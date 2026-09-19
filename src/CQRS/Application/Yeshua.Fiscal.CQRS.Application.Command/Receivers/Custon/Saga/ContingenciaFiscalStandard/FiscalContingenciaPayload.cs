@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Command.Receivers
 {
@@ -113,14 +114,38 @@ namespace Command.Receivers
 
         public static List<string> Pendencias(EntradaFiscalContingenciaDTO entrada, IEnumerable<NFeProdutoSnapshotDTO> documentos)
         {
-            var pendencias = new List<string>();
             var documentosLista = documentos as IReadOnlyCollection<NFeProdutoSnapshotDTO> ?? documentos.ToArray();
+            return FiscalEmissionPlanCompiler.Compile(entrada, documentosLista).Pendencias.ToList();
+        }
+
+        internal static List<string> BuildPendencias(
+            EntradaFiscalContingenciaDTO entrada,
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> documentosLista,
+            string? certificadoDocumentoTitular = null,
+            bool certificadoFoiVerificado = false)
+        {
+            var pendencias = new List<string>();
             var complemento = ComplementoJson(entrada);
 
             Require(pendencias, entrada.cargaid, "CargaId");
             Require(pendencias, Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"), "EmitenteFiscalDocumento");
             Require(pendencias, Value(entrada.tomadordocumento, complemento, "tomadorDocumento", "cnpjTomador"), "TomadorDocumento");
             Require(pendencias, Value(entrada.transportadordocumento, complemento, "transportadorDocumento", "cnpjTransportador"), "TransportadorDocumento");
+            Require(pendencias, Value(entrada.remetentedocumento, complemento, "remetenteDocumento", "cnpjRemetente"), "RemetenteDocumento");
+            Require(pendencias, Value(entrada.destinatariodocumento, complemento, "destinatarioDocumento", "cnpjDestinatario"), "DestinatarioDocumento");
+            ValidarParticipanteCTe(pendencias, complemento, "remetente", "Remetente");
+            ValidarParticipanteCTe(pendencias, complemento, "destinatario", "Destinatario");
+
+            var tomadorDocumento = Digits(Value(entrada.tomadordocumento, complemento, "tomadorDocumento", "cnpjTomador"));
+            var remetenteDocumento = Digits(Value(entrada.remetentedocumento, complemento, "remetenteDocumento", "cnpjRemetente"));
+            var destinatarioDocumento = Digits(Value(entrada.destinatariodocumento, complemento, "destinatarioDocumento", "cnpjDestinatario"));
+            if (!string.IsNullOrWhiteSpace(tomadorDocumento) &&
+                !string.Equals(tomadorDocumento, remetenteDocumento, StringComparison.Ordinal) &&
+                !string.Equals(tomadorDocumento, destinatarioDocumento, StringComparison.Ordinal))
+            {
+                pendencias.Add("TomadorOutrosRequerCadastroCompletoToma4");
+            }
+
             Require(pendencias, Value(entrada.rntrc, complemento, "rntrc", "RNTRC"), "RNTRC");
             Require(pendencias, Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"), "PlacaVeiculo");
             Require(pendencias, Value(entrada.ufveiculo, complemento, "ufVeiculo", "UFVeiculo"), "UFVeiculo");
@@ -130,6 +155,26 @@ namespace Command.Receivers
             Require(pendencias, Value(entrada.uffim, complemento, "ufFim", "UFFim"), "UFFim");
             Require(pendencias, Value(entrada.municipioiniciocodigoibge, complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"), "MunicipioInicioCodigoIbge");
             Require(pendencias, Value(entrada.municipiofimcodigoibge, complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"), "MunicipioFimCodigoIbge");
+
+            if (entrada.certificadodigitalid <= 0)
+                pendencias.Add("CertificadoDigital");
+
+            var emitenteFiscalDocumento = Digits(Value(
+                entrada.emitentefiscaldocumento,
+                complemento,
+                "emitenteFiscalDocumento",
+                "cnpjEmitente",
+                "emitenteDocumento"));
+            var documentoCertificado = Digits(certificadoDocumentoTitular);
+            if (certificadoFoiVerificado && string.IsNullOrWhiteSpace(documentoCertificado))
+            {
+                pendencias.Add("CertificadoDigitalIncompativelComEmitente");
+            }
+            else if (!string.IsNullOrWhiteSpace(documentoCertificado) &&
+                     !MesmaBaseCnpj(emitenteFiscalDocumento, documentoCertificado))
+            {
+                pendencias.Add("CertificadoDigitalIncompativelComEmitente");
+            }
 
             if (string.IsNullOrWhiteSpace(complemento) || complemento == "{}")
             {
@@ -142,12 +187,32 @@ namespace Command.Receivers
                 var tipoCargaMdfe = Text(complemento, "tipoCargaMDFe", "tipoCarga");
                 var produtoPredominanteMdfe = Text(complemento, "produtoPredominanteMDFe", "produtoPredominante");
                 var ncmProdutoPredominanteMdfe = Text(complemento, "ncmProdutoPredominanteMDFe", "ncmProdutoPredominante");
+                var defaultsCte = CteRecepcaoSincV4Options.FromEnvironment();
+                var ufEmitente = FirstNonEmpty(Text(complemento, "emitenteUf", "ufEmitente"), defaultsCte.UfEmitente);
+                var inscricaoEstadualEmitente = FirstNonEmpty(
+                    Text(complemento, "emitenteInscricaoEstadual", "inscricaoEstadualEmitente"),
+                    defaultsCte.InscricaoEstadual);
+                var municipioEmitenteCodigoIbge = FirstNonEmpty(
+                    Text(complemento, "emitenteMunicipioCodigoIbge", "municipioEmitenteCodigoIbge"),
+                    defaultsCte.MunicipioEmitenteCodigoIbge);
+                var ufInicio = Value(entrada.ufinicio, complemento, "ufInicio", "UFInicio");
+                var ufFim = Value(entrada.uffim, complemento, "ufFim", "UFFim");
+                var cfop = FirstNonEmpty(Text(complemento, "cfop", "CFOP"), CteCfopPolicy.Resolve(ufEmitente, ufInicio, ufFim));
 
                 Require(pendencias, tipoAgrupamento, "TipoAgrupamentoCTe");
                 Require(pendencias, estrategiaRateio, "EstrategiaRateioFrete");
                 Require(pendencias, tipoCargaMdfe, "TipoCargaMDFe");
                 Require(pendencias, produtoPredominanteMdfe, "ProdutoPredominanteMDFe");
                 Require(pendencias, ncmProdutoPredominanteMdfe, "NcmProdutoPredominanteMDFe");
+                Require(pendencias, ufEmitente, "UFEmitente");
+                Require(pendencias, inscricaoEstadualEmitente, "InscricaoEstadualEmitente");
+                Require(pendencias, municipioEmitenteCodigoIbge, "MunicipioEmitenteCodigoIbge");
+                Require(pendencias, cfop, "CFOP");
+
+                if (CteUfPolicy.ResolveCode(ufEmitente) == 0)
+                    pendencias.Add("UFEmitenteInvalida");
+                else if (!CteUfPolicy.MunicipioPertenceAoEstado(municipioEmitenteCodigoIbge, ufEmitente))
+                    pendencias.Add("UFEmitenteDivergeMunicipioEmitente");
 
                 if (Number(complemento, "valorFrete", "valorServico") <= 0m)
                     pendencias.Add("ValorFrete");
@@ -163,6 +228,9 @@ namespace Command.Receivers
                 {
                     pendencias.Add("NcmProdutoPredominanteMDFeInvalido");
                 }
+
+                if (cfop.Length != 4 || !cfop.All(char.IsDigit))
+                    pendencias.Add("CFOPInvalido");
 
                 ValidarParametrosDoPlano(pendencias, entrada, documentosLista, tipoAgrupamento, estrategiaRateio);
             }
@@ -223,6 +291,13 @@ namespace Command.Receivers
         }
 
         public static string PlanoEmissaoJson(EntradaFiscalContingenciaDTO entrada, IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos)
+            => FiscalEmissionPlanCompiler.Compile(entrada, documentos).PlanJson;
+
+        internal static string BuildPlanoEmissaoJson(
+            EntradaFiscalContingenciaDTO entrada,
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos,
+            IReadOnlyCollection<string> pendencias,
+            string rulesVersion)
         {
             var complemento = ComplementoJson(entrada);
             var tipoAgrupamento = FirstNonEmpty(
@@ -232,6 +307,70 @@ namespace Command.Receivers
                 Text(complemento, "estrategiaRateioFrete"),
                 "proporcional_valor_documento");
             var valorFrete = Number(complemento, "valorFrete", "valorServico");
+            var defaultsCte = CteRecepcaoSincV4Options.FromEnvironment();
+            var defaultsMdfe = MdfeRecepcaoSincOptions.FromEnvironment();
+            var ufEmitente = FirstNonEmpty(Text(complemento, "emitenteUf", "ufEmitente"), defaultsCte.UfEmitente);
+            var ufInicio = Value(entrada.ufinicio, complemento, "ufInicio", "UFInicio");
+            var ufFim = Value(entrada.uffim, complemento, "ufFim", "UFFim");
+            var cfopCalculado = CteCfopPolicy.Resolve(ufEmitente, ufInicio, ufFim);
+            var cfop = FirstNonEmpty(Text(complemento, "cfop", "CFOP"), cfopCalculado);
+            var tipoCTe = Int(complemento, "tipoCTe", "TipoCTe");
+            var tipoServico = Int(complemento, "tipoServico", "TipoServico");
+            var modal = Int(complemento, "modal", "Modal");
+            if (modal <= 0) modal = 1;
+            var globalizado = Int(complemento, "globalizado", "Globalizado");
+            var emitenteRazaoSocial = FirstNonEmpty(Text(complemento, "emitenteRazaoSocial", "razaoSocialEmitente"), defaultsCte.RazaoSocial);
+            var emitenteNomeFantasia = FirstNonEmpty(Text(complemento, "emitenteNomeFantasia", "nomeFantasiaEmitente"), defaultsCte.NomeFantasiaEmitente);
+            var emitenteInscricaoEstadual = FirstNonEmpty(Text(complemento, "emitenteInscricaoEstadual", "inscricaoEstadualEmitente"), defaultsCte.InscricaoEstadual);
+            var emitenteCrt = Int(complemento, "emitenteCrt", "crtEmitente");
+            if (emitenteCrt <= 0) emitenteCrt = defaultsCte.CrtEmitente;
+            var emitenteLogradouro = FirstNonEmpty(Text(complemento, "emitenteLogradouro", "logradouroEmitente"), defaultsCte.LogradouroEmitente);
+            var emitenteNumero = FirstNonEmpty(Text(complemento, "emitenteNumero", "numeroEnderecoEmitente"), defaultsCte.NumeroEnderecoEmitente);
+            var emitenteBairro = FirstNonEmpty(Text(complemento, "emitenteBairro", "bairroEmitente"), defaultsCte.BairroEmitente);
+            var emitenteCep = FirstNonEmpty(Text(complemento, "emitenteCep", "cepEmitente"), defaultsCte.CepEmitente);
+            var emitenteMunicipioCodigoIbge = FirstNonEmpty(Text(complemento, "emitenteMunicipioCodigoIbge", "municipioEmitenteCodigoIbge"), defaultsCte.MunicipioEmitenteCodigoIbge);
+            var emitenteMunicipioNome = FirstNonEmpty(Text(complemento, "emitenteMunicipioNome", "municipioEmitenteNome"), defaultsCte.MunicipioEmitenteNome);
+            var renavam = FirstNonEmpty(Text(complemento, "renavam", "Renavam"), defaultsMdfe.Renavam);
+            var taraKg = FirstNonEmpty(Text(complemento, "taraKg", "TaraKg"), defaultsMdfe.TaraKg);
+            var capacidadeKg = FirstNonEmpty(Text(complemento, "capacidadeKg", "CapacidadeKg"), defaultsMdfe.CapacidadeKg);
+            var capacidadeM3 = FirstNonEmpty(Text(complemento, "capacidadeM3", "CapacidadeM3"), defaultsMdfe.CapacidadeM3);
+            var tipoRodado = FirstNonEmpty(Text(complemento, "tipoRodado", "TipoRodado"), defaultsMdfe.TipoRodado);
+            var tipoCarroceria = FirstNonEmpty(Text(complemento, "tipoCarroceria", "TipoCarroceria"), defaultsMdfe.TipoCarroceria);
+            var cnpjResponsavelSeguro = FirstNonEmpty(Text(complemento, "cnpjResponsavelSeguro", "CnpjResponsavelSeguro"), defaultsMdfe.CnpjResponsavelSeguro);
+            var nomeSeguradora = FirstNonEmpty(Text(complemento, "nomeSeguradora", "NomeSeguradora"), defaultsMdfe.NomeSeguradora);
+            var cnpjSeguradora = FirstNonEmpty(Text(complemento, "cnpjSeguradora", "CnpjSeguradora"), defaultsMdfe.CnpjSeguradora);
+            var numeroApolice = FirstNonEmpty(Text(complemento, "numeroApolice", "NumeroApolice"), defaultsMdfe.NumeroApolice);
+            var numeroAverbacao = FirstNonEmpty(Text(complemento, "numeroAverbacao", "NumeroAverbacao"), defaultsMdfe.NumeroAverbacao);
+            var preferenciasEfetivasJson = BuildEffectivePreferencesJson(complemento, new Dictionary<string, object?>
+            {
+                ["emitenteUf"] = ufEmitente,
+                ["cfop"] = cfop,
+                ["tipoCTe"] = tipoCTe,
+                ["tipoServico"] = tipoServico,
+                ["modal"] = modal,
+                ["globalizado"] = globalizado,
+                ["emitenteRazaoSocial"] = emitenteRazaoSocial,
+                ["emitenteNomeFantasia"] = emitenteNomeFantasia,
+                ["emitenteInscricaoEstadual"] = emitenteInscricaoEstadual,
+                ["emitenteCrt"] = emitenteCrt,
+                ["emitenteLogradouro"] = emitenteLogradouro,
+                ["emitenteNumero"] = emitenteNumero,
+                ["emitenteBairro"] = emitenteBairro,
+                ["emitenteCep"] = emitenteCep,
+                ["emitenteMunicipioCodigoIbge"] = emitenteMunicipioCodigoIbge,
+                ["emitenteMunicipioNome"] = emitenteMunicipioNome,
+                ["renavam"] = renavam,
+                ["taraKg"] = taraKg,
+                ["capacidadeKg"] = capacidadeKg,
+                ["capacidadeM3"] = capacidadeM3,
+                ["tipoRodado"] = tipoRodado,
+                ["tipoCarroceria"] = tipoCarroceria,
+                ["cnpjResponsavelSeguro"] = cnpjResponsavelSeguro,
+                ["nomeSeguradora"] = nomeSeguradora,
+                ["cnpjSeguradora"] = cnpjSeguradora,
+                ["numeroApolice"] = numeroApolice,
+                ["numeroAverbacao"] = numeroAverbacao
+            });
             var grupos = AgruparDocumentos(entrada, documentos, tipoAgrupamento);
             var totalBaseRateio = grupos.Sum(x => BaseRateio(x.Documentos, estrategiaRateio));
             var valorFreteRateado = 0m;
@@ -268,19 +407,21 @@ namespace Command.Receivers
                     }).ToArray()
                 };
             }).ToArray();
-            var pendencias = Pendencias(entrada, documentos);
-
             return JsonSerializer.Serialize(new
             {
                 type = "fiscal.contingencia.plano-emissao",
+                rulesVersion,
                 entrada.id,
                 entrada.correlationid,
                 entrada.cargaid,
                 entrada.tiposolicitante,
                 entrada.ambiente,
+                certificadoDigitalId = entrada.certificadodigitalid,
                 emitenteFiscalDocumento = Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
                 tomadorDocumento = Value(entrada.tomadordocumento, complemento, "tomadorDocumento", "cnpjTomador"),
                 transportadorDocumento = Value(entrada.transportadordocumento, complemento, "transportadorDocumento", "cnpjTransportador"),
+                remetenteDocumento = Value(entrada.remetentedocumento, complemento, "remetenteDocumento", "cnpjRemetente"),
+                destinatarioDocumento = Value(entrada.destinatariodocumento, complemento, "destinatarioDocumento", "cnpjDestinatario"),
                 rntrc = Value(entrada.rntrc, complemento, "rntrc", "RNTRC"),
                 placaveiculo = Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"),
                 ufveiculo = Value(entrada.ufveiculo, complemento, "ufVeiculo", "UFVeiculo"),
@@ -297,14 +438,46 @@ namespace Command.Receivers
                 valorFrete,
                 tipoAgrupamentoCTe = tipoAgrupamento,
                 estrategiaRateioFrete = estrategiaRateio,
-                tipoCTe = Int(complemento, "tipoCTe", "TipoCTe"),
-                tipoServico = Int(complemento, "tipoServico", "TipoServico"),
-                modal = Int(complemento, "modal", "Modal"),
-                globalizado = Int(complemento, "globalizado", "Globalizado"),
+                cfop,
+                tipoCTe,
+                tipoServico,
+                modal,
+                globalizado,
                 origemRotaFiscal = Text(complemento, "origemRotaFiscal"),
                 observacaoFiscal = Text(complemento, "observacaoFiscal"),
-                dadosComplementaresJson = complemento,
-                preferenciasFiscaisJson = complemento,
+                parametrosFiscaisEfetivos = new
+                {
+                    emitenteUf = ufEmitente,
+                    cfop,
+                    cfopOrigem = string.IsNullOrWhiteSpace(Text(complemento, "cfop", "CFOP")) ? "calculado" : "informado",
+                    tipoCTe,
+                    tipoServico,
+                    modal,
+                    globalizado,
+                    emitenteRazaoSocial,
+                    emitenteNomeFantasia,
+                    emitenteInscricaoEstadual,
+                    emitenteCrt,
+                    emitenteLogradouro,
+                    emitenteNumero,
+                    emitenteBairro,
+                    emitenteCep,
+                    emitenteMunicipioCodigoIbge,
+                    emitenteMunicipioNome,
+                    renavam,
+                    taraKg,
+                    capacidadeKg,
+                    capacidadeM3,
+                    tipoRodado,
+                    tipoCarroceria,
+                    cnpjResponsavelSeguro,
+                    nomeSeguradora,
+                    cnpjSeguradora,
+                    numeroApolice,
+                    numeroAverbacao
+                },
+                dadosComplementaresJson = preferenciasEfetivasJson,
+                preferenciasFiscaisJson = preferenciasEfetivasJson,
                 pendencias,
                 ctesPrevistos,
                 mdfesPrevistos = new[]
@@ -313,6 +486,13 @@ namespace Command.Receivers
                     {
                         chave = entrada.cargaid,
                         descricao = "MDF-e da carga",
+                        emitenteDocumento = Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
+                        emitenteRazaoSocial,
+                        emitenteNomeFantasia,
+                        emitenteInscricaoEstadual,
+                        emitenteUf = ufEmitente,
+                        emitenteMunicipioCodigoIbge,
+                        emitenteMunicipioNome,
                         quantidadeCTes = ctesPrevistos.Length,
                         ctes = ctesPrevistos.Select(x => x.Chave).ToArray(),
                         ufinicio = Value(entrada.ufinicio, complemento, "ufInicio", "UFInicio"),
@@ -333,6 +513,28 @@ namespace Command.Receivers
                     }
                 }
             });
+        }
+
+        private static string BuildEffectivePreferencesJson(
+            string? sourceJson,
+            IReadOnlyDictionary<string, object?> effectiveValues)
+        {
+            JsonObject result;
+            try
+            {
+                result = string.IsNullOrWhiteSpace(sourceJson)
+                    ? new JsonObject()
+                    : JsonNode.Parse(sourceJson) as JsonObject ?? new JsonObject();
+            }
+            catch (JsonException)
+            {
+                result = new JsonObject();
+            }
+
+            foreach (var item in effectiveValues)
+                result[item.Key] = JsonSerializer.SerializeToNode(item.Value);
+
+            return result.ToJsonString();
         }
 
         private static string Text(JsonElement root, params string[] names)
@@ -377,6 +579,48 @@ namespace Command.Receivers
         {
             if (string.IsNullOrWhiteSpace(value))
                 pendencias.Add(field);
+        }
+
+        // The confirmed contingency payload is the source of truth for CT-e parties.
+        // NF-e snapshots are shown as origin data, never as a late fallback during emission.
+        private static void ValidarParticipanteCTe(
+            List<string> pendencias,
+            string complemento,
+            string participantName,
+            string label)
+        {
+            if (string.IsNullOrWhiteSpace(complemento))
+            {
+                pendencias.Add(label + "Participante");
+                return;
+            }
+
+            try
+            {
+                using var document = JsonDocument.Parse(complemento);
+                if (!TryGetProperty(document.RootElement, "participantesCTe", out var participants) ||
+                    participants.ValueKind != JsonValueKind.Object ||
+                    !TryGetProperty(participants, participantName, out var participant) ||
+                    participant.ValueKind != JsonValueKind.Object)
+                {
+                    pendencias.Add(label + "Participante");
+                    return;
+                }
+
+                Require(pendencias, Text(participant, "documento"), label + "Documento");
+                Require(pendencias, Text(participant, "nome"), label + "Nome");
+                Require(pendencias, Text(participant, "logradouro"), label + "Logradouro");
+                Require(pendencias, Text(participant, "numero"), label + "Numero");
+                Require(pendencias, Text(participant, "bairro"), label + "Bairro");
+                Require(pendencias, Text(participant, "municipioCodigoIbge"), label + "MunicipioCodigoIbge");
+                Require(pendencias, Text(participant, "municipioNome"), label + "MunicipioNome");
+                Require(pendencias, Text(participant, "uf"), label + "UF");
+                Require(pendencias, Text(participant, "cep"), label + "Cep");
+            }
+            catch (JsonException)
+            {
+                pendencias.Add(label + "Participante");
+            }
         }
 
         private static void ValidarParametrosDoPlano(
@@ -472,6 +716,14 @@ namespace Command.Receivers
                 ? Text(complemento, names)
                 : entityValue;
         }
+
+        private static string Digits(string? value)
+            => new((value ?? string.Empty).Where(char.IsDigit).ToArray());
+
+        private static bool MesmaBaseCnpj(string primeiro, string segundo)
+            => primeiro.Length >= 8 &&
+               segundo.Length >= 8 &&
+               string.Equals(primeiro[..8], segundo[..8], StringComparison.Ordinal);
 
         private static bool TryParseDecimal(string? value, out decimal result)
         {

@@ -101,7 +101,7 @@ namespace Command.Receivers
                 var solicitacaoId = GarantirSolicitacao(entrada, romaneio, plano, grupo, notasDoGrupo);
                 solicitacoes.Add(solicitacaoId);
                 documentosCriados += GarantirDocumentosOriginarios(solicitacaoId, notasDoGrupo);
-                GarantirParticipantes(solicitacaoId, notasDoGrupo);
+                GarantirParticipantes(solicitacaoId, notasDoGrupo, plano);
             }
 
             _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
@@ -142,14 +142,14 @@ namespace Command.Receivers
                     grupo.Key,
                     StringComparison.OrdinalIgnoreCase));
 
-            if (existente != null && existente.id > 0)
-                return existente.id;
-
             var preferencias = JsonSerializer.Serialize(new
             {
                 origem = "MontarSolicitacoesCTe",
                 grupoChave = grupo.Key,
                 grupoDescricao = grupo.Description,
+                tomadorDocumento = plano.TakerDocument,
+                emitenteUf = plano.IssuerState,
+                cfop = plano.Cfop,
                 valorServicoOrigem = plano.FromStoredPlan ? "plano-emissao-confirmado" : "preferencias-fiscais",
                 valorServico = grupo.FreightValue,
                 valorCarga = grupo.DocumentsValue,
@@ -158,13 +158,27 @@ namespace Command.Receivers
                 preferenciasFiscaisJson = plano.PreferencesJson
             });
 
+            if (existente != null && existente.id > 0)
+            {
+                if (existente.status >= 3 && !SameDocument(existente.emitentedocumento, plano.IssuerDocument))
+                {
+                    throw new InvalidOperationException(
+                        $"Carga {romaneio.cargaid}: a solicitacao CT-e {existente.id} ja foi preparada para o emitente " +
+                        $"{OnlyDigits(existente.emitentedocumento ?? string.Empty)}, mas o plano confirmado informa " +
+                        $"{OnlyDigits(plano.IssuerDocument)}. Gere uma nova solicitacao.");
+                }
+
+                SincronizarSolicitacao(existente.id, entrada, romaneio, plano, grupo, preferencias);
+                return existente.id;
+            }
+
             var solicitacao = new CTeSolicitacaoFiscalFactory(_logger).Create(
                 null,
                 entrada.id,
                 romaneio.id,
                 entrada.correlationid,
                 plano.Environment,
-                plano.StartState,
+                plano.IssuerState,
                 plano.IssuerDocument,
                 57,
                 plano.CteType,
@@ -185,6 +199,39 @@ namespace Command.Receivers
                 throw new InvalidOperationException($"Carga {romaneio.cargaid}: solicitacao fiscal CT-e nao recebeu Id apos insert.");
 
             return solicitacao.Id.Value;
+        }
+
+        private void SincronizarSolicitacao(
+            int solicitacaoId,
+            CTeEntradaOficialDTO entrada,
+            CTeRomaneioConsolidadoDTO romaneio,
+            PlanoEmissao plano,
+            PlanoCTe grupo,
+            string preferencias)
+        {
+            _cteSolicitacaoFiscalWriteRepository.UpdateEntradaOficialId(solicitacaoId, entrada.id);
+            _cteSolicitacaoFiscalWriteRepository.UpdateRomaneioConsolidadoId(solicitacaoId, romaneio.id);
+            _cteSolicitacaoFiscalWriteRepository.UpdateCorrelationId(solicitacaoId, entrada.correlationid);
+            _cteSolicitacaoFiscalWriteRepository.UpdateAmbiente(solicitacaoId, plano.Environment);
+            _cteSolicitacaoFiscalWriteRepository.UpdateUFEmitente(solicitacaoId, plano.IssuerState);
+            _cteSolicitacaoFiscalWriteRepository.UpdateEmitenteDocumento(solicitacaoId, plano.IssuerDocument);
+            _cteSolicitacaoFiscalWriteRepository.UpdateTipoCTe(solicitacaoId, plano.CteType);
+            _cteSolicitacaoFiscalWriteRepository.UpdateTipoServico(solicitacaoId, plano.ServiceType);
+            _cteSolicitacaoFiscalWriteRepository.UpdateModal(solicitacaoId, plano.Modal);
+            _cteSolicitacaoFiscalWriteRepository.UpdateGlobalizado(solicitacaoId, plano.Globalized);
+            _cteSolicitacaoFiscalWriteRepository.UpdateUFInicio(solicitacaoId, plano.StartState);
+            _cteSolicitacaoFiscalWriteRepository.UpdateUFFim(solicitacaoId, plano.EndState);
+            _cteSolicitacaoFiscalWriteRepository.UpdateMunicipioInicioCodigoIbge(solicitacaoId, plano.StartCityCode);
+            _cteSolicitacaoFiscalWriteRepository.UpdateMunicipioFimCodigoIbge(solicitacaoId, plano.EndCityCode);
+            _cteSolicitacaoFiscalWriteRepository.UpdateValorServico(solicitacaoId, grupo.FreightValue);
+            _cteSolicitacaoFiscalWriteRepository.UpdateValorCarga(solicitacaoId, grupo.DocumentsValue);
+            _cteSolicitacaoFiscalWriteRepository.UpdatePreferenciasManifestoJson(solicitacaoId, preferencias);
+            _cteSolicitacaoFiscalWriteRepository.UpdateChanged(solicitacaoId, DateTime.UtcNow);
+        }
+
+        private static bool SameDocument(string? first, string? second)
+        {
+            return string.Equals(OnlyDigits(first ?? string.Empty), OnlyDigits(second ?? string.Empty), StringComparison.Ordinal);
         }
 
         private static string PlanoGroupKey(string json)
@@ -241,10 +288,21 @@ namespace Command.Receivers
 
         private void GarantirParticipantes(
             int cteSolicitacaoFiscalId,
-            IReadOnlyCollection<NFeProdutoSnapshotDTO> notas)
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> notas,
+            PlanoEmissao plano)
         {
-            var existentes = (_cteParticipanteSnapshotReadRepository.GetAllByCTeSolicitacaoFiscalId(cteSolicitacaoFiscalId)
+            var participantesExistentes = (_cteParticipanteSnapshotReadRepository.GetAllByCTeSolicitacaoFiscalId(cteSolicitacaoFiscalId)
                     ?? Array.Empty<CTeParticipanteSnapshotDTO>())
+                .ToArray();
+
+            if (plano.FromStoredPlan)
+            {
+                GarantirParticipanteEfetivo(cteSolicitacaoFiscalId, "Remetente", plano.Remetente, participantesExistentes);
+                GarantirParticipanteEfetivo(cteSolicitacaoFiscalId, "Destinatario", plano.Destinatario, participantesExistentes);
+                return;
+            }
+
+            var existentes = participantesExistentes
                 .Select(x => $"{x.papel}|{OnlyDigits(x.documento ?? string.Empty)}")
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
@@ -267,6 +325,42 @@ namespace Command.Receivers
                 primeiraNota.snapshotjson,
                 "destinatarioSnapshot",
                 existentes);
+        }
+
+        private void GarantirParticipanteEfetivo(
+            int cteSolicitacaoFiscalId,
+            string papel,
+            ParticipanteSnapshot snapshot,
+            IReadOnlyCollection<CTeParticipanteSnapshotDTO> existentes)
+        {
+            if (string.IsNullOrWhiteSpace(snapshot.Documento))
+                throw new InvalidOperationException($"Solicitacao CT-e {cteSolicitacaoFiscalId}: {papel.ToLowerInvariant()} efetivo nao informado no plano confirmado.");
+
+            var existente = existentes.FirstOrDefault(item =>
+                string.Equals(item.papel, papel, StringComparison.OrdinalIgnoreCase));
+            if (existente != null && existente.id > 0)
+            {
+                _cteParticipanteSnapshotWriteRepository.UpdateDocumento(existente.id, snapshot.Documento);
+                _cteParticipanteSnapshotWriteRepository.UpdateNome(existente.id, snapshot.Nome);
+                _cteParticipanteSnapshotWriteRepository.UpdateInscricaoEstadual(existente.id, snapshot.InscricaoEstadual);
+                _cteParticipanteSnapshotWriteRepository.UpdateUF(existente.id, snapshot.UF);
+                _cteParticipanteSnapshotWriteRepository.UpdateMunicipioCodigoIbge(existente.id, snapshot.MunicipioCodigoIbge);
+                _cteParticipanteSnapshotWriteRepository.UpdateEnderecoJson(existente.id, snapshot.EnderecoJson);
+                _cteParticipanteSnapshotWriteRepository.UpdateChanged(existente.id, DateTime.UtcNow);
+                return;
+            }
+
+            var participante = new CTeParticipanteSnapshotFactory(_logger).Create(
+                null,
+                cteSolicitacaoFiscalId,
+                papel,
+                snapshot.Documento,
+                snapshot.Nome,
+                snapshot.InscricaoEstadual,
+                snapshot.UF,
+                snapshot.MunicipioCodigoIbge,
+                snapshot.EnderecoJson);
+            _cteParticipanteSnapshotWriteRepository.Insert(participante);
         }
 
         private void InserirParticipante(
@@ -361,12 +455,17 @@ namespace Command.Receivers
             public string EndState { get; private init; } = string.Empty;
             public string StartCityCode { get; private init; } = string.Empty;
             public string EndCityCode { get; private init; } = string.Empty;
+            public string IssuerState { get; private init; } = string.Empty;
+            public string Cfop { get; private init; } = string.Empty;
             public string IssuerDocument { get; private init; } = string.Empty;
+            public string TakerDocument { get; private init; } = string.Empty;
             public int CteType { get; private init; }
             public int ServiceType { get; private init; }
             public int Modal { get; private init; }
             public int Globalized { get; private init; }
             public string PreferencesJson { get; private init; } = string.Empty;
+            public ParticipanteSnapshot Remetente { get; private init; } = ParticipanteSnapshot.Empty;
+            public ParticipanteSnapshot Destinatario { get; private init; } = ParticipanteSnapshot.Empty;
             public IReadOnlyList<PlanoCTe> CTes { get; private init; } = Array.Empty<PlanoCTe>();
 
             public static PlanoEmissao Load(
@@ -390,7 +489,14 @@ namespace Command.Receivers
                     EndState = romaneio.uffim,
                     StartCityCode = romaneio.municipioiniciocodigoibge,
                     EndCityCode = romaneio.municipiofimcodigoibge,
+                    IssuerState = ResolveIssuerState(romaneio.preferenciasfiscaisjson),
+                    Cfop = ResolveCfop(
+                        romaneio.preferenciasfiscaisjson,
+                        ResolveIssuerState(romaneio.preferenciasfiscaisjson),
+                        romaneio.ufinicio,
+                        romaneio.uffim),
                     IssuerDocument = romaneio.emitentedocumento,
+                    TakerDocument = romaneio.tomadordocumento ?? string.Empty,
                     Modal = 1,
                     PreferencesJson = romaneio.preferenciasfiscaisjson,
                     CTes = new[]
@@ -410,6 +516,9 @@ namespace Command.Receivers
             {
                 using var document = JsonDocument.Parse(json);
                 var root = document.RootElement;
+                var preferencesJson = FirstNotEmpty(
+                    JsonText(root, "preferenciasFiscaisJson", "PreferenciasFiscaisJson"),
+                    romaneio.preferenciasfiscaisjson);
                 if (!TryProperty(root, "ctesPrevistos", out var ctesElement) || ctesElement.ValueKind != JsonValueKind.Array)
                     throw new InvalidOperationException($"Carga {romaneio.cargaid}: plano confirmado nao possui ctesPrevistos.");
 
@@ -448,14 +557,67 @@ namespace Command.Receivers
                     EndState = FirstNotEmpty(JsonText(root, "uffim", "UFFim"), romaneio.uffim),
                     StartCityCode = FirstNotEmpty(JsonText(root, "municipioiniciocodigoibge", "MunicipioInicioCodigoIbge"), romaneio.municipioiniciocodigoibge),
                     EndCityCode = FirstNotEmpty(JsonText(root, "municipiofimcodigoibge", "MunicipioFimCodigoIbge"), romaneio.municipiofimcodigoibge),
+                    IssuerState = ResolveIssuerState(preferencesJson),
+                    Cfop = FirstNotEmpty(
+                        JsonText(root, "cfop", "CFOP"),
+                        ResolveCfop(
+                            preferencesJson,
+                            ResolveIssuerState(preferencesJson),
+                            FirstNotEmpty(JsonText(root, "ufinicio", "UFInicio"), romaneio.ufinicio),
+                            FirstNotEmpty(JsonText(root, "uffim", "UFFim"), romaneio.uffim))),
                     IssuerDocument = FirstNotEmpty(JsonText(root, "emitenteFiscalDocumento", "emitentefiscaldocumento"), romaneio.emitentedocumento),
+                    TakerDocument = FirstNotEmpty(JsonText(root, "tomadorDocumento", "TomadorDocumento", "cnpjTomador"), romaneio.tomadordocumento),
                     CteType = JsonInt(root, "tipoCTE", "tipoCTe", "TipoCTe"),
                     ServiceType = JsonInt(root, "tipoServico", "TipoServico"),
                     Modal = JsonInt(root, "modal", "Modal") is var modal && modal > 0 ? modal : 1,
                     Globalized = JsonInt(root, "globalizado", "Globalizado"),
-                    PreferencesJson = FirstNotEmpty(JsonText(root, "preferenciasFiscaisJson", "PreferenciasFiscaisJson"), romaneio.preferenciasfiscaisjson),
+                    PreferencesJson = preferencesJson,
+                    Remetente = ParticipanteSnapshot.FromPreferences(preferencesJson, "remetente"),
+                    Destinatario = ParticipanteSnapshot.FromPreferences(preferencesJson, "destinatario"),
                     CTes = ctes
                 };
+            }
+
+            private static string ResolveIssuerState(string preferencesJson)
+            {
+                if (!string.IsNullOrWhiteSpace(preferencesJson))
+                {
+                    try
+                    {
+                        using var document = JsonDocument.Parse(preferencesJson);
+                        var value = JsonText(document.RootElement, "emitenteUf", "ufEmitente");
+                        if (!string.IsNullOrWhiteSpace(value))
+                            return value.Trim().ToUpperInvariant();
+                    }
+                    catch (JsonException)
+                    {
+                    }
+                }
+
+                return CteRecepcaoSincV4Options.FromEnvironment().UfEmitente.Trim().ToUpperInvariant();
+            }
+
+            private static string ResolveCfop(
+                string preferencesJson,
+                string issuerState,
+                string startState,
+                string endState)
+            {
+                if (!string.IsNullOrWhiteSpace(preferencesJson))
+                {
+                    try
+                    {
+                        using var document = JsonDocument.Parse(preferencesJson);
+                        var value = JsonText(document.RootElement, "cfop", "CFOP");
+                        if (!string.IsNullOrWhiteSpace(value))
+                            return value.Trim();
+                    }
+                    catch (JsonException)
+                    {
+                    }
+                }
+
+                return CteCfopPolicy.Resolve(issuerState, startState, endState);
             }
         }
 
@@ -549,6 +711,44 @@ namespace Command.Receivers
             string MunicipioCodigoIbge,
             string EnderecoJson)
         {
+            public static ParticipanteSnapshot Empty { get; } = new(
+                string.Empty,
+                string.Empty,
+                string.Empty,
+                string.Empty,
+                string.Empty,
+                "{}");
+
+            public static ParticipanteSnapshot FromPreferences(string json, string participantName)
+            {
+                if (string.IsNullOrWhiteSpace(json))
+                    return Empty;
+
+                try
+                {
+                    using var document = JsonDocument.Parse(json);
+                    if (!TryProperty(document.RootElement, "participantesCTe", out var participants) ||
+                        participants.ValueKind != JsonValueKind.Object ||
+                        !TryProperty(participants, participantName, out var participant) ||
+                        participant.ValueKind != JsonValueKind.Object)
+                    {
+                        return Empty;
+                    }
+
+                    return new ParticipanteSnapshot(
+                        JsonText(participant, "documento"),
+                        JsonText(participant, "nome"),
+                        JsonText(participant, "inscricaoEstadual"),
+                        JsonText(participant, "uf"),
+                        JsonText(participant, "municipioCodigoIbge"),
+                        participant.GetRawText());
+                }
+                catch (JsonException)
+                {
+                    return Empty;
+                }
+            }
+
             public static ParticipanteSnapshot From(
                 string json,
                 string propertyName,

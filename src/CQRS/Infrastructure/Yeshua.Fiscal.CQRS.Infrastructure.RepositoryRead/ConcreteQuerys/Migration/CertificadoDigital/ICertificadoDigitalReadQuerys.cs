@@ -28,6 +28,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsBySenhaStorageKeyQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByApelidoQuery(string value );
         public QueryModel FirstByDocumentoTitularQuery(string value );
@@ -40,6 +41,7 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstBySenhaStorageKeyQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -110,6 +110,63 @@ namespace Command.Receivers
             repository.UpdateAtualizadoEmUtc(id, DateTime.UtcNow);
         }
 
+        public static string RefreshPlan(
+            IEntradaFiscalContingenciaWriteRepository repository,
+            EntradaFiscalContingenciaDTO entrada,
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos,
+            string? certificadoDocumentoTitular = null,
+            bool certificadoFoiVerificado = false)
+        {
+            var compilacao = FiscalEmissionPlanCompiler.Compile(
+                entrada,
+                documentos,
+                certificadoDocumentoTitular,
+                certificadoFoiVerificado);
+
+            repository.UpdateQuantidadeDocumentos(entrada.id, documentos.Count);
+            repository.UpdateValorCarga(entrada.id, documentos.Sum(x => x.valordocumento));
+            repository.UpdatePesoBruto(entrada.id, documentos.Sum(x => x.pesobruto));
+            repository.UpdateVolume(entrada.id, documentos.Sum(x => x.volume));
+            repository.UpdatePendenciasJson(entrada.id, JsonSerializer.Serialize(compilacao.Pendencias));
+            repository.UpdateSnapshotJson(entrada.id, compilacao.PlanJson);
+            repository.UpdateAtualizadoEmUtc(entrada.id, DateTime.UtcNow);
+            repository.UpdateStatus(entrada.id, 2);
+
+            return compilacao.PlanJson;
+        }
+
+        public static bool HasValidPlanSnapshot(EntradaFiscalContingenciaDTO entrada)
+        {
+            if (string.IsNullOrWhiteSpace(entrada.snapshotjson))
+                return false;
+
+            try
+            {
+                using var snapshot = JsonDocument.Parse(entrada.snapshotjson);
+                if (snapshot.RootElement.ValueKind != JsonValueKind.Object ||
+                    !snapshot.RootElement.TryGetProperty("type", out var type) ||
+                    !string.Equals(type.GetString(), "fiscal.contingencia.plano-emissao", StringComparison.OrdinalIgnoreCase))
+                    return false;
+
+                if (!snapshot.RootElement.TryGetProperty("rulesVersion", out var rulesVersion) ||
+                    !string.Equals(rulesVersion.GetString(), FiscalEmissionPlanCompiler.RulesVersion, StringComparison.Ordinal))
+                {
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(entrada.pendenciasjson))
+                    return false;
+
+                using var pendencias = JsonDocument.Parse(entrada.pendenciasjson);
+                return pendencias.RootElement.ValueKind == JsonValueKind.Array &&
+                    pendencias.RootElement.GetArrayLength() == 0;
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+        }
+
         private static string MergeComplemento(string atual, string novo)
         {
             var destino = ParseObject(atual);

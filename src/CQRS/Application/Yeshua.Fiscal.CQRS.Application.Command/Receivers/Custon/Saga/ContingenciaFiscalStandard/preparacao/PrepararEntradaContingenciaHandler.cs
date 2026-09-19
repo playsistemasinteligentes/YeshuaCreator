@@ -15,7 +15,6 @@ using IRepository.Write;
 using Repositorio.Outputs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 
 namespace Command.Receivers
@@ -50,13 +49,6 @@ namespace Command.Receivers
             var entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
             var documentos = FiscalContingenciaState.LoadDocumentos(_nfeProdutoSnapshotReadRepository, entrada.cargaid);
 
-            if (documentos.Count > 0)
-            {
-                InferirDadosDosDocumentos(entrada, documentos);
-                entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
-                AtualizarSimulacao(entrada, documentos, AcaoInformarNotas);
-            }
-
             step.SetPayload(JsonSerializer.Serialize(new
             {
                 type = "fiscal.contingencia.preparacao-aguardando",
@@ -80,27 +72,22 @@ namespace Command.Receivers
             entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
             var documentos = FiscalContingenciaState.LoadDocumentos(_nfeProdutoSnapshotReadRepository, entrada.cargaid);
 
-            if (string.Equals(acao, AcaoInformarNotas, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(acao, AcaoConfirmarPlano, StringComparison.OrdinalIgnoreCase))
             {
-                if (documentos.Count == 0)
-                {
-                    ManterAguardando(step, entrada, documentos, acao, new List<string> { "DocumentosOriginarios" });
-                    return;
-                }
-
-                InferirDadosDosDocumentos(entrada, documentos);
-                entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
+                ManterAguardando(
+                    step,
+                    entrada,
+                    documentos,
+                    acao,
+                    new List<string> { "PreviewDesatualizado" });
+                return;
             }
 
             var planoJson = AtualizarSimulacao(entrada, documentos, acao);
             entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
-            var pendencias = FiscalContingenciaPayload.Pendencias(entrada, documentos);
-
-            if (!string.Equals(acao, AcaoConfirmarPlano, StringComparison.OrdinalIgnoreCase))
-            {
-                ManterAguardando(step, entrada, documentos, acao, pendencias, planoJson);
-                return;
-            }
+            var compilacao = FiscalEmissionPlanCompiler.Compile(entrada, documentos);
+            var pendencias = compilacao.Pendencias;
+            planoJson = compilacao.PlanJson;
 
             if (pendencias.Count > 0)
             {
@@ -131,17 +118,10 @@ namespace Command.Receivers
             IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos,
             string acao)
         {
-            var pendencias = FiscalContingenciaPayload.Pendencias(entrada, documentos);
-            var planoJson = FiscalContingenciaPayload.PlanoEmissaoJson(entrada, documentos);
-
-            _entradaWriteRepository.UpdateQuantidadeDocumentos(entrada.id, documentos.Count);
-            _entradaWriteRepository.UpdateValorCarga(entrada.id, documentos.Sum(x => x.valordocumento));
-            _entradaWriteRepository.UpdatePesoBruto(entrada.id, documentos.Sum(x => x.pesobruto));
-            _entradaWriteRepository.UpdateVolume(entrada.id, documentos.Sum(x => x.volume));
-            _entradaWriteRepository.UpdatePendenciasJson(entrada.id, JsonSerializer.Serialize(pendencias));
-            _entradaWriteRepository.UpdateSnapshotJson(entrada.id, planoJson);
-            _entradaWriteRepository.UpdateAtualizadoEmUtc(entrada.id, DateTime.UtcNow);
-            _entradaWriteRepository.UpdateStatus(entrada.id, 2);
+            var planoJson = FiscalContingenciaState.RefreshPlan(
+                _entradaWriteRepository,
+                entrada,
+                documentos);
 
             _logger.Info($"Contingencia fiscal {entrada.cargaid}: preparacao atualizada por {acao}.");
             return planoJson;
@@ -172,48 +152,6 @@ namespace Command.Receivers
                 occurredAtUtc = DateTime.UtcNow
             }));
             step.SetWaiting();
-        }
-
-        private void InferirDadosDosDocumentos(EntradaFiscalContingenciaDTO entrada, IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos)
-        {
-            if (documentos.Count == 0)
-                return;
-
-            var first = documentos.First();
-            var complemento = FiscalContingenciaPayload.ComplementoJson(entrada);
-            var id = entrada.id;
-
-            AtualizarTextoSeNecessario(id, entrada.emitentefiscaldocumento, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
-                first.emitentedocumento), _entradaWriteRepository.UpdateEmitenteFiscalDocumento);
-            AtualizarTextoSeNecessario(id, entrada.tomadordocumento, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "tomadorDocumento", "cnpjTomador"),
-                first.destinatariodocumento), _entradaWriteRepository.UpdateTomadorDocumento);
-            AtualizarTextoSeNecessario(id, entrada.transportadordocumento, FiscalContingenciaPayload.Text(complemento, "transportadorDocumento", "cnpjTransportador"), _entradaWriteRepository.UpdateTransportadorDocumento);
-            AtualizarTextoSeNecessario(id, entrada.remetentedocumento, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "remetenteDocumento", "cnpjRemetente"),
-                first.emitentedocumento), _entradaWriteRepository.UpdateRemetenteDocumento);
-            AtualizarTextoSeNecessario(id, entrada.destinatariodocumento, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "destinatarioDocumento", "cnpjDestinatario"),
-                first.destinatariodocumento), _entradaWriteRepository.UpdateDestinatarioDocumento);
-            AtualizarTextoSeNecessario(id, entrada.ufinicio, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "ufInicio", "UFInicio"),
-                first.uforigem), _entradaWriteRepository.UpdateUFInicio);
-            AtualizarTextoSeNecessario(id, entrada.uffim, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "ufFim", "UFFim"),
-                first.ufdestino), _entradaWriteRepository.UpdateUFFim);
-            AtualizarTextoSeNecessario(id, entrada.municipioiniciocodigoibge, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"),
-                first.municipioorigemcodigoibge), _entradaWriteRepository.UpdateMunicipioInicioCodigoIbge);
-            AtualizarTextoSeNecessario(id, entrada.municipiofimcodigoibge, FiscalContingenciaState.FirstNonEmpty(
-                FiscalContingenciaPayload.Text(complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"),
-                first.municipiodestinocodigoibge), _entradaWriteRepository.UpdateMunicipioFimCodigoIbge);
-        }
-
-        private static void AtualizarTextoSeNecessario(int id, string atual, string novo, Action<int, string> update)
-        {
-            if (string.IsNullOrWhiteSpace(atual) && !string.IsNullOrWhiteSpace(novo))
-                update(id, novo);
         }
 
         private static string ProximaAcao(string acao, IReadOnlyCollection<string> pendencias)

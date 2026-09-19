@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCertificadoDigitalQuery(ICertificadoDigitalEntity CertificadoDigital)
         {
-            this.Query = $@" INSERT INTO [CertificadoDigital] ([Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Apelido, @DocumentoTitular, @StorageKey, @Thumbprint, @ValidoDe, @ValidoAte, @Ativo, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CertificadoDigital] ([Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey]) OUTPUT INSERTED.[Id] VALUES(@Apelido, @DocumentoTitular, @StorageKey, @Thumbprint, @ValidoDe, @ValidoAte, @Ativo, @TenantID, @Deleted, @Changed, @UserId, @SenhaStorageKey) ";
             this.Parameters = new
             {
                 Apelido = CertificadoDigital.Apelido,
@@ -44,12 +44,13 @@ namespace Query.Write
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                SenhaStorageKey = CertificadoDigital.SenhaStorageKey,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateCertificadoDigitalQuery(ICertificadoDigitalEntity CertificadoDigital)
         {
-            this.Query = $@" UPDATE [CertificadoDigital] SET [Apelido] = @Apelido, [DocumentoTitular] = @DocumentoTitular, [StorageKey] = @StorageKey, [Thumbprint] = @Thumbprint, [ValidoDe] = @ValidoDe, [ValidoAte] = @ValidoAte, [Ativo] = @Ativo, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [CertificadoDigital] SET [Apelido] = @Apelido, [DocumentoTitular] = @DocumentoTitular, [StorageKey] = @StorageKey, [Thumbprint] = @Thumbprint, [ValidoDe] = @ValidoDe, [ValidoAte] = @ValidoAte, [Ativo] = @Ativo, [Changed] = @Changed, [UserId] = @UserId, [SenhaStorageKey] = @SenhaStorageKey WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Apelido = CertificadoDigital.Apelido,
@@ -61,6 +62,7 @@ namespace Query.Write
                 Ativo = CertificadoDigital.Ativo,
                 Changed = CertificadoDigital.Changed,
                 UserId = _executionContext.UserId,
+                SenhaStorageKey = CertificadoDigital.SenhaStorageKey,
                 Id = CertificadoDigital.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -171,6 +173,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateSenhaStorageKey(int id, string value)
+        {
+            this.Query = $@" UPDATE [CertificadoDigital] SET [SenhaStorageKey] = @SenhaStorageKey WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                SenhaStorageKey = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

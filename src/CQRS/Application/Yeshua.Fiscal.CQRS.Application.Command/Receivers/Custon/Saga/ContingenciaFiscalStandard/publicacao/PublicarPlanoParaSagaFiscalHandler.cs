@@ -26,6 +26,7 @@ namespace Command.Receivers
         private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository = default!;
         private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository = default!;
         private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
         private readonly ILogger _logger = default!;
 
@@ -33,12 +34,14 @@ namespace Command.Receivers
             IEntradaFiscalContingenciaReadRepository entradaReadRepository,
             IEntradaFiscalContingenciaWriteRepository entradaWriteRepository,
             INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository,
+            ICertificadoDigitalReadRepository certificadoDigitalReadRepository,
             IyInboxWriteRepository inboxWriteRepository,
             ILogger logger)
         {
             _entradaReadRepository = entradaReadRepository;
             _entradaWriteRepository = entradaWriteRepository;
             _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _inboxWriteRepository = inboxWriteRepository;
             _logger = logger;
         }
@@ -47,12 +50,20 @@ namespace Command.Receivers
         {
             var entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
             var documentos = FiscalContingenciaState.LoadDocumentos(_nfeProdutoSnapshotReadRepository, entrada.cargaid);
-            var pendencias = FiscalContingenciaPayload.Pendencias(entrada, documentos);
+            var certificado = FiscalCertificateResolver.TryResolve(
+                entrada.cargaid,
+                _entradaReadRepository,
+                _certificadoDigitalReadRepository);
+            var compilacao = FiscalEmissionPlanCompiler.Compile(
+                entrada,
+                documentos,
+                certificado?.DocumentoTitular,
+                certificadoFoiVerificado: true);
 
-            if (pendencias.Count > 0)
+            if (!compilacao.IsValid)
             {
                 throw new InvalidOperationException(
-                    $"Contingencia fiscal {entrada.cargaid}: plano de emissao invalido: {string.Join(", ", pendencias)}.");
+                    $"Contingencia fiscal {entrada.cargaid}: plano de emissao invalido: {string.Join(", ", compilacao.Pendencias)}.");
             }
 
             var fiscalCorrelationId = string.IsNullOrWhiteSpace(entrada.emissaofiscalcorrelationid)
@@ -60,7 +71,7 @@ namespace Command.Receivers
                 : entrada.emissaofiscalcorrelationid;
 
             var preferenciasFiscaisJson = FiscalContingenciaPayload.ComplementoJson(entrada);
-            var planoEmissaoJson = FiscalContingenciaPayload.PlanoEmissaoJson(entrada, documentos);
+            var planoEmissaoJson = compilacao.PlanJson;
             var planoStorage = FiscalPayloadStore.SaveEmissionPlan(entrada.cargaid, planoEmissaoJson);
             var payload = JsonSerializer.Serialize(new
             {

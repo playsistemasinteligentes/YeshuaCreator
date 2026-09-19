@@ -29,6 +29,8 @@ namespace Command.Receivers
         private readonly ICTeTentativaEmissaoWriteRepository _cteTentativaEmissaoWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
         private readonly IDocumentoFiscalWriteRepository _documentoFiscalWriteRepository = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaFiscalContingenciaReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly ILogger _logger = default!;
 
         public AutorizarCTeNaSefazHandler(
@@ -39,6 +41,8 @@ namespace Command.Receivers
             ICTeTentativaEmissaoWriteRepository cteTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
             IDocumentoFiscalWriteRepository documentoFiscalWriteRepository,
+            IEntradaFiscalContingenciaReadRepository entradaFiscalContingenciaReadRepository,
+            ICertificadoDigitalReadRepository certificadoDigitalReadRepository,
             ILogger logger)
         {
             _cteRomaneioConsolidadoReadRepository = cteRomaneioConsolidadoReadRepository;
@@ -48,6 +52,8 @@ namespace Command.Receivers
             _cteTentativaEmissaoWriteRepository = cteTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
             _documentoFiscalWriteRepository = documentoFiscalWriteRepository;
+            _entradaFiscalContingenciaReadRepository = entradaFiscalContingenciaReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _logger = logger;
         }
 
@@ -68,6 +74,10 @@ namespace Command.Receivers
 
             var autorizados = 0;
             var falhas = new List<string>();
+            var certificado = FiscalCertificateResolver.TryResolve(
+                cargaId,
+                _entradaFiscalContingenciaReadRepository,
+                _certificadoDigitalReadRepository);
             foreach (var solicitacao in solicitacoes)
             {
                 var tentativa = CarregarTentativaPreparada(cargaId, solicitacao);
@@ -80,7 +90,22 @@ namespace Command.Receivers
                 try
                 {
                     var prepared = CarregarXmlPreparado(tentativa);
-                    var result = CteRecepcaoSincV4HomologacaoClient.Autorizar(prepared);
+                    if (certificado is not null)
+                    {
+                        var emitenteDocumento = tentativa.chaveacesso?.Length >= 20
+                            ? tentativa.chaveacesso.Substring(6, 14)
+                            : solicitacao.emitentedocumento;
+                        FiscalCertificateResolver.ValidateIssuer(
+                            certificado,
+                            emitenteDocumento ?? string.Empty,
+                            $"Solicitacao CT-e {solicitacao.id}");
+                    }
+                    var result = certificado is null
+                        ? CteRecepcaoSincV4HomologacaoClient.Autorizar(prepared)
+                        : CteRecepcaoSincV4HomologacaoClient.Autorizar(
+                            prepared,
+                            certificado.CertificatePath,
+                            certificado.Password);
                     var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
 
                     if (!respostaEstruturada)

@@ -87,6 +87,13 @@ namespace Dominio
             this.Length = length;
             return this.Entity;
         }
+        public Entity VarcharMax(bool isMemo = true)
+        {
+            this.IsMemo = isMemo;
+            this.Type = "varchar";
+            this.Length = -1;
+            return this.Entity;
+        }
         public Entity Float()
         {
             Type = "float";

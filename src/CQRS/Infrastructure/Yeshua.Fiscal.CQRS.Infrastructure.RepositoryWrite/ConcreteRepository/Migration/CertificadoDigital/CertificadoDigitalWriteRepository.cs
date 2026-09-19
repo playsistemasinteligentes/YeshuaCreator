@@ -106,6 +106,11 @@ namespace Input.Repository.CertificadoDigital
             var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateSenhaStorageKey(int id, string value)
+        {
+            var query = _query.UpdateSenhaStorageKey(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

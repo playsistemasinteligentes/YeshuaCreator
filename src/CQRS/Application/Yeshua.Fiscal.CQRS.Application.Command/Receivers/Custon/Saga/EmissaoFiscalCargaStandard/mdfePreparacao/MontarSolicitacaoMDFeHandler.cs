@@ -116,9 +116,15 @@ namespace Command.Receivers
                 options.Ambiente,
                 options.CodigoUf,
                 options.CnpjEmitente,
+                options.RazaoSocial,
+                options.NomeFantasia,
+                options.InscricaoEstadual,
                 options.CodigoMunicipioEmitente,
                 options.MunicipioEmitente,
                 options.UfEmitente,
+                options.UfInicio,
+                options.CodigoMunicipioCarregamento,
+                options.MunicipioCarregamento,
                 options.CodigoMunicipioDescarga,
                 options.MunicipioDescarga,
                 options.UfDescarga,
@@ -164,28 +170,56 @@ namespace Command.Receivers
         private static MdfeRecepcaoSincOptions BuildOptions(Repositorio.Outputs.CTeRomaneioConsolidadoDTO romaneio)
         {
             var defaults = MdfeRecepcaoSincOptions.FromEnvironment();
-            var emitente = OnlyDigits(romaneio.emitentedocumento ?? string.Empty);
+            var preferencias = romaneio.preferenciasfiscaisjson ?? string.Empty;
+            var emitente = OnlyDigits(FirstNotEmpty(
+                JsonText(preferencias, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
+                romaneio.emitentedocumento ?? string.Empty));
+            var ufEmitente = FirstNotEmpty(JsonText(preferencias, "emitenteUf", "ufEmitente"), defaults.UfEmitente);
+            var codigoMunicipioEmitente = FirstNotEmpty(
+                JsonText(preferencias, "emitenteMunicipioCodigoIbge", "municipioEmitenteCodigoIbge"),
+                defaults.CodigoMunicipioEmitente);
             var codigoInicio = FirstNotEmpty(romaneio.municipioiniciocodigoibge, defaults.CodigoMunicipioEmitente);
             var codigoFim = FirstNotEmpty(romaneio.municipiofimcodigoibge, defaults.CodigoMunicipioDescarga);
 
             return defaults with
             {
-                CodigoUf = CodigoUf(romaneio.ufinicio, defaults.CodigoUf),
+                CodigoUf = CodigoUf(ufEmitente, defaults.CodigoUf),
                 CnpjEmitente = emitente,
-                CodigoMunicipioEmitente = codigoInicio,
-                MunicipioEmitente = MunicipioNome(codigoInicio, defaults.CodigoMunicipioEmitente, defaults.MunicipioEmitente),
-                UfEmitente = FirstNotEmpty(romaneio.ufinicio, defaults.UfEmitente),
+                RazaoSocial = FirstNotEmpty(JsonText(preferencias, "emitenteRazaoSocial", "razaoSocialEmitente"), defaults.RazaoSocial),
+                NomeFantasia = FirstNotEmpty(JsonText(preferencias, "emitenteNomeFantasia", "nomeFantasiaEmitente"), defaults.NomeFantasia),
+                InscricaoEstadual = FirstNotEmpty(JsonText(preferencias, "emitenteInscricaoEstadual", "inscricaoEstadualEmitente"), defaults.InscricaoEstadual),
+                Endereco = FirstNotEmpty(JsonText(preferencias, "emitenteLogradouro", "logradouroEmitente"), defaults.Endereco),
+                NumeroEndereco = FirstNotEmpty(JsonText(preferencias, "emitenteNumero", "numeroEnderecoEmitente"), defaults.NumeroEndereco),
+                Bairro = FirstNotEmpty(JsonText(preferencias, "emitenteBairro", "bairroEmitente"), defaults.Bairro),
+                Cep = FirstNotEmpty(JsonText(preferencias, "emitenteCep", "cepEmitente"), defaults.Cep),
+                CodigoMunicipioEmitente = codigoMunicipioEmitente,
+                MunicipioEmitente = FirstNotEmpty(JsonText(preferencias, "emitenteMunicipioNome", "municipioEmitenteNome"), defaults.MunicipioEmitente),
+                UfEmitente = ufEmitente,
+                UfInicio = FirstNotEmpty(romaneio.ufinicio, defaults.UfInicio),
+                CodigoMunicipioCarregamento = codigoInicio,
+                MunicipioCarregamento = MunicipioNome(codigoInicio, defaults.CodigoMunicipioCarregamento, defaults.MunicipioCarregamento),
                 CodigoMunicipioDescarga = codigoFim,
                 MunicipioDescarga = MunicipioNome(codigoFim, defaults.CodigoMunicipioDescarga, defaults.MunicipioDescarga),
                 UfDescarga = FirstNotEmpty(romaneio.uffim, defaults.UfDescarga),
-                Rntrc = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "rntrc", "RNTRC"), defaults.Rntrc),
-                Placa = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "placaVeiculo", "placa"), defaults.Placa),
-                CondutorCpf = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "condutorDocumento", "cpfCondutor", "cpfMotorista"), defaults.CondutorCpf),
-                CondutorNome = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "condutorNome", "nomeCondutor", "nomeMotorista"), defaults.CondutorNome),
-                TipoCarga = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "tipoCarga", "tipoCargaMDFe"), defaults.TipoCarga),
-                ProdutoPredominante = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "produtoPredominante", "produtoPredominanteMDFe"), defaults.ProdutoPredominante),
-                NcmProdutoPredominante = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "ncmProdutoPredominante", "ncmProdutoPredominanteMDFe"), defaults.NcmProdutoPredominante),
-                ObservacaoFiscal = FirstNotEmpty(JsonText(romaneio.preferenciasfiscaisjson, "observacaoFiscal"), defaults.ObservacaoFiscal),
+                Rntrc = FirstNotEmpty(JsonText(preferencias, "rntrc", "RNTRC"), defaults.Rntrc),
+                Placa = FirstNotEmpty(JsonText(preferencias, "placaVeiculo", "placa"), defaults.Placa),
+                Renavam = FirstNotEmpty(JsonText(preferencias, "renavam", "Renavam"), defaults.Renavam),
+                TaraKg = FirstNotEmpty(JsonText(preferencias, "taraKg", "TaraKg"), defaults.TaraKg),
+                CapacidadeKg = FirstNotEmpty(JsonText(preferencias, "capacidadeKg", "CapacidadeKg"), defaults.CapacidadeKg),
+                CapacidadeM3 = FirstNotEmpty(JsonText(preferencias, "capacidadeM3", "CapacidadeM3"), defaults.CapacidadeM3),
+                TipoRodado = FirstNotEmpty(JsonText(preferencias, "tipoRodado", "TipoRodado"), defaults.TipoRodado),
+                TipoCarroceria = FirstNotEmpty(JsonText(preferencias, "tipoCarroceria", "TipoCarroceria"), defaults.TipoCarroceria),
+                CondutorCpf = FirstNotEmpty(JsonText(preferencias, "condutorDocumento", "cpfCondutor", "cpfMotorista"), defaults.CondutorCpf),
+                CondutorNome = FirstNotEmpty(JsonText(preferencias, "condutorNome", "nomeCondutor", "nomeMotorista"), defaults.CondutorNome),
+                CnpjResponsavelSeguro = FirstNotEmpty(JsonText(preferencias, "cnpjResponsavelSeguro", "CnpjResponsavelSeguro"), defaults.CnpjResponsavelSeguro),
+                NomeSeguradora = FirstNotEmpty(JsonText(preferencias, "nomeSeguradora", "NomeSeguradora"), defaults.NomeSeguradora),
+                CnpjSeguradora = FirstNotEmpty(JsonText(preferencias, "cnpjSeguradora", "CnpjSeguradora"), defaults.CnpjSeguradora),
+                NumeroApolice = FirstNotEmpty(JsonText(preferencias, "numeroApolice", "NumeroApolice"), defaults.NumeroApolice),
+                NumeroAverbacao = FirstNotEmpty(JsonText(preferencias, "numeroAverbacao", "NumeroAverbacao"), defaults.NumeroAverbacao),
+                TipoCarga = FirstNotEmpty(JsonText(preferencias, "tipoCarga", "tipoCargaMDFe"), defaults.TipoCarga),
+                ProdutoPredominante = FirstNotEmpty(JsonText(preferencias, "produtoPredominante", "produtoPredominanteMDFe"), defaults.ProdutoPredominante),
+                NcmProdutoPredominante = FirstNotEmpty(JsonText(preferencias, "ncmProdutoPredominante", "ncmProdutoPredominanteMDFe"), defaults.NcmProdutoPredominante),
+                ObservacaoFiscal = FirstNotEmpty(JsonText(preferencias, "observacaoFiscal"), defaults.ObservacaoFiscal),
                 ValorCarga = JsonDecimal(romaneio.cargasnapshotjson, "valorCarga", "ValorCarga") ?? defaults.ValorCarga,
                 PesoBruto = JsonDecimal(romaneio.cargasnapshotjson, "pesoBruto", "PesoBruto") ?? defaults.PesoBruto,
                 ValorContrato = JsonDecimal(romaneio.preferenciasfiscaisjson, "valorFrete", "ValorFrete", "valorServico", "ValorServico", "valorContrato", "ValorContrato") ?? defaults.ValorContrato

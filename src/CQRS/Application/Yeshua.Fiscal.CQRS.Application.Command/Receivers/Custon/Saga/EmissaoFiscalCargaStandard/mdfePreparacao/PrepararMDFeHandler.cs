@@ -28,6 +28,8 @@ namespace Command.Receivers
         private readonly IMDFeTentativaEmissaoReadRepository _mdfeTentativaEmissaoReadRepository = default!;
         private readonly IMDFeTentativaEmissaoWriteRepository _mdfeTentativaEmissaoWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaFiscalContingenciaReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly ILogger _logger = default!;
 
         public PrepararMDFeHandler(
@@ -37,6 +39,8 @@ namespace Command.Receivers
             IMDFeTentativaEmissaoReadRepository mdfeTentativaEmissaoReadRepository,
             IMDFeTentativaEmissaoWriteRepository mdfeTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
+            IEntradaFiscalContingenciaReadRepository entradaFiscalContingenciaReadRepository,
+            ICertificadoDigitalReadRepository certificadoDigitalReadRepository,
             ILogger logger)
         {
             _mdfeSolicitacaoFiscalReadRepository = mdfeSolicitacaoFiscalReadRepository;
@@ -45,6 +49,8 @@ namespace Command.Receivers
             _mdfeTentativaEmissaoReadRepository = mdfeTentativaEmissaoReadRepository;
             _mdfeTentativaEmissaoWriteRepository = mdfeTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
+            _entradaFiscalContingenciaReadRepository = entradaFiscalContingenciaReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _logger = logger;
         }
 
@@ -80,6 +86,19 @@ namespace Command.Receivers
             if (tentativaId <= 0)
             {
                 var options = BuildOptions(solicitacao, chavesCTe);
+                var certificado = FiscalCertificateResolver.TryResolve(
+                    cargaId,
+                    _entradaFiscalContingenciaReadRepository,
+                    _certificadoDigitalReadRepository);
+                if (certificado is not null)
+                {
+                    FiscalCertificateResolver.ValidateIssuer(certificado, options.CnpjEmitente, $"Solicitacao MDF-e {solicitacao.id}");
+                    options = options with
+                    {
+                        CertificatePath = certificado.CertificatePath,
+                        CertificatePassword = certificado.Password
+                    };
+                }
                 var prepared = MdfeRecepcaoSincHomologacaoClient.Preparar(options);
                 var storage = SefazFiscalDocumentStore.SalvarXmlResposta("mdfe", "preparacao", prepared.Chave, prepared.XmlMDFe);
 
@@ -165,11 +184,21 @@ namespace Command.Receivers
             return defaults with
             {
                 Ambiente = solicitacao.ambiente,
-                CodigoUf = JsonInt(snapshot, "CodigoUf", "codigoUf") ?? CodigoUf(solicitacao.ufcarregamento, defaults.CodigoUf),
+                CodigoUf = JsonInt(snapshot, "CodigoUf", "codigoUf") ?? defaults.CodigoUf,
                 CnpjEmitente = FirstNotEmpty(JsonText(snapshot, "CnpjEmitente", "cnpjEmitente"), defaults.CnpjEmitente),
+                RazaoSocial = FirstNotEmpty(JsonText(snapshot, "RazaoSocial", "razaoSocial"), defaults.RazaoSocial),
+                NomeFantasia = FirstNotEmpty(JsonText(snapshot, "NomeFantasia", "nomeFantasia"), defaults.NomeFantasia),
+                InscricaoEstadual = FirstNotEmpty(JsonText(snapshot, "InscricaoEstadual", "inscricaoEstadual"), defaults.InscricaoEstadual),
+                Endereco = FirstNotEmpty(JsonText(snapshot, "Endereco", "endereco"), defaults.Endereco),
+                NumeroEndereco = FirstNotEmpty(JsonText(snapshot, "NumeroEndereco", "numeroEndereco"), defaults.NumeroEndereco),
+                Bairro = FirstNotEmpty(JsonText(snapshot, "Bairro", "bairro"), defaults.Bairro),
+                Cep = FirstNotEmpty(JsonText(snapshot, "Cep", "cep"), defaults.Cep),
                 CodigoMunicipioEmitente = FirstNotEmpty(JsonText(snapshot, "CodigoMunicipioEmitente", "codigoMunicipioEmitente"), defaults.CodigoMunicipioEmitente),
                 MunicipioEmitente = FirstNotEmpty(JsonText(snapshot, "MunicipioEmitente", "municipioEmitente"), defaults.MunicipioEmitente),
-                UfEmitente = FirstNotEmpty(solicitacao.ufcarregamento, defaults.UfEmitente),
+                UfEmitente = FirstNotEmpty(JsonText(snapshot, "UfEmitente", "ufEmitente"), defaults.UfEmitente),
+                UfInicio = FirstNotEmpty(JsonText(snapshot, "UfInicio", "ufInicio"), FirstNotEmpty(solicitacao.ufcarregamento, defaults.UfInicio)),
+                CodigoMunicipioCarregamento = FirstNotEmpty(JsonText(snapshot, "CodigoMunicipioCarregamento", "codigoMunicipioCarregamento"), defaults.CodigoMunicipioCarregamento),
+                MunicipioCarregamento = FirstNotEmpty(JsonText(snapshot, "MunicipioCarregamento", "municipioCarregamento"), defaults.MunicipioCarregamento),
                 CodigoMunicipioDescarga = FirstNotEmpty(JsonText(snapshot, "CodigoMunicipioDescarga", "codigoMunicipioDescarga"), defaults.CodigoMunicipioDescarga),
                 MunicipioDescarga = FirstNotEmpty(JsonText(snapshot, "MunicipioDescarga", "municipioDescarga"), defaults.MunicipioDescarga),
                 UfDescarga = FirstNotEmpty(solicitacao.ufdescarregamento, defaults.UfDescarga),

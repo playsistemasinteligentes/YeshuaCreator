@@ -147,6 +147,13 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Varchar(length, isMemo);
         }
+        public Entity VarcharMax(bool isMemo = true)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().VarcharMax(isMemo);
+            else
+                return this.AlterColumns.Last().VarcharMax(isMemo);
+        }
         public Entity WhereClauses(string WhereClauses)
         {
             if (this.StatusColuns == 1)

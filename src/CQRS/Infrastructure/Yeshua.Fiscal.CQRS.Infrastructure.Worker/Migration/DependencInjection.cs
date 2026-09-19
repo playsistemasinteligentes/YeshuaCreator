@@ -320,6 +320,7 @@ builder.Services.AddTransient<Command.Receivers.Write.DeleteEntradaFiscalConting
 builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKCertificadoDigitalIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IEmissaoFiscalTransporteWriteRepository, Input.Repository.EmissaoFiscalTransporte.EmissaoFiscalTransporteWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IEmissaoFiscalTransporteReadRepository, Read.Repository.EmissaoFiscalTransporteReadRepository>();
@@ -670,6 +671,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarPlanoEmissaoFis
 builder.Services.AddTransient<Command.Receivers.UseCase.InformarResultadoEmissaoFiscalContingenciaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.AcordarSagaTesteSyncPasso3Handler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.RegistrarCertificadoDigitalContingenciaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

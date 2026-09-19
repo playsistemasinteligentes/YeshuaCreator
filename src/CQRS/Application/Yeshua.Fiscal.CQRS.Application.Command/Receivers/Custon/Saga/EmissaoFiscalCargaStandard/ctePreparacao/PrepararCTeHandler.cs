@@ -30,6 +30,8 @@ namespace Command.Receivers
         private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository = default!;
         private readonly ICTeTentativaEmissaoWriteRepository _cteTentativaEmissaoWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaFiscalContingenciaReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly ILogger _logger = default!;
 
         public PrepararCTeHandler(
@@ -41,6 +43,8 @@ namespace Command.Receivers
             ICTeTentativaEmissaoReadRepository cteTentativaEmissaoReadRepository,
             ICTeTentativaEmissaoWriteRepository cteTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
+            IEntradaFiscalContingenciaReadRepository entradaFiscalContingenciaReadRepository,
+            ICertificadoDigitalReadRepository certificadoDigitalReadRepository,
             ILogger logger)
         {
             _cteRomaneioConsolidadoReadRepository = cteRomaneioConsolidadoReadRepository;
@@ -51,6 +55,8 @@ namespace Command.Receivers
             _cteTentativaEmissaoReadRepository = cteTentativaEmissaoReadRepository;
             _cteTentativaEmissaoWriteRepository = cteTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
+            _entradaFiscalContingenciaReadRepository = entradaFiscalContingenciaReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _logger = logger;
         }
 
@@ -69,9 +75,13 @@ namespace Command.Receivers
             if (solicitacoes.Count == 0)
                 throw new InvalidOperationException($"Carga {cargaId}: solicitacoes fiscais CT-e nao encontradas para preparar CT-e.");
 
+            var certificado = FiscalCertificateResolver.TryResolve(
+                cargaId,
+                _entradaFiscalContingenciaReadRepository,
+                _certificadoDigitalReadRepository);
             var preparados = new List<CTePreparadoResumo>(solicitacoes.Count);
             foreach (var solicitacao in solicitacoes)
-                preparados.Add(PrepararSolicitacao(cargaId, solicitacao));
+                preparados.Add(PrepararSolicitacao(cargaId, romaneio, solicitacao, certificado));
 
             _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
                 _logger,
@@ -90,7 +100,9 @@ namespace Command.Receivers
 
         private CTePreparadoResumo PrepararSolicitacao(
             string cargaId,
-            Repositorio.Outputs.CTeSolicitacaoFiscalDTO solicitacao)
+            Repositorio.Outputs.CTeRomaneioConsolidadoDTO romaneio,
+            Repositorio.Outputs.CTeSolicitacaoFiscalDTO solicitacao,
+            FiscalCertificateReference? certificado)
         {
             var tentativa = _cteTentativaEmissaoReadRepository.FirstByCTeSolicitacaoFiscalId(solicitacao.id);
             var tentativaId = tentativa?.id ?? 0;
@@ -114,7 +126,16 @@ namespace Command.Receivers
                 var participantes = (_cteParticipanteSnapshotReadRepository.GetAllByCTeSolicitacaoFiscalId(solicitacao.id)
                         ?? Array.Empty<Repositorio.Outputs.CTeParticipanteSnapshotDTO>())
                     .ToList();
-                var options = BuildOptions(solicitacao, documentos, participantes);
+                var options = BuildOptions(solicitacao, documentos, participantes, romaneio.tomadordocumento);
+                if (certificado is not null)
+                {
+                    FiscalCertificateResolver.ValidateIssuer(certificado, options.CnpjEmitente, $"Solicitacao CT-e {solicitacao.id}");
+                    options = options with
+                    {
+                        CertificatePath = certificado.CertificatePath,
+                        CertificatePassword = certificado.Password
+                    };
+                }
                 var prepared = CteRecepcaoSincV4HomologacaoClient.Preparar(options);
                 var storage = SefazFiscalDocumentStore.SalvarXmlResposta("cte", "preparacao", prepared.Chave, prepared.XmlCte);
 
@@ -163,11 +184,26 @@ namespace Command.Receivers
         private static CteRecepcaoSincV4Options BuildOptions(
             Repositorio.Outputs.CTeSolicitacaoFiscalDTO solicitacao,
             IReadOnlyCollection<Repositorio.Outputs.CTeDocumentoOriginarioDTO> documentos,
-            IReadOnlyCollection<Repositorio.Outputs.CTeParticipanteSnapshotDTO> participantes)
+            IReadOnlyCollection<Repositorio.Outputs.CTeParticipanteSnapshotDTO> participantes,
+            string? tomadorDocumentoRomaneio)
         {
             var defaults = CteRecepcaoSincV4Options.FromEnvironment();
-            var remetenteDocumento = SingleDocument(documentos.Select(x => x.emitentedocumento), "remetente", solicitacao.id);
-            var destinatarioDocumento = SingleDocument(documentos.Select(x => x.destinatariodocumento), "destinatario", solicitacao.id);
+            var planoConfirmado = string.Equals(
+                JsonText(solicitacao.preferenciasmanifestojson, "valorServicoOrigem"),
+                "plano-emissao-confirmado",
+                StringComparison.OrdinalIgnoreCase);
+            var remetenteDoPlano = JsonText(solicitacao.preferenciasmanifestojson, "remetenteDocumento", "cnpjRemetente");
+            var destinatarioDoPlano = JsonText(solicitacao.preferenciasmanifestojson, "destinatarioDocumento", "cnpjDestinatario");
+            var remetenteDocumento = planoConfirmado
+                ? RequiredDocument(remetenteDoPlano, solicitacao.id, "remetente do plano confirmado")
+                : FirstNotEmpty(
+                    remetenteDoPlano,
+                    SingleDocument(documentos.Select(x => x.emitentedocumento), "remetente", solicitacao.id));
+            var destinatarioDocumento = planoConfirmado
+                ? RequiredDocument(destinatarioDoPlano, solicitacao.id, "destinatario do plano confirmado")
+                : FirstNotEmpty(
+                    destinatarioDoPlano,
+                    SingleDocument(documentos.Select(x => x.destinatariodocumento), "destinatario", solicitacao.id));
             var chavesNFe = documentos
                 .Select(x => OnlyDigits(x.chaveacesso ?? string.Empty))
                 .Distinct(StringComparer.Ordinal)
@@ -176,18 +212,26 @@ namespace Command.Receivers
             var municipioInicio = solicitacao.municipioiniciocodigoibge ?? string.Empty;
             var municipioFim = solicitacao.municipiofimcodigoibge ?? string.Empty;
             var emitente = OnlyDigits(solicitacao.emitentedocumento ?? string.Empty);
+            var ufEmitente = FirstNotEmpty(
+                JsonText(solicitacao.preferenciasmanifestojson, "emitenteUf", "ufEmitente"),
+                FirstNotEmpty(solicitacao.ufemitente, defaults.UfEmitente));
+            var ufInicio = FirstNotEmpty(solicitacao.ufinicio, defaults.UfInicio);
+            var ufFim = FirstNotEmpty(solicitacao.uffim, defaults.UfFim);
 
             return defaults with
             {
                 Ambiente = solicitacao.ambiente,
-                CodigoUf = CodigoUf(solicitacao.ufemitente, solicitacao.ufinicio, defaults.CodigoUf),
+                CodigoUf = CodigoUf(ufEmitente, string.Empty, defaults.CodigoUf),
                 CnpjEmitente = emitente,
                 TipoCTe = solicitacao.tipocte,
                 TipoServico = solicitacao.tiposervico,
                 Modal = solicitacao.modal,
                 Globalizado = solicitacao.globalizado,
-                UfInicio = FirstNotEmpty(solicitacao.ufinicio, defaults.UfInicio),
-                UfFim = FirstNotEmpty(solicitacao.uffim, defaults.UfFim),
+                UfInicio = ufInicio,
+                UfFim = ufFim,
+                Cfop = FirstNotEmpty(
+                    JsonText(solicitacao.preferenciasmanifestojson, "cfop", "CFOP"),
+                    CteCfopPolicy.Resolve(ufEmitente, ufInicio, ufFim)),
                 MunicipioInicioCodigoIbge = FirstNotEmpty(municipioInicio, defaults.MunicipioInicioCodigoIbge),
                 MunicipioInicioNome = MunicipioNome(municipioInicio, defaults.MunicipioInicioCodigoIbge, defaults.MunicipioInicioNome),
                 MunicipioFimCodigoIbge = FirstNotEmpty(municipioFim, defaults.MunicipioFimCodigoIbge),
@@ -196,11 +240,12 @@ namespace Command.Receivers
                 DestinatarioDocumento = destinatarioDocumento,
                 Remetente = ParticipantOptions(participantes, "Remetente", remetenteDocumento),
                 Destinatario = ParticipantOptions(participantes, "Destinatario", destinatarioDocumento),
-                TomadorDocumento = RequiredJsonText(
-                    solicitacao.preferenciasmanifestojson,
+                TomadorDocumento = RequiredDocument(
+                    FirstNotEmpty(
+                        JsonText(solicitacao.preferenciasmanifestojson, "tomadorDocumento", "cnpjTomador"),
+                        tomadorDocumentoRomaneio ?? string.Empty),
                     solicitacao.id,
-                    "tomadorDocumento",
-                    "cnpjTomador"),
+                    "tomador"),
                 RazaoSocial = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteRazaoSocial", "razaoSocialEmitente"), defaults.RazaoSocial),
                 InscricaoEstadual = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteInscricaoEstadual", "inscricaoEstadualEmitente"), defaults.InscricaoEstadual),
                 NomeFantasiaEmitente = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteNomeFantasia", "nomeFantasiaEmitente"), defaults.NomeFantasiaEmitente),
@@ -210,7 +255,7 @@ namespace Command.Receivers
                 CepEmitente = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteCep", "cepEmitente"), defaults.CepEmitente),
                 MunicipioEmitenteCodigoIbge = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteMunicipioCodigoIbge", "municipioEmitenteCodigoIbge"), defaults.MunicipioEmitenteCodigoIbge),
                 MunicipioEmitenteNome = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteMunicipioNome", "municipioEmitenteNome"), defaults.MunicipioEmitenteNome),
-                UfEmitente = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "emitenteUf", "ufEmitente"), defaults.UfEmitente),
+                UfEmitente = ufEmitente,
                 CrtEmitente = JsonInt(solicitacao.preferenciasmanifestojson, defaults.CrtEmitente, "emitenteCrt", "crtEmitente"),
                 ObservacaoFiscal = JsonText(solicitacao.preferenciasmanifestojson, "observacaoFiscal"),
                 Rntrc = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "rntrc", "RNTRC"), defaults.Rntrc),
@@ -246,11 +291,11 @@ namespace Command.Receivers
                 FirstNotEmpty(participant.uf, address.UF));
         }
 
-        private static string RequiredJsonText(string json, int requestId, params string[] names)
+        private static string RequiredDocument(string document, int requestId, string role)
         {
-            var value = OnlyDigits(JsonText(json, names));
+            var value = OnlyDigits(document);
             if (value.Length is not 11 and not 14)
-                throw new InvalidOperationException($"Solicitacao CT-e {requestId}: documento do tomador nao informado.");
+                throw new InvalidOperationException($"Solicitacao CT-e {requestId}: documento do {role} nao informado.");
 
             return value;
         }

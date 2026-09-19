@@ -93,7 +93,7 @@ namespace Migration.Dominio.Migration
             .AddColumn("LastExecutionAt", "Última Execução").DateTime()
             .AddColumn("CompletedAt", "Finalizado em").DateTime()
             .AddColumn("ErrorMessage", "Erro").Varchar(2000)
-            .AddColumn("Payload", "Payload").Varchar(8000)
+            .AddColumn("Payload", "Payload").VarcharMax()
             .AddColumn("RetryCount", "Tentativas").Int().NotNull()
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
@@ -106,7 +106,7 @@ namespace Migration.Dominio.Migration
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
                 .AddColumn("CorrelationId", "Correlation Id").Varchar(100)
                 
-                .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
+                .AddColumn("Payload", "Payload").VarcharMax().NotNull()
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
                     .Enumerable(1, "Sent")
@@ -148,7 +148,7 @@ namespace Migration.Dominio.Migration
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
                 .AddColumn("CorrelationId", "Correlation Id").Varchar(100)
 
-                .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
+                .AddColumn("Payload", "Payload").VarcharMax().NotNull()
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
                     .Enumerable(1, "Sent")

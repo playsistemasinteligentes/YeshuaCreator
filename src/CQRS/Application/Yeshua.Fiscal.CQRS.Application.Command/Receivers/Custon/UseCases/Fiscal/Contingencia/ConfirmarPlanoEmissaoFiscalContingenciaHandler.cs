@@ -26,8 +26,10 @@ namespace Command.Receivers.UseCase
         private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia = default!;
         private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly ContingenciaFiscalStepStimulusService _stepStimulusService = default!;
-        public ConfirmarPlanoEmissaoFiscalContingenciaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,Command.Interfaces.ISagaStepInvoker sagaStepInvoker,IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia, IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia, ContingenciaFiscalStepStimulusService stepStimulusService)
+        public ConfirmarPlanoEmissaoFiscalContingenciaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,Command.Interfaces.ISagaStepInvoker sagaStepInvoker,IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia, IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia, INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository, ICertificadoDigitalReadRepository certificadoDigitalReadRepository, ContingenciaFiscalStepStimulusService stepStimulusService)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -37,10 +39,50 @@ namespace Command.Receivers.UseCase
            _sagaStepInvoker = sagaStepInvoker;
             _repReadEntradaFiscalContingencia = repReadEntradaFiscalContingencia;
             _repWriteEntradaFiscalContingencia = repWriteEntradaFiscalContingencia;
+            _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _stepStimulusService = stepStimulusService;
         }
 protected partial async Task<State<ConfirmarPlanoEmissaoFiscalContingenciaOutputCommand>> CustomActionHookAsync(State<ConfirmarPlanoEmissaoFiscalContingenciaOutputCommand> state, ConfirmarPlanoEmissaoFiscalContingenciaInputCommand comand, CancellationToken cancellationToken)
 {
+    var entrada = _repReadEntradaFiscalContingencia.FirstByCargaId(comand.CargaId);
+    if (entrada is null || entrada.id <= 0)
+        return ValidationError("Contingencia fiscal nao encontrada.");
+
+    try
+    {
+        var certificado = Command.Receivers.FiscalCertificateResolver.TryResolve(
+            comand.CargaId,
+            _repReadEntradaFiscalContingencia,
+            _certificadoDigitalReadRepository);
+
+        if (certificado is null)
+            return ValidationError("Nenhum certificado digital valido esta vinculado a contingencia.");
+
+        var documentos = Command.Receivers.FiscalContingenciaState.LoadDocumentos(
+            _nfeProdutoSnapshotReadRepository,
+            comand.CargaId);
+        Command.Receivers.FiscalContingenciaState.RefreshPlan(
+            _repWriteEntradaFiscalContingencia,
+            entrada,
+            documentos,
+            certificado.DocumentoTitular,
+            certificadoFoiVerificado: true);
+        entrada = _repReadEntradaFiscalContingencia.FirstByCargaId(comand.CargaId) ?? entrada;
+
+        if (!Command.Receivers.FiscalContingenciaState.HasValidPlanSnapshot(entrada))
+            return ValidationError("A previa fiscal possui pendencias. Corrija os dados e gere a previa novamente.");
+
+        Command.Receivers.FiscalCertificateResolver.ValidateIssuer(
+            certificado,
+            entrada.emitentefiscaldocumento,
+            $"Contingencia fiscal {comand.CargaId}");
+    }
+    catch (Exception exception) when (exception is InvalidOperationException or FileNotFoundException)
+    {
+        return ValidationError(exception.Message);
+    }
+
     var result = await _stepStimulusService.SubmitAsync(
         ContingenciaFiscalStandardSaga.STEP_1,
         comand.CorrelationId,

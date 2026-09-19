@@ -231,6 +231,11 @@ namespace Input.Repository.EntradaFiscalContingencia
             var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateCertificadoDigitalId(int id, int value)
+        {
+            var query = _query.UpdateCertificadoDigitalId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

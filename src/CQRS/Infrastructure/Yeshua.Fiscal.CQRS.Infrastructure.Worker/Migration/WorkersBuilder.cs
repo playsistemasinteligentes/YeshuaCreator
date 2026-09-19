@@ -27,13 +27,13 @@ builder.Services.AddHostedService(sp =>
     new PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>(
         sp,
         sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>>>(),
-        TimeSpan.FromSeconds(2)));
+        TimeSpan.FromMilliseconds(500)));
 
 builder.Services.AddHostedService(sp =>
     new PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>(
         sp,
         sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>>>(),
-        TimeSpan.FromSeconds(2)));
+        TimeSpan.FromMilliseconds(500)));
 
 }
 }

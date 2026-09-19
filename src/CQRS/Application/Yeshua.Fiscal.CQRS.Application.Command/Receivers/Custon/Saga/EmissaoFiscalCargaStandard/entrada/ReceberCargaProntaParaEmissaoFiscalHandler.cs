@@ -39,10 +39,10 @@ namespace Command.Receivers
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {
             _logger.Info($"Fiscal {saga.EntityId}: carga recebida para emissao fiscal.");
-            AcordarAguardandoDocumentosSeJaRecebidos(saga);
+            AcordarAguardandoDocumentosSeJaRecebidos(saga, payload);
         }
 
-        private void AcordarAguardandoDocumentosSeJaRecebidos(SagaBase saga)
+        private void AcordarAguardandoDocumentosSeJaRecebidos(SagaBase saga, string cargaRecebidaPayload)
         {
             var cargaId = saga.EntityId ?? string.Empty;
             if (string.IsNullOrWhiteSpace(cargaId))
@@ -70,6 +70,9 @@ namespace Command.Receivers
                 sagaCorrelationId = saga.CorrelationId.ToString(),
                 stepKey = stepAguardandoDocumentos.Key,
                 stepCorrelationId = stepAguardandoDocumentos.CorrelationId,
+                payloadHash = JsonText(cargaRecebidaPayload, "payloadHash", "PayloadHash"),
+                payloadStorageKey = JsonText(cargaRecebidaPayload, "payloadStorageKey", "PayloadStorageKey"),
+                preferenciasFiscaisJson = JsonText(cargaRecebidaPayload, "preferenciasFiscaisJson", "PreferenciasFiscaisJson"),
                 quantidadeDocumentos = documentos.Count,
                 occurredAtUtc = DateTime.UtcNow
             });
@@ -93,6 +96,21 @@ namespace Command.Receivers
 
             _inboxWriteRepository.Insert(inbox);
             _logger.Info($"Fiscal {cargaId}: documentos originarios ja estavam persistidos; step de espera foi acordado.");
+        }
+
+        private static string JsonText(string json, params string[] names)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return string.Empty;
+
+            using var document = JsonDocument.Parse(json);
+            foreach (var name in names)
+            {
+                if (document.RootElement.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.String)
+                    return value.GetString() ?? string.Empty;
+            }
+
+            return string.Empty;
         }
     }
 }

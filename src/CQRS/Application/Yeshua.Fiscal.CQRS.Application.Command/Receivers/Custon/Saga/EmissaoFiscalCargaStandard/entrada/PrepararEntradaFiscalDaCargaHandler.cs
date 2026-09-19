@@ -64,9 +64,17 @@ namespace Command.Receivers
                 throw new InvalidOperationException($"Carga {cargaId}: nao ha documentos originarios validos para preparar a entrada fiscal.");
 
             var input = EntradaFiscalStepInput.From(step.Payload);
+            var planoEmissaoJson = CarregarPlanoEmissao(input);
+            var validacaoDoPlano = FiscalEmissionPlanCompiler.ValidatePersistedPlan(planoEmissaoJson);
+            if (!string.IsNullOrWhiteSpace(planoEmissaoJson) && !validacaoDoPlano.IsValid)
+            {
+                throw new InvalidOperationException(
+                    $"Carga {cargaId}: plano fiscal confirmado invalido: {string.Join(", ", validacaoDoPlano.Errors)}.");
+            }
+
             var resumo = EntradaFiscalResumo.From(cargaId, notas);
             var entradaOficialId = GarantirEntradaOficial(saga, step, input, resumo);
-            var romaneioConsolidadoId = GarantirRomaneioConsolidado(saga, entradaOficialId, input, resumo);
+            var romaneioConsolidadoId = GarantirRomaneioConsolidado(saga, entradaOficialId, input, resumo, planoEmissaoJson);
 
             _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
                 _logger,
@@ -135,13 +143,18 @@ namespace Command.Receivers
             SagaBase saga,
             int entradaOficialId,
             EntradaFiscalStepInput input,
-            EntradaFiscalResumo resumo)
+            EntradaFiscalResumo resumo,
+            string planoEmissaoJson)
         {
+            var participantes = ParticipantesFiscais.From(planoEmissaoJson, resumo);
             var existente = _cteRomaneioConsolidadoReadRepository.FirstByCargaId(resumo.CargaId);
             if (existente != null && existente.id > 0)
+            {
+                _cteRomaneioConsolidadoWriteRepository.UpdateEmitenteDocumento(existente.id, participantes.EmitenteDocumento);
+                _cteRomaneioConsolidadoWriteRepository.UpdateTomadorDocumento(existente.id, participantes.TomadorDocumento);
                 return existente.id;
+            }
 
-            var planoEmissaoJson = CarregarPlanoEmissao(input);
             var rotaSnapshotJson = JsonSerializer.Serialize(new
             {
                 resumo.UFInicio,
@@ -161,9 +174,7 @@ namespace Command.Receivers
             })
                 : planoEmissaoJson;
 
-            var preferenciasFiscaisJson = string.IsNullOrWhiteSpace(planoEmissaoJson)
-                ? PreferenciasFiscaisJson(input)
-                : planoEmissaoJson;
+            var preferenciasFiscaisJson = ExtrairPreferenciasFiscaisJson(planoEmissaoJson, input);
 
             var romaneio = new CTeRomaneioConsolidadoFactory(_logger).Create(
                 null,
@@ -176,8 +187,8 @@ namespace Command.Receivers
                 resumo.UFFim,
                 resumo.MunicipioInicioCodigoIbge,
                 resumo.MunicipioFimCodigoIbge,
-                resumo.EmitenteDocumento,
-                resumo.TomadorDocumento,
+                participantes.EmitenteDocumento,
+                participantes.TomadorDocumento,
                 rotaSnapshotJson,
                 cargaSnapshotJson,
                 preferenciasFiscaisJson,
@@ -213,6 +224,34 @@ namespace Command.Receivers
                 globalizado = 0,
                 origem = "PrepararEntradaFiscalDaCarga"
             });
+        }
+
+        private static string ExtrairPreferenciasFiscaisJson(
+            string planoEmissaoJson,
+            EntradaFiscalStepInput input)
+        {
+            if (string.IsNullOrWhiteSpace(planoEmissaoJson))
+                return PreferenciasFiscaisJson(input);
+
+            try
+            {
+                using var document = JsonDocument.Parse(planoEmissaoJson);
+                var root = document.RootElement;
+                var preferencias = EntradaFiscalStepInput.Text(
+                    root,
+                    "preferenciasFiscaisJson",
+                    "PreferenciasFiscaisJson",
+                    "dadosComplementaresJson",
+                    "DadosComplementaresJson");
+
+                return string.IsNullOrWhiteSpace(preferencias)
+                    ? PreferenciasFiscaisJson(input)
+                    : preferencias;
+            }
+            catch (JsonException)
+            {
+                return PreferenciasFiscaisJson(input);
+            }
         }
 
         private static string Sha256(string value)
@@ -264,7 +303,7 @@ namespace Command.Receivers
                 }
             }
 
-            private static string? Text(JsonElement root, params string[] names)
+            internal static string? Text(JsonElement root, params string[] names)
             {
                 foreach (var name in names)
                 {
@@ -329,6 +368,49 @@ namespace Command.Receivers
                     EmitenteDocumento = primeira.emitentedocumento ?? string.Empty,
                     TomadorDocumento = primeira.destinatariodocumento ?? string.Empty
                 };
+            }
+        }
+
+        private sealed class ParticipantesFiscais
+        {
+            public string EmitenteDocumento { get; private init; } = string.Empty;
+            public string TomadorDocumento { get; private init; } = string.Empty;
+
+            public static ParticipantesFiscais From(string planoEmissaoJson, EntradaFiscalResumo resumo)
+            {
+                if (string.IsNullOrWhiteSpace(planoEmissaoJson))
+                {
+                    return new ParticipantesFiscais
+                    {
+                        EmitenteDocumento = resumo.EmitenteDocumento,
+                        TomadorDocumento = resumo.TomadorDocumento
+                    };
+                }
+
+                using var document = JsonDocument.Parse(planoEmissaoJson);
+                var root = document.RootElement;
+                var emitente = Text(root, "emitenteFiscalDocumento", "emitentefiscaldocumento");
+                var tomador = Text(root, "tomadorDocumento", "tomadordocumento", "cnpjTomador");
+
+                if (string.IsNullOrWhiteSpace(emitente))
+                    throw new InvalidOperationException("Plano de emissao confirmado sem emitente fiscal do CT-e.");
+
+                return new ParticipantesFiscais
+                {
+                    EmitenteDocumento = emitente,
+                    TomadorDocumento = string.IsNullOrWhiteSpace(tomador) ? resumo.TomadorDocumento : tomador
+                };
+            }
+
+            private static string Text(JsonElement root, params string[] names)
+            {
+                foreach (var name in names)
+                {
+                    if (root.TryGetProperty(name, out var property) && property.ValueKind == JsonValueKind.String)
+                        return property.GetString() ?? string.Empty;
+                }
+
+                return string.Empty;
             }
         }
     }

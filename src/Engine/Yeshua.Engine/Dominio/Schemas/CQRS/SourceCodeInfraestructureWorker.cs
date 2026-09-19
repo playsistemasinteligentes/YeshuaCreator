@@ -112,7 +112,8 @@ namespace Dominio.Schemas.CQRS
 
         private void AppendSagaPollingWorkers(StringBuilder sb)
         {
-            sb.AppendLine(@"
+            var loopMilliseconds = _migration.SagaWorkerLoopMilliseconds ?? 2000;
+            sb.AppendLine($@"
 builder.Services.AddTransient<Command.Patterns.SagaWorkerCommandHandler>();
 builder.Services.AddTransient<Command.Patterns.SagaInboxWorkerCommandHandler>();
 
@@ -120,13 +121,13 @@ builder.Services.AddHostedService(sp =>
     new PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>(
         sp,
         sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>>>(),
-        TimeSpan.FromSeconds(2)));
+        TimeSpan.FromMilliseconds({loopMilliseconds})));
 
 builder.Services.AddHostedService(sp =>
     new PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>(
         sp,
         sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>>>(),
-        TimeSpan.FromSeconds(2)));
+        TimeSpan.FromMilliseconds({loopMilliseconds})));
 ");
         }
 

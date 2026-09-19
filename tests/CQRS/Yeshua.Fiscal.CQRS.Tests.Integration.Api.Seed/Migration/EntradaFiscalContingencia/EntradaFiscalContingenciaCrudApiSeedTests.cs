@@ -85,6 +85,7 @@ public partial class EntradaFiscalContingenciaCrudApiSeedTests : ApiIntegrationT
             ["CriadoEmUtc"] = DateTime.UtcNow,
             ["AtualizadoEmUtc"] = DateTime.UtcNow,
             ["Status"] = 1,
+            ["CertificadoDigitalId"] = ApiSeedTestContext.GetRequiredCreatedId("CertificadoDigital", "CertificadoDigitalId"),
         };
     }
 
@@ -133,6 +134,7 @@ public partial class EntradaFiscalContingenciaCrudApiSeedTests : ApiIntegrationT
         payload["CriadoEmUtc"] = DateTime.UtcNow.AddMinutes(1);
         payload["AtualizadoEmUtc"] = DateTime.UtcNow.AddMinutes(1);
         payload["Status"] = 1;
+        payload["CertificadoDigitalId"] = ApiSeedTestContext.GetRequiredCreatedId("CertificadoDigital", "CertificadoDigitalId");
         return payload;
     }
 

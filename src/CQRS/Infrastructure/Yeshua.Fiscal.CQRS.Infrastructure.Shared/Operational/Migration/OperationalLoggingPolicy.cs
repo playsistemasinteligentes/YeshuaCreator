@@ -1060,6 +1060,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CertificadoDigitalTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "CertificadoDigital", operation, recordId, "UserId"))
                         mask |= CertificadoDigitalTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "CertificadoDigital", operation, recordId, "SenhaStorageKey"))
+                        mask |= CertificadoDigitalTrackingFields.SenhaStorageKey;
                     return mask;
                 }
 
@@ -1143,6 +1145,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EntradaFiscalContingenciaTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "EntradaFiscalContingencia", operation, recordId, "UserId"))
                         mask |= EntradaFiscalContingenciaTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "EntradaFiscalContingencia", operation, recordId, "CertificadoDigitalId"))
+                        mask |= EntradaFiscalContingenciaTrackingFields.CertificadoDigitalId;
                     return mask;
                 }
 

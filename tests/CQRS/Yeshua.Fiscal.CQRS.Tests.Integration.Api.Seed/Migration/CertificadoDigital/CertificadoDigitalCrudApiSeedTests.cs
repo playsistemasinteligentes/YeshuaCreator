@@ -60,6 +60,7 @@ public partial class CertificadoDigitalCrudApiSeedTests : ApiIntegrationTestBase
             ["ValidoDe"] = DateTime.UtcNow,
             ["ValidoAte"] = DateTime.UtcNow,
             ["Ativo"] = 0,
+            ["SenhaStorageKey"] = ApiTestData.Text("CertificadoDigital SenhaStorageKey", 80),
         };
     }
 
@@ -83,6 +84,7 @@ public partial class CertificadoDigitalCrudApiSeedTests : ApiIntegrationTestBase
         payload["ValidoDe"] = DateTime.UtcNow.AddMinutes(1);
         payload["ValidoAte"] = DateTime.UtcNow.AddMinutes(1);
         payload["Ativo"] = 0;
+        payload["SenhaStorageKey"] = ApiTestData.Text("CertificadoDigital SenhaStorageKey Update", 80);
         return payload;
     }
 

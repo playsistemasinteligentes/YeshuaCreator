@@ -283,6 +283,52 @@ Regra:
 - o modulo pode guardar uma referencia externa, mas a emissao deve preservar o
   dado fiscal usado naquele momento.
 
+### Papel De Cada Participante
+
+Os papeis descrevem a participacao na prestacao de transporte. Eles nao devem
+ser inferidos apenas pelo emitente ou destinatario da NF-e.
+
+| Papel | Responsabilidade no CT-e |
+| --- | --- |
+| `Emitente` | Transportador que presta/documenta o servico e emite o CT-e. Deve ser compatível com o certificado usado na assinatura. |
+| `Remetente` | Pessoa em nome de quem a carga sai no inicio da prestacao. Em uma operacao comum, costuma ser o vendedor/emitente da NF-e, mas isso nao e uma regra universal. |
+| `Destinatario` | Pessoa para quem a mercadoria se destina segundo a operacao comercial/documento originario. Costuma ser o comprador indicado na NF-e. |
+| `Expedidor` | Pessoa que efetivamente entrega a carga ao transportador no inicio da prestacao quando ela nao e o remetente. Se o proprio remetente entrega a carga, o expedidor separado normalmente nao se aplica. |
+| `Recebedor` | Pessoa que efetivamente recebe a carga do transportador no fim da prestacao quando ela nao e o destinatario. Se o proprio destinatario recebe a carga, o recebedor separado normalmente nao se aplica. |
+| `Tomador` | Pessoa responsavel pela contratacao/pagamento do servico de transporte, conforme a operacao. Pode coincidir com outro participante. |
+
+Uma mesma pessoa pode ocupar mais de um papel. Essa coincidencia nao elimina a
+semantica dos papeis: remetente/destinatario representam as pontas da operacao,
+enquanto expedidor/recebedor registram quem entrega e recebe fisicamente quando
+essas figuras forem diferentes.
+
+### Matriz De Cenarios
+
+Os codigos abaixo identificam cenarios funcionais. Eles nao substituem a
+classificacao oficial do CT-e nem autorizam automaticamente uma emissao.
+
+| Codigo | Cenario | Remetente | Expedidor | Recebedor | Destinatario | Tomador | Observacao |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `F01` | Transporte direto vendedor -> comprador | Vendedor/origem | Nao informado quando for o proprio remetente | Nao informado quando for o proprio destinatario | Comprador/destino | Remetente ou destinatario, conforme a contratacao (`toma3`) | Caso mais simples. O transportador emitente pode ser uma terceira empresa. |
+| `F02` | Coleta em deposito ou operador diferente do remetente | Dono/remetente fiscal da carga | Deposito, operador ou estabelecimento que entrega fisicamente a carga | Nao informado se o destinatario recebe | Comprador/destino | Contratante do frete; usa `toma4` quando nao for remetente ou destinatario | O local de coleta nao deve ser transformado automaticamente em remetente. |
+| `F03` | Entrega em CD que recebe em nome do destinatario | Vendedor/origem | Nao informado ou ponto real de expedicao | CD/operador que recebe fisicamente | Cliente final indicado na operacao | Contratante do frete; usa `toma4` quando nao for remetente ou destinatario | O recebedor pode ser o CD e o destinatario continuar sendo o cliente final. Depende dos documentos e da operacao fiscal. |
+| `F04` | Transferencia entre estabelecimentos da mesma empresa | Estabelecimento de origem | Nao informado ou operador do local de saida | Nao informado ou operador do local de chegada | Estabelecimento de destino | Origem, destino ou terceiro contratante conforme a prestacao | Remetente e destinatario podem compartilhar a mesma raiz de CNPJ, mas sao estabelecimentos/papeis distintos. |
+| `F05` | Subcontratacao | Participante da operacao originaria | Quem entrega a carga ao transportador subcontratado | Quem recebe do transportador subcontratado, quando diferente do destinatario | Participante da operacao originaria | Transportador contratante ou tomador original, conforme o contrato de subcontratacao | O transportador contratante normalmente aparece na relacao de contratacao/tomador; ele nao vira remetente ou destinatario apenas por subcontratar. |
+| `F06` | Redespacho ou troca de transportador | Remetente da operacao documentada | Transportador/operador anterior que entrega a carga no novo trecho, quando aplicavel | Transportador/operador seguinte ou recebedor fisico, quando aplicavel | Destinatario da operacao documentada | Redespachante ou contratante do trecho documentado | Cada trecho deve preservar seus documentos anteriores e representar corretamente quem entrega e recebe naquele trecho. |
+
+Regras de modelagem:
+
+- nao copiar automaticamente os participantes da NF-e como participantes do
+  CT-e sem considerar o servico de transporte;
+- nao transformar transportador em remetente, expedidor, recebedor ou
+  destinatario somente porque ele participa da cadeia logistica;
+- quando expedidor for igual ao remetente, ou recebedor igual ao destinatario,
+  evitar duplicacao desnecessaria no contrato canonico;
+- em CD, transbordo, subcontratacao e redespacho, preservar separadamente a
+  ponta comercial e a entrega/recebimento fisico;
+- validar cada combinacao contra o tipo de servico, documentos originarios e
+  schema CT-e vigente antes da autorizacao.
+
 ## Bloco: Servico De Transporte
 
 Representa a prestacao que o CT-e documenta.

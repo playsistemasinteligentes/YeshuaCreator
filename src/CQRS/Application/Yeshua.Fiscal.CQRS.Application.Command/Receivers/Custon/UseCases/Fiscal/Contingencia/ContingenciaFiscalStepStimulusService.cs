@@ -45,6 +45,8 @@ namespace Command.Receivers.UseCase
         private readonly IySagaStepReadRepository _sagaStepReadRepository = default!;
         private readonly IySagaStepWriteRepository _sagaStepWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository = default!;
+        private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository = default!;
         private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
         private readonly IDocumentoFiscalOriginarioWriteRepository _documentoFiscalOriginarioWriteRepository = default!;
         private readonly INFeProdutoSnapshotWriteRepository _nfeProdutoSnapshotWriteRepository = default!;
@@ -59,6 +61,8 @@ namespace Command.Receivers.UseCase
             IySagaStepReadRepository sagaStepReadRepository,
             IySagaStepWriteRepository sagaStepWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
+            IEntradaFiscalContingenciaReadRepository entradaReadRepository,
+            IEntradaFiscalContingenciaWriteRepository entradaWriteRepository,
             INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository,
             IDocumentoFiscalOriginarioWriteRepository documentoFiscalOriginarioWriteRepository,
             INFeProdutoSnapshotWriteRepository nfeProdutoSnapshotWriteRepository)
@@ -72,6 +76,8 @@ namespace Command.Receivers.UseCase
             _sagaStepReadRepository = sagaStepReadRepository;
             _sagaStepWriteRepository = sagaStepWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
+            _entradaReadRepository = entradaReadRepository;
+            _entradaWriteRepository = entradaWriteRepository;
             _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
             _documentoFiscalOriginarioWriteRepository = documentoFiscalOriginarioWriteRepository;
             _nfeProdutoSnapshotWriteRepository = nfeProdutoSnapshotWriteRepository;
@@ -132,34 +138,6 @@ namespace Command.Receivers.UseCase
                 return Task.FromResult(Rejected(correlationId, cargaId, stepKey, message, saga.id));
             }
 
-            var payload = BuildSmallInboxPayload(
-                stepKey,
-                correlationId,
-                entradaFiscalContingenciaId,
-                cargaId,
-                userAction,
-                documentosOriginariosJson,
-                dadosComplementaresJson,
-                payloadHash,
-                payloadStorageKey);
-
-            var inbox = new yInboxFactory(_logger).Create(
-                null,
-                Guid.NewGuid().ToString(),
-                InboxType,
-                "Carga",
-                cargaId,
-                waitingStep.correlationid,
-                payload,
-                0,
-                DateTime.UtcNow,
-                0,
-                string.Empty,
-                null,
-                null,
-                saga.id,
-                waitingStep.id);
-
             _unitOfWork.BeginTran();
             try
             {
@@ -179,6 +157,25 @@ namespace Command.Receivers.UseCase
                         documentos);
                 }
 
+                var entrada = entradaFiscalContingenciaId > 0
+                    ? _entradaReadRepository.FirstById(entradaFiscalContingenciaId)
+                    : _entradaReadRepository.FirstByCargaId(cargaId);
+
+                if (entrada == null || entrada.id <= 0)
+                    throw new InvalidOperationException($"Contingencia fiscal {cargaId}: entrada nao encontrada.");
+
+                if (!string.Equals(userAction, AcaoConfirmarPlano, StringComparison.OrdinalIgnoreCase))
+                {
+                    Command.Receivers.FiscalContingenciaState.ApplyComplemento(
+                        _entradaWriteRepository,
+                        entrada,
+                        dadosComplementaresJson,
+                        userAction);
+                    _entradaWriteRepository.UpdatePendenciasJson(
+                        entrada.id,
+                        JsonSerializer.Serialize(new[] { "PreviewDesatualizado" }));
+                }
+
                 if (saga.status == SagaStatusFailed)
                 {
                     _sagaWriteRepository.UpdateStatus(saga.id, SagaStatusInProgress);
@@ -192,7 +189,49 @@ namespace Command.Receivers.UseCase
                     _sagaStepWriteRepository.UpdateErrorMessage(waitingStep.id, string.Empty);
                 }
 
-                _inboxWriteRepository.Insert(inbox);
+                if (string.Equals(userAction, AcaoConfirmarPlano, StringComparison.OrdinalIgnoreCase))
+                {
+                    var payload = BuildSmallInboxPayload(
+                        stepKey,
+                        correlationId,
+                        entradaFiscalContingenciaId,
+                        cargaId,
+                        userAction,
+                        documentosOriginariosJson,
+                        dadosComplementaresJson,
+                        payloadHash,
+                        payloadStorageKey);
+
+                    var inbox = new yInboxFactory(_logger).Create(
+                        null,
+                        Guid.NewGuid().ToString(),
+                        InboxType,
+                        "Carga",
+                        cargaId,
+                        waitingStep.correlationid,
+                        payload,
+                        0,
+                        DateTime.UtcNow,
+                        0,
+                        string.Empty,
+                        null,
+                        null,
+                        saga.id,
+                        waitingStep.id);
+
+                    _inboxWriteRepository.Insert(inbox);
+                    _unitOfWork.Commit();
+
+                    return Task.FromResult(Accepted(
+                        correlationId,
+                        cargaId,
+                        stepKey,
+                        saga.id,
+                        waitingStep.id,
+                        inbox.Id.GetValueOrDefault(),
+                        "Plano confirmado e enviado para processamento."));
+                }
+
                 _unitOfWork.Commit();
             }
             catch
@@ -201,17 +240,14 @@ namespace Command.Receivers.UseCase
                 throw;
             }
 
-            return Task.FromResult(new ContingenciaFiscalStepStimulusResult
-            {
-                CorrelationId = string.IsNullOrWhiteSpace(correlationId) ? saga.correlationid : correlationId,
-                CargaId = cargaId,
-                StepKey = stepKey,
-                SagaId = saga.id,
-                SagaStepId = waitingStep.id,
-                InboxId = inbox.Id.GetValueOrDefault(),
-                Accepted = true,
-                Mensagem = "Etapa enviada para processamento."
-            });
+            return Task.FromResult(Accepted(
+                correlationId,
+                cargaId,
+                stepKey,
+                saga.id,
+                waitingStep.id,
+                0,
+                "Dados aplicados na preparacao."));
         }
 
         private string ValidateInput(string userAction, string cargaId, string documentosOriginariosJson, string dadosComplementaresJson)
@@ -380,6 +416,28 @@ namespace Command.Receivers.UseCase
                 StepKey = stepKey,
                 SagaId = sagaId,
                 Accepted = false,
+                Mensagem = message
+            };
+        }
+
+        private static ContingenciaFiscalStepStimulusResult Accepted(
+            string correlationId,
+            string cargaId,
+            string stepKey,
+            int sagaId,
+            int sagaStepId,
+            int inboxId,
+            string message)
+        {
+            return new ContingenciaFiscalStepStimulusResult
+            {
+                CorrelationId = correlationId,
+                CargaId = cargaId,
+                StepKey = stepKey,
+                SagaId = sagaId,
+                SagaStepId = sagaStepId,
+                InboxId = inboxId,
+                Accepted = true,
                 Mensagem = message
             };
         }

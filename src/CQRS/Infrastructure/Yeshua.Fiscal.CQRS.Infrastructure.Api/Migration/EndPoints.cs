@@ -2582,6 +2582,23 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/EntradaFiscalContingencia/EntradaFiscalContingenciaReadFKCertificadoDigitalId", async ([FromServices] Command.Receivers.Read.EntradaFiscalContingenciaReadFKCertificadoDigitalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/EmissaoFiscalTransporte/EmissaoFiscalTransporteReadFKTenantID", async ([FromServices] Command.Receivers.Read.EmissaoFiscalTransporteReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -5208,6 +5225,7 @@ app.MapGet("/yapi/getMetaDataCertificadoDigital", (HttpContext context) =>
                 new { id = "validode", label = "Valido de", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "validoate", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "ativo", label = "Ativo", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
+                new { id = "senhastoragekey", label = "Senha no Storage", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -5219,6 +5237,7 @@ app.MapGet("/yapi/getMetaDataCertificadoDigital", (HttpContext context) =>
                 new { id = "validode", label = "Valido de", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "validoate", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "ativo", label = "Ativo", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
+                new { id = "senhastoragekey", label = "Senha no Storage", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -5236,6 +5255,7 @@ app.MapGet("/yapi/getMetaDataCertificadoDigital", (HttpContext context) =>
             new { id = "validode", label = "Valido de", type = "DateTime", required = false, displaygroup = "Validade", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "validoate", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Validade", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "ativo", label = "Ativo", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
+            new { id = "senhastoragekey", label = "Senha no Storage", type = "string", required = false, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5310,6 +5330,7 @@ app.MapGet("/yapi/getMetaDataEntradaFiscalContingencia", (HttpContext context) =
                 new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+                new { id = "certificadodigitalid", label = "Certificado Digital", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataCertificadoDigital", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -5346,10 +5367,12 @@ app.MapGet("/yapi/getMetaDataEntradaFiscalContingencia", (HttpContext context) =
                 new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+                new { id = "certificadodigitalid", label = "Certificado Digital", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataCertificadoDigital", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
             {
+                certificadodigitalid = "/EntradaFiscalContingencia/EntradaFiscalContingenciaReadFKCertificadoDigitalId",
             }
             },
         },
@@ -5388,12 +5411,14 @@ app.MapGet("/yapi/getMetaDataEntradaFiscalContingencia", (HttpContext context) =
             new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+            new { id = "certificadodigitalid", label = "Certificado Digital", type = "int", required = false, displaygroup = "SEFAZ", isFk = true, endPontGetMetadata = "/getMetaDataCertificadoDigital", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
         actions = Array.Empty<object>(),
         endpoints = new
         {
+                 certificadodigitalid = "/EntradaFiscalContingencia/EntradaFiscalContingenciaReadFKCertificadoDigitalId",
             create = "/EntradaFiscalContingencia/PostEntradaFiscalContingencia",
             read = "/EntradaFiscalContingencia/ReadEntradaFiscalContingencia",
             update = "/EntradaFiscalContingencia/PutEntradaFiscalContingencia",
@@ -6016,7 +6041,7 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
             new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "errormessage", label = "Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
@@ -6084,7 +6109,7 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
             new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
             new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
             new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -6189,7 +6214,7 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
             new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
             new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -7449,6 +7474,23 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Fiscal/TesteAcordarSagaTesteSyncPasso3UseCase", async ([FromServices] Command.Receivers.UseCase.AcordarSagaTesteSyncPasso3Handler receiver, [FromBody] Command.UseCase.AcordarSagaTesteSyncPasso3InputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/SEFAZRegistrarCertificadoDigitalContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.RegistrarCertificadoDigitalContingenciaHandler receiver, [FromBody] Command.UseCase.RegistrarCertificadoDigitalContingenciaInputCommand command) =>
 {
 try
 {

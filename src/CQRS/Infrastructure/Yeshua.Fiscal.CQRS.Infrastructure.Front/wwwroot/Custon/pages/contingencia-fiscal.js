@@ -1,14 +1,15 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260918-mdfeplan01';
-import { showAlert } from '/spa/scripts/alerts.js?v=20260918-mdfeplan01';
+import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
+import { showAlert } from '/spa/scripts/alerts.js?v=20260919-parametros01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260918-mdfeplan01';
+const assetVersion = '20260919-parametros01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
     consultarProcessamento: '/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase',
     baixarPacote: '/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase',
+    registrarCertificado: '/Fiscal/SEFAZRegistrarCertificadoDigitalContingenciaUseCase',
     testeSync: '/Fiscal/TesteIniciarSagaTesteSyncUseCase',
     testeSyncAcordarPasso3: '/Fiscal/TesteAcordarSagaTesteSyncPasso3UseCase',
     steps: {
@@ -75,7 +76,9 @@ const state = {
     started: false,
     fiscalProcessingStarted: false,
     downloadAvailable: false,
-    nfeFiles: []
+    certificadoDigitalId: 0,
+    nfeFiles: [],
+    documentosOriginarios: null
 };
 
 let pendingRequests = 0;
@@ -84,6 +87,7 @@ const actionButtonIds = [
     'fiscal-send-notas',
     'fiscal-send-preview',
     'fiscal-confirmar-plano',
+    'fiscal-vincular-certificado',
     'fiscal-consultar-processamento',
     'fiscal-baixar-documentos'
 ];
@@ -175,6 +179,7 @@ function bindEvents() {
     document.getElementById('fiscal-send-notas')?.addEventListener('click', enviarXmls);
     document.getElementById('fiscal-send-preview')?.addEventListener('click', enviarPreview);
     document.getElementById('fiscal-confirmar-plano')?.addEventListener('click', confirmarPlano);
+    document.getElementById('fiscal-vincular-certificado')?.addEventListener('click', vincularCertificado);
     document.getElementById('fiscal-consultar-processamento')?.addEventListener('click', consultarProcessamentoFiscal);
     document.getElementById('fiscal-baixar-documentos')?.addEventListener('click', baixarDocumentosFiscais);
     bindPreparationPreviewEvents();
@@ -187,7 +192,51 @@ function bindPreparationPreviewEvents() {
         'fiscal-ambiente',
         'fiscal-tipo-solicitante',
         'fiscal-emitente',
+        'fiscal-emitente-uf',
+        'fiscal-cfop',
+        'fiscal-tipo-cte',
+        'fiscal-tipo-servico',
+        'fiscal-modal',
+        'fiscal-globalizado',
+        'fiscal-emitente-razao-social',
+        'fiscal-emitente-nome-fantasia',
+        'fiscal-emitente-inscricao-estadual',
+        'fiscal-emitente-crt',
+        'fiscal-emitente-logradouro',
+        'fiscal-emitente-numero',
+        'fiscal-emitente-bairro',
+        'fiscal-emitente-cep',
+        'fiscal-emitente-municipio-codigo-ibge',
+        'fiscal-emitente-municipio-nome',
         'fiscal-tomador',
+        'fiscal-remetente',
+        'fiscal-remetente-nome',
+        'fiscal-remetente-inscricao-estadual',
+        'fiscal-remetente-logradouro',
+        'fiscal-remetente-numero',
+        'fiscal-remetente-complemento',
+        'fiscal-remetente-bairro',
+        'fiscal-remetente-municipio-codigo-ibge',
+        'fiscal-remetente-municipio-nome',
+        'fiscal-remetente-uf',
+        'fiscal-remetente-cep',
+        'fiscal-remetente-pais-codigo',
+        'fiscal-remetente-pais-nome',
+        'fiscal-remetente-telefone',
+        'fiscal-destinatario',
+        'fiscal-destinatario-nome',
+        'fiscal-destinatario-inscricao-estadual',
+        'fiscal-destinatario-logradouro',
+        'fiscal-destinatario-numero',
+        'fiscal-destinatario-complemento',
+        'fiscal-destinatario-bairro',
+        'fiscal-destinatario-municipio-codigo-ibge',
+        'fiscal-destinatario-municipio-nome',
+        'fiscal-destinatario-uf',
+        'fiscal-destinatario-cep',
+        'fiscal-destinatario-pais-codigo',
+        'fiscal-destinatario-pais-nome',
+        'fiscal-destinatario-telefone',
         'fiscal-transportador',
         'fiscal-rntrc',
         'fiscal-placa',
@@ -205,6 +254,17 @@ function bindPreparationPreviewEvents() {
         'fiscal-tipo-carga-mdfe',
         'fiscal-produto-predominante-mdfe',
         'fiscal-ncm-produto-predominante-mdfe',
+        'fiscal-renavam',
+        'fiscal-tara-kg',
+        'fiscal-capacidade-kg',
+        'fiscal-capacidade-m3',
+        'fiscal-tipo-rodado',
+        'fiscal-tipo-carroceria',
+        'fiscal-seguro-responsavel-documento',
+        'fiscal-seguradora-nome',
+        'fiscal-seguradora-documento',
+        'fiscal-seguro-apolice',
+        'fiscal-seguro-averbacao',
         'fiscal-observacao-fiscal'
     ];
 
@@ -237,24 +297,54 @@ function resetForm() {
     state.started = false;
     state.fiscalProcessingStarted = false;
     state.downloadAvailable = false;
+    state.certificadoDigitalId = 0;
     state.nfeFiles = [];
+    state.documentosOriginarios = null;
 
     setValue('fiscal-carga-id', state.cargaId);
     setValue('fiscal-tenant-id', String(currentTenantId()));
     setValue('fiscal-ambiente', '2');
     setValue('fiscal-tipo-solicitante', '1');
-    setValue('fiscal-emitente', '63249950000174');
-    setValue('fiscal-tomador', '63249950000174');
-    setValue('fiscal-transportador', '63249950000174');
+    setValue('fiscal-modalidade-trabalho', 'transporte_normal_nfe');
+    setValue('fiscal-emitente', '');
+    setValue('fiscal-emitente-uf', '');
+    setValue('fiscal-cfop', '');
+    setValue('fiscal-tipo-cte', '0');
+    setValue('fiscal-tipo-servico', '0');
+    setValue('fiscal-modal', '1');
+    setValue('fiscal-globalizado', '0');
+    setValue('fiscal-emitente-razao-social', '');
+    setValue('fiscal-emitente-nome-fantasia', '');
+    setValue('fiscal-emitente-inscricao-estadual', '');
+    setValue('fiscal-emitente-crt', '');
+    setValue('fiscal-emitente-logradouro', '');
+    setValue('fiscal-emitente-numero', '');
+    setValue('fiscal-emitente-bairro', '');
+    setValue('fiscal-emitente-cep', '');
+    setValue('fiscal-emitente-municipio-codigo-ibge', '');
+    setValue('fiscal-emitente-municipio-nome', '');
+    setValue('fiscal-tomador', '');
+    setValue('fiscal-remetente', '');
+    setValue('fiscal-destinatario', '');
+    clearParticipanteEfetivo('fiscal-remetente');
+    clearParticipanteEfetivo('fiscal-destinatario');
+    setValue('fiscal-transportador', '');
+    setValue('fiscal-certificado-documento', '');
+    setValue('fiscal-certificado-apelido', 'Certificado da contingencia');
+    setValue('fiscal-certificado-senha', '');
+    const certificadoArquivo = document.getElementById('fiscal-certificado-arquivo');
+    if (certificadoArquivo) certificadoArquivo.value = '';
+    renderSectionStatus('certificado', 'pending');
+    setText('fiscal-certificado-resumo', 'Informe o CNPJ para reutilizar um certificado valido ou selecione um PFX para cadastrar.');
     setValue('fiscal-rntrc', '45861338');
     setValue('fiscal-placa', 'KYC7G21');
     setValue('fiscal-uf-veiculo', 'PE');
     setValue('fiscal-condutor-documento', '00000000191');
     setValue('fiscal-condutor-nome', 'CONDUTOR HOMOLOGACAO');
-    setValue('fiscal-uf-inicio', 'PE');
-    setValue('fiscal-municipio-inicio', '2611606');
-    setValue('fiscal-uf-fim', 'PE');
-    setValue('fiscal-municipio-fim', '2611606');
+    setValue('fiscal-uf-inicio', '');
+    setValue('fiscal-municipio-inicio', '');
+    setValue('fiscal-uf-fim', '');
+    setValue('fiscal-municipio-fim', '');
     setValue('fiscal-valor-frete', '100,00');
     setValue('fiscal-tipo-agrupamento-cte', 'um_cte_por_nfe');
     setValue('fiscal-estrategia-rateio-frete', 'proporcional_valor_documento');
@@ -262,6 +352,17 @@ function resetForm() {
     setValue('fiscal-tipo-carga-mdfe', '05');
     setValue('fiscal-produto-predominante-mdfe', 'PRODUTO HOMOLOGACAO');
     setValue('fiscal-ncm-produto-predominante-mdfe', '87089990');
+    setValue('fiscal-renavam', '');
+    setValue('fiscal-tara-kg', '');
+    setValue('fiscal-capacidade-kg', '');
+    setValue('fiscal-capacidade-m3', '');
+    setValue('fiscal-tipo-rodado', '');
+    setValue('fiscal-tipo-carroceria', '');
+    setValue('fiscal-seguro-responsavel-documento', '');
+    setValue('fiscal-seguradora-nome', '');
+    setValue('fiscal-seguradora-documento', '');
+    setValue('fiscal-seguro-apolice', '');
+    setValue('fiscal-seguro-averbacao', '');
     setValue('fiscal-observacao-fiscal', '');
 
     setValue('fiscal-nfe-xmls', '');
@@ -278,6 +379,7 @@ function resetForm() {
     setStage('preparacao');
     updatePrimaryButton();
     renderPlanPreview();
+    updateRequestUi();
 }
 
 async function iniciarContingencia(documentos = []) {
@@ -294,6 +396,7 @@ async function iniciarContingencia(documentos = []) {
         state.sagaId = Number(readField(result, 'sagaId', 'SagaId') || 0);
         state.currentStepKey = readField(result, 'stepKey', 'StepKey') || preparationStepKey;
         state.currentStepStatus = Number(readField(result, 'stepStatus', 'StepStatus') || 3);
+        applyDocumentosOriginarios(parseJsonObject(readField(result, 'documentosOriginariosJson', 'DocumentosOriginariosJson')));
 
         renderResult(
             state.correlationId,
@@ -305,6 +408,7 @@ async function iniciarContingencia(documentos = []) {
         feedback('Protocolo criado para esta carga.');
         notify('Protocolo da carga gravado.', 'success');
         updatePrimaryButton(1);
+        updateRequestUi();
         return true;
     } catch (error) {
         const message = error.message || 'Nao foi possivel iniciar a contingencia.';
@@ -413,6 +517,7 @@ async function enviarPreparacao(commandName, options = {}) {
         setStage('preparacao');
         setPreparationSectionStatus(commandName, 'sent');
         if (commandName === 'InformarNotasFiscaisContingencia') {
+            applyDocumentosOriginarios(parseJsonObject(readField(result, 'documentosOriginariosJson', 'DocumentosOriginariosJson')));
             invalidatePreview();
         }
         const message = commandName === 'ConfirmarPlanoEmissaoFiscalContingencia'
@@ -428,6 +533,7 @@ async function enviarPreparacao(commandName, options = {}) {
         notify(message, commandName === 'ConfirmarPlanoEmissaoFiscalContingencia' ? 'success' : 'info');
         renderPlanPreview();
         updatePrimaryButton();
+        updateRequestUi();
         return result;
     } catch (error) {
         const message = error.message || 'Nao foi possivel enviar a preparacao.';
@@ -468,14 +574,24 @@ async function enviarPreview() {
     }
 
     state.planPreview = planoEmissao;
+    applyEffectivePlanToForm(planoEmissao);
     const pendencias = normalizeArray(readField(planoEmissao, 'pendencias', 'Pendencias')).filter(Boolean);
+    state.certificadoDigitalId = Number(readField(planoEmissao, 'certificadoDigitalId', 'CertificadoDigitalId') || 0);
 
     setPreparationSectionStatus('EscolherModeloAgrupamentoCTeContingencia', 'sent');
     setPreparationSectionStatus('InformarFreteERateioContingencia', 'sent');
     setPreparationSectionStatus('InformarDadosTransporteContingencia', 'sent');
     setPreparationSectionStatus('ConfirmarPlanoEmissaoFiscalContingencia', pendencias.length > 0 ? 'error' : 'sent');
+    renderSectionStatus('certificado', state.certificadoDigitalId > 0 ? 'sent' : 'error');
+    renderSectionStatus('parametros-efetivos', 'sent');
+    setText(
+        'fiscal-certificado-resumo',
+        state.certificadoDigitalId > 0
+            ? 'Certificado valido e compativel com o emitente fiscal localizado pelo servidor.'
+            : 'Nenhum certificado disponivel e compativel com o emitente fiscal foi localizado para este tenant.');
     setText('fiscal-contingencia-status', pendencias.length > 0 ? 'preview com pendencias' : 'preview pronto');
     renderPlanPreview();
+    updateRequestUi();
     if (pendencias.length > 0) {
         feedback('Preview calculado com pendencias. Corrija os itens indicados antes de confirmar.');
         notify('Preview calculado com pendencias.', 'warning');
@@ -487,7 +603,70 @@ async function enviarPreview() {
 }
 
 async function confirmarPlano() {
+    if (state.sectionStatus.preview !== 'sent' || !state.planPreview) {
+        const message = 'A previa precisa ser validada sem pendencias antes da confirmacao.';
+        feedback(message);
+        notify(message, 'warning');
+        return;
+    }
     await enviarPreparacao('ConfirmarPlanoEmissaoFiscalContingencia');
+}
+
+async function vincularCertificado() {
+    if (!hasProtocol()) {
+        const message = 'Envie os XMLs para abrir o protocolo antes de vincular o certificado.';
+        feedback(message);
+        notify(message, 'warning');
+        return;
+    }
+
+    const documentoTitular = onlyDigits(getValue('fiscal-certificado-documento') || getValue('fiscal-transportador'));
+    if (documentoTitular.length !== 14) {
+        notify('Informe o CNPJ do titular do certificado.', 'warning');
+        return;
+    }
+
+    const arquivo = document.getElementById('fiscal-certificado-arquivo')?.files?.[0];
+    const arquivoPfxBase64 = arquivo ? await fileToBase64(arquivo) : '';
+    renderSectionStatus('certificado', 'sending');
+
+    try {
+        const result = await postUseCase(endpoints.registrarCertificado, {
+            entradaFiscalContingenciaId: state.entradaId,
+            documentoTitular,
+            apelido: getValue('fiscal-certificado-apelido'),
+            arquivoPfxBase64,
+            senha: getValue('fiscal-certificado-senha')
+        });
+
+        state.certificadoDigitalId = Number(readField(result, 'certificadoDigitalId', 'CertificadoDigitalId') || 0);
+        renderSectionStatus('certificado', state.certificadoDigitalId > 0 ? 'sent' : 'error');
+        setValue('fiscal-certificado-senha', '');
+        const input = document.getElementById('fiscal-certificado-arquivo');
+        if (input) input.value = '';
+
+        const validade = readField(result, 'validoAte', 'ValidoAte');
+        const mensagem = readField(result, 'mensagem', 'Mensagem') || 'Certificado vinculado.';
+        setText('fiscal-certificado-resumo', validade ? `${mensagem} Valido ate ${new Date(validade).toLocaleDateString('pt-BR')}.` : mensagem);
+        invalidatePreview();
+        feedback(mensagem);
+        notify(mensagem, 'success');
+    } catch (error) {
+        const message = error.message || 'Nao foi possivel vincular o certificado.';
+        renderSectionStatus('certificado', 'error');
+        setText('fiscal-certificado-resumo', message);
+        feedback(message);
+        notify(message, isValidationMessage(message) ? 'warning' : 'error');
+    }
+}
+
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || '').split(',').pop() || '');
+        reader.onerror = () => reject(new Error('Nao foi possivel ler o certificado PFX.'));
+        reader.readAsDataURL(file);
+    });
 }
 
 async function consultarProcessamentoFiscal() {
@@ -516,6 +695,7 @@ async function consultarProcessamentoFiscal() {
         state.downloadAvailable = downloadDisponivel;
         state.correlationId = readField(result, 'correlationId', 'CorrelationId') || state.correlationId;
         state.cargaId = readField(result, 'cargaId', 'CargaId') || state.cargaId;
+        applyDocumentosOriginarios(readField(documentos, 'documentosOriginarios', 'DocumentosOriginarios'));
 
         renderResult(state.correlationId, state.entradaId, mensagem);
         renderSagaProgress(sagas);
@@ -907,7 +1087,7 @@ function buildProtocolPayload(documentos = []) {
     return {
         ...payload,
         documentosOriginariosJson: JSON.stringify(Array.isArray(documentos) ? documentos : []),
-        dadosComplementaresJson: '{}',
+        dadosComplementaresJson: JSON.stringify(buildContingenciaContextComplemento()),
         payloadStorageKey: Array.isArray(documentos) && documentos.length > 0
             ? `front/contingencia/${payload.cargaId}/documentos-originarios.json`
             : `front/contingencia/${payload.cargaId}/protocolo.json`
@@ -921,7 +1101,7 @@ async function buildInitialPayload() {
     return {
         ...payload,
         documentosOriginariosJson: JSON.stringify(documentos),
-        dadosComplementaresJson: '{}',
+        dadosComplementaresJson: JSON.stringify(buildContingenciaContextComplemento()),
         payloadStorageKey: `front/contingencia/${payload.cargaId}/documentos-originarios.json`
     };
 }
@@ -984,7 +1164,6 @@ function buildComplementoForStep(stepKey, documentos, forceFullComplemento = fal
     if (stepKey === 'ConfirmarPlanoEmissaoFiscalContingencia'
         || stepKey === 'ConfirmarPlanoEmissaoFiscal') {
         return {
-            ...buildTransporteComplemento(),
             confirmado: true
         };
     }
@@ -995,11 +1174,16 @@ function buildComplementoForStep(stepKey, documentos, forceFullComplemento = fal
 function buildTransporteComplemento() {
     const valorFrete = parseDecimal(getValue('fiscal-valor-frete'));
     return {
+        ...buildContingenciaContextComplemento(),
         emitenteFiscalDocumento: onlyDigits(getValue('fiscal-emitente')),
         tomadorDocumento: onlyDigits(getValue('fiscal-tomador')),
         transportadorDocumento: onlyDigits(getValue('fiscal-transportador')),
-        remetenteDocumento: onlyDigits(getValue('fiscal-emitente')),
-        destinatarioDocumento: onlyDigits(getValue('fiscal-tomador')),
+        remetenteDocumento: onlyDigits(getValue('fiscal-remetente')),
+        destinatarioDocumento: onlyDigits(getValue('fiscal-destinatario')),
+        participantesCTe: {
+            remetente: buildParticipanteEfetivo('fiscal-remetente'),
+            destinatario: buildParticipanteEfetivo('fiscal-destinatario')
+        },
         ufInicio: upper(getValue('fiscal-uf-inicio')),
         ufFim: upper(getValue('fiscal-uf-fim')),
         municipioInicioCodigoIbge: getValue('fiscal-municipio-inicio'),
@@ -1018,11 +1202,151 @@ function buildTransporteComplemento() {
         produtoPredominanteMDFe: getValue('fiscal-produto-predominante-mdfe'),
         ncmProdutoPredominanteMDFe: onlyDigits(getValue('fiscal-ncm-produto-predominante-mdfe')),
         observacaoFiscal: getValue('fiscal-observacao-fiscal'),
-        tipoCTe: 0,
-        tipoServico: 0,
-        modal: 1,
-        globalizado: 0
+        emitenteUf: upper(getValue('fiscal-emitente-uf')),
+        cfop: onlyDigits(getValue('fiscal-cfop')),
+        tipoCTe: Number(getValue('fiscal-tipo-cte') || 0),
+        tipoServico: Number(getValue('fiscal-tipo-servico') || 0),
+        modal: Number(getValue('fiscal-modal') || 1),
+        globalizado: Number(getValue('fiscal-globalizado') || 0),
+        emitenteRazaoSocial: getValue('fiscal-emitente-razao-social'),
+        emitenteNomeFantasia: getValue('fiscal-emitente-nome-fantasia'),
+        emitenteInscricaoEstadual: getValue('fiscal-emitente-inscricao-estadual'),
+        emitenteCrt: Number(getValue('fiscal-emitente-crt') || 0),
+        emitenteLogradouro: getValue('fiscal-emitente-logradouro'),
+        emitenteNumero: getValue('fiscal-emitente-numero'),
+        emitenteBairro: getValue('fiscal-emitente-bairro'),
+        emitenteCep: onlyDigits(getValue('fiscal-emitente-cep')),
+        emitenteMunicipioCodigoIbge: onlyDigits(getValue('fiscal-emitente-municipio-codigo-ibge')),
+        emitenteMunicipioNome: getValue('fiscal-emitente-municipio-nome'),
+        renavam: onlyDigits(getValue('fiscal-renavam')),
+        taraKg: onlyDigits(getValue('fiscal-tara-kg')),
+        capacidadeKg: onlyDigits(getValue('fiscal-capacidade-kg')),
+        capacidadeM3: getValue('fiscal-capacidade-m3'),
+        tipoRodado: getValue('fiscal-tipo-rodado'),
+        tipoCarroceria: getValue('fiscal-tipo-carroceria'),
+        cnpjResponsavelSeguro: onlyDigits(getValue('fiscal-seguro-responsavel-documento')),
+        nomeSeguradora: getValue('fiscal-seguradora-nome'),
+        cnpjSeguradora: onlyDigits(getValue('fiscal-seguradora-documento')),
+        numeroApolice: getValue('fiscal-seguro-apolice'),
+        numeroAverbacao: getValue('fiscal-seguro-averbacao')
     };
+}
+
+function applyEffectivePlanToForm(plano) {
+    const parametros = readField(plano, 'parametrosFiscaisEfetivos', 'ParametrosFiscaisEfetivos') || plano;
+    const mappings = [
+        ['fiscal-emitente-uf', 'emitenteUf'],
+        ['fiscal-cfop', 'cfop'],
+        ['fiscal-tipo-cte', 'tipoCTe'],
+        ['fiscal-tipo-servico', 'tipoServico'],
+        ['fiscal-modal', 'modal'],
+        ['fiscal-globalizado', 'globalizado'],
+        ['fiscal-emitente-razao-social', 'emitenteRazaoSocial'],
+        ['fiscal-emitente-nome-fantasia', 'emitenteNomeFantasia'],
+        ['fiscal-emitente-inscricao-estadual', 'emitenteInscricaoEstadual'],
+        ['fiscal-emitente-crt', 'emitenteCrt'],
+        ['fiscal-emitente-logradouro', 'emitenteLogradouro'],
+        ['fiscal-emitente-numero', 'emitenteNumero'],
+        ['fiscal-emitente-bairro', 'emitenteBairro'],
+        ['fiscal-emitente-cep', 'emitenteCep'],
+        ['fiscal-emitente-municipio-codigo-ibge', 'emitenteMunicipioCodigoIbge'],
+        ['fiscal-emitente-municipio-nome', 'emitenteMunicipioNome'],
+        ['fiscal-renavam', 'renavam'],
+        ['fiscal-tara-kg', 'taraKg'],
+        ['fiscal-capacidade-kg', 'capacidadeKg'],
+        ['fiscal-capacidade-m3', 'capacidadeM3'],
+        ['fiscal-tipo-rodado', 'tipoRodado'],
+        ['fiscal-tipo-carroceria', 'tipoCarroceria'],
+        ['fiscal-seguro-responsavel-documento', 'cnpjResponsavelSeguro'],
+        ['fiscal-seguradora-nome', 'nomeSeguradora'],
+        ['fiscal-seguradora-documento', 'cnpjSeguradora'],
+        ['fiscal-seguro-apolice', 'numeroApolice'],
+        ['fiscal-seguro-averbacao', 'numeroAverbacao']
+    ];
+
+    for (const [id, property] of mappings) {
+        const value = readField(parametros, property, property.charAt(0).toUpperCase() + property.slice(1));
+        if (value !== undefined && value !== null && String(value) !== '') {
+            setValue(id, String(value));
+        }
+    }
+}
+
+function buildContingenciaContextComplemento() {
+    return {
+        modalidadeTrabalho: getValue('fiscal-modalidade-trabalho') || 'transporte_normal_nfe'
+    };
+}
+
+function applySuggestion(id, value) {
+    if (!getValue(id) && value) {
+        setValue(id, value);
+    }
+}
+
+function buildParticipanteEfetivo(prefix) {
+    return {
+        documento: onlyDigits(getValue(prefix)),
+        nome: getValue(`${prefix}-nome`),
+        inscricaoEstadual: getValue(`${prefix}-inscricao-estadual`),
+        logradouro: getValue(`${prefix}-logradouro`),
+        numero: getValue(`${prefix}-numero`),
+        complemento: getValue(`${prefix}-complemento`),
+        bairro: getValue(`${prefix}-bairro`),
+        municipioCodigoIbge: onlyDigits(getValue(`${prefix}-municipio-codigo-ibge`)),
+        municipioNome: getValue(`${prefix}-municipio-nome`),
+        uf: upper(getValue(`${prefix}-uf`)),
+        cep: onlyDigits(getValue(`${prefix}-cep`)),
+        paisCodigo: onlyDigits(getValue(`${prefix}-pais-codigo`)),
+        paisNome: getValue(`${prefix}-pais-nome`),
+        telefone: onlyDigits(getValue(`${prefix}-telefone`))
+    };
+}
+
+function clearParticipanteEfetivo(prefix) {
+    const fields = [
+        '', '-nome', '-inscricao-estadual', '-logradouro', '-numero', '-complemento', '-bairro',
+        '-municipio-codigo-ibge', '-municipio-nome', '-uf', '-cep', '-pais-codigo', '-pais-nome', '-telefone'
+    ];
+    for (const field of fields) setValue(`${prefix}${field}`, '');
+}
+
+function applyParticipanteEfetivo(prefix, participante) {
+    if (!participante) return;
+
+    applySuggestion(prefix, readField(participante, 'documento', 'Documento'));
+    applySuggestion(`${prefix}-nome`, readField(participante, 'nome', 'Nome'));
+    applySuggestion(`${prefix}-inscricao-estadual`, readField(participante, 'inscricaoEstadual', 'InscricaoEstadual'));
+    applySuggestion(`${prefix}-logradouro`, readField(participante, 'logradouro', 'Logradouro'));
+    applySuggestion(`${prefix}-numero`, readField(participante, 'numero', 'Numero'));
+    applySuggestion(`${prefix}-complemento`, readField(participante, 'complemento', 'Complemento'));
+    applySuggestion(`${prefix}-bairro`, readField(participante, 'bairro', 'Bairro'));
+    applySuggestion(`${prefix}-municipio-codigo-ibge`, readField(participante, 'municipioCodigoIbge', 'MunicipioCodigoIbge'));
+    applySuggestion(`${prefix}-municipio-nome`, readField(participante, 'municipioNome', 'MunicipioNome'));
+    applySuggestion(`${prefix}-uf`, readField(participante, 'uf', 'UF'));
+    applySuggestion(`${prefix}-cep`, readField(participante, 'cep', 'Cep'));
+    applySuggestion(`${prefix}-pais-codigo`, readField(participante, 'paisCodigo', 'PaisCodigo'));
+    applySuggestion(`${prefix}-pais-nome`, readField(participante, 'paisNome', 'PaisNome'));
+    applySuggestion(`${prefix}-telefone`, readField(participante, 'telefone', 'Telefone'));
+}
+
+function applyDocumentosOriginarios(documentos) {
+    if (!documentos || typeof documentos !== 'object') return;
+
+    state.documentosOriginarios = documentos;
+    const sugestoes = readField(documentos, 'sugestoes', 'Sugestoes');
+    if (sugestoes) {
+        const remetente = readField(sugestoes, 'remetente', 'Remetente');
+        const destinatario = readField(sugestoes, 'destinatario', 'Destinatario');
+        applyParticipanteEfetivo('fiscal-remetente', remetente);
+        applyParticipanteEfetivo('fiscal-destinatario', destinatario);
+        applySuggestion('fiscal-uf-inicio', readField(sugestoes, 'ufInicio', 'UFInicio'));
+        applySuggestion('fiscal-municipio-inicio', readField(sugestoes, 'municipioInicioCodigoIbge', 'MunicipioInicioCodigoIbge'));
+        applySuggestion('fiscal-uf-fim', readField(sugestoes, 'ufFim', 'UFFim'));
+        applySuggestion('fiscal-municipio-fim', readField(sugestoes, 'municipioFimCodigoIbge', 'MunicipioFimCodigoIbge'));
+    }
+
+    renderXmlPreview();
 }
 
 async function readDocumentosBrutos() {
@@ -1064,12 +1388,14 @@ function invalidatePreparationData() {
     invalidateSection('agrupamento');
     invalidateSection('frete');
     invalidateSection('transporte');
+    invalidateSection('parametros-efetivos');
     invalidatePreview();
 }
 
 function invalidatePreview() {
     state.planPreview = null;
     invalidateSection('preview');
+    updateRequestUi();
 }
 
 function invalidateSection(section) {
@@ -1082,6 +1408,21 @@ function invalidateSection(section) {
 function renderXmlPreview() {
     const host = document.getElementById('fiscal-documentos');
     if (!host) return;
+
+    const documentosPersistidos = normalizeArray(readField(state.documentosOriginarios, 'documentos', 'Documentos'));
+    if (documentosPersistidos.length > 0) {
+        host.innerHTML = `
+            <div class="fiscal-origin-header">
+                <strong>NF-e de origem importadas</strong>
+                <span>${documentosPersistidos.length} documento(s) persistido(s)</span>
+            </div>
+            <div class="fiscal-origin-list">
+                ${documentosPersistidos.map(renderDocumentoOriginario).join('')}
+            </div>`;
+        updateLocalSectionStatus('xmls', 'sent');
+        renderPlanPreview();
+        return;
+    }
 
     const pastedCount = getValue('fiscal-nfe-xmls').trim() ? 1 : 0;
     const fileCount = (state.nfeFiles || []).length;
@@ -1102,6 +1443,56 @@ function renderXmlPreview() {
     renderPlanPreview();
 }
 
+function renderDocumentoOriginario(documento) {
+    const chave = readField(documento, 'chaveAcesso', 'ChaveAcesso') || '-';
+    const emitente = readField(documento, 'emitente', 'Emitente') || {};
+    const destinatario = readField(documento, 'destinatario', 'Destinatario') || {};
+    const rota = `${readField(documento, 'ufOrigem', 'UFOrigem') || '-'} / ${readField(documento, 'municipioOrigemCodigoIbge', 'MunicipioOrigemCodigoIbge') || '-'} -> ${readField(documento, 'ufDestino', 'UFDestino') || '-'} / ${readField(documento, 'municipioDestinoCodigoIbge', 'MunicipioDestinoCodigoIbge') || '-'}`;
+
+    return `
+        <details class="fiscal-origin-document">
+            <summary>NF-e ${escapeHtml(readField(documento, 'numero', 'Numero') || '-')} serie ${escapeHtml(readField(documento, 'serie', 'Serie') || '-')} | ${escapeHtml(chave)}</summary>
+            <div class="fiscal-origin-meta">
+                <span>Valor: ${escapeHtml(formatMoney(readField(documento, 'valorDocumento', 'ValorDocumento') || 0))}</span>
+                <span>Peso: ${escapeHtml(formatDecimal(readField(documento, 'pesoBruto', 'PesoBruto') || 0))}</span>
+                <span>Volume: ${escapeHtml(formatDecimal(readField(documento, 'volume', 'Volume') || 0))}</span>
+                <span>Rota da NF-e: ${escapeHtml(rota)}</span>
+            </div>
+            <div class="fiscal-origin-participants">
+                ${renderParticipanteOriginario('Emitente da NF-e', emitente)}
+                ${renderParticipanteOriginario('Destinatario da NF-e', destinatario)}
+            </div>
+        </details>`;
+}
+
+function renderParticipanteOriginario(title, participante) {
+    const endereco = [
+        readField(participante, 'logradouro', 'Logradouro'),
+        readField(participante, 'numero', 'Numero'),
+        readField(participante, 'complemento', 'Complemento'),
+        readField(participante, 'bairro', 'Bairro')
+    ].filter(Boolean).join(', ');
+    const municipio = [
+        readField(participante, 'municipioNome', 'MunicipioNome'),
+        readField(participante, 'municipioCodigoIbge', 'MunicipioCodigoIbge'),
+        readField(participante, 'uf', 'UF')
+    ].filter(Boolean).join(' / ');
+    const pais = [
+        readField(participante, 'paisNome', 'PaisNome'),
+        readField(participante, 'paisCodigo', 'PaisCodigo')
+    ].filter(Boolean).join(' / ');
+
+    return `
+        <section class="fiscal-origin-participant">
+            <strong>${escapeHtml(title)}</strong>
+            <span>${escapeHtml(readField(participante, 'nome', 'Nome') || '-')}</span>
+            <span>Documento: ${escapeHtml(readField(participante, 'documento', 'Documento') || '-')} | IE: ${escapeHtml(readField(participante, 'inscricaoEstadual', 'InscricaoEstadual') || '-')}</span>
+            <span>${escapeHtml(endereco || '-')}</span>
+            <span>${escapeHtml(municipio || '-')} | CEP: ${escapeHtml(readField(participante, 'cep', 'Cep') || '-')}</span>
+            <span>Pais: ${escapeHtml(pais || '-')} | Telefone: ${escapeHtml(readField(participante, 'telefone', 'Telefone') || '-')}</span>
+        </section>`;
+}
+
 function updateLocalSectionStatus(section, computedStatus) {
     const current = state.sectionStatus[section];
     if ((current === 'sent' || current === 'sending') && computedStatus === 'ready') {
@@ -1119,6 +1510,7 @@ function setPreparationSectionStatus(commandName, status) {
 
     state.sectionStatus[section] = status;
     renderSectionStatus(section, status);
+    updateRequestUi();
 }
 
 function renderSectionStatus(section, status) {
@@ -1161,6 +1553,12 @@ function renderBackendPlanPreview(host, plano) {
     }));
     const mdfes = normalizeArray(readField(plano, 'mdfesPrevistos', 'MdfesPrevistos')).map(mdfe => ({
         descricao: readField(mdfe, 'descricao', 'Descricao') || 'MDF-e da carga',
+        emitenteDocumento: readField(mdfe, 'emitenteDocumento', 'EmitenteDocumento') || '-',
+        emitenteRazaoSocial: readField(mdfe, 'emitenteRazaoSocial', 'EmitenteRazaoSocial') || '-',
+        emitenteInscricaoEstadual: readField(mdfe, 'emitenteInscricaoEstadual', 'EmitenteInscricaoEstadual') || '-',
+        emitenteUf: readField(mdfe, 'emitenteUf', 'EmitenteUf') || '-',
+        emitenteMunicipioCodigoIbge: readField(mdfe, 'emitenteMunicipioCodigoIbge', 'EmitenteMunicipioCodigoIbge') || '-',
+        emitenteMunicipioNome: readField(mdfe, 'emitenteMunicipioNome', 'EmitenteMunicipioNome') || '-',
         quantidadeCTes: Number(readField(mdfe, 'quantidadeCTes', 'QuantidadeCTes') || 0),
         ctes: normalizeArray(readField(mdfe, 'ctes', 'Ctes')),
         ufInicio: readField(mdfe, 'ufinicio', 'ufInicio', 'UFInicio') || '-',
@@ -1191,6 +1589,12 @@ function renderBackendPlanPreview(host, plano) {
             ${previewCard('NF-e', String(readField(plano, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0))}
             ${previewCard('CT-e previstos', String(grupos.length))}
             ${previewCard('MDF-e previstos', String(mdfes.length))}
+            ${previewCard('Emitente fiscal', readField(plano, 'emitenteFiscalDocumento', 'EmitenteFiscalDocumento') || '-')}
+            ${previewCard('CFOP', readField(plano, 'cfop', 'CFOP') || '-')}
+            ${previewCard('Tipo CT-e', String(readField(plano, 'tipoCTe', 'TipoCTe') ?? '-'))}
+            ${previewCard('Tipo servico', String(readField(plano, 'tipoServico', 'TipoServico') ?? '-'))}
+            ${previewCard('Modal', String(readField(plano, 'modal', 'Modal') ?? '-'))}
+            ${previewCard('Globalizado', Number(readField(plano, 'globalizado', 'Globalizado') || 0) === 1 ? 'Sim' : 'Nao')}
             ${previewCard('Valor documentos', formatMoney(readField(plano, 'valorCarga', 'ValorCarga') || 0))}
             ${previewCard('Frete', formatMoney(readField(plano, 'valorFrete', 'ValorFrete') || 0))}
             ${previewCard('Peso bruto', formatDecimal(readField(plano, 'pesoBruto', 'PesoBruto') || 0))}
@@ -1219,9 +1623,25 @@ function renderPendenciasPreview(pendencias) {
     return `
         <div class="fiscal-preview-alert">
             <strong>Pendencias antes de confirmar</strong>
-            <ul>${itens.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+            <ul>${itens.map(item => `<li>${escapeHtml(pendingLabel(item))}</li>`).join('')}</ul>
         </div>
     `;
+}
+
+function pendingLabel(item) {
+    if (item === 'CertificadoDigital') {
+        return 'Informe ou vincule um certificado digital para o transportador antes de confirmar.';
+    }
+
+    if (item === 'CertificadoDigitalIncompativelComEmitente') {
+        return 'O certificado digital informado nao pertence ao emitente fiscal selecionado.';
+    }
+
+    if (item === 'TomadorOutrosRequerCadastroCompletoToma4') {
+        return 'O tomador deve ser o remetente ou o destinatario. Outro tomador exige cadastro fiscal completo (toma4), ainda nao disponivel nesta tela.';
+    }
+
+    return item;
 }
 
 function renderCteGroupsPreview(grupos) {
@@ -1253,6 +1673,7 @@ function renderMdfeGroupsPreview(mdfes) {
                 <div class="fiscal-preview-group">
                     <strong>MDF-e ${index + 1}</strong>
                     <span>${escapeHtml(mdfe.descricao)}</span>
+                    <span>emitente ${escapeHtml(mdfe.emitenteDocumento)} | IE ${escapeHtml(mdfe.emitenteInscricaoEstadual)} | ${escapeHtml(mdfe.emitenteUf)}/${escapeHtml(mdfe.emitenteMunicipioCodigoIbge)} ${escapeHtml(mdfe.emitenteMunicipioNome)}</span>
                     <span>${mdfe.quantidadeCTes} CT-e | ${escapeHtml(mdfe.ufInicio)}/${escapeHtml(mdfe.municipioInicioCodigoIbge)} -> ${escapeHtml(mdfe.ufFim)}/${escapeHtml(mdfe.municipioFimCodigoIbge)}</span>
                     <span>RNTRC ${escapeHtml(mdfe.rntrc)} | placa ${escapeHtml(mdfe.placaVeiculo)} | condutor ${escapeHtml(mdfe.condutorNome)} (${escapeHtml(mdfe.condutorDocumento)})</span>
                     <span>produto ${escapeHtml(mdfe.produtoPredominante)} | tipo ${escapeHtml(mdfe.tipoCarga)} | NCM ${escapeHtml(mdfe.ncmProdutoPredominante)}</span>
@@ -1305,12 +1726,22 @@ function endRequest() {
 }
 
 function updateRequestUi() {
-    const disabled = pendingRequests > 0;
-    for (const id of actionButtonIds) {
-        const button = document.getElementById(id);
-        if (!button) continue;
-        button.disabled = disabled || (id === 'fiscal-baixar-documentos' && !state.downloadAvailable);
-    }
+    const requesting = pendingRequests > 0;
+    const previewValida = state.sectionStatus.preview === 'sent' && Boolean(state.planPreview);
+    const emissaoSolicitada = state.fiscalProcessingStarted;
+
+    setButtonDisabled('fiscal-contingencia-new', requesting);
+    setButtonDisabled('fiscal-send-notas', requesting || emissaoSolicitada);
+    setButtonDisabled('fiscal-send-preview', requesting || emissaoSolicitada || !hasProtocol() || state.sectionStatus.xmls !== 'sent');
+    setButtonDisabled('fiscal-confirmar-plano', requesting || emissaoSolicitada || !previewValida);
+    setButtonDisabled('fiscal-vincular-certificado', requesting || emissaoSolicitada || !hasProtocol());
+    setButtonDisabled('fiscal-consultar-processamento', requesting || !emissaoSolicitada);
+    setButtonDisabled('fiscal-baixar-documentos', requesting || !emissaoSolicitada || !state.downloadAvailable);
+}
+
+function setButtonDisabled(id, disabled) {
+    const button = document.getElementById(id);
+    if (button) button.disabled = Boolean(disabled);
 }
 
 function parseErrorMessage(text) {

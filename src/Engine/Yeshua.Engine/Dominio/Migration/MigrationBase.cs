@@ -16,11 +16,21 @@ namespace Dominio.Migration
         public List<Entity> Entitys = new List<Entity>();
         public List<Module> Modules = new List<Module>();
         public List<UseCaseGroup> UseCaseGroup = new List<UseCaseGroup>();
+        public int? SagaWorkerLoopMilliseconds { get; private set; }
         private Entity _entity;
         private Module _module;
         private UseCaseGroup _hub;
         public int ID { get; set; }
         public string MigrationName { get; set; }
+
+        public MigrationBase ConfigureSagaWorkers(int loopMilliseconds)
+        {
+            if (loopMilliseconds <= 0)
+                throw new ArgumentOutOfRangeException(nameof(loopMilliseconds), "O tempo de looping dos workers de saga deve ser maior que zero.");
+
+            SagaWorkerLoopMilliseconds = loopMilliseconds;
+            return this;
+        }
 
         public Column GetColumn(string entityName, string columnName)
         {

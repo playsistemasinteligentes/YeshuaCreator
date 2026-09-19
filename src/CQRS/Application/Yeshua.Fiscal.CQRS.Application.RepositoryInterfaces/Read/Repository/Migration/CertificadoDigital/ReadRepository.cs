@@ -36,6 +36,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsBySenhaStorageKey(string value );
         public CertificadoDigitalDTO FirstById(int value );
         public CertificadoDigitalDTO FirstByApelido(string value );
         public CertificadoDigitalDTO FirstByDocumentoTitular(string value );
@@ -48,6 +49,7 @@ namespace IRepository.Read
         public CertificadoDigitalDTO FirstByDeleted(bool value );
         public CertificadoDigitalDTO FirstByChanged(DateTime value );
         public CertificadoDigitalDTO FirstByUserId(int value );
+        public CertificadoDigitalDTO FirstBySenhaStorageKey(string value );
         public IEnumerable<CertificadoDigitalDTO> GetAllById(int value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByApelido(string value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByDocumentoTitular(string value );
@@ -60,6 +62,7 @@ namespace IRepository.Read
         public IEnumerable<CertificadoDigitalDTO> GetAllByDeleted(bool value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByUserId(int value );
+        public IEnumerable<CertificadoDigitalDTO> GetAllBySenhaStorageKey(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

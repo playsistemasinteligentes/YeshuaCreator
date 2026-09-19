@@ -57,8 +57,9 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public int? CertificadoDigitalId { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal EntradaFiscalContingenciaEntity(int? id, string correlationid, string cargaid, int tiposolicitante, int ambiente, string sourceapplication, string? sourcemodule, string sourcemessageid, string? emitentefiscaldocumento, string? tomadordocumento, string? transportadordocumento, string? remetentedocumento, string? destinatariodocumento, string? ufinicio, string? uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? rntrc, string? placaveiculo, string? ufveiculo, string? condutordocumento, string? condutornome, int? quantidadedocumentos, Decimal? valorcarga, Decimal? pesobruto, Decimal? volume, string? pendenciasjson, string? snapshotjson, string? emissaofiscalcorrelationid, int? emissaofiscalsagaid, DateTime criadoemutc, DateTime? atualizadoemutc, int status ){
+ internal EntradaFiscalContingenciaEntity(int? id, string correlationid, string cargaid, int tiposolicitante, int ambiente, string sourceapplication, string? sourcemodule, string sourcemessageid, string? emitentefiscaldocumento, string? tomadordocumento, string? transportadordocumento, string? remetentedocumento, string? destinatariodocumento, string? ufinicio, string? uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? rntrc, string? placaveiculo, string? ufveiculo, string? condutordocumento, string? condutornome, int? quantidadedocumentos, Decimal? valorcarga, Decimal? pesobruto, Decimal? volume, string? pendenciasjson, string? snapshotjson, string? emissaofiscalcorrelationid, int? emissaofiscalsagaid, DateTime criadoemutc, DateTime? atualizadoemutc, int status, int? certificadodigitalid ){
  Id = id; 
  CorrelationId = correlationid; 
  CargaId = cargaid; 
@@ -92,6 +93,7 @@
  CriadoEmUtc = (criadoemutc < (new DateTime(1800, 1, 1))) ? DateTime.Now : criadoemutc; 
  AtualizadoEmUtc = atualizadoemutc.HasValue && atualizadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : atualizadoemutc; 
  Status = status; 
+ CertificadoDigitalId = certificadodigitalid; 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

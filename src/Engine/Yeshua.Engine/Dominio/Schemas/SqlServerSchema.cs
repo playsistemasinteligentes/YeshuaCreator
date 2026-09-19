@@ -140,7 +140,9 @@ END;", null);
                 case "BIGINT":
                     return "BIGINT";
                 case "VARCHAR":
-                    return $"VARCHAR({column.Length})"; // Tamanho padrão, ajuste conforme necessário
+                    return column.Length < 0
+                        ? "VARCHAR(MAX)"
+                        : $"VARCHAR({column.Length})";
                 case "TEXT":
                     return "TEXT";
                 case "DATE":

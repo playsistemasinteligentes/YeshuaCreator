@@ -178,6 +178,173 @@ body.yeshua-request-wait * {
     margin-bottom: 18px;
 }
 
+.fiscal-participants-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 18px;
+}
+
+.fiscal-participant-card {
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.fiscal-participant-card h4 {
+    font-size: 14px;
+    margin: 0 0 12px;
+}
+
+.fiscal-participant-fields {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fiscal-participant-fields label {
+    color: #475569;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 5px;
+}
+
+.fiscal-participant-fields input {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    color: #172033;
+    font-size: 14px;
+    min-height: 38px;
+    padding: 7px 9px;
+}
+
+.fiscal-work-mode-field small {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.fiscal-modalities-reference {
+    border-top: 1px solid #cbd5e1;
+    margin: 28px auto 0;
+    max-width: 1480px;
+    padding: 24px 0 8px;
+}
+
+.fiscal-modalities-heading,
+.fiscal-modality-group-title {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.fiscal-modalities-heading h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.fiscal-modalities-intro {
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 12px 0 16px;
+    max-width: 960px;
+}
+
+.fiscal-modalities-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.fiscal-modalities-table-wrap {
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.fiscal-modalities-table {
+    border-collapse: collapse;
+    min-width: 1120px;
+    width: 100%;
+}
+
+.fiscal-modalities-table th,
+.fiscal-modalities-table td {
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.fiscal-modalities-table th {
+    background: #f8fafc;
+    color: #172033;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.fiscal-modalities-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.fiscal-modality-group {
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.fiscal-modality-group h3 {
+    font-size: 13px;
+    margin: 0;
+}
+
+.fiscal-modality-group ul {
+    color: #475569;
+    display: grid;
+    font-size: 12px;
+    gap: 7px;
+    line-height: 1.45;
+    margin: 12px 0 0;
+    padding-left: 18px;
+}
+
+.fiscal-modality-status {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 7px;
+    text-transform: uppercase;
+}
+
+.fiscal-modality-status.available {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+}
+
+.fiscal-modality-status.validating {
+    background: #fef3c7;
+    border-color: #fcd34d;
+    color: #92400e;
+}
+
+.fiscal-modality-status.planned {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
+}
+
 .fiscal-contingencia-grid label,
 .fiscal-documento-grid label,
 .fiscal-xml-grid label {
@@ -234,6 +401,70 @@ body.yeshua-request-wait * {
     font-weight: 700;
     gap: 6px;
     padding: 10px 12px;
+}
+
+.fiscal-origin-header {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.fiscal-origin-header span,
+.fiscal-origin-meta,
+.fiscal-origin-participant span {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.fiscal-origin-list {
+    display: grid;
+    gap: 8px;
+}
+
+.fiscal-origin-document {
+    border: 1px solid #dbe3ee;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+.fiscal-origin-document summary {
+    color: #172033;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.fiscal-origin-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 10px 0;
+}
+
+.fiscal-origin-participants {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fiscal-origin-participant {
+    border-left: 3px solid #cbd5e1;
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+    padding-left: 8px;
+}
+
+.fiscal-origin-participant strong {
+    color: #172033;
+    font-size: 12px;
+}
+
+.fiscal-origin-participant span {
+    overflow-wrap: anywhere;
 }
 
 .fiscal-xml-empty {
@@ -574,12 +805,31 @@ body.yeshua-request-wait * {
     color: #b91c1c;
 }
 
+.fiscal-effective-details {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 14px;
+    padding-top: 12px;
+}
+
+.fiscal-effective-details summary {
+    color: #0f172a;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
 @media (max-width: 1080px) {
     .fiscal-contingencia-layout,
     .fiscal-contingencia-grid,
+    .fiscal-participants-grid,
     .fiscal-documento-grid,
     .fiscal-xml-grid,
     .fiscal-preview-summary {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .fiscal-modalities-grid {
         grid-template-columns: 1fr 1fr;
     }
 
@@ -599,9 +849,20 @@ body.yeshua-request-wait * {
 
     .fiscal-contingencia-layout,
     .fiscal-contingencia-grid,
+    .fiscal-participants-grid,
+    .fiscal-participant-fields,
     .fiscal-documento-grid,
     .fiscal-xml-grid,
     .fiscal-preview-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .fiscal-modalities-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .fiscal-modalities-grid {
         grid-template-columns: 1fr;
     }
 
@@ -611,5 +872,9 @@ body.yeshua-request-wait * {
 
     .fiscal-contingencia-grid .wide {
         grid-column: span 1;
+    }
+
+    .fiscal-origin-participants {
+        grid-template-columns: 1fr;
     }
 }

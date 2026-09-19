@@ -18,6 +18,13 @@ namespace Command.UseCase
         public string StepKey { get; set; } = string.Empty;
         public int StepStatus { get; set; }
         public int SagaStatus { get; set; }
+        public string SugestaoRemetenteDocumento { get; set; } = string.Empty;
+        public string SugestaoDestinatarioDocumento { get; set; } = string.Empty;
+        public string SugestaoUFInicio { get; set; } = string.Empty;
+        public string SugestaoUFFim { get; set; } = string.Empty;
+        public string SugestaoMunicipioInicioCodigoIbge { get; set; } = string.Empty;
+        public string SugestaoMunicipioFimCodigoIbge { get; set; } = string.Empty;
+        public string DocumentosOriginariosJson { get; set; } = string.Empty;
     }
 
 }

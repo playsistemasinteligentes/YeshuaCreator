@@ -100,6 +100,23 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
+        private IEnumerable<EntradaFiscalContingenciaCertificadoDigitalIdDTO> getEntradaFiscalContingenciaReadFKCertificadoDigitalId(Command.Patterns.Command.SearchFKCommand command )
+        {
+            var query = _query.EntradaFiscalContingenciaCertificadoDigitalIdQuery(command );
+
+                var lista = _unitOfWork.Query<EntradaFiscalContingenciaCertificadoDigitalIdDTO>(query.Query,query.Parameters).ToList();
+            return lista;
+        }
+
+        public IEnumerable<EntradaFiscalContingenciaCertificadoDigitalIdDTO> getEntradaFiscalContingenciaReadFKCertificadoDigitalId(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getEntradaFiscalContingenciaReadFKCertificadoDigitalId(c );
+            }
+            throw new NotImplementedException();
+        }
+
         public bool ExistsById(int value )
         {
             var query = _query.ExistsByIdQuery(value );
@@ -391,6 +408,14 @@ namespace Read.Repository
         public bool ExistsByUserId(int value )
         {
             var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByCertificadoDigitalId(int value )
+        {
+            var query = _query.ExistsByCertificadoDigitalIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -692,6 +717,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public EntradaFiscalContingenciaDTO FirstByCertificadoDigitalId(int value )
+        {
+            var query = _query.FirstByCertificadoDigitalIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<EntradaFiscalContingenciaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -983,6 +1016,14 @@ namespace Read.Repository
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByCertificadoDigitalId(int value )
+        {
+            var query = _query.FirstByCertificadoDigitalIdQuery(value );
 
                 var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;

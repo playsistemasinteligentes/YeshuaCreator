@@ -24,6 +24,7 @@ namespace IRepository.Read
         public DataPagination<EntradaFiscalContingenciaDTO> getEntradaFiscalContingencia(ICommandRead command );
         public IEnumerable<EntradaFiscalContingenciaTenantIDDTO> getEntradaFiscalContingenciaReadFKTenantID(object command );
         public IEnumerable<EntradaFiscalContingenciaUserIdDTO> getEntradaFiscalContingenciaReadFKUserId(object command );
+        public IEnumerable<EntradaFiscalContingenciaCertificadoDigitalIdDTO> getEntradaFiscalContingenciaReadFKCertificadoDigitalId(object command );
         public bool ExistsById(int value );
         public bool ExistsByCorrelationId(string value );
         public bool ExistsByCargaId(string value );
@@ -61,6 +62,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByCertificadoDigitalId(int value );
         public EntradaFiscalContingenciaDTO FirstById(int value );
         public EntradaFiscalContingenciaDTO FirstByCorrelationId(string value );
         public EntradaFiscalContingenciaDTO FirstByCargaId(string value );
@@ -98,6 +100,7 @@ namespace IRepository.Read
         public EntradaFiscalContingenciaDTO FirstByDeleted(bool value );
         public EntradaFiscalContingenciaDTO FirstByChanged(DateTime value );
         public EntradaFiscalContingenciaDTO FirstByUserId(int value );
+        public EntradaFiscalContingenciaDTO FirstByCertificadoDigitalId(int value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllById(int value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByCorrelationId(string value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByCargaId(string value );
@@ -135,6 +138,7 @@ namespace IRepository.Read
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByDeleted(bool value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByUserId(int value );
+        public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByCertificadoDigitalId(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -38,6 +38,18 @@
                         <option value="3">Subcontratacao</option>
                     </select>
                 </label>
+                <label class="wide fiscal-work-mode-field">
+                    Modalidade de trabalho
+                    <select id="fiscal-modalidade-trabalho">
+                        <option value="transporte_normal_nfe">F01 - Transporte direto remetente para destinatario - disponivel</option>
+                        <option disabled>F02 - Coleta em deposito ou operador - nao implementada</option>
+                        <option disabled>F03 - Entrega em CD ou operador recebedor - nao implementada</option>
+                        <option disabled>F04 - Transferencia entre estabelecimentos - nao implementada</option>
+                        <option disabled>F05 - Subcontratacao - nao implementada</option>
+                        <option disabled>F06 - Redespacho ou troca de transportador - nao implementada</option>
+                    </select>
+                    <small>Fluxo atual F01: recebe NF-e, prepara CT-e e, depois da autorizacao, prepara o MDF-e.</small>
+                </label>
             </div>
 
             <div class="fiscal-section-title">
@@ -65,7 +77,40 @@
             <div class="fiscal-stage" data-stage="preparacao">
             <div class="fiscal-section-title">
                 <div class="fiscal-section-heading">
-                    <h3>Dados De Transporte</h3>
+                    <h3>Certificado Digital</h3>
+                    <span id="fiscal-status-certificado" class="fiscal-section-status pending">pendente</span>
+                </div>
+                <div class="fiscal-section-actions">
+                    <button id="fiscal-vincular-certificado" type="button">Vincular certificado</button>
+                </div>
+            </div>
+            <div class="fiscal-contingencia-grid">
+                <label>
+                    CNPJ titular
+                    <input id="fiscal-certificado-documento" type="text" maxlength="18">
+                </label>
+                <label>
+                    Apelido
+                    <input id="fiscal-certificado-apelido" type="text">
+                </label>
+                <label>
+                    Certificado A1 (.pfx)
+                    <input id="fiscal-certificado-arquivo" type="file" accept=".pfx,application/x-pkcs12">
+                </label>
+                <label>
+                    Senha
+                    <input id="fiscal-certificado-senha" type="password" autocomplete="new-password">
+                </label>
+            </div>
+            <p id="fiscal-certificado-resumo" class="fiscal-stage-note">
+                Informe o CNPJ para reutilizar um certificado valido ou selecione um PFX para cadastrar.
+            </p>
+            </div>
+
+            <div class="fiscal-stage" data-stage="preparacao">
+            <div class="fiscal-section-title">
+                <div class="fiscal-section-heading">
+                    <h3>Dados Efetivos Do CT-e E Transporte</h3>
                     <span id="fiscal-status-transporte" class="fiscal-section-status pending">pendente</span>
                 </div>
             </div>
@@ -79,8 +124,8 @@
                     <input id="fiscal-tomador" type="text">
                 </label>
                 <label>
-                    Transportador
-                    <input id="fiscal-transportador" type="text">
+                    CNPJ do transportador
+                    <input id="fiscal-transportador" type="text" inputmode="numeric" placeholder="Somente numeros">
                 </label>
                 <label>
                     RNTRC
@@ -119,6 +164,141 @@
                     <input id="fiscal-municipio-fim" type="text">
                 </label>
             </div>
+
+            <p class="fiscal-stage-note">
+                Os dados abaixo sao os participantes que serao levados ao CT-e. A NF-e importada apenas preenche uma sugestao inicial; revise e altere livremente antes do preview.
+            </p>
+            <div class="fiscal-participants-grid">
+                <section class="fiscal-participant-card" aria-labelledby="fiscal-remetente-title">
+                    <h4 id="fiscal-remetente-title">Remetente efetivo do CT-e</h4>
+                    <div class="fiscal-participant-fields">
+                        <label>Documento<input id="fiscal-remetente" type="text" inputmode="numeric"></label>
+                        <label>Razao social<input id="fiscal-remetente-nome" type="text"></label>
+                        <label>Inscricao estadual<input id="fiscal-remetente-inscricao-estadual" type="text"></label>
+                        <label>Logradouro<input id="fiscal-remetente-logradouro" type="text"></label>
+                        <label>Numero<input id="fiscal-remetente-numero" type="text"></label>
+                        <label>Complemento<input id="fiscal-remetente-complemento" type="text"></label>
+                        <label>Bairro<input id="fiscal-remetente-bairro" type="text"></label>
+                        <label>Municipio IBGE<input id="fiscal-remetente-municipio-codigo-ibge" type="text"></label>
+                        <label>Municipio<input id="fiscal-remetente-municipio-nome" type="text"></label>
+                        <label>UF<input id="fiscal-remetente-uf" type="text" maxlength="2"></label>
+                        <label>CEP<input id="fiscal-remetente-cep" type="text" inputmode="numeric"></label>
+                        <label>Codigo pais<input id="fiscal-remetente-pais-codigo" type="text"></label>
+                        <label>Nome pais<input id="fiscal-remetente-pais-nome" type="text"></label>
+                        <label>Telefone<input id="fiscal-remetente-telefone" type="text"></label>
+                    </div>
+                </section>
+                <section class="fiscal-participant-card" aria-labelledby="fiscal-destinatario-title">
+                    <h4 id="fiscal-destinatario-title">Destinatario efetivo do CT-e</h4>
+                    <div class="fiscal-participant-fields">
+                        <label>Documento<input id="fiscal-destinatario" type="text" inputmode="numeric"></label>
+                        <label>Razao social<input id="fiscal-destinatario-nome" type="text"></label>
+                        <label>Inscricao estadual<input id="fiscal-destinatario-inscricao-estadual" type="text"></label>
+                        <label>Logradouro<input id="fiscal-destinatario-logradouro" type="text"></label>
+                        <label>Numero<input id="fiscal-destinatario-numero" type="text"></label>
+                        <label>Complemento<input id="fiscal-destinatario-complemento" type="text"></label>
+                        <label>Bairro<input id="fiscal-destinatario-bairro" type="text"></label>
+                        <label>Municipio IBGE<input id="fiscal-destinatario-municipio-codigo-ibge" type="text"></label>
+                        <label>Municipio<input id="fiscal-destinatario-municipio-nome" type="text"></label>
+                        <label>UF<input id="fiscal-destinatario-uf" type="text" maxlength="2"></label>
+                        <label>CEP<input id="fiscal-destinatario-cep" type="text" inputmode="numeric"></label>
+                        <label>Codigo pais<input id="fiscal-destinatario-pais-codigo" type="text"></label>
+                        <label>Nome pais<input id="fiscal-destinatario-pais-nome" type="text"></label>
+                        <label>Telefone<input id="fiscal-destinatario-telefone" type="text"></label>
+                    </div>
+                </section>
+            </div>
+            </div>
+
+            <div class="fiscal-stage" data-stage="preparacao">
+            <div class="fiscal-section-title">
+                <div class="fiscal-section-heading">
+                    <h3>Parametros Fiscais Efetivos</h3>
+                    <span id="fiscal-status-parametros-efetivos" class="fiscal-section-status pending">pendente</span>
+                </div>
+            </div>
+            <p class="fiscal-stage-note">
+                O backend sugere os valores no Preview. Os valores exibidos abaixo sao os que serao confirmados e enviados para a emissao.
+            </p>
+            <div class="fiscal-contingencia-grid">
+                <label>
+                    UF do emitente fiscal (CT-e/MDF-e)
+                    <input id="fiscal-emitente-uf" type="text" maxlength="2">
+                </label>
+                <label>
+                    CFOP
+                    <input id="fiscal-cfop" type="text" inputmode="numeric" maxlength="4">
+                </label>
+                <label>
+                    Tipo CT-e
+                    <select id="fiscal-tipo-cte">
+                        <option value="0">0 - Normal</option>
+                        <option value="1">1 - Complemento de valores</option>
+                        <option value="3">3 - Substituicao</option>
+                    </select>
+                </label>
+                <label>
+                    Tipo de servico
+                    <select id="fiscal-tipo-servico">
+                        <option value="0">0 - Normal</option>
+                        <option value="1">1 - Subcontratacao</option>
+                        <option value="2">2 - Redespacho</option>
+                        <option value="3">3 - Redespacho intermediario</option>
+                        <option value="4">4 - Servico vinculado a multimodal</option>
+                    </select>
+                </label>
+                <label>
+                    Modal
+                    <select id="fiscal-modal">
+                        <option value="1">1 - Rodoviario</option>
+                        <option value="2">2 - Aereo</option>
+                        <option value="3">3 - Aquaviario</option>
+                        <option value="4">4 - Ferroviario</option>
+                        <option value="5">5 - Dutoviario</option>
+                        <option value="6">6 - Multimodal</option>
+                    </select>
+                </label>
+                <label>
+                    Indicador globalizado
+                    <select id="fiscal-globalizado">
+                        <option value="0">0 - Nao</option>
+                        <option value="1">1 - Sim</option>
+                    </select>
+                </label>
+            </div>
+
+            <details class="fiscal-effective-details">
+                <summary>Cadastro fiscal efetivo do emitente (CT-e/MDF-e)</summary>
+                <div class="fiscal-contingencia-grid">
+                    <label>Razao social<input id="fiscal-emitente-razao-social" type="text"></label>
+                    <label>Nome fantasia<input id="fiscal-emitente-nome-fantasia" type="text"></label>
+                    <label>Inscricao estadual<input id="fiscal-emitente-inscricao-estadual" type="text"></label>
+                    <label>CRT<input id="fiscal-emitente-crt" type="number" min="1" max="3"></label>
+                    <label>Logradouro<input id="fiscal-emitente-logradouro" type="text"></label>
+                    <label>Numero<input id="fiscal-emitente-numero" type="text"></label>
+                    <label>Bairro<input id="fiscal-emitente-bairro" type="text"></label>
+                    <label>CEP<input id="fiscal-emitente-cep" type="text" inputmode="numeric"></label>
+                    <label>Municipio IBGE<input id="fiscal-emitente-municipio-codigo-ibge" type="text" inputmode="numeric"></label>
+                    <label>Municipio<input id="fiscal-emitente-municipio-nome" type="text"></label>
+                </div>
+            </details>
+
+            <details class="fiscal-effective-details">
+                <summary>Dados efetivos do veiculo e seguro do MDF-e</summary>
+                <div class="fiscal-contingencia-grid">
+                    <label>RENAVAM<input id="fiscal-renavam" type="text" inputmode="numeric"></label>
+                    <label>Tara em kg<input id="fiscal-tara-kg" type="text" inputmode="numeric"></label>
+                    <label>Capacidade em kg<input id="fiscal-capacidade-kg" type="text" inputmode="numeric"></label>
+                    <label>Capacidade em m3<input id="fiscal-capacidade-m3" type="text"></label>
+                    <label>Tipo rodado<input id="fiscal-tipo-rodado" type="text" maxlength="2"></label>
+                    <label>Tipo carroceria<input id="fiscal-tipo-carroceria" type="text" maxlength="2"></label>
+                    <label>CNPJ responsavel seguro<input id="fiscal-seguro-responsavel-documento" type="text" inputmode="numeric"></label>
+                    <label>Seguradora<input id="fiscal-seguradora-nome" type="text"></label>
+                    <label>CNPJ seguradora<input id="fiscal-seguradora-documento" type="text" inputmode="numeric"></label>
+                    <label>Numero apolice<input id="fiscal-seguro-apolice" type="text"></label>
+                    <label>Numero averbacao<input id="fiscal-seguro-averbacao" type="text"></label>
+                </div>
+            </details>
             </div>
 
             <div class="fiscal-stage" data-stage="preparacao">
@@ -259,4 +439,106 @@
             <div id="fiscal-contingencia-feedback" class="fiscal-feedback"></div>
         </aside>
     </div>
+
+    <section class="fiscal-modalities-reference" aria-labelledby="fiscal-modalities-title">
+        <div class="fiscal-modalities-heading">
+            <div>
+                <p class="fiscal-contingencia-kicker">Modalidades de trabalho</p>
+                <h2 id="fiscal-modalities-title">Cenarios previstos para a contingencia fiscal</h2>
+            </div>
+            <span class="fiscal-modality-status available">Atual: F01</span>
+        </div>
+
+        <p class="fiscal-modalities-intro">
+            A NF-e descreve a mercadoria transportada. Os papeis de emitente da NF-e, contratante,
+            tomador, transportador e emitente do CT-e sao independentes e serao validados conforme
+            a modalidade escolhida.
+        </p>
+
+        <div class="fiscal-modalities-table-wrap">
+            <table class="fiscal-modalities-table">
+                <thead>
+                    <tr>
+                        <th>Familia</th>
+                        <th>Operacao</th>
+                        <th>Remetente</th>
+                        <th>Expedidor</th>
+                        <th>Recebedor</th>
+                        <th>Destinatario</th>
+                        <th>Tomador</th>
+                        <th>Situacao</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>F01</strong></td>
+                        <td>Transporte direto</td>
+                        <td>Emitente/vendedor indicado na NF-e</td>
+                        <td>Nao informado quando o remetente entrega a carga</td>
+                        <td>Nao informado quando o destinatario recebe a carga</td>
+                        <td>Comprador indicado na NF-e</td>
+                        <td>Remetente ou destinatario, conforme a contratacao (toma3)</td>
+                        <td><span class="fiscal-modality-status available">Disponivel</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>F02</strong></td>
+                        <td>Coleta em deposito ou operador</td>
+                        <td>Dono/remetente fiscal da mercadoria</td>
+                        <td>Deposito, operador ou estabelecimento que entrega fisicamente</td>
+                        <td>Nao informado quando o destinatario recebe</td>
+                        <td>Comprador indicado na operacao</td>
+                        <td>Contratante do frete; pode exigir toma4 quando nao for remetente ou destinatario</td>
+                        <td><span class="fiscal-modality-status planned">Planejada</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>F03</strong></td>
+                        <td>Entrega em CD ou operador</td>
+                        <td>Vendedor/remetente da operacao</td>
+                        <td>Nao informado ou ponto real de expedicao</td>
+                        <td>CD ou operador que recebe fisicamente</td>
+                        <td>Cliente final indicado na operacao</td>
+                        <td>Contratante do frete; pode exigir toma4 quando nao for remetente ou destinatario</td>
+                        <td><span class="fiscal-modality-status planned">Planejada</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>F04</strong></td>
+                        <td>Transferencia entre estabelecimentos</td>
+                        <td>Estabelecimento de origem</td>
+                        <td>Nao informado ou operador do local de saida</td>
+                        <td>Nao informado ou operador do local de chegada</td>
+                        <td>Estabelecimento de destino</td>
+                        <td>Estabelecimento de origem, destino ou terceiro contratante conforme a prestacao</td>
+                        <td><span class="fiscal-modality-status planned">Planejada</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>F05</strong></td>
+                        <td>Subcontratacao</td>
+                        <td>Remetente da prestacao originaria</td>
+                        <td>Quem entrega ao transportador subcontratado</td>
+                        <td>Quem recebe do transportador subcontratado</td>
+                        <td>Destinatario da prestacao originaria</td>
+                        <td>Transportador contratante ou tomador original, conforme o contrato de subcontratacao</td>
+                        <td><span class="fiscal-modality-status planned">Planejada</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>F06</strong></td>
+                        <td>Redespacho ou troca de transportador</td>
+                        <td>Remetente da operacao documentada</td>
+                        <td>Transportador ou operador anterior que entrega o trecho</td>
+                        <td>Transportador, operador seguinte ou recebedor fisico</td>
+                        <td>Destinatario da operacao documentada</td>
+                        <td>Redespachante ou contratante do trecho documentado</td>
+                        <td><span class="fiscal-modality-status planned">Planejada</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="fiscal-modalities-intro">
+            No preview, a NF-e pode sugerir remetente, destinatario e localidades nas modalidades compativeis.
+            Expedidor e recebedor somente sao preenchidos quando diferirem das pontas comerciais. Emitente do CT-e,
+            transportador, tomador e certificado exigem informacao ou cadastro proprio e nunca sao substituidos pelo
+            emitente da NF-e.
+        </p>
+    </section>
 </section>

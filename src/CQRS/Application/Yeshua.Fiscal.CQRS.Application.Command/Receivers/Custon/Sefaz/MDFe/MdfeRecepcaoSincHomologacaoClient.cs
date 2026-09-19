@@ -67,6 +67,9 @@ namespace Command.Receivers
         public string TipoCarga { get; init; } = "05";
         public string ProdutoPredominante { get; init; } = "PRODUTO HOMOLOGACAO";
         public string ObservacaoFiscal { get; init; } = string.Empty;
+        public string UfInicio { get; init; } = string.Empty;
+        public string CodigoMunicipioCarregamento { get; init; } = string.Empty;
+        public string MunicipioCarregamento { get; init; } = string.Empty;
 
         public static MdfeRecepcaoSincOptions FromEnvironment()
         {
@@ -146,6 +149,9 @@ namespace Command.Receivers
                 TipoCarga = GetValue("YESHUA_MDFE_TIPO_CARGA", "05"),
                 ProdutoPredominante = GetValue("YESHUA_MDFE_PRODUTO_PREDOMINANTE", "PRODUTO HOMOLOGACAO"),
                 ObservacaoFiscal = Environment.GetEnvironmentVariable("YESHUA_MDFE_OBSERVACAO_FISCAL") ?? string.Empty,
+                UfInicio = fixedOptions.UfEmitente,
+                CodigoMunicipioCarregamento = fixedOptions.CodigoMunicipioEmitente,
+                MunicipioCarregamento = fixedOptions.MunicipioEmitente,
                 TimeoutSeconds = GetInt("YESHUA_MDFE_TIMEOUT_SECONDS", fixedOptions.TimeoutSeconds)
             };
         }
@@ -173,6 +179,7 @@ namespace Command.Receivers
             ValidateDigits(CnpjEmitente, 14, nameof(CnpjEmitente));
             ValidateDigits(InscricaoEstadual, 9, nameof(InscricaoEstadual));
             ValidateDigits(CodigoMunicipioEmitente, 7, nameof(CodigoMunicipioEmitente));
+            ValidateDigits(CodigoMunicipioCarregamento, 7, nameof(CodigoMunicipioCarregamento));
             ValidateDigits(CodigoMunicipioDescarga, 7, nameof(CodigoMunicipioDescarga));
             ValidateDigits(Cep, 8, nameof(Cep));
             ValidateDigits(CepDescarga, 8, nameof(CepDescarga));
@@ -188,6 +195,12 @@ namespace Command.Receivers
 
             if (!CodigoMunicipioEmitente.StartsWith(CodigoUf.ToString("D2"), StringComparison.Ordinal))
                 throw new InvalidOperationException("O municipio emitente nao pertence a UF configurada do MDF-e.");
+
+            if (string.IsNullOrWhiteSpace(UfInicio))
+                throw new InvalidOperationException("A UF de inicio da viagem do MDF-e deve ser informada.");
+
+            if (string.IsNullOrWhiteSpace(MunicipioCarregamento))
+                throw new InvalidOperationException("O municipio de carregamento do MDF-e deve ser informado.");
 
             if (string.IsNullOrWhiteSpace(NomeSeguradora))
                 throw new InvalidOperationException("A seguradora do MDF-e deve ser informada.");
@@ -362,6 +375,23 @@ namespace Command.Receivers
                     : new[] { OnlyDigits(prepared.ChaveCTe) }
             };
 
+            return EnviarPreparadoAsync(options, prepared).GetAwaiter().GetResult();
+        }
+
+        public static MdfeRecepcaoSincResult Autorizar(
+            MdfeRecepcaoSincPrepared prepared,
+            string certificatePath,
+            string certificatePassword)
+        {
+            var options = MdfeRecepcaoSincOptions.FromEnvironment() with
+            {
+                CertificatePath = certificatePath,
+                CertificatePassword = certificatePassword,
+                ChaveCTe = OnlyDigits(prepared.ChaveCTe),
+                ChavesCTe = prepared.ChavesCTe.Count > 0
+                    ? prepared.ChavesCTe
+                    : new[] { OnlyDigits(prepared.ChaveCTe) }
+            };
             return EnviarPreparadoAsync(options, prepared).GetAwaiter().GetResult();
         }
 
@@ -596,12 +626,12 @@ namespace Command.Receivers
             AppendElement(doc, ide, "tpEmis", "1");
             AppendElement(doc, ide, "procEmi", "0");
             AppendElement(doc, ide, "verProc", "YESHUA-MDFE-001");
-            AppendElement(doc, ide, "UFIni", options.UfEmitente);
+            AppendElement(doc, ide, "UFIni", options.UfInicio);
             AppendElement(doc, ide, "UFFim", options.UfDescarga);
 
             var infMunCarrega = AppendElement(doc, ide, "infMunCarrega");
-            AppendElement(doc, infMunCarrega, "cMunCarrega", options.CodigoMunicipioEmitente);
-            AppendElement(doc, infMunCarrega, "xMunCarrega", options.MunicipioEmitente);
+            AppendElement(doc, infMunCarrega, "cMunCarrega", options.CodigoMunicipioCarregamento);
+            AppendElement(doc, infMunCarrega, "xMunCarrega", options.MunicipioCarregamento);
             AppendElement(doc, ide, "dhIniViagem", now.ToString("yyyy-MM-dd'T'HH:mm:sszzz"));
         }
 

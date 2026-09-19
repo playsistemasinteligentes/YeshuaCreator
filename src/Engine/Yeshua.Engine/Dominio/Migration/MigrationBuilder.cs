@@ -60,7 +60,10 @@ namespace Dominio.Migration
 
             foreach (var m in migration)
             {
-                foreach (var entity in m.Entitys.Where(x => x.EntityName != "yStandardFields" && !x.IsFromView))
+                foreach (var entity in m.Entitys.Where(x =>
+                    x.create &&
+                    x.EntityName != "yStandardFields" &&
+                    !x.IsFromView))
                 {
                     foreach (var col in columns)
                     {
@@ -106,6 +109,9 @@ namespace Dominio.Migration
         {
             foreach (var migration in migrations)
             {
+                if (migration.SagaWorkerLoopMilliseconds.HasValue)
+                    _migrationConcriteBase.ConfigureSagaWorkers(migration.SagaWorkerLoopMilliseconds.Value);
+
                 SanitizeMigrationEndEntityToCodeGenerete(migration);
                 SanitizeMigrationEndHubAgentsToCodeGenerete(migration);
                 SanitizeMigrationExternalConnectorsToCodeGenerete(migration);
@@ -209,11 +215,12 @@ namespace Dominio.Migration
 
                 for (var i = 0; i < entity.AlterColumns.Count; i++)
                 {
-                    var index = sanitizedEntity.AddColumns.FindIndex(c => c.Name == entity.AddColumns[i].Name);
+                    var alteredColumn = entity.AlterColumns[i];
+                    var index = sanitizedEntity.AddColumns.FindIndex(c => c.Name == alteredColumn.Name);
                     if (index >= 0)
-                        sanitizedEntity.AddColumns[index] = entity.AddColumns[i];
-                    //else
-                    //    sanitizedEntity.AddColumns.Add(entity.AddColumns[i]);
+                        sanitizedEntity.AddColumns[index] = alteredColumn;
+                    else
+                        sanitizedEntity.AddColumns.Add(alteredColumn);
                 }
 
 

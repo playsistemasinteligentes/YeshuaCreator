@@ -32,6 +32,7 @@
             public const ulong Deleted = 1UL << 9;
             public const ulong Changed = 1UL << 10;
             public const ulong UserId = 1UL << 11;
+            public const ulong SenhaStorageKey = 1UL << 12;
         }
 
         public partial class CertificadoDigitalDecorator : ICertificadoDigitalEntity
@@ -225,6 +226,20 @@
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.UserId) != 0UL)
                                                     _logger.DomainValueChanged("CertificadoDigital", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string? SenhaStorageKey
+                                    {
+                                        get => _inner.SenhaStorageKey;
+                                        set
+                                        {
+                                            if (_inner.SenhaStorageKey != value)
+                                            {
+                                                _inner.SenhaStorageKey = value;
+                                                if ((_trackingMask & CertificadoDigitalTrackingFields.SenhaStorageKey) != 0UL)
+                                                    _logger.DomainValueChanged("CertificadoDigital", "SenhaStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

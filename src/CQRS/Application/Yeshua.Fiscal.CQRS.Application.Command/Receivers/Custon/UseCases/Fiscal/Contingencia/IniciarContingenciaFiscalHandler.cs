@@ -41,6 +41,7 @@ namespace Command.Receivers.UseCase
         private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia = default!;
         private readonly IDocumentoFiscalOriginarioWriteRepository _repWriteDocumentoFiscalOriginario = default!;
         private readonly INFeProdutoSnapshotWriteRepository _repWriteNFeProdutoSnapshot = default!;
+        private readonly INFeProdutoSnapshotReadRepository _repReadNFeProdutoSnapshot = default!;
         private readonly IySagaWriteRepository _sagaWriteRepository = default!;
         private readonly ISagaExecutor _sagaExecutor = default!;
         private readonly SagaResolverRegistry _sagaResolverRegistry = default!;
@@ -54,6 +55,7 @@ namespace Command.Receivers.UseCase
             IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia,
             IDocumentoFiscalOriginarioWriteRepository repWriteDocumentoFiscalOriginario,
             INFeProdutoSnapshotWriteRepository repWriteNFeProdutoSnapshot,
+            INFeProdutoSnapshotReadRepository repReadNFeProdutoSnapshot,
             IySagaWriteRepository sagaWriteRepository,
             ISagaExecutor sagaExecutor,
             SagaResolverRegistry sagaResolverRegistry)
@@ -67,6 +69,7 @@ namespace Command.Receivers.UseCase
             _repWriteEntradaFiscalContingencia = repWriteEntradaFiscalContingencia;
             _repWriteDocumentoFiscalOriginario = repWriteDocumentoFiscalOriginario;
             _repWriteNFeProdutoSnapshot = repWriteNFeProdutoSnapshot;
+            _repReadNFeProdutoSnapshot = repReadNFeProdutoSnapshot;
             _sagaWriteRepository = sagaWriteRepository;
             _sagaExecutor = sagaExecutor;
             _sagaResolverRegistry = sagaResolverRegistry;
@@ -116,6 +119,11 @@ namespace Command.Receivers.UseCase
                 _sagaExecutor.ExecuteUntilWait(saga, resolver);
                 _sagaWriteRepository.Save(saga);
 
+                // A tela recebe a mesma projeção que foi persistida, e não interpreta XML no navegador.
+                var documentosPersistidos = FiscalContingenciaState.LoadDocumentos(
+                    _repReadNFeProdutoSnapshot,
+                    cargaId);
+
                 _unitOfWork.Commit();
 
                 return Task.FromResult(Success("OK", new IniciarContingenciaFiscalOutputCommand
@@ -128,7 +136,15 @@ namespace Command.Receivers.UseCase
                     SagaId = saga.Id,
                     StepKey = saga.KeyCurrentStep,
                     StepStatus = (int)(saga.GetCurrent()?.Status ?? 0),
-                    SagaStatus = (int)saga.Status
+                    SagaStatus = (int)saga.Status,
+                    SugestaoRemetenteDocumento = persistResult.EmitenteDocumento,
+                    SugestaoDestinatarioDocumento = persistResult.DestinatarioDocumento,
+                    SugestaoUFInicio = persistResult.UFOrigem,
+                    SugestaoUFFim = persistResult.UFDestino,
+                    SugestaoMunicipioInicioCodigoIbge = persistResult.MunicipioOrigemCodigoIbge,
+                    SugestaoMunicipioFimCodigoIbge = persistResult.MunicipioDestinoCodigoIbge,
+                    DocumentosOriginariosJson = FiscalDocumentosOriginariosPresentation.Serialize(
+                        FiscalDocumentosOriginariosPresentation.FromSnapshots(documentosPersistidos))
                 }));
             }
             catch
@@ -171,15 +187,15 @@ namespace Command.Receivers.UseCase
                 ValueOrDefault(comand.SourceApplication, "ContingenciaFiscal"),
                 ValueOrDefault(comand.SourceModule, "DocumentosOriginariosContingencia"),
                 ValueOrDefault(comand.SourceMessageId, Guid.NewGuid().ToString()),
-                First(FiscalContingenciaPayload.Text(complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"), documentos.EmitenteDocumento),
-                First(FiscalContingenciaPayload.Text(complemento, "tomadorDocumento", "cnpjTomador"), documentos.DestinatarioDocumento),
+                FiscalContingenciaPayload.Text(complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
+                FiscalContingenciaPayload.Text(complemento, "tomadorDocumento", "cnpjTomador"),
                 FiscalContingenciaPayload.Text(complemento, "transportadorDocumento", "cnpjTransportador"),
-                First(FiscalContingenciaPayload.Text(complemento, "remetenteDocumento", "cnpjRemetente"), documentos.EmitenteDocumento),
-                First(FiscalContingenciaPayload.Text(complemento, "destinatarioDocumento", "cnpjDestinatario"), documentos.DestinatarioDocumento),
-                First(FiscalContingenciaPayload.Text(complemento, "ufInicio", "UFInicio"), documentos.UFOrigem),
-                First(FiscalContingenciaPayload.Text(complemento, "ufFim", "UFFim"), documentos.UFDestino),
-                First(FiscalContingenciaPayload.Text(complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"), documentos.MunicipioOrigemCodigoIbge),
-                First(FiscalContingenciaPayload.Text(complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"), documentos.MunicipioDestinoCodigoIbge),
+                FiscalContingenciaPayload.Text(complemento, "remetenteDocumento", "cnpjRemetente"),
+                FiscalContingenciaPayload.Text(complemento, "destinatarioDocumento", "cnpjDestinatario"),
+                FiscalContingenciaPayload.Text(complemento, "ufInicio", "UFInicio"),
+                FiscalContingenciaPayload.Text(complemento, "ufFim", "UFFim"),
+                FiscalContingenciaPayload.Text(complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"),
+                FiscalContingenciaPayload.Text(complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"),
                 FiscalContingenciaPayload.Text(complemento, "rntrc", "RNTRC"),
                 FiscalContingenciaPayload.Text(complemento, "placaVeiculo", "placa"),
                 FiscalContingenciaPayload.Text(complemento, "ufVeiculo", "UFVeiculo"),
@@ -195,7 +211,8 @@ namespace Command.Receivers.UseCase
                 null,
                 DateTime.UtcNow,
                 null,
-                1);
+                1,
+                null);
         }
 
         private static ContingenciaFiscalStandardSaga CriarSaga(
@@ -235,11 +252,6 @@ namespace Command.Receivers.UseCase
             }));
 
             return saga;
-        }
-
-        private static string First(string preferred, string fallback)
-        {
-            return string.IsNullOrWhiteSpace(preferred) ? fallback ?? string.Empty : preferred;
         }
 
         private static string ValueOrDefault(string value, string fallback)

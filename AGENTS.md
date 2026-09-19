@@ -474,6 +474,18 @@ os miolos customizados.
 
 ## Fiscal CT-e E MDF-e
 
+- Parametros fiscais efetivos formam um conceito explicito do plano de emissao.
+  Todo valor de negocio inferido, calculado ou preenchido por default no backend
+  deve ser devolvido pelo Preview com seu valor efetivo e, quando relevante, a
+  origem do valor. A tela deve exibir esses parametros e permitir a correcao dos
+  que forem editaveis antes da confirmacao.
+- A confirmacao congela exatamente o ultimo plano validado pelo Preview. As
+  sagas de CT-e e MDF-e devem consumir os valores desse plano sem recalculo
+  oculto. Regras como CFOP podem sugerir um valor no Preview, mas a solicitacao
+  fiscal usa o valor efetivo confirmado.
+- Configuracoes puramente tecnicas, como endpoint SEFAZ, timeout e caminho
+  interno do certificado, nao sao parametros fiscais efetivos e permanecem na
+  infraestrutura.
 - Modulos fiscais devem partir dos manuais, schemas XML e notas tecnicas
   oficiais do Portal CT-e/MDF-e; regras fiscais nao devem ser inferidas apenas
   por comportamento observado em bibliotecas ou sistemas legados.
@@ -558,6 +570,20 @@ os miolos customizados.
 - CT-e deve receber snapshots/requests de pedido, carga e nota fiscal; nao deve
   acessar diretamente o miolo ou tabelas internas de outros modulos como forma
   normal de integracao.
+- A compilacao do plano de emissao fiscal e uma unica regra de aplicacao:
+  `FiscalEmissionPlanCompiler`. Preview, confirmacao da contingencia,
+  publicacao para a saga fiscal e toda futura entrada APS/ERP devem usar a
+  mesma compilacao, que devolve plano imutavel, hash, versao de regras e lista
+  de pendencias. Nenhum fluxo pode pular regras por marcar um plano como
+  prevalidado; confirmar recompila a entrada persistida e congela o resultado
+  que sera entregue a emissao. Validacoes posteriores nos clientes XML/SEFAZ
+  ficam restritas a pre-condicoes tecnicas, integridade e defesa contra estado
+  corrompido, nunca uma segunda implementacao das regras de negocio.
+- `FiscalEmissionPlan.v1` e o primeiro contrato canonico de contingencia. A
+  entrada APS/ERP que ainda nao entrega plano completo deve evoluir seu
+  snapshot/contrato para alimentar esse mesmo compilador antes de tentar
+  duplicar agrupamento, rateio, participantes, rota ou validacao fiscal em
+  handlers da saga.
 - O agente/dev responsavel por CT-e pode evoluir planejamento e implementacao
   real de SEFAZ dentro do miolo customizado do modulo Fiscal. A orquestracao
   entre agentes deve preservar: contrato de entrada canonico, nomes de steps da

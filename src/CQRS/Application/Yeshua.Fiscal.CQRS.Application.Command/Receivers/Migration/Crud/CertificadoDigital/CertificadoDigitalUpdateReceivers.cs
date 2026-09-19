@@ -49,7 +49,7 @@ namespace Command.Receivers.Write
              if(comand is Command.Write.CertificadoDigitalCrudCommand c) 
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCertificadoDigital", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCertificadoDigitalReceiver), commandName: "Command.Write.CertificadoDigitalCrudCommand");
-                 var certificadodigital = new CertificadoDigitalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Apelido, c.DocumentoTitular, c.StorageKey, c.Thumbprint, c.ValidoDe, c.ValidoAte, c.Ativo);
+                 var certificadodigital = new CertificadoDigitalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Apelido, c.DocumentoTitular, c.StorageKey, c.Thumbprint, c.ValidoDe, c.ValidoAte, c.Ativo, c.SenhaStorageKey);
                  var domainResult = CertificadoDigitalDomainBehavior.Apply(certificadodigital, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

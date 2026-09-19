@@ -28,6 +28,8 @@ namespace Command.Receivers
         private readonly IMDFeTentativaEmissaoWriteRepository _mdfeTentativaEmissaoWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
         private readonly IDocumentoFiscalWriteRepository _documentoFiscalWriteRepository = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaFiscalContingenciaReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly ILogger _logger = default!;
 
         public AutorizarMDFeNaSefazHandler(
@@ -38,6 +40,8 @@ namespace Command.Receivers
             IMDFeTentativaEmissaoWriteRepository mdfeTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
             IDocumentoFiscalWriteRepository documentoFiscalWriteRepository,
+            IEntradaFiscalContingenciaReadRepository entradaFiscalContingenciaReadRepository,
+            ICertificadoDigitalReadRepository certificadoDigitalReadRepository,
             ILogger logger)
         {
             _mdfeSolicitacaoFiscalReadRepository = mdfeSolicitacaoFiscalReadRepository;
@@ -47,6 +51,8 @@ namespace Command.Receivers
             _mdfeTentativaEmissaoWriteRepository = mdfeTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
             _documentoFiscalWriteRepository = documentoFiscalWriteRepository;
+            _entradaFiscalContingenciaReadRepository = entradaFiscalContingenciaReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _logger = logger;
         }
 
@@ -60,7 +66,26 @@ namespace Command.Receivers
             {
                 (solicitacao, tentativa, documentoOriginario) = CarregarTentativaPreparada(saga);
                 var prepared = CarregarXmlPreparado(tentativa, documentoOriginario);
-                var result = MdfeRecepcaoSincHomologacaoClient.Autorizar(prepared);
+                var certificado = FiscalCertificateResolver.TryResolve(
+                    saga.EntityId ?? string.Empty,
+                    _entradaFiscalContingenciaReadRepository,
+                    _certificadoDigitalReadRepository);
+                if (certificado is not null)
+                {
+                    var emitenteDocumento = tentativa.chaveacesso?.Length >= 20
+                        ? tentativa.chaveacesso.Substring(6, 14)
+                        : string.Empty;
+                    FiscalCertificateResolver.ValidateIssuer(
+                        certificado,
+                        emitenteDocumento ?? string.Empty,
+                        $"Solicitacao MDF-e {solicitacao.id}");
+                }
+                var result = certificado is null
+                    ? MdfeRecepcaoSincHomologacaoClient.Autorizar(prepared)
+                    : MdfeRecepcaoSincHomologacaoClient.Autorizar(
+                        prepared,
+                        certificado.CertificatePath,
+                        certificado.Password);
                 var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
 
                 if (!respostaEstruturada)

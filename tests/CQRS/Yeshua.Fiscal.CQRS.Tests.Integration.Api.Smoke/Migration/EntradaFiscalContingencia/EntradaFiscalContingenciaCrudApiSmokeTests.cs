@@ -107,6 +107,7 @@ public partial class EntradaFiscalContingenciaCrudApiSmokeTests : ApiIntegration
             ["CriadoEmUtc"] = DateTime.UtcNow,
             ["AtualizadoEmUtc"] = DateTime.UtcNow,
             ["Status"] = 1,
+            ["CertificadoDigitalId"] = ApiSmokeTestContext.GetRequiredCreatedId("CertificadoDigital", "CertificadoDigitalId"),
         };
     }
 
@@ -155,6 +156,7 @@ public partial class EntradaFiscalContingenciaCrudApiSmokeTests : ApiIntegration
         payload["CriadoEmUtc"] = DateTime.UtcNow.AddMinutes(1);
         payload["AtualizadoEmUtc"] = DateTime.UtcNow.AddMinutes(1);
         payload["Status"] = 1;
+        payload["CertificadoDigitalId"] = ApiSmokeTestContext.GetRequiredCreatedId("CertificadoDigital", "CertificadoDigitalId");
         return payload;
     }
 

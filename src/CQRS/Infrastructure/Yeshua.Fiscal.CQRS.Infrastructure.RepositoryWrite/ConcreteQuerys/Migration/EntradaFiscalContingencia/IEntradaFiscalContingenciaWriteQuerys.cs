@@ -53,6 +53,7 @@ namespace IQuery.Write
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateCertificadoDigitalId(int id, int value);
         public QueryModel DeleteEntradaFiscalContingenciaQuery(IEntradaFiscalContingenciaEntity EntradaFiscalContingencia);
     }
 }

@@ -17,7 +17,6 @@ using IRepository.Read;
 using IRepository.Write;
 using Command.UseCase;
 using Dominio.Saga;
-using System.Text.Json;
 
 namespace Command.Receivers.UseCase
 {
@@ -28,8 +27,9 @@ namespace Command.Receivers.UseCase
         private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia = default!;
         private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia = default!;
         private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ICertificadoDigitalReadRepository _certificadoDigitalReadRepository = default!;
         private readonly ContingenciaFiscalStepStimulusService _stepStimulusService = default!;
-        public InformarDadosTransporteContingenciaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,Command.Interfaces.ISagaStepInvoker sagaStepInvoker,IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia, IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia, INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository, ContingenciaFiscalStepStimulusService stepStimulusService)
+        public InformarDadosTransporteContingenciaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,Command.Interfaces.ISagaStepInvoker sagaStepInvoker,IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia, IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia, INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository, ICertificadoDigitalReadRepository certificadoDigitalReadRepository, ContingenciaFiscalStepStimulusService stepStimulusService)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -40,6 +40,7 @@ namespace Command.Receivers.UseCase
             _repReadEntradaFiscalContingencia = repReadEntradaFiscalContingencia;
             _repWriteEntradaFiscalContingencia = repWriteEntradaFiscalContingencia;
             _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
+            _certificadoDigitalReadRepository = certificadoDigitalReadRepository;
             _stepStimulusService = stepStimulusService;
         }
 protected partial async Task<State<InformarDadosTransporteContingenciaOutputCommand>> CustomActionHookAsync(State<InformarDadosTransporteContingenciaOutputCommand> state, InformarDadosTransporteContingenciaInputCommand comand, CancellationToken cancellationToken)
@@ -58,30 +59,20 @@ protected partial async Task<State<InformarDadosTransporteContingenciaOutputComm
         cancellationToken);
 
     var entrada = _repReadEntradaFiscalContingencia.FirstByCargaId(comand.CargaId);
-    var documentos = Command.Receivers.FiscalContingenciaState.LoadDocumentos(
-        _nfeProdutoSnapshotReadRepository,
-        comand.CargaId);
-
-    if (entrada != null)
+    var planoEmissaoJson = string.Empty;
+    if (result.Accepted && entrada != null)
     {
-        entrada.rntrc = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "rntrc", "RNTRC");
-        entrada.placaveiculo = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "placaVeiculo", "placa");
-        entrada.ufveiculo = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "ufVeiculo", "UFVeiculo");
-        entrada.condutordocumento = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "condutorDocumento", "cpfMotorista", "cpfCondutor");
-        entrada.condutornome = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "condutorNome", "nomeMotorista", "nomeCondutor");
-        entrada.ufinicio = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "ufInicio", "UFInicio");
-        entrada.uffim = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "ufFim", "UFFim");
-        entrada.municipioiniciocodigoibge = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "municipioInicioCodigoIbge", "codigoMunicipioInicio");
-        entrada.municipiofimcodigoibge = Command.Receivers.FiscalContingenciaPayload.Text(comand.DadosComplementaresJson, "municipioFimCodigoIbge", "codigoMunicipioFim");
-        entrada.snapshotjson = JsonSerializer.Serialize(new
-        {
-            dadosComplementaresJson = string.IsNullOrWhiteSpace(comand.DadosComplementaresJson)
-                ? "{}"
-                : comand.DadosComplementaresJson,
-            preferenciasFiscaisJson = string.IsNullOrWhiteSpace(comand.DadosComplementaresJson)
-                ? "{}"
-                : comand.DadosComplementaresJson
-        });
+        var documentoCertificado = VincularCertificadoValido(entrada, comand.DadosComplementaresJson);
+        entrada = _repReadEntradaFiscalContingencia.FirstByCargaId(comand.CargaId) ?? entrada;
+        var documentos = Command.Receivers.FiscalContingenciaState.LoadDocumentos(
+            _nfeProdutoSnapshotReadRepository,
+            comand.CargaId);
+        planoEmissaoJson = Command.Receivers.FiscalContingenciaState.RefreshPlan(
+            _repWriteEntradaFiscalContingencia,
+            entrada,
+            documentos,
+            documentoCertificado,
+            certificadoFoiVerificado: true);
     }
 
     var output = new InformarDadosTransporteContingenciaOutputCommand
@@ -94,12 +85,73 @@ protected partial async Task<State<InformarDadosTransporteContingenciaOutputComm
         InboxId = result.InboxId,
         Accepted = result.Accepted,
         Mensagem = result.Mensagem,
-        PlanoEmissaoJson = result.Accepted && entrada != null
-            ? Command.Receivers.FiscalContingenciaPayload.PlanoEmissaoJson(entrada, documentos)
-            : string.Empty
+        PlanoEmissaoJson = planoEmissaoJson
     };
 
     return result.Accepted ? Success("OK", output) : ValidationError(result.Mensagem, output);
+}
+
+private static string SomenteDigitos(string value) =>
+    new(value.Where(char.IsDigit).ToArray());
+
+private string VincularCertificadoValido(Repositorio.Outputs.EntradaFiscalContingenciaDTO entrada, string dadosComplementaresJson)
+{
+    var emitenteDocumento = SomenteDigitos(
+        Command.Receivers.FiscalContingenciaPayload.Text(
+            dadosComplementaresJson,
+            "emitenteFiscalDocumento",
+            "cnpjEmitente",
+            "emitenteDocumento"));
+
+    if (emitenteDocumento.Length != 14)
+        emitenteDocumento = SomenteDigitos(entrada.emitentefiscaldocumento ?? string.Empty);
+
+    var emitenteBase = emitenteDocumento.Length == 14 ? emitenteDocumento[..8] : string.Empty;
+    var candidatos = emitenteBase.Length == 8
+        ? _certificadoDigitalReadRepository
+            .GetAllByDocumentoTitular(emitenteDocumento)
+            .Where(x => !x.deleted &&
+                        x.tenantid == _executionContext.TenantID &&
+                        x.ativo == 1 &&
+                        x.validoate.ToUniversalTime() > DateTime.UtcNow &&
+                        !string.IsNullOrWhiteSpace(x.storagekey) &&
+                        File.Exists(x.storagekey) &&
+                        !string.IsNullOrWhiteSpace(x.senhastoragekey) &&
+                        File.Exists(x.senhastoragekey))
+            .OrderByDescending(x => x.validoate)
+            .ToArray()
+        : Array.Empty<Repositorio.Outputs.CertificadoDigitalDTO>();
+
+    Repositorio.Outputs.CertificadoDigitalDTO? certificado = null;
+    string documentoCertificado = string.Empty;
+    foreach (var candidato in candidatos)
+    {
+        try
+        {
+            var referencia = Command.Receivers.FiscalCertificateResolver.Resolve(
+                candidato,
+                $"Contingencia fiscal {entrada.cargaid}");
+            Command.Receivers.FiscalCertificateResolver.ValidateIssuer(
+                referencia,
+                emitenteDocumento,
+                $"Contingencia fiscal {entrada.cargaid}");
+            certificado = candidato;
+            documentoCertificado = referencia.DocumentoTitular;
+            break;
+        }
+        catch (Exception exception) when (exception is InvalidOperationException or FileNotFoundException)
+        {
+        }
+    }
+
+    if (certificado is null || certificado.id <= 0)
+        return string.Empty;
+
+    if (entrada.certificadodigitalid != certificado.id)
+        _repWriteEntradaFiscalContingencia.UpdateCertificadoDigitalId(entrada.id, certificado.id);
+
+    entrada.certificadodigitalid = certificado.id;
+    return documentoCertificado;
 }
     }
 }

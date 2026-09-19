@@ -53,6 +53,7 @@ namespace Command.Receivers
         public int Globalizado { get; init; }
         public string UfInicio { get; init; } = "PE";
         public string UfFim { get; init; } = "PE";
+        public string Cfop { get; init; } = string.Empty;
         public string MunicipioInicioCodigoIbge { get; init; } = "2611606";
         public string MunicipioInicioNome { get; init; } = "RECIFE";
         public string MunicipioFimCodigoIbge { get; init; } = "2607901";
@@ -218,6 +219,22 @@ namespace Command.Receivers
                 throw new InvalidOperationException("O cadastro fiscal completo do emitente do CT-e deve ser informado.");
             }
 
+            var codigoUfEmitente = CteUfPolicy.ResolveCode(UfEmitente);
+            if (codigoUfEmitente == 0)
+                throw new InvalidOperationException($"A UF do emitente do CT-e e invalida: {UfEmitente}.");
+
+            if (CodigoUf != codigoUfEmitente)
+            {
+                throw new InvalidOperationException(
+                    $"O codigo da UF autorizadora {CodigoUf:D2} diverge da UF do emitente {UfEmitente} ({codigoUfEmitente:D2}).");
+            }
+
+            if (!CteUfPolicy.MunicipioPertenceAoEstado(MunicipioEmitenteCodigoIbge, UfEmitente))
+            {
+                throw new InvalidOperationException(
+                    $"O municipio IBGE do emitente {MunicipioEmitenteCodigoIbge} diverge da UF {UfEmitente}.");
+            }
+
             foreach (var chaveNFe in ChavesNFe)
             {
                 if (chaveNFe.Length != 44 || chaveNFe.Any(character => character is < '0' or > '9'))
@@ -303,6 +320,19 @@ namespace Command.Receivers
             return EnviarAsync(CteRecepcaoSincV4Options.FromEnvironment(), prepared)
                 .GetAwaiter()
                 .GetResult();
+        }
+
+        public static CteRecepcaoSincV4Result Autorizar(
+            CteRecepcaoSincV4Prepared prepared,
+            string certificatePath,
+            string certificatePassword)
+        {
+            var options = CteRecepcaoSincV4Options.FromEnvironment() with
+            {
+                CertificatePath = certificatePath,
+                CertificatePassword = certificatePassword
+            };
+            return EnviarAsync(options, prepared).GetAwaiter().GetResult();
         }
 
         private static async Task<CteRecepcaoSincV4Result> AutorizarAsync(CteRecepcaoSincV4Options options)
@@ -460,7 +490,13 @@ namespace Command.Receivers
             var ide = AppendElement(doc, infCte, "ide");
             AppendElement(doc, ide, "cUF", options.CodigoUf.ToString());
             AppendElement(doc, ide, "cCT", codigoControle);
-            AppendElement(doc, ide, "CFOP", "5353");
+            AppendElement(
+                doc,
+                ide,
+                "CFOP",
+                string.IsNullOrWhiteSpace(options.Cfop)
+                    ? CteCfopPolicy.Resolve(options.UfEmitente, options.UfInicio, options.UfFim)
+                    : options.Cfop.Trim());
             AppendElement(doc, ide, "natOp", "PRESTACAO DE SERVICO DE TRANSPORTE");
             AppendElement(doc, ide, "mod", "57");
             AppendElement(doc, ide, "serie", serie.ToString());
@@ -498,7 +534,7 @@ namespace Command.Receivers
             var emit = AppendElement(doc, infCte, "emit");
             AppendElement(doc, emit, "CNPJ", options.CnpjEmitente);
             AppendElement(doc, emit, "IE", options.InscricaoEstadual);
-            AppendElement(doc, emit, "xNome", options.RazaoSocial);
+            AppendElement(doc, emit, "xNome", NomeParaAmbiente(options.Ambiente, options.RazaoSocial));
             if (!string.IsNullOrWhiteSpace(options.NomeFantasiaEmitente))
                 AppendElement(doc, emit, "xFant", options.NomeFantasiaEmitente);
             AppendEndereco(
@@ -519,6 +555,7 @@ namespace Command.Receivers
                 infCte,
                 "rem",
                 "enderReme",
+                options.Ambiente,
                 options.Remetente,
                 options.RemetenteDocumento,
                 options.CnpjEmitente,
@@ -535,6 +572,7 @@ namespace Command.Receivers
                 infCte,
                 "dest",
                 "enderDest",
+                options.Ambiente,
                 options.Destinatario,
                 options.DestinatarioDocumento,
                 "00000000000191",
@@ -672,6 +710,7 @@ namespace Command.Receivers
             XmlElement infCte,
             string elementName,
             string addressElementName,
+            int ambiente,
             CteParticipantOptions participant,
             string documentFallback,
             string cnpjFallback,
@@ -690,7 +729,7 @@ namespace Command.Receivers
                 FirstNotEmpty(participant.Documento, documentFallback),
                 cnpjFallback);
             AppendElement(doc, element, "IE", FirstNotEmpty(participant.InscricaoEstadual, ieFallback));
-            AppendElement(doc, element, "xNome", FirstNotEmpty(participant.Nome, HomologacaoNome));
+            AppendElement(doc, element, "xNome", NomeParaAmbiente(ambiente, participant.Nome));
             AppendEndereco(
                 doc,
                 AppendElement(doc, element, addressElementName),
@@ -706,6 +745,9 @@ namespace Command.Receivers
 
         private static string FirstNotEmpty(string first, string fallback)
             => string.IsNullOrWhiteSpace(first) ? fallback : first;
+
+        private static string NomeParaAmbiente(int ambiente, string nomeEfetivo)
+            => ambiente == 2 ? HomologacaoNome : FirstNotEmpty(nomeEfetivo, HomologacaoNome);
 
         private static void AppendDocumento(
             XmlDocument doc,

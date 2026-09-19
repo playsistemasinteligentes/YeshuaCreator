@@ -57,6 +57,7 @@
             public const ulong Deleted = 1UL << 34;
             public const ulong Changed = 1UL << 35;
             public const ulong UserId = 1UL << 36;
+            public const ulong CertificadoDigitalId = 1UL << 37;
         }
 
         public partial class EntradaFiscalContingenciaDecorator : IEntradaFiscalContingenciaEntity
@@ -600,6 +601,20 @@
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & EntradaFiscalContingenciaTrackingFields.UserId) != 0UL)
                                                     _logger.DomainValueChanged("EntradaFiscalContingencia", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public int? CertificadoDigitalId
+                                    {
+                                        get => _inner.CertificadoDigitalId;
+                                        set
+                                        {
+                                            if (_inner.CertificadoDigitalId != value)
+                                            {
+                                                _inner.CertificadoDigitalId = value;
+                                                if ((_trackingMask & EntradaFiscalContingenciaTrackingFields.CertificadoDigitalId) != 0UL)
+                                                    _logger.DomainValueChanged("EntradaFiscalContingencia", "CertificadoDigitalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

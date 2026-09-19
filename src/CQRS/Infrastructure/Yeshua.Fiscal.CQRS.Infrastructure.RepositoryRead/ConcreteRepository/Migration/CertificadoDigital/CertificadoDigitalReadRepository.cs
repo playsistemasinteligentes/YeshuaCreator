@@ -196,6 +196,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsBySenhaStorageKey(string value )
+        {
+            var query = _query.ExistsBySenhaStorageKeyQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public CertificadoDigitalDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -292,6 +300,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public CertificadoDigitalDTO FirstBySenhaStorageKey(string value )
+        {
+            var query = _query.FirstBySenhaStorageKeyQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<CertificadoDigitalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<CertificadoDigitalDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -383,6 +399,14 @@ namespace Read.Repository
         public IEnumerable<CertificadoDigitalDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<CertificadoDigitalDTO> GetAllBySenhaStorageKey(string value )
+        {
+            var query = _query.FirstBySenhaStorageKeyQuery(value );
 
                 var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;

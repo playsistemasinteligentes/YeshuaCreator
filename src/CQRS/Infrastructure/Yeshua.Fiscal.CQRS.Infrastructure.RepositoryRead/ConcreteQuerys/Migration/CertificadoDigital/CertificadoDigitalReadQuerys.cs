@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] from [CertificadoDigital] ";
+            this.Query = $@" select [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] from [CertificadoDigital] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (!string.IsNullOrEmpty(Command.Apelido)) dict["Apelido"] = $"%{Command.Apelido}%";
@@ -56,6 +56,8 @@ if (Command.Ativo.HasValue)
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.SenhaStorageKey)) dict["SenhaStorageKey"] = $"%{Command.SenhaStorageKey}%";
+if (!string.IsNullOrEmpty(Command.SenhaStorageKey)) whereClauses.Add($"[SenhaStorageKey] like @SenhaStorageKey");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -331,12 +333,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsBySenhaStorageKeyQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [CertificadoDigital] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["SenhaStorageKey"] = value; //04
+                      whereClauses.Add($" [SenhaStorageKey] = @SenhaStorageKey ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -353,7 +372,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -370,7 +389,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -387,7 +406,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -404,7 +423,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -421,7 +440,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -438,7 +457,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -455,7 +474,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -472,7 +491,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -489,7 +508,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -506,7 +525,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -523,13 +542,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId] FROM [CertificadoDigital] ";
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstBySenhaStorageKeyQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey] FROM [CertificadoDigital] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["SenhaStorageKey"] = value; //06
+                      whereClauses.Add($" [SenhaStorageKey] = @SenhaStorageKey ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

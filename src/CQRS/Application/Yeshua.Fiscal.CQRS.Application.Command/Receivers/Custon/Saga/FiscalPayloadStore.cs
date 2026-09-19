@@ -42,6 +42,34 @@ namespace Command.Receivers
             return json;
         }
 
+        public static async Task<FiscalCertificateStorageResult> SaveCertificateAsync(
+            int tenantId,
+            string documentoTitular,
+            string thumbprint,
+            byte[] pfx,
+            string senha,
+            CancellationToken cancellationToken)
+        {
+            var directory = Path.Combine(
+                StorageRoot(),
+                "fiscal",
+                "certificados",
+                tenantId.ToString(),
+                SafeFileName(documentoTitular),
+                SafeFileName(thumbprint));
+            Directory.CreateDirectory(directory);
+
+            var certificatePath = Path.Combine(directory, "certificado.pfx");
+            var passwordPath = Path.Combine(directory, "senha.secret");
+
+            // PENDENCIA: substituir o segredo em arquivo por cofre/API local de certificados.
+            // O banco e os payloads devem continuar armazenando apenas referencias.
+            await File.WriteAllBytesAsync(certificatePath, pfx, cancellationToken).ConfigureAwait(false);
+            await File.WriteAllTextAsync(passwordPath, senha, new UTF8Encoding(false), cancellationToken).ConfigureAwait(false);
+
+            return new FiscalCertificateStorageResult(certificatePath, passwordPath);
+        }
+
         private static string StorageRoot()
         {
             return Environment.GetEnvironmentVariable("YESHUA_FISCAL_STORAGE_ROOT")
@@ -68,4 +96,5 @@ namespace Command.Receivers
     }
 
     internal sealed record FiscalPayloadStorageResult(string Path, string Sha256);
+    internal sealed record FiscalCertificateStorageResult(string CertificatePath, string PasswordPath);
 }

@@ -8,6 +8,8 @@ public class M000001 : MigrationBase
 {
     public override void Up()
     {
+        ConfigureSagaWorkers(loopMilliseconds: 500);
+
         AddModule("FIS", "Fiscal");
         AddModule("DFE", "Documentos Fiscais Eletronicos");
         AddModule("CTE", "CT-e");
@@ -62,7 +64,7 @@ public class M000001 : MigrationBase
             .AddColumn("ValorDocumento", "Valor Documento").Decimal(18, 2).Group("Valores")
             .AddColumn("PesoBruto", "Peso Bruto").Decimal(18, 6).Group("Valores")
             .AddColumn("Volume", "Volume").Decimal(18, 6).Group("Valores")
-            .AddColumn("SnapshotJson", "Snapshot").Varchar(8000).Group("Snapshot")
+            .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot")
             .AddColumn("Status", "Status").Int().NotNull().Group("Status")
                 .Enumerable(1, "Recebido")
                 .Enumerable(2, "Vinculado")
@@ -85,7 +87,7 @@ public class M000001 : MigrationBase
             .AddColumn("PesoBruto", "Peso Bruto").Decimal(18, 6).Group("Valores")
             .AddColumn("Volume", "Volume").Decimal(18, 6).Group("Valores")
             .AddColumn("XmlStorageKey", "XML").Varchar(500).Group("Arquivos")
-            .AddColumn("SnapshotJson", "Snapshot").Varchar(8000).Group("Snapshot")
+            .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot")
             .AddColumn("Status", "Status").Int().NotNull().Group("Status")
                 .Enumerable(1, "Recebida")
                 .Enumerable(2, "DisponivelParaCTe")
@@ -123,9 +125,9 @@ public class M000001 : MigrationBase
             .AddColumn("MunicipioFimCodigoIbge", "Municipio Fim").Varchar(7).Group("Rota")
             .AddColumn("EmitenteDocumento", "Emitente Documento").Varchar(14).Group("Participantes")
             .AddColumn("TomadorDocumento", "Tomador Documento").Varchar(14).Group("Participantes")
-            .AddColumn("RotaSnapshotJson", "Snapshot da Rota").Varchar(4000).Group("Snapshot")
-            .AddColumn("CargaSnapshotJson", "Snapshot da Carga").Varchar(8000).Group("Snapshot")
-            .AddColumn("PreferenciasFiscaisJson", "Preferencias Fiscais").Varchar(4000).Group("Snapshot")
+            .AddColumn("RotaSnapshotJson", "Snapshot da Rota").VarcharMax().Group("Snapshot")
+            .AddColumn("CargaSnapshotJson", "Snapshot da Carga").VarcharMax().Group("Snapshot")
+            .AddColumn("PreferenciasFiscaisJson", "Preferencias Fiscais").VarcharMax().Group("Snapshot")
             .AddColumn("Status", "Status do Romaneio").Int().NotNull().Group("Status")
                 .Enumerable(1, "Recebido")
                 .Enumerable(2, "SolicitacaoCriada")
@@ -172,7 +174,7 @@ public class M000001 : MigrationBase
             .AddColumn("MunicipioFimCodigoIbge", "Municipio Fim").Varchar(7).Group("Rota")
             .AddColumn("ValorServico", "Valor Servico").Decimal(18, 2).Group("Valores")
             .AddColumn("ValorCarga", "Valor Carga").Decimal(18, 2).Group("Valores")
-            .AddColumn("PreferenciasManifestoJson", "Preferencias Manifesto").Varchar(4000).Group("Snapshot")
+            .AddColumn("PreferenciasManifestoJson", "Preferencias Manifesto").VarcharMax().Group("Snapshot")
             .AddColumn("Status", "Status da Solicitacao").Int().NotNull().Group("Status")
                 .Enumerable(1, "Aberta")
                 .Enumerable(2, "Classificada")
@@ -193,7 +195,7 @@ public class M000001 : MigrationBase
             .AddColumn("DestinatarioDocumento", "Destinatario Documento").Varchar(14).Group("Participantes")
             .AddColumn("ValorDocumento", "Valor Documento").Decimal(18, 2).Group("Valores")
             .AddColumn("PesoBruto", "Peso Bruto").Decimal(18, 6).Group("Valores")
-            .AddColumn("SnapshotJson", "Snapshot").Varchar(8000).Group("Snapshot");
+            .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot");
 
         AddEntity("CTeParticipanteSnapshot", "Participante CT-e").AddModule("CTE")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
@@ -204,7 +206,7 @@ public class M000001 : MigrationBase
             .AddColumn("InscricaoEstadual", "Inscricao Estadual").Varchar(30).Group("Fiscal")
             .AddColumn("UF", "UF").Varchar(2).Group("Endereco")
             .AddColumn("MunicipioCodigoIbge", "Municipio IBGE").Varchar(7).Group("Endereco")
-            .AddColumn("EnderecoJson", "Endereco").Varchar(4000).Group("Endereco");
+            .AddColumn("EnderecoJson", "Endereco").VarcharMax().Group("Endereco");
 
         AddEntity("CTeTentativaEmissao", "Tentativa de Emissao CT-e").AddModule("CTE")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
@@ -274,8 +276,8 @@ public class M000001 : MigrationBase
             .AddColumn("UFDescarregamento", "UF de Descarregamento").Varchar(2).NotNull().Group("Rota")
             .AddColumn("PlacaVeiculo", "Placa do Veiculo").Varchar(7).Group("Transporte")
             .AddColumn("CondutorDocumento", "Documento do Condutor").Varchar(14).Group("Transporte")
-            .AddColumn("DocumentosOriginariosJson", "Documentos Originarios").Varchar(8000).Group("Snapshot")
-            .AddColumn("TransporteSnapshotJson", "Snapshot Transporte").Varchar(8000).Group("Snapshot")
+            .AddColumn("DocumentosOriginariosJson", "Documentos Originarios").VarcharMax().Group("Snapshot")
+            .AddColumn("TransporteSnapshotJson", "Snapshot Transporte").VarcharMax().Group("Snapshot")
             .AddColumn("Status", "Status").Int().NotNull().Group("Status")
                 .Enumerable(1, "Aberta")
                 .Enumerable(2, "ProntaParaEmissao")
@@ -289,7 +291,7 @@ public class M000001 : MigrationBase
             .AddColumn("DocumentoFiscalOriginarioId", "Documento Originario").FK("DocumentoFiscalOriginario", "Id").Int().Group("Vinculo")
             .AddColumn("TipoDocumento", "Tipo Documento").Varchar(30).NotNull().Group("Identificacao")
             .AddColumn("ChaveAcesso", "Chave de Acesso").Varchar(44).Group("Identificacao")
-            .AddColumn("SnapshotJson", "Snapshot").Varchar(8000).Group("Snapshot");
+            .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot");
 
         AddEntity("MDFePercurso", "Percurso MDF-e").AddModule("MDFE")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")

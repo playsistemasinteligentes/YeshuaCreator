@@ -57,6 +57,7 @@
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    int? CertificadoDigitalId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

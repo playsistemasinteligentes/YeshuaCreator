@@ -495,6 +495,7 @@ namespace MyApp.Domain.Entities
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string? SenhaStorageKey { get; set; }
 
         public static MyApp.QueryBuilder.Query<CertificadoDigital> Query() => new MyApp.QueryBuilder.Query<CertificadoDigital>();
     }
@@ -540,6 +541,8 @@ namespace MyApp.Domain.Entities
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public int? CertificadoDigitalId { get; set; }
+        public CertificadoDigital CertificadoDigital { get; set; }
 
         public static MyApp.QueryBuilder.Query<EntradaFiscalContingencia> Query() => new MyApp.QueryBuilder.Query<EntradaFiscalContingencia>();
     }

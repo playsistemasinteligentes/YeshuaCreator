@@ -16,6 +16,7 @@ namespace IQuery.Read
         public QueryModel EntradaFiscalContingenciaQuery(Command.Read.EntradaFiscalContingenciaReadCommand Command );
         public QueryModel EntradaFiscalContingenciaTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel EntradaFiscalContingenciaUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel EntradaFiscalContingenciaCertificadoDigitalIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByCorrelationIdQuery(string value );
         public QueryModel ExistsByCargaIdQuery(string value );
@@ -53,6 +54,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByCertificadoDigitalIdQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByCorrelationIdQuery(string value );
         public QueryModel FirstByCargaIdQuery(string value );
@@ -90,6 +92,7 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByCertificadoDigitalIdQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

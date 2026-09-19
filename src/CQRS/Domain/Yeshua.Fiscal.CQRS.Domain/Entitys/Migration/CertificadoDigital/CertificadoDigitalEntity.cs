@@ -32,8 +32,9 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string? SenhaStorageKey { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal CertificadoDigitalEntity(int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo ){
+ internal CertificadoDigitalEntity(int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo, string? senhastoragekey ){
  Id = id; 
  Apelido = apelido; 
  DocumentoTitular = documentotitular; 
@@ -42,6 +43,7 @@
  ValidoDe = validode.HasValue && validode.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validode; 
  ValidoAte = validoate.HasValue && validoate.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validoate; 
  Ativo = ativo; 
+ SenhaStorageKey = senhastoragekey; 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -26,8 +26,9 @@ namespace Command.Receivers.UseCase
         private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia = default!;
         private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
         private readonly ContingenciaFiscalStepStimulusService _stepStimulusService = default!;
-        public InformarNotasFiscaisContingenciaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,Command.Interfaces.ISagaStepInvoker sagaStepInvoker,IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia, IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia, ContingenciaFiscalStepStimulusService stepStimulusService)
+        public InformarNotasFiscaisContingenciaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,Command.Interfaces.ISagaStepInvoker sagaStepInvoker,IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia, IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia, INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository, ContingenciaFiscalStepStimulusService stepStimulusService)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -37,6 +38,7 @@ namespace Command.Receivers.UseCase
            _sagaStepInvoker = sagaStepInvoker;
             _repReadEntradaFiscalContingencia = repReadEntradaFiscalContingencia;
             _repWriteEntradaFiscalContingencia = repWriteEntradaFiscalContingencia;
+            _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
             _stepStimulusService = stepStimulusService;
         }
 protected partial async Task<State<InformarNotasFiscaisContingenciaOutputCommand>> CustomActionHookAsync(State<InformarNotasFiscaisContingenciaOutputCommand> state, InformarNotasFiscaisContingenciaInputCommand comand, CancellationToken cancellationToken)
@@ -63,7 +65,12 @@ protected partial async Task<State<InformarNotasFiscaisContingenciaOutputCommand
         SagaStepId = result.SagaStepId,
         InboxId = result.InboxId,
         Accepted = result.Accepted,
-        Mensagem = result.Mensagem
+        Mensagem = result.Mensagem,
+        DocumentosOriginariosJson = FiscalDocumentosOriginariosPresentation.Serialize(
+            FiscalDocumentosOriginariosPresentation.FromSnapshots(
+                Command.Receivers.FiscalContingenciaState.LoadDocumentos(
+                    _nfeProdutoSnapshotReadRepository,
+                    result.CargaId)))
     };
 
     return result.Accepted ? Success("OK", output) : ValidationError(result.Mensagem, output);

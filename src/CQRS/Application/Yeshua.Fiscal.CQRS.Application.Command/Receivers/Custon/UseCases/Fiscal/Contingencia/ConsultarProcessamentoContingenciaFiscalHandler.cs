@@ -27,6 +27,7 @@ namespace Command.Receivers.UseCase
         private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia = default!;
         private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
         private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioRepository = default!;
         private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoRepository = default!;
         private readonly ICTeTentativaEmissaoReadRepository _cteTentativaRepository = default!;
@@ -42,6 +43,7 @@ namespace Command.Receivers.UseCase
             IDomainTrackingPolicy domainTrackingPolicy,
             IEntradaFiscalContingenciaReadRepository repReadEntradaFiscalContingencia,
             IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia,
+            INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository,
             ICTeRomaneioConsolidadoReadRepository cteRomaneioRepository,
             ICTeSolicitacaoFiscalReadRepository cteSolicitacaoRepository,
             ICTeTentativaEmissaoReadRepository cteTentativaRepository,
@@ -57,6 +59,7 @@ namespace Command.Receivers.UseCase
            _domainTrackingPolicy = domainTrackingPolicy;
             _repReadEntradaFiscalContingencia = repReadEntradaFiscalContingencia;
             _repWriteEntradaFiscalContingencia = repWriteEntradaFiscalContingencia;
+            _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
             _cteRomaneioRepository = cteRomaneioRepository;
             _cteSolicitacaoRepository = cteSolicitacaoRepository;
             _cteTentativaRepository = cteTentativaRepository;
@@ -100,6 +103,10 @@ protected partial Task<State<ConsultarProcessamentoContingenciaFiscalOutputComma
 
     var documentosJson = JsonSerializer.Serialize(new
     {
+        documentosOriginarios = FiscalDocumentosOriginariosPresentation.FromSnapshots(
+            Command.Receivers.FiscalContingenciaState.LoadDocumentos(
+                _nfeProdutoSnapshotReadRepository,
+                entrada.cargaid)),
         ctes = ctes.Select(item => new
         {
             chaveAcesso = item.chaveacesso,

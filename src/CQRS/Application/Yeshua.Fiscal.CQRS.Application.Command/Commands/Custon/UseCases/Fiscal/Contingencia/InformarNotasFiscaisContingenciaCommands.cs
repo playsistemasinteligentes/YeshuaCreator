@@ -9,3 +9,12 @@
 // </yeshua>
 
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup
+using RepositoryInterfaces.Patterns.Command;
+
+namespace Command.UseCase
+{
+    public partial record InformarNotasFiscaisContingenciaOutputCommand
+    {
+        public string DocumentosOriginariosJson { get; set; } = string.Empty;
+    }
+}

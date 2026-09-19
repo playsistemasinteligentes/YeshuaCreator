@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICertificadoDigitalEntity Create(int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo )
+                                    } public ICertificadoDigitalEntity Create(int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo, string? senhastoragekey )
                             {
-                                return Create(null, id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo);
+                                return Create(null, id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo, senhastoragekey);
                             }
 
                             public ICertificadoDigitalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo, string? senhastoragekey )
                             {
-                            var entity = new CertificadoDigitalEntity(id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo );
+                            var entity = new CertificadoDigitalEntity(id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo, senhastoragekey );
 
 
                             var trackingMask = _trackingPolicy?.GetMask("CertificadoDigital", context?.Intent, context?.RecordId) ?? 0UL;
