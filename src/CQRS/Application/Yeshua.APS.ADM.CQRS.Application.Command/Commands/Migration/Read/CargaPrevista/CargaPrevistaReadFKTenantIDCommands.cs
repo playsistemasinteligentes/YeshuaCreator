@@ -14,7 +14,7 @@ namespace Command.Read
     public struct CargaPrevistaReadFKTenantIDCommand : ICommand
     {
         public int? Id { get; set; }
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

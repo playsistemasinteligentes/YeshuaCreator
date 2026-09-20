@@ -18,8 +18,8 @@ namespace Repositorio.Outputs
 {
     public partial record TipoMovimentoEstoqueDTO
     {
-    public string tip_id { get; set; }
-    public string tip_descricao { get; set; }
+    public string tip_id { get; set; } = string.Empty;
+    public string tip_descricao { get; set; } = string.Empty;
     public int tip_type { get; set; }
     public int spr { get; set; }
     public int tenantid { get; set; }

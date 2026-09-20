@@ -22,7 +22,7 @@
 {
     public int? Id { get; set; }
     public int TIP_ID { get; set; }
-    public string TIP_DESCRICAO { get; set; }
+    public string? TIP_DESCRICAO { get; set; }
     public int? TIP_QTD_DISPONIVEL { get; set; }
     public Decimal? TIP_VALOR_KM { get; set; }
     public Decimal? TIP_VALOR_DIARIA { get; set; }
@@ -43,8 +43,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal TipoVeiculoEntity(int? id, int tip_id, string tip_descricao, int? tip_qtd_disponivel, Decimal? tip_valor_km, Decimal? tip_valor_diaria, Decimal? tip_valor_ajudante, Decimal? tip_qtd_eixos, Decimal? tip_velocidade_media, Decimal? tip_capacidade_altura, Decimal? tip_capacidade_comprimento, Decimal? tip_capacidade_largura, Decimal? tip_capacidade_altura_pescoco_e, Decimal? tip_capacidade_comprimento_pescoco_e, Decimal? tip_capacidade_largura_pescoco_e, Decimal? tip_capacidade_altura_pescoco_d, Decimal? tip_capacidade_comprimento_pescoco_d, Decimal? tip_capacidade_largura_pescoco_d, Decimal? tip_capacidade_m3 ){
+    private List<string> _erroMensagem = new List<string>();
+ internal TipoVeiculoEntity(int? id, int tip_id, string? tip_descricao, int? tip_qtd_disponivel, Decimal? tip_valor_km, Decimal? tip_valor_diaria, Decimal? tip_valor_ajudante, Decimal? tip_qtd_eixos, Decimal? tip_velocidade_media, Decimal? tip_capacidade_altura, Decimal? tip_capacidade_comprimento, Decimal? tip_capacidade_largura, Decimal? tip_capacidade_altura_pescoco_e, Decimal? tip_capacidade_comprimento_pescoco_e, Decimal? tip_capacidade_largura_pescoco_e, Decimal? tip_capacidade_altura_pescoco_d, Decimal? tip_capacidade_comprimento_pescoco_d, Decimal? tip_capacidade_largura_pescoco_d, Decimal? tip_capacidade_m3 ){
  Id = id; 
  TIP_ID = tip_id; 
  TIP_DESCRICAO = tip_descricao; 

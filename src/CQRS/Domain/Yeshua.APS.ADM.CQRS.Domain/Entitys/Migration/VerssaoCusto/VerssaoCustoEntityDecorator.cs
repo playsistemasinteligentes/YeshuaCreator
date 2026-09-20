@@ -86,7 +86,7 @@
                                         }
                                     }
 
-                                    public string VER_STATUS
+                                    public string? VER_STATUS
                                     {
                                         get => _inner.VER_STATUS;
                                         set
@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string VER_OBS
+                                    public string? VER_OBS
                                     {
                                         get => _inner.VER_OBS;
                                         set

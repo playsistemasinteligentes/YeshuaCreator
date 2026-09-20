@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -42,9 +42,8 @@ namespace Command.Receivers
                     step.SetPendingApply();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                saga.MarkFailed(ex.Message);
                 throw;
             }
         }
@@ -57,9 +56,8 @@ namespace Command.Receivers
                 CustomApplyResponse(saga, step, payload);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                saga.MarkFailed(ex.Message);
                 throw;
             }
         }

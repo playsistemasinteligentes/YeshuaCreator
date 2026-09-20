@@ -14,9 +14,9 @@ namespace Command.Read
     public struct T_GrupoReadCommand : ICommandRead
     {
         public int? GRU_ID { get; set; }
-        public string NOME { get; set; }
+        public string? NOME { get; set; }
         public int? EXIBELISTA { get; set; }
-        public string GRU_DESCRICAO { get; set; }
+        public string? GRU_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

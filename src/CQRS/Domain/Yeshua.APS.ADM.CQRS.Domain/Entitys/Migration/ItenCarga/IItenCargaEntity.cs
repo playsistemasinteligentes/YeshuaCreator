@@ -28,8 +28,8 @@
     int ITC_ORDEM_ENTREGA { get; set; }
     Decimal ITC_QTD_PLANEJADA { get; set; }
     Decimal ITC_QTD_REALIZADA { get; set; }
-    string ORD_HASH_KEY { get; set; }
-    string NOT_ID { get; set; }
+    string? ORD_HASH_KEY { get; set; }
+    string? NOT_ID { get; set; }
     DateTime? NOT_EMISSAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

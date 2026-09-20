@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct MovimentoEstoqueReadFKTipoCommand : ICommand
     {
-        public string TIP_ID { get; set; }
+        public string? TIP_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

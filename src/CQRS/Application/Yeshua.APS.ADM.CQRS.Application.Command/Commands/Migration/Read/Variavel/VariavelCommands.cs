@@ -15,7 +15,7 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? VAR_ID { get; set; }
-        public string VAR_DESCRICAO { get; set; }
+        public string? VAR_DESCRICAO { get; set; }
         public int? CON_ID { get; set; }
         public int? VAR_MODO { get; set; }
         public int? TenantID { get; set; }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMesesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMesesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MesesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var meses = new MesesFactory(_logger, _domainTrackingPolicy).Create(context, c.MES, c.fator);
                  var domainResult = MesesDomainBehavior.Apply(meses, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(meses);
-                     return Success("OK", meses);
+                     return Task.FromResult(Success("OK", meses));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, meses);
+                    return Task.FromResult(Error(e, meses));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

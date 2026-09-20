@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel GrupoMaquinaQuery(Command.Read.GrupoMaquinaReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -64,7 +63,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         public QueryModel GrupoMaquinaTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -95,7 +93,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         public QueryModel GrupoMaquinaUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -125,7 +122,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -143,7 +139,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -161,7 +156,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -179,7 +173,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -197,7 +190,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -215,7 +207,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -233,7 +224,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -251,7 +241,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel ExistsByGMA_TIPO_PLANEJAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -269,7 +258,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -287,7 +275,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -305,7 +292,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -323,7 +309,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -341,7 +326,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -359,7 +343,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -377,7 +360,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -395,7 +377,6 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GM
         }
         public QueryModel FirstByGMA_TIPO_PLANEJAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

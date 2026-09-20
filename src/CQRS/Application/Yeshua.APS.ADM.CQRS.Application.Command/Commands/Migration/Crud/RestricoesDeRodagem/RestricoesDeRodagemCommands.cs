@@ -16,8 +16,8 @@ namespace Command.Write
         public int? Id { get; set; }
         public int RES_ID { get; set; }
         public string RES_TIPO { get; set; }
-        public string RES_HORA_INI { get; set; }
-        public string RES_HORA_FIM { get; set; }
+        public string? RES_HORA_INI { get; set; }
+        public string? RES_HORA_FIM { get; set; }
         public Decimal? RES_VELOCIDADE_HORA_RUSH { get; set; }
         public int? TVE_ID { get; set; }
         public int? MAP_ID { get; set; }

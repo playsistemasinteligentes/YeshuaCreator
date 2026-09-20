@@ -29,28 +29,28 @@
     public Decimal Quantidade { get; set; }
     public Decimal? Grupo { get; set; }
     public int? Status { get; set; }
-    public string TurnoId { get; set; }
-    public string TurmaId { get; set; }
+    public string? TurnoId { get; set; }
+    public string? TurmaId { get; set; }
     public int IdLoteClp { get; set; }
-    public string OcorrenciaId { get; set; }
+    public string? OcorrenciaId { get; set; }
     public int? Fase { get; set; }
-    public string ClpOrigem { get; set; }
+    public string? ClpOrigem { get; set; }
     public int? CLP_LOTE { get; set; }
     public int? COMPACTA { get; set; }
-    public string BOL_ID { get; set; }
+    public string? BOL_ID { get; set; }
     public int? COR_SEQUENCIA { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ClpMedicoesEntity(int? id, int id2, string maquinaid, DateTime datainicio, DateTime datafim, DateTime? emissao, Decimal quantidade, Decimal? grupo, int? status, string turnoid, string turmaid, int idloteclp, string ocorrenciaid, int? fase, string clporigem, int? clp_lote, int? compacta, string bol_id, int? cor_sequencia ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ClpMedicoesEntity(int? id, int id2, string maquinaid, DateTime datainicio, DateTime datafim, DateTime? emissao, Decimal quantidade, Decimal? grupo, int? status, string? turnoid, string? turmaid, int idloteclp, string? ocorrenciaid, int? fase, string? clporigem, int? clp_lote, int? compacta, string? bol_id, int? cor_sequencia ){
  Id = id; 
  Id2 = id2; 
  MaquinaId = maquinaid; 
  DataInicio = (datainicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : datainicio; 
  DataFim = (datafim < (new DateTime(1800, 1, 1))) ? DateTime.Now : datafim; 
- Emissao = (emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : emissao; 
+ Emissao = emissao.HasValue && emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : emissao; 
  Quantidade = quantidade; 
  Grupo = grupo; 
  Status = status; 
@@ -72,9 +72,9 @@ public bool isValidData()
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(MaquinaId))
    this._erroMensagem.Add("MaquinaId deve ser informado.");
-   if(DataInicio == null || DataInicio < (new DateTime(1800, 1, 1)))
+   if(DataInicio < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataInicio deve ser informado.");
-   if(DataFim == null || DataFim < (new DateTime(1800, 1, 1)))
+   if(DataFim < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataFim deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

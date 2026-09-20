@@ -30,7 +30,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ColaboradorEntity(string col_cpf, string col_nome, DateTime col_nascimento, string col_email, string col_matricula, string turm_id ){
  COL_CPF = col_cpf; 
  COL_NOME = col_nome; 
@@ -48,7 +48,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("COL CPF deve ser informado.");
    if(string.IsNullOrEmpty(COL_NOME))
    this._erroMensagem.Add("COL NOME deve ser informado.");
-   if(COL_NASCIMENTO == null || COL_NASCIMENTO < (new DateTime(1800, 1, 1)))
+   if(COL_NASCIMENTO < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("COL NASCIMENTO deve ser informado.");
    if(string.IsNullOrEmpty(COL_EMAIL))
    this._erroMensagem.Add("COL EMAIL deve ser informado.");

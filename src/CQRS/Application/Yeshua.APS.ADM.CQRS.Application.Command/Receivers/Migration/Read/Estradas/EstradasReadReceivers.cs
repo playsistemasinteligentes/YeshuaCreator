@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<EstradasDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<EstradasDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.EstradasReadCommand c) 
              {    
                 var EstradasReadRepository = _repository.getEstradas(c);
-                return Success("OK", EstradasReadRepository);
+                return Task.FromResult(Success("OK", EstradasReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

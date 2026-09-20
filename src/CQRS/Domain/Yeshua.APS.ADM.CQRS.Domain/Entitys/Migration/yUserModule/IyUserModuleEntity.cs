@@ -21,7 +21,7 @@
                     public interface IyUserModuleEntity
 {
     int? Id { get; set; }
-    string ModuleId { get; set; }
+    string? ModuleId { get; set; }
     int? UserId { get; set; }
     DateTime? ValidUntil { get; set; }
     int? TenantID { get; set; }

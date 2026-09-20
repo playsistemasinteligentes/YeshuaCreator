@@ -23,7 +23,7 @@
     int? Id { get; set; }
     int PER_ID { get; set; }
     string OBJ_ID { get; set; }
-    string PEO_ACAO { get; set; }
+    string? PEO_ACAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

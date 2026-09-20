@@ -15,7 +15,7 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public int EST_ID { get; set; }
-        public string EST_DESCRICAO { get; set; }
+        public string? EST_DESCRICAO { get; set; }
         public int? EST_ID_LIGACAO_PONTO_A { get; set; }
         public int? EST_ID_LIGACAO_PONTO_B { get; set; }
         public int? TenantID { get; set; }

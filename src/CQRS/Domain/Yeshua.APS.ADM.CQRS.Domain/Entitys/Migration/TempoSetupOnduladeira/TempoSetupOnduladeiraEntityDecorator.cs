@@ -73,7 +73,7 @@
                                         }
                                     }
 
-                                    public string OND_ID_DE
+                                    public string? OND_ID_DE
                                     {
                                         get => _inner.OND_ID_DE;
                                         set
@@ -87,7 +87,7 @@
                                         }
                                     }
 
-                                    public string OND_ID_PARA
+                                    public string? OND_ID_PARA
                                     {
                                         get => _inner.OND_ID_PARA;
                                         set
@@ -101,7 +101,7 @@
                                         }
                                     }
 
-                                    public string TEM_RESINA_DE
+                                    public string? TEM_RESINA_DE
                                     {
                                         get => _inner.TEM_RESINA_DE;
                                         set
@@ -115,7 +115,7 @@
                                         }
                                     }
 
-                                    public string TEM_RESINA_PARA
+                                    public string? TEM_RESINA_PARA
                                     {
                                         get => _inner.TEM_RESINA_PARA;
                                         set

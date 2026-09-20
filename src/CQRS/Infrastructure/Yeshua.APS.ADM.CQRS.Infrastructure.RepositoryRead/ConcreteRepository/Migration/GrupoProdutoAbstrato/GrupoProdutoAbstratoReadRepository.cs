@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<GrupoProdutoAbstratoDTO> getGrupoProdutoAbstrato(Command.Read.GrupoProdutoAbstratoReadCommand command )
         {
-            DataPagination<GrupoProdutoAbstratoDTO> customResult = null;
+            var customResult = new DataPagination<GrupoProdutoAbstratoDTO>();
             var customHandled = false;
             TryGetGrupoProdutoAbstratoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoProdutoAbstratoGRP_PAP_ONDADTO> getGrupoProdutoAbstratoReadFKGRP_PAP_ONDA(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoProdutoAbstratoGRP_PAP_ONDADTO> lista;
             var query = _query.GrupoProdutoAbstratoGRP_PAP_ONDAQuery(command );
 
-                lista = _unitOfWork.Query<GrupoProdutoAbstratoGRP_PAP_ONDADTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoGRP_PAP_ONDADTO>;
+                var lista = _unitOfWork.Query<GrupoProdutoAbstratoGRP_PAP_ONDADTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoProdutoAbstratoVIN_IDDTO> getGrupoProdutoAbstratoReadFKVIN_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoProdutoAbstratoVIN_IDDTO> lista;
             var query = _query.GrupoProdutoAbstratoVIN_IDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoProdutoAbstratoVIN_IDDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoVIN_IDDTO>;
+                var lista = _unitOfWork.Query<GrupoProdutoAbstratoVIN_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoProdutoAbstratoTenantIDDTO> getGrupoProdutoAbstratoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoProdutoAbstratoTenantIDDTO> lista;
             var query = _query.GrupoProdutoAbstratoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoProdutoAbstratoTenantIDDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoTenantIDDTO>;
+                var lista = _unitOfWork.Query<GrupoProdutoAbstratoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoProdutoAbstratoUserIdDTO> getGrupoProdutoAbstratoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoProdutoAbstratoUserIdDTO> lista;
             var query = _query.GrupoProdutoAbstratoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<GrupoProdutoAbstratoUserIdDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoUserIdDTO>;
+                var lista = _unitOfWork.Query<GrupoProdutoAbstratoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -942,7 +938,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -950,7 +946,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -958,7 +954,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -966,7 +962,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -974,7 +970,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAP_ONDAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -982,7 +978,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAP_GRAMATURAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -990,7 +986,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAP_ALTURAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -998,7 +994,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAP_NOME_COMERCIALQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1006,7 +1002,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ATIVOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1014,7 +1010,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_DT_CRIACAOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1022,7 +1018,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL1Query(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1030,7 +1026,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL2Query(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1038,7 +1034,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL3Query(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1046,7 +1042,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL4Query(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1054,7 +1050,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL5Query(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1062,7 +1058,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ID_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1070,7 +1066,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ID_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1078,7 +1074,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TYPEQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1086,7 +1082,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1094,7 +1090,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1102,7 +1098,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_RESINAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1110,7 +1106,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ENDURECEDOR_MIOLOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1118,7 +1114,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIN_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1126,7 +1122,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_COLUNA_DEQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1134,7 +1130,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_COLUNA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1142,7 +1138,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_CRUSHQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1150,7 +1146,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ID_FAMILIAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1158,7 +1154,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_REFILE_LARGURAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1166,7 +1162,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_REFILE_COMPRIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1174,7 +1170,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TIPO_LAPQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1182,7 +1178,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_LAP_PROLONGADOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1190,7 +1186,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TAMANHO_LAP_OND_SIMPLESQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1198,7 +1194,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TAMANHO_LAP_OND_DUPLAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1206,7 +1202,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLESQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1214,7 +1210,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TAMANHO_LAP_PROLONGADO_OND_DUPLAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1222,7 +1218,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_FEFCOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1230,7 +1226,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TOLERANCIA_DIMENCAO_CHAPA_DEQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1238,7 +1234,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TOLERANCIA_DIMENCAO_CHAPA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1246,7 +1242,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PREFIXO_ID_PRODUTOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1254,7 +1250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_COLUNA_CAIXAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1262,7 +1258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_COLUNA_CHAPAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1270,7 +1266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_MULLENQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1278,7 +1274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TENDENCIA_TOLERANCIA_PEDIDOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1286,7 +1282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PERCENTUAL_PERDA_MEDIAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1294,7 +1290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_FILTRA_SEQ_TRANSQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1302,7 +1298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_IMG_CAIXAQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1310,7 +1306,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1318,7 +1314,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1326,7 +1322,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1334,7 +1330,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters) as List<GrupoProdutoAbstratoDTO>;
+                var result = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

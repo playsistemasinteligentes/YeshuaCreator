@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRegistrosOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRegistrosOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RegistrosOnduladeiraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var registrosonduladeira = new RegistrosOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REG_ID, c.REG_RESPOSTA, c.REG_STATUS, c.REG_DATA_INICIO);
                  var domainResult = RegistrosOnduladeiraDomainBehavior.Apply(registrosonduladeira, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(registrosonduladeira);
-                     return Success("OK", registrosonduladeira);
+                     return Task.FromResult(Success("OK", registrosonduladeira));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, registrosonduladeira);
+                    return Task.FromResult(Error(e, registrosonduladeira));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

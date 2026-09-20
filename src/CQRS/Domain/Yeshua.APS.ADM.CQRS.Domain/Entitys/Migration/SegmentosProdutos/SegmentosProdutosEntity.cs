@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal SegmentosProdutosEntity(int? id, string grs_id, string pro_id, string seg_id ){
  Id = id; 
  GRS_ID = grs_id; 

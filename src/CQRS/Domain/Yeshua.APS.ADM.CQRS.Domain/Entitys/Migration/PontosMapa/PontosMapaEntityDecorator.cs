@@ -200,7 +200,7 @@
                                         }
                                     }
 
-                                    public string MUN_ID
+                                    public string? MUN_ID
                                     {
                                         get => _inner.MUN_ID;
                                         set

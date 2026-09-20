@@ -157,7 +157,7 @@
                                         }
                                     }
 
-                                    public string RiscoResumo
+                                    public string? RiscoResumo
                                     {
                                         get => _inner.RiscoResumo;
                                         set
@@ -171,7 +171,7 @@
                                         }
                                     }
 
-                                    public string PedidosResumo
+                                    public string? PedidosResumo
                                     {
                                         get => _inner.PedidosResumo;
                                         set
@@ -185,7 +185,7 @@
                                         }
                                     }
 
-                                    public string OpcoesConflitantesResumo
+                                    public string? OpcoesConflitantesResumo
                                     {
                                         get => _inner.OpcoesConflitantesResumo;
                                         set

@@ -19,11 +19,11 @@ namespace Repositorio.Outputs
     public partial record CanhotosDTO
     {
     public int id { get; set; }
-    public string car_id { get; set; }
-    public string ord_id { get; set; }
-    public string not_id { get; set; }
+    public string car_id { get; set; } = string.Empty;
+    public string ord_id { get; set; } = string.Empty;
+    public string not_id { get; set; } = string.Empty;
     public DateTime can_data_entrega { get; set; }
-    public string can_img { get; set; }
+    public string can_img { get; set; } = string.Empty;
     public Decimal can_lat_entrega { get; set; }
     public Decimal can_long_entrega { get; set; }
     public int tenantid { get; set; }

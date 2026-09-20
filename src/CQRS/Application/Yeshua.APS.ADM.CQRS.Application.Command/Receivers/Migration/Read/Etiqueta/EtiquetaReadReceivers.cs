@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<EtiquetaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<EtiquetaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.EtiquetaReadCommand c) 
              {    
                 var EtiquetaReadRepository = _repository.getEtiqueta(c);
-                return Success("OK", EtiquetaReadRepository);
+                return Task.FromResult(Success("OK", EtiquetaReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

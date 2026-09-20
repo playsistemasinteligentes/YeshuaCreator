@@ -19,20 +19,20 @@ namespace Repositorio.Outputs
     public partial record BoletimEstudoDTO
     {
     public int id { get; set; }
-    public string bol_id { get; set; }
-    public string bol_id_origem { get; set; }
-    public string bol_solver { get; set; }
-    public string bol_integracao { get; set; }
+    public string bol_id { get; set; } = string.Empty;
+    public string bol_id_origem { get; set; } = string.Empty;
+    public string bol_solver { get; set; } = string.Empty;
+    public string bol_integracao { get; set; } = string.Empty;
     public Decimal bol_sequencia { get; set; }
     public Decimal grp_pap_gramatura_programado { get; set; }
-    public string grp_id_programado { get; set; }
-    public string grp_papel1_programado { get; set; }
-    public string grp_papel2_programado { get; set; }
-    public string grp_papel3_programado { get; set; }
-    public string grp_papel4_programado { get; set; }
-    public string grp_papel5_programado { get; set; }
-    public string bol_status_interface { get; set; }
-    public string bol_tipo { get; set; }
+    public string grp_id_programado { get; set; } = string.Empty;
+    public string grp_papel1_programado { get; set; } = string.Empty;
+    public string grp_papel2_programado { get; set; } = string.Empty;
+    public string grp_papel3_programado { get; set; } = string.Empty;
+    public string grp_papel4_programado { get; set; } = string.Empty;
+    public string grp_papel5_programado { get; set; } = string.Empty;
+    public string bol_status_interface { get; set; } = string.Empty;
+    public string bol_tipo { get; set; } = string.Empty;
     public int bol_formato { get; set; }
     public Decimal bol_gramatura_papeis_programados { get; set; }
     public Decimal bol_gramatura_papeis_realizado { get; set; }

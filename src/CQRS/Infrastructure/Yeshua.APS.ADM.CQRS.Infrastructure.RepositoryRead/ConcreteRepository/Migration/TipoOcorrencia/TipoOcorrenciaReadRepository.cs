@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoOcorrenciaDTO> getTipoOcorrencia(Command.Read.TipoOcorrenciaReadCommand command )
         {
-            DataPagination<TipoOcorrenciaDTO> customResult = null;
+            var customResult = new DataPagination<TipoOcorrenciaDTO>();
             var customHandled = false;
             TryGetTipoOcorrenciaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoOcorrenciaTenantIDDTO> getTipoOcorrenciaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoOcorrenciaTenantIDDTO> lista;
             var query = _query.TipoOcorrenciaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoOcorrenciaTenantIDDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoOcorrenciaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoOcorrenciaUserIdDTO> getTipoOcorrenciaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoOcorrenciaUserIdDTO> lista;
             var query = _query.TipoOcorrenciaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoOcorrenciaUserIdDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoOcorrenciaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySprQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters) as List<TipoOcorrenciaDTO>;
+                var result = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

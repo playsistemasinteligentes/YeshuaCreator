@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<ItensCalendarioDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<ItensCalendarioDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.ItensCalendarioReadCommand c) 
              {    
                 var ItensCalendarioReadRepository = _repository.getItensCalendario(c);
-                return Success("OK", ItensCalendarioReadRepository);
+                return Task.FromResult(Success("OK", ItensCalendarioReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

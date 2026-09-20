@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel OpcaoPlanejamentoTransporteQuery(Command.Read.OpcaoPlanejamentoTransporteReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -59,7 +58,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByOpcaoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -73,7 +71,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByGrupoDecisaoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -87,7 +84,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByPesoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -101,7 +97,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByVolumeQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -115,7 +110,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByCustoEstimadoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -129,7 +123,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByAderenciaCubagemQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -143,7 +136,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByAderenciaJanelaEntregaQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -157,7 +149,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByRiscoResumoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -171,7 +162,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByPedidosResumoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -185,7 +175,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel ExistsByOpcoesConflitantesResumoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -199,7 +188,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByOpcaoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -213,7 +201,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByGrupoDecisaoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -227,7 +214,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByPesoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -241,7 +227,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByVolumeQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -255,7 +240,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByCustoEstimadoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -269,7 +253,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByAderenciaCubagemQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -283,7 +266,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByAderenciaJanelaEntregaQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -297,7 +279,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByRiscoResumoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -311,7 +292,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByPedidosResumoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -325,7 +305,6 @@ if (!string.IsNullOrEmpty(Command.OpcoesConflitantesResumo)) whereClauses.Add($"
         }
         public QueryModel FirstByOpcoesConflitantesResumoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

@@ -23,24 +23,24 @@
     public int IND_ID { get; set; }
     public string IND_DESCRICAO { get; set; }
     public int NEG_ID { get; set; }
-    public string DESC_CALCULO { get; set; }
+    public string? DESC_CALCULO { get; set; }
     public int IND_TIPOCOMPARADOR { get; set; }
     public int? IND_GRAFICO { get; set; }
-    public string IND_CONEXAO { get; set; }
+    public string? IND_CONEXAO { get; set; }
     public DateTime? IND_DTCRIACAO { get; set; }
-    public string RESPOSAVELIND { get; set; }
-    public string RESPOSAVELCARGA { get; set; }
-    public string PROCEXTRACAO { get; set; }
-    public string PER_ID { get; set; }
-    public string DIM_ID { get; set; }
-    public string DOM_EMPRESA { get; set; }
-    public string DOM_FILIAL { get; set; }
+    public string? RESPOSAVELIND { get; set; }
+    public string? RESPOSAVELCARGA { get; set; }
+    public string? PROCEXTRACAO { get; set; }
+    public string? PER_ID { get; set; }
+    public string? DIM_ID { get; set; }
+    public string? DOM_EMPRESA { get; set; }
+    public string? DOM_FILIAL { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal T_IndicadoresEntity(int ind_id, string ind_descricao, int neg_id, string desc_calculo, int ind_tipocomparador, int? ind_grafico, string ind_conexao, DateTime? ind_dtcriacao, string resposavelind, string resposavelcarga, string procextracao, string per_id, string dim_id, string dom_empresa, string dom_filial ){
+    private List<string> _erroMensagem = new List<string>();
+ internal T_IndicadoresEntity(int ind_id, string ind_descricao, int neg_id, string? desc_calculo, int ind_tipocomparador, int? ind_grafico, string? ind_conexao, DateTime? ind_dtcriacao, string? resposavelind, string? resposavelcarga, string? procextracao, string? per_id, string? dim_id, string? dom_empresa, string? dom_filial ){
  IND_ID = ind_id; 
  IND_DESCRICAO = ind_descricao; 
  NEG_ID = neg_id; 
@@ -48,7 +48,7 @@
  IND_TIPOCOMPARADOR = ind_tipocomparador; 
  IND_GRAFICO = ind_grafico; 
  IND_CONEXAO = ind_conexao; 
- IND_DTCRIACAO = (ind_dtcriacao < (new DateTime(1800, 1, 1))) ? DateTime.Now : ind_dtcriacao; 
+ IND_DTCRIACAO = ind_dtcriacao.HasValue && ind_dtcriacao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ind_dtcriacao; 
  RESPOSAVELIND = resposavelind; 
  RESPOSAVELCARGA = resposavelcarga; 
  PROCEXTRACAO = procextracao; 

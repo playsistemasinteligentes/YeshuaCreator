@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ConsultasGruposDTO> getConsultasGrupos(Command.Read.ConsultasGruposReadCommand command )
         {
-            DataPagination<ConsultasGruposDTO> customResult = null;
+            var customResult = new DataPagination<ConsultasGruposDTO>();
             var customHandled = false;
             TryGetConsultasGruposCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultasGruposTenantIDDTO> getConsultasGruposReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultasGruposTenantIDDTO> lista;
             var query = _query.ConsultasGruposTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ConsultasGruposTenantIDDTO>(query.Query,query.Parameters) as List<ConsultasGruposTenantIDDTO>;
+                var lista = _unitOfWork.Query<ConsultasGruposTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultasGruposUserIdDTO> getConsultasGruposReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultasGruposUserIdDTO> lista;
             var query = _query.ConsultasGruposUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ConsultasGruposUserIdDTO>(query.Query,query.Parameters) as List<ConsultasGruposUserIdDTO>;
+                var lista = _unitOfWork.Query<ConsultasGruposUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRU_IDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters) as List<ConsultasGruposDTO>;
+                var result = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

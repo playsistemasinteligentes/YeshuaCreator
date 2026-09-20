@@ -19,10 +19,10 @@ namespace Repositorio.Outputs
     public partial record ObjetoControlavelDTO
     {
     public int id { get; set; }
-    public string obj_id { get; set; }
-    public string obj_descricao { get; set; }
-    public string obj_tipo { get; set; }
-    public string obj_grupo { get; set; }
+    public string obj_id { get; set; } = string.Empty;
+    public string obj_descricao { get; set; } = string.Empty;
+    public string obj_tipo { get; set; } = string.Empty;
+    public string obj_grupo { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

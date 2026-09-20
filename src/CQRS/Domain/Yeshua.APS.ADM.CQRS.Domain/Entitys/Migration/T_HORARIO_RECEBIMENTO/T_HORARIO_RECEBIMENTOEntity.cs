@@ -29,7 +29,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal T_HORARIO_RECEBIMENTOEntity(int hre_dia_da_semana, DateTime hre_hora_inicial, DateTime hre_hora_final, string cli_id, int hre_id ){
  HRE_DIA_DA_SEMANA = hre_dia_da_semana; 
  HRE_HORA_INICIAL = (hre_hora_inicial < (new DateTime(1800, 1, 1))) ? DateTime.Now : hre_hora_inicial; 
@@ -42,9 +42,9 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(HRE_HORA_INICIAL == null || HRE_HORA_INICIAL < (new DateTime(1800, 1, 1)))
+   if(HRE_HORA_INICIAL < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("HRE HORA INICIAL deve ser informado.");
-   if(HRE_HORA_FINAL == null || HRE_HORA_FINAL < (new DateTime(1800, 1, 1)))
+   if(HRE_HORA_FINAL < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("HRE HORA FINAL deve ser informado.");
    if(string.IsNullOrEmpty(CLI_ID))
    this._erroMensagem.Add("CLI ID deve ser informado.");

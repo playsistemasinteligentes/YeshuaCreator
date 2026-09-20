@@ -30,7 +30,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal MovimentosEntity(int mov_id, string mov_data, Decimal mov_valor, int mov_plaid, int mov_unid, int? tr_unidade_uni_id ){
  MOV_ID = mov_id; 
  MOV_DATA = mov_data; 

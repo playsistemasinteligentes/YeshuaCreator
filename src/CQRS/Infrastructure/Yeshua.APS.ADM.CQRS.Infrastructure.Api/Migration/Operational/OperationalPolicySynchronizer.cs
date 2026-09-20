@@ -56,6 +56,31 @@ public sealed class OperationalPolicySynchronizer : BackgroundService
         }
     }
 
+    public async Task<OperationalLoggingPolicy> ReplaceAsync(
+        OperationalLoggingPolicyUpdate update,
+        CancellationToken cancellationToken)
+    {
+        var application = _identityProvider.Current.Application;
+        var environment = _identityProvider.Current.Environment;
+        var url = $"{_endpoint}/api/operational-control/{Uri.EscapeDataString(application)}/{Uri.EscapeDataString(environment)}";
+        using var response = await _httpClient.PutAsJsonAsync(
+            url,
+            update,
+            OperationalLoggingJsonContext.Default.OperationalLoggingPolicyUpdate,
+            cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        var policy = await response.Content.ReadFromJsonAsync(
+            OperationalLoggingJsonContext.Default.OperationalLoggingPolicy,
+            cancellationToken);
+        if (policy is null)
+            throw new InvalidOperationException("Operational control returned an empty policy.");
+
+        _state.Replace(policy);
+        MarkCentralAvailable();
+        return policy;
+    }
+
     private async Task RefreshAsync(CancellationToken cancellationToken)
     {
         try
@@ -123,6 +148,7 @@ public sealed class OperationalPolicySynchronizer : BackgroundService
 
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 [JsonSerializable(typeof(OperationalLoggingPolicy))]
+[JsonSerializable(typeof(OperationalLoggingPolicyUpdate))]
 internal partial class OperationalLoggingJsonContext : JsonSerializerContext
 {
 }//Dominio.Schemas.CQRS.SourceCodeInfrastructureOperationalControlSynchronizerMigration

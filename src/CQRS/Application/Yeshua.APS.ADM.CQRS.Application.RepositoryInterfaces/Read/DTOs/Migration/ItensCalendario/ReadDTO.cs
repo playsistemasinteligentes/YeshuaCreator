@@ -21,13 +21,13 @@ namespace Repositorio.Outputs
     public int ica_id { get; set; }
     public DateTime ica_data_de { get; set; }
     public DateTime ica_data_ate { get; set; }
-    public string ica_observacao { get; set; }
+    public string ica_observacao { get; set; } = string.Empty;
     public int ica_tipo { get; set; }
-    public string urm_id { get; set; }
-    public string urn_id { get; set; }
+    public string urm_id { get; set; } = string.Empty;
+    public string urn_id { get; set; } = string.Empty;
     public int cal_id { get; set; }
-    public string maq_id { get; set; }
-    public string pro_id { get; set; }
+    public string maq_id { get; set; } = string.Empty;
+    public string pro_id { get; set; } = string.Empty;
     public int ica_limpesa_maquina { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

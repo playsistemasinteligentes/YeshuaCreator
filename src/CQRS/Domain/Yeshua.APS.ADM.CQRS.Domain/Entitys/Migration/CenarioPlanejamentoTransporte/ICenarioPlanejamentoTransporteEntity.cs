@@ -28,7 +28,7 @@
     Decimal? CustoTotal { get; set; }
     Decimal? AderenciaCubagem { get; set; }
     Decimal? AtrasoPrevisto { get; set; }
-    string AlertasResumo { get; set; }
+    string? AlertasResumo { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

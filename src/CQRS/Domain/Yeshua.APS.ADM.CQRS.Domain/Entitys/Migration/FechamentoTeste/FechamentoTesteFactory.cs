@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IFechamentoTesteEntity Create(int? id, int fec_id, int? fec_qtd, string grp_id )
+                                    } public IFechamentoTesteEntity Create(int? id, int fec_id, int? fec_qtd, string? grp_id )
                             {
                                 return Create(null, id, fec_id, fec_qtd, grp_id);
                             }
 
                             public IFechamentoTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int fec_id, int? fec_qtd, string grp_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int fec_id, int? fec_qtd, string? grp_id )
                             {
                             var entity = new FechamentoTesteEntity(id, fec_id, fec_qtd, grp_id );
 

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMapaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMapaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MapaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mapa = new MapaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MAP_ID, c.PON_ID, c.PON_ID_VIZINHO, c.MAP_DISTANCIA, c.MAP_CUSTO_PEDAGIO_POR_EIXO, c.ROD_ID, c.MAP_ALTURA_ROD);
                  var domainResult = MapaDomainBehavior.Apply(mapa, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(mapa);
-                     return Success("OK", mapa);
+                     return Task.FromResult(Success("OK", mapa));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mapa);
+                    return Task.FromResult(Error(e, mapa));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

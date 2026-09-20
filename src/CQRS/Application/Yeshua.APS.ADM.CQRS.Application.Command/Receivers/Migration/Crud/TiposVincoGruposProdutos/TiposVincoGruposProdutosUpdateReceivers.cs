@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITiposVincoGruposProdutosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITiposVincoGruposProdutosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TiposVincoGruposProdutosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tiposvincogruposprodutos = new TiposVincoGruposProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2);
                  var domainResult = TiposVincoGruposProdutosDomainBehavior.Apply(tiposvincogruposprodutos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(tiposvincogruposprodutos);
-                     return Success("OK", tiposvincogruposprodutos);
+                     return Task.FromResult(Success("OK", tiposvincogruposprodutos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tiposvincogruposprodutos);
+                    return Task.FromResult(Error(e, tiposvincogruposprodutos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

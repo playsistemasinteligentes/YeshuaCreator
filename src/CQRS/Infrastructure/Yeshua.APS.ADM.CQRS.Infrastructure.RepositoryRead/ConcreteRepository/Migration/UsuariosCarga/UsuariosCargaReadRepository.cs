@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<UsuariosCargaDTO> getUsuariosCarga(Command.Read.UsuariosCargaReadCommand command )
         {
-            DataPagination<UsuariosCargaDTO> customResult = null;
+            var customResult = new DataPagination<UsuariosCargaDTO>();
             var customHandled = false;
             TryGetUsuariosCargaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<UsuariosCargaUSE_IDDTO> getUsuariosCargaReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UsuariosCargaUSE_IDDTO> lista;
             var query = _query.UsuariosCargaUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<UsuariosCargaUSE_IDDTO>(query.Query,query.Parameters) as List<UsuariosCargaUSE_IDDTO>;
+                var lista = _unitOfWork.Query<UsuariosCargaUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<UsuariosCargaTenantIDDTO> getUsuariosCargaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UsuariosCargaTenantIDDTO> lista;
             var query = _query.UsuariosCargaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<UsuariosCargaTenantIDDTO>(query.Query,query.Parameters) as List<UsuariosCargaTenantIDDTO>;
+                var lista = _unitOfWork.Query<UsuariosCargaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<UsuariosCargaUserIdDTO> getUsuariosCargaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UsuariosCargaUserIdDTO> lista;
             var query = _query.UsuariosCargaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<UsuariosCargaUserIdDTO>(query.Query,query.Parameters) as List<UsuariosCargaUserIdDTO>;
+                var lista = _unitOfWork.Query<UsuariosCargaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRGO_IDQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters) as List<UsuariosCargaDTO>;
+                var result = _unitOfWork.Query<UsuariosCargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

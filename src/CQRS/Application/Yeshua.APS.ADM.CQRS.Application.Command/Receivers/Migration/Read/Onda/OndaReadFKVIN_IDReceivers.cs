@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<OndaVIN_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<OndaVIN_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var OndaReadRepository = _repository.getOndaReadFKVIN_ID(c);
-                return Success("OK", OndaReadRepository);
+                return Task.FromResult(Success("OK", OndaReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

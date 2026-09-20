@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IOperacoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IOperacoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.OperacoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var operacoes = new OperacoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OPE_TIPO_REGISTRO, c.OPE_ID, c.GMA_ID, c.MAQ_ID, c.PRO_ID, c.OPE_EXCECAO, c.ROT_SEQ_TRANFORMACAO, c.ORD_ID, c.FPR_SEQ_REPETICAO);
                  var domainResult = OperacoesDomainBehavior.Apply(operacoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(operacoes);
-                     return Success("OK", operacoes);
+                     return Task.FromResult(Success("OK", operacoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, operacoes);
+                    return Task.FromResult(Error(e, operacoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

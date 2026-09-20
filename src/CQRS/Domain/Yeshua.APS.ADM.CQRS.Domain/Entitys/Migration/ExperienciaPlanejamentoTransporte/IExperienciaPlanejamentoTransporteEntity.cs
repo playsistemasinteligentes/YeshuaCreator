@@ -22,15 +22,15 @@
 {
     int? Id { get; set; }
     int Tipo { get; set; }
-    string Referencia { get; set; }
-    string PedidoId { get; set; }
-    string ClienteId { get; set; }
-    string Municipio { get; set; }
-    string Regiao { get; set; }
-    string RotaId { get; set; }
+    string? Referencia { get; set; }
+    string? PedidoId { get; set; }
+    string? ClienteId { get; set; }
+    string? Municipio { get; set; }
+    string? Regiao { get; set; }
+    string? RotaId { get; set; }
     Decimal? Peso { get; set; }
     Decimal? Volume { get; set; }
-    string Observacao { get; set; }
+    string? Observacao { get; set; }
     DateTime CriadoEm { get; set; }
     string CriadoPor { get; set; }
     int? TenantID { get; set; }

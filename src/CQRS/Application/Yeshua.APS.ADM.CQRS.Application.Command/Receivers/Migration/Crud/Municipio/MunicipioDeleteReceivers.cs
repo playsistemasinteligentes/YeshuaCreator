@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMunicipioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMunicipioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MunicipioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var municipio = new MunicipioFactory(_logger, _domainTrackingPolicy).Create(context, c.MUN_ID, c.MUN_NOME, c.UF_COD, c.MUN_CODIGO_IBGE, c.MUN_LATITUDE, c.MUN_LONGITUDE, c.MUN_ID_INTEGRACAO_ERP, c.MUN_CODIGO_SIAFI, c.MUN_CODIGO_CNPJ, c.MUN_DISTANCIA_KM);
                  var domainResult = MunicipioDomainBehavior.Apply(municipio, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(municipio);
-                     return Success("OK", municipio);
+                     return Task.FromResult(Success("OK", municipio));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, municipio);
+                    return Task.FromResult(Error(e, municipio));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

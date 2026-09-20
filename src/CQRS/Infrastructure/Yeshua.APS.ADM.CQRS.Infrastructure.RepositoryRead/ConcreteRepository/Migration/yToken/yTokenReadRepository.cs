@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<yTokenDTO> getyToken(Command.Read.yTokenReadCommand command , bool TakeOffTenantID = false)
         {
-            DataPagination<yTokenDTO> customResult = null;
+            var customResult = new DataPagination<yTokenDTO>();
             var customHandled = false;
             TryGetyTokenCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<yTokenTenantIDDTO> getyTokenReadFKTenantID(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<yTokenTenantIDDTO> lista;
             var query = _query.yTokenTenantIDQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<yTokenTenantIDDTO>(query.Query,query.Parameters) as List<yTokenTenantIDDTO>;
+                var lista = _unitOfWork.Query<yTokenTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<yTokenUserIdDTO> getyTokenReadFKUserId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<yTokenUserIdDTO> lista;
             var query = _query.yTokenUserIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<yTokenUserIdDTO>(query.Query,query.Parameters) as List<yTokenUserIdDTO>;
+                var lista = _unitOfWork.Query<yTokenUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTokenHashQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByConnectorKeyQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByActiveQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidUntilQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLastUsedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters) as List<yTokenDTO>;
+                var result = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

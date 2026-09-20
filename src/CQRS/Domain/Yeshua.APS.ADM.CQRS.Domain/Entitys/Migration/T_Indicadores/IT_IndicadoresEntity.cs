@@ -23,18 +23,18 @@
     int IND_ID { get; set; }
     string IND_DESCRICAO { get; set; }
     int NEG_ID { get; set; }
-    string DESC_CALCULO { get; set; }
+    string? DESC_CALCULO { get; set; }
     int IND_TIPOCOMPARADOR { get; set; }
     int? IND_GRAFICO { get; set; }
-    string IND_CONEXAO { get; set; }
+    string? IND_CONEXAO { get; set; }
     DateTime? IND_DTCRIACAO { get; set; }
-    string RESPOSAVELIND { get; set; }
-    string RESPOSAVELCARGA { get; set; }
-    string PROCEXTRACAO { get; set; }
-    string PER_ID { get; set; }
-    string DIM_ID { get; set; }
-    string DOM_EMPRESA { get; set; }
-    string DOM_FILIAL { get; set; }
+    string? RESPOSAVELIND { get; set; }
+    string? RESPOSAVELCARGA { get; set; }
+    string? PROCEXTRACAO { get; set; }
+    string? PER_ID { get; set; }
+    string? DIM_ID { get; set; }
+    string? DOM_EMPRESA { get; set; }
+    string? DOM_FILIAL { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

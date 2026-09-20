@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TemplatesGrupoMaquinaDTO> getTemplatesGrupoMaquina(Command.Read.TemplatesGrupoMaquinaReadCommand command )
         {
-            DataPagination<TemplatesGrupoMaquinaDTO> customResult = null;
+            var customResult = new DataPagination<TemplatesGrupoMaquinaDTO>();
             var customHandled = false;
             TryGetTemplatesGrupoMaquinaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TemplatesGrupoMaquinaTenantIDDTO> getTemplatesGrupoMaquinaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemplatesGrupoMaquinaTenantIDDTO> lista;
             var query = _query.TemplatesGrupoMaquinaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TemplatesGrupoMaquinaTenantIDDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaTenantIDDTO>;
+                var lista = _unitOfWork.Query<TemplatesGrupoMaquinaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TemplatesGrupoMaquinaUserIdDTO> getTemplatesGrupoMaquinaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemplatesGrupoMaquinaUserIdDTO> lista;
             var query = _query.TemplatesGrupoMaquinaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TemplatesGrupoMaquinaUserIdDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaUserIdDTO>;
+                var lista = _unitOfWork.Query<TemplatesGrupoMaquinaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGMA_IDQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters) as List<TemplatesGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

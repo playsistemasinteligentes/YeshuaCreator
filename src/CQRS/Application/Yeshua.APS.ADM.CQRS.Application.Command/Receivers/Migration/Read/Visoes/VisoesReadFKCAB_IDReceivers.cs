@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<VisoesCAB_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<VisoesCAB_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var VisoesReadRepository = _repository.getVisoesReadFKCAB_ID(c);
-                return Success("OK", VisoesReadRepository);
+                return Task.FromResult(Success("OK", VisoesReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

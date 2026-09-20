@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<ColaboradorTURM_idDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<ColaboradorTURM_idDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var ColaboradorReadRepository = _repository.getColaboradorReadFKTURM_id(c);
-                return Success("OK", ColaboradorReadRepository);
+                return Task.FromResult(Success("OK", ColaboradorReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

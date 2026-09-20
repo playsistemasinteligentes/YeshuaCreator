@@ -191,7 +191,7 @@
                                         }
                                     }
 
-                                    public string ErrorMessage
+                                    public string? ErrorMessage
                                     {
                                         get => _inner.ErrorMessage;
                                         set
@@ -205,7 +205,7 @@
                                         }
                                     }
 
-                                    public string Payload
+                                    public string? Payload
                                     {
                                         get => _inner.Payload;
                                         set

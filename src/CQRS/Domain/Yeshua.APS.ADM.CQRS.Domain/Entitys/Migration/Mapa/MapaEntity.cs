@@ -32,7 +32,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal MapaEntity(int? id, int map_id, string pon_id, string pon_id_vizinho, Decimal map_distancia, Decimal? map_custo_pedagio_por_eixo, int? rod_id, Decimal? map_altura_rod ){
  Id = id; 
  MAP_ID = map_id; 

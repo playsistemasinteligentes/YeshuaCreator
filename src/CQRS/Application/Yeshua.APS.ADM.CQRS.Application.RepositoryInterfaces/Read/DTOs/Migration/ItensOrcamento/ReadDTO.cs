@@ -22,19 +22,19 @@ namespace Repositorio.Outputs
     public int ito_id { get; set; }
     public int orc_id { get; set; }
     public int tip_id { get; set; }
-    public string pro_id { get; set; }
-    public string ito_obs { get; set; }
+    public string pro_id { get; set; } = string.Empty;
+    public string ito_obs { get; set; } = string.Empty;
     public Decimal ito_quantidade { get; set; }
     public Decimal ito_custo { get; set; }
     public Decimal ito_margem { get; set; }
     public Decimal ito_valor_unitario { get; set; }
     public DateTime ito_verssao_custo { get; set; }
-    public string ito_status { get; set; }
+    public string ito_status { get; set; } = string.Empty;
     public Decimal ito_erp_custos_fixos { get; set; }
     public Decimal ito_erp_custos_variaveis { get; set; }
     public Decimal ito_erp_despesas_var_venda { get; set; }
     public Decimal ito_erp_impostos { get; set; }
-    public string grp_id_composicao { get; set; }
+    public string grp_id_composicao { get; set; } = string.Empty;
     public Decimal ito_largura { get; set; }
     public Decimal ito_comprimento { get; set; }
     public int tenantid { get; set; }

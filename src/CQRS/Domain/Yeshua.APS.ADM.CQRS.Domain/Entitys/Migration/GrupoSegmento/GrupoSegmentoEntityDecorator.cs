@@ -85,7 +85,7 @@
                                         }
                                     }
 
-                                    public string GRS_DESCRICAO
+                                    public string? GRS_DESCRICAO
                                     {
                                         get => _inner.GRS_DESCRICAO;
                                         set
@@ -99,7 +99,7 @@
                                         }
                                     }
 
-                                    public string GRS_INTEGRACAO_ERP
+                                    public string? GRS_INTEGRACAO_ERP
                                     {
                                         get => _inner.GRS_INTEGRACAO_ERP;
                                         set

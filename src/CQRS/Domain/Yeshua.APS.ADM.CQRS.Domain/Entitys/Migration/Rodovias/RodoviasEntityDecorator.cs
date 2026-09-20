@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string ROD_DESCRICAO
+                                    public string? ROD_DESCRICAO
                                     {
                                         get => _inner.ROD_DESCRICAO;
                                         set

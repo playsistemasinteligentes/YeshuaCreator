@@ -21,11 +21,11 @@
                     public interface IMensagemEntity
 {
     string MEN_ID { get; set; }
-    string MEN_SEND { get; set; }
+    string? MEN_SEND { get; set; }
     DateTime? MEN_EMISSION { get; set; }
-    string MEN_STATUS { get; set; }
-    string MEN_RECEIVE { get; set; }
-    string MEN_TYPE { get; set; }
+    string? MEN_STATUS { get; set; }
+    string? MEN_RECEIVE { get; set; }
+    string? MEN_TYPE { get; set; }
     Decimal? MEN_QTD_TRY_SEND { get; set; }
     DateTime? MEN_DATE_TRY_SEND { get; set; }
     int? TenantID { get; set; }

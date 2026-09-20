@@ -35,7 +35,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal OrderTrackEntity(int? id, int otk_id, Decimal otk_sequencia, int otk_verssao, string ord_id, string otk_evento, DateTime? otk_data_necessidade_de, DateTime? otk_data_necessidade_ate, DateTime? otk_data_prevista, DateTime? otk_data_realizada, int? fpr_id ){
  Id = id; 
  OTK_ID = otk_id; 
@@ -43,10 +43,10 @@
  OTK_VERSSAO = otk_verssao; 
  ORD_ID = ord_id; 
  OTK_EVENTO = otk_evento; 
- OTK_DATA_NECESSIDADE_DE = (otk_data_necessidade_de < (new DateTime(1800, 1, 1))) ? DateTime.Now : otk_data_necessidade_de; 
- OTK_DATA_NECESSIDADE_ATE = (otk_data_necessidade_ate < (new DateTime(1800, 1, 1))) ? DateTime.Now : otk_data_necessidade_ate; 
- OTK_DATA_PREVISTA = (otk_data_prevista < (new DateTime(1800, 1, 1))) ? DateTime.Now : otk_data_prevista; 
- OTK_DATA_REALIZADA = (otk_data_realizada < (new DateTime(1800, 1, 1))) ? DateTime.Now : otk_data_realizada; 
+ OTK_DATA_NECESSIDADE_DE = otk_data_necessidade_de.HasValue && otk_data_necessidade_de.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_necessidade_de; 
+ OTK_DATA_NECESSIDADE_ATE = otk_data_necessidade_ate.HasValue && otk_data_necessidade_ate.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_necessidade_ate; 
+ OTK_DATA_PREVISTA = otk_data_prevista.HasValue && otk_data_prevista.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_prevista; 
+ OTK_DATA_REALIZADA = otk_data_realizada.HasValue && otk_data_realizada.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_realizada; 
  FPR_ID = fpr_id; 
  Deleted = false; 
  Changed = DateTime.Now; 

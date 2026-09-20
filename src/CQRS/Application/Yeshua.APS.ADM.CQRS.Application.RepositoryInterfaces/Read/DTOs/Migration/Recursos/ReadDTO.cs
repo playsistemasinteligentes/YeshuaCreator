@@ -18,11 +18,11 @@ namespace Repositorio.Outputs
 {
     public partial record RecursosDTO
     {
-    public string rec_id { get; set; }
-    public string rec_descricao { get; set; }
+    public string rec_id { get; set; } = string.Empty;
+    public string rec_descricao { get; set; } = string.Empty;
     public int cal_id { get; set; }
-    public string rec_control_ip { get; set; }
-    public string gre_id { get; set; }
+    public string rec_control_ip { get; set; } = string.Empty;
+    public string gre_id { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record OrderCLI_IDDTO
     {
-    public string cli_id { get; set; }
+    public string cli_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

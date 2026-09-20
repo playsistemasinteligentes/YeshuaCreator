@@ -22,7 +22,7 @@
 {
     public int EST_ID { get; set; }
     public int? ITO_ID { get; set; }
-    public string ORD_ID { get; set; }
+    public string? ORD_ID { get; set; }
     public string PRO_ID { get; set; }
     public string PRO_ID_PRODUTO { get; set; }
     public string PRO_ID_COMPONENTE { get; set; }
@@ -40,8 +40,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal EstruturaCustoEntity(int est_id, int? ito_id, string ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal EstruturaCustoEntity(int est_id, int? ito_id, string? ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao ){
  EST_ID = est_id; 
  ITO_ID = ito_id; 
  ORD_ID = ord_id; 

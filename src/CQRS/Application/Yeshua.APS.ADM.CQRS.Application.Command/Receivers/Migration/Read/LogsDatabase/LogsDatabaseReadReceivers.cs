@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<LogsDatabaseDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<LogsDatabaseDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.LogsDatabaseReadCommand c) 
              {    
                 var LogsDatabaseReadRepository = _repository.getLogsDatabase(c);
-                return Success("OK", LogsDatabaseReadRepository);
+                return Task.FromResult(Success("OK", LogsDatabaseReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

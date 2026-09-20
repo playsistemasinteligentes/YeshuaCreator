@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct EstruturaCustoReadFKORD_IDCommand : ICommand
     {
-        public string ORD_ID { get; set; }
+        public string? ORD_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

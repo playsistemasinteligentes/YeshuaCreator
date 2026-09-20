@@ -2633,9 +2633,18 @@ app.Run();");
 }}");
 
             SyncApplicationInfrastructureFrontStandardFiles(projectDirectory);
-            WriteTextIfMissing(
+            var applicationName = GetApplicationName();
+            var applicationExtensionPath = $"/Custon/Apps/{applicationName}/extensions.js";
+            WriteText(
                 Path.Combine(projectDirectory, "wwwroot", "Custon", "extensions.js"),
-                @"window.yeshuaExtensions = window.yeshuaExtensions || {};");
+                $@"window.yeshuaExtensions = window.yeshuaExtensions || {{}};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {{}};
+window.yeshuaAppExtensionReady = import('{applicationExtensionPath}')
+    .catch(error => console.error('Falha ao carregar extensoes do aplicativo {applicationName}.', error));");
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "wwwroot", "Custon", "Apps", applicationName, "extensions.js"),
+                @"window.yeshuaExtensions = window.yeshuaExtensions || {};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};");
         }
 
         private int GetApplicationInfrastructureFrontPort()

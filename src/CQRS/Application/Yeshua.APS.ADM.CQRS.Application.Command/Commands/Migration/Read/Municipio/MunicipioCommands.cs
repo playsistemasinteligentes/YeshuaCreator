@@ -13,15 +13,15 @@ namespace Command.Read
 {
     public struct MunicipioReadCommand : ICommandRead
     {
-        public string MUN_ID { get; set; }
-        public string MUN_NOME { get; set; }
-        public string UF_COD { get; set; }
-        public string MUN_CODIGO_IBGE { get; set; }
+        public string? MUN_ID { get; set; }
+        public string? MUN_NOME { get; set; }
+        public string? UF_COD { get; set; }
+        public string? MUN_CODIGO_IBGE { get; set; }
         public Decimal? MUN_LATITUDE { get; set; }
         public Decimal? MUN_LONGITUDE { get; set; }
-        public string MUN_ID_INTEGRACAO_ERP { get; set; }
-        public string MUN_CODIGO_SIAFI { get; set; }
-        public string MUN_CODIGO_CNPJ { get; set; }
+        public string? MUN_ID_INTEGRACAO_ERP { get; set; }
+        public string? MUN_CODIGO_SIAFI { get; set; }
+        public string? MUN_CODIGO_CNPJ { get; set; }
         public Decimal? MUN_DISTANCIA_KM { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

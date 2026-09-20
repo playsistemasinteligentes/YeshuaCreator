@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITransportadoraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITransportadoraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TransportadoraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var transportadora = new TransportadoraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TRA_ID, c.TRA_NOME, c.TRA_CNPJ, c.TRA_INSCRICAO_ESTADUAL, c.TRA_RNTRC, c.TRA_EMAIL, c.TRA_RESPONSAVEL, c.TRA_FONE, c.TRA_ID_INTEGRACAO, c.TRA_ID_INTEGRACAO_ERP);
                  var domainResult = TransportadoraDomainBehavior.Apply(transportadora, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(transportadora);
-                     return Success("OK", transportadora);
+                     return Task.FromResult(Success("OK", transportadora));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, transportadora);
+                    return Task.FromResult(Error(e, transportadora));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

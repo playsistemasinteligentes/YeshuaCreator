@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct ProdutoReadFKUNI_IDCommand : ICommand
     {
-        public string UNI_ID { get; set; }
+        public string? UNI_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

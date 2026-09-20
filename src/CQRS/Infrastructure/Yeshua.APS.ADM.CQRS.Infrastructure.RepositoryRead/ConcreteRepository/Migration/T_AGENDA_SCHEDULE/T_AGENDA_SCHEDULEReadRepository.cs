@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_AGENDA_SCHEDULEDTO> getT_AGENDA_SCHEDULE(Command.Read.T_AGENDA_SCHEDULEReadCommand command )
         {
-            DataPagination<T_AGENDA_SCHEDULEDTO> customResult = null;
+            var customResult = new DataPagination<T_AGENDA_SCHEDULEDTO>();
             var customHandled = false;
             TryGetT_AGENDA_SCHEDULECustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_AGENDA_SCHEDULETenantIDDTO> getT_AGENDA_SCHEDULEReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_AGENDA_SCHEDULETenantIDDTO> lista;
             var query = _query.T_AGENDA_SCHEDULETenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_AGENDA_SCHEDULETenantIDDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULETenantIDDTO>;
+                var lista = _unitOfWork.Query<T_AGENDA_SCHEDULETenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_AGENDA_SCHEDULEUserIdDTO> getT_AGENDA_SCHEDULEReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_AGENDA_SCHEDULEUserIdDTO> lista;
             var query = _query.T_AGENDA_SCHEDULEUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_AGENDA_SCHEDULEUserIdDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEUserIdDTO>;
+                var lista = _unitOfWork.Query<T_AGENDA_SCHEDULEUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_DATA_ESPECIFICAQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_HORARIO_INICIOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_HORARIO_FIMQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_SEGUNDAQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_TERCAQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_QUARTAQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_QUINTAQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_SEXTAQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_SABADOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_DOMINGOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_INTERVALOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_ORDEM_EXECUCAOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_PARAMETROSQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_EXCECAOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAGE_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters) as List<T_AGENDA_SCHEDULEDTO>;
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

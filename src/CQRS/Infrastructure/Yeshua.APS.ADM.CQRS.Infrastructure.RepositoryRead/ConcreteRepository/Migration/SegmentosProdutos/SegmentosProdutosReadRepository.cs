@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<SegmentosProdutosDTO> getSegmentosProdutos(Command.Read.SegmentosProdutosReadCommand command )
         {
-            DataPagination<SegmentosProdutosDTO> customResult = null;
+            var customResult = new DataPagination<SegmentosProdutosDTO>();
             var customHandled = false;
             TryGetSegmentosProdutosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<SegmentosProdutosTenantIDDTO> getSegmentosProdutosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SegmentosProdutosTenantIDDTO> lista;
             var query = _query.SegmentosProdutosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<SegmentosProdutosTenantIDDTO>(query.Query,query.Parameters) as List<SegmentosProdutosTenantIDDTO>;
+                var lista = _unitOfWork.Query<SegmentosProdutosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<SegmentosProdutosUserIdDTO> getSegmentosProdutosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SegmentosProdutosUserIdDTO> lista;
             var query = _query.SegmentosProdutosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<SegmentosProdutosUserIdDTO>(query.Query,query.Parameters) as List<SegmentosProdutosUserIdDTO>;
+                var lista = _unitOfWork.Query<SegmentosProdutosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRS_IDQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEG_IDQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters) as List<SegmentosProdutosDTO>;
+                var result = _unitOfWork.Query<SegmentosProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IRespInspVisualEntity Create(int? id, int riv_id, int? ipv_id, int? iti_id, string riv_status )
+                                    } public IRespInspVisualEntity Create(int? id, int riv_id, int? ipv_id, int? iti_id, string? riv_status )
                             {
                                 return Create(null, id, riv_id, ipv_id, iti_id, riv_status);
                             }
 
                             public IRespInspVisualEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int riv_id, int? ipv_id, int? iti_id, string riv_status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int riv_id, int? ipv_id, int? iti_id, string? riv_status )
                             {
                             var entity = new RespInspVisualEntity(id, riv_id, ipv_id, iti_id, riv_status );
 

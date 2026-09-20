@@ -86,7 +86,7 @@
                                         }
                                     }
 
-                                    public string OBJ_DESCRICAO
+                                    public string? OBJ_DESCRICAO
                                     {
                                         get => _inner.OBJ_DESCRICAO;
                                         set
@@ -100,7 +100,7 @@
                                         }
                                     }
 
-                                    public string OBJ_TIPO
+                                    public string? OBJ_TIPO
                                     {
                                         get => _inner.OBJ_TIPO;
                                         set
@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string OBJ_GRUPO
+                                    public string? OBJ_GRUPO
                                     {
                                         get => _inner.OBJ_GRUPO;
                                         set

@@ -28,9 +28,9 @@
     public Decimal? CustoTotal { get; set; }
     public Decimal? AderenciaCubagem { get; set; }
     public Decimal? AtrasoPrevisto { get; set; }
-    public string AlertasResumo { get; set; }
-    private List<string> _erroMensagem = null;
- internal CenarioPlanejamentoTransporteEntity(string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string alertasresumo ){
+    public string? AlertasResumo { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal CenarioPlanejamentoTransporteEntity(string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string? alertasresumo ){
  CenarioId = cenarioid; 
  Descricao = descricao; 
  Objetivo = objetivo; 

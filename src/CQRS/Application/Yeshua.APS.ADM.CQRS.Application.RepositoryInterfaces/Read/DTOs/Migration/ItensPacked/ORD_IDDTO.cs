@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record ItensPackedORD_IDDTO
     {
-    public string ord_id { get; set; }
+    public string ord_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

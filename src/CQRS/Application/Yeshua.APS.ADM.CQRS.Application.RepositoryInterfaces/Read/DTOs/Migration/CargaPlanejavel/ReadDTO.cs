@@ -18,10 +18,10 @@ namespace Repositorio.Outputs
 {
     public partial record CargaPlanejavelDTO
     {
-    public string cargaid { get; set; }
-    public string status { get; set; }
-    public string transportadoraid { get; set; }
-    public string veiculoid { get; set; }
+    public string cargaid { get; set; } = string.Empty;
+    public string status { get; set; } = string.Empty;
+    public string transportadoraid { get; set; } = string.Empty;
+    public string veiculoid { get; set; } = string.Empty;
     public int tipoveiculoid { get; set; }
     public Decimal pesoteorico { get; set; }
     public Decimal volumeteorico { get; set; }
@@ -29,7 +29,7 @@ namespace Repositorio.Outputs
     public DateTime fimjanelaembarque { get; set; }
     public DateTime embarquealvo { get; set; }
     public int quantidadepedidos { get; set; }
-    public string alertasresumo { get; set; }
+    public string alertasresumo { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

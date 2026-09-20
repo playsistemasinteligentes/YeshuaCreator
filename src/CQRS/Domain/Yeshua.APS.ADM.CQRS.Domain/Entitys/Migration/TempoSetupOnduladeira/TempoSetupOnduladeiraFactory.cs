@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ITempoSetupOnduladeiraEntity Create(int tem_id, string ond_id_de, string ond_id_para, string tem_resina_de, string tem_resina_para, int? tem_tempo )
+                                    } public ITempoSetupOnduladeiraEntity Create(int tem_id, string? ond_id_de, string? ond_id_para, string? tem_resina_de, string? tem_resina_para, int? tem_tempo )
                             {
                                 return Create(null, tem_id, ond_id_de, ond_id_para, tem_resina_de, tem_resina_para, tem_tempo);
                             }
 
                             public ITempoSetupOnduladeiraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int tem_id, string ond_id_de, string ond_id_para, string tem_resina_de, string tem_resina_para, int? tem_tempo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int tem_id, string? ond_id_de, string? ond_id_para, string? tem_resina_de, string? tem_resina_para, int? tem_tempo )
                             {
                             var entity = new TempoSetupOnduladeiraEntity(tem_id, ond_id_de, ond_id_para, tem_resina_de, tem_resina_para, tem_tempo );
 

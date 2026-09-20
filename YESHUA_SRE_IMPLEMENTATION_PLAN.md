@@ -19,7 +19,7 @@ plano registra, para cada entrega:
 Este arquivo nao deve apresentar uma capacidade planejada como se estivesse
 disponivel. Toda afirmacao usa um dos estados abaixo.
 
-A linha de base foi avaliada no repositorio em 2026-08-21. Ela comprova a
+A linha de base foi reavaliada no repositorio em 2026-09-19. Ela comprova a
 existencia de codigo, nao a homologacao de um ambiente de producao.
 
 | Estado | Significado |
@@ -94,25 +94,41 @@ intencao e a rastreabilidade; somente a evidencia executada comprova o gate.
 - Smoke tests CRUD gerados por aplicativo e ordenados por dependencias.
 - Healthcheck de banco da API de Inteligencia Operacional.
 - Modelo de infraestrutura capaz de renderizar healthchecks de containers.
+- Identidade imutavel de runtime gerada para API e Worker, contendo aplicativo,
+  ambiente, versao, commit e horario de build.
+- Liveness e readiness basicos gerados para API e Worker.
+- Telemetria de Commands concentrada em `ReciverBase`, sem instrumentacao
+  repetida em cada receiver.
+- Telemetria de repositorio concentrada em `RepositoryTelemetry`, com
+  identificador de consulta e sem registrar SQL ou parametros.
+- Politica operacional central por aplicativo e ambiente, sincronizada em
+  runtime sem reiniciar os hosts.
+- Runner pos-build capaz de correlacionar identidade, health e smoke CRUD e
+  produzir relatorio unico.
 
 ### 2.2 Capacidades Parciais
 
 - `TraceId` existe em HTTP, Worker e Receiver, mas nao representa o conjunto
-  completo de identidades operacionais.
+  completo de identidades operacionais nem sua cadeia causal.
 - `CorrelationId` existe em filas, Inbox, Outbox e Saga, mas nao ha um contrato
   unico de propagacao ponta a ponta.
 - Receivers registram inicio, fim, duracao e excecao, mas nao produzem ainda o
   contrato D0/D1 completo.
 - Workers registram inicio e falhas, mas nao registram uma narrativa causal
   padronizada.
-- Healthchecks existem em partes da infraestrutura, mas nao formam um gate
-  pos-build unico.
+- Healthchecks e o runner pos-build existem, mas o gate completo ainda nao foi
+  homologado contra um ambiente publicado com todas as evidencias G1-G7.
 - A API operacional centraliza fontes estaticas, mas ainda nao coleta logs,
   metricas, traces, bancos operacionais ou servicos externos.
+- A politica operacional possui nivel, profundidade, alvos e expiracao, mas
+  ainda nao implementa aprovacao, justificativa, auditoria persistente, limite
+  de volume e lista positiva de campos capturaveis.
+- Os snapshots de telemetria vivem em memoria nos processos e ainda nao
+  constituem um repositorio central duravel de evidencias.
 
 ### 2.3 Capacidades Nao Implementadas
 
-- Modelo runtime dos tres eixos independentes.
+- Modelo runtime completo dos tres eixos independentes.
 - `RootOperationId`, `OperationId`, `ExecutionId` e `CausationId` como contrato
   universal.
 - Resultados tecnico e de negocio registrados separadamente.
@@ -174,6 +190,79 @@ intencao e a rastreabilidade; somente a evidencia executada comprova o gate.
 - Produzir bundles de investigacao.
 - Expor capacidades a pessoas, Codex e futuros agentes.
 - Separar fatos, inferencias, hipoteses e recomendacoes.
+
+### 3.1 Avaliacao Arquitetural
+
+O Yeshua possui as pecas corretas, mas elas ainda formam ilhas. A implementacao
+nao deve criar um segundo logger, um segundo contexto, um segundo controle de
+profundidade ou um runner paralelo. A evolucao deve convergir sobre os pontos
+ja existentes:
+
+| Necessidade do padrao | Ponto de evolucao existente |
+| --- | --- |
+| Identidade operacional | `IExecutionContext` e propagacao HTTP/Worker |
+| Inicio, fim, falha e duracao | `ReciverBase` |
+| Dependencias de dados | `RepositoryTelemetry` e `InstrumentedUnitOfWork` |
+| Saga, Inbox, Outbox e Worker | Executor e workers ja gerados pela Engine |
+| Identidade do artefato | `RuntimeIdentity` e provider gerado |
+| Controle D0-D2 | `OperationalControl` e sincronizador gerado |
+| Evidencia local | `ILogger` estruturado e snapshot de telemetria |
+| Evidencia central | `Yeshua.OperationalIntelligence.Api` |
+| Correlacao com fonte | `Yeshua.Engine.AIContextBuilder` |
+| Gate de promocao | `Yeshua.OperationalIntelligence.PostBuild` |
+
+### 3.2 Arquitetura Alvo
+
+O fluxo alvo e unico:
+
+`borda -> IExecutionContext -> Command/Receiver -> Repository/Saga/Worker -> evento operacional sanitizado -> provider -> Inteligencia Operacional -> contexto de fonte`
+
+1. `Shared` define contratos pequenos: identidades, tres eixos, resultados,
+   classificacao de dados, envelope operacional, sanitizador e publisher.
+2. A `Engine` gera descritores estaticos, propagacao e chamadas nos pontos
+   arquiteturais existentes. Nao usa reflection no caminho quente.
+3. O `Studio/DSL` declara somente semantica de negocio que nao pode ser
+   inferida: operacao, resultado de negocio, classificacao sensivel e politica
+   excepcional de profundidade.
+4. O aplicativo informa fatos de negocio especificos no miolo customizado; nao
+   escolhe provider nem conhece armazenamento central.
+5. A infraestrutura coleta stdout/eventos fora da transacao de negocio. Uma
+   indisponibilidade da observabilidade nunca derruba a operacao principal.
+6. A `OperationalIntelligence.Api` persiste, consulta e correlaciona evidencias
+   por identidade e versao. O orquestrador atual recebe um
+   `RuntimeContextCollector`, sem substituir o `SourceCodeContextCollector`.
+7. O `PostBuild` demonstra os gates e produz evidencia associada exatamente ao
+   mesmo artefato que foi publicado.
+
+### 3.3 Regras De Desempenho E Simplicidade
+
+- D0/D1 usam chamadas diretas e payload pequeno.
+- A politica e consultada antes de montar detalhes, serializar ou capturar
+  dados.
+- D2 e temporario, direcionado e auditado; D3/D4 nao entram no primeiro ciclo.
+- IDs, nomes de operacao e descritores sao gerados ou calculados uma vez.
+- Publicacao remota nao ocorre de forma sincrona dentro de Receiver ou
+  Repository.
+- SQL, parametros, senha, token, certificado, chave privada e payload bruto nao
+  entram em evidencia por padrao.
+- Nenhum dado `NeverCapture` pode chegar ao provider, mesmo em D3/D4.
+- Snapshot local e endpoint de diagnostico continuam uteis, mas nao substituem
+  o repositorio central de evidencias.
+
+### 3.4 Matriz Atual Dos Gates
+
+| Gate | Estado em 2026-09-19 | Evidencia existente | Lacuna para conformidade |
+| --- | --- | --- | --- |
+| G1 Governanca | PARCIAL | escopo e runbook piloto da Clinica | donos, ambientes, exclusoes e aprovacao por operacao/aplicativo |
+| G2 Fonte e versao | PARCIAL AVANCADO | identidade runtime, snapshots por commit e pos-build | provar automaticamente artefato publicado igual ao snapshot confirmado |
+| G3 Identidade operacional | PARCIAL | `TraceId` e `CorrelationId` em varios fluxos | contrato universal e propagacao de raiz, operacao, execucao e causa |
+| G4 Evidencia minima | PARCIAL | Commands, repositories, health e logs JSON | envelope D0/D1, tres eixos, dois resultados e sanitizacao obrigatoria |
+| G5 Consulta | PARCIAL | API de fonte e snapshots locais | persistencia runtime central, retencao, auditoria e consulta por operacao |
+| G6 Diagnostico dirigido | PARCIAL INICIAL | controle central, alvos e expiracao | aprovacao, justificativa, volume, campos autorizados e captura D2 completa |
+| G7 Demonstracao | PARCIAL | runner pos-build e smoke CRUD | pacote de sucesso, rejeicao, falha, propagacao, NeverCapture e D2 |
+
+Nenhum gate deve ser apresentado como conforme enquanto a coluna de lacuna nao
+for zerada por evidencia executada.
 
 ## 4. Matriz Dos Passos De Implementacao
 
@@ -599,6 +688,100 @@ demonstrados.
 | R18 | Reproducao e regressao | Passo 12 | Avancado | D4 | Y4 |
 | R19 | Agentes operacionais assistidos | Passo 12 | Avancado | D0-D4 | Y5 |
 | R20 | Prevencao e predicao | Passo 12 | Avancado | D0-D4 | Y6 |
+
+#### 10.1.1 Sequencia Executavel A Partir Da Reavaliacao
+
+As rodadas continuam sendo a rastreabilidade detalhada. Para implementacao, a
+ordem abaixo agrupa somente dependencias inseparaveis e evita espalhar mudancas
+incompletas por todos os aplicativos.
+
+**Bloco A - Contrato seguro (R07 + R08)**
+
+1. Evoluir os tipos existentes de politica, sem criar uma segunda familia de
+   configuracao.
+2. Definir no Shared os tres eixos, resultados tecnico e de negocio,
+   classificacao de dados e envelope operacional D0/D1.
+3. Criar sanitizacao obrigatoria antes do publisher e uma lista irremovivel de
+   `NeverCapture` para senha, token, certificado, chave privada e segredo.
+4. Fazer a Engine gerar descritores constantes de operacao e classificacao;
+   nenhuma descoberta por reflection no caminho quente.
+5. Aplicar primeiro somente ao fluxo Fiscal de contingencia e emissao,
+   conforme `docs/operational/fiscal/FISCAL_OPERATIONAL_EXPERIMENT_PLAN.md`.
+6. Consultar a correlacao normativa separada em
+   `docs/operational/fiscal/FISCAL_OPERATIONAL_STANDARD_CORRELATION.md` sem
+   alterar o documento externo.
+
+**Aceite:** testes provam independencia dos tres eixos, separacao dos dois
+resultados e impossibilidade de `NeverCapture` atravessar o publisher.
+
+**Bloco B - Identidade universal (R09 + R10)**
+
+1. Evoluir `IExecutionContext`, preservando `TraceId` temporariamente como
+   compatibilidade.
+2. Criar ou receber raiz e operacao na borda HTTP.
+3. Criar nova execucao por tentativa e causa por transicao.
+4. Propagar o mesmo envelope por Command, Outbox, Inbox, Saga e Worker.
+5. Nao alterar a semantica dos executores e workers; apenas transportar o
+   contexto pelo caminho existente.
+
+**Aceite:** uma entrada HTTP seguida de processamento assincrono e retry pode
+ser reconstruida por raiz, operacao, execucoes e causas.
+
+**Bloco C - Evidencia D0/D1 uniforme (R11 + R12)**
+
+1. Fazer `ReciverBase` emitir o envelope no inicio e no termino.
+2. Fazer `RepositoryTelemetry` anexar dependencia e duracao sem SQL bruto.
+3. Instrumentar nos geradores os pontos comuns de Saga, Inbox, Outbox, Worker e
+   integracao externa, sem codigo repetido nos aplicativos.
+4. Reservar ao miolo customizado somente o resultado de negocio e metadados
+   que a Engine nao consegue inferir.
+
+**Aceite:** sucesso, rejeicao de negocio e falha tecnica produzem evidencias
+distintas e ordenaveis; desligar detalhe nao deixa payload residual.
+
+**Bloco D - Evidencia central e consulta (R13)**
+
+1. Preservar stdout JSON como transporte inicial barato nos containers.
+2. Coletar fora da transacao da aplicacao e persistir em base operacional
+   propria, nunca no banco do aplicativo.
+3. Adicionar o `RuntimeContextCollector` ao orquestrador existente.
+4. Consultar por aplicativo, versao, periodo e identidades operacionais.
+5. Definir retencao e auditoria de consulta.
+
+**Aceite:** suporte recupera D0/D1 pela API central sem acessar servidor,
+container ou banco do aplicativo; indisponibilidade central nao interrompe o
+fluxo de negocio.
+
+**Bloco E - Runtime ligado ao fonte (R14)**
+
+1. Resolver automaticamente o snapshot usando aplicativo, versao e commit da
+   evidencia runtime.
+2. Usar componente, operacao, classe, metodo e query ID para reduzir os fontes
+   relevantes.
+3. Entregar no bundle fatos runtime separados de inferencias sobre o codigo.
+
+**Aceite:** uma operacao real seleciona o snapshot confirmado correto e gera
+um bundle reproduzivel sem usar working tree.
+
+**Bloco F - D2 e homologacao (R15 + R16)**
+
+1. Completar justificativa, solicitante, aprovador, expiracao, limite de volume
+   e campos permitidos no controle central.
+2. Aplicar D2 somente a alvo especifico, sem reinicio dos aplicativos.
+3. Demonstrar sucesso, rejeicao, falha, propagacao, protecao e diagnostico
+   direcionado.
+4. Fazer o PostBuild produzir o relatorio final G1-G7 do artefato publicado.
+
+**Aceite:** todos os gates estao comprovados por evidencia executada. Somente
+depois disso D3, D4, replay e agentes entram no planejamento ativo.
+
+#### 10.1.2 Primeira Mudanca De Codigo Recomendada
+
+A proxima mudanca deve iniciar por F-EXP-00 e pelo Bloco A no aplicativo
+Fiscal. Ela nao deve incluir provider central, replay, dashboard ou agente.
+Propagacao assincrona somente entra no experimento F-EXP-03, depois de o custo
+desligado e os contratos seguros estarem aprovados. Isso permite validar custo,
+controle e protecao antes de espalhar evidencias pelo ecossistema.
 
 ### 10.2 R01 - Escopo Piloto E Responsaveis
 

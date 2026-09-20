@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TurmaDTO> getTurma(Command.Read.TurmaReadCommand command )
         {
-            DataPagination<TurmaDTO> customResult = null;
+            var customResult = new DataPagination<TurmaDTO>();
             var customHandled = false;
             TryGetTurmaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TurmaTenantIDDTO> getTurmaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TurmaTenantIDDTO> lista;
             var query = _query.TurmaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TurmaTenantIDDTO>(query.Query,query.Parameters) as List<TurmaTenantIDDTO>;
+                var lista = _unitOfWork.Query<TurmaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TurmaUserIdDTO> getTurmaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TurmaUserIdDTO> lista;
             var query = _query.TurmaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TurmaUserIdDTO>(query.Query,query.Parameters) as List<TurmaUserIdDTO>;
+                var lista = _unitOfWork.Query<TurmaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA1Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA1Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA2Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA2Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA3Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA3Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA4Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA4Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA5Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA5Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA6Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA6Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_INI_DIA7Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_HORA_FIM_DIA7Query(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters) as List<TurmaDTO>;
+                var result = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

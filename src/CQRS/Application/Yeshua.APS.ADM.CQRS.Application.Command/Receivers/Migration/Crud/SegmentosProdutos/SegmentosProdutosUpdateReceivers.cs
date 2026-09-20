@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ISegmentosProdutosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ISegmentosProdutosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.SegmentosProdutosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var segmentosprodutos = new SegmentosProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.PRO_ID, c.SEG_ID);
                  var domainResult = SegmentosProdutosDomainBehavior.Apply(segmentosprodutos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(segmentosprodutos);
-                     return Success("OK", segmentosprodutos);
+                     return Task.FromResult(Success("OK", segmentosprodutos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, segmentosprodutos);
+                    return Task.FromResult(Error(e, segmentosprodutos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

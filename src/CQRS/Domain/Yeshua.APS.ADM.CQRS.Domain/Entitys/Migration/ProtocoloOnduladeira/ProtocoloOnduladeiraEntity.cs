@@ -29,7 +29,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ProtocoloOnduladeiraEntity(int? id, string pto_id, string pto_chave, string maq_id, string pto_comando ){
  Id = id; 
  PTO_ID = pto_id; 

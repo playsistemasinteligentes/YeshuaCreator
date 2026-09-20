@@ -23,10 +23,10 @@
     public int? Id { get; set; }
     public string OPE_TIPO_REGISTRO { get; set; }
     public string OPE_ID { get; set; }
-    public string GMA_ID { get; set; }
+    public string? GMA_ID { get; set; }
     public string MAQ_ID { get; set; }
     public string PRO_ID { get; set; }
-    public string OPE_EXCECAO { get; set; }
+    public string? OPE_EXCECAO { get; set; }
     public int ROT_SEQ_TRANFORMACAO { get; set; }
     public string ORD_ID { get; set; }
     public int FPR_SEQ_REPETICAO { get; set; }
@@ -34,8 +34,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal OperacoesEntity(int? id, string ope_tipo_registro, string ope_id, string gma_id, string maq_id, string pro_id, string ope_excecao, int rot_seq_tranformacao, string ord_id, int fpr_seq_repeticao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal OperacoesEntity(int? id, string ope_tipo_registro, string ope_id, string? gma_id, string maq_id, string pro_id, string? ope_excecao, int rot_seq_tranformacao, string ord_id, int fpr_seq_repeticao ){
  Id = id; 
  OPE_TIPO_REGISTRO = ope_tipo_registro; 
  OPE_ID = ope_id; 

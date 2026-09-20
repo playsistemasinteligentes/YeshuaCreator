@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IGrupoSegmentoEntity Create(int? id, string grs_id, string grs_descricao, string grs_integracao_erp )
+                                    } public IGrupoSegmentoEntity Create(int? id, string grs_id, string? grs_descricao, string? grs_integracao_erp )
                             {
                                 return Create(null, id, grs_id, grs_descricao, grs_integracao_erp);
                             }
 
                             public IGrupoSegmentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string grs_id, string grs_descricao, string grs_integracao_erp )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string grs_id, string? grs_descricao, string? grs_integracao_erp )
                             {
                             var entity = new GrupoSegmentoEntity(id, grs_id, grs_descricao, grs_integracao_erp );
 

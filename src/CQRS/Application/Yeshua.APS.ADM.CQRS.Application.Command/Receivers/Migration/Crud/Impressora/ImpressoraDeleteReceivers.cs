@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IImpressoraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IImpressoraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ImpressoraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var impressora = new ImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.IMP_ID, c.IMP_IP, c.IMP_NOME);
                  var domainResult = ImpressoraDomainBehavior.Apply(impressora, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(impressora);
-                     return Success("OK", impressora);
+                     return Task.FromResult(Success("OK", impressora));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, impressora);
+                    return Task.FromResult(Error(e, impressora));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

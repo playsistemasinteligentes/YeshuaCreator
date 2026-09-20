@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IItemTestavelEntity Create(int? id, int ite_id, string ite_descricao, string ite_obs, int? ite_numero_de_testes, string ite_condicional_de_avaliacao, Decimal? ite_valor_da_condicional, string ite_valor_calculado_da_condicional, string ite_tipo_avaliacao_final )
+                                    } public IItemTestavelEntity Create(int? id, int ite_id, string? ite_descricao, string? ite_obs, int? ite_numero_de_testes, string? ite_condicional_de_avaliacao, Decimal? ite_valor_da_condicional, string? ite_valor_calculado_da_condicional, string? ite_tipo_avaliacao_final )
                             {
                                 return Create(null, id, ite_id, ite_descricao, ite_obs, ite_numero_de_testes, ite_condicional_de_avaliacao, ite_valor_da_condicional, ite_valor_calculado_da_condicional, ite_tipo_avaliacao_final);
                             }
 
                             public IItemTestavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ite_id, string ite_descricao, string ite_obs, int? ite_numero_de_testes, string ite_condicional_de_avaliacao, Decimal? ite_valor_da_condicional, string ite_valor_calculado_da_condicional, string ite_tipo_avaliacao_final )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ite_id, string? ite_descricao, string? ite_obs, int? ite_numero_de_testes, string? ite_condicional_de_avaliacao, Decimal? ite_valor_da_condicional, string? ite_valor_calculado_da_condicional, string? ite_tipo_avaliacao_final )
                             {
                             var entity = new ItemTestavelEntity(id, ite_id, ite_descricao, ite_obs, ite_numero_de_testes, ite_condicional_de_avaliacao, ite_valor_da_condicional, ite_valor_calculado_da_condicional, ite_tipo_avaliacao_final );
 

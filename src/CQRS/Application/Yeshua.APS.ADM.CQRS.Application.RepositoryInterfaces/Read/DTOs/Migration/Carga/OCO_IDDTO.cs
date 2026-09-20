@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record CargaOCO_IDDTO
     {
-    public string oco_id { get; set; }
+    public string oco_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

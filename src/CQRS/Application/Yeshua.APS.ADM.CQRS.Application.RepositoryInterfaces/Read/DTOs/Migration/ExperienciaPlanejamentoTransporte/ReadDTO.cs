@@ -20,17 +20,17 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int tipo { get; set; }
-    public string referencia { get; set; }
-    public string pedidoid { get; set; }
-    public string clienteid { get; set; }
-    public string municipio { get; set; }
-    public string regiao { get; set; }
-    public string rotaid { get; set; }
+    public string referencia { get; set; } = string.Empty;
+    public string pedidoid { get; set; } = string.Empty;
+    public string clienteid { get; set; } = string.Empty;
+    public string municipio { get; set; } = string.Empty;
+    public string regiao { get; set; } = string.Empty;
+    public string rotaid { get; set; } = string.Empty;
     public Decimal peso { get; set; }
     public Decimal volume { get; set; }
-    public string observacao { get; set; }
+    public string observacao { get; set; } = string.Empty;
     public DateTime criadoem { get; set; }
-    public string criadopor { get; set; }
+    public string criadopor { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IResultMedidaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IResultMedidaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ResultMedidaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var resultmedida = new ResultMedidaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RSM_ID, c.RL_ID, c.MDT_ID);
                  var domainResult = ResultMedidaDomainBehavior.Apply(resultmedida, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(resultmedida);
-                     return Success("OK", resultmedida);
+                     return Task.FromResult(Success("OK", resultmedida));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, resultmedida);
+                    return Task.FromResult(Error(e, resultmedida));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

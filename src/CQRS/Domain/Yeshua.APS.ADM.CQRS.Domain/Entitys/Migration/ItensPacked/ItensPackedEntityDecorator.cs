@@ -107,7 +107,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID
+                                    public string? PRO_ID
                                     {
                                         get => _inner.PRO_ID;
                                         set
@@ -121,7 +121,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set

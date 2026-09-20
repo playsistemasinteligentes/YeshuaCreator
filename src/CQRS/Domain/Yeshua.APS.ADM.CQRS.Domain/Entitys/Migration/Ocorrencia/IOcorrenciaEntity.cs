@@ -23,11 +23,11 @@
     string OCO_ID { get; set; }
     string OCO_DESCRICAO { get; set; }
     int TIP_ID { get; set; }
-    string GMA_ID { get; set; }
-    string MAQ_ID { get; set; }
+    string? GMA_ID { get; set; }
+    string? MAQ_ID { get; set; }
     int? SPR { get; set; }
-    string OCO_SUB_TIPO { get; set; }
-    string SUB_ID { get; set; }
+    string? OCO_SUB_TIPO { get; set; }
+    string? SUB_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

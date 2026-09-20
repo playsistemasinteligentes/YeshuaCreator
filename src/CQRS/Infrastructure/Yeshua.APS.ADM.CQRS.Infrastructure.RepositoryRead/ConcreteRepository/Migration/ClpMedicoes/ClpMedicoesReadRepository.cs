@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ClpMedicoesDTO> getClpMedicoes(Command.Read.ClpMedicoesReadCommand command )
         {
-            DataPagination<ClpMedicoesDTO> customResult = null;
+            var customResult = new DataPagination<ClpMedicoesDTO>();
             var customHandled = false;
             TryGetClpMedicoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ClpMedicoesTenantIDDTO> getClpMedicoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClpMedicoesTenantIDDTO> lista;
             var query = _query.ClpMedicoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ClpMedicoesTenantIDDTO>(query.Query,query.Parameters) as List<ClpMedicoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<ClpMedicoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ClpMedicoesUserIdDTO> getClpMedicoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClpMedicoesUserIdDTO> lista;
             var query = _query.ClpMedicoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ClpMedicoesUserIdDTO>(query.Query,query.Parameters) as List<ClpMedicoesUserIdDTO>;
+                var lista = _unitOfWork.Query<ClpMedicoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstById2Query(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMaquinaIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataInicioQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataFimQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmissaoQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadeQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTurnoIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTurmaIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdLoteClpQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOcorrenciaIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFaseQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByClpOrigemQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLP_LOTEQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOMPACTAQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -610,7 +608,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -618,7 +616,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -626,7 +624,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -634,7 +632,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -642,7 +640,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -650,7 +648,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters) as List<ClpMedicoesDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

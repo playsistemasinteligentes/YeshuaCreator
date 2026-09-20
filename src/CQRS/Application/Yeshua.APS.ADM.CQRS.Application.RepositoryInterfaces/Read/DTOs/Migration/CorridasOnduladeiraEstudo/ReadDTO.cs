@@ -19,15 +19,15 @@ namespace Repositorio.Outputs
     public partial record CorridasOnduladeiraEstudoDTO
     {
     public int id { get; set; }
-    public string bol_id { get; set; }
-    public string bol_id_origem { get; set; }
+    public string bol_id { get; set; } = string.Empty;
+    public string bol_id_origem { get; set; } = string.Empty;
     public Decimal pro_largura_peca { get; set; }
     public Decimal pro_largura_peca_programado { get; set; }
     public Decimal pro_comprimento_peca { get; set; }
     public Decimal pro_comprimento_peca_programado { get; set; }
     public Decimal pro_utilizou_refile_obrigatorio { get; set; }
-    public string pro_vincos_recalculados { get; set; }
-    public string cor_solver { get; set; }
+    public string pro_vincos_recalculados { get; set; } = string.Empty;
+    public string cor_solver { get; set; } = string.Empty;
     public Decimal cor_gramatura_papeis_programados { get; set; }
     public Decimal cor_custo_papeis_programados { get; set; }
     public Decimal cor_gramatura_resina_programados { get; set; }
@@ -36,8 +36,8 @@ namespace Repositorio.Outputs
     public Decimal cor_tolerancia_mais { get; set; }
     public int cor_pilhas_por_palete { get; set; }
     public Decimal cor_m_linear_realizado { get; set; }
-    public string pro_id_palete { get; set; }
-    public string cor_status_palete { get; set; }
+    public string pro_id_palete { get; set; } = string.Empty;
+    public string cor_status_palete { get; set; } = string.Empty;
     public Decimal cor_grupo_produtivo { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

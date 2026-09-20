@@ -86,7 +86,7 @@
                                         }
                                     }
 
-                                    public string EST_DESCRICAO
+                                    public string? EST_DESCRICAO
                                     {
                                         get => _inner.EST_DESCRICAO;
                                         set

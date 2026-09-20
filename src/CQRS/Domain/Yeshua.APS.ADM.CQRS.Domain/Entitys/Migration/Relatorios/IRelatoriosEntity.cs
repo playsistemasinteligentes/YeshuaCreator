@@ -21,7 +21,7 @@
                     public interface IRelatoriosEntity
 {
     int REL_ID { get; set; }
-    string REL_NOME_RELATORIO { get; set; }
+    string? REL_NOME_RELATORIO { get; set; }
     string REL_NOME_CAMPO { get; set; }
     string REL_TIPO_CAMPO { get; set; }
     int? REL_POS_X { get; set; }

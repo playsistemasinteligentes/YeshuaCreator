@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoCarroceriaDTO> getTipoCarroceria(Command.Read.TipoCarroceriaReadCommand command )
         {
-            DataPagination<TipoCarroceriaDTO> customResult = null;
+            var customResult = new DataPagination<TipoCarroceriaDTO>();
             var customHandled = false;
             TryGetTipoCarroceriaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoCarroceriaTenantIDDTO> getTipoCarroceriaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoCarroceriaTenantIDDTO> lista;
             var query = _query.TipoCarroceriaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoCarroceriaTenantIDDTO>(query.Query,query.Parameters) as List<TipoCarroceriaTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoCarroceriaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoCarroceriaUserIdDTO> getTipoCarroceriaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoCarroceriaUserIdDTO> lista;
             var query = _query.TipoCarroceriaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoCarroceriaUserIdDTO>(query.Query,query.Parameters) as List<TipoCarroceriaUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoCarroceriaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTCA_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTCA_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters) as List<TipoCarroceriaDTO>;
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

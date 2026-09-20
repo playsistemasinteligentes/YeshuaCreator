@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IParametrosDeCustoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IParametrosDeCustoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ParametrosDeCustoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var parametrosdecusto = new ParametrosDeCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PAR_ID, c.PRO_ID, c.CUS_ID, c.PAR_VALOR);
                  var domainResult = ParametrosDeCustoDomainBehavior.Apply(parametrosdecusto, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(parametrosdecusto);
-                     return Success("OK", parametrosdecusto);
+                     return Task.FromResult(Success("OK", parametrosdecusto));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, parametrosdecusto);
+                    return Task.FromResult(Error(e, parametrosdecusto));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

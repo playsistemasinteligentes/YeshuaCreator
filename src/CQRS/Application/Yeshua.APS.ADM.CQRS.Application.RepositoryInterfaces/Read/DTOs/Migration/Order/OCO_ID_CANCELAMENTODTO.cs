@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record OrderOCO_ID_CANCELAMENTODTO
     {
-    public string oco_id { get; set; }
+    public string oco_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

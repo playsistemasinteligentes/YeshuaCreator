@@ -22,8 +22,8 @@
 {
     int? Id { get; set; }
     int COM_ID { get; set; }
-    string GRP_ID { get; set; }
-    string OND_ID { get; set; }
+    string? GRP_ID { get; set; }
+    string? OND_ID { get; set; }
     int? COM_VINCO1_OND { get; set; }
     int? COM_VINCO2_OND { get; set; }
     int? COM_VINCO3_OND { get; set; }

@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<GrupoMaquinaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<GrupoMaquinaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.GrupoMaquinaReadCommand c) 
              {    
                 var GrupoMaquinaReadRepository = _repository.getGrupoMaquina(c);
-                return Success("OK", GrupoMaquinaReadRepository);
+                return Task.FromResult(Success("OK", GrupoMaquinaReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

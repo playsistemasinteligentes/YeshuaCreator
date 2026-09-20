@@ -23,8 +23,8 @@
     int? Id { get; set; }
     int IPA_ID { get; set; }
     string CAR_ID { get; set; }
-    string PRO_ID { get; set; }
-    string ORD_ID { get; set; }
+    string? PRO_ID { get; set; }
+    string? ORD_ID { get; set; }
     Decimal? IPA_COORDC { get; set; }
     Decimal? IPA_COORDL { get; set; }
     Decimal? IPA_COORDA { get; set; }

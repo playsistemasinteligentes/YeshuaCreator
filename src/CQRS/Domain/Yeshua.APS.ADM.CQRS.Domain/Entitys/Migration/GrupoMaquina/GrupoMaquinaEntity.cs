@@ -20,16 +20,16 @@
                 {
                     public partial class GrupoMaquinaEntity : IGrupoMaquinaEntity
 {
-    public string Id { get; set; }
-    public string Descricao { get; set; }
-    public string Status { get; set; }
+    public string? Id { get; set; }
+    public string? Descricao { get; set; }
+    public string? Status { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    public string GMA_TIPO_PLANEJAMENTO { get; set; }
-    private List<string> _erroMensagem = null;
- internal GrupoMaquinaEntity(string id, string descricao, string status, string gma_tipo_planejamento ){
+    public string? GMA_TIPO_PLANEJAMENTO { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal GrupoMaquinaEntity(string? id, string? descricao, string? status, string? gma_tipo_planejamento ){
  Id = id; 
  Descricao = descricao; 
  Status = status; 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PendenciasInterfaceDTO> getPendenciasInterface(Command.Read.PendenciasInterfaceReadCommand command )
         {
-            DataPagination<PendenciasInterfaceDTO> customResult = null;
+            var customResult = new DataPagination<PendenciasInterfaceDTO>();
             var customHandled = false;
             TryGetPendenciasInterfaceCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PendenciasInterfaceTenantIDDTO> getPendenciasInterfaceReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PendenciasInterfaceTenantIDDTO> lista;
             var query = _query.PendenciasInterfaceTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PendenciasInterfaceTenantIDDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceTenantIDDTO>;
+                var lista = _unitOfWork.Query<PendenciasInterfaceTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PendenciasInterfaceUserIdDTO> getPendenciasInterfaceReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PendenciasInterfaceUserIdDTO> lista;
             var query = _query.PendenciasInterfaceUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PendenciasInterfaceUserIdDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceUserIdDTO>;
+                var lista = _unitOfWork.Query<PendenciasInterfaceUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_STATUS_OUTQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_PROTOCOLO_OUTQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_ID_PROTOCOLO_OUTQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_STATUS_INQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_PROTOCOLO_INQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_ID_PROTOCOLO_INQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDATA_ENTRADAQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEN_IDQuery(value );
 
-                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters) as List<PendenciasInterfaceDTO>;
+                var result = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

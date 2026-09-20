@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record CargosDTO
     {
     public int id { get; set; }
-    public string rgo_id { get; set; }
-    public string rgo_descricao { get; set; }
+    public string rgo_id { get; set; } = string.Empty;
+    public string rgo_descricao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

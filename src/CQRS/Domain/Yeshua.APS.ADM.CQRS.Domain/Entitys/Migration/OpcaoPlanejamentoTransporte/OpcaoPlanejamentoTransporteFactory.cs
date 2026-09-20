@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IOpcaoPlanejamentoTransporteEntity Create(string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string riscoresumo, string pedidosresumo, string opcoesconflitantesresumo )
+                                    } public IOpcaoPlanejamentoTransporteEntity Create(string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string? riscoresumo, string? pedidosresumo, string? opcoesconflitantesresumo )
                             {
                                 return Create(null, opcaoid, grupodecisaoid, peso, volume, custoestimado, aderenciacubagem, aderenciajanelaentrega, riscoresumo, pedidosresumo, opcoesconflitantesresumo);
                             }
 
                             public IOpcaoPlanejamentoTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string riscoresumo, string pedidosresumo, string opcoesconflitantesresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string? riscoresumo, string? pedidosresumo, string? opcoesconflitantesresumo )
                             {
                             var entity = new OpcaoPlanejamentoTransporteEntity(opcaoid, grupodecisaoid, peso, volume, custoestimado, aderenciacubagem, aderenciajanelaentrega, riscoresumo, pedidosresumo, opcoesconflitantesresumo );
 

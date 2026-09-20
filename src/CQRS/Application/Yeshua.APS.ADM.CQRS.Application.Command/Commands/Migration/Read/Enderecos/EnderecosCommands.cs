@@ -13,8 +13,8 @@ namespace Command.Read
 {
     public struct EnderecosReadCommand : ICommandRead
     {
-        public string END_ID { get; set; }
-        public string END_GRUPO { get; set; }
+        public string? END_ID { get; set; }
+        public string? END_GRUPO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

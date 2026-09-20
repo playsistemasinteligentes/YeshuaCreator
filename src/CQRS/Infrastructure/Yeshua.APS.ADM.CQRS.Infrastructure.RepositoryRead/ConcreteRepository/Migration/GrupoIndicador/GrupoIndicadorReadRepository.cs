@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<GrupoIndicadorDTO> getGrupoIndicador(Command.Read.GrupoIndicadorReadCommand command )
         {
-            DataPagination<GrupoIndicadorDTO> customResult = null;
+            var customResult = new DataPagination<GrupoIndicadorDTO>();
             var customHandled = false;
             TryGetGrupoIndicadorCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoIndicadorGRU_IDDTO> getGrupoIndicadorReadFKGRU_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoIndicadorGRU_IDDTO> lista;
             var query = _query.GrupoIndicadorGRU_IDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoIndicadorGRU_IDDTO>(query.Query,query.Parameters) as List<GrupoIndicadorGRU_IDDTO>;
+                var lista = _unitOfWork.Query<GrupoIndicadorGRU_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoIndicadorIND_IDDTO> getGrupoIndicadorReadFKIND_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoIndicadorIND_IDDTO> lista;
             var query = _query.GrupoIndicadorIND_IDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoIndicadorIND_IDDTO>(query.Query,query.Parameters) as List<GrupoIndicadorIND_IDDTO>;
+                var lista = _unitOfWork.Query<GrupoIndicadorIND_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoIndicadorTenantIDDTO> getGrupoIndicadorReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoIndicadorTenantIDDTO> lista;
             var query = _query.GrupoIndicadorTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoIndicadorTenantIDDTO>(query.Query,query.Parameters) as List<GrupoIndicadorTenantIDDTO>;
+                var lista = _unitOfWork.Query<GrupoIndicadorTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoIndicadorUserIdDTO> getGrupoIndicadorReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoIndicadorUserIdDTO> lista;
             var query = _query.GrupoIndicadorUserIdQuery(command );
 
-                lista = _unitOfWork.Query<GrupoIndicadorUserIdDTO>(query.Query,query.Parameters) as List<GrupoIndicadorUserIdDTO>;
+                var lista = _unitOfWork.Query<GrupoIndicadorUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -254,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRU_IND_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRU_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIND_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters) as List<GrupoIndicadorDTO>;
+                var result = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

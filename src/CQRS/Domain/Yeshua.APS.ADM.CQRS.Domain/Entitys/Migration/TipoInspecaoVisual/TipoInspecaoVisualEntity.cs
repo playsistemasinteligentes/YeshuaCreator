@@ -26,17 +26,17 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    public string TIV_NOME { get; set; }
-    public string TIV_DESCRICAO { get; set; }
-    public string TIV_FECHAMENTO { get; set; }
-    public string TIV_AMOSTRA_ALEATORIA { get; set; }
+    public string? TIV_NOME { get; set; }
+    public string? TIV_DESCRICAO { get; set; }
+    public string? TIV_FECHAMENTO { get; set; }
+    public string? TIV_AMOSTRA_ALEATORIA { get; set; }
     public int? TIV_N_AMOSTRAS { get; set; }
-    public string TIV_MEDIDA { get; set; }
+    public string? TIV_MEDIDA { get; set; }
     public Decimal? TIV_ESPECIFICACAO { get; set; }
     public Decimal? TIV_TOL_MAIS { get; set; }
     public Decimal? TIV_TOL_MENOS { get; set; }
-    private List<string> _erroMensagem = null;
- internal TipoInspecaoVisualEntity(int? id, int tiv_id, string tiv_nome, string tiv_descricao, string tiv_fechamento, string tiv_amostra_aleatoria, int? tiv_n_amostras, string tiv_medida, Decimal? tiv_especificacao, Decimal? tiv_tol_mais, Decimal? tiv_tol_menos ){
+    private List<string> _erroMensagem = new List<string>();
+ internal TipoInspecaoVisualEntity(int? id, int tiv_id, string? tiv_nome, string? tiv_descricao, string? tiv_fechamento, string? tiv_amostra_aleatoria, int? tiv_n_amostras, string? tiv_medida, Decimal? tiv_especificacao, Decimal? tiv_tol_mais, Decimal? tiv_tol_menos ){
  Id = id; 
  TIV_ID = tiv_id; 
  TIV_NOME = tiv_nome; 

@@ -21,15 +21,15 @@
                     public interface ICorridasOnduladeiraEstudoEntity
 {
     int? Id { get; set; }
-    string BOL_ID { get; set; }
-    string BOL_ID_ORIGEM { get; set; }
+    string? BOL_ID { get; set; }
+    string? BOL_ID_ORIGEM { get; set; }
     Decimal? PRO_LARGURA_PECA { get; set; }
     Decimal? PRO_LARGURA_PECA_PROGRAMADO { get; set; }
     Decimal? PRO_COMPRIMENTO_PECA { get; set; }
     Decimal? PRO_COMPRIMENTO_PECA_PROGRAMADO { get; set; }
     Decimal? PRO_UTILIZOU_REFILE_OBRIGATORIO { get; set; }
-    string PRO_VINCOS_RECALCULADOS { get; set; }
-    string COR_SOLVER { get; set; }
+    string? PRO_VINCOS_RECALCULADOS { get; set; }
+    string? COR_SOLVER { get; set; }
     Decimal? COR_GRAMATURA_PAPEIS_PROGRAMADOS { get; set; }
     Decimal? COR_CUSTO_PAPEIS_PROGRAMADOS { get; set; }
     Decimal? COR_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
@@ -38,8 +38,8 @@
     Decimal? COR_TOLERANCIA_MAIS { get; set; }
     int? COR_PILHAS_POR_PALETE { get; set; }
     Decimal? COR_M_LINEAR_REALIZADO { get; set; }
-    string PRO_ID_PALETE { get; set; }
-    string COR_STATUS_PALETE { get; set; }
+    string? PRO_ID_PALETE { get; set; }
+    string? COR_STATUS_PALETE { get; set; }
     Decimal? COR_GRUPO_PRODUTIVO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

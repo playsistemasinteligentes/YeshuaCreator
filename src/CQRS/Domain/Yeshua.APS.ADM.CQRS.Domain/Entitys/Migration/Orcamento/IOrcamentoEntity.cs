@@ -22,11 +22,11 @@
 {
     int? Id { get; set; }
     int ORC_ID { get; set; }
-    string REP_ID { get; set; }
-    string CON_ID { get; set; }
-    string ORC_TIPO_FRETE { get; set; }
+    string? REP_ID { get; set; }
+    string? CON_ID { get; set; }
+    string? ORC_TIPO_FRETE { get; set; }
     DateTime? ORC_EMISSAO { get; set; }
-    string CLI_ID { get; set; }
+    string? CLI_ID { get; set; }
     int VER_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

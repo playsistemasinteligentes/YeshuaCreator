@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IUsuarioObjetoControlavelEntity Create(int? id, int use_id, string obj_id, string usu_objeto_acao )
+                                    } public IUsuarioObjetoControlavelEntity Create(int? id, int use_id, string obj_id, string? usu_objeto_acao )
                             {
                                 return Create(null, id, use_id, obj_id, usu_objeto_acao);
                             }
 
                             public IUsuarioObjetoControlavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int use_id, string obj_id, string usu_objeto_acao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int use_id, string obj_id, string? usu_objeto_acao )
                             {
                             var entity = new UsuarioObjetoControlavelEntity(id, use_id, obj_id, usu_objeto_acao );
 

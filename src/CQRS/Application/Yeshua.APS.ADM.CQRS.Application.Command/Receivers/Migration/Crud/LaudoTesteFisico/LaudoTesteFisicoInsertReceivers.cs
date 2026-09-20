@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ILaudoTesteFisicoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ILaudoTesteFisicoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.LaudoTesteFisicoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var laudotestefisico = new LaudoTesteFisicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LTF_ID, c.LTF_EMISSAO, c.LTF_VALOR, c.LTF_OBS, c.LTF_STATUS, c.ORD_ID, c.ROT_PRO_ID, c.FPR_SEQ_REPETICAO, c.USE_ID);
                  var domainResult = LaudoTesteFisicoDomainBehavior.Apply(laudotestefisico, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(laudotestefisico);
-                     return Success("OK", laudotestefisico);
+                     return Task.FromResult(Success("OK", laudotestefisico));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, laudotestefisico);
+                    return Task.FromResult(Error(e, laudotestefisico));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

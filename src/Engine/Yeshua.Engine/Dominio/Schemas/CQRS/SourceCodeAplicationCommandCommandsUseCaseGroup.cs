@@ -189,6 +189,8 @@ namespace Dominio.Schemas.CQRS
             var commandContracts = "ICommand";
             if (IsSagaStepStimulusOutput(className))
                 commandContracts += ", ISagaStepStimulusOutput";
+            if (HasOperationalTelemetryMetadata(className))
+                commandContracts += ", IOperationalTelemetryCommand";
 
             // Começa a geração da classe record
             sb.AppendLine($"public partial record {className} : {commandContracts}");
@@ -199,6 +201,8 @@ namespace Dominio.Schemas.CQRS
                 string propTypeName = GetFriendlyTypeName(prop.PropertyType);
                 sb.AppendLine($"    public {propTypeName} {prop.Name} {{ get; set; }}{DefaultInitializer(prop.PropertyType)}");
             }
+
+            GenerateOperationalTelemetryMetadata(type, className, sb);
 
             sb.AppendLine("}");
             sb.AppendLine();
@@ -234,6 +238,35 @@ namespace Dominio.Schemas.CQRS
             return _method != null
                 && _method.IsSagaStepStimulus
                 && className == _method.OutputCommandName;
+        }
+
+        private bool HasOperationalTelemetryMetadata(string className)
+        {
+            return _method != null
+                && className == _method.InputCommandName
+                && _method.Entitys.Count > 0;
+        }
+
+        private void GenerateOperationalTelemetryMetadata(
+            Type type,
+            string className,
+            StringBuilder sb)
+        {
+            if (!HasOperationalTelemetryMetadata(className))
+                return;
+
+            var entityName = _method.Entitys[0].EntityName;
+            var recordIdProperty = type.GetProperties().FirstOrDefault(property =>
+                property.PropertyType == typeof(string)
+                && (property.Name == "CorrelationId"
+                    || property.Name == $"{entityName}Id"
+                    || property.Name == "RecordId"));
+
+            sb.AppendLine();
+            sb.AppendLine($"    public string OperationalEntity => \"{entityName}\";");
+            sb.AppendLine(recordIdProperty == null
+                ? "    public string? OperationalRecordId => null;"
+                : $"    public string? OperationalRecordId => {recordIdProperty.Name};");
         }
 
         private static string DefaultInitializer(Type type)

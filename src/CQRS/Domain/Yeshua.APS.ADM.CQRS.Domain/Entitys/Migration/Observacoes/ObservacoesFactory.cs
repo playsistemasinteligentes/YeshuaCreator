@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IObservacoesEntity Create(int obs_id, string obs_tipo, string obs_descricao, string cli_id, string maq_id, string pro_id, int? rot_seq_tranformacao, string obs_integracao )
+                                    } public IObservacoesEntity Create(int obs_id, string? obs_tipo, string? obs_descricao, string? cli_id, string? maq_id, string? pro_id, int? rot_seq_tranformacao, string? obs_integracao )
                             {
                                 return Create(null, obs_id, obs_tipo, obs_descricao, cli_id, maq_id, pro_id, rot_seq_tranformacao, obs_integracao);
                             }
 
                             public IObservacoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int obs_id, string obs_tipo, string obs_descricao, string cli_id, string maq_id, string pro_id, int? rot_seq_tranformacao, string obs_integracao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int obs_id, string? obs_tipo, string? obs_descricao, string? cli_id, string? maq_id, string? pro_id, int? rot_seq_tranformacao, string? obs_integracao )
                             {
                             var entity = new ObservacoesEntity(obs_id, obs_tipo, obs_descricao, cli_id, maq_id, pro_id, rot_seq_tranformacao, obs_integracao );
 

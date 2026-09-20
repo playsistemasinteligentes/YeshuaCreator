@@ -21,20 +21,20 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public int age_id { get; set; }
     public DateTime age_data_especifica { get; set; }
-    public string age_horario_inicio { get; set; }
-    public string age_horario_fim { get; set; }
-    public string age_segunda { get; set; }
-    public string age_terca { get; set; }
-    public string age_quarta { get; set; }
-    public string age_quinta { get; set; }
-    public string age_sexta { get; set; }
-    public string age_sabado { get; set; }
-    public string age_domingo { get; set; }
+    public string age_horario_inicio { get; set; } = string.Empty;
+    public string age_horario_fim { get; set; } = string.Empty;
+    public string age_segunda { get; set; } = string.Empty;
+    public string age_terca { get; set; } = string.Empty;
+    public string age_quarta { get; set; } = string.Empty;
+    public string age_quinta { get; set; } = string.Empty;
+    public string age_sexta { get; set; } = string.Empty;
+    public string age_sabado { get; set; } = string.Empty;
+    public string age_domingo { get; set; } = string.Empty;
     public Decimal age_intervalo { get; set; }
-    public string age_ordem_execucao { get; set; }
-    public string age_parametros { get; set; }
-    public string age_excecao { get; set; }
-    public string age_descricao { get; set; }
+    public string age_ordem_execucao { get; set; } = string.Empty;
+    public string age_parametros { get; set; } = string.Empty;
+    public string age_excecao { get; set; } = string.Empty;
+    public string age_descricao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

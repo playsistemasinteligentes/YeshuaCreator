@@ -23,17 +23,17 @@
     public string OCO_ID { get; set; }
     public string OCO_DESCRICAO { get; set; }
     public int TIP_ID { get; set; }
-    public string GMA_ID { get; set; }
-    public string MAQ_ID { get; set; }
+    public string? GMA_ID { get; set; }
+    public string? MAQ_ID { get; set; }
     public int? SPR { get; set; }
-    public string OCO_SUB_TIPO { get; set; }
-    public string SUB_ID { get; set; }
+    public string? OCO_SUB_TIPO { get; set; }
+    public string? SUB_ID { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal OcorrenciaEntity(string oco_id, string oco_descricao, int tip_id, string gma_id, string maq_id, int? spr, string oco_sub_tipo, string sub_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal OcorrenciaEntity(string oco_id, string oco_descricao, int tip_id, string? gma_id, string? maq_id, int? spr, string? oco_sub_tipo, string? sub_id ){
  OCO_ID = oco_id; 
  OCO_DESCRICAO = oco_descricao; 
  TIP_ID = tip_id; 

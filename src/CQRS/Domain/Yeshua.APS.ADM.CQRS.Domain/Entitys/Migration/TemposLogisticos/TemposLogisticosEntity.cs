@@ -29,7 +29,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TemposLogisticosEntity(int? id, string tmp_tipo_tempo, string tmp_tipo_carga, Decimal tmp_tempo_medio_unitario, string cli_id ){
  Id = id; 
  TMP_TIPO_TEMPO = tmp_tipo_tempo; 

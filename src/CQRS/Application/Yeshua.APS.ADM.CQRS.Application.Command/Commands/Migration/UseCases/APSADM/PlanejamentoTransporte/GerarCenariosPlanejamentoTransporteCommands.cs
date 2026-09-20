@@ -11,18 +11,22 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record GerarCenariosPlanejamentoTransporteInputCommand : ICommand
+public partial record GerarCenariosPlanejamentoTransporteInputCommand : ICommand, IOperationalTelemetryCommand
 {
-    public string ContextoId { get; set; }
-    public string Objetivo { get; set; }
+    public string ContextoId { get; set; } = string.Empty;
+    public string Objetivo { get; set; } = string.Empty;
+
+    public string OperationalEntity => "CenarioPlanejamentoTransporte";
+    public string? OperationalRecordId => null;
 }
 
 public partial record GerarCenariosPlanejamentoTransporteOutputCommand : ICommand
 {
-    public List<CenarioPlanejamentoEnvelope> Cenarios { get; set; }
+    public List<CenarioPlanejamentoEnvelope> Cenarios { get; set; } = default!;
 }
 
 }

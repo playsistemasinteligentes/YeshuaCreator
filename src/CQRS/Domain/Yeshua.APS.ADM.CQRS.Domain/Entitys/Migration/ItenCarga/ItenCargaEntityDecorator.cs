@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string ORD_HASH_KEY
+                                    public string? ORD_HASH_KEY
                                     {
                                         get => _inner.ORD_HASH_KEY;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string NOT_ID
+                                    public string? NOT_ID
                                     {
                                         get => _inner.NOT_ID;
                                         set

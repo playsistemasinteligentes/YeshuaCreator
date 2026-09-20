@@ -25,7 +25,7 @@
     public string ProdutoId { get; set; }
     public int SequenciaTransformacao { get; set; }
     public string StatusCadastro { get; set; }
-    public string TipoPlanejamento { get; set; }
+    public string? TipoPlanejamento { get; set; }
     public int CalendarioId { get; set; }
     public Decimal? HierarquiaSequenciaTransformacao { get; set; }
     public int? ProximaSequenciaTransformacao { get; set; }
@@ -34,7 +34,7 @@
     public Decimal? TempoSetupAjuste { get; set; }
     public Decimal? PecasPorPulso { get; set; }
     public Decimal? PrioridadeInformada { get; set; }
-    public string Status { get; set; }
+    public string? Status { get; set; }
     public string Operacoes { get; set; }
     public string ExcecaoOperacoes { get; set; }
     public string LinhaDireta { get; set; }
@@ -43,8 +43,8 @@
     public Decimal? MaquinaLarguraUtil { get; set; }
     public Decimal? GrupoTipo { get; set; }
     public Decimal GrupoPerformanceMetroLinear { get; set; }
-    private List<string> _erroMensagem = null;
- internal RoteiroPedidoEntity(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string statuscadastro, string tipoplanejamento, int calendarioid, Decimal? hierarquiasequenciatransformacao, int? proximasequenciatransformacao, Decimal? performance, Decimal? temposetup, Decimal? temposetupajuste, Decimal? pecasporpulso, Decimal? prioridadeinformada, string status, string operacoes, string excecaooperacoes, string linhadireta, int? avaliacusto, Decimal? percentualiniciopassoanterior, Decimal? maquinalargurautil, Decimal? grupotipo, Decimal grupoperformancemetrolinear ){
+    private List<string> _erroMensagem = new List<string>();
+ internal RoteiroPedidoEntity(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string statuscadastro, string? tipoplanejamento, int calendarioid, Decimal? hierarquiasequenciatransformacao, int? proximasequenciatransformacao, Decimal? performance, Decimal? temposetup, Decimal? temposetupajuste, Decimal? pecasporpulso, Decimal? prioridadeinformada, string? status, string operacoes, string excecaooperacoes, string linhadireta, int? avaliacusto, Decimal? percentualiniciopassoanterior, Decimal? maquinalargurautil, Decimal? grupotipo, Decimal grupoperformancemetrolinear ){
  PedidoId = pedidoid; 
  MaquinaId = maquinaid; 
  ProdutoId = produtoid; 

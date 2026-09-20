@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OpcaoPlanejamentoTransporteDTO> getOpcaoPlanejamentoTransporte(Command.Read.OpcaoPlanejamentoTransporteReadCommand command )
         {
-            DataPagination<OpcaoPlanejamentoTransporteDTO> customResult = null;
+            var customResult = new DataPagination<OpcaoPlanejamentoTransporteDTO>();
             var customHandled = false;
             TryGetOpcaoPlanejamentoTransporteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -230,7 +230,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOpcaoIdQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -238,7 +238,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoDecisaoIdQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -246,7 +246,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -254,7 +254,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +262,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCustoEstimadoQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +270,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAderenciaCubagemQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +278,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAderenciaJanelaEntregaQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +286,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRiscoResumoQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +294,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidosResumoQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +302,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOpcoesConflitantesResumoQuery(value );
 
-                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<OpcaoPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

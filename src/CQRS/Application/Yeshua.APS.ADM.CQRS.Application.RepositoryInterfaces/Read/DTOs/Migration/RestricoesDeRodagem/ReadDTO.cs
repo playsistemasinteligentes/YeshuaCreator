@@ -20,9 +20,9 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int res_id { get; set; }
-    public string res_tipo { get; set; }
-    public string res_hora_ini { get; set; }
-    public string res_hora_fim { get; set; }
+    public string res_tipo { get; set; } = string.Empty;
+    public string res_hora_ini { get; set; } = string.Empty;
+    public string res_hora_fim { get; set; } = string.Empty;
     public Decimal res_velocidade_hora_rush { get; set; }
     public int tve_id { get; set; }
     public int map_id { get; set; }

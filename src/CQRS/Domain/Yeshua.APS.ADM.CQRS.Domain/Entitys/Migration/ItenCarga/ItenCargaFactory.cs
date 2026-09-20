@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IItenCargaEntity Create(int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string ord_hash_key, string not_id, DateTime? not_emissao )
+                                    } public IItenCargaEntity Create(int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string? ord_hash_key, string? not_id, DateTime? not_emissao )
                             {
                                 return Create(null, id, car_id, ord_id, itc_entrega_planejada, itc_entrega_realizada, itc_ordem_entrega, itc_qtd_planejada, itc_qtd_realizada, ord_hash_key, not_id, not_emissao);
                             }
 
                             public IItenCargaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string ord_hash_key, string not_id, DateTime? not_emissao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string? ord_hash_key, string? not_id, DateTime? not_emissao )
                             {
                             var entity = new ItenCargaEntity(id, car_id, ord_id, itc_entrega_planejada, itc_entrega_realizada, itc_ordem_entrega, itc_qtd_planejada, itc_qtd_realizada, ord_hash_key, not_id, not_emissao );
 

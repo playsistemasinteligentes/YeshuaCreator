@@ -41,25 +41,25 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TurnoEntity(string id, string descricao, int turn_prioridade, DateTime? turn_hora_ini_dia1, DateTime? turn_hora_fim_dia1, DateTime? turn_hora_ini_dia2, DateTime? turn_hora_fim_dia2, DateTime? turn_hora_ini_dia3, DateTime? turn_hora_fim_dia3, DateTime? turn_hora_ini_dia4, DateTime? turn_hora_fim_dia4, DateTime? turn_hora_ini_dia5, DateTime? turn_hora_fim_dia5, DateTime? turn_hora_ini_dia6, DateTime? turn_hora_fim_dia6, DateTime? turn_hora_ini_dia7, DateTime? turn_hora_fim_dia7 ){
  Id = id; 
  Descricao = descricao; 
  TURN_PRIORIDADE = turn_prioridade; 
- TURN_HORA_INI_DIA1 = (turn_hora_ini_dia1 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia1; 
- TURN_HORA_FIM_DIA1 = (turn_hora_fim_dia1 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia1; 
- TURN_HORA_INI_DIA2 = (turn_hora_ini_dia2 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia2; 
- TURN_HORA_FIM_DIA2 = (turn_hora_fim_dia2 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia2; 
- TURN_HORA_INI_DIA3 = (turn_hora_ini_dia3 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia3; 
- TURN_HORA_FIM_DIA3 = (turn_hora_fim_dia3 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia3; 
- TURN_HORA_INI_DIA4 = (turn_hora_ini_dia4 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia4; 
- TURN_HORA_FIM_DIA4 = (turn_hora_fim_dia4 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia4; 
- TURN_HORA_INI_DIA5 = (turn_hora_ini_dia5 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia5; 
- TURN_HORA_FIM_DIA5 = (turn_hora_fim_dia5 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia5; 
- TURN_HORA_INI_DIA6 = (turn_hora_ini_dia6 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia6; 
- TURN_HORA_FIM_DIA6 = (turn_hora_fim_dia6 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia6; 
- TURN_HORA_INI_DIA7 = (turn_hora_ini_dia7 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia7; 
- TURN_HORA_FIM_DIA7 = (turn_hora_fim_dia7 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia7; 
+ TURN_HORA_INI_DIA1 = turn_hora_ini_dia1.HasValue && turn_hora_ini_dia1.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia1; 
+ TURN_HORA_FIM_DIA1 = turn_hora_fim_dia1.HasValue && turn_hora_fim_dia1.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia1; 
+ TURN_HORA_INI_DIA2 = turn_hora_ini_dia2.HasValue && turn_hora_ini_dia2.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia2; 
+ TURN_HORA_FIM_DIA2 = turn_hora_fim_dia2.HasValue && turn_hora_fim_dia2.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia2; 
+ TURN_HORA_INI_DIA3 = turn_hora_ini_dia3.HasValue && turn_hora_ini_dia3.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia3; 
+ TURN_HORA_FIM_DIA3 = turn_hora_fim_dia3.HasValue && turn_hora_fim_dia3.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia3; 
+ TURN_HORA_INI_DIA4 = turn_hora_ini_dia4.HasValue && turn_hora_ini_dia4.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia4; 
+ TURN_HORA_FIM_DIA4 = turn_hora_fim_dia4.HasValue && turn_hora_fim_dia4.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia4; 
+ TURN_HORA_INI_DIA5 = turn_hora_ini_dia5.HasValue && turn_hora_ini_dia5.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia5; 
+ TURN_HORA_FIM_DIA5 = turn_hora_fim_dia5.HasValue && turn_hora_fim_dia5.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia5; 
+ TURN_HORA_INI_DIA6 = turn_hora_ini_dia6.HasValue && turn_hora_ini_dia6.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia6; 
+ TURN_HORA_FIM_DIA6 = turn_hora_fim_dia6.HasValue && turn_hora_fim_dia6.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia6; 
+ TURN_HORA_INI_DIA7 = turn_hora_ini_dia7.HasValue && turn_hora_ini_dia7.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia7; 
+ TURN_HORA_FIM_DIA7 = turn_hora_fim_dia7.HasValue && turn_hora_fim_dia7.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia7; 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -108,7 +108,7 @@
                                         }
                                     }
 
-                                    public string CLI_FONE
+                                    public string? CLI_FONE
                                     {
                                         get => _inner.CLI_FONE;
                                         set
@@ -122,7 +122,7 @@
                                         }
                                     }
 
-                                    public string CLI_OBS
+                                    public string? CLI_OBS
                                     {
                                         get => _inner.CLI_OBS;
                                         set
@@ -136,7 +136,7 @@
                                         }
                                     }
 
-                                    public string CLI_ENDERECO_ENTREGA
+                                    public string? CLI_ENDERECO_ENTREGA
                                     {
                                         get => _inner.CLI_ENDERECO_ENTREGA;
                                         set
@@ -150,7 +150,7 @@
                                         }
                                     }
 
-                                    public string CLI_CPF_CNPJ
+                                    public string? CLI_CPF_CNPJ
                                     {
                                         get => _inner.CLI_CPF_CNPJ;
                                         set
@@ -164,7 +164,7 @@
                                         }
                                     }
 
-                                    public string CLI_BAIRRO_ENTREGA
+                                    public string? CLI_BAIRRO_ENTREGA
                                     {
                                         get => _inner.CLI_BAIRRO_ENTREGA;
                                         set
@@ -178,7 +178,7 @@
                                         }
                                     }
 
-                                    public string CLI_CEP_ENTREGA
+                                    public string? CLI_CEP_ENTREGA
                                     {
                                         get => _inner.CLI_CEP_ENTREGA;
                                         set
@@ -192,7 +192,7 @@
                                         }
                                     }
 
-                                    public string CLI_EMAIL
+                                    public string? CLI_EMAIL
                                     {
                                         get => _inner.CLI_EMAIL;
                                         set
@@ -206,7 +206,7 @@
                                         }
                                     }
 
-                                    public string CLI_INTEGRACAO
+                                    public string? CLI_INTEGRACAO
                                     {
                                         get => _inner.CLI_INTEGRACAO;
                                         set
@@ -220,7 +220,7 @@
                                         }
                                     }
 
-                                    public string MUN_ID_ENTREGA
+                                    public string? MUN_ID_ENTREGA
                                     {
                                         get => _inner.MUN_ID_ENTREGA;
                                         set
@@ -248,7 +248,7 @@
                                         }
                                     }
 
-                                    public string CLI_REGIAO_ENTREGA
+                                    public string? CLI_REGIAO_ENTREGA
                                     {
                                         get => _inner.CLI_REGIAO_ENTREGA;
                                         set
@@ -318,7 +318,7 @@
                                         }
                                     }
 
-                                    public string REP_ID
+                                    public string? REP_ID
                                     {
                                         get => _inner.REP_ID;
                                         set
@@ -332,7 +332,7 @@
                                         }
                                     }
 
-                                    public string CLI_RAZAO_SOCIAL
+                                    public string? CLI_RAZAO_SOCIAL
                                     {
                                         get => _inner.CLI_RAZAO_SOCIAL;
                                         set
@@ -346,7 +346,7 @@
                                         }
                                     }
 
-                                    public string CLI_EMAIL_MONITORAMENTO_TRANSPORTE
+                                    public string? CLI_EMAIL_MONITORAMENTO_TRANSPORTE
                                     {
                                         get => _inner.CLI_EMAIL_MONITORAMENTO_TRANSPORTE;
                                         set
@@ -360,7 +360,7 @@
                                         }
                                     }
 
-                                    public string CLI_CONTATO
+                                    public string? CLI_CONTATO
                                     {
                                         get => _inner.CLI_CONTATO;
                                         set
@@ -374,7 +374,7 @@
                                         }
                                     }
 
-                                    public string CLI_SETOR
+                                    public string? CLI_SETOR
                                     {
                                         get => _inner.CLI_SETOR;
                                         set
@@ -388,7 +388,7 @@
                                         }
                                     }
 
-                                    public string SEG_ID
+                                    public string? SEG_ID
                                     {
                                         get => _inner.SEG_ID;
                                         set
@@ -402,7 +402,7 @@
                                         }
                                     }
 
-                                    public string CLI_TIPO
+                                    public string? CLI_TIPO
                                     {
                                         get => _inner.CLI_TIPO;
                                         set
@@ -416,7 +416,7 @@
                                         }
                                     }
 
-                                    public string CLI_INTEGRACAO_ERP
+                                    public string? CLI_INTEGRACAO_ERP
                                     {
                                         get => _inner.CLI_INTEGRACAO_ERP;
                                         set

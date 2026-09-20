@@ -26,22 +26,22 @@
     int? MET_ID { get; set; }
     int? UNI_ID { get; set; }
     DateTime MED_DATA { get; set; }
-    string MED_VALOR { get; set; }
-    string MED_AC_ANO { get; set; }
-    string MED_DATAMEDICAO { get; set; }
+    string? MED_VALOR { get; set; }
+    string? MED_AC_ANO { get; set; }
+    string? MED_DATAMEDICAO { get; set; }
     Decimal? MED_PONDERACAO { get; set; }
-    string DIM_ID { get; set; }
-    string DIM_DESCRICAO { get; set; }
-    string DIM_SUBDIMENSAO_ID { get; set; }
-    string DIM_SUB_DESCRICAO { get; set; }
-    string PER_ID { get; set; }
-    string PER_DESCRICAO { get; set; }
-    string FAT_ID { get; set; }
-    string FAT_DESCRICAO { get; set; }
-    string MED_SQL { get; set; }
-    string DOM_EMPRESA { get; set; }
-    string DOM_FILIAL { get; set; }
-    string MED_VALOR_DISPER { get; set; }
+    string? DIM_ID { get; set; }
+    string? DIM_DESCRICAO { get; set; }
+    string? DIM_SUBDIMENSAO_ID { get; set; }
+    string? DIM_SUB_DESCRICAO { get; set; }
+    string? PER_ID { get; set; }
+    string? PER_DESCRICAO { get; set; }
+    string? FAT_ID { get; set; }
+    string? FAT_DESCRICAO { get; set; }
+    string? MED_SQL { get; set; }
+    string? DOM_EMPRESA { get; set; }
+    string? DOM_FILIAL { get; set; }
+    string? MED_VALOR_DISPER { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

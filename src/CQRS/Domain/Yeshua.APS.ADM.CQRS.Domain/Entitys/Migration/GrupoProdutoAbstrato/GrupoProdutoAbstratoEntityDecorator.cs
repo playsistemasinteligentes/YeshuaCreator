@@ -155,7 +155,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAP_ONDA
+                                    public string? GRP_PAP_ONDA
                                     {
                                         get => _inner.GRP_PAP_ONDA;
                                         set
@@ -197,7 +197,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAP_NOME_COMERCIAL
+                                    public string? GRP_PAP_NOME_COMERCIAL
                                     {
                                         get => _inner.GRP_PAP_NOME_COMERCIAL;
                                         set
@@ -211,7 +211,7 @@
                                         }
                                     }
 
-                                    public string GRP_ATIVO
+                                    public string? GRP_ATIVO
                                     {
                                         get => _inner.GRP_ATIVO;
                                         set
@@ -239,7 +239,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL1
+                                    public string? GRP_PAPEL1
                                     {
                                         get => _inner.GRP_PAPEL1;
                                         set
@@ -253,7 +253,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL2
+                                    public string? GRP_PAPEL2
                                     {
                                         get => _inner.GRP_PAPEL2;
                                         set
@@ -267,7 +267,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL3
+                                    public string? GRP_PAPEL3
                                     {
                                         get => _inner.GRP_PAPEL3;
                                         set
@@ -281,7 +281,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL4
+                                    public string? GRP_PAPEL4
                                     {
                                         get => _inner.GRP_PAPEL4;
                                         set
@@ -295,7 +295,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL5
+                                    public string? GRP_PAPEL5
                                     {
                                         get => _inner.GRP_PAPEL5;
                                         set
@@ -309,7 +309,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID_INTEGRACAO
+                                    public string? GRP_ID_INTEGRACAO
                                     {
                                         get => _inner.GRP_ID_INTEGRACAO;
                                         set
@@ -323,7 +323,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID_INTEGRACAO_ERP
+                                    public string? GRP_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.GRP_ID_INTEGRACAO_ERP;
                                         set
@@ -379,7 +379,7 @@
                                         }
                                     }
 
-                                    public string GRP_RESINA
+                                    public string? GRP_RESINA
                                     {
                                         get => _inner.GRP_RESINA;
                                         set
@@ -393,7 +393,7 @@
                                         }
                                     }
 
-                                    public string GRP_ENDURECEDOR_MIOLO
+                                    public string? GRP_ENDURECEDOR_MIOLO
                                     {
                                         get => _inner.GRP_ENDURECEDOR_MIOLO;
                                         set
@@ -463,7 +463,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID_FAMILIA
+                                    public string? GRP_ID_FAMILIA
                                     {
                                         get => _inner.GRP_ID_FAMILIA;
                                         set
@@ -505,7 +505,7 @@
                                         }
                                     }
 
-                                    public string GRP_TIPO_LAP
+                                    public string? GRP_TIPO_LAP
                                     {
                                         get => _inner.GRP_TIPO_LAP;
                                         set
@@ -519,7 +519,7 @@
                                         }
                                     }
 
-                                    public string GRP_LAP_PROLONGADO
+                                    public string? GRP_LAP_PROLONGADO
                                     {
                                         get => _inner.GRP_LAP_PROLONGADO;
                                         set
@@ -589,7 +589,7 @@
                                         }
                                     }
 
-                                    public string GRP_FEFCO
+                                    public string? GRP_FEFCO
                                     {
                                         get => _inner.GRP_FEFCO;
                                         set
@@ -631,7 +631,7 @@
                                         }
                                     }
 
-                                    public string GRP_PREFIXO_ID_PRODUTO
+                                    public string? GRP_PREFIXO_ID_PRODUTO
                                     {
                                         get => _inner.GRP_PREFIXO_ID_PRODUTO;
                                         set
@@ -729,7 +729,7 @@
                                         }
                                     }
 
-                                    public string GRP_IMG_CAIXA
+                                    public string? GRP_IMG_CAIXA
                                     {
                                         get => _inner.GRP_IMG_CAIXA;
                                         set

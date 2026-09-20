@@ -24,10 +24,10 @@
     int LTF_ID { get; set; }
     DateTime? LTF_EMISSAO { get; set; }
     Decimal? LTF_VALOR { get; set; }
-    string LTF_OBS { get; set; }
-    string LTF_STATUS { get; set; }
-    string ORD_ID { get; set; }
-    string ROT_PRO_ID { get; set; }
+    string? LTF_OBS { get; set; }
+    string? LTF_STATUS { get; set; }
+    string? ORD_ID { get; set; }
+    string? ROT_PRO_ID { get; set; }
     int? FPR_SEQ_REPETICAO { get; set; }
     int? USE_ID { get; set; }
     int? TenantID { get; set; }

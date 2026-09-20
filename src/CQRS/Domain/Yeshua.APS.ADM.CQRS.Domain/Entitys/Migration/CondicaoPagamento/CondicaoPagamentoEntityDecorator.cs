@@ -87,7 +87,7 @@
                                         }
                                     }
 
-                                    public string CON_DESCRICAO
+                                    public string? CON_DESCRICAO
                                     {
                                         get => _inner.CON_DESCRICAO;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string CON_INTEGRACAO_ERP
+                                    public string? CON_INTEGRACAO_ERP
                                     {
                                         get => _inner.CON_INTEGRACAO_ERP;
                                         set

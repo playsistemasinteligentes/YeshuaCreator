@@ -162,7 +162,9 @@ namespace Command.Receivers
             return (cteTentativa, mdfeTentativa);
         }
 
-        private void AcordarContingenciaSeExistir(SagaBase saga, (CTeTentativaEmissaoDTO CTe, MDFeTentativaEmissaoDTO MDFe) fiscal)
+        private void AcordarContingenciaSeExistir(
+            SagaBase saga,
+            (CTeTentativaEmissaoDTO CTe, MDFeTentativaEmissaoDTO MDFe) fiscal)
         {
             var cargaId = saga.EntityId ?? string.Empty;
             if (string.IsNullOrWhiteSpace(cargaId))

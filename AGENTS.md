@@ -59,6 +59,9 @@ Miolos que IA/dev devem preencher:
   caso de duvida, parar, mapear o que ja existe e apresentar a menor mudanca
   possivel.
 - Tudo executavel tende a ser Command + Receiver.
+- Logs e telemetria devem ser plugados nas bordas arquiteturais geradas ou
+  compartilhadas. Nunca instrumentar regra de negocio, handler customizado ou
+  codigo `Custon`, salvo solicitacao explicita para um diagnostico pontual.
 - Command representa uma intencao e carrega dados.
 - Receiver executa a intencao.
 - Receiver pequeno faz uma acao especifica.
@@ -366,6 +369,15 @@ Regra resumida:
   como metadata de modulo, por exemplo `AddCustomPage`, para permitir menu,
   permissao, descoberta e operacao; HTML, CSS, JS e provedores continuam em
   `wwwroot/Custon` do aplicativo.
+- Todo artefato de Front especifico de aplicativo deve ficar em
+  `wwwroot/Custon/Apps/<Aplicativo>`. O arquivo raiz
+  `wwwroot/Custon/extensions.js` e um carregador gerado pela Engine; ele nao
+  deve acumular regras ou telas do aplicativo. Essa divisao prepara a futura
+  composicao de um Front central sem acoplar os aplicativos agora.
+- Paginas operacionais genericas pertencem a matriz do Front. O catalogo de
+  entidades e campos dessas paginas e gerado estaticamente pela Engine na API
+  de cada aplicativo, sem reflection; a pagina generica compoe a interface a
+  partir desse catalogo local.
 - Agrupamentos de menu devem nascer na DSL como metadata de modulo, por
   exemplo `AddMenuGroup`, `AddMenuGroupByPrefix` e `AddRemainingMenuGroup`.
   O front padrao apenas renderiza a arvore entregue por `/getMenu`; regras

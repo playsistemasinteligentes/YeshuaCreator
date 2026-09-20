@@ -22,7 +22,7 @@
 {
     string UNI_ID { get; set; }
     string UNI_DESCRICAO { get; set; }
-    string UNI_ESCALA_TEMPO { get; set; }
+    string? UNI_ESCALA_TEMPO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICotasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICotasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CotasCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cotas = new CotasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.COT_ID, c.COT_DATA_DE, c.COT_DATA_ATE, c.COT_VALOR, c.COT_OCUPADO, c.REP_ID);
                  var domainResult = CotasDomainBehavior.Apply(cotas, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(cotas);
-                     return Success("OK", cotas);
+                     return Task.FromResult(Success("OK", cotas));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cotas);
+                    return Task.FromResult(Error(e, cotas));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -13,9 +13,9 @@ namespace Command.Read
 {
     public struct PontosMapaReadCommand : ICommandRead
     {
-        public string PON_ID { get; set; }
-        public string PON_DESCRICAO { get; set; }
-        public string PON_TIPO { get; set; }
+        public string? PON_ID { get; set; }
+        public string? PON_DESCRICAO { get; set; }
+        public string? PON_TIPO { get; set; }
         public Decimal? PON_LATITUDE { get; set; }
         public Decimal? PON_LONGITUDE { get; set; }
         public Decimal? PON_DISTANCIA_KM { get; set; }
@@ -23,7 +23,7 @@ namespace Command.Read
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
-        public string MUN_ID { get; set; }
+        public string? MUN_ID { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

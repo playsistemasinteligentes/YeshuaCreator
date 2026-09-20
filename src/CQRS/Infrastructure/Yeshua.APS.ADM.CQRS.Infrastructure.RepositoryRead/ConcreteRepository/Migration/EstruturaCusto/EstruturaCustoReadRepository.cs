@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<EstruturaCustoDTO> getEstruturaCusto(Command.Read.EstruturaCustoReadCommand command )
         {
-            DataPagination<EstruturaCustoDTO> customResult = null;
+            var customResult = new DataPagination<EstruturaCustoDTO>();
             var customHandled = false;
             TryGetEstruturaCustoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EstruturaCustoORD_IDDTO> getEstruturaCustoReadFKORD_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstruturaCustoORD_IDDTO> lista;
             var query = _query.EstruturaCustoORD_IDQuery(command );
 
-                lista = _unitOfWork.Query<EstruturaCustoORD_IDDTO>(query.Query,query.Parameters) as List<EstruturaCustoORD_IDDTO>;
+                var lista = _unitOfWork.Query<EstruturaCustoORD_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EstruturaCustoTenantIDDTO> getEstruturaCustoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstruturaCustoTenantIDDTO> lista;
             var query = _query.EstruturaCustoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EstruturaCustoTenantIDDTO>(query.Query,query.Parameters) as List<EstruturaCustoTenantIDDTO>;
+                var lista = _unitOfWork.Query<EstruturaCustoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<EstruturaCustoUserIdDTO> getEstruturaCustoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstruturaCustoUserIdDTO> lista;
             var query = _query.EstruturaCustoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EstruturaCustoUserIdDTO>(query.Query,query.Parameters) as List<EstruturaCustoUserIdDTO>;
+                var lista = _unitOfWork.Query<EstruturaCustoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_PRODUTOQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_COMPONENTEQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_TIPO_CUSTOQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_GRUPO_CONTABILQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_ORDEMQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_GRUPOQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_QUANTQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_VALOR_TOTALQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_DATA_BASEQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_BASE_PRODUCAOQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_NIVELQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -580,7 +577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -588,7 +585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -596,7 +593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters) as List<EstruturaCustoDTO>;
+                var result = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

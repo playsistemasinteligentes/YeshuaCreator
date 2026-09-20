@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct TempoSetupOnduladeiraReadFKOND_ID_DECommand : ICommand
     {
-        public string OND_ID { get; set; }
+        public string? OND_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -15,7 +15,7 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record SendFileInputCommand : ICommand
+public partial record SendFileInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string token { get; set; } = string.Empty;
     public int ChunkIndex { get; set; }
@@ -23,6 +23,9 @@ public partial record SendFileInputCommand : ICommand
     public string FileName { get; set; } = string.Empty;
     public string ContentType { get; set; } = string.Empty;
     public IFormFile FileStream { get; set; } = default!;
+
+    public string OperationalEntity => "yFileUpload";
+    public string? OperationalRecordId => null;
 }
 
 public partial record SendFileOutputCommand : ICommand

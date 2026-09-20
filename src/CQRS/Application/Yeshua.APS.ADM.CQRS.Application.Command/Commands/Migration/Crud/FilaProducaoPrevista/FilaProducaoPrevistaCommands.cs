@@ -23,8 +23,8 @@ namespace Command.Write
         public DateTime FPR_DATA_FIM_MAXIMA { get; set; }
         public int ROT_SEQ_TRANFORMACAO { get; set; }
         public int FPR_SEQ_REPETICAO { get; set; }
-        public string FPR_OBS_PRODUCAO { get; set; }
-        public string FPR_STATUS { get; set; }
+        public string? FPR_OBS_PRODUCAO { get; set; }
+        public string? FPR_STATUS { get; set; }
         public Decimal? FPR_TEMPO_DECORRIDO_SETUP { get; set; }
         public Decimal? FPR_TEMPO_DECORRIDO_SETUPA { get; set; }
         public Decimal? FPR_TEMPO_DECORRIDO_PERFORMANC { get; set; }
@@ -42,39 +42,39 @@ namespace Command.Write
         public DateTime? FPR_FIM_PREVISTO_ATUAL { get; set; }
         public int? FPR_PRODUZINDO { get; set; }
         public Decimal? FPR_ORDEM_NA_FILA { get; set; }
-        public string FPR_ID_INTEGRACAO { get; set; }
-        public string FPR_TRUNCADO { get; set; }
+        public string? FPR_ID_INTEGRACAO { get; set; }
+        public string? FPR_TRUNCADO { get; set; }
         public DateTime? FPR_DATA_TRUNC_INI { get; set; }
         public DateTime? FPR_DATA_TRUNC_FIM { get; set; }
         public int FPR_ID { get; set; }
-        public string FPR_COR_FILA { get; set; }
-        public string MAQ_ID_MANUAL { get; set; }
-        public string MAQ_ID_RESTRINGIDA { get; set; }
+        public string? FPR_COR_FILA { get; set; }
+        public string? MAQ_ID_MANUAL { get; set; }
+        public string? MAQ_ID_RESTRINGIDA { get; set; }
         public DateTime FPR_PREVISAO_MATERIA_PRIMA { get; set; }
         public DateTime? FPR_DATA_NECESSIDADE_INICIO_PRODUCAO { get; set; }
         public DateTime? FPR_DATA_NECESSIDADE_FIM_PRODUCAO { get; set; }
         public Decimal? FPR_GRUPO_PRODUTIVO { get; set; }
         public DateTime? FPR_INICIO_GRUPO_PRODUTIVO { get; set; }
         public DateTime? FPR_FIM_GRUPO_PRODUTIVO { get; set; }
-        public string FPR_COR_BICO1 { get; set; }
-        public string FPR_COR_BICO2 { get; set; }
-        public string FPR_COR_BICO3 { get; set; }
-        public string FPR_COR_BICO4 { get; set; }
-        public string FPR_COR_BICO5 { get; set; }
+        public string? FPR_COR_BICO1 { get; set; }
+        public string? FPR_COR_BICO2 { get; set; }
+        public string? FPR_COR_BICO3 { get; set; }
+        public string? FPR_COR_BICO4 { get; set; }
+        public string? FPR_COR_BICO5 { get; set; }
         public Decimal? FPR_META_SETUP { get; set; }
-        public string FPR_ORD_ID_REPROGRAMADO { get; set; }
+        public string? FPR_ORD_ID_REPROGRAMADO { get; set; }
         public int? FPR_PRIORIDADE { get; set; }
         public int? FPR_SEQ_INCLUSAO_FILA { get; set; }
         public int? FPR_HIERARQUIA_SEQ_TRANSFORMACAO { get; set; }
         public int? FPR_ID_ORIGEM { get; set; }
         public DateTime? FPR_DATA_ENTREGA { get; set; }
-        public string EQU_ID { get; set; }
+        public string? EQU_ID { get; set; }
         public Decimal? FPR_GRUPO_PRODUTIVO_MANUAL { get; set; }
         public DateTime? FPR_EMISSAO { get; set; }
-        public string FPR_MOTIVO_PULA_FILA { get; set; }
-        public string OCO_ID { get; set; }
-        public string FPR_PESO_UNITARIO { get; set; }
-        public string FPR_M2_UNITARIO { get; set; }
+        public string? FPR_MOTIVO_PULA_FILA { get; set; }
+        public string? OCO_ID { get; set; }
+        public string? FPR_PESO_UNITARIO { get; set; }
+        public string? FPR_M2_UNITARIO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

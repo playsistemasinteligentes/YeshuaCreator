@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICorConfiguracaoGraficoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICorConfiguracaoGraficoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CorConfiguracaoGraficoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var corconfiguracaografico = new CorConfiguracaoGraficoFactory(_logger, _domainTrackingPolicy).Create(context, c.COR_ID, c.COR_PERCENTUAL_INI, c.COR_PERCENTUAL_FIM, c.COR_DESCRICAO);
                  var domainResult = CorConfiguracaoGraficoDomainBehavior.Apply(corconfiguracaografico, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(corconfiguracaografico);
-                     return Success("OK", corconfiguracaografico);
+                     return Task.FromResult(Success("OK", corconfiguracaografico));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, corconfiguracaografico);
+                    return Task.FromResult(Error(e, corconfiguracaografico));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

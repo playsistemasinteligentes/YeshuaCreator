@@ -18,15 +18,15 @@ namespace Repositorio.Outputs
 {
     public partial record CenarioPlanejamentoTransporteDTO
     {
-    public string cenarioid { get; set; }
-    public string descricao { get; set; }
-    public string objetivo { get; set; }
+    public string cenarioid { get; set; } = string.Empty;
+    public string descricao { get; set; } = string.Empty;
+    public string objetivo { get; set; } = string.Empty;
     public int quantidadecargas { get; set; }
     public int quantidadepedidosnaoatendidos { get; set; }
     public Decimal custototal { get; set; }
     public Decimal aderenciacubagem { get; set; }
     public Decimal atrasoprevisto { get; set; }
-    public string alertasresumo { get; set; }
+    public string alertasresumo { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

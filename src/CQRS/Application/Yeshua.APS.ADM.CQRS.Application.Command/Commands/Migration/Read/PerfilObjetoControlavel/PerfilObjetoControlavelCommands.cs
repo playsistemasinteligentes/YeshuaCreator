@@ -15,8 +15,8 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? PER_ID { get; set; }
-        public string OBJ_ID { get; set; }
-        public string PEO_ACAO { get; set; }
+        public string? OBJ_ID { get; set; }
+        public string? PEO_ACAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

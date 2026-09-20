@@ -18,16 +18,16 @@ namespace Repositorio.Outputs
 {
     public partial record OpcaoPlanejamentoTransporteDTO
     {
-    public string opcaoid { get; set; }
-    public string grupodecisaoid { get; set; }
+    public string opcaoid { get; set; } = string.Empty;
+    public string grupodecisaoid { get; set; } = string.Empty;
     public Decimal peso { get; set; }
     public Decimal volume { get; set; }
     public Decimal custoestimado { get; set; }
     public Decimal aderenciacubagem { get; set; }
     public Decimal aderenciajanelaentrega { get; set; }
-    public string riscoresumo { get; set; }
-    public string pedidosresumo { get; set; }
-    public string opcoesconflitantesresumo { get; set; }
+    public string riscoresumo { get; set; } = string.Empty;
+    public string pedidosresumo { get; set; } = string.Empty;
+    public string opcoesconflitantesresumo { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

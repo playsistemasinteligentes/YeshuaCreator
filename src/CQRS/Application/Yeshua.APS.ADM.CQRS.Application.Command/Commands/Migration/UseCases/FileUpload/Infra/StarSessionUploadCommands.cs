@@ -11,19 +11,23 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record StarSessionUploadInputCommand : ICommand
+public partial record StarSessionUploadInputCommand : ICommand, IOperationalTelemetryCommand
 {
-    public string token { get; set; }
-    public string entityType { get; set; }
-    public string entityId { get; set; }
+    public string token { get; set; } = string.Empty;
+    public string entityType { get; set; } = string.Empty;
+    public string entityId { get; set; } = string.Empty;
+
+    public string OperationalEntity => "yFileUpload";
+    public string? OperationalRecordId => null;
 }
 
 public partial record StarSessionUploadOutputCommand : ICommand
 {
-    public string uploadToken { get; set; }
+    public string uploadToken { get; set; } = string.Empty;
 }
 
 }

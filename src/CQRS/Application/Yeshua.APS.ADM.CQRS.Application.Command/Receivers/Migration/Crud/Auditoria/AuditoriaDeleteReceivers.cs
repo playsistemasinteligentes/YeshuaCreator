@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IAuditoriaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IAuditoriaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.AuditoriaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var auditoria = new AuditoriaFactory(_logger, _domainTrackingPolicy).Create(context, c.ID, c.DATA, c.USE_ID, c.ROTINA, c.HISTORICO, c.CHAVE);
                  var domainResult = AuditoriaDomainBehavior.Apply(auditoria, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(auditoria);
-                     return Success("OK", auditoria);
+                     return Task.FromResult(Success("OK", auditoria));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, auditoria);
+                    return Task.FromResult(Error(e, auditoria));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

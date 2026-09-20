@@ -17,7 +17,7 @@ namespace Command.Read
         public int? MEM_ID { get; set; }
         public int? ORC_ID { get; set; }
         public Decimal? MEM_VALOR { get; set; }
-        public string MEM_DESCRICAO { get; set; }
+        public string? MEM_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

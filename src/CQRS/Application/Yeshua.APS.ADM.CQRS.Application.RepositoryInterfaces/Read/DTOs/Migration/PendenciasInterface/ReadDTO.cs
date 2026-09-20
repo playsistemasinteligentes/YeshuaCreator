@@ -18,12 +18,12 @@ namespace Repositorio.Outputs
 {
     public partial record PendenciasInterfaceDTO
     {
-    public string pen_status_out { get; set; }
-    public string pen_protocolo_out { get; set; }
-    public string pen_id_protocolo_out { get; set; }
-    public string pen_status_in { get; set; }
-    public string pen_protocolo_in { get; set; }
-    public string pen_id_protocolo_in { get; set; }
+    public string pen_status_out { get; set; } = string.Empty;
+    public string pen_protocolo_out { get; set; } = string.Empty;
+    public string pen_id_protocolo_out { get; set; } = string.Empty;
+    public string pen_status_in { get; set; } = string.Empty;
+    public string pen_protocolo_in { get; set; } = string.Empty;
+    public string pen_id_protocolo_in { get; set; } = string.Empty;
     public DateTime data_entrada { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

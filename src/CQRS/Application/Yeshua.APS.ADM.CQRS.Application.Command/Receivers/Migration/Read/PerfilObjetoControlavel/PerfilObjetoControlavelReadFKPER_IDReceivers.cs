@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<PerfilObjetoControlavelPER_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<PerfilObjetoControlavelPER_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var PerfilObjetoControlavelReadRepository = _repository.getPerfilObjetoControlavelReadFKPER_ID(c);
-                return Success("OK", PerfilObjetoControlavelReadRepository);
+                return Task.FromResult(Success("OK", PerfilObjetoControlavelReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

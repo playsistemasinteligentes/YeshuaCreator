@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record RoteiroPedidoPedidoIdDTO
     {
-    public string pedidoid { get; set; }
+    public string pedidoid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

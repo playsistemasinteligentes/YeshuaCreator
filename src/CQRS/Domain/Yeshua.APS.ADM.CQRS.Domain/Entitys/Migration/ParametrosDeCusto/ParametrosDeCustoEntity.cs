@@ -29,7 +29,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ParametrosDeCustoEntity(int? id, int par_id, string pro_id, string cus_id, string par_valor ){
  Id = id; 
  PAR_ID = par_id; 

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IInformacoesComplementaresEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IInformacoesComplementaresEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.InformacoesComplementaresCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var informacoescomplementares = new InformacoesComplementaresFactory(_logger, _domainTrackingPolicy).Create(context, c.INF_ID, c.INF_DESCRICAO, c.INF_VALOR, c.MET_ID, c.INF_DATA);
                  var domainResult = InformacoesComplementaresDomainBehavior.Apply(informacoescomplementares, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(informacoescomplementares);
-                     return Success("OK", informacoescomplementares);
+                     return Task.FromResult(Success("OK", informacoescomplementares));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, informacoescomplementares);
+                    return Task.FromResult(Error(e, informacoescomplementares));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

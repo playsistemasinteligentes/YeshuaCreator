@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<yInboxDTO> getyInbox(Command.Read.yInboxReadCommand command , bool TakeOffTenantID = false)
         {
-            DataPagination<yInboxDTO> customResult = null;
+            var customResult = new DataPagination<yInboxDTO>();
             var customHandled = false;
             TryGetyInboxCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<yInboxSagaIdDTO> getyInboxReadFKSagaId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<yInboxSagaIdDTO> lista;
             var query = _query.yInboxSagaIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<yInboxSagaIdDTO>(query.Query,query.Parameters) as List<yInboxSagaIdDTO>;
+                var lista = _unitOfWork.Query<yInboxSagaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<yInboxSagaStepIdDTO> getyInboxReadFKSagaStepId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<yInboxSagaStepIdDTO> lista;
             var query = _query.yInboxSagaStepIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<yInboxSagaStepIdDTO>(query.Query,query.Parameters) as List<yInboxSagaStepIdDTO>;
+                var lista = _unitOfWork.Query<yInboxSagaStepIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<yInboxTenantIDDTO> getyInboxReadFKTenantID(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<yInboxTenantIDDTO> lista;
             var query = _query.yInboxTenantIDQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<yInboxTenantIDDTO>(query.Query,query.Parameters) as List<yInboxTenantIDDTO>;
+                var lista = _unitOfWork.Query<yInboxTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<yInboxUserIdDTO> getyInboxReadFKUserId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<yInboxUserIdDTO> lista;
             var query = _query.yInboxUserIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<yInboxUserIdDTO>(query.Query,query.Parameters) as List<yInboxUserIdDTO>;
+                var lista = _unitOfWork.Query<yInboxUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -446,7 +442,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -454,7 +450,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMessageIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -462,7 +458,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -470,7 +466,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEntityTypeQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -478,7 +474,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEntityIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -486,7 +482,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -494,7 +490,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -502,7 +498,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -510,7 +506,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -518,7 +514,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -526,7 +522,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -534,7 +530,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProcessingAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -542,7 +538,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNextAttemptAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -550,7 +546,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySagaIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -558,7 +554,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySagaStepIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -566,7 +562,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -574,7 +570,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -582,7 +578,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -590,7 +586,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

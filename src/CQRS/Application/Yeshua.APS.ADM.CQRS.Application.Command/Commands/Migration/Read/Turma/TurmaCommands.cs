@@ -13,8 +13,8 @@ namespace Command.Read
 {
     public struct TurmaReadCommand : ICommandRead
     {
-        public string Id { get; set; }
-        public string Descricao { get; set; }
+        public string? Id { get; set; }
+        public string? Descricao { get; set; }
         public DateTime? TURM_HORA_INI_DIA1 { get; set; }
         public DateTime? TURM_HORA_FIM_DIA1 { get; set; }
         public DateTime? TURM_HORA_INI_DIA2 { get; set; }

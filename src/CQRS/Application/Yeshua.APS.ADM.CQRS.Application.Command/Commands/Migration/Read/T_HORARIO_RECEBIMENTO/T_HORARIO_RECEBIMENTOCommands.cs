@@ -16,7 +16,7 @@ namespace Command.Read
         public int? HRE_DIA_DA_SEMANA { get; set; }
         public DateTime? HRE_HORA_INICIAL { get; set; }
         public DateTime? HRE_HORA_FINAL { get; set; }
-        public string CLI_ID { get; set; }
+        public string? CLI_ID { get; set; }
         public int? HRE_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

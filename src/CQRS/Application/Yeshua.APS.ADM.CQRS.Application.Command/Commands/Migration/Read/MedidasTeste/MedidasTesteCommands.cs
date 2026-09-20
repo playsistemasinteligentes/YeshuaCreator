@@ -15,10 +15,10 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? MDT_ID { get; set; }
-        public string MDT_DESC { get; set; }
+        public string? MDT_DESC { get; set; }
         public Decimal? MDT_VALOR_ESPERADO { get; set; }
         public Decimal? MDT_ENCONTRADO { get; set; }
-        public string UNI_ID { get; set; }
+        public string? UNI_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

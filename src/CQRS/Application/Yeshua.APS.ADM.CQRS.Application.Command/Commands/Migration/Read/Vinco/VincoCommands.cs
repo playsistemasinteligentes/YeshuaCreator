@@ -14,8 +14,8 @@ namespace Command.Read
     public struct VincoReadCommand : ICommandRead
     {
         public int? VIN_ID { get; set; }
-        public string VIN_DESCRICAO { get; set; }
-        public string VIN_ID_DESLOCAMENTO { get; set; }
+        public string? VIN_DESCRICAO { get; set; }
+        public string? VIN_ID_DESLOCAMENTO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

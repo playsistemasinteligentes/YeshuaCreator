@@ -15,12 +15,15 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record EncerrarMDFeInputCommand : ICommand
+public partial record EncerrarMDFeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string ChaveAcesso { get; set; } = string.Empty;
     public string UfCarregamento { get; set; } = string.Empty;
     public string UfDescarregamento { get; set; } = string.Empty;
     public string PlacaVeiculo { get; set; } = string.Empty;
+
+    public string OperationalEntity => "MDFe";
+    public string? OperationalRecordId => null;
 }
 
 public partial record EncerrarMDFeOutputCommand : ICommand

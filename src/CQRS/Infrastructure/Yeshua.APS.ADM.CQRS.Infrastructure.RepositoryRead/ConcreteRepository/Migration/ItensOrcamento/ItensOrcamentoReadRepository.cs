@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItensOrcamentoDTO> getItensOrcamento(Command.Read.ItensOrcamentoReadCommand command )
         {
-            DataPagination<ItensOrcamentoDTO> customResult = null;
+            var customResult = new DataPagination<ItensOrcamentoDTO>();
             var customHandled = false;
             TryGetItensOrcamentoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensOrcamentoGRP_ID_COMPOSICAODTO> getItensOrcamentoReadFKGRP_ID_COMPOSICAO(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensOrcamentoGRP_ID_COMPOSICAODTO> lista;
             var query = _query.ItensOrcamentoGRP_ID_COMPOSICAOQuery(command );
 
-                lista = _unitOfWork.Query<ItensOrcamentoGRP_ID_COMPOSICAODTO>(query.Query,query.Parameters) as List<ItensOrcamentoGRP_ID_COMPOSICAODTO>;
+                var lista = _unitOfWork.Query<ItensOrcamentoGRP_ID_COMPOSICAODTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensOrcamentoTenantIDDTO> getItensOrcamentoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensOrcamentoTenantIDDTO> lista;
             var query = _query.ItensOrcamentoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItensOrcamentoTenantIDDTO>(query.Query,query.Parameters) as List<ItensOrcamentoTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItensOrcamentoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensOrcamentoUserIdDTO> getItensOrcamentoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensOrcamentoUserIdDTO> lista;
             var query = _query.ItensOrcamentoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItensOrcamentoUserIdDTO>(query.Query,query.Parameters) as List<ItensOrcamentoUserIdDTO>;
+                var lista = _unitOfWork.Query<ItensOrcamentoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORC_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_OBSQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_QUANTIDADEQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_CUSTOQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_MARGEMQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_VALOR_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_VERSSAO_CUSTOQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -580,7 +577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -588,7 +585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_ERP_CUSTOS_FIXOSQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -596,7 +593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_ERP_CUSTOS_VARIAVEISQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -604,7 +601,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_ERP_DESPESAS_VAR_VENDAQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -612,7 +609,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_ERP_IMPOSTOSQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -620,7 +617,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ID_COMPOSICAOQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -628,7 +625,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_LARGURAQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -636,7 +633,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITO_COMPRIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -644,7 +641,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -652,7 +649,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -660,7 +657,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -668,7 +665,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters) as List<ItensOrcamentoDTO>;
+                var result = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

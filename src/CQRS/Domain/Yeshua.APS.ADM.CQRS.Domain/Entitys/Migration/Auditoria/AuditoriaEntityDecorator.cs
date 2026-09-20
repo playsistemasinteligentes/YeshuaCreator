@@ -115,7 +115,7 @@
                                         }
                                     }
 
-                                    public string HISTORICO
+                                    public string? HISTORICO
                                     {
                                         get => _inner.HISTORICO;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string CHAVE
+                                    public string? CHAVE
                                     {
                                         get => _inner.CHAVE;
                                         set

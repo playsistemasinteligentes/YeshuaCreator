@@ -19,15 +19,15 @@ namespace Repositorio.Outputs
     public partial record PlanoacaoDTO
     {
     public int pla_id { get; set; }
-    public string pla_descricao { get; set; }
+    public string pla_descricao { get; set; } = string.Empty;
     public int met_id { get; set; }
-    public string pla_status { get; set; }
+    public string pla_status { get; set; } = string.Empty;
     public DateTime pla_data { get; set; }
-    public string pla_metaperiodo { get; set; }
-    public string pla_vlrperiodo { get; set; }
-    public string pla_metaculado { get; set; }
-    public string pla_vlracumulado { get; set; }
-    public string pla_referencia { get; set; }
+    public string pla_metaperiodo { get; set; } = string.Empty;
+    public string pla_vlrperiodo { get; set; } = string.Empty;
+    public string pla_metaculado { get; set; } = string.Empty;
+    public string pla_vlracumulado { get; set; } = string.Empty;
+    public string pla_referencia { get; set; } = string.Empty;
     public int use_id { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

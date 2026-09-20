@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CanhotosDTO> getCanhotos(Command.Read.CanhotosReadCommand command )
         {
-            DataPagination<CanhotosDTO> customResult = null;
+            var customResult = new DataPagination<CanhotosDTO>();
             var customHandled = false;
             TryGetCanhotosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CanhotosTenantIDDTO> getCanhotosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CanhotosTenantIDDTO> lista;
             var query = _query.CanhotosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CanhotosTenantIDDTO>(query.Query,query.Parameters) as List<CanhotosTenantIDDTO>;
+                var lista = _unitOfWork.Query<CanhotosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CanhotosUserIdDTO> getCanhotosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CanhotosUserIdDTO> lista;
             var query = _query.CanhotosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CanhotosUserIdDTO>(query.Query,query.Parameters) as List<CanhotosUserIdDTO>;
+                var lista = _unitOfWork.Query<CanhotosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNOT_IDQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAN_DATA_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAN_IMGQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAN_LAT_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAN_LONG_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters) as List<CanhotosDTO>;
+                var result = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

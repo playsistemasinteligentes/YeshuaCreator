@@ -75,7 +75,7 @@
                                         }
                                     }
 
-                                    public string OBS_TIPO
+                                    public string? OBS_TIPO
                                     {
                                         get => _inner.OBS_TIPO;
                                         set
@@ -89,7 +89,7 @@
                                         }
                                     }
 
-                                    public string OBS_DESCRICAO
+                                    public string? OBS_DESCRICAO
                                     {
                                         get => _inner.OBS_DESCRICAO;
                                         set
@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string CLI_ID
+                                    public string? CLI_ID
                                     {
                                         get => _inner.CLI_ID;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID
+                                    public string? MAQ_ID
                                     {
                                         get => _inner.MAQ_ID;
                                         set
@@ -131,7 +131,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID
+                                    public string? PRO_ID
                                     {
                                         get => _inner.PRO_ID;
                                         set
@@ -159,7 +159,7 @@
                                         }
                                     }
 
-                                    public string OBS_INTEGRACAO
+                                    public string? OBS_INTEGRACAO
                                     {
                                         get => _inner.OBS_INTEGRACAO;
                                         set

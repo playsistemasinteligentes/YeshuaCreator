@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IVeiculoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IVeiculoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.VeiculoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var veiculo = new VeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VEI_PLACA, c.VEI_UF, c.TIP_ID, c.VEI_CAPACIDADE_M3, c.VEI_CAPACIDADE_LARGURA, c.VEI_CAPACIDADE_COMPRIMENTO, c.VEI_CAPACIDADE_ALTURA, c.VEI_MODELO, c.VEI_NOME_MOTORISTA, c.VEI_DADOS_CONTATO, c.VEI_CPF_MOTORISTA, c.TCA_ID, c.VEI_EMISSAO, c.VEI_VENCIMENTO, c.VEI_STATUS);
                  var domainResult = VeiculoDomainBehavior.Apply(veiculo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(veiculo);
-                     return Success("OK", veiculo);
+                     return Task.FromResult(Success("OK", veiculo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, veiculo);
+                    return Task.FromResult(Error(e, veiculo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

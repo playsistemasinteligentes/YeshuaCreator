@@ -21,9 +21,9 @@
                     public partial class CargaPlanejavelEntity : ICargaPlanejavelEntity
 {
     public string CargaId { get; set; }
-    public string Status { get; set; }
-    public string TransportadoraId { get; set; }
-    public string VeiculoId { get; set; }
+    public string? Status { get; set; }
+    public string? TransportadoraId { get; set; }
+    public string? VeiculoId { get; set; }
     public int? TipoVeiculoId { get; set; }
     public Decimal? PesoTeorico { get; set; }
     public Decimal? VolumeTeorico { get; set; }
@@ -31,9 +31,9 @@
     public DateTime? FimJanelaEmbarque { get; set; }
     public DateTime? EmbarqueAlvo { get; set; }
     public int? QuantidadePedidos { get; set; }
-    public string AlertasResumo { get; set; }
-    private List<string> _erroMensagem = null;
- internal CargaPlanejavelEntity(string cargaid, string status, string transportadoraid, string veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string alertasresumo ){
+    public string? AlertasResumo { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal CargaPlanejavelEntity(string cargaid, string? status, string? transportadoraid, string? veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string? alertasresumo ){
  CargaId = cargaid; 
  Status = status; 
  TransportadoraId = transportadoraid; 
@@ -41,9 +41,9 @@
  TipoVeiculoId = tipoveiculoid; 
  PesoTeorico = pesoteorico; 
  VolumeTeorico = volumeteorico; 
- InicioJanelaEmbarque = (iniciojanelaembarque < (new DateTime(1800, 1, 1))) ? DateTime.Now : iniciojanelaembarque; 
- FimJanelaEmbarque = (fimjanelaembarque < (new DateTime(1800, 1, 1))) ? DateTime.Now : fimjanelaembarque; 
- EmbarqueAlvo = (embarquealvo < (new DateTime(1800, 1, 1))) ? DateTime.Now : embarquealvo; 
+ InicioJanelaEmbarque = iniciojanelaembarque.HasValue && iniciojanelaembarque.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : iniciojanelaembarque; 
+ FimJanelaEmbarque = fimjanelaembarque.HasValue && fimjanelaembarque.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : fimjanelaembarque; 
+ EmbarqueAlvo = embarquealvo.HasValue && embarquealvo.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : embarquealvo; 
  QuantidadePedidos = quantidadepedidos; 
  AlertasResumo = alertasresumo; 
 }

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyUserEntity Create(int? id, string nome, string email, string senha )
+                                    } public IyUserEntity Create(int? id, string nome, string email, string? senha )
                             {
                                 return Create(null, id, nome, email, senha);
                             }
 
                             public IyUserEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string email, string senha )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string email, string? senha )
                             {
                             var entity = new yUserEntity(id, nome, email, senha );
 

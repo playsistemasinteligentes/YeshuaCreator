@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IOndaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IOndaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.OndaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var onda = new OndaFactory(_logger, _domainTrackingPolicy).Create(context, c.OND_ID, c.OND_ESPESSURA, c.OND_PESO_COLA, c.OND_RENDIMENTO_ONDA_1, c.OND_RENDIMENTO_ONDA_2, c.OND_PROFUNDIDADE_VINCO, c.OND_ID_INTEGRACAO, c.VIN_ID);
                  var domainResult = OndaDomainBehavior.Apply(onda, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(onda);
-                     return Success("OK", onda);
+                     return Task.FromResult(Success("OK", onda));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, onda);
+                    return Task.FromResult(Error(e, onda));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

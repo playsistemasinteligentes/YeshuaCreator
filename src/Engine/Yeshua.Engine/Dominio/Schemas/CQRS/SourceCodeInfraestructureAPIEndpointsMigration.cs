@@ -53,6 +53,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    .AllowAnonymous();");
             sb.AppendLine("");
 
+            sb.AppendLine($"app.MapPut(\"{getPrefixo()}/operational/logging-policy\", ([FromServices] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyState policyState, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update) =>");
+            sb.AppendLine("    Results.Ok(policyState.ApplyLocal(update)))");
+            sb.AppendLine("    .RequireAuthorization();");
+            sb.AppendLine("");
+
+            AppendOperationalCatalogEndpoint(sb);
+
             sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/telemetry\", ([FromServices] Dominio.Interfaces.ILogger logger) =>");
             sb.AppendLine("    Results.Ok(logger.Snapshot()))");
             sb.AppendLine("    .AllowAnonymous();");
@@ -791,7 +798,11 @@ namespace Dominio.Schemas.CQRS
 
         private static string EscapeLiteral(string value)
         {
-            return (value ?? string.Empty).Replace("\\", "\\\\").Replace("\"", "\\\"");
+            return (value ?? string.Empty)
+                .Replace("\\", "\\\\")
+                .Replace("\"", "\\\"")
+                .Replace("\r", "\\r")
+                .Replace("\n", "\\n");
         }
 
         private string getPrefixo()
@@ -903,6 +914,54 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("return Results.Problem(ex.Message);");
             sb.AppendLine("}");
         }
+
+        private void AppendOperationalCatalogEndpoint(StringBuilder sb)
+        {
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/catalog\", ([FromServices] IRuntimeIdentityProvider identityProvider) =>");
+            sb.AppendLine("    Results.Ok(new");
+            sb.AppendLine("    {");
+            sb.AppendLine("        application = identityProvider.Current.Application,");
+            sb.AppendLine("        components = new[]");
+            sb.AppendLine("        {");
+            sb.AppendLine("            new { id = \"Command\", title = \"Commands\", description = \"Execucao, falha e duracao dos commands.\" },");
+            sb.AppendLine("            new { id = \"Saga\", title = \"Sagas\", description = \"Execucao e transicao dos steps de saga.\" },");
+            sb.AppendLine("            new { id = \"RepositoryCounters\", title = \"Repositorios - contadores\", description = \"Contadores e tempos agregados de acesso a dados.\" },");
+            sb.AppendLine("            new { id = \"RepositoryEvents\", title = \"Repositorios - eventos\", description = \"Eventos detalhados das operacoes de repositorio.\" },");
+            sb.AppendLine("            new { id = \"DomainTracker\", title = \"Rastreamento de dominio\", description = \"Alteracoes das entidades e campos selecionados.\" }");
+            sb.AppendLine("        },");
+            sb.AppendLine("        entities = new object[]");
+            sb.AppendLine("        {");
+
+            foreach (var entity in _migration.Entitys.OrderBy(entity => entity.EntityName))
+            {
+                var entityTitle = string.IsNullOrWhiteSpace(entity.EntityDescription)
+                    ? entity.EntityName
+                    : entity.EntityDescription;
+                sb.AppendLine("            new");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                name = \"{EscapeLiteral(entity.EntityName)}\",");
+                sb.AppendLine($"                title = \"{EscapeLiteral(entityTitle)}\",");
+                sb.AppendLine("                fields = new[]");
+                sb.AppendLine("                {");
+                foreach (var column in entity.AddColumns
+                    .Where(column => !column.IsBackEndField)
+                    .Take(64))
+                {
+                    var columnTitle = string.IsNullOrWhiteSpace(column.Description)
+                        ? column.Name
+                        : column.Description;
+                    sb.AppendLine($"                    new {{ name = \"{EscapeLiteral(column.Name)}\", title = \"{EscapeLiteral(columnTitle)}\" }},");
+                }
+                sb.AppendLine("                }");
+                sb.AppendLine("            },");
+            }
+
+            sb.AppendLine("        }");
+            sb.AppendLine("    }))");
+            sb.AppendLine("    .RequireAuthorization();");
+            sb.AppendLine("");
+        }
+
         // Função para construir options de enum
         string BuildOptions(Column col)
         {

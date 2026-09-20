@@ -113,7 +113,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
-                                    public string Id
+                                    public string? Id
                                     {
                                         get => _inner.Id;
                                         set
@@ -127,7 +127,7 @@
                                         }
                                     }
 
-                                    public string Descricao
+                                    public string? Descricao
                                     {
                                         get => _inner.Descricao;
                                         set
@@ -141,7 +141,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -281,7 +281,7 @@
                                         }
                                     }
 
-                                    public string PRO_GRUPO_PALETIZACAO
+                                    public string? PRO_GRUPO_PALETIZACAO
                                     {
                                         get => _inner.PRO_GRUPO_PALETIZACAO;
                                         set
@@ -309,7 +309,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_INTEGRACAO
+                                    public string? PRO_ID_INTEGRACAO
                                     {
                                         get => _inner.PRO_ID_INTEGRACAO;
                                         set
@@ -323,7 +323,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_INTEGRACAO_ERP
+                                    public string? PRO_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.PRO_ID_INTEGRACAO_ERP;
                                         set
@@ -449,7 +449,7 @@
                                         }
                                     }
 
-                                    public string PRO_FRENTE
+                                    public string? PRO_FRENTE
                                     {
                                         get => _inner.PRO_FRENTE;
                                         set
@@ -463,7 +463,7 @@
                                         }
                                     }
 
-                                    public string PRO_ROTACIONA_COMPRIMENTO
+                                    public string? PRO_ROTACIONA_COMPRIMENTO
                                     {
                                         get => _inner.PRO_ROTACIONA_COMPRIMENTO;
                                         set
@@ -477,7 +477,7 @@
                                         }
                                     }
 
-                                    public string PRO_ROTACIONA_LARGURA
+                                    public string? PRO_ROTACIONA_LARGURA
                                     {
                                         get => _inner.PRO_ROTACIONA_LARGURA;
                                         set
@@ -491,7 +491,7 @@
                                         }
                                     }
 
-                                    public string PRO_ROTACIONA_ALTURA
+                                    public string? PRO_ROTACIONA_ALTURA
                                     {
                                         get => _inner.PRO_ROTACIONA_ALTURA;
                                         set
@@ -505,7 +505,7 @@
                                         }
                                     }
 
-                                    public string PRO_ESCALA_COR
+                                    public string? PRO_ESCALA_COR
                                     {
                                         get => _inner.PRO_ESCALA_COR;
                                         set
@@ -519,7 +519,7 @@
                                         }
                                     }
 
-                                    public string PRO_SUB_ESCALA_COR
+                                    public string? PRO_SUB_ESCALA_COR
                                     {
                                         get => _inner.PRO_SUB_ESCALA_COR;
                                         set
@@ -561,7 +561,7 @@
                                         }
                                     }
 
-                                    public string TMP_TIPO_CARGA
+                                    public string? TMP_TIPO_CARGA
                                     {
                                         get => _inner.TMP_TIPO_CARGA;
                                         set
@@ -659,7 +659,7 @@
                                         }
                                     }
 
-                                    public string PRO_COLOR_HEXA
+                                    public string? PRO_COLOR_HEXA
                                     {
                                         get => _inner.PRO_COLOR_HEXA;
                                         set
@@ -673,7 +673,7 @@
                                         }
                                     }
 
-                                    public string PRO_VINCOS_LARGURA
+                                    public string? PRO_VINCOS_LARGURA
                                     {
                                         get => _inner.PRO_VINCOS_LARGURA;
                                         set
@@ -687,7 +687,7 @@
                                         }
                                     }
 
-                                    public string PRO_VINCOS_COMPRIMENTO
+                                    public string? PRO_VINCOS_COMPRIMENTO
                                     {
                                         get => _inner.PRO_VINCOS_COMPRIMENTO;
                                         set
@@ -743,7 +743,7 @@
                                         }
                                     }
 
-                                    public string PRO_COD_DESENHO
+                                    public string? PRO_COD_DESENHO
                                     {
                                         get => _inner.PRO_COD_DESENHO;
                                         set
@@ -757,7 +757,7 @@
                                         }
                                     }
 
-                                    public string PRO_FECHAMENTO
+                                    public string? PRO_FECHAMENTO
                                     {
                                         get => _inner.PRO_FECHAMENTO;
                                         set
@@ -771,7 +771,7 @@
                                         }
                                     }
 
-                                    public string PRO_TIPO_LAP
+                                    public string? PRO_TIPO_LAP
                                     {
                                         get => _inner.PRO_TIPO_LAP;
                                         set
@@ -799,7 +799,7 @@
                                         }
                                     }
 
-                                    public string PRO_LAP_PROLONGADO
+                                    public string? PRO_LAP_PROLONGADO
                                     {
                                         get => _inner.PRO_LAP_PROLONGADO;
                                         set
@@ -1009,7 +1009,7 @@
                                         }
                                     }
 
-                                    public string PRO_IMG_LASTRO
+                                    public string? PRO_IMG_LASTRO
                                     {
                                         get => _inner.PRO_IMG_LASTRO;
                                         set
@@ -1022,7 +1022,7 @@
                                         }
                                     }
 
-                                    public string ABN_ID
+                                    public string? ABN_ID
                                     {
                                         get => _inner.ABN_ID;
                                         set
@@ -1048,7 +1048,7 @@
                                         }
                                     }
 
-                                    public string PRO_RESINA
+                                    public string? PRO_RESINA
                                     {
                                         get => _inner.PRO_RESINA;
                                         set
@@ -1061,7 +1061,7 @@
                                         }
                                     }
 
-                                    public string PRO_ENDURECEDOR_MIOLO
+                                    public string? PRO_ENDURECEDOR_MIOLO
                                     {
                                         get => _inner.PRO_ENDURECEDOR_MIOLO;
                                         set
@@ -1074,7 +1074,7 @@
                                         }
                                     }
 
-                                    public string PRO_VINCOS_ONDULADEIRA
+                                    public string? PRO_VINCOS_ONDULADEIRA
                                     {
                                         get => _inner.PRO_VINCOS_ONDULADEIRA;
                                         set
@@ -1113,7 +1113,7 @@
                                         }
                                     }
 
-                                    public string PRO_PROMOVE_RESINA
+                                    public string? PRO_PROMOVE_RESINA
                                     {
                                         get => _inner.PRO_PROMOVE_RESINA;
                                         set
@@ -1178,7 +1178,7 @@
                                         }
                                     }
 
-                                    public string PRO_PROMOVE_PRODUTO
+                                    public string? PRO_PROMOVE_PRODUTO
                                     {
                                         get => _inner.PRO_PROMOVE_PRODUTO;
                                         set
@@ -1217,7 +1217,7 @@
                                         }
                                     }
 
-                                    public string PRO_COD_BARRAS_CAIXA
+                                    public string? PRO_COD_BARRAS_CAIXA
                                     {
                                         get => _inner.PRO_COD_BARRAS_CAIXA;
                                         set
@@ -1230,7 +1230,7 @@
                                         }
                                     }
 
-                                    public string CJN_ID
+                                    public string? CJN_ID
                                     {
                                         get => _inner.CJN_ID;
                                         set
@@ -1243,7 +1243,7 @@
                                         }
                                     }
 
-                                    public string PRJ_ID
+                                    public string? PRJ_ID
                                     {
                                         get => _inner.PRJ_ID;
                                         set
@@ -1321,7 +1321,7 @@
                                         }
                                     }
 
-                                    public string PRO_DIVISAO_MONTADA
+                                    public string? PRO_DIVISAO_MONTADA
                                     {
                                         get => _inner.PRO_DIVISAO_MONTADA;
                                         set
@@ -1503,7 +1503,7 @@
                                         }
                                     }
 
-                                    public string PRO_ORELHA_INVERTIDA
+                                    public string? PRO_ORELHA_INVERTIDA
                                     {
                                         get => _inner.PRO_ORELHA_INVERTIDA;
                                         set
@@ -1516,7 +1516,7 @@
                                         }
                                     }
 
-                                    public string PRO_ENDERECO
+                                    public string? PRO_ENDERECO
                                     {
                                         get => _inner.PRO_ENDERECO;
                                         set
@@ -1529,7 +1529,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_VINCULADO
+                                    public string? PRO_ID_VINCULADO
                                     {
                                         get => _inner.PRO_ID_VINCULADO;
                                         set
@@ -1555,7 +1555,7 @@
                                         }
                                     }
 
-                                    public string PRO_ENTRADA_NA_MAQUINA
+                                    public string? PRO_ENTRADA_NA_MAQUINA
                                     {
                                         get => _inner.PRO_ENTRADA_NA_MAQUINA;
                                         set
@@ -1568,7 +1568,7 @@
                                         }
                                     }
 
-                                    public string TDI_ID
+                                    public string? TDI_ID
                                     {
                                         get => _inner.TDI_ID;
                                         set
@@ -1633,7 +1633,7 @@
                                         }
                                     }
 
-                                    public string PRO_TIPO_CUSTO
+                                    public string? PRO_TIPO_CUSTO
                                     {
                                         get => _inner.PRO_TIPO_CUSTO;
                                         set
@@ -1646,7 +1646,7 @@
                                         }
                                     }
 
-                                    public string PRO_GRUPO_CONTABIL
+                                    public string? PRO_GRUPO_CONTABIL
                                     {
                                         get => _inner.PRO_GRUPO_CONTABIL;
                                         set
@@ -1659,7 +1659,7 @@
                                         }
                                     }
 
-                                    public string PRO_CLASSE_CUSTO_01
+                                    public string? PRO_CLASSE_CUSTO_01
                                     {
                                         get => _inner.PRO_CLASSE_CUSTO_01;
                                         set
@@ -1672,7 +1672,7 @@
                                         }
                                     }
 
-                                    public string PRO_OBS_ALTERACAO
+                                    public string? PRO_OBS_ALTERACAO
                                     {
                                         get => _inner.PRO_OBS_ALTERACAO;
                                         set
@@ -1763,7 +1763,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_FACA
+                                    public string? PRO_ID_FACA
                                     {
                                         get => _inner.PRO_ID_FACA;
                                         set
@@ -1776,7 +1776,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_CLICHE
+                                    public string? PRO_ID_CLICHE
                                     {
                                         get => _inner.PRO_ID_CLICHE;
                                         set
@@ -1789,7 +1789,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TINTA_01
+                                    public string? PRO_ID_TINTA_01
                                     {
                                         get => _inner.PRO_ID_TINTA_01;
                                         set
@@ -1802,7 +1802,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TINTA_02
+                                    public string? PRO_ID_TINTA_02
                                     {
                                         get => _inner.PRO_ID_TINTA_02;
                                         set
@@ -1815,7 +1815,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TINTA_03
+                                    public string? PRO_ID_TINTA_03
                                     {
                                         get => _inner.PRO_ID_TINTA_03;
                                         set
@@ -1828,7 +1828,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TINTA_04
+                                    public string? PRO_ID_TINTA_04
                                     {
                                         get => _inner.PRO_ID_TINTA_04;
                                         set
@@ -1841,7 +1841,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TINTA_05
+                                    public string? PRO_ID_TINTA_05
                                     {
                                         get => _inner.PRO_ID_TINTA_05;
                                         set
@@ -1854,7 +1854,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_FORROSUP
+                                    public string? PRO_ID_FORROSUP
                                     {
                                         get => _inner.PRO_ID_FORROSUP;
                                         set
@@ -1867,7 +1867,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_CANTONEIRA
+                                    public string? PRO_ID_CANTONEIRA
                                     {
                                         get => _inner.PRO_ID_CANTONEIRA;
                                         set
@@ -1880,7 +1880,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_PALETE
+                                    public string? PRO_ID_PALETE
                                     {
                                         get => _inner.PRO_ID_PALETE;
                                         set
@@ -1893,7 +1893,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TAMPO
+                                    public string? PRO_ID_TAMPO
                                     {
                                         get => _inner.PRO_ID_TAMPO;
                                         set
@@ -1906,7 +1906,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_FORROINF
+                                    public string? PRO_ID_FORROINF
                                     {
                                         get => _inner.PRO_ID_FORROINF;
                                         set
@@ -1919,7 +1919,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_CHAPA
+                                    public string? PRO_ID_CHAPA
                                     {
                                         get => _inner.PRO_ID_CHAPA;
                                         set
@@ -1932,7 +1932,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_COMPOSICAO
+                                    public string? PRO_ID_COMPOSICAO
                                     {
                                         get => _inner.PRO_ID_COMPOSICAO;
                                         set
@@ -1971,7 +1971,7 @@
                                         }
                                     }
 
-                                    public string CLI_ID
+                                    public string? CLI_ID
                                     {
                                         get => _inner.CLI_ID;
                                         set

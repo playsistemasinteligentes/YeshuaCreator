@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoAvaliacaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoAvaliacaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoAvaliacaoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipoavaliacao = new TipoAvaliacaoFactory(_logger, _domainTrackingPolicy).Create(context, c.TA_ID, c.TA_DESC);
                  var domainResult = TipoAvaliacaoDomainBehavior.Apply(tipoavaliacao, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(tipoavaliacao);
-                     return Success("OK", tipoavaliacao);
+                     return Task.FromResult(Success("OK", tipoavaliacao));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipoavaliacao);
+                    return Task.FromResult(Error(e, tipoavaliacao));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

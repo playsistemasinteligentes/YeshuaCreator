@@ -22,21 +22,21 @@
 {
     public int? Id { get; set; }
     public string SEM_ID { get; set; }
-    public string SEM_STATUS { get; set; }
-    public string SEM_ORIGEM { get; set; }
+    public string? SEM_STATUS { get; set; }
+    public string? SEM_ORIGEM { get; set; }
     public DateTime? SEM_EMISSAO { get; set; }
-    public string SEM_ID_CONEXAO { get; set; }
+    public string? SEM_ID_CONEXAO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal SemaforoEntity(int? id, string sem_id, string sem_status, string sem_origem, DateTime? sem_emissao, string sem_id_conexao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal SemaforoEntity(int? id, string sem_id, string? sem_status, string? sem_origem, DateTime? sem_emissao, string? sem_id_conexao ){
  Id = id; 
  SEM_ID = sem_id; 
  SEM_STATUS = sem_status; 
  SEM_ORIGEM = sem_origem; 
- SEM_EMISSAO = (sem_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : sem_emissao; 
+ SEM_EMISSAO = sem_emissao.HasValue && sem_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : sem_emissao; 
  SEM_ID_CONEXAO = sem_id_conexao; 
  Deleted = false; 
  Changed = DateTime.Now; 

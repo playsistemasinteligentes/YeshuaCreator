@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IObjetoControlavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IObjetoControlavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ObjetoControlavelCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var objetocontrolavel = new ObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OBJ_ID, c.OBJ_DESCRICAO, c.OBJ_TIPO, c.OBJ_GRUPO);
                  var domainResult = ObjetoControlavelDomainBehavior.Apply(objetocontrolavel, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(objetocontrolavel);
-                     return Success("OK", objetocontrolavel);
+                     return Task.FromResult(Success("OK", objetocontrolavel));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, objetocontrolavel);
+                    return Task.FromResult(Error(e, objetocontrolavel));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

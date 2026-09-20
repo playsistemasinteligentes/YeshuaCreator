@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<VariavelPlotagemDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<VariavelPlotagemDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.VariavelPlotagemReadCommand c) 
              {    
                 var VariavelPlotagemReadRepository = _repository.getVariavelPlotagem(c);
-                return Success("OK", VariavelPlotagemReadRepository);
+                return Task.FromResult(Success("OK", VariavelPlotagemReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

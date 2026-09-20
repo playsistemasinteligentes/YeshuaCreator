@@ -99,7 +99,7 @@
                                         }
                                     }
 
-                                    public string PEO_ACAO
+                                    public string? PEO_ACAO
                                     {
                                         get => _inner.PEO_ACAO;
                                         set

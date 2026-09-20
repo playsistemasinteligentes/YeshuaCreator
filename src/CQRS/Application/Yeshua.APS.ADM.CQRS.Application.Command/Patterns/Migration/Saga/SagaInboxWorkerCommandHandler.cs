@@ -32,24 +32,24 @@ namespace Command.Patterns
             _sagaStepReadRepository = sagaStepReadRepository;
         }
 
-        protected override async Task<State<InboxOutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
+        protected override Task<State<InboxOutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {
                 var processed = _sagaStepReadRepository.SetPendingApply();
-                return Success("OK", new InboxOutputCommand
+                return Task.FromResult(Success("OK", new InboxOutputCommand
                 {
                     Claimed = processed,
                     Processed = processed
-                });
+                }));
             }
             catch (ReceiverException<InboxOutputCommand> ex)
             {
-                return ex.State;
+                return Task.FromResult(ex.State);
             }
             catch (Exception ex)
             {
-                return Error(ex, default);
+                return Task.FromResult(Error(ex));
             }
         }
     }

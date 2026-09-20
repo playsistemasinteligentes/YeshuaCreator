@@ -19,10 +19,10 @@ namespace Repositorio.Outputs
     public partial record TemposLogisticosDTO
     {
     public int id { get; set; }
-    public string tmp_tipo_tempo { get; set; }
-    public string tmp_tipo_carga { get; set; }
+    public string tmp_tipo_tempo { get; set; } = string.Empty;
+    public string tmp_tipo_carga { get; set; } = string.Empty;
     public Decimal tmp_tempo_medio_unitario { get; set; }
-    public string cli_id { get; set; }
+    public string cli_id { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

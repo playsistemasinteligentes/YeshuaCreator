@@ -19,11 +19,11 @@ namespace Repositorio.Outputs
     public partial record CondicaoPagamentoDTO
     {
     public int id { get; set; }
-    public string con_id { get; set; }
-    public string con_descricao { get; set; }
+    public string con_id { get; set; } = string.Empty;
+    public string con_descricao { get; set; } = string.Empty;
     public int con_parcelas { get; set; }
     public Decimal con_valor_acrecimo { get; set; }
-    public string con_integracao_erp { get; set; }
+    public string con_integracao_erp { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

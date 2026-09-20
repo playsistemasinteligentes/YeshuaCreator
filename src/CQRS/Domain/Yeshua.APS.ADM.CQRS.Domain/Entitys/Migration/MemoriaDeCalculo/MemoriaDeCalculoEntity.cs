@@ -24,13 +24,13 @@
     public int MEM_ID { get; set; }
     public int? ORC_ID { get; set; }
     public Decimal? MEM_VALOR { get; set; }
-    public string MEM_DESCRICAO { get; set; }
+    public string? MEM_DESCRICAO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal MemoriaDeCalculoEntity(int? id, int mem_id, int? orc_id, Decimal? mem_valor, string mem_descricao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal MemoriaDeCalculoEntity(int? id, int mem_id, int? orc_id, Decimal? mem_valor, string? mem_descricao ){
  Id = id; 
  MEM_ID = mem_id; 
  ORC_ID = orc_id; 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<IndicadoresDepartamentosDTO> getIndicadoresDepartamentos(Command.Read.IndicadoresDepartamentosReadCommand command )
         {
-            DataPagination<IndicadoresDepartamentosDTO> customResult = null;
+            var customResult = new DataPagination<IndicadoresDepartamentosDTO>();
             var customHandled = false;
             TryGetIndicadoresDepartamentosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDepartamentosDEP_IDDTO> getIndicadoresDepartamentosReadFKDEP_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDepartamentosDEP_IDDTO> lista;
             var query = _query.IndicadoresDepartamentosDEP_IDQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDepartamentosDEP_IDDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDEP_IDDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDepartamentosDEP_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDepartamentosIND_IDDTO> getIndicadoresDepartamentosReadFKIND_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDepartamentosIND_IDDTO> lista;
             var query = _query.IndicadoresDepartamentosIND_IDQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDepartamentosIND_IDDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosIND_IDDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDepartamentosIND_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDepartamentosTenantIDDTO> getIndicadoresDepartamentosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDepartamentosTenantIDDTO> lista;
             var query = _query.IndicadoresDepartamentosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDepartamentosTenantIDDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosTenantIDDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDepartamentosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDepartamentosUserIdDTO> getIndicadoresDepartamentosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDepartamentosUserIdDTO> lista;
             var query = _query.IndicadoresDepartamentosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDepartamentosUserIdDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosUserIdDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDepartamentosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -254,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByINDDEP_IDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDEP_IDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIND_IDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters) as List<IndicadoresDepartamentosDTO>;
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

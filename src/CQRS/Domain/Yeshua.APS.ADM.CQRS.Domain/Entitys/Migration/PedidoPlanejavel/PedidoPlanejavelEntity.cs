@@ -25,21 +25,21 @@
     public string ClienteNome { get; set; }
     public string Estado { get; set; }
     public string Municipio { get; set; }
-    public string Regiao { get; set; }
-    public string Bairro { get; set; }
-    public string RotaId { get; set; }
+    public string? Regiao { get; set; }
+    public string? Bairro { get; set; }
+    public string? RotaId { get; set; }
     public DateTime? EmbarqueAlvo { get; set; }
     public DateTime? DataEntregaDe { get; set; }
     public DateTime? DataEntregaAte { get; set; }
     public Decimal? Peso { get; set; }
     public Decimal? Volume { get; set; }
     public Decimal? SaldoAExpedir { get; set; }
-    public string Status { get; set; }
-    public string CargaAtualId { get; set; }
-    public string VersaoPlanejamento { get; set; }
-    public string AlertasResumo { get; set; }
-    private List<string> _erroMensagem = null;
- internal PedidoPlanejavelEntity(string pedidoid, string clienteid, string clientenome, string estado, string municipio, string regiao, string bairro, string rotaid, DateTime? embarquealvo, DateTime? dataentregade, DateTime? dataentregaate, Decimal? peso, Decimal? volume, Decimal? saldoaexpedir, string status, string cargaatualid, string versaoplanejamento, string alertasresumo ){
+    public string? Status { get; set; }
+    public string? CargaAtualId { get; set; }
+    public string? VersaoPlanejamento { get; set; }
+    public string? AlertasResumo { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal PedidoPlanejavelEntity(string pedidoid, string clienteid, string clientenome, string estado, string municipio, string? regiao, string? bairro, string? rotaid, DateTime? embarquealvo, DateTime? dataentregade, DateTime? dataentregaate, Decimal? peso, Decimal? volume, Decimal? saldoaexpedir, string? status, string? cargaatualid, string? versaoplanejamento, string? alertasresumo ){
  PedidoId = pedidoid; 
  ClienteId = clienteid; 
  ClienteNome = clientenome; 
@@ -48,9 +48,9 @@
  Regiao = regiao; 
  Bairro = bairro; 
  RotaId = rotaid; 
- EmbarqueAlvo = (embarquealvo < (new DateTime(1800, 1, 1))) ? DateTime.Now : embarquealvo; 
- DataEntregaDe = (dataentregade < (new DateTime(1800, 1, 1))) ? DateTime.Now : dataentregade; 
- DataEntregaAte = (dataentregaate < (new DateTime(1800, 1, 1))) ? DateTime.Now : dataentregaate; 
+ EmbarqueAlvo = embarquealvo.HasValue && embarquealvo.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : embarquealvo; 
+ DataEntregaDe = dataentregade.HasValue && dataentregade.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : dataentregade; 
+ DataEntregaAte = dataentregaate.HasValue && dataentregaate.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : dataentregaate; 
  Peso = peso; 
  Volume = volume; 
  SaldoAExpedir = saldoaexpedir; 

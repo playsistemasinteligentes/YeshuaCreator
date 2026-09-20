@@ -13,10 +13,10 @@ namespace Command.Read
 {
     public struct CorConfiguracaoGraficoReadCommand : ICommandRead
     {
-        public string COR_ID { get; set; }
+        public string? COR_ID { get; set; }
         public Decimal? COR_PERCENTUAL_INI { get; set; }
         public Decimal? COR_PERCENTUAL_FIM { get; set; }
-        public string COR_DESCRICAO { get; set; }
+        public string? COR_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

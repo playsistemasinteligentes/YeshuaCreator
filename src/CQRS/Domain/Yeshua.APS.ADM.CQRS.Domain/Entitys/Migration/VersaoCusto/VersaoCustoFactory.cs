@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IVersaoCustoEntity Create(int? id, int ver_id, string ver_status, string ver_obs )
+                                    } public IVersaoCustoEntity Create(int? id, int ver_id, string? ver_status, string? ver_obs )
                             {
                                 return Create(null, id, ver_id, ver_status, ver_obs);
                             }
 
                             public IVersaoCustoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ver_id, string ver_status, string ver_obs )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ver_id, string? ver_status, string? ver_obs )
                             {
                             var entity = new VersaoCustoEntity(id, ver_id, ver_status, ver_obs );
 

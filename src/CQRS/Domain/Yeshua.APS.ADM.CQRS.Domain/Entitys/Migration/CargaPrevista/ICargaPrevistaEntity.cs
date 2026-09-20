@@ -40,17 +40,17 @@
     Decimal? CAR_PESO_EMBALAGEM { get; set; }
     Decimal? CAR_PESO_ENTRADA { get; set; }
     Decimal? CAR_PESO_SAIDA { get; set; }
-    string CAR_ID_DOCA { get; set; }
-    string VEI_PLACA { get; set; }
+    string? CAR_ID_DOCA { get; set; }
+    string? VEI_PLACA { get; set; }
     int? TIP_ID { get; set; }
-    string TRA_ID { get; set; }
+    string? TRA_ID { get; set; }
     Decimal? CAR_GRUPO_PRODUTIVO { get; set; }
-    string ROT_ID { get; set; }
-    string CAR_OBSERVACAO_DE_TRANSPORTE { get; set; }
-    string CAR_JUSTIFICATIVA_DE_CARREGAMENTO { get; set; }
-    string OCO_ID { get; set; }
-    string CAR_ID_JUNTADA { get; set; }
-    string CAR_OBSERVACAO_OTIMIZADOR { get; set; }
+    string? ROT_ID { get; set; }
+    string? CAR_OBSERVACAO_DE_TRANSPORTE { get; set; }
+    string? CAR_JUSTIFICATIVA_DE_CARREGAMENTO { get; set; }
+    string? OCO_ID { get; set; }
+    string? CAR_ID_JUNTADA { get; set; }
+    string? CAR_OBSERVACAO_OTIMIZADOR { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

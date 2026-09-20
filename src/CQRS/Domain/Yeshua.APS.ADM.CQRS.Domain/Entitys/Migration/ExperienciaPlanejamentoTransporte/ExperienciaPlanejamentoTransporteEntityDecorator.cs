@@ -94,7 +94,7 @@
                                         }
                                     }
 
-                                    public string Referencia
+                                    public string? Referencia
                                     {
                                         get => _inner.Referencia;
                                         set
@@ -108,7 +108,7 @@
                                         }
                                     }
 
-                                    public string PedidoId
+                                    public string? PedidoId
                                     {
                                         get => _inner.PedidoId;
                                         set
@@ -122,7 +122,7 @@
                                         }
                                     }
 
-                                    public string ClienteId
+                                    public string? ClienteId
                                     {
                                         get => _inner.ClienteId;
                                         set
@@ -136,7 +136,7 @@
                                         }
                                     }
 
-                                    public string Municipio
+                                    public string? Municipio
                                     {
                                         get => _inner.Municipio;
                                         set
@@ -150,7 +150,7 @@
                                         }
                                     }
 
-                                    public string Regiao
+                                    public string? Regiao
                                     {
                                         get => _inner.Regiao;
                                         set
@@ -164,7 +164,7 @@
                                         }
                                     }
 
-                                    public string RotaId
+                                    public string? RotaId
                                     {
                                         get => _inner.RotaId;
                                         set
@@ -206,7 +206,7 @@
                                         }
                                     }
 
-                                    public string Observacao
+                                    public string? Observacao
                                     {
                                         get => _inner.Observacao;
                                         set

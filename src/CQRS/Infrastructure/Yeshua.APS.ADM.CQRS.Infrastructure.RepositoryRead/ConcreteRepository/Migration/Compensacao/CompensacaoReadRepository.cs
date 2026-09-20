@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CompensacaoDTO> getCompensacao(Command.Read.CompensacaoReadCommand command )
         {
-            DataPagination<CompensacaoDTO> customResult = null;
+            var customResult = new DataPagination<CompensacaoDTO>();
             var customHandled = false;
             TryGetCompensacaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CompensacaoGRP_IDDTO> getCompensacaoReadFKGRP_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CompensacaoGRP_IDDTO> lista;
             var query = _query.CompensacaoGRP_IDQuery(command );
 
-                lista = _unitOfWork.Query<CompensacaoGRP_IDDTO>(query.Query,query.Parameters) as List<CompensacaoGRP_IDDTO>;
+                var lista = _unitOfWork.Query<CompensacaoGRP_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CompensacaoOND_IDDTO> getCompensacaoReadFKOND_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CompensacaoOND_IDDTO> lista;
             var query = _query.CompensacaoOND_IDQuery(command );
 
-                lista = _unitOfWork.Query<CompensacaoOND_IDDTO>(query.Query,query.Parameters) as List<CompensacaoOND_IDDTO>;
+                var lista = _unitOfWork.Query<CompensacaoOND_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<CompensacaoTenantIDDTO> getCompensacaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CompensacaoTenantIDDTO> lista;
             var query = _query.CompensacaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CompensacaoTenantIDDTO>(query.Query,query.Parameters) as List<CompensacaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<CompensacaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<CompensacaoUserIdDTO> getCompensacaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CompensacaoUserIdDTO> lista;
             var query = _query.CompensacaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CompensacaoUserIdDTO>(query.Query,query.Parameters) as List<CompensacaoUserIdDTO>;
+                var lista = _unitOfWork.Query<CompensacaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -590,7 +586,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -598,7 +594,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_IDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -606,7 +602,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_IDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -614,7 +610,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_IDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -622,7 +618,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO1_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -630,7 +626,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO2_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -638,7 +634,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO3_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -646,7 +642,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO4_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -654,7 +650,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO5_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -662,7 +658,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO6_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -670,7 +666,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO7_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -678,7 +674,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO8_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -686,7 +682,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO9_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -694,7 +690,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO10_ONDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -702,7 +698,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO1_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -710,7 +706,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO2_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -718,7 +714,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO3_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -726,7 +722,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO4_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -734,7 +730,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO5_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -742,7 +738,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO6_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -750,7 +746,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO7_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -758,7 +754,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO8_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -766,7 +762,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO9_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -774,7 +770,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOM_VINCO10_CONVERSAOQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -782,7 +778,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -790,7 +786,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -798,7 +794,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -806,7 +802,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters) as List<CompensacaoDTO>;
+                var result = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

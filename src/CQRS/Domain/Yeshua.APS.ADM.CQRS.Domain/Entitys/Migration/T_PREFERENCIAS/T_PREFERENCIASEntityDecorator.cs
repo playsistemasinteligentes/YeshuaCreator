@@ -89,7 +89,7 @@
                                         }
                                     }
 
-                                    public string PRE_DESCRICAO
+                                    public string? PRE_DESCRICAO
                                     {
                                         get => _inner.PRE_DESCRICAO;
                                         set
@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string PRE_NAMESPACE
+                                    public string? PRE_NAMESPACE
                                     {
                                         get => _inner.PRE_NAMESPACE;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string PRE_TIPO
+                                    public string? PRE_TIPO
                                     {
                                         get => _inner.PRE_TIPO;
                                         set
@@ -131,7 +131,7 @@
                                         }
                                     }
 
-                                    public string PRE_VALOR
+                                    public string? PRE_VALOR
                                     {
                                         get => _inner.PRE_VALOR;
                                         set

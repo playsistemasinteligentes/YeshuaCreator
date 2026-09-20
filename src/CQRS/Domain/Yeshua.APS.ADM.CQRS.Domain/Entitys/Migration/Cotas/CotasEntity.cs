@@ -31,12 +31,12 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal CotasEntity(int? id, int cot_id, DateTime? cot_data_de, DateTime? cot_data_ate, Decimal? cot_valor, Decimal? cot_ocupado, int rep_id ){
  Id = id; 
  COT_ID = cot_id; 
- COT_DATA_DE = (cot_data_de < (new DateTime(1800, 1, 1))) ? DateTime.Now : cot_data_de; 
- COT_DATA_ATE = (cot_data_ate < (new DateTime(1800, 1, 1))) ? DateTime.Now : cot_data_ate; 
+ COT_DATA_DE = cot_data_de.HasValue && cot_data_de.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : cot_data_de; 
+ COT_DATA_ATE = cot_data_ate.HasValue && cot_data_ate.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : cot_data_ate; 
  COT_VALOR = cot_valor; 
  COT_OCUPADO = cot_ocupado; 
  REP_ID = rep_id; 

@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<ySagaStepDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<ySagaStepDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.ySagaStepReadCommand c) 
              {    
                 var ySagaStepReadRepository = _repository.getySagaStep(c);
-                return Success("OK", ySagaStepReadRepository);
+                return Task.FromResult(Success("OK", ySagaStepReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

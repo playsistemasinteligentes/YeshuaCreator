@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITemposLogisticosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITemposLogisticosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TemposLogisticosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var temposlogisticos = new TemposLogisticosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TMP_TIPO_TEMPO, c.TMP_TIPO_CARGA, c.TMP_TEMPO_MEDIO_UNITARIO, c.CLI_ID);
                  var domainResult = TemposLogisticosDomainBehavior.Apply(temposlogisticos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(temposlogisticos);
-                     return Success("OK", temposlogisticos);
+                     return Task.FromResult(Success("OK", temposlogisticos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, temposlogisticos);
+                    return Task.FromResult(Error(e, temposlogisticos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

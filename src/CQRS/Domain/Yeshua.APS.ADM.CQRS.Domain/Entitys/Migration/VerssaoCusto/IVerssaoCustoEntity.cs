@@ -22,9 +22,9 @@
 {
     int? Id { get; set; }
     int VER_ID { get; set; }
-    string VER_STATUS { get; set; }
+    string? VER_STATUS { get; set; }
     DateTime? VER_DATA_VERSSAO_CUSTO { get; set; }
-    string VER_OBS { get; set; }
+    string? VER_OBS { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

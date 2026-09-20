@@ -22,10 +22,10 @@
 {
     int? Id { get; set; }
     string SEM_ID { get; set; }
-    string SEM_STATUS { get; set; }
-    string SEM_ORIGEM { get; set; }
+    string? SEM_STATUS { get; set; }
+    string? SEM_ORIGEM { get; set; }
     DateTime? SEM_EMISSAO { get; set; }
-    string SEM_ID_CONEXAO { get; set; }
+    string? SEM_ID_CONEXAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

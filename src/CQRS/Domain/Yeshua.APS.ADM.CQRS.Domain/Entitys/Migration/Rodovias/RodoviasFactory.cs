@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IRodoviasEntity Create(int? id, int rod_id, string rod_descricao )
+                                    } public IRodoviasEntity Create(int? id, int rod_id, string? rod_descricao )
                             {
                                 return Create(null, id, rod_id, rod_descricao);
                             }
 
                             public IRodoviasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rod_id, string rod_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rod_id, string? rod_descricao )
                             {
                             var entity = new RodoviasEntity(id, rod_id, rod_descricao );
 

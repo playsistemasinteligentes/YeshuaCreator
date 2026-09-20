@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel TipoInspecaoVisualQuery(Command.Read.TipoInspecaoVisualReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -72,7 +71,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         public QueryModel TipoInspecaoVisualTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -103,7 +101,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         public QueryModel TipoInspecaoVisualUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -133,7 +130,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -151,7 +147,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -169,7 +164,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -187,7 +181,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -205,7 +198,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -223,7 +215,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -241,7 +232,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_NOMEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -259,7 +249,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_DESCRICAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -277,7 +266,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_FECHAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -295,7 +283,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_AMOSTRA_ALEATORIAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -313,7 +300,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_N_AMOSTRASQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -331,7 +317,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_MEDIDAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -349,7 +334,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_ESPECIFICACAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -367,7 +351,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_TOL_MAISQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -385,7 +368,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel ExistsByTIV_TOL_MENOSQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -403,7 +385,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -421,7 +402,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -439,7 +419,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -457,7 +436,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -475,7 +453,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -493,7 +470,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -511,7 +487,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_NOMEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -529,7 +504,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_DESCRICAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -547,7 +521,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_FECHAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -565,7 +538,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_AMOSTRA_ALEATORIAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -583,7 +555,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_N_AMOSTRASQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -601,7 +572,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_MEDIDAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -619,7 +589,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_ESPECIFICACAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -637,7 +606,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_TOL_MAISQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -655,7 +623,6 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
         }
         public QueryModel FirstByTIV_TOL_MENOSQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

@@ -15,8 +15,8 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public int COM_ID { get; set; }
-        public string GRP_ID { get; set; }
-        public string OND_ID { get; set; }
+        public string? GRP_ID { get; set; }
+        public string? OND_ID { get; set; }
         public int? COM_VINCO1_OND { get; set; }
         public int? COM_VINCO2_OND { get; set; }
         public int? COM_VINCO3_OND { get; set; }

@@ -28,6 +28,4200 @@ app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvide
     Results.Ok(identityProvider.Current))
     .AllowAnonymous();
 
+app.MapPut("/yapi/operational/logging-policy", async ([FromServices] Yeshua.Generated.OperationalControl.OperationalPolicySynchronizer synchronizer, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update, CancellationToken cancellationToken) =>
+{
+    try
+    {
+        return Results.Ok(await synchronizer.ReplaceAsync(update, cancellationToken));
+    }
+    catch (HttpRequestException exception)
+    {
+        return Results.Problem(exception.Message, statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+})
+    .RequireAuthorization();
+
+app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        application = identityProvider.Current.Application,
+        components = new[]
+        {
+            new { id = "Command", title = "Commands", description = "Execucao, falha e duracao dos commands." },
+            new { id = "Saga", title = "Sagas", description = "Execucao e transicao dos steps de saga." },
+            new { id = "RepositoryCounters", title = "Repositorios - contadores", description = "Contadores e tempos agregados de acesso a dados." },
+            new { id = "RepositoryEvents", title = "Repositorios - eventos", description = "Eventos detalhados das operacoes de repositorio." },
+            new { id = "DomainTracker", title = "Rastreamento de dominio", description = "Alteracoes das entidades e campos selecionados." }
+        },
+        entities = new object[]
+        {
+            new
+            {
+                name = "Auditoria",
+                title = "Auditoria",
+                fields = new[]
+                {
+                    new { name = "ID", title = "ID" },
+                    new { name = "DATA", title = "DATA" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "ROTINA", title = "ROTINA" },
+                    new { name = "HISTORICO", title = "HISTORICO" },
+                    new { name = "CHAVE", title = "CHAVE" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Boletim",
+                title = "Boletim",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "BOL_ID_ORIGEM", title = "BOL ID ORIGEM" },
+                    new { name = "BOL_SOLVER", title = "BOL SOLVER" },
+                    new { name = "BOL_INTEGRACAO", title = "BOL INTEGRACAO" },
+                    new { name = "BOL_SEQUENCIA", title = "BOL SEQUENCIA" },
+                    new { name = "GRP_PAP_GRAMATURA_PROGRAMADO", title = "GRP PAP GRAMATURA PROGRAMADO" },
+                    new { name = "GRP_ID_PROGRAMADO", title = "GRP ID PROGRAMADO" },
+                    new { name = "GRP_PAPEL1_PROGRAMADO", title = "GRP PAPEL1 PROGRAMADO" },
+                    new { name = "GRP_PAPEL2_PROGRAMADO", title = "GRP PAPEL2 PROGRAMADO" },
+                    new { name = "GRP_PAPEL3_PROGRAMADO", title = "GRP PAPEL3 PROGRAMADO" },
+                    new { name = "GRP_PAPEL4_PROGRAMADO", title = "GRP PAPEL4 PROGRAMADO" },
+                    new { name = "GRP_PAPEL5_PROGRAMADO", title = "GRP PAPEL5 PROGRAMADO" },
+                    new { name = "BOL_STATUS_INTERFACE", title = "BOL STATUS INTERFACE" },
+                    new { name = "BOL_TIPO", title = "BOL TIPO" },
+                    new { name = "BOL_FORMATO", title = "BOL FORMATO" },
+                    new { name = "BOL_GRAMATURA_PAPEIS_PROGRAMADOS", title = "BOL GRAMATURA PAPEIS PROGRAMADOS" },
+                    new { name = "BOL_GRAMATURA_PAPEIS_REALIZADO", title = "BOL GRAMATURA PAPEIS REALIZADO" },
+                    new { name = "BOL_CUSTO_PAPEIS_PROGRAMADOS", title = "BOL CUSTO PAPEIS PROGRAMADOS" },
+                    new { name = "BOL_CUSTO_PAPEIS_REALIZADO", title = "BOL CUSTO PAPEIS REALIZADO" },
+                    new { name = "BOL_GRAMATURA_RESINA_PROGRAMADOS", title = "BOL GRAMATURA RESINA PROGRAMADOS" },
+                    new { name = "BOL_CUSTO_RESINA_PROGRAMADOS", title = "BOL CUSTO RESINA PROGRAMADOS" },
+                    new { name = "BOL_REFILE_OBRIGATORIO", title = "BOL REFILE OBRIGATORIO" },
+                    new { name = "BOL_OBS", title = "BOL OBS" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "BoletimEstudo",
+                title = "BoletimEstudo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "BOL_ID_ORIGEM", title = "BOL ID ORIGEM" },
+                    new { name = "BOL_SOLVER", title = "BOL SOLVER" },
+                    new { name = "BOL_INTEGRACAO", title = "BOL INTEGRACAO" },
+                    new { name = "BOL_SEQUENCIA", title = "BOL SEQUENCIA" },
+                    new { name = "GRP_PAP_GRAMATURA_PROGRAMADO", title = "GRP PAP GRAMATURA PROGRAMADO" },
+                    new { name = "GRP_ID_PROGRAMADO", title = "GRP ID PROGRAMADO" },
+                    new { name = "GRP_PAPEL1_PROGRAMADO", title = "GRP PAPEL1 PROGRAMADO" },
+                    new { name = "GRP_PAPEL2_PROGRAMADO", title = "GRP PAPEL2 PROGRAMADO" },
+                    new { name = "GRP_PAPEL3_PROGRAMADO", title = "GRP PAPEL3 PROGRAMADO" },
+                    new { name = "GRP_PAPEL4_PROGRAMADO", title = "GRP PAPEL4 PROGRAMADO" },
+                    new { name = "GRP_PAPEL5_PROGRAMADO", title = "GRP PAPEL5 PROGRAMADO" },
+                    new { name = "BOL_STATUS_INTERFACE", title = "BOL STATUS INTERFACE" },
+                    new { name = "BOL_TIPO", title = "BOL TIPO" },
+                    new { name = "BOL_FORMATO", title = "BOL FORMATO" },
+                    new { name = "BOL_GRAMATURA_PAPEIS_PROGRAMADOS", title = "BOL GRAMATURA PAPEIS PROGRAMADOS" },
+                    new { name = "BOL_GRAMATURA_PAPEIS_REALIZADO", title = "BOL GRAMATURA PAPEIS REALIZADO" },
+                    new { name = "BOL_CUSTO_PAPEIS_PROGRAMADOS", title = "BOL CUSTO PAPEIS PROGRAMADOS" },
+                    new { name = "BOL_CUSTO_PAPEIS_REALIZADO", title = "BOL CUSTO PAPEIS REALIZADO" },
+                    new { name = "BOL_GRAMATURA_RESINA_PROGRAMADOS", title = "BOL GRAMATURA RESINA PROGRAMADOS" },
+                    new { name = "BOL_CUSTO_RESINA_PROGRAMADOS", title = "BOL CUSTO RESINA PROGRAMADOS" },
+                    new { name = "BOL_REFILE_OBRIGATORIO", title = "BOL REFILE OBRIGATORIO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Cabvisao",
+                title = "Cabvisao",
+                fields = new[]
+                {
+                    new { name = "CAB_ID", title = "CAB ID" },
+                    new { name = "CAB_DESC", title = "CAB DESC" },
+                    new { name = "CAB_STATUS", title = "CAB STATUS" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Calendario",
+                title = "Calendario",
+                fields = new[]
+                {
+                    new { name = "CAL_ID", title = "CAL ID" },
+                    new { name = "CAL_DESCRICAO", title = "CAL DESCRICAO" },
+                    new { name = "CAL_DIVIDE_DIA_EM", title = "CAL DIVIDE DIA EM" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CalendarioDisponibilidadeVeiculos",
+                title = "CalendarioDisponibilidadeVeiculos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CDV_ID", title = "CDV ID" },
+                    new { name = "CDV_DATA_DE", title = "CDV DATA DE" },
+                    new { name = "CDV_DATA_ATE", title = "CDV DATA ATE" },
+                    new { name = "CDV_SEGUNDA", title = "CDV SEGUNDA" },
+                    new { name = "CDV_TERCA", title = "CDV TERCA" },
+                    new { name = "CDV_QUARTA", title = "CDV QUARTA" },
+                    new { name = "CDV_QUINTA", title = "CDV QUINTA" },
+                    new { name = "CDV_SEXTA", title = "CDV SEXTA" },
+                    new { name = "CDV_SABADO", title = "CDV SABADO" },
+                    new { name = "CDV_DOMINGO", title = "CDV DOMINGO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Canhotos",
+                title = "Canhotos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "NOT_ID", title = "NOT ID" },
+                    new { name = "CAN_DATA_ENTREGA", title = "CAN DATA ENTREGA" },
+                    new { name = "CAN_IMG", title = "CAN IMG" },
+                    new { name = "CAN_LAT_ENTREGA", title = "CAN LAT ENTREGA" },
+                    new { name = "CAN_LONG_ENTREGA", title = "CAN LONG ENTREGA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Carga",
+                title = "Carga",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "CAR_PREVISAO_MATERIA_PRIMA", title = "CAR PREVISAO MATERIA PRIMA" },
+                    new { name = "CAR_DATA_INICIO_PREVISTO", title = "CAR DATA INICIO PREVISTO" },
+                    new { name = "CAR_DATA_INICIO_REALIZADO", title = "CAR DATA INICIO REALIZADO" },
+                    new { name = "CAR_DATA_FIM_PREVISTO", title = "CAR DATA FIM PREVISTO" },
+                    new { name = "CAR_DATA_FIM_REALIZADO", title = "CAR DATA FIM REALIZADO" },
+                    new { name = "CAR_INICIO_JANELA_EMBARQUE", title = "CAR INICIO JANELA EMBARQUE" },
+                    new { name = "CAR_FIM_JANELA_EMBARQUE", title = "CAR FIM JANELA EMBARQUE" },
+                    new { name = "CAR_EMBARQUE_ALVO", title = "CAR EMBARQUE ALVO" },
+                    new { name = "CAR_STATUS", title = "CAR STATUS" },
+                    new { name = "CAR_PESO_TEORICO", title = "CAR PESO TEORICO" },
+                    new { name = "CAR_VOLUME_TEORICO", title = "CAR VOLUME TEORICO" },
+                    new { name = "CAR_PESO_REAL", title = "CAR PESO REAL" },
+                    new { name = "CAR_VOLUME_REAL", title = "CAR VOLUME REAL" },
+                    new { name = "CAR_PESO_EMBALAGEM", title = "CAR PESO EMBALAGEM" },
+                    new { name = "CAR_PESO_ENTRADA", title = "CAR PESO ENTRADA" },
+                    new { name = "CAR_PESO_SAIDA", title = "CAR PESO SAIDA" },
+                    new { name = "CAR_ID_DOCA", title = "CAR ID DOCA" },
+                    new { name = "VEI_PLACA", title = "VEI PLACA" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "TRA_ID", title = "TRA ID" },
+                    new { name = "CAR_GRUPO_PRODUTIVO", title = "CAR GRUPO PRODUTIVO" },
+                    new { name = "ROT_ID", title = "ROT ID" },
+                    new { name = "CAR_OBSERVACAO_DE_TRANSPORTE", title = "CAR OBSERVACAO DE TRANSPORTE" },
+                    new { name = "CAR_JUSTIFICATIVA_DE_CARREGAMENTO", title = "CAR JUSTIFICATIVA DE CARREGAMENTO" },
+                    new { name = "OCO_ID", title = "OCO ID" },
+                    new { name = "CAR_ID_JUNTADA", title = "CAR ID JUNTADA" },
+                    new { name = "CAR_OBSERVACAO_OTIMIZADOR", title = "CAR OBSERVACAO OTIMIZADOR" },
+                    new { name = "CAR_ID_INTEGRACAO_BALANCA", title = "CAR ID INTEGRACAO BALANCA" },
+                    new { name = "CAR_PESAGEM_LIBERADA", title = "CAR PESAGEM LIBERADA" },
+                    new { name = "CAR_OBS_LIERACAO", title = "CAR OBS LIERACAO" },
+                    new { name = "OCO_ID_LIERACAO", title = "OCO ID LIERACAO" },
+                    new { name = "CAR_DATA_ENTRADA_VEICULO", title = "CAR DATA ENTRADA VEICULO" },
+                    new { name = "CAR_DATA_SAIDA_VEICULO", title = "CAR DATA SAIDA VEICULO" },
+                    new { name = "CAR_DATA_ROMANEIO_CONSOLIDADO", title = "CAR DATA ROMANEIO CONSOLIDADO" },
+                    new { name = "CAR_DIA_TURMA_ROMANEIO_CONSOLIDADO", title = "CAR DIA TURMA ROMANEIO CONSOLIDADO" },
+                    new { name = "CAR_DIFERENCA_PESAGEM", title = "CAR DIFERENCA PESAGEM" },
+                    new { name = "CAR_DATA_AGENCIAMENTO", title = "CAR DATA AGENCIAMENTO" },
+                    new { name = "TURN_ID", title = "TURN ID" },
+                    new { name = "TURM_ID", title = "TURM ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CargaPlanejavel",
+                title = "Carga Planejavel",
+                fields = new[]
+                {
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TransportadoraId", title = "Transportadora" },
+                    new { name = "VeiculoId", title = "Veiculo" },
+                    new { name = "TipoVeiculoId", title = "Tipo Veiculo" },
+                    new { name = "PesoTeorico", title = "Peso Teorico" },
+                    new { name = "VolumeTeorico", title = "Volume Teorico" },
+                    new { name = "InicioJanelaEmbarque", title = "Inicio Janela Embarque" },
+                    new { name = "FimJanelaEmbarque", title = "Fim Janela Embarque" },
+                    new { name = "EmbarqueAlvo", title = "Embarque Alvo" },
+                    new { name = "QuantidadePedidos", title = "Quantidade Pedidos" },
+                    new { name = "AlertasResumo", title = "Alertas" },
+                }
+            },
+            new
+            {
+                name = "CargaPrevista",
+                title = "CargaPrevista",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ITC_QTD_PLANEJADA", title = "ITC QTD PLANEJADA" },
+                    new { name = "CAR_PREVISAO_MATERIA_PRIMA", title = "CAR PREVISAO MATERIA PRIMA" },
+                    new { name = "CAR_DATA_INICIO_PREVISTO", title = "CAR DATA INICIO PREVISTO" },
+                    new { name = "CAR_DATA_INICIO_REALIZADO", title = "CAR DATA INICIO REALIZADO" },
+                    new { name = "CAR_DATA_FIM_PREVISTO", title = "CAR DATA FIM PREVISTO" },
+                    new { name = "CAR_DATA_FIM_REALIZADO", title = "CAR DATA FIM REALIZADO" },
+                    new { name = "CAR_INICIO_JANELA_EMBARQUE", title = "CAR INICIO JANELA EMBARQUE" },
+                    new { name = "CAR_FIM_JANELA_EMBARQUE", title = "CAR FIM JANELA EMBARQUE" },
+                    new { name = "CAR_EMBARQUE_ALVO", title = "CAR EMBARQUE ALVO" },
+                    new { name = "CAR_STATUS", title = "CAR STATUS" },
+                    new { name = "CAR_PESO_TEORICO", title = "CAR PESO TEORICO" },
+                    new { name = "CAR_VOLUME_TEORICO", title = "CAR VOLUME TEORICO" },
+                    new { name = "CAR_PESO_REAL", title = "CAR PESO REAL" },
+                    new { name = "CAR_VOLUME_REAL", title = "CAR VOLUME REAL" },
+                    new { name = "CAR_PESO_EMBALAGEM", title = "CAR PESO EMBALAGEM" },
+                    new { name = "CAR_PESO_ENTRADA", title = "CAR PESO ENTRADA" },
+                    new { name = "CAR_PESO_SAIDA", title = "CAR PESO SAIDA" },
+                    new { name = "CAR_ID_DOCA", title = "CAR ID DOCA" },
+                    new { name = "VEI_PLACA", title = "VEI PLACA" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "TRA_ID", title = "TRA ID" },
+                    new { name = "CAR_GRUPO_PRODUTIVO", title = "CAR GRUPO PRODUTIVO" },
+                    new { name = "ROT_ID", title = "ROT ID" },
+                    new { name = "CAR_OBSERVACAO_DE_TRANSPORTE", title = "CAR OBSERVACAO DE TRANSPORTE" },
+                    new { name = "CAR_JUSTIFICATIVA_DE_CARREGAMENTO", title = "CAR JUSTIFICATIVA DE CARREGAMENTO" },
+                    new { name = "OCO_ID", title = "OCO ID" },
+                    new { name = "CAR_ID_JUNTADA", title = "CAR ID JUNTADA" },
+                    new { name = "CAR_OBSERVACAO_OTIMIZADOR", title = "CAR OBSERVACAO OTIMIZADOR" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Cargos",
+                title = "Cargos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "RGO_ID", title = "RGO ID" },
+                    new { name = "RGO_DESCRICAO", title = "RGO DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CenarioPlanejamentoTransporte",
+                title = "Cenario Planejamento Transporte",
+                fields = new[]
+                {
+                    new { name = "CenarioId", title = "Cenario" },
+                    new { name = "Descricao", title = "Descricao" },
+                    new { name = "Objetivo", title = "Objetivo" },
+                    new { name = "QuantidadeCargas", title = "Quantidade Cargas" },
+                    new { name = "QuantidadePedidosNaoAtendidos", title = "Pedidos Nao Atendidos" },
+                    new { name = "CustoTotal", title = "Custo Total" },
+                    new { name = "AderenciaCubagem", title = "Aderencia Cubagem" },
+                    new { name = "AtrasoPrevisto", title = "Atraso Previsto" },
+                    new { name = "AlertasResumo", title = "Alertas" },
+                }
+            },
+            new
+            {
+                name = "Cliente",
+                title = "Cliente",
+                fields = new[]
+                {
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "CLI_NOME", title = "CLI NOME" },
+                    new { name = "CLI_FONE", title = "CLI FONE" },
+                    new { name = "CLI_OBS", title = "CLI OBS" },
+                    new { name = "CLI_ENDERECO_ENTREGA", title = "CLI ENDERECO ENTREGA" },
+                    new { name = "CLI_CPF_CNPJ", title = "CLI CPF CNPJ" },
+                    new { name = "CLI_BAIRRO_ENTREGA", title = "CLI BAIRRO ENTREGA" },
+                    new { name = "CLI_CEP_ENTREGA", title = "CLI CEP ENTREGA" },
+                    new { name = "CLI_EMAIL", title = "CLI EMAIL" },
+                    new { name = "CLI_INTEGRACAO", title = "CLI INTEGRACAO" },
+                    new { name = "MUN_ID_ENTREGA", title = "MUN ID ENTREGA" },
+                    new { name = "CLI_TRANSLADO", title = "CLI TRANSLADO" },
+                    new { name = "CLI_REGIAO_ENTREGA", title = "CLI REGIAO ENTREGA" },
+                    new { name = "CLI_EXIGENTE_NA_IMPRESSAO", title = "CLI EXIGENTE NA IMPRESSAO" },
+                    new { name = "CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO", title = "CLI TEMPO MEDIO ESPERA DE DESCARREGAMENTO" },
+                    new { name = "CLI_TEMPO_DESCARREGAMENTO_UNITARIO", title = "CLI TEMPO DESCARREGAMENTO UNITARIO" },
+                    new { name = "CLI_PERCENTUAL_JANELA_EMBARQUE", title = "CLI PERCENTUAL JANELA EMBARQUE" },
+                    new { name = "REP_ID", title = "REP ID" },
+                    new { name = "CLI_RAZAO_SOCIAL", title = "CLI RAZAO SOCIAL" },
+                    new { name = "CLI_EMAIL_MONITORAMENTO_TRANSPORTE", title = "CLI EMAIL MONITORAMENTO TRANSPORTE" },
+                    new { name = "CLI_CONTATO", title = "CLI CONTATO" },
+                    new { name = "CLI_SETOR", title = "CLI SETOR" },
+                    new { name = "SEG_ID", title = "SEG ID" },
+                    new { name = "CLI_TIPO", title = "CLI TIPO" },
+                    new { name = "CLI_INTEGRACAO_ERP", title = "CLI INTEGRACAO ERP" },
+                    new { name = "CLI_LATITUDE_ENTREGA", title = "CLI LATITUDE ENTREGA" },
+                    new { name = "CLI_LONGITUDE_ENTREGA", title = "CLI LONGITUDE ENTREGA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ClpMedicoes",
+                title = "ClpMedicoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Id2", title = "Id2" },
+                    new { name = "MaquinaId", title = "MaquinaId" },
+                    new { name = "DataInicio", title = "DataInicio" },
+                    new { name = "DataFim", title = "DataFim" },
+                    new { name = "Emissao", title = "Emissao" },
+                    new { name = "Quantidade", title = "Quantidade" },
+                    new { name = "Grupo", title = "Grupo" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TurnoId", title = "TurnoId" },
+                    new { name = "TurmaId", title = "TurmaId" },
+                    new { name = "IdLoteClp", title = "IdLoteClp" },
+                    new { name = "OcorrenciaId", title = "OcorrenciaId" },
+                    new { name = "Fase", title = "Fase" },
+                    new { name = "ClpOrigem", title = "ClpOrigem" },
+                    new { name = "CLP_LOTE", title = "CLP LOTE" },
+                    new { name = "COMPACTA", title = "COMPACTA" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ClpMedicoesH",
+                title = "ClpMedicoesH",
+                fields = new[]
+                {
+                    new { name = "ID", title = "ID" },
+                    new { name = "MAQUINA_ID", title = "MAQUINA ID" },
+                    new { name = "DATA_INI", title = "DATA INI" },
+                    new { name = "DATA_FIM", title = "DATA FIM" },
+                    new { name = "CLP_EMISSAO", title = "CLP EMISSAO" },
+                    new { name = "QTD", title = "QTD" },
+                    new { name = "GRUPO", title = "GRUPO" },
+                    new { name = "STATUS", title = "STATUS" },
+                    new { name = "URN_ID", title = "URN ID" },
+                    new { name = "URM_ID", title = "URM ID" },
+                    new { name = "ID_LOTE_CLP", title = "ID LOTE CLP" },
+                    new { name = "OCO_ID", title = "OCO ID" },
+                    new { name = "FASE", title = "FASE" },
+                    new { name = "CLP_ORIGEM", title = "CLP ORIGEM" },
+                    new { name = "CLP_LOTE", title = "CLP LOTE" },
+                    new { name = "COMPACTA", title = "COMPACTA" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Colaborador",
+                title = "Colaborador",
+                fields = new[]
+                {
+                    new { name = "COL_CPF", title = "COL CPF" },
+                    new { name = "COL_NOME", title = "COL NOME" },
+                    new { name = "COL_NASCIMENTO", title = "COL NASCIMENTO" },
+                    new { name = "COL_EMAIL", title = "COL EMAIL" },
+                    new { name = "COL_MATRICULA", title = "COL MATRICULA" },
+                    new { name = "TURM_id", title = "TURM id" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Compensacao",
+                title = "Compensacao",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "COM_ID", title = "COM ID" },
+                    new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "OND_ID", title = "OND ID" },
+                    new { name = "COM_VINCO1_OND", title = "COM VINCO1 OND" },
+                    new { name = "COM_VINCO2_OND", title = "COM VINCO2 OND" },
+                    new { name = "COM_VINCO3_OND", title = "COM VINCO3 OND" },
+                    new { name = "COM_VINCO4_OND", title = "COM VINCO4 OND" },
+                    new { name = "COM_VINCO5_OND", title = "COM VINCO5 OND" },
+                    new { name = "COM_VINCO6_OND", title = "COM VINCO6 OND" },
+                    new { name = "COM_VINCO7_OND", title = "COM VINCO7 OND" },
+                    new { name = "COM_VINCO8_OND", title = "COM VINCO8 OND" },
+                    new { name = "COM_VINCO9_OND", title = "COM VINCO9 OND" },
+                    new { name = "COM_VINCO10_OND", title = "COM VINCO10 OND" },
+                    new { name = "COM_VINCO1_CONVERSAO", title = "COM VINCO1 CONVERSAO" },
+                    new { name = "COM_VINCO2_CONVERSAO", title = "COM VINCO2 CONVERSAO" },
+                    new { name = "COM_VINCO3_CONVERSAO", title = "COM VINCO3 CONVERSAO" },
+                    new { name = "COM_VINCO4_CONVERSAO", title = "COM VINCO4 CONVERSAO" },
+                    new { name = "COM_VINCO5_CONVERSAO", title = "COM VINCO5 CONVERSAO" },
+                    new { name = "COM_VINCO6_CONVERSAO", title = "COM VINCO6 CONVERSAO" },
+                    new { name = "COM_VINCO7_CONVERSAO", title = "COM VINCO7 CONVERSAO" },
+                    new { name = "COM_VINCO8_CONVERSAO", title = "COM VINCO8 CONVERSAO" },
+                    new { name = "COM_VINCO9_CONVERSAO", title = "COM VINCO9 CONVERSAO" },
+                    new { name = "COM_VINCO10_CONVERSAO", title = "COM VINCO10 CONVERSAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CondicaoPagamento",
+                title = "CondicaoPagamento",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "CON_DESCRICAO", title = "CON DESCRICAO" },
+                    new { name = "CON_PARCELAS", title = "CON PARCELAS" },
+                    new { name = "CON_VALOR_ACRECIMO", title = "CON VALOR ACRECIMO" },
+                    new { name = "CON_INTEGRACAO_ERP", title = "CON INTEGRACAO ERP" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Configuracoes",
+                title = "Configuracoes",
+                fields = new[]
+                {
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ConsultaPedido",
+                title = "Consulta de Pedido",
+                fields = new[]
+                {
+                    new { name = "PedidoId", title = "Pedido" },
+                    new { name = "ClienteId", title = "Cliente" },
+                    new { name = "ClienteNome", title = "Nome do Cliente" },
+                    new { name = "RazaoSocial", title = "Razao Social" },
+                    new { name = "ProdutoId", title = "Produto" },
+                    new { name = "ProdutoDescricao", title = "Descricao do Produto" },
+                    new { name = "Status", title = "Status do Pedido" },
+                    new { name = "Estagio", title = "Estagio" },
+                    new { name = "DataEntregaDe", title = "Entrega de" },
+                    new { name = "DataEntregaAte", title = "Entrega ate" },
+                    new { name = "EmbarqueAlvo", title = "Embarque Alvo" },
+                    new { name = "Quantidade", title = "Quantidade" },
+                    new { name = "SaldoAProduzir", title = "Saldo a Produzir" },
+                    new { name = "SaldoAExpedir", title = "Saldo a Expedir" },
+                    new { name = "CorFila", title = "Cor da Fila" },
+                    new { name = "PedidoCliente", title = "Pedido do Cliente" },
+                }
+            },
+            new
+            {
+                name = "Consultas",
+                title = "Consultas",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CON_CASAS_DECIMAIS", title = "CON CASAS DECIMAIS" },
+                    new { name = "CON_CONEXAO", title = "CON CONEXAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ConsultasGrupos",
+                title = "ConsultasGrupos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "GRU_ID", title = "GRU ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ConsultasIndicadores",
+                title = "ConsultasIndicadores",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CorConfiguracaoGrafico",
+                title = "CorConfiguracaoGrafico",
+                fields = new[]
+                {
+                    new { name = "COR_ID", title = "COR ID" },
+                    new { name = "COR_PERCENTUAL_INI", title = "COR PERCENTUAL INI" },
+                    new { name = "COR_PERCENTUAL_FIM", title = "COR PERCENTUAL FIM" },
+                    new { name = "COR_DESCRICAO", title = "COR DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CorridasOnduladeira",
+                title = "CorridasOnduladeira",
+                fields = new[]
+                {
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "BOL_ID_ORIGEM", title = "BOL ID ORIGEM" },
+                    new { name = "PRO_LARGURA_PECA", title = "PRO LARGURA PECA" },
+                    new { name = "PRO_LARGURA_PECA_PROGRAMADO", title = "PRO LARGURA PECA PROGRAMADO" },
+                    new { name = "PRO_COMPRIMENTO_PECA", title = "PRO COMPRIMENTO PECA" },
+                    new { name = "PRO_COMPRIMENTO_PECA_PROGRAMADO", title = "PRO COMPRIMENTO PECA PROGRAMADO" },
+                    new { name = "PRO_UTILIZOU_REFILE_OBRIGATORIO", title = "PRO UTILIZOU REFILE OBRIGATORIO" },
+                    new { name = "PRO_VINCOS_RECALCULADOS", title = "PRO VINCOS RECALCULADOS" },
+                    new { name = "COR_SOLVER", title = "COR SOLVER" },
+                    new { name = "COR_GRAMATURA_PAPEIS_PROGRAMADOS", title = "COR GRAMATURA PAPEIS PROGRAMADOS" },
+                    new { name = "COR_CUSTO_PAPEIS_PROGRAMADOS", title = "COR CUSTO PAPEIS PROGRAMADOS" },
+                    new { name = "COR_GRAMATURA_RESINA_PROGRAMADOS", title = "COR GRAMATURA RESINA PROGRAMADOS" },
+                    new { name = "COR_CUSTO_RESINA_PROGRAMADOS", title = "COR CUSTO RESINA PROGRAMADOS" },
+                    new { name = "COR_TOLERANCIA_MENOS", title = "COR TOLERANCIA MENOS" },
+                    new { name = "COR_TOLERANCIA_MAIS", title = "COR TOLERANCIA MAIS" },
+                    new { name = "COR_PILHAS_POR_PALETE", title = "COR PILHAS POR PALETE" },
+                    new { name = "COR_COR_FILA", title = "COR COR FILA" },
+                    new { name = "COR_M_LINEAR_REALIZADO", title = "COR M LINEAR REALIZADO" },
+                    new { name = "PRO_ID_PALETE", title = "PRO ID PALETE" },
+                    new { name = "COR_STATUS_PALETE", title = "COR STATUS PALETE" },
+                    new { name = "COR_GRUPO_PRODUTIVO", title = "COR GRUPO PRODUTIVO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "COR_ID", title = "COR ID" },
+                    new { name = "COR_STATUS", title = "COR STATUS" },
+                    new { name = "COR_STATUS_INTERFACE", title = "COR STATUS INTERFACE" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "COR_ID_INTERFACE", title = "COR ID INTERFACE" },
+                    new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "COR_SEQUENCIA_ORIGEM", title = "COR SEQUENCIA ORIGEM" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "COR_FACAO", title = "COR FACAO" },
+                    new { name = "COR_FORMATO_BOBINA", title = "COR FORMATO BOBINA" },
+                    new { name = "COR_INICIO_PREVISTO", title = "COR INICIO PREVISTO" },
+                    new { name = "COR_FIM_PREVISTO", title = "COR FIM PREVISTO" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "COR_QTD_PLANEJADO", title = "COR QTD PLANEJADO" },
+                    new { name = "PRO_QTD_PACAS", title = "PRO QTD PACAS" },
+                    new { name = "COR_PECAS_LARGURA", title = "COR PECAS LARGURA" },
+                }
+            },
+            new
+            {
+                name = "CorridasOnduladeiraEstudo",
+                title = "CorridasOnduladeiraEstudo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "BOL_ID_ORIGEM", title = "BOL ID ORIGEM" },
+                    new { name = "PRO_LARGURA_PECA", title = "PRO LARGURA PECA" },
+                    new { name = "PRO_LARGURA_PECA_PROGRAMADO", title = "PRO LARGURA PECA PROGRAMADO" },
+                    new { name = "PRO_COMPRIMENTO_PECA", title = "PRO COMPRIMENTO PECA" },
+                    new { name = "PRO_COMPRIMENTO_PECA_PROGRAMADO", title = "PRO COMPRIMENTO PECA PROGRAMADO" },
+                    new { name = "PRO_UTILIZOU_REFILE_OBRIGATORIO", title = "PRO UTILIZOU REFILE OBRIGATORIO" },
+                    new { name = "PRO_VINCOS_RECALCULADOS", title = "PRO VINCOS RECALCULADOS" },
+                    new { name = "COR_SOLVER", title = "COR SOLVER" },
+                    new { name = "COR_GRAMATURA_PAPEIS_PROGRAMADOS", title = "COR GRAMATURA PAPEIS PROGRAMADOS" },
+                    new { name = "COR_CUSTO_PAPEIS_PROGRAMADOS", title = "COR CUSTO PAPEIS PROGRAMADOS" },
+                    new { name = "COR_GRAMATURA_RESINA_PROGRAMADOS", title = "COR GRAMATURA RESINA PROGRAMADOS" },
+                    new { name = "COR_CUSTO_RESINA_PROGRAMADOS", title = "COR CUSTO RESINA PROGRAMADOS" },
+                    new { name = "COR_TOLERANCIA_MENOS", title = "COR TOLERANCIA MENOS" },
+                    new { name = "COR_TOLERANCIA_MAIS", title = "COR TOLERANCIA MAIS" },
+                    new { name = "COR_PILHAS_POR_PALETE", title = "COR PILHAS POR PALETE" },
+                    new { name = "COR_M_LINEAR_REALIZADO", title = "COR M LINEAR REALIZADO" },
+                    new { name = "PRO_ID_PALETE", title = "PRO ID PALETE" },
+                    new { name = "COR_STATUS_PALETE", title = "COR STATUS PALETE" },
+                    new { name = "COR_GRUPO_PRODUTIVO", title = "COR GRUPO PRODUTIVO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Cotas",
+                title = "Cotas",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "COT_ID", title = "COT ID" },
+                    new { name = "COT_DATA_DE", title = "COT DATA DE" },
+                    new { name = "COT_DATA_ATE", title = "COT DATA ATE" },
+                    new { name = "COT_VALOR", title = "COT VALOR" },
+                    new { name = "COT_OCUPADO", title = "COT OCUPADO" },
+                    new { name = "REP_ID", title = "REP ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Enderecos",
+                title = "Enderecos",
+                fields = new[]
+                {
+                    new { name = "END_ID", title = "END ID" },
+                    new { name = "END_GRUPO", title = "END GRUPO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Equipe",
+                title = "Equipe",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "EQU_ID", title = "EQU ID" },
+                    new { name = "EQU_HIERARQUIA_SEQ_TRANSFORMACAO", title = "EQU HIERARQUIA SEQ TRANSFORMACAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Estradas",
+                title = "Estradas",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "EST_ID", title = "EST ID" },
+                    new { name = "EST_DESCRICAO", title = "EST DESCRICAO" },
+                    new { name = "EST_ID_LIGACAO_PONTO_A", title = "EST ID LIGACAO PONTO A" },
+                    new { name = "EST_ID_LIGACAO_PONTO_B", title = "EST ID LIGACAO PONTO B" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "EstruturaCusto",
+                title = "EstruturaCusto",
+                fields = new[]
+                {
+                    new { name = "EST_ID", title = "EST ID" },
+                    new { name = "ITO_ID", title = "ITO ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "PRO_ID_PRODUTO", title = "PRO ID PRODUTO" },
+                    new { name = "PRO_ID_COMPONENTE", title = "PRO ID COMPONENTE" },
+                    new { name = "PRO_TIPO_CUSTO", title = "PRO TIPO CUSTO" },
+                    new { name = "PRO_GRUPO_CONTABIL", title = "PRO GRUPO CONTABIL" },
+                    new { name = "EST_ORDEM", title = "EST ORDEM" },
+                    new { name = "EST_GRUPO", title = "EST GRUPO" },
+                    new { name = "EST_QUANT", title = "EST QUANT" },
+                    new { name = "EST_VALOR_TOTAL", title = "EST VALOR TOTAL" },
+                    new { name = "EST_DATA_BASE", title = "EST DATA BASE" },
+                    new { name = "EST_BASE_PRODUCAO", title = "EST BASE PRODUCAO" },
+                    new { name = "EST_NIVEL", title = "EST NIVEL" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "EstruturaImpressao",
+                title = "EstruturaImpressao",
+                fields = new[]
+                {
+                    new { name = "EST_ID", title = "EST ID" },
+                    new { name = "HTML_ESTRUTURA", title = "HTML ESTRUTURA" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "EST_DESCRICAO", title = "EST DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "EstruturaProduto",
+                title = "EstruturaProduto",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "EST_DATA_VALIDADE", title = "EST DATA VALIDADE" },
+                    new { name = "PRO_ID_PRODUTO", title = "PRO ID PRODUTO" },
+                    new { name = "PRO_ID_COMPONENTE", title = "PRO ID COMPONENTE" },
+                    new { name = "EST_QUANT", title = "EST QUANT" },
+                    new { name = "EST_DATA_INCLUSAO", title = "EST DATA INCLUSAO" },
+                    new { name = "EST_BASE_PRODUCAO", title = "EST BASE PRODUCAO" },
+                    new { name = "EST_TIPO_REQUISICAO", title = "EST TIPO REQUISICAO" },
+                    new { name = "EST_CODIGO_DE_EXCECAO", title = "EST CODIGO DE EXCECAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Etiqueta",
+                title = "Etiqueta",
+                fields = new[]
+                {
+                    new { name = "ETI_ID", title = "ETI ID" },
+                    new { name = "ETI_EMISSAO", title = "ETI EMISSAO" },
+                    new { name = "ETI_CODIGO_BARRAS", title = "ETI CODIGO BARRAS" },
+                    new { name = "ETI_SEQUENCIA", title = "ETI SEQUENCIA" },
+                    new { name = "ETI_NUMERO_COPIAS", title = "ETI NUMERO COPIAS" },
+                    new { name = "ETI_STATUS", title = "ETI STATUS" },
+                    new { name = "ETI_DATA_FABRICACAO", title = "ETI DATA FABRICACAO" },
+                    new { name = "ETI_COD_BARRAS_ORIGINAL", title = "ETI COD BARRAS ORIGINAL" },
+                    new { name = "ETI_OP_ORIGINAL", title = "ETI OP ORIGINAL" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "IMP_ID", title = "IMP ID" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ROT_PRO_ID", title = "ROT PRO ID" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "ETI_QUANTIDADE_PALETE", title = "ETI QUANTIDADE PALETE" },
+                    new { name = "ETI_LOTE", title = "ETI LOTE" },
+                    new { name = "ETI_SUB_LOTE", title = "ETI SUB LOTE" },
+                    new { name = "ETI_IMPRIMIR_DE", title = "ETI IMPRIMIR DE" },
+                    new { name = "ETI_IMPRIMIR_ATE", title = "ETI IMPRIMIR ATE" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ExperienciaPlanejamentoTransporte",
+                title = "Experiencia Planejamento Transporte",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Tipo", title = "Tipo" },
+                    new { name = "Referencia", title = "Referencia" },
+                    new { name = "PedidoId", title = "Pedido" },
+                    new { name = "ClienteId", title = "Cliente" },
+                    new { name = "Municipio", title = "Municipio" },
+                    new { name = "Regiao", title = "Regiao" },
+                    new { name = "RotaId", title = "Rota" },
+                    new { name = "Peso", title = "Peso" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "Observacao", title = "Observacao" },
+                    new { name = "CriadoEm", title = "Criado Em" },
+                    new { name = "CriadoPor", title = "Criado Por" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "FechamentoTeste",
+                title = "FechamentoTeste",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "FEC_ID", title = "FEC ID" },
+                    new { name = "FEC_QTD", title = "FEC QTD" },
+                    new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Feedback",
+                title = "Feedback",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "DataInicial", title = "DataInicial" },
+                    new { name = "Datafinal", title = "Datafinal" },
+                    new { name = "MaquinaId", title = "MaquinaId" },
+                    new { name = "OcorrenciaId", title = "OcorrenciaId" },
+                    new { name = "TurnoId", title = "TurnoId" },
+                    new { name = "TurmaId", title = "TurmaId" },
+                    new { name = "UsuarioId", title = "UsuarioId" },
+                    new { name = "OrderId", title = "OrderId" },
+                    new { name = "ProdutoId", title = "ProdutoId" },
+                    new { name = "Observacoes", title = "Observacoes" },
+                    new { name = "Grupo", title = "Grupo" },
+                    new { name = "DiaTurma", title = "DiaTurma" },
+                    new { name = "SequenciaTransformacao", title = "SequenciaTransformacao" },
+                    new { name = "SequenciaRepeticao", title = "SequenciaRepeticao" },
+                    new { name = "QuantidadePulsos", title = "QuantidadePulsos" },
+                    new { name = "QuantidadePecasPorPulso", title = "QuantidadePecasPorPulso" },
+                    new { name = "FEE_QTD_TOTAL_PRODUCAO_AJUSTADA", title = "FEE QTD TOTAL PRODUCAO AJUSTADA" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "FilaProducao",
+                title = "FilaProducao",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ROT_PRO_ID", title = "ROT PRO ID" },
+                    new { name = "FPR_QUANTIDADE_PREVISTA", title = "FPR QUANTIDADE PREVISTA" },
+                    new { name = "ROT_MAQ_ID", title = "ROT MAQ ID" },
+                    new { name = "FPR_DATA_INICIO_PREVISTA", title = "FPR DATA INICIO PREVISTA" },
+                    new { name = "FPR_DATA_FIM_PREVISTA", title = "FPR DATA FIM PREVISTA" },
+                    new { name = "FPR_DATA_FIM_MAXIMA", title = "FPR DATA FIM MAXIMA" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "FPR_OBS_PRODUCAO", title = "FPR OBS PRODUCAO" },
+                    new { name = "FPR_STATUS", title = "FPR STATUS" },
+                    new { name = "FPR_TEMPO_DECORRIDO_SETUP", title = "FPR TEMPO DECORRIDO SETUP" },
+                    new { name = "FPR_TEMPO_DECORRIDO_SETUPA", title = "FPR TEMPO DECORRIDO SETUPA" },
+                    new { name = "FPR_TEMPO_DECORRIDO_PERFORMANC", title = "FPR TEMPO DECORRIDO PERFORMANC" },
+                    new { name = "FPR_TEMPO_DECO_PEQUENA_PARADA", title = "FPR TEMPO DECO PEQUENA PARADA" },
+                    new { name = "FPR_QTD_PERFORMANCE", title = "FPR QTD PERFORMANCE" },
+                    new { name = "FPR_QTD_SETUP", title = "FPR QTD SETUP" },
+                    new { name = "FPR_QTD_PRODUZIDA", title = "FPR QTD PRODUZIDA" },
+                    new { name = "FPR_TEMPO_TEORICO_PERFORMANCE", title = "FPR TEMPO TEORICO PERFORMANCE" },
+                    new { name = "FPR_TEMPO_RESTANTE_PERFORMANC", title = "FPR TEMPO RESTANTE PERFORMANC" },
+                    new { name = "FPR_VELOCIDADE_P_ATINGIR_META", title = "FPR VELOCIDADE P ATINGIR META" },
+                    new { name = "FPR_QTD_RESTANTE", title = "FPR QTD RESTANTE" },
+                    new { name = "FPR_VELO_ATU_PC_SEGUNDO", title = "FPR VELO ATU PC SEGUNDO" },
+                    new { name = "FPR_PERFORMANCE_PROJETADA", title = "FPR PERFORMANCE PROJETADA" },
+                    new { name = "FPR_TEMPO_RESTANTE_TOTAL", title = "FPR TEMPO RESTANTE TOTAL" },
+                    new { name = "FPR_FIM_PREVISTO_ATUAL", title = "FPR FIM PREVISTO ATUAL" },
+                    new { name = "FPR_PRODUZINDO", title = "FPR PRODUZINDO" },
+                    new { name = "FPR_ORDEM_NA_FILA", title = "FPR ORDEM NA FILA" },
+                    new { name = "FPR_ID_INTEGRACAO", title = "FPR ID INTEGRACAO" },
+                    new { name = "FPR_TRUNCADO", title = "FPR TRUNCADO" },
+                    new { name = "FPR_DATA_TRUNC_INI", title = "FPR DATA TRUNC INI" },
+                    new { name = "FPR_DATA_TRUNC_FIM", title = "FPR DATA TRUNC FIM" },
+                    new { name = "FPR_ID", title = "FPR ID" },
+                    new { name = "FPR_COR_FILA", title = "FPR COR FILA" },
+                    new { name = "MAQ_ID_MANUAL", title = "MAQ ID MANUAL" },
+                    new { name = "MAQ_ID_RESTRINGIDA", title = "MAQ ID RESTRINGIDA" },
+                    new { name = "FPR_PREVISAO_MATERIA_PRIMA", title = "FPR PREVISAO MATERIA PRIMA" },
+                    new { name = "FPR_DATA_NECESSIDADE_INICIO_PRODUCAO", title = "FPR DATA NECESSIDADE INICIO PRODUCAO" },
+                    new { name = "FPR_DATA_NECESSIDADE_FIM_PRODUCAO", title = "FPR DATA NECESSIDADE FIM PRODUCAO" },
+                    new { name = "FPR_GRUPO_PRODUTIVO", title = "FPR GRUPO PRODUTIVO" },
+                    new { name = "FPR_INICIO_GRUPO_PRODUTIVO", title = "FPR INICIO GRUPO PRODUTIVO" },
+                    new { name = "FPR_FIM_GRUPO_PRODUTIVO", title = "FPR FIM GRUPO PRODUTIVO" },
+                    new { name = "FPR_COR_BICO1", title = "FPR COR BICO1" },
+                    new { name = "FPR_COR_BICO2", title = "FPR COR BICO2" },
+                    new { name = "FPR_COR_BICO3", title = "FPR COR BICO3" },
+                    new { name = "FPR_COR_BICO4", title = "FPR COR BICO4" },
+                    new { name = "FPR_COR_BICO5", title = "FPR COR BICO5" },
+                    new { name = "FPR_META_SETUP", title = "FPR META SETUP" },
+                    new { name = "FPR_ORD_ID_REPROGRAMADO", title = "FPR ORD ID REPROGRAMADO" },
+                    new { name = "FPR_PRIORIDADE", title = "FPR PRIORIDADE" },
+                    new { name = "FPR_SEQ_INCLUSAO_FILA", title = "FPR SEQ INCLUSAO FILA" },
+                    new { name = "FPR_HIERARQUIA_SEQ_TRANSFORMACAO", title = "FPR HIERARQUIA SEQ TRANSFORMACAO" },
+                    new { name = "FPR_ID_ORIGEM", title = "FPR ID ORIGEM" },
+                    new { name = "FPR_DATA_ENTREGA", title = "FPR DATA ENTREGA" },
+                    new { name = "EQU_ID", title = "EQU ID" },
+                    new { name = "FPR_GRUPO_PRODUTIVO_MANUAL", title = "FPR GRUPO PRODUTIVO MANUAL" },
+                    new { name = "FPR_EMISSAO", title = "FPR EMISSAO" },
+                    new { name = "FPR_MOTIVO_PULA_FILA", title = "FPR MOTIVO PULA FILA" },
+                    new { name = "OCO_ID", title = "OCO ID" },
+                    new { name = "FPR_TOLERANCIA_MENOS", title = "FPR TOLERANCIA MENOS" },
+                    new { name = "FPR_TOLERANCIA_MAIS", title = "FPR TOLERANCIA MAIS" },
+                    new { name = "FPR_DATA_ENCERRAMENTO", title = "FPR DATA ENCERRAMENTO" },
+                    new { name = "TenantID", title = "TenantID" },
+                }
+            },
+            new
+            {
+                name = "FilaProducaoPrevista",
+                title = "FilaProducaoPrevista",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ROT_PRO_ID", title = "ROT PRO ID" },
+                    new { name = "FPR_QUANTIDADE_PREVISTA", title = "FPR QUANTIDADE PREVISTA" },
+                    new { name = "ROT_MAQ_ID", title = "ROT MAQ ID" },
+                    new { name = "FPR_DATA_INICIO_PREVISTA", title = "FPR DATA INICIO PREVISTA" },
+                    new { name = "FPR_DATA_FIM_PREVISTA", title = "FPR DATA FIM PREVISTA" },
+                    new { name = "FPR_DATA_FIM_MAXIMA", title = "FPR DATA FIM MAXIMA" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "FPR_OBS_PRODUCAO", title = "FPR OBS PRODUCAO" },
+                    new { name = "FPR_STATUS", title = "FPR STATUS" },
+                    new { name = "FPR_TEMPO_DECORRIDO_SETUP", title = "FPR TEMPO DECORRIDO SETUP" },
+                    new { name = "FPR_TEMPO_DECORRIDO_SETUPA", title = "FPR TEMPO DECORRIDO SETUPA" },
+                    new { name = "FPR_TEMPO_DECORRIDO_PERFORMANC", title = "FPR TEMPO DECORRIDO PERFORMANC" },
+                    new { name = "FPR_TEMPO_DECO_PEQUENA_PARADA", title = "FPR TEMPO DECO PEQUENA PARADA" },
+                    new { name = "FPR_QTD_PERFORMANCE", title = "FPR QTD PERFORMANCE" },
+                    new { name = "FPR_QTD_SETUP", title = "FPR QTD SETUP" },
+                    new { name = "FPR_QTD_PRODUZIDA", title = "FPR QTD PRODUZIDA" },
+                    new { name = "FPR_TEMPO_TEORICO_PERFORMANCE", title = "FPR TEMPO TEORICO PERFORMANCE" },
+                    new { name = "FPR_TEMPO_RESTANTE_PERFORMANC", title = "FPR TEMPO RESTANTE PERFORMANC" },
+                    new { name = "FPR_VELOCIDADE_P_ATINGIR_META", title = "FPR VELOCIDADE P ATINGIR META" },
+                    new { name = "FPR_QTD_RESTANTE", title = "FPR QTD RESTANTE" },
+                    new { name = "FPR_VELO_ATU_PC_SEGUNDO", title = "FPR VELO ATU PC SEGUNDO" },
+                    new { name = "FPR_PERFORMANCE_PROJETADA", title = "FPR PERFORMANCE PROJETADA" },
+                    new { name = "FPR_TEMPO_RESTANTE_TOTAL", title = "FPR TEMPO RESTANTE TOTAL" },
+                    new { name = "FPR_FIM_PREVISTO_ATUAL", title = "FPR FIM PREVISTO ATUAL" },
+                    new { name = "FPR_PRODUZINDO", title = "FPR PRODUZINDO" },
+                    new { name = "FPR_ORDEM_NA_FILA", title = "FPR ORDEM NA FILA" },
+                    new { name = "FPR_ID_INTEGRACAO", title = "FPR ID INTEGRACAO" },
+                    new { name = "FPR_TRUNCADO", title = "FPR TRUNCADO" },
+                    new { name = "FPR_DATA_TRUNC_INI", title = "FPR DATA TRUNC INI" },
+                    new { name = "FPR_DATA_TRUNC_FIM", title = "FPR DATA TRUNC FIM" },
+                    new { name = "FPR_ID", title = "FPR ID" },
+                    new { name = "FPR_COR_FILA", title = "FPR COR FILA" },
+                    new { name = "MAQ_ID_MANUAL", title = "MAQ ID MANUAL" },
+                    new { name = "MAQ_ID_RESTRINGIDA", title = "MAQ ID RESTRINGIDA" },
+                    new { name = "FPR_PREVISAO_MATERIA_PRIMA", title = "FPR PREVISAO MATERIA PRIMA" },
+                    new { name = "FPR_DATA_NECESSIDADE_INICIO_PRODUCAO", title = "FPR DATA NECESSIDADE INICIO PRODUCAO" },
+                    new { name = "FPR_DATA_NECESSIDADE_FIM_PRODUCAO", title = "FPR DATA NECESSIDADE FIM PRODUCAO" },
+                    new { name = "FPR_GRUPO_PRODUTIVO", title = "FPR GRUPO PRODUTIVO" },
+                    new { name = "FPR_INICIO_GRUPO_PRODUTIVO", title = "FPR INICIO GRUPO PRODUTIVO" },
+                    new { name = "FPR_FIM_GRUPO_PRODUTIVO", title = "FPR FIM GRUPO PRODUTIVO" },
+                    new { name = "FPR_COR_BICO1", title = "FPR COR BICO1" },
+                    new { name = "FPR_COR_BICO2", title = "FPR COR BICO2" },
+                    new { name = "FPR_COR_BICO3", title = "FPR COR BICO3" },
+                    new { name = "FPR_COR_BICO4", title = "FPR COR BICO4" },
+                    new { name = "FPR_COR_BICO5", title = "FPR COR BICO5" },
+                    new { name = "FPR_META_SETUP", title = "FPR META SETUP" },
+                    new { name = "FPR_ORD_ID_REPROGRAMADO", title = "FPR ORD ID REPROGRAMADO" },
+                    new { name = "FPR_PRIORIDADE", title = "FPR PRIORIDADE" },
+                    new { name = "FPR_SEQ_INCLUSAO_FILA", title = "FPR SEQ INCLUSAO FILA" },
+                    new { name = "FPR_HIERARQUIA_SEQ_TRANSFORMACAO", title = "FPR HIERARQUIA SEQ TRANSFORMACAO" },
+                    new { name = "FPR_ID_ORIGEM", title = "FPR ID ORIGEM" },
+                    new { name = "FPR_DATA_ENTREGA", title = "FPR DATA ENTREGA" },
+                    new { name = "EQU_ID", title = "EQU ID" },
+                    new { name = "FPR_GRUPO_PRODUTIVO_MANUAL", title = "FPR GRUPO PRODUTIVO MANUAL" },
+                    new { name = "FPR_EMISSAO", title = "FPR EMISSAO" },
+                    new { name = "FPR_MOTIVO_PULA_FILA", title = "FPR MOTIVO PULA FILA" },
+                    new { name = "OCO_ID", title = "OCO ID" },
+                    new { name = "FPR_PESO_UNITARIO", title = "FPR PESO UNITARIO" },
+                    new { name = "FPR_M2_UNITARIO", title = "FPR M2 UNITARIO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                }
+            },
+            new
+            {
+                name = "GrupoIndicador",
+                title = "GrupoIndicador",
+                fields = new[]
+                {
+                    new { name = "GRU_IND_ID", title = "GRU IND ID" },
+                    new { name = "GRU_ID", title = "GRU ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "GrupoMaquina",
+                title = "GrupoMaquina",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Codigo do Grupo de Maquina" },
+                    new { name = "Descricao", title = "Descricao do Grupo de Maquina" },
+                    new { name = "Status", title = "Status do Grupo de Maquina" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "GMA_TIPO_PLANEJAMENTO", title = "GMA TIPO PLANEJAMENTO" },
+                }
+            },
+            new
+            {
+                name = "GrupoProdutoAbstrato",
+                title = "GrupoProdutoAbstrato",
+                fields = new[]
+                {
+                    new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "GRP_DESCRICAO", title = "GRP DESCRICAO" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "GRP_TIPO", title = "GRP TIPO" },
+                    new { name = "GRP_PAP_ONDA", title = "GRP PAP ONDA" },
+                    new { name = "GRP_PAP_GRAMATURA", title = "GRP PAP GRAMATURA" },
+                    new { name = "GRP_PAP_ALTURA", title = "GRP PAP ALTURA" },
+                    new { name = "GRP_PAP_NOME_COMERCIAL", title = "GRP PAP NOME COMERCIAL" },
+                    new { name = "GRP_ATIVO", title = "GRP ATIVO" },
+                    new { name = "GRP_DT_CRIACAO", title = "GRP DT CRIACAO" },
+                    new { name = "GRP_PAPEL1", title = "GRP PAPEL1" },
+                    new { name = "GRP_PAPEL2", title = "GRP PAPEL2" },
+                    new { name = "GRP_PAPEL3", title = "GRP PAPEL3" },
+                    new { name = "GRP_PAPEL4", title = "GRP PAPEL4" },
+                    new { name = "GRP_PAPEL5", title = "GRP PAPEL5" },
+                    new { name = "GRP_ID_INTEGRACAO", title = "GRP ID INTEGRACAO" },
+                    new { name = "GRP_ID_INTEGRACAO_ERP", title = "GRP ID INTEGRACAO ERP" },
+                    new { name = "GRP_TYPE", title = "GRP TYPE" },
+                    new { name = "GRP_PERFORMANCE", title = "GRP PERFORMANCE" },
+                    new { name = "GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO", title = "GRP PERFORMANCE METRO LINEAR POR SEGUNDO" },
+                    new { name = "GRP_RESINA", title = "GRP RESINA" },
+                    new { name = "GRP_ENDURECEDOR_MIOLO", title = "GRP ENDURECEDOR MIOLO" },
+                    new { name = "VIN_ID", title = "VIN ID" },
+                    new { name = "GRP_COLUNA_DE", title = "GRP COLUNA DE" },
+                    new { name = "GRP_COLUNA_ATE", title = "GRP COLUNA ATE" },
+                    new { name = "GRP_CRUSH", title = "GRP CRUSH" },
+                    new { name = "GRP_ID_FAMILIA", title = "GRP ID FAMILIA" },
+                    new { name = "GRP_REFILE_LARGURA", title = "GRP REFILE LARGURA" },
+                    new { name = "GRP_REFILE_COMPRIMENTO", title = "GRP REFILE COMPRIMENTO" },
+                    new { name = "GRP_TIPO_LAP", title = "GRP TIPO LAP" },
+                    new { name = "GRP_LAP_PROLONGADO", title = "GRP LAP PROLONGADO" },
+                    new { name = "GRP_TAMANHO_LAP_OND_SIMPLES", title = "GRP TAMANHO LAP OND SIMPLES" },
+                    new { name = "GRP_TAMANHO_LAP_OND_DUPLA", title = "GRP TAMANHO LAP OND DUPLA" },
+                    new { name = "GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES", title = "GRP TAMANHO LAP PROLONGADO OND SIMPLES" },
+                    new { name = "GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA", title = "GRP TAMANHO LAP PROLONGADO OND DUPLA" },
+                    new { name = "GRP_FEFCO", title = "GRP FEFCO" },
+                    new { name = "GRP_TOLERANCIA_DIMENCAO_CHAPA_DE", title = "GRP TOLERANCIA DIMENCAO CHAPA DE" },
+                    new { name = "GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE", title = "GRP TOLERANCIA DIMENCAO CHAPA ATE" },
+                    new { name = "GRP_PREFIXO_ID_PRODUTO", title = "GRP PREFIXO ID PRODUTO" },
+                    new { name = "GRP_COLUNA_CAIXA", title = "GRP COLUNA CAIXA" },
+                    new { name = "GRP_COLUNA_CHAPA", title = "GRP COLUNA CHAPA" },
+                    new { name = "GRP_MULLEN", title = "GRP MULLEN" },
+                    new { name = "GRP_TENDENCIA_TOLERANCIA_PEDIDO", title = "GRP TENDENCIA TOLERANCIA PEDIDO" },
+                    new { name = "GRP_PERCENTUAL_PERDA_MEDIA", title = "GRP PERCENTUAL PERDA MEDIA" },
+                    new { name = "GRP_FILTRA_SEQ_TRANS", title = "GRP FILTRA SEQ TRANS" },
+                    new { name = "GRP_IMG_CAIXA", title = "GRP IMG CAIXA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "GrupoRecurso",
+                title = "GrupoRecurso",
+                fields = new[]
+                {
+                    new { name = "GRE_ID", title = "GRE ID" },
+                    new { name = "GRE_DESCRICAO", title = "GRE DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "GrupoSegmento",
+                title = "GrupoSegmento",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "GRS_ID", title = "GRS ID" },
+                    new { name = "GRS_DESCRICAO", title = "GRS DESCRICAO" },
+                    new { name = "GRS_INTEGRACAO_ERP", title = "GRS INTEGRACAO ERP" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Impressora",
+                title = "Impressora",
+                fields = new[]
+                {
+                    new { name = "IMP_ID", title = "IMP ID" },
+                    new { name = "IMP_IP", title = "IMP IP" },
+                    new { name = "IMP_NOME", title = "IMP NOME" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "IndicadoresDepartamentos",
+                title = "IndicadoresDepartamentos",
+                fields = new[]
+                {
+                    new { name = "INDDEP_ID", title = "INDDEP ID" },
+                    new { name = "DEP_ID", title = "DEP ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "IndicadoresDimencoes",
+                title = "IndicadoresDimencoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "DIM_ID", title = "DIM ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "DIM_DESCRICAO", title = "DIM DESCRICAO" },
+                    new { name = "DIM_SQL", title = "DIM SQL" },
+                    new { name = "DIM_CONEXAO", title = "DIM CONEXAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "IndicadoresFatosDimencoes",
+                title = "IndicadoresFatosDimencoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "FAT_ID", title = "FAT ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "DIM_ID", title = "DIM ID" },
+                    new { name = "FAT_DESCRICAO", title = "FAT DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "IndicadoresPeriodosDimencoes",
+                title = "IndicadoresPeriodosDimencoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "DIM_ID", title = "DIM ID" },
+                    new { name = "PER_DESCRICAO", title = "PER DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "InformacoesComplementares",
+                title = "InformacoesComplementares",
+                fields = new[]
+                {
+                    new { name = "INF_ID", title = "INF ID" },
+                    new { name = "INF_DESCRICAO", title = "INF DESCRICAO" },
+                    new { name = "INF_VALOR", title = "INF VALOR" },
+                    new { name = "MET_ID", title = "MET ID" },
+                    new { name = "INF_DATA", title = "INF DATA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "InpecaoVisual",
+                title = "InpecaoVisual",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "IPV_ID", title = "IPV ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "InspecaoVisual",
+                title = "InspecaoVisual",
+                fields = new[]
+                {
+                    new { name = "IPV_ID", title = "IPV ID" },
+                    new { name = "IPV_VALOR", title = "IPV VALOR" },
+                    new { name = "IPV_ID_OPERADOR", title = "IPV ID OPERADOR" },
+                    new { name = "IPV_ID_LIBERACAO", title = "IPV ID LIBERACAO" },
+                    new { name = "IPV_OBS", title = "IPV OBS" },
+                    new { name = "IPV_DATA_COLETA", title = "IPV DATA COLETA" },
+                    new { name = "IPV_DATA_AVAL", title = "IPV DATA AVAL" },
+                    new { name = "TIV_ID", title = "TIV ID" },
+                    new { name = "TURN_ID", title = "TURN ID" },
+                    new { name = "TURM_ID", title = "TURM ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ROT_PRO_ID", title = "ROT PRO ID" },
+                    new { name = "ROT_MAQ_ID", title = "ROT MAQ ID" },
+                    new { name = "ROT_SEQ_TRANSFORMACAO", title = "ROT SEQ TRANSFORMACAO" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "IPV_STATUS_LIBERACAO", title = "IPV STATUS LIBERACAO" },
+                    new { name = "IPV_VALOR_MEDIDA", title = "IPV VALOR MEDIDA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItemInspecao",
+                title = "ItemInspecao",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ITI_ID", title = "ITI ID" },
+                    new { name = "ITI_DESC", title = "ITI DESC" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItemTestavel",
+                title = "ItemTestavel",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ITE_ID", title = "ITE ID" },
+                    new { name = "ITE_DESCRICAO", title = "ITE DESCRICAO" },
+                    new { name = "ITE_OBS", title = "ITE OBS" },
+                    new { name = "ITE_NUMERO_DE_TESTES", title = "ITE NUMERO DE TESTES" },
+                    new { name = "ITE_CONDICIONAL_DE_AVALIACAO", title = "ITE CONDICIONAL DE AVALIACAO" },
+                    new { name = "ITE_VALOR_DA_CONDICIONAL", title = "ITE VALOR DA CONDICIONAL" },
+                    new { name = "ITE_VALOR_CALCULADO_DA_CONDICIONAL", title = "ITE VALOR CALCULADO DA CONDICIONAL" },
+                    new { name = "ITE_TIPO_AVALIACAO_FINAL", title = "ITE TIPO AVALIACAO FINAL" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItenCalendarioDisponibilidadeVeiculos",
+                title = "ItenCalendarioDisponibilidadeVeiculos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CDV_ID", title = "CDV ID" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "IDV_QTD", title = "IDV QTD" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItenCarga",
+                title = "ItenCarga",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ITC_ENTREGA_PLANEJADA", title = "ITC ENTREGA PLANEJADA" },
+                    new { name = "ITC_ENTREGA_REALIZADA", title = "ITC ENTREGA REALIZADA" },
+                    new { name = "ITC_ORDEM_ENTREGA", title = "ITC ORDEM ENTREGA" },
+                    new { name = "ITC_QTD_PLANEJADA", title = "ITC QTD PLANEJADA" },
+                    new { name = "ITC_QTD_REALIZADA", title = "ITC QTD REALIZADA" },
+                    new { name = "ORD_HASH_KEY", title = "ORD HASH KEY" },
+                    new { name = "NOT_ID", title = "NOT ID" },
+                    new { name = "NOT_EMISSAO", title = "NOT EMISSAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItensCalendario",
+                title = "ItensCalendario",
+                fields = new[]
+                {
+                    new { name = "ICA_ID", title = "ICA ID" },
+                    new { name = "ICA_DATA_DE", title = "ICA DATA DE" },
+                    new { name = "ICA_DATA_ATE", title = "ICA DATA ATE" },
+                    new { name = "ICA_OBSERVACAO", title = "ICA OBSERVACAO" },
+                    new { name = "ICA_TIPO", title = "ICA TIPO" },
+                    new { name = "URM_ID", title = "URM ID" },
+                    new { name = "URN_ID", title = "URN ID" },
+                    new { name = "CAL_ID", title = "CAL ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "ICA_LIMPESA_MAQUINA", title = "ICA LIMPESA MAQUINA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItensEstruturaImpressao",
+                title = "ItensEstruturaImpressao",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "IES_CUSTOM_FONT_SIZE", title = "IES CUSTOM FONT SIZE" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItensOrcamento",
+                title = "ItensOrcamento",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ITO_ID", title = "ITO ID" },
+                    new { name = "ORC_ID", title = "ORC ID" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "ITO_OBS", title = "ITO OBS" },
+                    new { name = "ITO_QUANTIDADE", title = "ITO QUANTIDADE" },
+                    new { name = "ITO_CUSTO", title = "ITO CUSTO" },
+                    new { name = "ITO_MARGEM", title = "ITO MARGEM" },
+                    new { name = "ITO_VALOR_UNITARIO", title = "ITO VALOR UNITARIO" },
+                    new { name = "ITO_VERSSAO_CUSTO", title = "ITO VERSSAO CUSTO" },
+                    new { name = "ITO_STATUS", title = "ITO STATUS" },
+                    new { name = "ITO_ERP_CUSTOS_FIXOS", title = "ITO ERP CUSTOS FIXOS" },
+                    new { name = "ITO_ERP_CUSTOS_VARIAVEIS", title = "ITO ERP CUSTOS VARIAVEIS" },
+                    new { name = "ITO_ERP_DESPESAS_VAR_VENDA", title = "ITO ERP DESPESAS VAR VENDA" },
+                    new { name = "ITO_ERP_IMPOSTOS", title = "ITO ERP IMPOSTOS" },
+                    new { name = "GRP_ID_COMPOSICAO", title = "GRP ID COMPOSICAO" },
+                    new { name = "ITO_LARGURA", title = "ITO LARGURA" },
+                    new { name = "ITO_COMPRIMENTO", title = "ITO COMPRIMENTO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ItensPacked",
+                title = "ItensPacked",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "IPA_ID", title = "IPA ID" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "IPA_COORDC", title = "IPA COORDC" },
+                    new { name = "IPA_COORDL", title = "IPA COORDL" },
+                    new { name = "IPA_COORDA", title = "IPA COORDA" },
+                    new { name = "IPA_DIMC", title = "IPA DIMC" },
+                    new { name = "IPA_DIML", title = "IPA DIML" },
+                    new { name = "IPA_DIMA", title = "IPA DIMA" },
+                    new { name = "IPA_QTD_POR_PALETE", title = "IPA QTD POR PALETE" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "LaudoTesteFisico",
+                title = "LaudoTesteFisico",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "LTF_ID", title = "LTF ID" },
+                    new { name = "LTF_EMISSAO", title = "LTF EMISSAO" },
+                    new { name = "LTF_VALOR", title = "LTF VALOR" },
+                    new { name = "LTF_OBS", title = "LTF OBS" },
+                    new { name = "LTF_STATUS", title = "LTF STATUS" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ROT_PRO_ID", title = "ROT PRO ID" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Logs",
+                title = "Logs",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "LOG_CHAVE", title = "LOG CHAVE" },
+                    new { name = "LOG_CONTEXTO", title = "LOG CONTEXTO" },
+                    new { name = "LOG_CONTEUDO", title = "LOG CONTEUDO" },
+                    new { name = "LOG_ID", title = "LOG ID" },
+                    new { name = "LOG_EMISSAO", title = "LOG EMISSAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "LogsDatabase",
+                title = "LogsDatabase",
+                fields = new[]
+                {
+                    new { name = "LOGS_ID", title = "LOGS ID" },
+                    new { name = "LOGS_TABLE", title = "LOGS TABLE" },
+                    new { name = "LOGS_KEY", title = "LOGS KEY" },
+                    new { name = "LOGS_KEY1", title = "LOGS KEY1" },
+                    new { name = "LOGS_KEY2", title = "LOGS KEY2" },
+                    new { name = "LOGS_KEY3", title = "LOGS KEY3" },
+                    new { name = "LOGS_KEY4", title = "LOGS KEY4" },
+                    new { name = "LOGS_COLUMN", title = "LOGS COLUMN" },
+                    new { name = "LOGS_BEFORE", title = "LOGS BEFORE" },
+                    new { name = "LOGS_AFTER", title = "LOGS AFTER" },
+                    new { name = "LOGS_ACTION", title = "LOGS ACTION" },
+                    new { name = "LOGS_DATE", title = "LOGS DATE" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "LOGS_ORIGEM", title = "LOGS ORIGEM" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Loock",
+                title = "Loock",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "LOO_ID", title = "LOO ID" },
+                    new { name = "LOO_DESCRICAO", title = "LOO DESCRICAO" },
+                    new { name = "LOO_CONTEUDO", title = "LOO CONTEUDO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Lotes",
+                title = "Lotes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MOV_LOTE", title = "MOV LOTE" },
+                    new { name = "MOV_SUB_LOTE", title = "MOV SUB LOTE" },
+                    new { name = "LOT_LARGURA", title = "LOT LARGURA" },
+                    new { name = "LOT_COMPRIMENTO", title = "LOT COMPRIMENTO" },
+                    new { name = "LOT_DIAMETRO", title = "LOT DIAMETRO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "LoteTeste",
+                title = "LoteTeste",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "LT_ID", title = "LT ID" },
+                    new { name = "TES_ID", title = "TES ID" },
+                    new { name = "RL_ID", title = "RL ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Mapa",
+                title = "Mapa",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MAP_ID", title = "MAP ID" },
+                    new { name = "PON_ID", title = "PON ID" },
+                    new { name = "PON_ID_VIZINHO", title = "PON ID VIZINHO" },
+                    new { name = "MAP_DISTANCIA", title = "MAP DISTANCIA" },
+                    new { name = "MAP_CUSTO_PEDAGIO_POR_EIXO", title = "MAP CUSTO PEDAGIO POR EIXO" },
+                    new { name = "ROD_ID", title = "ROD ID" },
+                    new { name = "MAP_ALTURA_ROD", title = "MAP ALTURA ROD" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Maquina",
+                title = "Maquina",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Codigo da Maquina" },
+                    new { name = "Descricao", title = "Descricao da Maquina" },
+                    new { name = "Status", title = "Status da Maquina" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "CAL_ID", title = "CAL ID" },
+                    new { name = "MAQ_CONTROL_IP", title = "MAQ CONTROL IP" },
+                    new { name = "GMA_ID", title = "GMA ID" },
+                    new { name = "MAQ_ULTIMA_ATUALIZACAO", title = "MAQ ULTIMA ATUALIZACAO" },
+                    new { name = "MAQ_SIRENE_SEMAFORO", title = "MAQ SIRENE SEMAFORO" },
+                    new { name = "MAQ_COR_SEMAFORO", title = "MAQ COR SEMAFORO" },
+                    new { name = "MAQ_ID_MAQ_PAI", title = "MAQ ID MAQ PAI" },
+                    new { name = "MAQ_TIPO_CONTADOR", title = "MAQ TIPO CONTADOR" },
+                    new { name = "MAQ_TIPO_PLANEJAMENTO", title = "MAQ TIPO PLANEJAMENTO" },
+                    new { name = "MAQ_AVALIA_CUSTO", title = "MAQ AVALIA CUSTO" },
+                    new { name = "FPR_ID_OP_PRODUZINDO", title = "FPR ID OP PRODUZINDO" },
+                    new { name = "MAQ_CONGELA_FILA", title = "MAQ CONGELA FILA" },
+                    new { name = "MAQ_TEMPO_MIN_PARADA", title = "MAQ TEMPO MIN PARADA" },
+                    new { name = "MAQ_QTD_CORES", title = "MAQ QTD CORES" },
+                    new { name = "MAQ_ID_INTEGRACAO", title = "MAQ ID INTEGRACAO" },
+                    new { name = "MAQ_ID_INTEGRACAO_ERP", title = "MAQ ID INTEGRACAO ERP" },
+                    new { name = "MAQ_HIERARQUIA_SEQ_TRANSFORMACAO", title = "MAQ HIERARQUIA SEQ TRANSFORMACAO" },
+                    new { name = "EQU_ID", title = "EQU ID" },
+                    new { name = "MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR", title = "MAQ PERCENTUAL INICIO PASSO ANTERIOR" },
+                    new { name = "MAQ_ACOMPANHA_LOTE_PILOTO", title = "MAQ ACOMPANHA LOTE PILOTO" },
+                    new { name = "MAQ_ID_SENSOR", title = "MAQ ID SENSOR" },
+                    new { name = "MAQ_DEBOUNCING_LOW", title = "MAQ DEBOUNCING LOW" },
+                    new { name = "MAQ_DEBOUNCING_HIGHT", title = "MAQ DEBOUNCING HIGHT" },
+                    new { name = "MAQ_TIPO_SINAL", title = "MAQ TIPO SINAL" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "MAQ_COMPRIMENTO_CHAPA_DE", title = "MAQ COMPRIMENTO CHAPA DE" },
+                    new { name = "MAQ_COMPRIMENTO_CHAPA_ATE", title = "MAQ COMPRIMENTO CHAPA ATE" },
+                    new { name = "MAQ_LARGURA_CHAPA_DE", title = "MAQ LARGURA CHAPA DE" },
+                    new { name = "MAQ_LARGURA_CHAPA_ATE", title = "MAQ LARGURA CHAPA ATE" },
+                    new { name = "MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR", title = "MAQ COMPRIMENTO CHAPA DE FACAO SUPERIOR" },
+                    new { name = "MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR", title = "MAQ COMPRIMENTO CHAPA ATE FACAO SUPERIOR" },
+                    new { name = "MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR", title = "MAQ COMPRIMENTO CHAPA DE FACAO INFERIOR" },
+                    new { name = "MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR", title = "MAQ COMPRIMENTO CHAPA ATE FACAO INFERIOR" },
+                    new { name = "MAQ_COMPRIMENTO_ENTRE_VINCO_DE", title = "MAQ COMPRIMENTO ENTRE VINCO DE" },
+                    new { name = "MAQ_COMPRIMENTO_ENTRE_VINCO_ATE", title = "MAQ COMPRIMENTO ENTRE VINCO ATE" },
+                    new { name = "MAQ_LARGURA_ENTRE_VINCO_DE", title = "MAQ LARGURA ENTRE VINCO DE" },
+                    new { name = "MAQ_LARGURA_ENTRE_VINCO_ATE", title = "MAQ LARGURA ENTRE VINCO ATE" },
+                    new { name = "MAQ_ALTURA_ENTRE_VINCO_DE", title = "MAQ ALTURA ENTRE VINCO DE" },
+                    new { name = "MAQ_ALTURA_ENTRE_VINCO_ATE", title = "MAQ ALTURA ENTRE VINCO ATE" },
+                    new { name = "MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE", title = "MAQ COMPRIMENTO MAIS LARGURA ENTRE VINCO DE" },
+                    new { name = "MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE", title = "MAQ COMPRIMENTO MAIS LARGURA ENTRE VINCO ATE" },
+                    new { name = "MAQ_ABA_DE", title = "MAQ ABA DE" },
+                    new { name = "MAQ_ABA_ATE", title = "MAQ ABA ATE" },
+                    new { name = "MAQ_LAP_DE", title = "MAQ LAP DE" },
+                    new { name = "MAQ_LAP_ATE", title = "MAQ LAP ATE" },
+                    new { name = "MAQ_ONDAS", title = "MAQ ONDAS" },
+                    new { name = "MAQ_PROLONGA_LAP", title = "MAQ PROLONGA LAP" },
+                    new { name = "MAQ_LARGURA_IMPRESSAO", title = "MAQ LARGURA IMPRESSAO" },
+                    new { name = "MAQ_COMPRIMENTO_IMPRESSAO", title = "MAQ COMPRIMENTO IMPRESSAO" },
+                    new { name = "MAQ_ROLO_DISPOSITIVO_DE", title = "MAQ ROLO DISPOSITIVO DE" },
+                    new { name = "MAQ_ROLO_DISPOSITIVO_ATE", title = "MAQ ROLO DISPOSITIVO ATE" },
+                    new { name = "MAQ_FAMILIAS", title = "MAQ FAMILIAS" },
+                    new { name = "MAQ_REFILE_MINIMO", title = "MAQ REFILE MINIMO" },
+                    new { name = "MAQ_LARGURA_UTIL", title = "MAQ LARGURA UTIL" },
+                    new { name = "MAQ_TOTAL_ACO", title = "MAQ TOTAL ACO" },
+                    new { name = "MAQ_FECHAMENTO", title = "MAQ FECHAMENTO" },
+                    new { name = "MAQ_OPERACAO_VINCAR", title = "MAQ OPERACAO VINCAR" },
+                }
+            },
+            new
+            {
+                name = "MaquinaGrupoMaquina",
+                title = "MaquinaGrupoMaquina",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "GMA_ID", title = "GMA ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MaquinaImpressora",
+                title = "MaquinaImpressora",
+                fields = new[]
+                {
+                    new { name = "MAQ_IMP_ID", title = "MAQ IMP ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "IMP_ID", title = "IMP ID" },
+                    new { name = "MAI_FACAO", title = "MAI FACAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MedicoesOnduladeira",
+                title = "MedicoesOnduladeira",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MedidasTeste",
+                title = "MedidasTeste",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MDT_ID", title = "MDT ID" },
+                    new { name = "MDT_DESC", title = "MDT DESC" },
+                    new { name = "MDT_VALOR_ESPERADO", title = "MDT VALOR ESPERADO" },
+                    new { name = "MDT_ENCONTRADO", title = "MDT ENCONTRADO" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MemoriaDeCalculo",
+                title = "MemoriaDeCalculo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MEM_ID", title = "MEM ID" },
+                    new { name = "ORC_ID", title = "ORC ID" },
+                    new { name = "MEM_VALOR", title = "MEM VALOR" },
+                    new { name = "MEM_DESCRICAO", title = "MEM DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Mensagem",
+                title = "Mensagem",
+                fields = new[]
+                {
+                    new { name = "MEN_ID", title = "MEN ID" },
+                    new { name = "MEN_SEND", title = "MEN SEND" },
+                    new { name = "MEN_EMISSION", title = "MEN EMISSION" },
+                    new { name = "MEN_STATUS", title = "MEN STATUS" },
+                    new { name = "MEN_RECEIVE", title = "MEN RECEIVE" },
+                    new { name = "MEN_TYPE", title = "MEN TYPE" },
+                    new { name = "MEN_QTD_TRY_SEND", title = "MEN QTD TRY SEND" },
+                    new { name = "MEN_DATE_TRY_SEND", title = "MEN DATE TRY SEND" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Meses",
+                title = "Meses",
+                fields = new[]
+                {
+                    new { name = "MES", title = "MES" },
+                    new { name = "fator", title = "fator" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MovimentoEstoque",
+                title = "MovimentoEstoque",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ProdutoId", title = "ProdutoId" },
+                    new { name = "OrderId", title = "OrderId" },
+                    new { name = "Tipo", title = "Tipo" },
+                    new { name = "TurnoId", title = "TurnoId" },
+                    new { name = "TurmaId", title = "TurmaId" },
+                    new { name = "Quantidade", title = "Quantidade" },
+                    new { name = "MOV_PESO_UNITARIO", title = "MOV PESO UNITARIO" },
+                    new { name = "DataHoraCriacao", title = "DataHoraCriacao" },
+                    new { name = "DataHoraEmissao", title = "DataHoraEmissao" },
+                    new { name = "DiaTurma", title = "DiaTurma" },
+                    new { name = "Lote", title = "Lote" },
+                    new { name = "SubLote", title = "SubLote" },
+                    new { name = "MaquinaId", title = "MaquinaId" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "Observacao", title = "Observacao" },
+                    new { name = "OcorrenciaId", title = "OcorrenciaId" },
+                    new { name = "Armazem", title = "Armazem" },
+                    new { name = "Endereco", title = "Endereco" },
+                    new { name = "Estorno", title = "Estorno" },
+                    new { name = "SequenciaTransformacao", title = "SequenciaTransformacao" },
+                    new { name = "SequenciaRepeticao", title = "SequenciaRepeticao" },
+                    new { name = "ObsOpParcial", title = "ObsOpParcial" },
+                    new { name = "OcoIdOpParcial", title = "OcoIdOpParcial" },
+                    new { name = "MOV_ID_INTEGRACAO", title = "MOV ID INTEGRACAO" },
+                    new { name = "MOV_ID_INTEGRACAO_ERP", title = "MOV ID INTEGRACAO ERP" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "MOV_ID_DESTINO", title = "MOV ID DESTINO" },
+                    new { name = "PRO_ID_DESTINO", title = "PRO ID DESTINO" },
+                    new { name = "MOV_LOTE_DESTINO", title = "MOV LOTE DESTINO" },
+                    new { name = "MOV_SUB_LOTE_DESTINO", title = "MOV SUB LOTE DESTINO" },
+                    new { name = "MOV_ID_ORIGEM", title = "MOV ID ORIGEM" },
+                    new { name = "PRO_ID_ORIGEM", title = "PRO ID ORIGEM" },
+                    new { name = "MOV_LOTE_ORIGEM", title = "MOV LOTE ORIGEM" },
+                    new { name = "MOV_SUB_LOTE_ORIGEM", title = "MOV SUB LOTE ORIGEM" },
+                    new { name = "MOV_TYPE", title = "MOV TYPE" },
+                    new { name = "MOV_DOC", title = "MOV DOC" },
+                    new { name = "MOV_APROVEITAMENTO", title = "MOV APROVEITAMENTO" },
+                    new { name = "MOV_RETIDO", title = "MOV RETIDO" },
+                    new { name = "MOV_VINCOS_ONDULADEIRA", title = "MOV VINCOS ONDULADEIRA" },
+                    new { name = "BOL_ID", title = "BOL ID" },
+                    new { name = "ORD_ID_ORIGEM", title = "ORD ID ORIGEM" },
+                    new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "VER_ID", title = "VER ID" },
+                    new { name = "MOV_TIPO_CUSTO", title = "MOV TIPO CUSTO" },
+                    new { name = "MOV_GRUPO_CONTABIL", title = "MOV GRUPO CONTABIL" },
+                    new { name = "FOR_ID", title = "FOR ID" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Movimentos",
+                title = "Movimentos",
+                fields = new[]
+                {
+                    new { name = "MOV_ID", title = "MOV ID" },
+                    new { name = "MOV_DATA", title = "MOV DATA" },
+                    new { name = "MOV_VALOR", title = "MOV VALOR" },
+                    new { name = "MOV_PLAID", title = "MOV PLAID" },
+                    new { name = "MOV_UNID", title = "MOV UNID" },
+                    new { name = "Tr_Unidade_UNI_ID", title = "Tr Unidade UNI ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Municipio",
+                title = "Municipio",
+                fields = new[]
+                {
+                    new { name = "MUN_ID", title = "MUN ID" },
+                    new { name = "MUN_NOME", title = "MUN NOME" },
+                    new { name = "UF_COD", title = "UF COD" },
+                    new { name = "MUN_CODIGO_IBGE", title = "MUN CODIGO IBGE" },
+                    new { name = "MUN_LATITUDE", title = "MUN LATITUDE" },
+                    new { name = "MUN_LONGITUDE", title = "MUN LONGITUDE" },
+                    new { name = "MUN_ID_INTEGRACAO_ERP", title = "MUN ID INTEGRACAO ERP" },
+                    new { name = "MUN_CODIGO_SIAFI", title = "MUN CODIGO SIAFI" },
+                    new { name = "MUN_CODIGO_CNPJ", title = "MUN CODIGO CNPJ" },
+                    new { name = "MUN_DISTANCIA_KM", title = "MUN DISTANCIA KM" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ObjetoControlavel",
+                title = "ObjetoControlavel",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "OBJ_ID", title = "OBJ ID" },
+                    new { name = "OBJ_DESCRICAO", title = "OBJ DESCRICAO" },
+                    new { name = "OBJ_TIPO", title = "OBJ TIPO" },
+                    new { name = "OBJ_GRUPO", title = "OBJ GRUPO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Observacoes",
+                title = "Observacoes",
+                fields = new[]
+                {
+                    new { name = "OBS_ID", title = "OBS ID" },
+                    new { name = "OBS_TIPO", title = "OBS TIPO" },
+                    new { name = "OBS_DESCRICAO", title = "OBS DESCRICAO" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "OBS_INTEGRACAO", title = "OBS INTEGRACAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Ocorrencia",
+                title = "Ocorrencia",
+                fields = new[]
+                {
+                    new { name = "OCO_ID", title = "OCO ID" },
+                    new { name = "OCO_DESCRICAO", title = "OCO DESCRICAO" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "GMA_ID", title = "GMA ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "SPR", title = "SPR" },
+                    new { name = "OCO_SUB_TIPO", title = "OCO SUB TIPO" },
+                    new { name = "SUB_ID", title = "SUB ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Onda",
+                title = "Onda",
+                fields = new[]
+                {
+                    new { name = "OND_ID", title = "OND ID" },
+                    new { name = "OND_ESPESSURA", title = "OND ESPESSURA" },
+                    new { name = "OND_PESO_COLA", title = "OND PESO COLA" },
+                    new { name = "OND_RENDIMENTO_ONDA_1", title = "OND RENDIMENTO ONDA 1" },
+                    new { name = "OND_RENDIMENTO_ONDA_2", title = "OND RENDIMENTO ONDA 2" },
+                    new { name = "OND_PROFUNDIDADE_VINCO", title = "OND PROFUNDIDADE VINCO" },
+                    new { name = "OND_ID_INTEGRACAO", title = "OND ID INTEGRACAO" },
+                    new { name = "VIN_ID", title = "VIN ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "OpcaoPlanejamentoTransporte",
+                title = "Opcao Planejamento Transporte",
+                fields = new[]
+                {
+                    new { name = "OpcaoId", title = "Opcao" },
+                    new { name = "GrupoDecisaoId", title = "Grupo Decisao" },
+                    new { name = "Peso", title = "Peso" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "CustoEstimado", title = "Custo Estimado" },
+                    new { name = "AderenciaCubagem", title = "Aderencia Cubagem" },
+                    new { name = "AderenciaJanelaEntrega", title = "Aderencia Janela Entrega" },
+                    new { name = "RiscoResumo", title = "Risco" },
+                    new { name = "PedidosResumo", title = "Pedidos" },
+                    new { name = "OpcoesConflitantesResumo", title = "Opcoes Conflitantes" },
+                }
+            },
+            new
+            {
+                name = "Operacoes",
+                title = "Operacoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "OPE_TIPO_REGISTRO", title = "OPE TIPO REGISTRO" },
+                    new { name = "OPE_ID", title = "OPE ID" },
+                    new { name = "GMA_ID", title = "GMA ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "OPE_EXCECAO", title = "OPE EXCECAO" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "OptAlteracaoDimencoes",
+                title = "OptAlteracaoDimencoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "OAD_ID", title = "OAD ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Orcamento",
+                title = "Orcamento",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ORC_ID", title = "ORC ID" },
+                    new { name = "REP_ID", title = "REP ID" },
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "ORC_TIPO_FRETE", title = "ORC TIPO FRETE" },
+                    new { name = "ORC_EMISSAO", title = "ORC EMISSAO" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "VER_ID", title = "VER ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Order",
+                title = "Order",
+                fields = new[]
+                {
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "ORD_ID_RESERVA", title = "ORD ID RESERVA" },
+                    new { name = "ORD_ID_CONJUNTO", title = "ORD ID CONJUNTO" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "PRO_ID_CONJUNTO", title = "PRO ID CONJUNTO" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "ORD_PRECO_UNITARIO", title = "ORD PRECO UNITARIO" },
+                    new { name = "ORD_QUANTIDADE", title = "ORD QUANTIDADE" },
+                    new { name = "ORD_DATA_ENTREGA_DE", title = "ORD DATA ENTREGA DE" },
+                    new { name = "ORD_DATA_ENTREGA_ATE", title = "ORD DATA ENTREGA ATE" },
+                    new { name = "ORD_TIPO", title = "ORD TIPO" },
+                    new { name = "ORD_TOLERANCIA_MAIS", title = "ORD TOLERANCIA MAIS" },
+                    new { name = "ORD_TOLERANCIA_MENOS", title = "ORD TOLERANCIA MENOS" },
+                    new { name = "HASH_KEY", title = "HASH KEY" },
+                    new { name = "ORD_INICIO_JANELA_EMBARQUE", title = "ORD INICIO JANELA EMBARQUE" },
+                    new { name = "ORD_FIM_JANELA_EMBARQUE", title = "ORD FIM JANELA EMBARQUE" },
+                    new { name = "ORD_EMBARQUE_ALVO", title = "ORD EMBARQUE ALVO" },
+                    new { name = "ORD_INICIO_GRUPO_PRODUTIVO", title = "ORD INICIO GRUPO PRODUTIVO" },
+                    new { name = "ORD_FIM_GRUPO_PRODUTIVO", title = "ORD FIM GRUPO PRODUTIVO" },
+                    new { name = "ORD_PESO_UNITARIO", title = "ORD PESO UNITARIO" },
+                    new { name = "ORD_PESO_UNITARIO_BRUTO", title = "ORD PESO UNITARIO BRUTO" },
+                    new { name = "ORD_M2_UNITARIO", title = "ORD M2 UNITARIO" },
+                    new { name = "ORD_MIT", title = "ORD MIT" },
+                    new { name = "CAR_TIPO_CARREGAMENTO", title = "CAR TIPO CARREGAMENTO" },
+                    new { name = "ORD_STATUS", title = "ORD STATUS" },
+                    new { name = "ORD_TIPO_FRETE", title = "ORD TIPO FRETE" },
+                    new { name = "ORD_ENDERECO_ENTREGA", title = "ORD ENDERECO ENTREGA" },
+                    new { name = "ORD_BAIRRO_ENTREGA", title = "ORD BAIRRO ENTREGA" },
+                    new { name = "UF_ID_ENTREGA", title = "UF ID ENTREGA" },
+                    new { name = "ORD_CEP_ENTREGA", title = "ORD CEP ENTREGA" },
+                    new { name = "MUN_ID_ENTREGA", title = "MUN ID ENTREGA" },
+                    new { name = "ORD_REGIAO_ENTREGA", title = "ORD REGIAO ENTREGA" },
+                    new { name = "ORD_LARGURA", title = "ORD LARGURA" },
+                    new { name = "ORD_COMPRIMENTO", title = "ORD COMPRIMENTO" },
+                    new { name = "ORD_GRAMATURA", title = "ORD GRAMATURA" },
+                    new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "ORD_ID_INTEGRACAO", title = "ORD ID INTEGRACAO" },
+                    new { name = "ORD_OBSERVACAO_OTIMIZADOR", title = "ORD OBSERVACAO OTIMIZADOR" },
+                    new { name = "ORD_COR_FILA", title = "ORD COR FILA" },
+                    new { name = "ORD_PED_CLI", title = "ORD PED CLI" },
+                    new { name = "ORD_OP_INTEGRACAO", title = "ORD OP INTEGRACAO" },
+                    new { name = "ORD_LOTE_PILOTO", title = "ORD LOTE PILOTO" },
+                    new { name = "ORD_PRIORIDADE", title = "ORD PRIORIDADE" },
+                    new { name = "ORD_EMISSAO", title = "ORD EMISSAO" },
+                    new { name = "REP_ID", title = "REP ID" },
+                    new { name = "ORD_RESINA", title = "ORD RESINA" },
+                    new { name = "ORD_ENDURECEDOR_MIOLO", title = "ORD ENDURECEDOR MIOLO" },
+                    new { name = "PRO_ID_INTEGRACAO_ERP", title = "PRO ID INTEGRACAO ERP" },
+                    new { name = "ORD_VINCOS_ONDULADEIRA", title = "ORD VINCOS ONDULADEIRA" },
+                    new { name = "ORD_ERP_CUSTOS_FIXOS", title = "ORD ERP CUSTOS FIXOS" },
+                    new { name = "ORD_ERP_CUSTOS_VARIAVEIS", title = "ORD ERP CUSTOS VARIAVEIS" },
+                    new { name = "ORD_ERP_DESPESAS_VAR_VENDA", title = "ORD ERP DESPESAS VAR VENDA" },
+                    new { name = "ORD_ERP_IMPOSTOS", title = "ORD ERP IMPOSTOS" },
+                    new { name = "ORD_STATUS_PLANEJAMENTO", title = "ORD STATUS PLANEJAMENTO" },
+                    new { name = "ORD_TOLERANCIA_DIMENSAO_CHAPA_DE", title = "ORD TOLERANCIA DIMENSAO CHAPA DE" },
+                    new { name = "ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE", title = "ORD TOLERANCIA DIMENSAO CHAPA ATE" },
+                    new { name = "ORD_PROMOVE_DE", title = "ORD PROMOVE DE" },
+                    new { name = "ORD_PROMOVE_ATE", title = "ORD PROMOVE ATE" },
+                    new { name = "ORD_TRAVA_COMPOSICAO", title = "ORD TRAVA COMPOSICAO" },
+                    new { name = "ORD_TRAVA_RESINA", title = "ORD TRAVA RESINA" },
+                    new { name = "ORD_PROMOVE_RESINA", title = "ORD PROMOVE RESINA" },
+                    new { name = "ORD_LATITUDE_ENTREGA", title = "ORD LATITUDE ENTREGA" },
+                    new { name = "ORD_LONGITUDE_ENTREGA", title = "ORD LONGITUDE ENTREGA" },
+                    new { name = "OCO_ID_CANCELAMENTO", title = "OCO ID CANCELAMENTO" },
+                }
+            },
+            new
+            {
+                name = "OrderTrack",
+                title = "OrderTrack",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "OTK_ID", title = "OTK ID" },
+                    new { name = "OTK_SEQUENCIA", title = "OTK SEQUENCIA" },
+                    new { name = "OTK_VERSSAO", title = "OTK VERSSAO" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "OTK_EVENTO", title = "OTK EVENTO" },
+                    new { name = "OTK_DATA_NECESSIDADE_DE", title = "OTK DATA NECESSIDADE DE" },
+                    new { name = "OTK_DATA_NECESSIDADE_ATE", title = "OTK DATA NECESSIDADE ATE" },
+                    new { name = "OTK_DATA_PREVISTA", title = "OTK DATA PREVISTA" },
+                    new { name = "OTK_DATA_REALIZADA", title = "OTK DATA REALIZADA" },
+                    new { name = "FPR_ID", title = "FPR ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Param",
+                title = "Param",
+                fields = new[]
+                {
+                    new { name = "PAR_ID", title = "PAR ID" },
+                    new { name = "PAR_DESCRICAO", title = "PAR DESCRICAO" },
+                    new { name = "PAR_VALOR_S", title = "PAR VALOR S" },
+                    new { name = "PAR_VALOR_N", title = "PAR VALOR N" },
+                    new { name = "PAR_VALOR_D", title = "PAR VALOR D" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ParametrosDeCusto",
+                title = "ParametrosDeCusto",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PAR_ID", title = "PAR ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "CUS_ID", title = "CUS ID" },
+                    new { name = "PAR_VALOR", title = "PAR VALOR" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PedidoPlanejavel",
+                title = "Pedido Planejavel",
+                fields = new[]
+                {
+                    new { name = "PedidoId", title = "Pedido" },
+                    new { name = "ClienteId", title = "Cliente" },
+                    new { name = "ClienteNome", title = "Nome do Cliente" },
+                    new { name = "Estado", title = "Estado" },
+                    new { name = "Municipio", title = "Municipio" },
+                    new { name = "Regiao", title = "Regiao" },
+                    new { name = "Bairro", title = "Bairro" },
+                    new { name = "RotaId", title = "Rota" },
+                    new { name = "EmbarqueAlvo", title = "Embarque Alvo" },
+                    new { name = "DataEntregaDe", title = "Entrega De" },
+                    new { name = "DataEntregaAte", title = "Entrega Ate" },
+                    new { name = "Peso", title = "Peso" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "SaldoAExpedir", title = "Saldo A Expedir" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "CargaAtualId", title = "Carga Atual" },
+                    new { name = "VersaoPlanejamento", title = "Versao Planejamento" },
+                    new { name = "AlertasResumo", title = "Alertas" },
+                }
+            },
+            new
+            {
+                name = "PendenciasInterface",
+                title = "PendenciasInterface",
+                fields = new[]
+                {
+                    new { name = "PEN_STATUS_OUT", title = "PEN STATUS OUT" },
+                    new { name = "PEN_PROTOCOLO_OUT", title = "PEN PROTOCOLO OUT" },
+                    new { name = "PEN_ID_PROTOCOLO_OUT", title = "PEN ID PROTOCOLO OUT" },
+                    new { name = "PEN_STATUS_IN", title = "PEN STATUS IN" },
+                    new { name = "PEN_PROTOCOLO_IN", title = "PEN PROTOCOLO IN" },
+                    new { name = "PEN_ID_PROTOCOLO_IN", title = "PEN ID PROTOCOLO IN" },
+                    new { name = "DATA_ENTRADA", title = "DATA ENTRADA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "PEN_ID", title = "PEN ID" },
+                }
+            },
+            new
+            {
+                name = "Perfil",
+                title = "Perfil",
+                fields = new[]
+                {
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "PER_NOME", title = "PER NOME" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PerfilObjetoControlavel",
+                title = "PerfilObjetoControlavel",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "OBJ_ID", title = "OBJ ID" },
+                    new { name = "PEO_ACAO", title = "PEO ACAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PeriodicidadeTeste",
+                title = "PeriodicidadeTeste",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "PER_QTD", title = "PER QTD" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Planoacao",
+                title = "Planoacao",
+                fields = new[]
+                {
+                    new { name = "PLA_ID", title = "PLA ID" },
+                    new { name = "PLA_DESCRICAO", title = "PLA DESCRICAO" },
+                    new { name = "MET_ID", title = "MET ID" },
+                    new { name = "PLA_STATUS", title = "PLA STATUS" },
+                    new { name = "PLA_DATA", title = "PLA DATA" },
+                    new { name = "PLA_METAPERIODO", title = "PLA METAPERIODO" },
+                    new { name = "PLA_VLRPERIODO", title = "PLA VLRPERIODO" },
+                    new { name = "PLA_METACULADO", title = "PLA METACULADO" },
+                    new { name = "PLA_VLRACUMULADO", title = "PLA VLRACUMULADO" },
+                    new { name = "PLA_REFERENCIA", title = "PLA REFERENCIA" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PlanoAmostralTeste",
+                title = "PlanoAmostralTeste",
+                fields = new[]
+                {
+                    new { name = "GRP_TIPO", title = "GRP TIPO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "PAT_ID", title = "PAT ID" },
+                    new { name = "PAT_QTD_CAIXAS_DE", title = "PAT QTD CAIXAS DE" },
+                    new { name = "PAT_QTD_CAIXAS_ATE", title = "PAT QTD CAIXAS ATE" },
+                    new { name = "PAT_N_AMOSTRAGEM", title = "PAT N AMOSTRAGEM" },
+                    new { name = "PAT_PERCENT_ESPECIF", title = "PAT PERCENT ESPECIF" },
+                }
+            },
+            new
+            {
+                name = "Planocontas",
+                title = "Planocontas",
+                fields = new[]
+                {
+                    new { name = "PLA_ID", title = "PLA ID" },
+                    new { name = "PLA_CODIGO", title = "PLA CODIGO" },
+                    new { name = "PLA_DESCRICAO", title = "PLA DESCRICAO" },
+                    new { name = "PLA_TIPO", title = "PLA TIPO" },
+                    new { name = "PLA_NATUREZA", title = "PLA NATUREZA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Plotagem",
+                title = "Plotagem",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PLO_ID", title = "PLO ID" },
+                    new { name = "PLO_NOME", title = "PLO NOME" },
+                    new { name = "PLO_DIMENSAO", title = "PLO DIMENSAO" },
+                    new { name = "PLO_X", title = "PLO X" },
+                    new { name = "PLO_Y", title = "PLO Y" },
+                    new { name = "PLO_Z", title = "PLO Z" },
+                    new { name = "PLO_GRAFICO", title = "PLO GRAFICO" },
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PoliticaOnduladeira",
+                title = "PoliticaOnduladeira",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "POL_ID", title = "POL ID" },
+                    new { name = "POL_NIVEL", title = "POL NIVEL" },
+                    new { name = "POL_PROMOCAO", title = "POL PROMOCAO" },
+                    new { name = "POL_DIAS_ANTECIPACAO", title = "POL DIAS ANTECIPACAO" },
+                    new { name = "POL_METROS_LINEARES", title = "POL METROS LINEARES" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PontosMapa",
+                title = "PontosMapa",
+                fields = new[]
+                {
+                    new { name = "PON_ID", title = "PON ID" },
+                    new { name = "PON_DESCRICAO", title = "PON DESCRICAO" },
+                    new { name = "PON_TIPO", title = "PON TIPO" },
+                    new { name = "PON_LATITUDE", title = "PON LATITUDE" },
+                    new { name = "PON_LONGITUDE", title = "PON LONGITUDE" },
+                    new { name = "PON_DISTANCIA_KM", title = "PON DISTANCIA KM" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "MUN_ID", title = "Municipio" },
+                }
+            },
+            new
+            {
+                name = "Produto",
+                title = "Produto",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Codigo do Produto" },
+                    new { name = "Descricao", title = "Descricao do Produto" },
+                    new { name = "Status", title = "Status do Produto" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "PRO_ESTOQUE_ATUAL", title = "PRO ESTOQUE ATUAL" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "PRO_FARDOS_POR_CAMADA", title = "PRO FARDOS POR CAMADA" },
+                    new { name = "PRO_CAMADAS_POR_PALETE", title = "PRO CAMADAS POR PALETE" },
+                    new { name = "PRO_TIPO_IDENTIFICACAO", title = "PRO TIPO IDENTIFICACAO" },
+                    new { name = "PRO_GRUPO_PALETIZACAO", title = "PRO GRUPO PALETIZACAO" },
+                    new { name = "PRO_PECAS_POR_FARDO", title = "PRO PECAS POR FARDO" },
+                    new { name = "PRO_ID_INTEGRACAO", title = "PRO ID INTEGRACAO" },
+                    new { name = "PRO_ID_INTEGRACAO_ERP", title = "PRO ID INTEGRACAO ERP" },
+                    new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "PRO_LARGURA_PECA", title = "PRO LARGURA PECA" },
+                    new { name = "PRO_COMPRIMENTO_PECA", title = "PRO COMPRIMENTO PECA" },
+                    new { name = "PRO_ALTURA_PECA", title = "PRO ALTURA PECA" },
+                    new { name = "PRO_LARGURA_EMBALADA", title = "PRO LARGURA EMBALADA" },
+                    new { name = "PRO_COMPRIMENTO_EMBALADA", title = "PRO COMPRIMENTO EMBALADA" },
+                    new { name = "PRO_ALTURA_EMBALADA", title = "PRO ALTURA EMBALADA" },
+                    new { name = "PRO_FRENTE", title = "PRO FRENTE" },
+                    new { name = "PRO_ROTACIONA_COMPRIMENTO", title = "PRO ROTACIONA COMPRIMENTO" },
+                    new { name = "PRO_ROTACIONA_LARGURA", title = "PRO ROTACIONA LARGURA" },
+                    new { name = "PRO_ROTACIONA_ALTURA", title = "PRO ROTACIONA ALTURA" },
+                    new { name = "PRO_ESCALA_COR", title = "PRO ESCALA COR" },
+                    new { name = "PRO_SUB_ESCALA_COR", title = "PRO SUB ESCALA COR" },
+                    new { name = "PRO_CUSTO_SUBIDA_ESCALA_COR", title = "PRO CUSTO SUBIDA ESCALA COR" },
+                    new { name = "PRO_CUSTO_DECIDA_ESCALA_COR", title = "PRO CUSTO DECIDA ESCALA COR" },
+                    new { name = "TMP_TIPO_CARGA", title = "TMP TIPO CARGA" },
+                    new { name = "PRO_TEMPO_CARREGAMENTO_UNITARIO", title = "PRO TEMPO CARREGAMENTO UNITARIO" },
+                    new { name = "PRO_TEMPO_DESCARREGAMENTO_UNITARIO", title = "PRO TEMPO DESCARREGAMENTO UNITARIO" },
+                    new { name = "PRO_PERCENTUAL_JANELA_EMBARQUE", title = "PRO PERCENTUAL JANELA EMBARQUE" },
+                    new { name = "PRO_TEMPO_PRODUCAO_CONJUNTO", title = "PRO TEMPO PRODUCAO CONJUNTO" },
+                    new { name = "PRO_PECAS_DA_PECA", title = "PRO PECAS DA PECA" },
+                    new { name = "PRO_TYPE", title = "PRO TYPE" },
+                    new { name = "PRO_COLOR_HEXA", title = "PRO COLOR HEXA" },
+                    new { name = "PRO_VINCOS_LARGURA", title = "PRO VINCOS LARGURA" },
+                    new { name = "PRO_VINCOS_COMPRIMENTO", title = "PRO VINCOS COMPRIMENTO" },
+                    new { name = "PRO_LARGURA_INTERNA", title = "PRO LARGURA INTERNA" },
+                    new { name = "PRO_COMPRIMENTO_INTERNA", title = "PRO COMPRIMENTO INTERNA" },
+                    new { name = "PRO_ALTURA_INTERNA", title = "PRO ALTURA INTERNA" },
+                    new { name = "PRO_COD_DESENHO", title = "PRO COD DESENHO" },
+                    new { name = "PRO_FECHAMENTO", title = "PRO FECHAMENTO" },
+                    new { name = "PRO_TIPO_LAP", title = "PRO TIPO LAP" },
+                    new { name = "PRO_TAMANHO_LAP", title = "PRO TAMANHO LAP" },
+                    new { name = "PRO_LAP_PROLONGADO", title = "PRO LAP PROLONGADO" },
+                    new { name = "PRO_TAMANHO_LAP_PROLONG", title = "PRO TAMANHO LAP PROLONG" },
+                    new { name = "PRO_ARRANJO_LARGURA", title = "PRO ARRANJO LARGURA" },
+                    new { name = "PRO_ARRANJO_COMPRIMENTO", title = "PRO ARRANJO COMPRIMENTO" },
+                    new { name = "PRO_FITILHOS_FARDO_LARG", title = "PRO FITILHOS FARDO LARG" },
+                    new { name = "PRO_FITILHOS_FARDO_COMP", title = "PRO FITILHOS FARDO COMP" },
+                    new { name = "PRO_FITILHOS_PALETE_LARG", title = "PRO FITILHOS PALETE LARG" },
+                    new { name = "PRO_FITILHOS_PALETE_COMP", title = "PRO FITILHOS PALETE COMP" },
+                    new { name = "PRO_FILME_PALETE", title = "PRO FILME PALETE" },
+                    new { name = "PRO_QTD_ESPELHO", title = "PRO QTD ESPELHO" },
+                    new { name = "PRO_CUSTO", title = "PRO CUSTO" },
+                    new { name = "PRO_AREA_LIQUIDA", title = "PRO AREA LIQUIDA" },
+                    new { name = "PRO_PESO", title = "PRO PESO" },
+                    new { name = "PRO_TOLERANCIA_DIMENSAO_CHAPA_DE", title = "PRO TOLERANCIA DIMENSAO CHAPA DE" },
+                    new { name = "PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE", title = "PRO TOLERANCIA DIMENSAO CHAPA ATE" },
+                }
+            },
+            new
+            {
+                name = "ProtocoloOnduladeira",
+                title = "ProtocoloOnduladeira",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PTO_ID", title = "PTO ID" },
+                    new { name = "PTO_CHAVE", title = "PTO CHAVE" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "PTO_COMANDO", title = "PTO COMANDO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Recursos",
+                title = "Recursos",
+                fields = new[]
+                {
+                    new { name = "REC_ID", title = "REC ID" },
+                    new { name = "REC_DESCRICAO", title = "REC DESCRICAO" },
+                    new { name = "CAL_ID", title = "CAL ID" },
+                    new { name = "REC_CONTROL_IP", title = "REC CONTROL IP" },
+                    new { name = "GRE_ID", title = "GRE ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "RegistrosOnduladeira",
+                title = "RegistrosOnduladeira",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "REG_ID", title = "REG ID" },
+                    new { name = "REG_RESPOSTA", title = "REG RESPOSTA" },
+                    new { name = "REG_STATUS", title = "REG STATUS" },
+                    new { name = "REG_DATA_INICIO", title = "REG DATA INICIO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Relatorios",
+                title = "Relatorios",
+                fields = new[]
+                {
+                    new { name = "REL_ID", title = "REL ID" },
+                    new { name = "REL_NOME_RELATORIO", title = "REL NOME RELATORIO" },
+                    new { name = "REL_NOME_CAMPO", title = "REL NOME CAMPO" },
+                    new { name = "REL_TIPO_CAMPO", title = "REL TIPO CAMPO" },
+                    new { name = "REL_POS_X", title = "REL POS X" },
+                    new { name = "REL_POS_Y", title = "REL POS Y" },
+                    new { name = "REL_TAMANHO_FONTE", title = "REL TAMANHO FONTE" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Representantes",
+                title = "Representantes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "REP_ID", title = "REP ID" },
+                    new { name = "REP_NOME", title = "REP NOME" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "RespInspVisual",
+                title = "RespInspVisual",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "RIV_ID", title = "RIV ID" },
+                    new { name = "IPV_ID", title = "IPV ID" },
+                    new { name = "ITI_ID", title = "ITI ID" },
+                    new { name = "RIV_STATUS", title = "RIV STATUS" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "RestricoesDeRodagem",
+                title = "RestricoesDeRodagem",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "RES_ID", title = "RES ID" },
+                    new { name = "RES_TIPO", title = "RES TIPO" },
+                    new { name = "RES_HORA_INI", title = "RES HORA INI" },
+                    new { name = "RES_HORA_FIM", title = "RES HORA FIM" },
+                    new { name = "RES_VELOCIDADE_HORA_RUSH", title = "RES VELOCIDADE HORA RUSH" },
+                    new { name = "TVE_ID", title = "TVE ID" },
+                    new { name = "MAP_ID", title = "MAP ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ResultLote",
+                title = "ResultLote",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ResultMedida",
+                title = "ResultMedida",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "RSM_ID", title = "RSM ID" },
+                    new { name = "RL_ID", title = "RL ID" },
+                    new { name = "MDT_ID", title = "MDT ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Rodovias",
+                title = "Rodovias",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ROD_ID", title = "ROD ID" },
+                    new { name = "ROD_DESCRICAO", title = "ROD DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "RotaPontosMapa",
+                title = "RotaPontosMapa",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ROT_ID", title = "ROT ID" },
+                    new { name = "PON_ID_DESTINO", title = "PON ID DESTINO" },
+                    new { name = "PON_ID_ORIGEM", title = "PON ID ORIGEM" },
+                    new { name = "ROT_CUSTO_TOTAL", title = "ROT CUSTO TOTAL" },
+                    new { name = "PON_ID_ROTEIRO", title = "PON ID ROTEIRO" },
+                    new { name = "ROT_ORDEM_ROTEIRO", title = "ROT ORDEM ROTEIRO" },
+                    new { name = "ROT_TIPO", title = "ROT TIPO" },
+                    new { name = "ROT_DISTANCIA", title = "ROT DISTANCIA" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "RotaRealizada",
+                title = "RotaRealizada",
+                fields = new[]
+                {
+                    new { name = "ROT_ID", title = "ROT ID" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "ROT_DATA_HORA", title = "ROT DATA HORA" },
+                    new { name = "ROT_LAT", title = "ROT LAT" },
+                    new { name = "ROT_LONG", title = "ROT LONG" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Roteiro",
+                title = "Roteiro",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MaquinaId", title = "Codigo da Maquina" },
+                    new { name = "ProdutoId", title = "Codigo do Produto" },
+                    new { name = "SequenciaTransformacao", title = "Sequencia de Transformacao" },
+                    new { name = "GrupoMaquinaId", title = "Grupo de Maquinas" },
+                    new { name = "PecasPorPulso", title = "Quantidade de Pecas por Pulso" },
+                    new { name = "PrioridadeInformada", title = "Grau de Prioridade" },
+                    new { name = "Acao", title = "Maquina Excecao" },
+                    new { name = "Performance", title = "Performance Pulsos por Segundo" },
+                    new { name = "TempoSetup", title = "Setup em Segundos" },
+                    new { name = "TempoSetupAjuste", title = "Tempo Setup Ajuste em Segundos" },
+                    new { name = "ProximaSequenciaTransformacao", title = "Proxima Sequencia de Transformacao" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "HierarquiaSequenciaTransformacao", title = "Hierarquia Calculo" },
+                    new { name = "AvaliaCusto", title = "Avalia Custo" },
+                    new { name = "Operacoes", title = "Operacoes" },
+                    new { name = "ExcecaoOperacoes", title = "Excecao Operacoes" },
+                    new { name = "PercentualInicioPassoAnterior", title = "Percentual Inicio Passo Anterior" },
+                    new { name = "LinhaDireta", title = "Linha Direta" },
+                    new { name = "TemplateDeTestesId", title = "Template de Testes" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "RoteiroPedido",
+                title = "Roteiro do Pedido",
+                fields = new[]
+                {
+                    new { name = "PedidoId", title = "Pedido" },
+                    new { name = "MaquinaId", title = "Maquina" },
+                    new { name = "ProdutoId", title = "Produto" },
+                    new { name = "SequenciaTransformacao", title = "Sequencia de Transformacao" },
+                    new { name = "StatusCadastro", title = "Status do Cadastro" },
+                    new { name = "TipoPlanejamento", title = "Tipo de Planejamento" },
+                    new { name = "CalendarioId", title = "Calendario" },
+                    new { name = "HierarquiaSequenciaTransformacao", title = "Hierarquia Calculo" },
+                    new { name = "ProximaSequenciaTransformacao", title = "Proxima Sequencia" },
+                    new { name = "Performance", title = "Performance" },
+                    new { name = "TempoSetup", title = "Tempo Setup" },
+                    new { name = "TempoSetupAjuste", title = "Tempo Setup Ajuste" },
+                    new { name = "PecasPorPulso", title = "Pecas por Pulso" },
+                    new { name = "PrioridadeInformada", title = "Prioridade Informada" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "Operacoes", title = "Operacoes" },
+                    new { name = "ExcecaoOperacoes", title = "Excecao Operacoes" },
+                    new { name = "LinhaDireta", title = "Linha Direta" },
+                    new { name = "AvaliaCusto", title = "Avalia Custo" },
+                    new { name = "PercentualInicioPassoAnterior", title = "Percentual Inicio Passo Anterior" },
+                    new { name = "MaquinaLarguraUtil", title = "Largura Util da Maquina" },
+                    new { name = "GrupoTipo", title = "Tipo do Grupo" },
+                    new { name = "GrupoPerformanceMetroLinear", title = "Performance Metro Linear" },
+                }
+            },
+            new
+            {
+                name = "Segmento",
+                title = "Segmento",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "SEG_ID", title = "SEG ID" },
+                    new { name = "SEG_DESCRICAO", title = "SEG DESCRICAO" },
+                    new { name = "SEG_ID_SEGUIMENTO_PAI", title = "SEG ID SEGUIMENTO PAI" },
+                    new { name = "GRS_ID", title = "GRS ID" },
+                    new { name = "SEG_INTEGRACAO_ERP", title = "SEG INTEGRACAO ERP" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "SegmentosProdutos",
+                title = "SegmentosProdutos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "GRS_ID", title = "GRS ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "SEG_ID", title = "SEG ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Semaforo",
+                title = "Semaforo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "SEM_ID", title = "SEM ID" },
+                    new { name = "SEM_STATUS", title = "SEM STATUS" },
+                    new { name = "SEM_ORIGEM", title = "SEM ORIGEM" },
+                    new { name = "SEM_EMISSAO", title = "SEM EMISSAO" },
+                    new { name = "SEM_ID_CONEXAO", title = "SEM ID CONEXAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "SubOcorrencia",
+                title = "SubOcorrencia",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "SUB_ID", title = "SUB ID" },
+                    new { name = "SUB_DESCRICAO", title = "SUB DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_AGENDA_SCHEDULE",
+                title = "T_AGENDA_SCHEDULE",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "AGE_ID", title = "AGE ID" },
+                    new { name = "AGE_DATA_ESPECIFICA", title = "AGE DATA ESPECIFICA" },
+                    new { name = "AGE_HORARIO_INICIO", title = "AGE HORARIO INICIO" },
+                    new { name = "AGE_HORARIO_FIM", title = "AGE HORARIO FIM" },
+                    new { name = "AGE_SEGUNDA", title = "AGE SEGUNDA" },
+                    new { name = "AGE_TERCA", title = "AGE TERCA" },
+                    new { name = "AGE_QUARTA", title = "AGE QUARTA" },
+                    new { name = "AGE_QUINTA", title = "AGE QUINTA" },
+                    new { name = "AGE_SEXTA", title = "AGE SEXTA" },
+                    new { name = "AGE_SABADO", title = "AGE SABADO" },
+                    new { name = "AGE_DOMINGO", title = "AGE DOMINGO" },
+                    new { name = "AGE_INTERVALO", title = "AGE INTERVALO" },
+                    new { name = "AGE_ORDEM_EXECUCAO", title = "AGE ORDEM EXECUCAO" },
+                    new { name = "AGE_PARAMETROS", title = "AGE PARAMETROS" },
+                    new { name = "AGE_EXCECAO", title = "AGE EXCECAO" },
+                    new { name = "AGE_DESCRICAO", title = "AGE DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Departamentos",
+                title = "T_Departamentos",
+                fields = new[]
+                {
+                    new { name = "DEP_ID", title = "DEP ID" },
+                    new { name = "DEP_NOME", title = "DEP NOME" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Favoritos",
+                title = "T_Favoritos",
+                fields = new[]
+                {
+                    new { name = "IDFAVORITO", title = "IDFAVORITO" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "ID_INDICADOR", title = "ID INDICADOR" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_FeedbackMovEstoque",
+                title = "T_FeedbackMovEstoque",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "FeedbackId", title = "FeedbackId" },
+                    new { name = "MovimentoEstoqueId", title = "MovimentoEstoqueId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Grupo",
+                title = "T_Grupo",
+                fields = new[]
+                {
+                    new { name = "GRU_ID", title = "GRU ID" },
+                    new { name = "NOME", title = "NOME" },
+                    new { name = "EXIBELISTA", title = "EXIBELISTA" },
+                    new { name = "GRU_DESCRICAO", title = "GRU DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_HORARIO_RECEBIMENTO",
+                title = "T_HORARIO_RECEBIMENTO",
+                fields = new[]
+                {
+                    new { name = "HRE_DIA_DA_SEMANA", title = "HRE DIA DA SEMANA" },
+                    new { name = "HRE_HORA_INICIAL", title = "HRE HORA INICIAL" },
+                    new { name = "HRE_HORA_FINAL", title = "HRE HORA FINAL" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "HRE_ID", title = "HRE ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Indicadores",
+                title = "T_Indicadores",
+                fields = new[]
+                {
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "IND_DESCRICAO", title = "IND DESCRICAO" },
+                    new { name = "NEG_ID", title = "NEG ID" },
+                    new { name = "DESC_CALCULO", title = "DESC CALCULO" },
+                    new { name = "IND_TIPOCOMPARADOR", title = "IND TIPOCOMPARADOR" },
+                    new { name = "IND_GRAFICO", title = "IND GRAFICO" },
+                    new { name = "IND_CONEXAO", title = "IND CONEXAO" },
+                    new { name = "IND_DTCRIACAO", title = "IND DTCRIACAO" },
+                    new { name = "RESPOSAVELIND", title = "RESPOSAVELIND" },
+                    new { name = "RESPOSAVELCARGA", title = "RESPOSAVELCARGA" },
+                    new { name = "PROCEXTRACAO", title = "PROCEXTRACAO" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "DIM_ID", title = "DIM ID" },
+                    new { name = "DOM_EMPRESA", title = "DOM EMPRESA" },
+                    new { name = "DOM_FILIAL", title = "DOM FILIAL" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_MAQUINAS_EQUIPES",
+                title = "T_MAQUINAS_EQUIPES",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "EQU_ID", title = "EQU ID" },
+                    new { name = "CAL_ID", title = "CAL ID" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Medicoes",
+                title = "T_Medicoes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "MED_ID", title = "MED ID" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "MET_ID", title = "MET ID" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "MED_DATA", title = "MED DATA" },
+                    new { name = "MED_VALOR", title = "MED VALOR" },
+                    new { name = "MED_AC_ANO", title = "MED AC ANO" },
+                    new { name = "MED_DATAMEDICAO", title = "MED DATAMEDICAO" },
+                    new { name = "MED_PONDERACAO", title = "MED PONDERACAO" },
+                    new { name = "DIM_ID", title = "DIM ID" },
+                    new { name = "DIM_DESCRICAO", title = "DIM DESCRICAO" },
+                    new { name = "DIM_SUBDIMENSAO_ID", title = "DIM SUBDIMENSAO ID" },
+                    new { name = "DIM_SUB_DESCRICAO", title = "DIM SUB DESCRICAO" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "PER_DESCRICAO", title = "PER DESCRICAO" },
+                    new { name = "FAT_ID", title = "FAT ID" },
+                    new { name = "FAT_DESCRICAO", title = "FAT DESCRICAO" },
+                    new { name = "MED_SQL", title = "MED SQL" },
+                    new { name = "DOM_EMPRESA", title = "DOM EMPRESA" },
+                    new { name = "DOM_FILIAL", title = "DOM FILIAL" },
+                    new { name = "MED_VALOR_DISPER", title = "MED VALOR DISPER" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Metas",
+                title = "T_Metas",
+                fields = new[]
+                {
+                    new { name = "MET_ID", title = "MET ID" },
+                    new { name = "MET_DTINICIO", title = "MET DTINICIO" },
+                    new { name = "MET_DTFIM", title = "MET DTFIM" },
+                    new { name = "MET_ALVO", title = "MET ALVO" },
+                    new { name = "MET_TIPOALVO", title = "MET TIPOALVO" },
+                    new { name = "IND_ID", title = "IND ID" },
+                    new { name = "MET_RANGE01", title = "MET RANGE01" },
+                    new { name = "MET_RANGE02", title = "MET RANGE02" },
+                    new { name = "MET_RANGE03", title = "MET RANGE03" },
+                    new { name = "DIM_ID", title = "DIM ID" },
+                    new { name = "FAT_ID", title = "FAT ID" },
+                    new { name = "DIM_SUBDIMENSAO_ID", title = "DIM SUBDIMENSAO ID" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "DOM_EMPRESA", title = "DOM EMPRESA" },
+                    new { name = "DOM_FILIAL", title = "DOM FILIAL" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_Negocio",
+                title = "T_Negocio",
+                fields = new[]
+                {
+                    new { name = "NEG_ID", title = "NEG ID" },
+                    new { name = "NEG_DESCRICAO", title = "NEG DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_PREFERENCIAS",
+                title = "T_PREFERENCIAS",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "PRE_ID", title = "PRE ID" },
+                    new { name = "PRE_DESCRICAO", title = "PRE DESCRICAO" },
+                    new { name = "PRE_NAMESPACE", title = "PRE NAMESPACE" },
+                    new { name = "PRE_TIPO", title = "PRE TIPO" },
+                    new { name = "PRE_VALOR", title = "PRE VALOR" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "T_USER_GRUPO",
+                title = "T_USER_GRUPO",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "GRU_ID", title = "GRU ID" },
+                    new { name = "ID_USUARIO", title = "ID USUARIO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Tabela",
+                title = "Tabela",
+                fields = new[]
+                {
+                    new { name = "ID_TABELA", title = "ID TABELA" },
+                    new { name = "CODIGO", title = "CODIGO" },
+                    new { name = "NOME", title = "NOME" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TargetProduto",
+                title = "TargetProduto",
+                fields = new[]
+                {
+                    new { name = "TAR_ID", title = "TAR ID" },
+                    new { name = "MOV_ID", title = "MOV ID" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "TURM_ID", title = "TURM ID" },
+                    new { name = "TURN_ID", title = "TURN ID" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "TAR_DIA_TURMA", title = "TAR DIA TURMA" },
+                    new { name = "TAR_META_PERFORMANCE", title = "TAR META PERFORMANCE" },
+                    new { name = "TAR_REALIZADO_PERFORMANCE", title = "TAR REALIZADO PERFORMANCE" },
+                    new { name = "TAR_PERCENTUAL_REALIZADO_PERFORMANCE", title = "TAR PERCENTUAL REALIZADO PERFORMANCE" },
+                    new { name = "TAR_PROXIMA_META_PERFORMANCE", title = "TAR PROXIMA META PERFORMANCE" },
+                    new { name = "TAR_META_TEMPO_SETUP", title = "TAR META TEMPO SETUP" },
+                    new { name = "TAR_REALIZADO_TEMPO_SETUP", title = "TAR REALIZADO TEMPO SETUP" },
+                    new { name = "TAR_PROXIMA_META_TEMPO_SETUP", title = "TAR PROXIMA META TEMPO SETUP" },
+                    new { name = "TAR_META_TEMPO_SETUP_AJUSTE", title = "TAR META TEMPO SETUP AJUSTE" },
+                    new { name = "TAR_REALIZADO_TEMPO_SETUP_AJUSTE", title = "TAR REALIZADO TEMPO SETUP AJUSTE" },
+                    new { name = "TAR_PROXIMA_META_TEMPO_SETUP_AJUSTE", title = "TAR PROXIMA META TEMPO SETUP AJUSTE" },
+                    new { name = "OCO_ID_PERFORMANCE", title = "OCO ID PERFORMANCE" },
+                    new { name = "TAR_OBS_PERFORMANCE", title = "TAR OBS PERFORMANCE" },
+                    new { name = "OCO_ID_SETUP", title = "OCO ID SETUP" },
+                    new { name = "TAR_OBS_SETUP", title = "TAR OBS SETUP" },
+                    new { name = "OCO_ID_SETUPA", title = "OCO ID SETUPA" },
+                    new { name = "TAR_OBS_SETUPA", title = "TAR OBS SETUPA" },
+                    new { name = "TAR_TIPO_FEEDBACK_PERFORMANCE", title = "TAR TIPO FEEDBACK PERFORMANCE" },
+                    new { name = "TAR_TIPO_FEEDBACK_SETUP", title = "TAR TIPO FEEDBACK SETUP" },
+                    new { name = "TAR_TIPO_FEEDBACK_SETUP_AJUSTE", title = "TAR TIPO FEEDBACK SETUP AJUSTE" },
+                    new { name = "TAR_QTD_SETUP_AJUSTE", title = "TAR QTD SETUP AJUSTE" },
+                    new { name = "TAR_QTD", title = "TAR QTD" },
+                    new { name = "TAR_PARAMETRO_TIME_WORK_STOP_MACHINE", title = "TAR PARAMETRO TIME WORK STOP MACHINE" },
+                    new { name = "TAR_PARAMETRO_TEMPO_QUEBRA_DE_LOTE", title = "TAR PARAMETRO TEMPO QUEBRA DE LOTE" },
+                    new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "TAR_PERFORMANCE_MAX_VERDE", title = "TAR PERFORMANCE MAX VERDE" },
+                    new { name = "TAR_PERFORMANCE_MIN_VERDE", title = "TAR PERFORMANCE MIN VERDE" },
+                    new { name = "TAR_SETUP_MAX_VERDE", title = "TAR SETUP MAX VERDE" },
+                    new { name = "TAR_SETUP_MIN_VERDE", title = "TAR SETUP MIN VERDE" },
+                    new { name = "TAR_SETUPA_MAX_VERDE", title = "TAR SETUPA MAX VERDE" },
+                    new { name = "TAR_SETUPA_MIN_VERDE", title = "TAR SETUPA MIN VERDE" },
+                    new { name = "TAR_PERFORMANCE_MIN_AMARELO", title = "TAR PERFORMANCE MIN AMARELO" },
+                    new { name = "TAR_SETUP_MAX_AMARELO", title = "TAR SETUP MAX AMARELO" },
+                    new { name = "TAR_SETUPA_MAX_AMARELO", title = "TAR SETUPA MAX AMARELO" },
+                    new { name = "TAR_OBS_OP_PARCIAL", title = "TAR OBS OP PARCIAL" },
+                    new { name = "TAR_OCO_ID_OP_PARCIAL", title = "TAR OCO ID OP PARCIAL" },
+                    new { name = "TAR_COR_PERFORMANCE", title = "TAR COR PERFORMANCE" },
+                    new { name = "TAR_COR_SETUP_GERAL", title = "TAR COR SETUP GERAL" },
+                    new { name = "TAR_COR_SETUP", title = "TAR COR SETUP" },
+                    new { name = "TAR_COR_SETUPA", title = "TAR COR SETUPA" },
+                    new { name = "TAR_DIA_TURMA_D", title = "TAR DIA TURMA D" },
+                    new { name = "FEE_QTD_PECAS_POR_PULSO", title = "FEE QTD PECAS POR PULSO" },
+                    new { name = "TAR_QTD_PERDAS", title = "TAR QTD PERDAS" },
+                    new { name = "TAR_DATA_INICIAL", title = "TAR DATA INICIAL" },
+                    new { name = "TAR_DATA_FINAL", title = "TAR DATA FINAL" },
+                    new { name = "TAR_APROVADO", title = "TAR APROVADO" },
+                    new { name = "TAR_TEMPO_PRODUZINDO", title = "TAR TEMPO PRODUZINDO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TemplateDeTestes",
+                title = "TemplateDeTestes",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Template de Testes" },
+                    new { name = "Descricao", title = "Descricao do Template" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Observacao", title = "Observacao" },
+                }
+            },
+            new
+            {
+                name = "TemplatesGrupoMaquina",
+                title = "TemplatesGrupoMaquina",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "GMA_ID", title = "GMA ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TemplatesMaquinas",
+                title = "TemplatesMaquinas",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TemplateTipoInspecaoVisual",
+                title = "TemplateTipoInspecaoVisual",
+                fields = new[]
+                {
+                    new { name = "TTI_ID", title = "TTI ID" },
+                    new { name = "TIV_ID", title = "TIV ID" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TemplateTipoTeste",
+                title = "TemplateTipoTeste",
+                fields = new[]
+                {
+                    new { name = "TTT_ID", title = "TTT ID" },
+                    new { name = "TT_ID", title = "TT ID" },
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TempoSetupOnduladeira",
+                title = "TempoSetupOnduladeira",
+                fields = new[]
+                {
+                    new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "OND_ID_DE", title = "OND ID DE" },
+                    new { name = "OND_ID_PARA", title = "OND ID PARA" },
+                    new { name = "TEM_RESINA_DE", title = "TEM RESINA DE" },
+                    new { name = "TEM_RESINA_PARA", title = "TEM RESINA PARA" },
+                    new { name = "TEM_TEMPO", title = "TEM TEMPO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TemposLogisticos",
+                title = "TemposLogisticos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TMP_TIPO_TEMPO", title = "TMP TIPO TEMPO" },
+                    new { name = "TMP_TIPO_CARGA", title = "TMP TIPO CARGA" },
+                    new { name = "TMP_TEMPO_MEDIO_UNITARIO", title = "TMP TEMPO MEDIO UNITARIO" },
+                    new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TesteFisico",
+                title = "TesteFisico",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TES_ID", title = "TES ID" },
+                    new { name = "ITE_ID", title = "ITE ID" },
+                    new { name = "USR_ID", title = "USR ID" },
+                    new { name = "TES_NOME_TECNICO", title = "TES NOME TECNICO" },
+                    new { name = "TES_AMOSTRA", title = "TES AMOSTRA" },
+                    new { name = "TES_OP", title = "TES OP" },
+                    new { name = "TES_VALOR_NUMERICO", title = "TES VALOR NUMERICO" },
+                    new { name = "TES_VALOR_DATA", title = "TES VALOR DATA" },
+                    new { name = "TES_VALOR_TEXTO", title = "TES VALOR TEXTO" },
+                    new { name = "TES_EMISSAO", title = "TES EMISSAO" },
+                    new { name = "ORD_ID", title = "ORD ID" },
+                    new { name = "PRO_ID", title = "PRO ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "FPR_SEQ_TRANFORMACAO", title = "FPR SEQ TRANFORMACAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoABNT",
+                title = "TipoABNT",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "ABN_ID", title = "ABN ID" },
+                    new { name = "ABN_DESCRICAO", title = "ABN DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoAvaliacao",
+                title = "TipoAvaliacao",
+                fields = new[]
+                {
+                    new { name = "TA_ID", title = "TA ID" },
+                    new { name = "TA_DESC", title = "TA DESC" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoCarroceria",
+                title = "TipoCarroceria",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TCA_ID", title = "TCA ID" },
+                    new { name = "TCA_DESCRICAO", title = "TCA DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoDispositivo",
+                title = "TipoDispositivo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TDI_ID", title = "TDI ID" },
+                    new { name = "TDI_DESCRICAO", title = "TDI DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoDispositivoMaquina",
+                title = "TipoDispositivoMaquina",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TDI_ID", title = "TDI ID" },
+                    new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoInspecaoItens",
+                title = "TipoInspecaoItens",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TII_ID", title = "TII ID" },
+                    new { name = "TIV_ID", title = "TIV ID" },
+                    new { name = "ITI_ID", title = "ITI ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoInspecaoVisual",
+                title = "TipoInspecaoVisual",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TIV_ID", title = "TIV ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "TIV_NOME", title = "TIV NOME" },
+                    new { name = "TIV_DESCRICAO", title = "TIV DESCRICAO" },
+                    new { name = "TIV_FECHAMENTO", title = "TIV FECHAMENTO" },
+                    new { name = "TIV_AMOSTRA_ALEATORIA", title = "TIV AMOSTRA ALEATORIA" },
+                    new { name = "TIV_N_AMOSTRAS", title = "TIV N AMOSTRAS" },
+                    new { name = "TIV_MEDIDA", title = "TIV MEDIDA" },
+                    new { name = "TIV_ESPECIFICACAO", title = "TIV ESPECIFICACAO" },
+                    new { name = "TIV_TOL_MAIS", title = "TIV TOL MAIS" },
+                    new { name = "TIV_TOL_MENOS", title = "TIV TOL MENOS" },
+                }
+            },
+            new
+            {
+                name = "TipoMovimentoEstoque",
+                title = "TipoMovimentoEstoque",
+                fields = new[]
+                {
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "TIP_DESCRICAO", title = "TIP DESCRICAO" },
+                    new { name = "TIP_TYPE", title = "TIP TYPE" },
+                    new { name = "SPR", title = "SPR" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoOcorrencia",
+                title = "TipoOcorrencia",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Descricao", title = "Descricao" },
+                    new { name = "Spr", title = "Spr" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TiposVincoGruposProdutos",
+                title = "TiposVincoGruposProdutos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Id2", title = "Id2" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TiposVincoOndas",
+                title = "TiposVincoOndas",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Id2", title = "Id2" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TiposVincoProdutos",
+                title = "TiposVincoProdutos",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Id2", title = "Id2" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "TipoTeste",
+                title = "TipoTeste",
+                fields = new[]
+                {
+                    new { name = "TT_ESPECIFICACAO", title = "TT ESPECIFICACAO" },
+                    new { name = "TT_ORIGEM_ESPECIFICACAO", title = "TT ORIGEM ESPECIFICACAO" },
+                    new { name = "TT_IMPRIME_NO_LAUDO", title = "TT IMPRIME NO LAUDO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "TT_ID", title = "TT ID" },
+                    new { name = "TT_NOME", title = "TT NOME" },
+                    new { name = "TT_DESC", title = "TT DESC" },
+                    new { name = "TT_TOL_MAIS", title = "TT TOL MAIS" },
+                    new { name = "TT_TOL_MENOS", title = "TT TOL MENOS" },
+                    new { name = "TT_NORMA", title = "TT NORMA" },
+                    new { name = "TT_INICIO_PROCESSO", title = "TT INICIO PROCESSO" },
+                    new { name = "TA_ID", title = "TA ID" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "TT_N_AMOSTRAS_P_TESTE", title = "TT N AMOSTRAS P TESTE" },
+                    new { name = "TT_MAX_DEF_CRITICO", title = "TT MAX DEF CRITICO" },
+                    new { name = "TT_MAX_DEF_GRAVE", title = "TT MAX DEF GRAVE" },
+                }
+            },
+            new
+            {
+                name = "TipoVeiculo",
+                title = "TipoVeiculo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "TIP_DESCRICAO", title = "TIP DESCRICAO" },
+                    new { name = "TIP_QTD_DISPONIVEL", title = "TIP QTD DISPONIVEL" },
+                    new { name = "TIP_VALOR_KM", title = "TIP VALOR KM" },
+                    new { name = "TIP_VALOR_DIARIA", title = "TIP VALOR DIARIA" },
+                    new { name = "TIP_VALOR_AJUDANTE", title = "TIP VALOR AJUDANTE" },
+                    new { name = "TIP_QTD_EIXOS", title = "TIP QTD EIXOS" },
+                    new { name = "TIP_VELOCIDADE_MEDIA", title = "TIP VELOCIDADE MEDIA" },
+                    new { name = "TIP_CAPACIDADE_ALTURA", title = "TIP CAPACIDADE ALTURA" },
+                    new { name = "TIP_CAPACIDADE_COMPRIMENTO", title = "TIP CAPACIDADE COMPRIMENTO" },
+                    new { name = "TIP_CAPACIDADE_LARGURA", title = "TIP CAPACIDADE LARGURA" },
+                    new { name = "TIP_CAPACIDADE_ALTURA_PESCOCO_E", title = "TIP CAPACIDADE ALTURA PESCOCO E" },
+                    new { name = "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E", title = "TIP CAPACIDADE COMPRIMENTO PESCOCO E" },
+                    new { name = "TIP_CAPACIDADE_LARGURA_PESCOCO_E", title = "TIP CAPACIDADE LARGURA PESCOCO E" },
+                    new { name = "TIP_CAPACIDADE_ALTURA_PESCOCO_D", title = "TIP CAPACIDADE ALTURA PESCOCO D" },
+                    new { name = "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D", title = "TIP CAPACIDADE COMPRIMENTO PESCOCO D" },
+                    new { name = "TIP_CAPACIDADE_LARGURA_PESCOCO_D", title = "TIP CAPACIDADE LARGURA PESCOCO D" },
+                    new { name = "TIP_CAPACIDADE_M3", title = "TIP CAPACIDADE M3" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Transportadora",
+                title = "Transportadora",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "TRA_ID", title = "TRA ID" },
+                    new { name = "TRA_NOME", title = "TRA NOME" },
+                    new { name = "TRA_CNPJ", title = "CNPJ" },
+                    new { name = "TRA_INSCRICAO_ESTADUAL", title = "Inscricao Estadual" },
+                    new { name = "TRA_RNTRC", title = "RNTRC" },
+                    new { name = "TRA_EMAIL", title = "TRA EMAIL" },
+                    new { name = "TRA_RESPONSAVEL", title = "TRA RESPONSAVEL" },
+                    new { name = "TRA_FONE", title = "TRA FONE" },
+                    new { name = "TRA_ID_INTEGRACAO", title = "TRA ID INTEGRACAO" },
+                    new { name = "TRA_ID_INTEGRACAO_ERP", title = "TRA ID INTEGRACAO ERP" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Turma",
+                title = "Turma",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Descricao", title = "Descricao" },
+                    new { name = "TURM_HORA_INI_DIA1", title = "TURM HORA INI DIA1" },
+                    new { name = "TURM_HORA_FIM_DIA1", title = "TURM HORA FIM DIA1" },
+                    new { name = "TURM_HORA_INI_DIA2", title = "TURM HORA INI DIA2" },
+                    new { name = "TURM_HORA_FIM_DIA2", title = "TURM HORA FIM DIA2" },
+                    new { name = "TURM_HORA_INI_DIA3", title = "TURM HORA INI DIA3" },
+                    new { name = "TURM_HORA_FIM_DIA3", title = "TURM HORA FIM DIA3" },
+                    new { name = "TURM_HORA_INI_DIA4", title = "TURM HORA INI DIA4" },
+                    new { name = "TURM_HORA_FIM_DIA4", title = "TURM HORA FIM DIA4" },
+                    new { name = "TURM_HORA_INI_DIA5", title = "TURM HORA INI DIA5" },
+                    new { name = "TURM_HORA_FIM_DIA5", title = "TURM HORA FIM DIA5" },
+                    new { name = "TURM_HORA_INI_DIA6", title = "TURM HORA INI DIA6" },
+                    new { name = "TURM_HORA_FIM_DIA6", title = "TURM HORA FIM DIA6" },
+                    new { name = "TURM_HORA_INI_DIA7", title = "TURM HORA INI DIA7" },
+                    new { name = "TURM_HORA_FIM_DIA7", title = "TURM HORA FIM DIA7" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Turno",
+                title = "Turno",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "Descricao", title = "Descricao" },
+                    new { name = "TURN_PRIORIDADE", title = "TURN PRIORIDADE" },
+                    new { name = "TURN_HORA_INI_DIA1", title = "TURN HORA INI DIA1" },
+                    new { name = "TURN_HORA_FIM_DIA1", title = "TURN HORA FIM DIA1" },
+                    new { name = "TURN_HORA_INI_DIA2", title = "TURN HORA INI DIA2" },
+                    new { name = "TURN_HORA_FIM_DIA2", title = "TURN HORA FIM DIA2" },
+                    new { name = "TURN_HORA_INI_DIA3", title = "TURN HORA INI DIA3" },
+                    new { name = "TURN_HORA_FIM_DIA3", title = "TURN HORA FIM DIA3" },
+                    new { name = "TURN_HORA_INI_DIA4", title = "TURN HORA INI DIA4" },
+                    new { name = "TURN_HORA_FIM_DIA4", title = "TURN HORA FIM DIA4" },
+                    new { name = "TURN_HORA_INI_DIA5", title = "TURN HORA INI DIA5" },
+                    new { name = "TURN_HORA_FIM_DIA5", title = "TURN HORA FIM DIA5" },
+                    new { name = "TURN_HORA_INI_DIA6", title = "TURN HORA INI DIA6" },
+                    new { name = "TURN_HORA_FIM_DIA6", title = "TURN HORA FIM DIA6" },
+                    new { name = "TURN_HORA_INI_DIA7", title = "TURN HORA INI DIA7" },
+                    new { name = "TURN_HORA_FIM_DIA7", title = "TURN HORA FIM DIA7" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Unidade",
+                title = "Unidade",
+                fields = new[]
+                {
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "DEESCRICAO", title = "DEESCRICAO" },
+                    new { name = "UN", title = "UN" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Unidade_Unidade",
+                title = "Unidade_Unidade",
+                fields = new[]
+                {
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "UNI_DESCRICAO", title = "UNI DESCRICAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "UnidadeMedida",
+                title = "UnidadeMedida",
+                fields = new[]
+                {
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "UNI_DESCRICAO", title = "UNI DESCRICAO" },
+                    new { name = "UNI_ESCALA_TEMPO", title = "UNI ESCALA TEMPO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Uniuser",
+                title = "Uniuser",
+                fields = new[]
+                {
+                    new { name = "USERGRU_ID", title = "USERGRU ID" },
+                    new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Usuario",
+                title = "Usuario",
+                fields = new[]
+                {
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "USE_NOME", title = "USE NOME" },
+                    new { name = "USE_EMAIL", title = "USE EMAIL" },
+                    new { name = "USE_SENHA", title = "USE SENHA" },
+                    new { name = "TURM_ID", title = "TURM ID" },
+                    new { name = "USE_ATIVO", title = "USE ATIVO" },
+                    new { name = "USE_CODERP", title = "USE CODERP" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "UsuarioObjetoControlavel",
+                title = "UsuarioObjetoControlavel",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "OBJ_ID", title = "OBJ ID" },
+                    new { name = "USU_OBJETO_ACAO", title = "USU OBJETO ACAO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "UsuarioPerfil",
+                title = "UsuarioPerfil",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "PER_ID", title = "PER ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "UsuariosCarga",
+                title = "UsuariosCarga",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "USE_ID", title = "USE ID" },
+                    new { name = "CAR_ID", title = "CAR ID" },
+                    new { name = "RGO_ID", title = "RGO ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Variavel",
+                title = "Variavel",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "VAR_ID", title = "VAR ID" },
+                    new { name = "VAR_DESCRICAO", title = "VAR DESCRICAO" },
+                    new { name = "CON_ID", title = "CON ID" },
+                    new { name = "VAR_MODO", title = "VAR MODO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "VariavelPlotagem",
+                title = "VariavelPlotagem",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "VAR_ID", title = "VAR ID" },
+                    new { name = "PLO_ID", title = "PLO ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Veiculo",
+                title = "Veiculo",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "VEI_PLACA", title = "VEI PLACA" },
+                    new { name = "VEI_UF", title = "UF" },
+                    new { name = "TIP_ID", title = "TIP ID" },
+                    new { name = "VEI_CAPACIDADE_M3", title = "VEI CAPACIDADE M3" },
+                    new { name = "VEI_CAPACIDADE_LARGURA", title = "VEI CAPACIDADE LARGURA" },
+                    new { name = "VEI_CAPACIDADE_COMPRIMENTO", title = "VEI CAPACIDADE COMPRIMENTO" },
+                    new { name = "VEI_CAPACIDADE_ALTURA", title = "VEI CAPACIDADE ALTURA" },
+                    new { name = "VEI_MODELO", title = "VEI MODELO" },
+                    new { name = "VEI_NOME_MOTORISTA", title = "VEI NOME MOTORISTA" },
+                    new { name = "VEI_DADOS_CONTATO", title = "VEI DADOS CONTATO" },
+                    new { name = "VEI_CPF_MOTORISTA", title = "VEI CPF MOTORISTA" },
+                    new { name = "TCA_ID", title = "TCA ID" },
+                    new { name = "VEI_EMISSAO", title = "VEI EMISSAO" },
+                    new { name = "VEI_VENCIMENTO", title = "VEI VENCIMENTO" },
+                    new { name = "VEI_STATUS", title = "VEI STATUS" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "VersaoCusto",
+                title = "VersaoCusto",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "VER_ID", title = "VER ID" },
+                    new { name = "VER_STATUS", title = "VER STATUS" },
+                    new { name = "VER_OBS", title = "VER OBS" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "VerssaoCusto",
+                title = "VerssaoCusto",
+                fields = new[]
+                {
+                    new { name = "Id", title = "Id" },
+                    new { name = "VER_ID", title = "VER ID" },
+                    new { name = "VER_STATUS", title = "VER STATUS" },
+                    new { name = "VER_DATA_VERSSAO_CUSTO", title = "VER DATA VERSSAO CUSTO" },
+                    new { name = "VER_OBS", title = "VER OBS" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Vinco",
+                title = "Vinco",
+                fields = new[]
+                {
+                    new { name = "VIN_ID", title = "VIN ID" },
+                    new { name = "VIN_DESCRICAO", title = "VIN DESCRICAO" },
+                    new { name = "VIN_ID_DESLOCAMENTO", title = "VIN ID DESLOCAMENTO" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Visoes",
+                title = "Visoes",
+                fields = new[]
+                {
+                    new { name = "VIS_ID", title = "VIS ID" },
+                    new { name = "VIS_PLANID", title = "VIS PLANID" },
+                    new { name = "VIS_FORMULA", title = "VIS FORMULA" },
+                    new { name = "CAB_ID", title = "CAB ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yConfigArcteture",
+                title = "yConfigArcteture",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "AuditTrackerActived", title = "AuditTrackerActived" },
+                    new { name = "AuditCRUDActived", title = "AuditCRUDActived" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yConfigNotification",
+                title = "yConfigNotification",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "EmailSmtpClient", title = "EmailSmtpClient" },
+                    new { name = "EmailPort", title = "EmailPort" },
+                    new { name = "EmailUserName", title = "EmailUserName" },
+                    new { name = "EmailPassword", title = "EmailPassword" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yFileUpload",
+                title = "yFileUpload",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Type", title = "Tipo do Arquivo" },
+                    new { name = "Status", title = "Status do Upload" },
+                    new { name = "FilePath", title = "Caminho do Arquivo" },
+                    new { name = "FileSize", title = "Tamanho do Arquivo" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yGrant",
+                title = "yGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yInbox",
+                title = "yInbox",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MessageId", title = "Message Id" },
+                    new { name = "Type", title = "Tipo da Mensagem" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CorrelationId", title = "Correlation Id" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "LastError", title = "Último Erro" },
+                    new { name = "ProcessingAt", title = "Processando em" },
+                    new { name = "NextAttemptAt", title = "Próxima tentativa" },
+                    new { name = "SagaId", title = "SagaId" },
+                    new { name = "SagaStepId", title = "SagaStepId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yModule",
+                title = "yModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                }
+            },
+            new
+            {
+                name = "yOutbox",
+                title = "yOutbox",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MessageId", title = "Message Id" },
+                    new { name = "Type", title = "Tipo da Mensagem" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CorrelationId", title = "Correlation Id" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TransportType", title = "Tipo de Transporte" },
+                    new { name = "TransportData", title = "Dados do transporte" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "SentAt", title = "Enviado em" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "LastError", title = "Último Erro" },
+                    new { name = "ProcessingAt", title = "Processando em" },
+                    new { name = "NextAttemptAt", title = "Próxima tentativa" },
+                    new { name = "SagaId", title = "SagaId" },
+                    new { name = "SagaStepId", title = "SagaStepId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yPerfil",
+                title = "yPerfil",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yPerfilGrant",
+                title = "yPerfilGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PerfilId", title = "ID Perfil" },
+                    new { name = "GrantId", title = "ID Permição" },
+                    new { name = "CanGrant", title = "Permite acessar" },
+                    new { name = "CanCreate", title = "Permite Criar" },
+                    new { name = "CanRead", title = "Permite Ler" },
+                    new { name = "CanUpdate", title = "Permite Atualizar" },
+                    new { name = "CanDelete", title = "Permite Deletar" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ySaga",
+                title = "ySaga",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Type", title = "Type" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "KeyCurrentStep", title = "Key Step Atual" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "NextExecutionAt", title = "Proxima execucao" },
+                    new { name = "LockedAt", title = "LockedAt" },
+                    new { name = "LockedBy", title = "LockedBy" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ySagaStep",
+                title = "ySagaStep",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "SagaId", title = "Saga" },
+                    new { name = "StepKey", title = "Step Key" },
+                    new { name = "IndexOrder", title = "Index Order" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "ExecutionCount", title = "Execuções" },
+                    new { name = "LastExecutionAt", title = "Última Execução" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "ErrorMessage", title = "Erro" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yTenant",
+                title = "yTenant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CnpjCpf", title = "Cnpj/Cpf" },
+                    new { name = "Nome", title = "Nome" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yTenantModule",
+                title = "yTenantModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ModuleId", title = "ID Modulo" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yToken",
+                title = "yToken",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "TokenHash", title = "Hash do Token" },
+                    new { name = "Description", title = "Descricao" },
+                    new { name = "ConnectorKey", title = "Conector" },
+                    new { name = "Active", title = "Ativo" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "LastUsedAt", title = "Ultimo uso" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yUser",
+                title = "yUser",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Nome", title = "Nome Usuario" },
+                    new { name = "Email", title = "Email" },
+                    new { name = "Senha", title = "Senha" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yUserGrant",
+                title = "yUserGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PerfilId", title = "ID Perfil" },
+                    new { name = "GrantId", title = "ID Permição" },
+                    new { name = "CanGrant", title = "Permite acessar" },
+                    new { name = "CanCreate", title = "Permite Criar" },
+                    new { name = "CanRead", title = "Permite Ler" },
+                    new { name = "CanUpdate", title = "Permite Atualizar" },
+                    new { name = "CanDelete", title = "Permite Deletar" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yUserModule",
+                title = "yUserModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ModuleId", title = "ID Modulo" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+        }
+    }))
+    .RequireAuthorization();
+
 app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILogger logger) =>
     Results.Ok(logger.Snapshot()))
     .AllowAnonymous();
@@ -31786,7 +35980,7 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
             new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "errormessage", label = "Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
@@ -31854,7 +36048,7 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
             new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
             new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
             new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -31959,7 +36153,7 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
             new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
             new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PerfilDTO> getPerfil(Command.Read.PerfilReadCommand command )
         {
-            DataPagination<PerfilDTO> customResult = null;
+            var customResult = new DataPagination<PerfilDTO>();
             var customHandled = false;
             TryGetPerfilCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PerfilTenantIDDTO> getPerfilReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PerfilTenantIDDTO> lista;
             var query = _query.PerfilTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PerfilTenantIDDTO>(query.Query,query.Parameters) as List<PerfilTenantIDDTO>;
+                var lista = _unitOfWork.Query<PerfilTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PerfilUserIdDTO> getPerfilReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PerfilUserIdDTO> lista;
             var query = _query.PerfilUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PerfilUserIdDTO>(query.Query,query.Parameters) as List<PerfilUserIdDTO>;
+                var lista = _unitOfWork.Query<PerfilUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_IDQuery(value );
 
-                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters) as List<PerfilDTO>;
+                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters) as List<PerfilDTO>;
+                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters) as List<PerfilDTO>;
+                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters) as List<PerfilDTO>;
+                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters) as List<PerfilDTO>;
+                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters) as List<PerfilDTO>;
+                var result = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

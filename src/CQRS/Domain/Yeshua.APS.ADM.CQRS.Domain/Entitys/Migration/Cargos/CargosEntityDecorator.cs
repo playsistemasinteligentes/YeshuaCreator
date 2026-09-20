@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string RGO_DESCRICAO
+                                    public string? RGO_DESCRICAO
                                     {
                                         get => _inner.RGO_DESCRICAO;
                                         set

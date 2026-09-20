@@ -67,7 +67,7 @@ namespace Read.Repository
             if (cached != null) return cached;
             var result = _inner.getyConfigNotificationReadFKTenantID(command );
             if (result != null) _cacheFKTenantID.Set(key, result,"yConfigNotification");
-            return result;
+            return result ?? System.Array.Empty<yConfigNotificationTenantIDDTO>();
         }
         public IEnumerable<yConfigNotificationUserIdDTO> getyConfigNotificationReadFKUserId(object command )
         {
@@ -82,7 +82,7 @@ namespace Read.Repository
             if (cached != null) return cached;
             var result = _inner.getyConfigNotificationReadFKUserId(command );
             if (result != null) _cacheFKUserId.Set(key, result,"yConfigNotification");
-            return result;
+            return result ?? System.Array.Empty<yConfigNotificationUserIdDTO>();
         }
         public bool ExistsById(int value )
         {

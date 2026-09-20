@@ -198,7 +198,7 @@
                                         }
                                     }
 
-                                    public string TurnoId
+                                    public string? TurnoId
                                     {
                                         get => _inner.TurnoId;
                                         set
@@ -212,7 +212,7 @@
                                         }
                                     }
 
-                                    public string TurmaId
+                                    public string? TurmaId
                                     {
                                         get => _inner.TurmaId;
                                         set
@@ -240,7 +240,7 @@
                                         }
                                     }
 
-                                    public string OcorrenciaId
+                                    public string? OcorrenciaId
                                     {
                                         get => _inner.OcorrenciaId;
                                         set
@@ -268,7 +268,7 @@
                                         }
                                     }
 
-                                    public string ClpOrigem
+                                    public string? ClpOrigem
                                     {
                                         get => _inner.ClpOrigem;
                                         set
@@ -310,7 +310,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID
+                                    public string? BOL_ID
                                     {
                                         get => _inner.BOL_ID;
                                         set

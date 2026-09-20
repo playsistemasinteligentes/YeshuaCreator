@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<VariavelDTO> getVariavel(Command.Read.VariavelReadCommand command )
         {
-            DataPagination<VariavelDTO> customResult = null;
+            var customResult = new DataPagination<VariavelDTO>();
             var customHandled = false;
             TryGetVariavelCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<VariavelTenantIDDTO> getVariavelReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VariavelTenantIDDTO> lista;
             var query = _query.VariavelTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<VariavelTenantIDDTO>(query.Query,query.Parameters) as List<VariavelTenantIDDTO>;
+                var lista = _unitOfWork.Query<VariavelTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<VariavelUserIdDTO> getVariavelReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VariavelUserIdDTO> lista;
             var query = _query.VariavelUserIdQuery(command );
 
-                lista = _unitOfWork.Query<VariavelUserIdDTO>(query.Query,query.Parameters) as List<VariavelUserIdDTO>;
+                var lista = _unitOfWork.Query<VariavelUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVAR_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVAR_MODOQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters) as List<VariavelDTO>;
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

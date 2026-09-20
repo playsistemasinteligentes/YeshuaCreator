@@ -14,10 +14,10 @@ namespace Command.Read
     public struct ProtocoloOnduladeiraReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string PTO_ID { get; set; }
-        public string PTO_CHAVE { get; set; }
-        public string MAQ_ID { get; set; }
-        public string PTO_COMANDO { get; set; }
+        public string? PTO_ID { get; set; }
+        public string? PTO_CHAVE { get; set; }
+        public string? MAQ_ID { get; set; }
+        public string? PTO_COMANDO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

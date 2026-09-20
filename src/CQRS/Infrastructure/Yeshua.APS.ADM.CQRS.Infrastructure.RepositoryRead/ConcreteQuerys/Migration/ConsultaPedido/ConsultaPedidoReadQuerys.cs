@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel ConsultaPedidoQuery(Command.Read.ConsultaPedidoReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -70,7 +69,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         public QueryModel ConsultaPedidoProdutoIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Descricao] from [Produto] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -100,7 +98,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByPedidoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -114,7 +111,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByClienteIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -128,7 +124,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByClienteNomeQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -142,7 +137,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByRazaoSocialQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -156,7 +150,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByProdutoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -170,7 +163,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByProdutoDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -184,7 +176,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -198,7 +189,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByEstagioQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -212,7 +202,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByDataEntregaDeQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -226,7 +215,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByDataEntregaAteQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -240,7 +228,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByEmbarqueAlvoQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -254,7 +241,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByQuantidadeQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -268,7 +254,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsBySaldoAProduzirQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -282,7 +267,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsBySaldoAExpedirQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -296,7 +280,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByCorFilaQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -310,7 +293,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel ExistsByPedidoClienteQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -324,7 +306,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByPedidoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -338,7 +319,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByClienteIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -352,7 +332,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByClienteNomeQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -366,7 +345,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByRazaoSocialQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -380,7 +358,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByProdutoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -394,7 +371,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByProdutoDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -408,7 +384,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -422,7 +397,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByEstagioQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -436,7 +410,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByDataEntregaDeQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -450,7 +423,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByDataEntregaAteQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -464,7 +436,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByEmbarqueAlvoQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -478,7 +449,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByQuantidadeQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -492,7 +462,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstBySaldoAProduzirQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -506,7 +475,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstBySaldoAExpedirQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -520,7 +488,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByCorFilaQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -534,7 +501,6 @@ if (!string.IsNullOrEmpty(Command.PedidoCliente)) whereClauses.Add($"[ORD_PED_CL
         }
         public QueryModel FirstByPedidoClienteQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IItemInspecaoEntity Create(int? id, int iti_id, string iti_desc )
+                                    } public IItemInspecaoEntity Create(int? id, int iti_id, string? iti_desc )
                             {
                                 return Create(null, id, iti_id, iti_desc);
                             }
 
                             public IItemInspecaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int iti_id, string iti_desc )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int iti_id, string? iti_desc )
                             {
                             var entity = new ItemInspecaoEntity(id, iti_id, iti_desc );
 

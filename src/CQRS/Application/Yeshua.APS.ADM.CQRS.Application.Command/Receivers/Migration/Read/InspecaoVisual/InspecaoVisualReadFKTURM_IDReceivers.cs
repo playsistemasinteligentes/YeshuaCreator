@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<InspecaoVisualTURM_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<InspecaoVisualTURM_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var InspecaoVisualReadRepository = _repository.getInspecaoVisualReadFKTURM_ID(c);
-                return Success("OK", InspecaoVisualReadRepository);
+                return Task.FromResult(Success("OK", InspecaoVisualReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

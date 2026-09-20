@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TipoMovimentoEstoqueEntity(string tip_id, string tip_descricao, int tip_type, int spr ){
  TIP_ID = tip_id; 
  TIP_DESCRICAO = tip_descricao; 

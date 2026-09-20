@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel PlanoAmostralTesteQuery(Command.Read.PlanoAmostralTesteReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -64,7 +63,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         public QueryModel PlanoAmostralTesteTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -95,7 +93,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         public QueryModel PlanoAmostralTesteUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -125,7 +122,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByGRP_TIPOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -143,7 +139,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -161,7 +156,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -179,7 +173,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -197,7 +190,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -215,7 +207,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByPAT_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -233,7 +224,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByPAT_QTD_CAIXAS_DEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -251,7 +241,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByPAT_QTD_CAIXAS_ATEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -269,7 +258,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByPAT_N_AMOSTRAGEMQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -287,7 +275,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel ExistsByPAT_PERCENT_ESPECIFQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -305,7 +292,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByGRP_TIPOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -323,7 +309,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -341,7 +326,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -359,7 +343,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -377,7 +360,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -395,7 +377,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByPAT_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -413,7 +394,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByPAT_QTD_CAIXAS_DEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -431,7 +411,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByPAT_QTD_CAIXAS_ATEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -449,7 +428,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByPAT_N_AMOSTRAGEMQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -467,7 +445,6 @@ if (Command.PAT_N_AMOSTRAGEM.HasValue) whereClauses.Add($"[PAT_N_AMOSTRAGEM] = @
         }
         public QueryModel FirstByPAT_PERCENT_ESPECIFQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

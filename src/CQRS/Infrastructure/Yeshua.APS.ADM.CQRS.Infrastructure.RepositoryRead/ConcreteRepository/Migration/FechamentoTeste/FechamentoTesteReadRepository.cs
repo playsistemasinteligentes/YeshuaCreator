@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<FechamentoTesteDTO> getFechamentoTeste(Command.Read.FechamentoTesteReadCommand command )
         {
-            DataPagination<FechamentoTesteDTO> customResult = null;
+            var customResult = new DataPagination<FechamentoTesteDTO>();
             var customHandled = false;
             TryGetFechamentoTesteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<FechamentoTesteTenantIDDTO> getFechamentoTesteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FechamentoTesteTenantIDDTO> lista;
             var query = _query.FechamentoTesteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<FechamentoTesteTenantIDDTO>(query.Query,query.Parameters) as List<FechamentoTesteTenantIDDTO>;
+                var lista = _unitOfWork.Query<FechamentoTesteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<FechamentoTesteUserIdDTO> getFechamentoTesteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FechamentoTesteUserIdDTO> lista;
             var query = _query.FechamentoTesteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<FechamentoTesteUserIdDTO>(query.Query,query.Parameters) as List<FechamentoTesteUserIdDTO>;
+                var lista = _unitOfWork.Query<FechamentoTesteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFEC_IDQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFEC_QTDQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_IDQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters) as List<FechamentoTesteDTO>;
+                var result = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

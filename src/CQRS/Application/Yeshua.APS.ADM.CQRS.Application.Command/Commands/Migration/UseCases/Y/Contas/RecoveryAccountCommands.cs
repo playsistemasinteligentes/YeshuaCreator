@@ -11,18 +11,19 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
 public partial record RecoveryAccountInputCommand : ICommand
 {
-    public string email { get; set; }
+    public string email { get; set; } = string.Empty;
     public TypeNotification typeNotification { get; set; }
 }
 
 public partial record RecoveryAccountOutputCommand : ICommand
 {
-    public string email { get; set; }
+    public string email { get; set; } = string.Empty;
     public TypeNotification typeNotification { get; set; }
 }
 

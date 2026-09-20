@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ConfiguracoesDTO> getConfiguracoes(Command.Read.ConfiguracoesReadCommand command )
         {
-            DataPagination<ConfiguracoesDTO> customResult = null;
+            var customResult = new DataPagination<ConfiguracoesDTO>();
             var customHandled = false;
             TryGetConfiguracoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ConfiguracoesTenantIDDTO> getConfiguracoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConfiguracoesTenantIDDTO> lista;
             var query = _query.ConfiguracoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ConfiguracoesTenantIDDTO>(query.Query,query.Parameters) as List<ConfiguracoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<ConfiguracoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ConfiguracoesUserIdDTO> getConfiguracoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConfiguracoesUserIdDTO> lista;
             var query = _query.ConfiguracoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ConfiguracoesUserIdDTO>(query.Query,query.Parameters) as List<ConfiguracoesUserIdDTO>;
+                var lista = _unitOfWork.Query<ConfiguracoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -186,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters) as List<ConfiguracoesDTO>;
+                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -194,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters) as List<ConfiguracoesDTO>;
+                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters) as List<ConfiguracoesDTO>;
+                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters) as List<ConfiguracoesDTO>;
+                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters) as List<ConfiguracoesDTO>;
+                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

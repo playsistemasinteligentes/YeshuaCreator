@@ -23,10 +23,10 @@
     public string PedidoId { get; set; }
     public string ClienteId { get; set; }
     public string ClienteNome { get; set; }
-    public string RazaoSocial { get; set; }
+    public string? RazaoSocial { get; set; }
     public string ProdutoId { get; set; }
     public string ProdutoDescricao { get; set; }
-    public string Status { get; set; }
+    public string? Status { get; set; }
     public string Estagio { get; set; }
     public DateTime DataEntregaDe { get; set; }
     public DateTime DataEntregaAte { get; set; }
@@ -34,10 +34,10 @@
     public Decimal Quantidade { get; set; }
     public Decimal SaldoAProduzir { get; set; }
     public Decimal? SaldoAExpedir { get; set; }
-    public string CorFila { get; set; }
-    public string PedidoCliente { get; set; }
-    private List<string> _erroMensagem = null;
- internal ConsultaPedidoEntity(string pedidoid, string clienteid, string clientenome, string razaosocial, string produtoid, string produtodescricao, string status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string corfila, string pedidocliente ){
+    public string? CorFila { get; set; }
+    public string? PedidoCliente { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal ConsultaPedidoEntity(string pedidoid, string clienteid, string clientenome, string? razaosocial, string produtoid, string produtodescricao, string? status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string? corfila, string? pedidocliente ){
  PedidoId = pedidoid; 
  ClienteId = clienteid; 
  ClienteNome = clientenome; 
@@ -48,7 +48,7 @@
  Estagio = estagio; 
  DataEntregaDe = (dataentregade < (new DateTime(1800, 1, 1))) ? DateTime.Now : dataentregade; 
  DataEntregaAte = (dataentregaate < (new DateTime(1800, 1, 1))) ? DateTime.Now : dataentregaate; 
- EmbarqueAlvo = (embarquealvo < (new DateTime(1800, 1, 1))) ? DateTime.Now : embarquealvo; 
+ EmbarqueAlvo = embarquealvo.HasValue && embarquealvo.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : embarquealvo; 
  Quantidade = quantidade; 
  SaldoAProduzir = saldoaproduzir; 
  SaldoAExpedir = saldoaexpedir; 
@@ -70,9 +70,9 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Descricao do Produto deve ser informado.");
    if(string.IsNullOrEmpty(Estagio))
    this._erroMensagem.Add("Estagio deve ser informado.");
-   if(DataEntregaDe == null || DataEntregaDe < (new DateTime(1800, 1, 1)))
+   if(DataEntregaDe < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Entrega de deve ser informado.");
-   if(DataEntregaAte == null || DataEntregaAte < (new DateTime(1800, 1, 1)))
+   if(DataEntregaAte < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Entrega ate deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

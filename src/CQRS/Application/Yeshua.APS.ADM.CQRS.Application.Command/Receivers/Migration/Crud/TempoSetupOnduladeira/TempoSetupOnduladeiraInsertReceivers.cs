@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITempoSetupOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITempoSetupOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TempoSetupOnduladeiraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var temposetuponduladeira = new TempoSetupOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.TEM_ID, c.OND_ID_DE, c.OND_ID_PARA, c.TEM_RESINA_DE, c.TEM_RESINA_PARA, c.TEM_TEMPO);
                  var domainResult = TempoSetupOnduladeiraDomainBehavior.Apply(temposetuponduladeira, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(temposetuponduladeira);
-                     return Success("OK", temposetuponduladeira);
+                     return Task.FromResult(Success("OK", temposetuponduladeira));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, temposetuponduladeira);
+                    return Task.FromResult(Error(e, temposetuponduladeira));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

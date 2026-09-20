@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IImpressoraEntity Create(int imp_id, string imp_ip, string imp_nome )
+                                    } public IImpressoraEntity Create(int imp_id, string? imp_ip, string? imp_nome )
                             {
                                 return Create(null, imp_id, imp_ip, imp_nome);
                             }
 
                             public IImpressoraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int imp_id, string imp_ip, string imp_nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int imp_id, string? imp_ip, string? imp_nome )
                             {
                             var entity = new ImpressoraEntity(imp_id, imp_ip, imp_nome );
 

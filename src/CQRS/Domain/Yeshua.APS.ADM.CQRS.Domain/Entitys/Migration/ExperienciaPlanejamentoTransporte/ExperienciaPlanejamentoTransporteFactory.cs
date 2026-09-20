@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IExperienciaPlanejamentoTransporteEntity Create(int? id, int tipo, string referencia, string pedidoid, string clienteid, string municipio, string regiao, string rotaid, Decimal? peso, Decimal? volume, string observacao, DateTime criadoem, string criadopor )
+                                    } public IExperienciaPlanejamentoTransporteEntity Create(int? id, int tipo, string? referencia, string? pedidoid, string? clienteid, string? municipio, string? regiao, string? rotaid, Decimal? peso, Decimal? volume, string? observacao, DateTime criadoem, string criadopor )
                             {
                                 return Create(null, id, tipo, referencia, pedidoid, clienteid, municipio, regiao, rotaid, peso, volume, observacao, criadoem, criadopor);
                             }
 
                             public IExperienciaPlanejamentoTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tipo, string referencia, string pedidoid, string clienteid, string municipio, string regiao, string rotaid, Decimal? peso, Decimal? volume, string observacao, DateTime criadoem, string criadopor )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tipo, string? referencia, string? pedidoid, string? clienteid, string? municipio, string? regiao, string? rotaid, Decimal? peso, Decimal? volume, string? observacao, DateTime criadoem, string criadopor )
                             {
                             var entity = new ExperienciaPlanejamentoTransporteEntity(id, tipo, referencia, pedidoid, clienteid, municipio, regiao, rotaid, peso, volume, observacao, criadoem, criadopor );
 

@@ -24,28 +24,28 @@
     public string MaquinaId { get; set; }
     public string ProdutoId { get; set; }
     public int SequenciaTransformacao { get; set; }
-    public string GrupoMaquinaId { get; set; }
+    public string? GrupoMaquinaId { get; set; }
     public Decimal? PecasPorPulso { get; set; }
     public Decimal? PrioridadeInformada { get; set; }
-    public string Acao { get; set; }
+    public string? Acao { get; set; }
     public Decimal Performance { get; set; }
     public Decimal? TempoSetup { get; set; }
     public Decimal? TempoSetupAjuste { get; set; }
     public int? ProximaSequenciaTransformacao { get; set; }
-    public string Status { get; set; }
+    public string? Status { get; set; }
     public Decimal? HierarquiaSequenciaTransformacao { get; set; }
     public int? AvaliaCusto { get; set; }
-    public string Operacoes { get; set; }
-    public string ExcecaoOperacoes { get; set; }
+    public string? Operacoes { get; set; }
+    public string? ExcecaoOperacoes { get; set; }
     public Decimal? PercentualInicioPassoAnterior { get; set; }
-    public string LinhaDireta { get; set; }
+    public string? LinhaDireta { get; set; }
     public int? TemplateDeTestesId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal RoteiroEntity(int? id, string maquinaid, string produtoid, int sequenciatransformacao, string grupomaquinaid, Decimal? pecasporpulso, Decimal? prioridadeinformada, string acao, Decimal performance, Decimal? temposetup, Decimal? temposetupajuste, int? proximasequenciatransformacao, string status, Decimal? hierarquiasequenciatransformacao, int? avaliacusto, string operacoes, string excecaooperacoes, Decimal? percentualiniciopassoanterior, string linhadireta, int? templatedetestesid ){
+    private List<string> _erroMensagem = new List<string>();
+ internal RoteiroEntity(int? id, string maquinaid, string produtoid, int sequenciatransformacao, string? grupomaquinaid, Decimal? pecasporpulso, Decimal? prioridadeinformada, string? acao, Decimal performance, Decimal? temposetup, Decimal? temposetupajuste, int? proximasequenciatransformacao, string? status, Decimal? hierarquiasequenciatransformacao, int? avaliacusto, string? operacoes, string? excecaooperacoes, Decimal? percentualiniciopassoanterior, string? linhadireta, int? templatedetestesid ){
  Id = id; 
  MaquinaId = maquinaid; 
  ProdutoId = produtoid; 

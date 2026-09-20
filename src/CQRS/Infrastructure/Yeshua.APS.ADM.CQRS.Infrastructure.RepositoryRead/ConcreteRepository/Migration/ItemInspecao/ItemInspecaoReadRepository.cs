@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItemInspecaoDTO> getItemInspecao(Command.Read.ItemInspecaoReadCommand command )
         {
-            DataPagination<ItemInspecaoDTO> customResult = null;
+            var customResult = new DataPagination<ItemInspecaoDTO>();
             var customHandled = false;
             TryGetItemInspecaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItemInspecaoTenantIDDTO> getItemInspecaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItemInspecaoTenantIDDTO> lista;
             var query = _query.ItemInspecaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItemInspecaoTenantIDDTO>(query.Query,query.Parameters) as List<ItemInspecaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItemInspecaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItemInspecaoUserIdDTO> getItemInspecaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItemInspecaoUserIdDTO> lista;
             var query = _query.ItemInspecaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItemInspecaoUserIdDTO>(query.Query,query.Parameters) as List<ItemInspecaoUserIdDTO>;
+                var lista = _unitOfWork.Query<ItemInspecaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITI_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITI_DESCQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters) as List<ItemInspecaoDTO>;
+                var result = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

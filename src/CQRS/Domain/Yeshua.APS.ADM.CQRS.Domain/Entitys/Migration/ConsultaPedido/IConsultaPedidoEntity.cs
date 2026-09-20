@@ -23,10 +23,10 @@
     string PedidoId { get; set; }
     string ClienteId { get; set; }
     string ClienteNome { get; set; }
-    string RazaoSocial { get; set; }
+    string? RazaoSocial { get; set; }
     string ProdutoId { get; set; }
     string ProdutoDescricao { get; set; }
-    string Status { get; set; }
+    string? Status { get; set; }
     string Estagio { get; set; }
     DateTime DataEntregaDe { get; set; }
     DateTime DataEntregaAte { get; set; }
@@ -34,8 +34,8 @@
     Decimal Quantidade { get; set; }
     Decimal SaldoAProduzir { get; set; }
     Decimal? SaldoAExpedir { get; set; }
-    string CorFila { get; set; }
-    string PedidoCliente { get; set; }
+    string? CorFila { get; set; }
+    string? PedidoCliente { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

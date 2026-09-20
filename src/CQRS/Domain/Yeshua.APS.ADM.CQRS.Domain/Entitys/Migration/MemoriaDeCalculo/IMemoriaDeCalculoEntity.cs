@@ -24,7 +24,7 @@
     int MEM_ID { get; set; }
     int? ORC_ID { get; set; }
     Decimal? MEM_VALOR { get; set; }
-    string MEM_DESCRICAO { get; set; }
+    string? MEM_DESCRICAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

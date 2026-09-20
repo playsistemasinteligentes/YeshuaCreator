@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TurnoDTO> getTurno(Command.Read.TurnoReadCommand command )
         {
-            DataPagination<TurnoDTO> customResult = null;
+            var customResult = new DataPagination<TurnoDTO>();
             var customHandled = false;
             TryGetTurnoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TurnoTenantIDDTO> getTurnoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TurnoTenantIDDTO> lista;
             var query = _query.TurnoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TurnoTenantIDDTO>(query.Query,query.Parameters) as List<TurnoTenantIDDTO>;
+                var lista = _unitOfWork.Query<TurnoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TurnoUserIdDTO> getTurnoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TurnoUserIdDTO> lista;
             var query = _query.TurnoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TurnoUserIdDTO>(query.Query,query.Parameters) as List<TurnoUserIdDTO>;
+                var lista = _unitOfWork.Query<TurnoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_PRIORIDADEQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA1Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA1Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA2Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA2Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA3Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA3Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA4Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA4Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA5Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA5Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA6Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA6Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_INI_DIA7Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_HORA_FIM_DIA7Query(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters) as List<TurnoDTO>;
+                var result = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

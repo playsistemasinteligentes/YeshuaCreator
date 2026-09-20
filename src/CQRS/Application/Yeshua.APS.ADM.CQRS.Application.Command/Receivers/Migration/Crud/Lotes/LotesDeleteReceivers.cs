@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ILotesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ILotesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.LotesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var lotes = new LotesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MOV_LOTE, c.MOV_SUB_LOTE, c.LOT_LARGURA, c.LOT_COMPRIMENTO, c.LOT_DIAMETRO);
                  var domainResult = LotesDomainBehavior.Apply(lotes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(lotes);
-                     return Success("OK", lotes);
+                     return Task.FromResult(Success("OK", lotes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, lotes);
+                    return Task.FromResult(Error(e, lotes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

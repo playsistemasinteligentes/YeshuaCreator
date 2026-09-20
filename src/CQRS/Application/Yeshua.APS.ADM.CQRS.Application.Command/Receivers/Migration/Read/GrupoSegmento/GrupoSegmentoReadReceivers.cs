@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<GrupoSegmentoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<GrupoSegmentoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.GrupoSegmentoReadCommand c) 
              {    
                 var GrupoSegmentoReadRepository = _repository.getGrupoSegmento(c);
-                return Success("OK", GrupoSegmentoReadRepository);
+                return Task.FromResult(Success("OK", GrupoSegmentoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

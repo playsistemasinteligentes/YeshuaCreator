@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TransportadoraDTO> getTransportadora(Command.Read.TransportadoraReadCommand command )
         {
-            DataPagination<TransportadoraDTO> customResult = null;
+            var customResult = new DataPagination<TransportadoraDTO>();
             var customHandled = false;
             TryGetTransportadoraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TransportadoraTenantIDDTO> getTransportadoraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TransportadoraTenantIDDTO> lista;
             var query = _query.TransportadoraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TransportadoraTenantIDDTO>(query.Query,query.Parameters) as List<TransportadoraTenantIDDTO>;
+                var lista = _unitOfWork.Query<TransportadoraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TransportadoraUserIdDTO> getTransportadoraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TransportadoraUserIdDTO> lista;
             var query = _query.TransportadoraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TransportadoraUserIdDTO>(query.Query,query.Parameters) as List<TransportadoraUserIdDTO>;
+                var lista = _unitOfWork.Query<TransportadoraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_IDQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_CNPJQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_INSCRICAO_ESTADUALQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_RNTRCQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_EMAILQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_RESPONSAVELQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_FONEQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_ID_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_ID_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<RoteiroPedidoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<RoteiroPedidoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.RoteiroPedidoReadCommand c) 
              {    
                 var RoteiroPedidoReadRepository = _repository.getRoteiroPedido(c);
-                return Success("OK", RoteiroPedidoReadRepository);
+                return Task.FromResult(Success("OK", RoteiroPedidoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

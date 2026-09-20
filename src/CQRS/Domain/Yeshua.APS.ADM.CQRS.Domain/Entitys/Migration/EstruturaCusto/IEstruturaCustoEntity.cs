@@ -22,7 +22,7 @@
 {
     int EST_ID { get; set; }
     int? ITO_ID { get; set; }
-    string ORD_ID { get; set; }
+    string? ORD_ID { get; set; }
     string PRO_ID { get; set; }
     string PRO_ID_PRODUTO { get; set; }
     string PRO_ID_COMPONENTE { get; set; }

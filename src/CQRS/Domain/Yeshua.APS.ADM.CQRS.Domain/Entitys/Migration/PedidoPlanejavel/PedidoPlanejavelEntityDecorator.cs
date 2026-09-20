@@ -137,7 +137,7 @@
                                         }
                                     }
 
-                                    public string Regiao
+                                    public string? Regiao
                                     {
                                         get => _inner.Regiao;
                                         set
@@ -151,7 +151,7 @@
                                         }
                                     }
 
-                                    public string Bairro
+                                    public string? Bairro
                                     {
                                         get => _inner.Bairro;
                                         set
@@ -165,7 +165,7 @@
                                         }
                                     }
 
-                                    public string RotaId
+                                    public string? RotaId
                                     {
                                         get => _inner.RotaId;
                                         set
@@ -263,7 +263,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -277,7 +277,7 @@
                                         }
                                     }
 
-                                    public string CargaAtualId
+                                    public string? CargaAtualId
                                     {
                                         get => _inner.CargaAtualId;
                                         set
@@ -291,7 +291,7 @@
                                         }
                                     }
 
-                                    public string VersaoPlanejamento
+                                    public string? VersaoPlanejamento
                                     {
                                         get => _inner.VersaoPlanejamento;
                                         set
@@ -305,7 +305,7 @@
                                         }
                                     }
 
-                                    public string AlertasResumo
+                                    public string? AlertasResumo
                                     {
                                         get => _inner.AlertasResumo;
                                         set

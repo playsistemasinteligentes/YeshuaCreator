@@ -19,13 +19,13 @@ namespace Repositorio.Outputs
     public partial record RotaPontosMapaDTO
     {
     public int id { get; set; }
-    public string rot_id { get; set; }
-    public string pon_id_destino { get; set; }
-    public string pon_id_origem { get; set; }
+    public string rot_id { get; set; } = string.Empty;
+    public string pon_id_destino { get; set; } = string.Empty;
+    public string pon_id_origem { get; set; } = string.Empty;
     public Decimal rot_custo_total { get; set; }
-    public string pon_id_roteiro { get; set; }
+    public string pon_id_roteiro { get; set; } = string.Empty;
     public int rot_ordem_roteiro { get; set; }
-    public string rot_tipo { get; set; }
+    public string rot_tipo { get; set; } = string.Empty;
     public Decimal rot_distancia { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

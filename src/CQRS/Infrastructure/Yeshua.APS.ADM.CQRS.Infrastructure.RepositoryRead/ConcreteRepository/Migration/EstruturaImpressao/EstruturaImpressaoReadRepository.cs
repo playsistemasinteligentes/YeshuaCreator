@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<EstruturaImpressaoDTO> getEstruturaImpressao(Command.Read.EstruturaImpressaoReadCommand command )
         {
-            DataPagination<EstruturaImpressaoDTO> customResult = null;
+            var customResult = new DataPagination<EstruturaImpressaoDTO>();
             var customHandled = false;
             TryGetEstruturaImpressaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EstruturaImpressaoCLI_IDDTO> getEstruturaImpressaoReadFKCLI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstruturaImpressaoCLI_IDDTO> lista;
             var query = _query.EstruturaImpressaoCLI_IDQuery(command );
 
-                lista = _unitOfWork.Query<EstruturaImpressaoCLI_IDDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoCLI_IDDTO>;
+                var lista = _unitOfWork.Query<EstruturaImpressaoCLI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EstruturaImpressaoTenantIDDTO> getEstruturaImpressaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstruturaImpressaoTenantIDDTO> lista;
             var query = _query.EstruturaImpressaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EstruturaImpressaoTenantIDDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<EstruturaImpressaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<EstruturaImpressaoUserIdDTO> getEstruturaImpressaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstruturaImpressaoUserIdDTO> lista;
             var query = _query.EstruturaImpressaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EstruturaImpressaoUserIdDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoUserIdDTO>;
+                var lista = _unitOfWork.Query<EstruturaImpressaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHTML_ESTRUTURAQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters) as List<EstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<EstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

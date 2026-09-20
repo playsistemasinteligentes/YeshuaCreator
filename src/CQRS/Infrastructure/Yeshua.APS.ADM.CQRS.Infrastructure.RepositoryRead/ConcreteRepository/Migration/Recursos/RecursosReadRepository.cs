@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RecursosDTO> getRecursos(Command.Read.RecursosReadCommand command )
         {
-            DataPagination<RecursosDTO> customResult = null;
+            var customResult = new DataPagination<RecursosDTO>();
             var customHandled = false;
             TryGetRecursosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RecursosCAL_IDDTO> getRecursosReadFKCAL_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RecursosCAL_IDDTO> lista;
             var query = _query.RecursosCAL_IDQuery(command );
 
-                lista = _unitOfWork.Query<RecursosCAL_IDDTO>(query.Query,query.Parameters) as List<RecursosCAL_IDDTO>;
+                var lista = _unitOfWork.Query<RecursosCAL_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RecursosTenantIDDTO> getRecursosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RecursosTenantIDDTO> lista;
             var query = _query.RecursosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RecursosTenantIDDTO>(query.Query,query.Parameters) as List<RecursosTenantIDDTO>;
+                var lista = _unitOfWork.Query<RecursosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<RecursosUserIdDTO> getRecursosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RecursosUserIdDTO> lista;
             var query = _query.RecursosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RecursosUserIdDTO>(query.Query,query.Parameters) as List<RecursosUserIdDTO>;
+                var lista = _unitOfWork.Query<RecursosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREC_IDQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREC_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_IDQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREC_CONTROL_IPQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRE_IDQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters) as List<RecursosDTO>;
+                var result = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

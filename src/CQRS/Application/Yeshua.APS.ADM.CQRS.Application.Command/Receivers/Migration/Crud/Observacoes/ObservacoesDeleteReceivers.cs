@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IObservacoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IObservacoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ObservacoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var observacoes = new ObservacoesFactory(_logger, _domainTrackingPolicy).Create(context, c.OBS_ID, c.OBS_TIPO, c.OBS_DESCRICAO, c.CLI_ID, c.MAQ_ID, c.PRO_ID, c.ROT_SEQ_TRANFORMACAO, c.OBS_INTEGRACAO);
                  var domainResult = ObservacoesDomainBehavior.Apply(observacoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(observacoes);
-                     return Success("OK", observacoes);
+                     return Task.FromResult(Success("OK", observacoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, observacoes);
+                    return Task.FromResult(Error(e, observacoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -77,7 +77,7 @@
                                         }
                                     }
 
-                                    public string MUN_NOME
+                                    public string? MUN_NOME
                                     {
                                         get => _inner.MUN_NOME;
                                         set
@@ -91,7 +91,7 @@
                                         }
                                     }
 
-                                    public string UF_COD
+                                    public string? UF_COD
                                     {
                                         get => _inner.UF_COD;
                                         set
@@ -105,7 +105,7 @@
                                         }
                                     }
 
-                                    public string MUN_CODIGO_IBGE
+                                    public string? MUN_CODIGO_IBGE
                                     {
                                         get => _inner.MUN_CODIGO_IBGE;
                                         set
@@ -147,7 +147,7 @@
                                         }
                                     }
 
-                                    public string MUN_ID_INTEGRACAO_ERP
+                                    public string? MUN_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.MUN_ID_INTEGRACAO_ERP;
                                         set
@@ -161,7 +161,7 @@
                                         }
                                     }
 
-                                    public string MUN_CODIGO_SIAFI
+                                    public string? MUN_CODIGO_SIAFI
                                     {
                                         get => _inner.MUN_CODIGO_SIAFI;
                                         set
@@ -175,7 +175,7 @@
                                         }
                                     }
 
-                                    public string MUN_CODIGO_CNPJ
+                                    public string? MUN_CODIGO_CNPJ
                                     {
                                         get => _inner.MUN_CODIGO_CNPJ;
                                         set

@@ -18,8 +18,8 @@ namespace Repositorio.Outputs
 {
     public partial record EnderecosDTO
     {
-    public string end_id { get; set; }
-    public string end_grupo { get; set; }
+    public string end_id { get; set; } = string.Empty;
+    public string end_grupo { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -125,7 +125,7 @@
                                         }
                                     }
 
-                                    public string TES_NOME_TECNICO
+                                    public string? TES_NOME_TECNICO
                                     {
                                         get => _inner.TES_NOME_TECNICO;
                                         set
@@ -153,7 +153,7 @@
                                         }
                                     }
 
-                                    public string TES_OP
+                                    public string? TES_OP
                                     {
                                         get => _inner.TES_OP;
                                         set
@@ -195,7 +195,7 @@
                                         }
                                     }
 
-                                    public string TES_VALOR_TEXTO
+                                    public string? TES_VALOR_TEXTO
                                     {
                                         get => _inner.TES_VALOR_TEXTO;
                                         set
@@ -223,7 +223,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set
@@ -237,7 +237,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID
+                                    public string? PRO_ID
                                     {
                                         get => _inner.PRO_ID;
                                         set
@@ -251,7 +251,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID
+                                    public string? MAQ_ID
                                     {
                                         get => _inner.MAQ_ID;
                                         set

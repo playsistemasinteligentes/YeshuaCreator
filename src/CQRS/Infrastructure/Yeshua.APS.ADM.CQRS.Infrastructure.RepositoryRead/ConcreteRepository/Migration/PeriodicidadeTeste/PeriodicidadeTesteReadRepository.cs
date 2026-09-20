@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PeriodicidadeTesteDTO> getPeriodicidadeTeste(Command.Read.PeriodicidadeTesteReadCommand command )
         {
-            DataPagination<PeriodicidadeTesteDTO> customResult = null;
+            var customResult = new DataPagination<PeriodicidadeTesteDTO>();
             var customHandled = false;
             TryGetPeriodicidadeTesteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PeriodicidadeTesteTenantIDDTO> getPeriodicidadeTesteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PeriodicidadeTesteTenantIDDTO> lista;
             var query = _query.PeriodicidadeTesteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PeriodicidadeTesteTenantIDDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteTenantIDDTO>;
+                var lista = _unitOfWork.Query<PeriodicidadeTesteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PeriodicidadeTesteUserIdDTO> getPeriodicidadeTesteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PeriodicidadeTesteUserIdDTO> lista;
             var query = _query.PeriodicidadeTesteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PeriodicidadeTesteUserIdDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteUserIdDTO>;
+                var lista = _unitOfWork.Query<PeriodicidadeTesteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_IDQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_QTDQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_IDQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters) as List<PeriodicidadeTesteDTO>;
+                var result = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -21,14 +21,14 @@
                     public partial class ConsultasEntity : IConsultasEntity
 {
     public int? Id { get; set; }
-    public string CON_CASAS_DECIMAIS { get; set; }
-    public string CON_CONEXAO { get; set; }
+    public string? CON_CASAS_DECIMAIS { get; set; }
+    public string? CON_CONEXAO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ConsultasEntity(int? id, string con_casas_decimais, string con_conexao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ConsultasEntity(int? id, string? con_casas_decimais, string? con_conexao ){
  Id = id; 
  CON_CASAS_DECIMAIS = con_casas_decimais; 
  CON_CONEXAO = con_conexao; 

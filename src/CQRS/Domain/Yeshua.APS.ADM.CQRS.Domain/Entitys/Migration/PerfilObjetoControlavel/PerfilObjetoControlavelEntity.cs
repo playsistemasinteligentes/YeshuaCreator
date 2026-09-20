@@ -23,13 +23,13 @@
     public int? Id { get; set; }
     public int PER_ID { get; set; }
     public string OBJ_ID { get; set; }
-    public string PEO_ACAO { get; set; }
+    public string? PEO_ACAO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal PerfilObjetoControlavelEntity(int? id, int per_id, string obj_id, string peo_acao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal PerfilObjetoControlavelEntity(int? id, int per_id, string obj_id, string? peo_acao ){
  Id = id; 
  PER_ID = per_id; 
  OBJ_ID = obj_id; 

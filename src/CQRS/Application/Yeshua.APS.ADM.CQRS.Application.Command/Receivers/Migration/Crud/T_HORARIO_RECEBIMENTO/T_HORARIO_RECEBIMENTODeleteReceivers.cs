@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_HORARIO_RECEBIMENTOEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_HORARIO_RECEBIMENTOEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_HORARIO_RECEBIMENTOCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_horario_recebimento = new T_HORARIO_RECEBIMENTOFactory(_logger, _domainTrackingPolicy).Create(context, c.HRE_DIA_DA_SEMANA, c.HRE_HORA_INICIAL, c.HRE_HORA_FINAL, c.CLI_ID, c.HRE_ID);
                  var domainResult = T_HORARIO_RECEBIMENTODomainBehavior.Apply(t_horario_recebimento, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(t_horario_recebimento);
-                     return Success("OK", t_horario_recebimento);
+                     return Task.FromResult(Success("OK", t_horario_recebimento));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_horario_recebimento);
+                    return Task.FromResult(Error(e, t_horario_recebimento));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

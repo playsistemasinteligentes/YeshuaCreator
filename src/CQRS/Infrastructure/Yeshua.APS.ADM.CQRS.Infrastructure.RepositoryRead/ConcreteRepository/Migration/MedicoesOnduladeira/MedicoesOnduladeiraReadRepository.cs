@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MedicoesOnduladeiraDTO> getMedicoesOnduladeira(Command.Read.MedicoesOnduladeiraReadCommand command )
         {
-            DataPagination<MedicoesOnduladeiraDTO> customResult = null;
+            var customResult = new DataPagination<MedicoesOnduladeiraDTO>();
             var customHandled = false;
             TryGetMedicoesOnduladeiraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MedicoesOnduladeiraTenantIDDTO> getMedicoesOnduladeiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MedicoesOnduladeiraTenantIDDTO> lista;
             var query = _query.MedicoesOnduladeiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MedicoesOnduladeiraTenantIDDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<MedicoesOnduladeiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MedicoesOnduladeiraUserIdDTO> getMedicoesOnduladeiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MedicoesOnduladeiraUserIdDTO> lista;
             var query = _query.MedicoesOnduladeiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MedicoesOnduladeiraUserIdDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraUserIdDTO>;
+                var lista = _unitOfWork.Query<MedicoesOnduladeiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -186,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraDTO>;
+                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -194,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraDTO>;
+                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraDTO>;
+                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraDTO>;
+                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters) as List<MedicoesOnduladeiraDTO>;
+                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

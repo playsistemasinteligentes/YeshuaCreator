@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_NegocioDTO> getT_Negocio(Command.Read.T_NegocioReadCommand command )
         {
-            DataPagination<T_NegocioDTO> customResult = null;
+            var customResult = new DataPagination<T_NegocioDTO>();
             var customHandled = false;
             TryGetT_NegocioCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_NegocioTenantIDDTO> getT_NegocioReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_NegocioTenantIDDTO> lista;
             var query = _query.T_NegocioTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_NegocioTenantIDDTO>(query.Query,query.Parameters) as List<T_NegocioTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_NegocioTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_NegocioUserIdDTO> getT_NegocioReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_NegocioUserIdDTO> lista;
             var query = _query.T_NegocioUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_NegocioUserIdDTO>(query.Query,query.Parameters) as List<T_NegocioUserIdDTO>;
+                var lista = _unitOfWork.Query<T_NegocioUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNEG_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters) as List<T_NegocioDTO>;
+                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNEG_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters) as List<T_NegocioDTO>;
+                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters) as List<T_NegocioDTO>;
+                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters) as List<T_NegocioDTO>;
+                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters) as List<T_NegocioDTO>;
+                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters) as List<T_NegocioDTO>;
+                var result = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

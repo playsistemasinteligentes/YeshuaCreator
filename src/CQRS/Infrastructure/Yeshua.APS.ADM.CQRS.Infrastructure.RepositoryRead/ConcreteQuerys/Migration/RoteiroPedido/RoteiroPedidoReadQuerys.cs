@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel RoteiroPedidoQuery(Command.Read.RoteiroPedidoReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -76,7 +75,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         public QueryModel RoteiroPedidoPedidoIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [ORD_ID] AS [PedidoId] from [V_CONSULTA_PEDIDO] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -101,7 +99,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         public QueryModel RoteiroPedidoMaquinaIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Descricao] from [Maquina] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -132,7 +129,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         public QueryModel RoteiroPedidoProdutoIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Descricao] from [Produto] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -162,7 +158,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByPedidoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -176,7 +171,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByMaquinaIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -190,7 +184,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByProdutoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -204,7 +197,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsBySequenciaTransformacaoQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -218,7 +210,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByStatusCadastroQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -232,7 +223,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByTipoPlanejamentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -246,7 +236,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByCalendarioIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -260,7 +249,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByHierarquiaSequenciaTransformacaoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -274,7 +262,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByProximaSequenciaTransformacaoQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -288,7 +275,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByPerformanceQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -302,7 +288,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByTempoSetupQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -316,7 +301,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByTempoSetupAjusteQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -330,7 +314,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByPecasPorPulsoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -344,7 +327,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByPrioridadeInformadaQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -358,7 +340,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -372,7 +353,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByOperacoesQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -386,7 +366,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByExcecaoOperacoesQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -400,7 +379,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByLinhaDiretaQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -414,7 +392,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByAvaliaCustoQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -428,7 +405,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByPercentualInicioPassoAnteriorQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -442,7 +418,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByMaquinaLarguraUtilQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -456,7 +431,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByGrupoTipoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -470,7 +444,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel ExistsByGrupoPerformanceMetroLinearQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -484,7 +457,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByPedidoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -498,7 +470,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByMaquinaIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -512,7 +483,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByProdutoIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -526,7 +496,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstBySequenciaTransformacaoQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -540,7 +509,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByStatusCadastroQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -554,7 +522,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByTipoPlanejamentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -568,7 +535,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByCalendarioIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -582,7 +548,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByHierarquiaSequenciaTransformacaoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -596,7 +561,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByProximaSequenciaTransformacaoQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -610,7 +574,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByPerformanceQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -624,7 +587,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByTempoSetupQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -638,7 +600,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByTempoSetupAjusteQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -652,7 +613,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByPecasPorPulsoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -666,7 +626,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByPrioridadeInformadaQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -680,7 +639,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -694,7 +652,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByOperacoesQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -708,7 +665,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByExcecaoOperacoesQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -722,7 +678,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByLinhaDiretaQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -736,7 +691,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByAvaliaCustoQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -750,7 +704,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByPercentualInicioPassoAnteriorQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -764,7 +717,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByMaquinaLarguraUtilQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -778,7 +730,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByGrupoTipoQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -792,7 +743,6 @@ if (Command.AvaliaCusto.HasValue) whereClauses.Add($"[AVALIA_CUSTO] = @AvaliaCus
         }
         public QueryModel FirstByGrupoPerformanceMetroLinearQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

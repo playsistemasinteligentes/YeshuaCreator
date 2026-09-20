@@ -19,9 +19,9 @@ namespace Repositorio.Outputs
     public partial record GrupoSegmentoDTO
     {
     public int id { get; set; }
-    public string grs_id { get; set; }
-    public string grs_descricao { get; set; }
-    public string grs_integracao_erp { get; set; }
+    public string grs_id { get; set; } = string.Empty;
+    public string grs_descricao { get; set; } = string.Empty;
+    public string grs_integracao_erp { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

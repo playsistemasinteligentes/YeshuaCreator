@@ -22,24 +22,24 @@
 {
     public int? Id { get; set; }
     public int ORC_ID { get; set; }
-    public string REP_ID { get; set; }
-    public string CON_ID { get; set; }
-    public string ORC_TIPO_FRETE { get; set; }
+    public string? REP_ID { get; set; }
+    public string? CON_ID { get; set; }
+    public string? ORC_TIPO_FRETE { get; set; }
     public DateTime? ORC_EMISSAO { get; set; }
-    public string CLI_ID { get; set; }
+    public string? CLI_ID { get; set; }
     public int VER_ID { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal OrcamentoEntity(int? id, int orc_id, string rep_id, string con_id, string orc_tipo_frete, DateTime? orc_emissao, string cli_id, int ver_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal OrcamentoEntity(int? id, int orc_id, string? rep_id, string? con_id, string? orc_tipo_frete, DateTime? orc_emissao, string? cli_id, int ver_id ){
  Id = id; 
  ORC_ID = orc_id; 
  REP_ID = rep_id; 
  CON_ID = con_id; 
  ORC_TIPO_FRETE = orc_tipo_frete; 
- ORC_EMISSAO = (orc_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : orc_emissao; 
+ ORC_EMISSAO = orc_emissao.HasValue && orc_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : orc_emissao; 
  CLI_ID = cli_id; 
  VER_ID = ver_id; 
  Deleted = false; 

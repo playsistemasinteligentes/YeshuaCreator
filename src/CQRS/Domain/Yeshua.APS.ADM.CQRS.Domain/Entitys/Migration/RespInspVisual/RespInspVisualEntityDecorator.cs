@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string RIV_STATUS
+                                    public string? RIV_STATUS
                                     {
                                         get => _inner.RIV_STATUS;
                                         set

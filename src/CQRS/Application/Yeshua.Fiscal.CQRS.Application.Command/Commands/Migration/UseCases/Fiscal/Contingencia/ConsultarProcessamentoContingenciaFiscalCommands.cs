@@ -15,9 +15,12 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record ConsultarProcessamentoContingenciaFiscalInputCommand : ICommand
+public partial record ConsultarProcessamentoContingenciaFiscalInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int EntradaFiscalContingenciaId { get; set; }
+
+    public string OperationalEntity => "EntradaFiscalContingencia";
+    public string? OperationalRecordId => null;
 }
 
 public partial record ConsultarProcessamentoContingenciaFiscalOutputCommand : ICommand

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ILaudoTesteFisicoEntity Create(int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string ltf_obs, string ltf_status, string ord_id, string rot_pro_id, int? fpr_seq_repeticao, int? use_id )
+                                    } public ILaudoTesteFisicoEntity Create(int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string? ltf_obs, string? ltf_status, string? ord_id, string? rot_pro_id, int? fpr_seq_repeticao, int? use_id )
                             {
                                 return Create(null, id, ltf_id, ltf_emissao, ltf_valor, ltf_obs, ltf_status, ord_id, rot_pro_id, fpr_seq_repeticao, use_id);
                             }
 
                             public ILaudoTesteFisicoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string ltf_obs, string ltf_status, string ord_id, string rot_pro_id, int? fpr_seq_repeticao, int? use_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string? ltf_obs, string? ltf_status, string? ord_id, string? rot_pro_id, int? fpr_seq_repeticao, int? use_id )
                             {
                             var entity = new LaudoTesteFisicoEntity(id, ltf_id, ltf_emissao, ltf_valor, ltf_obs, ltf_status, ord_id, rot_pro_id, fpr_seq_repeticao, use_id );
 

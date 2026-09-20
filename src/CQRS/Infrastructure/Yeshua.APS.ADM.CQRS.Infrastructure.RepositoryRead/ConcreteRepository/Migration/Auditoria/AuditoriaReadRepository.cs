@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<AuditoriaDTO> getAuditoria(Command.Read.AuditoriaReadCommand command )
         {
-            DataPagination<AuditoriaDTO> customResult = null;
+            var customResult = new DataPagination<AuditoriaDTO>();
             var customHandled = false;
             TryGetAuditoriaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<AuditoriaUSE_IDDTO> getAuditoriaReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<AuditoriaUSE_IDDTO> lista;
             var query = _query.AuditoriaUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<AuditoriaUSE_IDDTO>(query.Query,query.Parameters) as List<AuditoriaUSE_IDDTO>;
+                var lista = _unitOfWork.Query<AuditoriaUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<AuditoriaTenantIDDTO> getAuditoriaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<AuditoriaTenantIDDTO> lista;
             var query = _query.AuditoriaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<AuditoriaTenantIDDTO>(query.Query,query.Parameters) as List<AuditoriaTenantIDDTO>;
+                var lista = _unitOfWork.Query<AuditoriaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<AuditoriaUserIdDTO> getAuditoriaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<AuditoriaUserIdDTO> lista;
             var query = _query.AuditoriaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<AuditoriaUserIdDTO>(query.Query,query.Parameters) as List<AuditoriaUserIdDTO>;
+                var lista = _unitOfWork.Query<AuditoriaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIDQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDATAQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROTINAQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHISTORICOQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCHAVEQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters) as List<AuditoriaDTO>;
+                var result = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

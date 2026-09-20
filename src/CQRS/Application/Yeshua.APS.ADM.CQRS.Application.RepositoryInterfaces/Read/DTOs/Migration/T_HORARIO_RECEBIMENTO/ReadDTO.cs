@@ -21,7 +21,7 @@ namespace Repositorio.Outputs
     public int hre_dia_da_semana { get; set; }
     public DateTime hre_hora_inicial { get; set; }
     public DateTime hre_hora_final { get; set; }
-    public string cli_id { get; set; }
+    public string cli_id { get; set; } = string.Empty;
     public int hre_id { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

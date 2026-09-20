@@ -31,7 +31,8 @@ namespace Command.Receivers.UseCase
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public GerarCenariosPlanejamentoTransporteHandler(
             Dominio.Interfaces.ILogger logger,
-            Aplication.Interfaces.Services.IExecutionContext context)
+            Aplication.Interfaces.Services.IExecutionContext context
+)
             : base(logger, context)
         {
             _logger = logger;
@@ -43,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<GerarCenariosPlanejamentoTransporteOutputCommand> retorno = Success("OK", null);
+                 State<GerarCenariosPlanejamentoTransporteOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<GerarCenariosPlanejamentoTransporteOutputCommand> e)
@@ -52,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<GerarCenariosPlanejamentoTransporteOutputCommand>> CustomActionHookAsync(State<GerarCenariosPlanejamentoTransporteOutputCommand> state, GerarCenariosPlanejamentoTransporteInputCommand comand, CancellationToken cancellationToken);

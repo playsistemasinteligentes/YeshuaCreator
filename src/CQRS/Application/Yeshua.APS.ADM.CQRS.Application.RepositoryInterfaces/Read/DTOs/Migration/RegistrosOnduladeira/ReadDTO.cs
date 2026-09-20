@@ -20,8 +20,8 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int reg_id { get; set; }
-    public string reg_resposta { get; set; }
-    public string reg_status { get; set; }
+    public string reg_resposta { get; set; } = string.Empty;
+    public string reg_status { get; set; } = string.Empty;
     public DateTime reg_data_inicio { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

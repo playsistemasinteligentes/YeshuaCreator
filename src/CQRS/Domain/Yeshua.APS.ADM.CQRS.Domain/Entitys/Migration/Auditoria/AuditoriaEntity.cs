@@ -24,14 +24,14 @@
     public DateTime DATA { get; set; }
     public int USE_ID { get; set; }
     public string ROTINA { get; set; }
-    public string HISTORICO { get; set; }
-    public string CHAVE { get; set; }
+    public string? HISTORICO { get; set; }
+    public string? CHAVE { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal AuditoriaEntity(int id, DateTime data, int use_id, string rotina, string historico, string chave ){
+    private List<string> _erroMensagem = new List<string>();
+ internal AuditoriaEntity(int id, DateTime data, int use_id, string rotina, string? historico, string? chave ){
  ID = id; 
  DATA = (data < (new DateTime(1800, 1, 1))) ? DateTime.Now : data; 
  USE_ID = use_id; 
@@ -44,7 +44,7 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(DATA == null || DATA < (new DateTime(1800, 1, 1)))
+   if(DATA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DATA deve ser informado.");
    if(string.IsNullOrEmpty(ROTINA))
    this._erroMensagem.Add("ROTINA deve ser informado.");

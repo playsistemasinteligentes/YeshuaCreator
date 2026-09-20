@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RelatoriosDTO> getRelatorios(Command.Read.RelatoriosReadCommand command )
         {
-            DataPagination<RelatoriosDTO> customResult = null;
+            var customResult = new DataPagination<RelatoriosDTO>();
             var customHandled = false;
             TryGetRelatoriosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RelatoriosTenantIDDTO> getRelatoriosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RelatoriosTenantIDDTO> lista;
             var query = _query.RelatoriosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RelatoriosTenantIDDTO>(query.Query,query.Parameters) as List<RelatoriosTenantIDDTO>;
+                var lista = _unitOfWork.Query<RelatoriosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RelatoriosUserIdDTO> getRelatoriosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RelatoriosUserIdDTO> lista;
             var query = _query.RelatoriosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RelatoriosUserIdDTO>(query.Query,query.Parameters) as List<RelatoriosUserIdDTO>;
+                var lista = _unitOfWork.Query<RelatoriosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_IDQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_NOME_RELATORIOQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_NOME_CAMPOQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_TIPO_CAMPOQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_POS_XQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_POS_YQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREL_TAMANHO_FONTEQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters) as List<RelatoriosDTO>;
+                var result = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

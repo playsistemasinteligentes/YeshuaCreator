@@ -30,7 +30,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal LotesEntity(int? id, string mov_lote, string mov_sub_lote, Decimal? lot_largura, Decimal? lot_comprimento, Decimal? lot_diametro ){
  Id = id; 
  MOV_LOTE = mov_lote; 

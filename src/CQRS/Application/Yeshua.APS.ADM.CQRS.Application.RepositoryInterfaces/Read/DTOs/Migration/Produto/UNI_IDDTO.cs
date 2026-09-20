@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record ProdutoUNI_IDDTO
     {
-    public string uni_id { get; set; }
+    public string uni_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

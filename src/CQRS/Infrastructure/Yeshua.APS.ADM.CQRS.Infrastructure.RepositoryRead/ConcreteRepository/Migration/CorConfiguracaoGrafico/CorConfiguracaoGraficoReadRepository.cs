@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CorConfiguracaoGraficoDTO> getCorConfiguracaoGrafico(Command.Read.CorConfiguracaoGraficoReadCommand command )
         {
-            DataPagination<CorConfiguracaoGraficoDTO> customResult = null;
+            var customResult = new DataPagination<CorConfiguracaoGraficoDTO>();
             var customHandled = false;
             TryGetCorConfiguracaoGraficoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CorConfiguracaoGraficoTenantIDDTO> getCorConfiguracaoGraficoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CorConfiguracaoGraficoTenantIDDTO> lista;
             var query = _query.CorConfiguracaoGraficoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CorConfiguracaoGraficoTenantIDDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoTenantIDDTO>;
+                var lista = _unitOfWork.Query<CorConfiguracaoGraficoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CorConfiguracaoGraficoUserIdDTO> getCorConfiguracaoGraficoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CorConfiguracaoGraficoUserIdDTO> lista;
             var query = _query.CorConfiguracaoGraficoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CorConfiguracaoGraficoUserIdDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoUserIdDTO>;
+                var lista = _unitOfWork.Query<CorConfiguracaoGraficoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_IDQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_PERCENTUAL_INIQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_PERCENTUAL_FIMQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters) as List<CorConfiguracaoGraficoDTO>;
+                var result = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

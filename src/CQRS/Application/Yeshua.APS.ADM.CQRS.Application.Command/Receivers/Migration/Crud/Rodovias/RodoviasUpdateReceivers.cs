@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRodoviasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRodoviasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RodoviasCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var rodovias = new RodoviasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ROD_ID, c.ROD_DESCRICAO);
                  var domainResult = RodoviasDomainBehavior.Apply(rodovias, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(rodovias);
-                     return Success("OK", rodovias);
+                     return Task.FromResult(Success("OK", rodovias));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, rodovias);
+                    return Task.FromResult(Error(e, rodovias));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

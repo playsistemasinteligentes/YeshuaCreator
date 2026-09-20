@@ -105,7 +105,7 @@
                                         }
                                     }
 
-                                    public string GMA_ID
+                                    public string? GMA_ID
                                     {
                                         get => _inner.GMA_ID;
                                         set
@@ -147,7 +147,7 @@
                                         }
                                     }
 
-                                    public string OPE_EXCECAO
+                                    public string? OPE_EXCECAO
                                     {
                                         get => _inner.OPE_EXCECAO;
                                         set

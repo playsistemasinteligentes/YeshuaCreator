@@ -23,20 +23,20 @@
     int? Id { get; set; }
     int AGE_ID { get; set; }
     DateTime? AGE_DATA_ESPECIFICA { get; set; }
-    string AGE_HORARIO_INICIO { get; set; }
-    string AGE_HORARIO_FIM { get; set; }
-    string AGE_SEGUNDA { get; set; }
-    string AGE_TERCA { get; set; }
-    string AGE_QUARTA { get; set; }
-    string AGE_QUINTA { get; set; }
-    string AGE_SEXTA { get; set; }
-    string AGE_SABADO { get; set; }
-    string AGE_DOMINGO { get; set; }
+    string? AGE_HORARIO_INICIO { get; set; }
+    string? AGE_HORARIO_FIM { get; set; }
+    string? AGE_SEGUNDA { get; set; }
+    string? AGE_TERCA { get; set; }
+    string? AGE_QUARTA { get; set; }
+    string? AGE_QUINTA { get; set; }
+    string? AGE_SEXTA { get; set; }
+    string? AGE_SABADO { get; set; }
+    string? AGE_DOMINGO { get; set; }
     Decimal? AGE_INTERVALO { get; set; }
-    string AGE_ORDEM_EXECUCAO { get; set; }
-    string AGE_PARAMETROS { get; set; }
-    string AGE_EXCECAO { get; set; }
-    string AGE_DESCRICAO { get; set; }
+    string? AGE_ORDEM_EXECUCAO { get; set; }
+    string? AGE_PARAMETROS { get; set; }
+    string? AGE_EXCECAO { get; set; }
+    string? AGE_DESCRICAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

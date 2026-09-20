@@ -22,7 +22,7 @@
 {
     int? Id { get; set; }
     string RGO_ID { get; set; }
-    string RGO_DESCRICAO { get; set; }
+    string? RGO_DESCRICAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

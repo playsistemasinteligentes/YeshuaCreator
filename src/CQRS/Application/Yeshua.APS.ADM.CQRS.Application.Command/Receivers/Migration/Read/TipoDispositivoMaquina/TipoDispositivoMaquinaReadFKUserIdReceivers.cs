@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<TipoDispositivoMaquinaUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<TipoDispositivoMaquinaUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var TipoDispositivoMaquinaReadRepository = _repository.getTipoDispositivoMaquinaReadFKUserId(c);
-                return Success("OK", TipoDispositivoMaquinaReadRepository);
+                return Task.FromResult(Success("OK", TipoDispositivoMaquinaReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

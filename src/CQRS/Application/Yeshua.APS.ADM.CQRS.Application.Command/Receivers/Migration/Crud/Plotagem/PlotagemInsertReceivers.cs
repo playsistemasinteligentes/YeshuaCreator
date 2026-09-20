@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPlotagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPlotagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PlotagemCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var plotagem = new PlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PLO_ID, c.PLO_NOME, c.PLO_DIMENSAO, c.PLO_X, c.PLO_Y, c.PLO_Z, c.PLO_GRAFICO, c.CON_ID);
                  var domainResult = PlotagemDomainBehavior.Apply(plotagem, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(plotagem);
-                     return Success("OK", plotagem);
+                     return Task.FromResult(Success("OK", plotagem));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, plotagem);
+                    return Task.FromResult(Error(e, plotagem));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

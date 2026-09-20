@@ -21,7 +21,7 @@ namespace Command.Write
         public Decimal? CustoTotal { get; set; }
         public Decimal? AderenciaCubagem { get; set; }
         public Decimal? AtrasoPrevisto { get; set; }
-        public string AlertasResumo { get; set; }
+        public string? AlertasResumo { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

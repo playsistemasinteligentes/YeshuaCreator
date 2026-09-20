@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICargaPlanejavelEntity Create(string cargaid, string status, string transportadoraid, string veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string alertasresumo )
+                                    } public ICargaPlanejavelEntity Create(string cargaid, string? status, string? transportadoraid, string? veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string? alertasresumo )
                             {
                                 return Create(null, cargaid, status, transportadoraid, veiculoid, tipoveiculoid, pesoteorico, volumeteorico, iniciojanelaembarque, fimjanelaembarque, embarquealvo, quantidadepedidos, alertasresumo);
                             }
 
                             public ICargaPlanejavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string cargaid, string status, string transportadoraid, string veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string alertasresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string cargaid, string? status, string? transportadoraid, string? veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string? alertasresumo )
                             {
                             var entity = new CargaPlanejavelEntity(cargaid, status, transportadoraid, veiculoid, tipoveiculoid, pesoteorico, volumeteorico, iniciojanelaembarque, fimjanelaembarque, embarquealvo, quantidadepedidos, alertasresumo );
 

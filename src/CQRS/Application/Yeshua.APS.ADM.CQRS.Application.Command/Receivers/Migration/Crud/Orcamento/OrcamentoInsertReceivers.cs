@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IOrcamentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IOrcamentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.OrcamentoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var orcamento = new OrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ORC_ID, c.REP_ID, c.CON_ID, c.ORC_TIPO_FRETE, c.ORC_EMISSAO, c.CLI_ID, c.VER_ID);
                  var domainResult = OrcamentoDomainBehavior.Apply(orcamento, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(orcamento);
-                     return Success("OK", orcamento);
+                     return Task.FromResult(Success("OK", orcamento));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, orcamento);
+                    return Task.FromResult(Error(e, orcamento));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

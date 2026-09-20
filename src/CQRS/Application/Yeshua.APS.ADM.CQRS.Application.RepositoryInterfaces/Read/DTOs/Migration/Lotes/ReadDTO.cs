@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record LotesDTO
     {
     public int id { get; set; }
-    public string mov_lote { get; set; }
-    public string mov_sub_lote { get; set; }
+    public string mov_lote { get; set; } = string.Empty;
+    public string mov_sub_lote { get; set; } = string.Empty;
     public Decimal lot_largura { get; set; }
     public Decimal lot_comprimento { get; set; }
     public Decimal lot_diametro { get; set; }

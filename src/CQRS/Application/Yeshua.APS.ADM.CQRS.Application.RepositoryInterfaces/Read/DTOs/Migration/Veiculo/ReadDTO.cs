@@ -19,21 +19,21 @@ namespace Repositorio.Outputs
     public partial record VeiculoDTO
     {
     public int id { get; set; }
-    public string vei_placa { get; set; }
-    public string vei_uf { get; set; }
+    public string vei_placa { get; set; } = string.Empty;
+    public string vei_uf { get; set; } = string.Empty;
     public int tip_id { get; set; }
     public Decimal vei_capacidade_m3 { get; set; }
     public Decimal vei_capacidade_largura { get; set; }
     public Decimal vei_capacidade_comprimento { get; set; }
     public Decimal vei_capacidade_altura { get; set; }
-    public string vei_modelo { get; set; }
-    public string vei_nome_motorista { get; set; }
-    public string vei_dados_contato { get; set; }
-    public string vei_cpf_motorista { get; set; }
-    public string tca_id { get; set; }
+    public string vei_modelo { get; set; } = string.Empty;
+    public string vei_nome_motorista { get; set; } = string.Empty;
+    public string vei_dados_contato { get; set; } = string.Empty;
+    public string vei_cpf_motorista { get; set; } = string.Empty;
+    public string tca_id { get; set; } = string.Empty;
     public DateTime vei_emissao { get; set; }
     public DateTime vei_vencimento { get; set; }
-    public string vei_status { get; set; }
+    public string vei_status { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MensagemDTO> getMensagem(Command.Read.MensagemReadCommand command )
         {
-            DataPagination<MensagemDTO> customResult = null;
+            var customResult = new DataPagination<MensagemDTO>();
             var customHandled = false;
             TryGetMensagemCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MensagemTenantIDDTO> getMensagemReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MensagemTenantIDDTO> lista;
             var query = _query.MensagemTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MensagemTenantIDDTO>(query.Query,query.Parameters) as List<MensagemTenantIDDTO>;
+                var lista = _unitOfWork.Query<MensagemTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MensagemUserIdDTO> getMensagemReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MensagemUserIdDTO> lista;
             var query = _query.MensagemUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MensagemUserIdDTO>(query.Query,query.Parameters) as List<MensagemUserIdDTO>;
+                var lista = _unitOfWork.Query<MensagemUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_IDQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_SENDQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_EMISSIONQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_RECEIVEQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_TYPEQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_QTD_TRY_SENDQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEN_DATE_TRY_SENDQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters) as List<MensagemDTO>;
+                var result = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

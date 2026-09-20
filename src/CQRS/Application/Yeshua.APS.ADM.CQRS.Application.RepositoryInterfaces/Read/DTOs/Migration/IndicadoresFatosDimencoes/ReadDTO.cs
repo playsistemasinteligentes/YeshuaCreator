@@ -19,10 +19,10 @@ namespace Repositorio.Outputs
     public partial record IndicadoresFatosDimencoesDTO
     {
     public int id { get; set; }
-    public string fat_id { get; set; }
+    public string fat_id { get; set; } = string.Empty;
     public int ind_id { get; set; }
     public int dim_id { get; set; }
-    public string fat_descricao { get; set; }
+    public string fat_descricao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

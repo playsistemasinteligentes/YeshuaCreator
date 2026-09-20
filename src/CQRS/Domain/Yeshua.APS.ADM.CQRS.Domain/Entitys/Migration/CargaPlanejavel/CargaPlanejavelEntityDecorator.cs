@@ -75,7 +75,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -89,7 +89,7 @@
                                         }
                                     }
 
-                                    public string TransportadoraId
+                                    public string? TransportadoraId
                                     {
                                         get => _inner.TransportadoraId;
                                         set
@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string VeiculoId
+                                    public string? VeiculoId
                                     {
                                         get => _inner.VeiculoId;
                                         set
@@ -215,7 +215,7 @@
                                         }
                                     }
 
-                                    public string AlertasResumo
+                                    public string? AlertasResumo
                                     {
                                         get => _inner.AlertasResumo;
                                         set

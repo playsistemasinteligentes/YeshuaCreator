@@ -19,10 +19,10 @@ namespace Repositorio.Outputs
     public partial record PlanocontasDTO
     {
     public int pla_id { get; set; }
-    public string pla_codigo { get; set; }
-    public string pla_descricao { get; set; }
+    public string pla_codigo { get; set; } = string.Empty;
+    public string pla_descricao { get; set; } = string.Empty;
     public int pla_tipo { get; set; }
-    public string pla_natureza { get; set; }
+    public string pla_natureza { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

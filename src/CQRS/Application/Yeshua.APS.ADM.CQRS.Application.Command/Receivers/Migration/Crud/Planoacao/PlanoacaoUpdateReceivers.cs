@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPlanoacaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPlanoacaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PlanoacaoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var planoacao = new PlanoacaoFactory(_logger, _domainTrackingPolicy).Create(context, c.PLA_ID, c.PLA_DESCRICAO, c.MET_ID, c.PLA_STATUS, c.PLA_DATA, c.PLA_METAPERIODO, c.PLA_VLRPERIODO, c.PLA_METACULADO, c.PLA_VLRACUMULADO, c.PLA_REFERENCIA, c.USE_ID);
                  var domainResult = PlanoacaoDomainBehavior.Apply(planoacao, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(planoacao);
-                     return Success("OK", planoacao);
+                     return Task.FromResult(Success("OK", planoacao));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, planoacao);
+                    return Task.FromResult(Error(e, planoacao));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

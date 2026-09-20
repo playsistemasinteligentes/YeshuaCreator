@@ -24,16 +24,16 @@
     string LOGS_TABLE { get; set; }
     string LOGS_KEY { get; set; }
     string LOGS_KEY1 { get; set; }
-    string LOGS_KEY2 { get; set; }
-    string LOGS_KEY3 { get; set; }
-    string LOGS_KEY4 { get; set; }
-    string LOGS_COLUMN { get; set; }
-    string LOGS_BEFORE { get; set; }
-    string LOGS_AFTER { get; set; }
+    string? LOGS_KEY2 { get; set; }
+    string? LOGS_KEY3 { get; set; }
+    string? LOGS_KEY4 { get; set; }
+    string? LOGS_COLUMN { get; set; }
+    string? LOGS_BEFORE { get; set; }
+    string? LOGS_AFTER { get; set; }
     string LOGS_ACTION { get; set; }
     DateTime LOGS_DATE { get; set; }
     int USE_ID { get; set; }
-    string LOGS_ORIGEM { get; set; }
+    string? LOGS_ORIGEM { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

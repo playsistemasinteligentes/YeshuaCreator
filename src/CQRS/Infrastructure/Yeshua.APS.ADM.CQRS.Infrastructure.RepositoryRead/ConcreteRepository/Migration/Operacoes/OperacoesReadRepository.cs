@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OperacoesDTO> getOperacoes(Command.Read.OperacoesReadCommand command )
         {
-            DataPagination<OperacoesDTO> customResult = null;
+            var customResult = new DataPagination<OperacoesDTO>();
             var customHandled = false;
             TryGetOperacoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<OperacoesTenantIDDTO> getOperacoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OperacoesTenantIDDTO> lista;
             var query = _query.OperacoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<OperacoesTenantIDDTO>(query.Query,query.Parameters) as List<OperacoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<OperacoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<OperacoesUserIdDTO> getOperacoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OperacoesUserIdDTO> lista;
             var query = _query.OperacoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<OperacoesUserIdDTO>(query.Query,query.Parameters) as List<OperacoesUserIdDTO>;
+                var lista = _unitOfWork.Query<OperacoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOPE_TIPO_REGISTROQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOPE_IDQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGMA_IDQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOPE_EXCECAOQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_SEQ_TRANFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters) as List<OperacoesDTO>;
+                var result = _unitOfWork.Query<OperacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

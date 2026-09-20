@@ -15,8 +15,8 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? REG_ID { get; set; }
-        public string REG_RESPOSTA { get; set; }
-        public string REG_STATUS { get; set; }
+        public string? REG_RESPOSTA { get; set; }
+        public string? REG_STATUS { get; set; }
         public DateTime? REG_DATA_INICIO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

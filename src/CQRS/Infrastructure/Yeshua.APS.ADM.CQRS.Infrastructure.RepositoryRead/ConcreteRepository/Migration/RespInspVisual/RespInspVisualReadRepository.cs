@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RespInspVisualDTO> getRespInspVisual(Command.Read.RespInspVisualReadCommand command )
         {
-            DataPagination<RespInspVisualDTO> customResult = null;
+            var customResult = new DataPagination<RespInspVisualDTO>();
             var customHandled = false;
             TryGetRespInspVisualCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RespInspVisualTenantIDDTO> getRespInspVisualReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RespInspVisualTenantIDDTO> lista;
             var query = _query.RespInspVisualTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RespInspVisualTenantIDDTO>(query.Query,query.Parameters) as List<RespInspVisualTenantIDDTO>;
+                var lista = _unitOfWork.Query<RespInspVisualTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RespInspVisualUserIdDTO> getRespInspVisualReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RespInspVisualUserIdDTO> lista;
             var query = _query.RespInspVisualUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RespInspVisualUserIdDTO>(query.Query,query.Parameters) as List<RespInspVisualUserIdDTO>;
+                var lista = _unitOfWork.Query<RespInspVisualUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRIV_IDQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_IDQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITI_IDQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRIV_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters) as List<RespInspVisualDTO>;
+                var result = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

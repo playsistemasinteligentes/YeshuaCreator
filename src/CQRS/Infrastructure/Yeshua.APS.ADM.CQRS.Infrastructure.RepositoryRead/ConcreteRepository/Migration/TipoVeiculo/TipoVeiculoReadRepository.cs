@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoVeiculoDTO> getTipoVeiculo(Command.Read.TipoVeiculoReadCommand command )
         {
-            DataPagination<TipoVeiculoDTO> customResult = null;
+            var customResult = new DataPagination<TipoVeiculoDTO>();
             var customHandled = false;
             TryGetTipoVeiculoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoVeiculoTenantIDDTO> getTipoVeiculoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoVeiculoTenantIDDTO> lista;
             var query = _query.TipoVeiculoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoVeiculoTenantIDDTO>(query.Query,query.Parameters) as List<TipoVeiculoTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoVeiculoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoVeiculoUserIdDTO> getTipoVeiculoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoVeiculoUserIdDTO> lista;
             var query = _query.TipoVeiculoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoVeiculoUserIdDTO>(query.Query,query.Parameters) as List<TipoVeiculoUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoVeiculoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_QTD_DISPONIVELQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_VALOR_KMQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_VALOR_DIARIAQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_VALOR_AJUDANTEQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_QTD_EIXOSQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_VELOCIDADE_MEDIAQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_ALTURAQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_COMPRIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_LARGURAQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_ALTURA_PESCOCO_EQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_EQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_LARGURA_PESCOCO_EQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_ALTURA_PESCOCO_DQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_DQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -610,7 +608,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_LARGURA_PESCOCO_DQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -618,7 +616,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_CAPACIDADE_M3Query(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -626,7 +624,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -634,7 +632,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -642,7 +640,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -650,7 +648,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters) as List<TipoVeiculoDTO>;
+                var result = _unitOfWork.Query<TipoVeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPerfilObjetoControlavelEntity Create(int? id, int per_id, string obj_id, string peo_acao )
+                                    } public IPerfilObjetoControlavelEntity Create(int? id, int per_id, string obj_id, string? peo_acao )
                             {
                                 return Create(null, id, per_id, obj_id, peo_acao);
                             }
 
                             public IPerfilObjetoControlavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string obj_id, string peo_acao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string obj_id, string? peo_acao )
                             {
                             var entity = new PerfilObjetoControlavelEntity(id, per_id, obj_id, peo_acao );
 

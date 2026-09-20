@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IIndicadoresPeriodosDimencoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IIndicadoresPeriodosDimencoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.IndicadoresPeriodosDimencoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var indicadoresperiodosdimencoes = new IndicadoresPeriodosDimencoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.IND_ID, c.DIM_ID, c.PER_DESCRICAO);
                  var domainResult = IndicadoresPeriodosDimencoesDomainBehavior.Apply(indicadoresperiodosdimencoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(indicadoresperiodosdimencoes);
-                     return Success("OK", indicadoresperiodosdimencoes);
+                     return Task.FromResult(Success("OK", indicadoresperiodosdimencoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, indicadoresperiodosdimencoes);
+                    return Task.FromResult(Error(e, indicadoresperiodosdimencoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

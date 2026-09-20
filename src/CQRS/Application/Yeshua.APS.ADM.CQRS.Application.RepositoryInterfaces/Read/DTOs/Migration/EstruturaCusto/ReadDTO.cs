@@ -20,17 +20,17 @@ namespace Repositorio.Outputs
     {
     public int est_id { get; set; }
     public int ito_id { get; set; }
-    public string ord_id { get; set; }
-    public string pro_id { get; set; }
-    public string pro_id_produto { get; set; }
-    public string pro_id_componente { get; set; }
-    public string pro_tipo_custo { get; set; }
-    public string pro_grupo_contabil { get; set; }
+    public string ord_id { get; set; } = string.Empty;
+    public string pro_id { get; set; } = string.Empty;
+    public string pro_id_produto { get; set; } = string.Empty;
+    public string pro_id_componente { get; set; } = string.Empty;
+    public string pro_tipo_custo { get; set; } = string.Empty;
+    public string pro_grupo_contabil { get; set; } = string.Empty;
     public int est_ordem { get; set; }
-    public string est_grupo { get; set; }
+    public string est_grupo { get; set; } = string.Empty;
     public Decimal est_quant { get; set; }
     public Decimal est_valor_total { get; set; }
-    public string est_data_base { get; set; }
+    public string est_data_base { get; set; } = string.Empty;
     public Decimal est_base_producao { get; set; }
     public Decimal est_nivel { get; set; }
     public int fpr_seq_repeticao { get; set; }

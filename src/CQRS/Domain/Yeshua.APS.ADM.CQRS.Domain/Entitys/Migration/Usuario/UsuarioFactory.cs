@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IUsuarioEntity Create(int use_id, string use_nome, string use_email, string use_senha, string turm_id, int use_ativo, string use_coderp )
+                                    } public IUsuarioEntity Create(int use_id, string use_nome, string use_email, string use_senha, string? turm_id, int use_ativo, string? use_coderp )
                             {
                                 return Create(null, use_id, use_nome, use_email, use_senha, turm_id, use_ativo, use_coderp);
                             }
 
                             public IUsuarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int use_id, string use_nome, string use_email, string use_senha, string turm_id, int use_ativo, string use_coderp )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int use_id, string use_nome, string use_email, string use_senha, string? turm_id, int use_ativo, string? use_coderp )
                             {
                             var entity = new UsuarioEntity(use_id, use_nome, use_email, use_senha, turm_id, use_ativo, use_coderp );
 

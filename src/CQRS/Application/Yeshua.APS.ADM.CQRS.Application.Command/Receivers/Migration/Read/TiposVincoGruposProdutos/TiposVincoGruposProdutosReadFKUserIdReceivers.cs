@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<TiposVincoGruposProdutosUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<TiposVincoGruposProdutosUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var TiposVincoGruposProdutosReadRepository = _repository.getTiposVincoGruposProdutosReadFKUserId(c);
-                return Success("OK", TiposVincoGruposProdutosReadRepository);
+                return Task.FromResult(Success("OK", TiposVincoGruposProdutosReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

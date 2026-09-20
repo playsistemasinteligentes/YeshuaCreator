@@ -55,15 +55,16 @@ testes para apoiar diagnostico, manutencao e, futuramente, agentes operacionais.
 - Modo: forma de execucao (`Live`, `Replay`, `Simulation`, `Regression`).
 
 Um eixo nao altera automaticamente o outro. No momento, o Yeshua possui uma
-base parcial de severidade e profundidade D0/D1. O contrato completo dos tres
-eixos pertence a R08.
+base parcial de severidade e profundidade D0/D1, incluindo controle central e
+sincronizacao de politica. Ainda falta o envelope uniforme que carregue os tres
+eixos em toda evidencia; esse contrato pertence a R08.
 
 ## 4. Niveis De Capacidade
 
 | Nivel | Capacidade | Estado resumido |
 | --- | --- | --- |
 | Y0 | Fonte versionado e pesquisavel | Implementado |
-| Y1 | Build verificavel | Parcial; R05 e R06 fecham o nivel |
+| Y1 | Build verificavel | Parcial avancado; falta homologar o gate publicado e vincular o snapshot |
 | Y2 | Operacao observavel ponta a ponta | Nao implementado |
 | Y3 | Diagnostico dirigido | Nao implementado |
 | Y4 | Reproducao segura | Nao implementado |
@@ -106,6 +107,18 @@ de assuntos durante R04.
 - Smoke CRUD da Clinica gerado e orquestrado pelo runner pos-build; execucao
   contra o ambiente publicado permanece pendente.
 
+## 5.1 Avaliacao Dos Gates Externos
+
+| Gate | Estado | Resumo |
+| --- | --- | --- |
+| G1 | Parcial | piloto documentado; governanca ainda nao generalizada |
+| G2 | Parcial avancado | runtime e fonte possuem versao; falta comprovacao automatica do mesmo artefato |
+| G3 | Parcial | TraceId/CorrelationId existem; identidade universal ainda nao |
+| G4 | Parcial | ha telemetria real; falta envelope seguro D0/D1 completo |
+| G5 | Parcial | fonte e consultavel; evidencia runtime ainda nao e central e duravel |
+| G6 | Parcial inicial | controle dirigido existe; governanca e captura D2 ainda nao |
+| G7 | Parcial | pos-build existe; demonstracao integral dos gates ainda nao |
+
 ## 6. Situacao Das Rodadas
 
 | Rodada | Entrega | Estado |
@@ -120,10 +133,27 @@ de assuntos durante R04.
 
 ## 7. Ponto Atual
 
-1. Manter R06 pausado ate existir demanda real de implementacao.
-2. Executar o gate R05 contra um build publicado antes de considera-lo comprovado em producao.
-3. Preservar como pendencia a validacao dirigida da mudanca de profundidade D0/D1 e dos logs detalhados.
-4. A compilacao Release dos componentes da Clinica e 19 testes locais foram aprovados em 2026-08-22.
+1. Congelar a criacao de mecanismos paralelos; evoluir somente os pontos
+   arquiteturais existentes.
+2. Executar F-EXP-00 no Fiscal para provar custo minimo quando desligado.
+3. Executar R07 e R08 no Fiscal como uma fundacao segura: classificacao,
+   `NeverCapture`, tres eixos, dois resultados e envelope operacional.
+4. Executar R09 e R10 para identidade e causalidade sincronas e assincronas.
+5. Consolidar D0/D1 nos pontos existentes em R11 e R12.
+6. Implementar o provider e `RuntimeContextCollector` em R13 sem chamada remota
+   sincrona no caminho quente.
+7. Correlacionar runtime com o snapshot confirmado em R14.
+8. Fechar D2 e homologar G1-G7 em R15 e R16.
+9. Manter D3, D4, replay e agentes fora do caminho critico ate G1-G7 estarem
+   demonstrados.
+
+A ordem detalhada e os criterios de saida estao em
+`YESHUA_SRE_IMPLEMENTATION_PLAN.md`. A proxima implementacao concreta e
+F-EXP-00, seguida pela fundacao R07/R08. R06 continua util ao gate de negocio,
+mas nao deve bloquear a seguranca da observabilidade.
+
+O roteiro detalhado de custo e seletores do piloto Fiscal esta em
+`docs/operational/fiscal/FISCAL_OPERATIONAL_EXPERIMENT_PLAN.md`.
 
 ## 8. Regra De Atualizacao
 

@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string OcorrenciaId
+                                    public string? OcorrenciaId
                                     {
                                         get => _inner.OcorrenciaId;
                                         set
@@ -143,7 +143,7 @@
                                         }
                                     }
 
-                                    public string TurnoId
+                                    public string? TurnoId
                                     {
                                         get => _inner.TurnoId;
                                         set
@@ -157,7 +157,7 @@
                                         }
                                     }
 
-                                    public string TurmaId
+                                    public string? TurmaId
                                     {
                                         get => _inner.TurmaId;
                                         set
@@ -185,7 +185,7 @@
                                         }
                                     }
 
-                                    public string OrderId
+                                    public string? OrderId
                                     {
                                         get => _inner.OrderId;
                                         set
@@ -199,7 +199,7 @@
                                         }
                                     }
 
-                                    public string ProdutoId
+                                    public string? ProdutoId
                                     {
                                         get => _inner.ProdutoId;
                                         set
@@ -213,7 +213,7 @@
                                         }
                                     }
 
-                                    public string Observacoes
+                                    public string? Observacoes
                                     {
                                         get => _inner.Observacoes;
                                         set
@@ -241,7 +241,7 @@
                                         }
                                     }
 
-                                    public string DiaTurma
+                                    public string? DiaTurma
                                     {
                                         get => _inner.DiaTurma;
                                         set
@@ -325,7 +325,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID
+                                    public string? BOL_ID
                                     {
                                         get => _inner.BOL_ID;
                                         set

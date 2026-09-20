@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IProtocoloOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IProtocoloOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ProtocoloOnduladeiraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var protocoloonduladeira = new ProtocoloOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PTO_ID, c.PTO_CHAVE, c.MAQ_ID, c.PTO_COMANDO);
                  var domainResult = ProtocoloOnduladeiraDomainBehavior.Apply(protocoloonduladeira, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(protocoloonduladeira);
-                     return Success("OK", protocoloonduladeira);
+                     return Task.FromResult(Success("OK", protocoloonduladeira));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, protocoloonduladeira);
+                    return Task.FromResult(Error(e, protocoloonduladeira));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -22,10 +22,10 @@
 {
     int? Id { get; set; }
     int? TenantID { get; set; }
-    string EmailSmtpClient { get; set; }
+    string? EmailSmtpClient { get; set; }
     int? EmailPort { get; set; }
-    string EmailUserName { get; set; }
-    string EmailPassword { get; set; }
+    string? EmailUserName { get; set; }
+    string? EmailPassword { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }

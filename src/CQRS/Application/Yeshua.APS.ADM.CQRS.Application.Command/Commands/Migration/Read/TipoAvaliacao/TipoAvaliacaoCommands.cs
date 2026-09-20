@@ -14,7 +14,7 @@ namespace Command.Read
     public struct TipoAvaliacaoReadCommand : ICommandRead
     {
         public int? TA_ID { get; set; }
-        public string TA_DESC { get; set; }
+        public string? TA_DESC { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

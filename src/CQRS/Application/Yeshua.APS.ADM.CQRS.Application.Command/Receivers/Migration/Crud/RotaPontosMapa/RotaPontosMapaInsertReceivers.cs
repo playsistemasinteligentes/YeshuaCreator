@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRotaPontosMapaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRotaPontosMapaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RotaPontosMapaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var rotapontosmapa = new RotaPontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ROT_ID, c.PON_ID_DESTINO, c.PON_ID_ORIGEM, c.ROT_CUSTO_TOTAL, c.PON_ID_ROTEIRO, c.ROT_ORDEM_ROTEIRO, c.ROT_TIPO, c.ROT_DISTANCIA);
                  var domainResult = RotaPontosMapaDomainBehavior.Apply(rotapontosmapa, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(rotapontosmapa);
-                     return Success("OK", rotapontosmapa);
+                     return Task.FromResult(Success("OK", rotapontosmapa));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, rotapontosmapa);
+                    return Task.FromResult(Error(e, rotapontosmapa));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

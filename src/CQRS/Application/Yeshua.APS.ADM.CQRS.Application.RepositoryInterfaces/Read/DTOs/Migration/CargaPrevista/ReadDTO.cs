@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record CargaPrevistaDTO
     {
     public int id { get; set; }
-    public string car_id { get; set; }
-    public string ord_id { get; set; }
+    public string car_id { get; set; } = string.Empty;
+    public string ord_id { get; set; } = string.Empty;
     public Decimal itc_qtd_planejada { get; set; }
     public DateTime car_previsao_materia_prima { get; set; }
     public DateTime car_data_inicio_previsto { get; set; }
@@ -38,17 +38,17 @@ namespace Repositorio.Outputs
     public Decimal car_peso_embalagem { get; set; }
     public Decimal car_peso_entrada { get; set; }
     public Decimal car_peso_saida { get; set; }
-    public string car_id_doca { get; set; }
-    public string vei_placa { get; set; }
+    public string car_id_doca { get; set; } = string.Empty;
+    public string vei_placa { get; set; } = string.Empty;
     public int tip_id { get; set; }
-    public string tra_id { get; set; }
+    public string tra_id { get; set; } = string.Empty;
     public Decimal car_grupo_produtivo { get; set; }
-    public string rot_id { get; set; }
-    public string car_observacao_de_transporte { get; set; }
-    public string car_justificativa_de_carregamento { get; set; }
-    public string oco_id { get; set; }
-    public string car_id_juntada { get; set; }
-    public string car_observacao_otimizador { get; set; }
+    public string rot_id { get; set; } = string.Empty;
+    public string car_observacao_de_transporte { get; set; } = string.Empty;
+    public string car_justificativa_de_carregamento { get; set; } = string.Empty;
+    public string oco_id { get; set; } = string.Empty;
+    public string car_id_juntada { get; set; } = string.Empty;
+    public string car_observacao_otimizador { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

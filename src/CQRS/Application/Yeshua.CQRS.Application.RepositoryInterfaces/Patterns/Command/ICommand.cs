@@ -10,4 +10,10 @@ namespace RepositoryInterfaces.Patterns.Command
     {
 
     }
+
+    public interface IOperationalTelemetryCommand
+    {
+        string OperationalEntity { get; }
+        string? OperationalRecordId { get; }
+    }
 }

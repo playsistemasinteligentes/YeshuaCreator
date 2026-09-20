@@ -18,13 +18,13 @@ namespace Repositorio.Outputs
 {
     public partial record OndaDTO
     {
-    public string ond_id { get; set; }
+    public string ond_id { get; set; } = string.Empty;
     public Decimal ond_espessura { get; set; }
     public Decimal ond_peso_cola { get; set; }
     public Decimal ond_rendimento_onda_1 { get; set; }
     public Decimal ond_rendimento_onda_2 { get; set; }
     public int ond_profundidade_vinco { get; set; }
-    public string ond_id_integracao { get; set; }
+    public string ond_id_integracao { get; set; } = string.Empty;
     public int vin_id { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

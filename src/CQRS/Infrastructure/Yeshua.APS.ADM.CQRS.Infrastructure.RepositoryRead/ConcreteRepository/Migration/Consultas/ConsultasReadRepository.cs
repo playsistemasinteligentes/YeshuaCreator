@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ConsultasDTO> getConsultas(Command.Read.ConsultasReadCommand command )
         {
-            DataPagination<ConsultasDTO> customResult = null;
+            var customResult = new DataPagination<ConsultasDTO>();
             var customHandled = false;
             TryGetConsultasCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultasTenantIDDTO> getConsultasReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultasTenantIDDTO> lista;
             var query = _query.ConsultasTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ConsultasTenantIDDTO>(query.Query,query.Parameters) as List<ConsultasTenantIDDTO>;
+                var lista = _unitOfWork.Query<ConsultasTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultasUserIdDTO> getConsultasReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultasUserIdDTO> lista;
             var query = _query.ConsultasUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ConsultasUserIdDTO>(query.Query,query.Parameters) as List<ConsultasUserIdDTO>;
+                var lista = _unitOfWork.Query<ConsultasUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_CASAS_DECIMAISQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_CONEXAOQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters) as List<ConsultasDTO>;
+                var result = _unitOfWork.Query<ConsultasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

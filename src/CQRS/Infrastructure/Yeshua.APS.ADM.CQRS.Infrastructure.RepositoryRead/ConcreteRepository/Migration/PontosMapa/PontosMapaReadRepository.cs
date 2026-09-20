@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PontosMapaDTO> getPontosMapa(Command.Read.PontosMapaReadCommand command )
         {
-            DataPagination<PontosMapaDTO> customResult = null;
+            var customResult = new DataPagination<PontosMapaDTO>();
             var customHandled = false;
             TryGetPontosMapaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PontosMapaTenantIDDTO> getPontosMapaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PontosMapaTenantIDDTO> lista;
             var query = _query.PontosMapaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PontosMapaTenantIDDTO>(query.Query,query.Parameters) as List<PontosMapaTenantIDDTO>;
+                var lista = _unitOfWork.Query<PontosMapaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PontosMapaUserIdDTO> getPontosMapaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PontosMapaUserIdDTO> lista;
             var query = _query.PontosMapaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PontosMapaUserIdDTO>(query.Query,query.Parameters) as List<PontosMapaUserIdDTO>;
+                var lista = _unitOfWork.Query<PontosMapaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<PontosMapaMUN_IDDTO> getPontosMapaReadFKMUN_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PontosMapaMUN_IDDTO> lista;
             var query = _query.PontosMapaMUN_IDQuery(command );
 
-                lista = _unitOfWork.Query<PontosMapaMUN_IDDTO>(query.Query,query.Parameters) as List<PontosMapaMUN_IDDTO>;
+                var lista = _unitOfWork.Query<PontosMapaMUN_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_IDQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_LATITUDEQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_LONGITUDEQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_DISTANCIA_KMQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_IDQuery(value );
 
-                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

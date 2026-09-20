@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel ProdutoQuery(Command.Read.ProdutoReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -232,7 +231,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         public QueryModel ProdutoTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -263,7 +261,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         public QueryModel ProdutoUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -294,7 +291,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         public QueryModel ProdutoUNI_IDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [UNI_ID] from [UnidadeMedida] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -323,7 +319,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         public QueryModel ProdutoGRP_IDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [GRP_ID] from [GrupoProdutoAbstrato] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -352,7 +347,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         public QueryModel ProdutoVIN_IDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [VIN_ID] from [Vinco] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -380,7 +374,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -398,7 +391,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -416,7 +408,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -434,7 +425,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -452,7 +442,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -470,7 +459,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -488,7 +476,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -506,7 +493,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ESTOQUE_ATUALQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -524,7 +510,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByUNI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -542,7 +527,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FARDOS_POR_CAMADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -560,7 +544,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_CAMADAS_POR_PALETEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -578,7 +561,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TIPO_IDENTIFICACAOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -596,7 +578,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_GRUPO_PALETIZACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -614,7 +595,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PECAS_POR_FARDOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -632,7 +612,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_INTEGRACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -650,7 +629,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_INTEGRACAO_ERPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -668,7 +646,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByGRP_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -686,7 +663,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByTEM_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -704,7 +680,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_LARGURA_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -722,7 +697,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COMPRIMENTO_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -740,7 +714,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ALTURA_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -758,7 +731,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_LARGURA_EMBALADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -776,7 +748,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COMPRIMENTO_EMBALADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -794,7 +765,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ALTURA_EMBALADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -812,7 +782,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FRENTEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -830,7 +799,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ROTACIONA_COMPRIMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -848,7 +816,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ROTACIONA_LARGURAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -866,7 +833,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ROTACIONA_ALTURAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -884,7 +850,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ESCALA_CORQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -902,7 +867,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SUB_ESCALA_CORQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -920,7 +884,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_CUSTO_SUBIDA_ESCALA_CORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -938,7 +901,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_CUSTO_DECIDA_ESCALA_CORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -956,7 +918,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByTMP_TIPO_CARGAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -974,7 +935,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TEMPO_CARREGAMENTO_UNITARIOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -992,7 +952,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TEMPO_DESCARREGAMENTO_UNITARIOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1010,7 +969,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PERCENTUAL_JANELA_EMBARQUEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1028,7 +986,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TEMPO_PRODUCAO_CONJUNTOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1046,7 +1003,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PECAS_DA_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1064,7 +1020,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TYPEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1082,7 +1037,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COLOR_HEXAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1100,7 +1054,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_VINCOS_LARGURAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1118,7 +1071,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_VINCOS_COMPRIMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1136,7 +1088,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_LARGURA_INTERNAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1154,7 +1105,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COMPRIMENTO_INTERNAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1172,7 +1122,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ALTURA_INTERNAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1190,7 +1139,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COD_DESENHOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1208,7 +1156,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FECHAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1226,7 +1173,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TIPO_LAPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1244,7 +1190,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TAMANHO_LAPQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1262,7 +1207,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_LAP_PROLONGADOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1280,7 +1224,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TAMANHO_LAP_PROLONGQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1298,7 +1241,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ARRANJO_LARGURAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1316,7 +1258,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ARRANJO_COMPRIMENTOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1334,7 +1275,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FITILHOS_FARDO_LARGQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1352,7 +1292,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FITILHOS_FARDO_COMPQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1370,7 +1309,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FITILHOS_PALETE_LARGQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1388,7 +1326,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FITILHOS_PALETE_COMPQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1406,7 +1343,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_FILME_PALETEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1424,7 +1360,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QTD_ESPELHOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1442,7 +1377,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_CUSTOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1460,7 +1394,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_AREA_LIQUIDAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1478,7 +1411,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PESOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1496,7 +1428,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TOLERANCIA_DIMENSAO_CHAPA_DEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1514,7 +1445,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TOLERANCIA_DIMENSAO_CHAPA_ATEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1532,7 +1462,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_IMG_LASTROQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1550,7 +1479,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByABN_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1568,7 +1496,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsBySEG_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1586,7 +1513,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_RESINAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1604,7 +1530,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ENDURECEDOR_MIOLOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1622,7 +1547,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_VINCOS_ONDULADEIRAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1640,7 +1564,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ADICIONAL_ABA_SUPERIORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1658,7 +1581,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ADICIONAL_ABA_INFERIORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1676,7 +1598,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PROMOVE_RESINAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1694,7 +1615,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PROMOVE_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1712,7 +1632,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PROMOVE_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1730,7 +1649,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PROFUNDIDADE_VINCOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1748,7 +1666,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByVIN_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1766,7 +1683,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PROMOVE_PRODUTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1784,7 +1700,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TARAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1802,7 +1717,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COMPRESSAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1820,7 +1734,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COD_BARRAS_CAIXAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1838,7 +1751,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByCJN_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1856,7 +1768,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRJ_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1874,7 +1785,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_REFILE_LARGURAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1892,7 +1802,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_REFILE_COMPRIMENTOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1910,7 +1819,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_M2_PONTAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1928,7 +1836,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QTD_CORTES_PECA1Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1946,7 +1853,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QTD_CORTES_PECA2Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1964,7 +1870,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_DIVISAO_MONTADAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1982,7 +1887,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_AQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2000,7 +1904,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_BQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2018,7 +1921,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_CQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2036,7 +1938,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_DQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2054,7 +1955,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_EQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2072,7 +1972,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_FQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2090,7 +1989,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_GQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2108,7 +2006,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_HQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2126,7 +2023,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_SEGMENTO_IQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2144,7 +2040,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QTD_GRAMPOSQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2162,7 +2057,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_AREA_REFILE_INTERNOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2180,7 +2074,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_AREA_REFILE_EXTERNOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2198,7 +2091,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PESO_REFILEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2216,7 +2108,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ORELHA_INVERTIDAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2234,7 +2125,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ENDERECOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2252,7 +2142,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_VINCULADOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2270,7 +2159,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_BATIDAS_PROXIMA_MANUTENCAOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2288,7 +2176,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ENTRADA_NA_MAQUINAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2306,7 +2193,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByTDI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2324,7 +2210,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QUEBRA_VINCOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2342,7 +2227,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_LARGURA_FARDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2360,7 +2244,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_COMPRIMENTO_FARDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2378,7 +2261,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ALTURA_FARDOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2396,7 +2278,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_TIPO_CUSTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2414,7 +2295,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_GRUPO_CONTABILQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2432,7 +2312,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_CLASSE_CUSTO_01Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2450,7 +2329,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_OBS_ALTERACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2468,7 +2346,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByTIP_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2486,7 +2363,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_PECAS_POR_VEICULOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2504,7 +2380,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_DISTANCIA_ENTRE_VINCOSQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2522,7 +2397,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_DISTANCIA_ENTRE_VINCOS2Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2540,7 +2414,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_DISTANCIA_ENTRE_VINCOS3Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2558,7 +2431,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_OUTQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2576,7 +2448,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_FACAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2594,7 +2465,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_CLICHEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2612,7 +2482,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_TINTA_01Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2630,7 +2499,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_TINTA_02Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2648,7 +2516,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_TINTA_03Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2666,7 +2533,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_TINTA_04Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2684,7 +2550,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_TINTA_05Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2702,7 +2567,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_FORROSUPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2720,7 +2584,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_CANTONEIRAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2738,7 +2601,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_PALETEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2756,7 +2618,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_TAMPOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2774,7 +2635,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_FORROINFQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2792,7 +2652,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_CHAPAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2810,7 +2669,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_ID_COMPOSICAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2828,7 +2686,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QUEBRA_VINCO_MAIORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2846,7 +2703,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByPRO_QUEBRA_VINCO_MENORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2864,7 +2720,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel ExistsByCLI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2882,7 +2737,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2900,7 +2754,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2918,7 +2771,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2936,7 +2788,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2954,7 +2805,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2972,7 +2822,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2990,7 +2839,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3008,7 +2856,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ESTOQUE_ATUALQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3026,7 +2873,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByUNI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3044,7 +2890,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FARDOS_POR_CAMADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3062,7 +2907,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_CAMADAS_POR_PALETEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3080,7 +2924,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TIPO_IDENTIFICACAOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3098,7 +2941,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_GRUPO_PALETIZACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3116,7 +2958,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PECAS_POR_FARDOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3134,7 +2975,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_INTEGRACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3152,7 +2992,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_INTEGRACAO_ERPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3170,7 +3009,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByGRP_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3188,7 +3026,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByTEM_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3206,7 +3043,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_LARGURA_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3224,7 +3060,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COMPRIMENTO_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3242,7 +3077,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ALTURA_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3260,7 +3094,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_LARGURA_EMBALADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3278,7 +3111,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COMPRIMENTO_EMBALADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3296,7 +3128,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ALTURA_EMBALADAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3314,7 +3145,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FRENTEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3332,7 +3162,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ROTACIONA_COMPRIMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3350,7 +3179,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ROTACIONA_LARGURAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3368,7 +3196,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ROTACIONA_ALTURAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3386,7 +3213,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ESCALA_CORQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3404,7 +3230,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SUB_ESCALA_CORQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3422,7 +3247,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_CUSTO_SUBIDA_ESCALA_CORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3440,7 +3264,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_CUSTO_DECIDA_ESCALA_CORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3458,7 +3281,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByTMP_TIPO_CARGAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3476,7 +3298,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TEMPO_CARREGAMENTO_UNITARIOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3494,7 +3315,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TEMPO_DESCARREGAMENTO_UNITARIOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3512,7 +3332,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PERCENTUAL_JANELA_EMBARQUEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3530,7 +3349,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TEMPO_PRODUCAO_CONJUNTOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3548,7 +3366,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PECAS_DA_PECAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3566,7 +3383,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TYPEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3584,7 +3400,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COLOR_HEXAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3602,7 +3417,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_VINCOS_LARGURAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3620,7 +3434,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_VINCOS_COMPRIMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3638,7 +3451,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_LARGURA_INTERNAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3656,7 +3468,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COMPRIMENTO_INTERNAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3674,7 +3485,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ALTURA_INTERNAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3692,7 +3502,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COD_DESENHOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3710,7 +3519,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FECHAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3728,7 +3536,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TIPO_LAPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3746,7 +3553,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TAMANHO_LAPQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3764,7 +3570,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_LAP_PROLONGADOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3782,7 +3587,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TAMANHO_LAP_PROLONGQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3800,7 +3604,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ARRANJO_LARGURAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3818,7 +3621,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ARRANJO_COMPRIMENTOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3836,7 +3638,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FITILHOS_FARDO_LARGQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3854,7 +3655,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FITILHOS_FARDO_COMPQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3872,7 +3672,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FITILHOS_PALETE_LARGQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3890,7 +3689,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FITILHOS_PALETE_COMPQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3908,7 +3706,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_FILME_PALETEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3926,7 +3723,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QTD_ESPELHOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3944,7 +3740,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_CUSTOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3962,7 +3757,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_AREA_LIQUIDAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3980,7 +3774,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PESOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -3998,7 +3791,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TOLERANCIA_DIMENSAO_CHAPA_DEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4016,7 +3808,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TOLERANCIA_DIMENSAO_CHAPA_ATEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4034,7 +3825,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_IMG_LASTROQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4052,7 +3842,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByABN_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4070,7 +3859,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstBySEG_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4088,7 +3876,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_RESINAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4106,7 +3893,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ENDURECEDOR_MIOLOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4124,7 +3910,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_VINCOS_ONDULADEIRAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4142,7 +3927,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ADICIONAL_ABA_SUPERIORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4160,7 +3944,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ADICIONAL_ABA_INFERIORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4178,7 +3961,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PROMOVE_RESINAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4196,7 +3978,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PROMOVE_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4214,7 +3995,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PROMOVE_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4232,7 +4012,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PROFUNDIDADE_VINCOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4250,7 +4029,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByVIN_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4268,7 +4046,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PROMOVE_PRODUTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4286,7 +4063,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TARAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4304,7 +4080,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COMPRESSAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4322,7 +4097,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COD_BARRAS_CAIXAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4340,7 +4114,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByCJN_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4358,7 +4131,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRJ_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4376,7 +4148,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_REFILE_LARGURAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4394,7 +4165,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_REFILE_COMPRIMENTOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4412,7 +4182,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_M2_PONTAQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4430,7 +4199,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QTD_CORTES_PECA1Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4448,7 +4216,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QTD_CORTES_PECA2Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4466,7 +4233,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_DIVISAO_MONTADAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4484,7 +4250,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_AQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4502,7 +4267,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_BQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4520,7 +4284,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_CQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4538,7 +4301,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_DQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4556,7 +4318,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_EQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4574,7 +4335,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_FQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4592,7 +4352,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_GQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4610,7 +4369,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_HQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4628,7 +4386,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_SEGMENTO_IQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4646,7 +4403,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QTD_GRAMPOSQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4664,7 +4420,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_AREA_REFILE_INTERNOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4682,7 +4437,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_AREA_REFILE_EXTERNOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4700,7 +4454,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PESO_REFILEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4718,7 +4471,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ORELHA_INVERTIDAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4736,7 +4488,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ENDERECOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4754,7 +4505,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_VINCULADOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4772,7 +4522,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_BATIDAS_PROXIMA_MANUTENCAOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4790,7 +4539,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ENTRADA_NA_MAQUINAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4808,7 +4556,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByTDI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4826,7 +4573,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QUEBRA_VINCOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4844,7 +4590,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_LARGURA_FARDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4862,7 +4607,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_COMPRIMENTO_FARDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4880,7 +4624,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ALTURA_FARDOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4898,7 +4641,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_TIPO_CUSTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4916,7 +4658,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_GRUPO_CONTABILQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4934,7 +4675,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_CLASSE_CUSTO_01Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4952,7 +4692,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_OBS_ALTERACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4970,7 +4709,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByTIP_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -4988,7 +4726,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_PECAS_POR_VEICULOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5006,7 +4743,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_DISTANCIA_ENTRE_VINCOSQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5024,7 +4760,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_DISTANCIA_ENTRE_VINCOS2Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5042,7 +4777,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_DISTANCIA_ENTRE_VINCOS3Query(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5060,7 +4794,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_OUTQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5078,7 +4811,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_FACAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5096,7 +4828,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_CLICHEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5114,7 +4845,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_TINTA_01Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5132,7 +4862,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_TINTA_02Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5150,7 +4879,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_TINTA_03Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5168,7 +4896,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_TINTA_04Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5186,7 +4913,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_TINTA_05Query(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5204,7 +4930,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_FORROSUPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5222,7 +4947,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_CANTONEIRAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5240,7 +4964,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_PALETEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5258,7 +4981,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_TAMPOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5276,7 +4998,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_FORROINFQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5294,7 +5015,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_CHAPAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5312,7 +5032,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_ID_COMPOSICAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5330,7 +5049,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QUEBRA_VINCO_MAIORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5348,7 +5066,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByPRO_QUEBRA_VINCO_MENORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -5366,7 +5083,6 @@ if (!string.IsNullOrEmpty(Command.CLI_ID)) whereClauses.Add($"[CLI_ID] like @CLI
         }
         public QueryModel FirstByCLI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

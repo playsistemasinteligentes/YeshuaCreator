@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEstruturaProdutoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEstruturaProdutoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EstruturaProdutoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var estruturaproduto = new EstruturaProdutoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_DATA_VALIDADE, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.EST_QUANT, c.EST_DATA_INCLUSAO, c.EST_BASE_PRODUCAO, c.EST_TIPO_REQUISICAO, c.EST_CODIGO_DE_EXCECAO);
                  var domainResult = EstruturaProdutoDomainBehavior.Apply(estruturaproduto, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(estruturaproduto);
-                     return Success("OK", estruturaproduto);
+                     return Task.FromResult(Success("OK", estruturaproduto));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, estruturaproduto);
+                    return Task.FromResult(Error(e, estruturaproduto));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

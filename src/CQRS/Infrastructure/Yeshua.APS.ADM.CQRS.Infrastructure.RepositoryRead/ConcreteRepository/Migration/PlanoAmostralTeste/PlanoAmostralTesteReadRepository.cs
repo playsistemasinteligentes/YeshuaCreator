@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PlanoAmostralTesteDTO> getPlanoAmostralTeste(Command.Read.PlanoAmostralTesteReadCommand command )
         {
-            DataPagination<PlanoAmostralTesteDTO> customResult = null;
+            var customResult = new DataPagination<PlanoAmostralTesteDTO>();
             var customHandled = false;
             TryGetPlanoAmostralTesteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PlanoAmostralTesteTenantIDDTO> getPlanoAmostralTesteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PlanoAmostralTesteTenantIDDTO> lista;
             var query = _query.PlanoAmostralTesteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PlanoAmostralTesteTenantIDDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteTenantIDDTO>;
+                var lista = _unitOfWork.Query<PlanoAmostralTesteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PlanoAmostralTesteUserIdDTO> getPlanoAmostralTesteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PlanoAmostralTesteUserIdDTO> lista;
             var query = _query.PlanoAmostralTesteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PlanoAmostralTesteUserIdDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteUserIdDTO>;
+                var lista = _unitOfWork.Query<PlanoAmostralTesteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPAT_IDQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPAT_QTD_CAIXAS_DEQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPAT_QTD_CAIXAS_ATEQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPAT_N_AMOSTRAGEMQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPAT_PERCENT_ESPECIFQuery(value );
 
-                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters) as List<PlanoAmostralTesteDTO>;
+                var result = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

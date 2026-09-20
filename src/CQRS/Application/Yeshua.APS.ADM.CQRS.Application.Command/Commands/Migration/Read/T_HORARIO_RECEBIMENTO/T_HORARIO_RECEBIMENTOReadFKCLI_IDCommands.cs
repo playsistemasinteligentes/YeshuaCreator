@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct T_HORARIO_RECEBIMENTOReadFKCLI_IDCommand : ICommand
     {
-        public string CLI_ID { get; set; }
+        public string? CLI_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

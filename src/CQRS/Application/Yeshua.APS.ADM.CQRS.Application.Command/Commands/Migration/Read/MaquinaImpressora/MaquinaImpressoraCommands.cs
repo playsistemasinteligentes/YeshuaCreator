@@ -14,7 +14,7 @@ namespace Command.Read
     public struct MaquinaImpressoraReadCommand : ICommandRead
     {
         public int? MAQ_IMP_ID { get; set; }
-        public string MAQ_ID { get; set; }
+        public string? MAQ_ID { get; set; }
         public int? IMP_ID { get; set; }
         public int? MAI_FACAO { get; set; }
         public int? TenantID { get; set; }

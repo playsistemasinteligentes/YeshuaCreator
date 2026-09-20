@@ -21,17 +21,17 @@
                     public partial class TempoSetupOnduladeiraEntity : ITempoSetupOnduladeiraEntity
 {
     public int TEM_ID { get; set; }
-    public string OND_ID_DE { get; set; }
-    public string OND_ID_PARA { get; set; }
-    public string TEM_RESINA_DE { get; set; }
-    public string TEM_RESINA_PARA { get; set; }
+    public string? OND_ID_DE { get; set; }
+    public string? OND_ID_PARA { get; set; }
+    public string? TEM_RESINA_DE { get; set; }
+    public string? TEM_RESINA_PARA { get; set; }
     public int? TEM_TEMPO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal TempoSetupOnduladeiraEntity(int tem_id, string ond_id_de, string ond_id_para, string tem_resina_de, string tem_resina_para, int? tem_tempo ){
+    private List<string> _erroMensagem = new List<string>();
+ internal TempoSetupOnduladeiraEntity(int tem_id, string? ond_id_de, string? ond_id_para, string? tem_resina_de, string? tem_resina_para, int? tem_tempo ){
  TEM_ID = tem_id; 
  OND_ID_DE = ond_id_de; 
  OND_ID_PARA = ond_id_para; 

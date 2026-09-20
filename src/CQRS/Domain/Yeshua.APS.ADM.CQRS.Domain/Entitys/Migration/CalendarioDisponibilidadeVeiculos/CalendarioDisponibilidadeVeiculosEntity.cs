@@ -35,12 +35,12 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal CalendarioDisponibilidadeVeiculosEntity(int? id, int cdv_id, DateTime? cdv_data_de, DateTime? cdv_data_ate, int? cdv_segunda, int? cdv_terca, int? cdv_quarta, int? cdv_quinta, int? cdv_sexta, int? cdv_sabado, int? cdv_domingo ){
  Id = id; 
  CDV_ID = cdv_id; 
- CDV_DATA_DE = (cdv_data_de < (new DateTime(1800, 1, 1))) ? DateTime.Now : cdv_data_de; 
- CDV_DATA_ATE = (cdv_data_ate < (new DateTime(1800, 1, 1))) ? DateTime.Now : cdv_data_ate; 
+ CDV_DATA_DE = cdv_data_de.HasValue && cdv_data_de.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : cdv_data_de; 
+ CDV_DATA_ATE = cdv_data_ate.HasValue && cdv_data_ate.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : cdv_data_ate; 
  CDV_SEGUNDA = cdv_segunda; 
  CDV_TERCA = cdv_terca; 
  CDV_QUARTA = cdv_quarta; 

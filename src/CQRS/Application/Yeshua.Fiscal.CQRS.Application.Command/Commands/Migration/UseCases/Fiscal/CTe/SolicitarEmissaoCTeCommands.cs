@@ -15,7 +15,7 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record SolicitarEmissaoCTeInputCommand : ICommand
+public partial record SolicitarEmissaoCTeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int RomaneioConsolidadoId { get; set; }
     public string UFEmitente { get; set; } = string.Empty;
@@ -25,6 +25,9 @@ public partial record SolicitarEmissaoCTeInputCommand : ICommand
     public int TipoCTe { get; set; }
     public int TipoServico { get; set; }
     public int Modal { get; set; }
+
+    public string OperationalEntity => "CTeSolicitacaoFiscal";
+    public string? OperationalRecordId => null;
 }
 
 public partial record SolicitarEmissaoCTeOutputCommand : ICommand

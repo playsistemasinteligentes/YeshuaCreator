@@ -30,9 +30,9 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    public string MUN_ID { get; set; }
-    private List<string> _erroMensagem = null;
- internal PontosMapaEntity(string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string mun_id ){
+    public string? MUN_ID { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal PontosMapaEntity(string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string? mun_id ){
  PON_ID = pon_id; 
  PON_DESCRICAO = pon_descricao; 
  PON_TIPO = pon_tipo; 

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IIndicadoresDepartamentosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IIndicadoresDepartamentosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.IndicadoresDepartamentosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var indicadoresdepartamentos = new IndicadoresDepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.INDDEP_ID, c.DEP_ID, c.IND_ID);
                  var domainResult = IndicadoresDepartamentosDomainBehavior.Apply(indicadoresdepartamentos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(indicadoresdepartamentos);
-                     return Success("OK", indicadoresdepartamentos);
+                     return Task.FromResult(Success("OK", indicadoresdepartamentos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, indicadoresdepartamentos);
+                    return Task.FromResult(Error(e, indicadoresdepartamentos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

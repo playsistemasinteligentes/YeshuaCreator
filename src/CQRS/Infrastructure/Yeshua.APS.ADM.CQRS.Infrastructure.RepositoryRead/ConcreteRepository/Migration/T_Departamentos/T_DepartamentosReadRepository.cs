@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_DepartamentosDTO> getT_Departamentos(Command.Read.T_DepartamentosReadCommand command )
         {
-            DataPagination<T_DepartamentosDTO> customResult = null;
+            var customResult = new DataPagination<T_DepartamentosDTO>();
             var customHandled = false;
             TryGetT_DepartamentosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_DepartamentosTenantIDDTO> getT_DepartamentosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_DepartamentosTenantIDDTO> lista;
             var query = _query.T_DepartamentosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_DepartamentosTenantIDDTO>(query.Query,query.Parameters) as List<T_DepartamentosTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_DepartamentosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_DepartamentosUserIdDTO> getT_DepartamentosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_DepartamentosUserIdDTO> lista;
             var query = _query.T_DepartamentosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_DepartamentosUserIdDTO>(query.Query,query.Parameters) as List<T_DepartamentosUserIdDTO>;
+                var lista = _unitOfWork.Query<T_DepartamentosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDEP_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters) as List<T_DepartamentosDTO>;
+                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDEP_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters) as List<T_DepartamentosDTO>;
+                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters) as List<T_DepartamentosDTO>;
+                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters) as List<T_DepartamentosDTO>;
+                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters) as List<T_DepartamentosDTO>;
+                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters) as List<T_DepartamentosDTO>;
+                var result = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

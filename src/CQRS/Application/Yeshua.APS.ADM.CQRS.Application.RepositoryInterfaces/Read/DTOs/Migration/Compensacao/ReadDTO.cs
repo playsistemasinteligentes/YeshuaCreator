@@ -20,8 +20,8 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int com_id { get; set; }
-    public string grp_id { get; set; }
-    public string ond_id { get; set; }
+    public string grp_id { get; set; } = string.Empty;
+    public string ond_id { get; set; } = string.Empty;
     public int com_vinco1_ond { get; set; }
     public int com_vinco2_ond { get; set; }
     public int com_vinco3_ond { get; set; }

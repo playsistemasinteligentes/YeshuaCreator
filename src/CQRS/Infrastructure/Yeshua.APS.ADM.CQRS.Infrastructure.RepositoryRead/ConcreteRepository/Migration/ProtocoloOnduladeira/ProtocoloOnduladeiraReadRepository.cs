@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ProtocoloOnduladeiraDTO> getProtocoloOnduladeira(Command.Read.ProtocoloOnduladeiraReadCommand command )
         {
-            DataPagination<ProtocoloOnduladeiraDTO> customResult = null;
+            var customResult = new DataPagination<ProtocoloOnduladeiraDTO>();
             var customHandled = false;
             TryGetProtocoloOnduladeiraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ProtocoloOnduladeiraTenantIDDTO> getProtocoloOnduladeiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ProtocoloOnduladeiraTenantIDDTO> lista;
             var query = _query.ProtocoloOnduladeiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ProtocoloOnduladeiraTenantIDDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<ProtocoloOnduladeiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ProtocoloOnduladeiraUserIdDTO> getProtocoloOnduladeiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ProtocoloOnduladeiraUserIdDTO> lista;
             var query = _query.ProtocoloOnduladeiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ProtocoloOnduladeiraUserIdDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraUserIdDTO>;
+                var lista = _unitOfWork.Query<ProtocoloOnduladeiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPTO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPTO_CHAVEQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPTO_COMANDOQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters) as List<ProtocoloOnduladeiraDTO>;
+                var result = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

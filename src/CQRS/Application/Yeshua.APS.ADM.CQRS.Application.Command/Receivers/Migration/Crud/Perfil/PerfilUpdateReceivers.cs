@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPerfilEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPerfilEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PerfilCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var perfil = new PerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.PER_ID, c.PER_NOME);
                  var domainResult = PerfilDomainBehavior.Apply(perfil, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(perfil);
-                     return Success("OK", perfil);
+                     return Task.FromResult(Success("OK", perfil));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, perfil);
+                    return Task.FromResult(Error(e, perfil));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

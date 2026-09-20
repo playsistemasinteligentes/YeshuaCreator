@@ -14,7 +14,7 @@ namespace Command.Read
     public struct OcorrenciaReadFKTIP_IDCommand : ICommand
     {
         public int? Id { get; set; }
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

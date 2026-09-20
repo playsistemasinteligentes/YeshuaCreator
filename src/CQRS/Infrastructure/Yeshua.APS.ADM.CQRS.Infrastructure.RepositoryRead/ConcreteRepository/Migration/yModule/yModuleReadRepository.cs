@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<yModuleDTO> getyModule(Command.Read.yModuleReadCommand command )
         {
-            DataPagination<yModuleDTO> customResult = null;
+            var customResult = new DataPagination<yModuleDTO>();
             var customHandled = false;
             TryGetyModuleCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -102,7 +102,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
+                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -110,7 +110,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value );
 
-                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
+                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

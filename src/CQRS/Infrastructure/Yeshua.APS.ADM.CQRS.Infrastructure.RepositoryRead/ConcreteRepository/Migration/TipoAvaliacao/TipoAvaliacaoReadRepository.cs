@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoAvaliacaoDTO> getTipoAvaliacao(Command.Read.TipoAvaliacaoReadCommand command )
         {
-            DataPagination<TipoAvaliacaoDTO> customResult = null;
+            var customResult = new DataPagination<TipoAvaliacaoDTO>();
             var customHandled = false;
             TryGetTipoAvaliacaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoAvaliacaoTenantIDDTO> getTipoAvaliacaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoAvaliacaoTenantIDDTO> lista;
             var query = _query.TipoAvaliacaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoAvaliacaoTenantIDDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoAvaliacaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoAvaliacaoUserIdDTO> getTipoAvaliacaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoAvaliacaoUserIdDTO> lista;
             var query = _query.TipoAvaliacaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoAvaliacaoUserIdDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoAvaliacaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTA_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoDTO>;
+                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTA_DESCQuery(value );
 
-                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoDTO>;
+                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoDTO>;
+                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoDTO>;
+                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoDTO>;
+                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters) as List<TipoAvaliacaoDTO>;
+                var result = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

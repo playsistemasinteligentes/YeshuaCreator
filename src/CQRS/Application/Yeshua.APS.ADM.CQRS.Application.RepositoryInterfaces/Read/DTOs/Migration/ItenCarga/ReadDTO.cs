@@ -19,15 +19,15 @@ namespace Repositorio.Outputs
     public partial record ItenCargaDTO
     {
     public int id { get; set; }
-    public string car_id { get; set; }
-    public string ord_id { get; set; }
+    public string car_id { get; set; } = string.Empty;
+    public string ord_id { get; set; } = string.Empty;
     public DateTime itc_entrega_planejada { get; set; }
     public DateTime itc_entrega_realizada { get; set; }
     public int itc_ordem_entrega { get; set; }
     public Decimal itc_qtd_planejada { get; set; }
     public Decimal itc_qtd_realizada { get; set; }
-    public string ord_hash_key { get; set; }
-    public string not_id { get; set; }
+    public string ord_hash_key { get; set; } = string.Empty;
+    public string not_id { get; set; } = string.Empty;
     public DateTime not_emissao { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

@@ -19,9 +19,9 @@ namespace Repositorio.Outputs
     public partial record RelatoriosDTO
     {
     public int rel_id { get; set; }
-    public string rel_nome_relatorio { get; set; }
-    public string rel_nome_campo { get; set; }
-    public string rel_tipo_campo { get; set; }
+    public string rel_nome_relatorio { get; set; } = string.Empty;
+    public string rel_nome_campo { get; set; } = string.Empty;
+    public string rel_tipo_campo { get; set; } = string.Empty;
     public int rel_pos_x { get; set; }
     public int rel_pos_y { get; set; }
     public int rel_tamanho_fonte { get; set; }

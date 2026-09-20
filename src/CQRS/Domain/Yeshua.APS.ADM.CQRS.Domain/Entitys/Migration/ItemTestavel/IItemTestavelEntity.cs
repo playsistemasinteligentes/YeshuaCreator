@@ -22,13 +22,13 @@
 {
     int? Id { get; set; }
     int ITE_ID { get; set; }
-    string ITE_DESCRICAO { get; set; }
-    string ITE_OBS { get; set; }
+    string? ITE_DESCRICAO { get; set; }
+    string? ITE_OBS { get; set; }
     int? ITE_NUMERO_DE_TESTES { get; set; }
-    string ITE_CONDICIONAL_DE_AVALIACAO { get; set; }
+    string? ITE_CONDICIONAL_DE_AVALIACAO { get; set; }
     Decimal? ITE_VALOR_DA_CONDICIONAL { get; set; }
-    string ITE_VALOR_CALCULADO_DA_CONDICIONAL { get; set; }
-    string ITE_TIPO_AVALIACAO_FINAL { get; set; }
+    string? ITE_VALOR_CALCULADO_DA_CONDICIONAL { get; set; }
+    string? ITE_TIPO_AVALIACAO_FINAL { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

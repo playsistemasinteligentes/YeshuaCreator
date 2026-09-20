@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPendenciasInterfaceEntity Create(string pen_status_out, string pen_protocolo_out, string pen_id_protocolo_out, string pen_status_in, string pen_protocolo_in, string pen_id_protocolo_in, DateTime data_entrada, int pen_id )
+                                    } public IPendenciasInterfaceEntity Create(string? pen_status_out, string? pen_protocolo_out, string? pen_id_protocolo_out, string? pen_status_in, string? pen_protocolo_in, string? pen_id_protocolo_in, DateTime data_entrada, int pen_id )
                             {
                                 return Create(null, pen_status_out, pen_protocolo_out, pen_id_protocolo_out, pen_status_in, pen_protocolo_in, pen_id_protocolo_in, data_entrada, pen_id);
                             }
 
                             public IPendenciasInterfaceEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pen_status_out, string pen_protocolo_out, string pen_id_protocolo_out, string pen_status_in, string pen_protocolo_in, string pen_id_protocolo_in, DateTime data_entrada, int pen_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? pen_status_out, string? pen_protocolo_out, string? pen_id_protocolo_out, string? pen_status_in, string? pen_protocolo_in, string? pen_id_protocolo_in, DateTime data_entrada, int pen_id )
                             {
                             var entity = new PendenciasInterfaceEntity(pen_status_out, pen_protocolo_out, pen_id_protocolo_out, pen_status_in, pen_protocolo_in, pen_id_protocolo_in, data_entrada, pen_id );
 

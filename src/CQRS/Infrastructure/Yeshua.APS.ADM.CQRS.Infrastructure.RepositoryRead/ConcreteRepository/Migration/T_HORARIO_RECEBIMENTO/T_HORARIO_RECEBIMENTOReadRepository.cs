@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_HORARIO_RECEBIMENTODTO> getT_HORARIO_RECEBIMENTO(Command.Read.T_HORARIO_RECEBIMENTOReadCommand command )
         {
-            DataPagination<T_HORARIO_RECEBIMENTODTO> customResult = null;
+            var customResult = new DataPagination<T_HORARIO_RECEBIMENTODTO>();
             var customHandled = false;
             TryGetT_HORARIO_RECEBIMENTOCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_HORARIO_RECEBIMENTOCLI_IDDTO> getT_HORARIO_RECEBIMENTOReadFKCLI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_HORARIO_RECEBIMENTOCLI_IDDTO> lista;
             var query = _query.T_HORARIO_RECEBIMENTOCLI_IDQuery(command );
 
-                lista = _unitOfWork.Query<T_HORARIO_RECEBIMENTOCLI_IDDTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTOCLI_IDDTO>;
+                var lista = _unitOfWork.Query<T_HORARIO_RECEBIMENTOCLI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_HORARIO_RECEBIMENTOTenantIDDTO> getT_HORARIO_RECEBIMENTOReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_HORARIO_RECEBIMENTOTenantIDDTO> lista;
             var query = _query.T_HORARIO_RECEBIMENTOTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_HORARIO_RECEBIMENTOTenantIDDTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTOTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_HORARIO_RECEBIMENTOTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<T_HORARIO_RECEBIMENTOUserIdDTO> getT_HORARIO_RECEBIMENTOReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_HORARIO_RECEBIMENTOUserIdDTO> lista;
             var query = _query.T_HORARIO_RECEBIMENTOUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_HORARIO_RECEBIMENTOUserIdDTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTOUserIdDTO>;
+                var lista = _unitOfWork.Query<T_HORARIO_RECEBIMENTOUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHRE_DIA_DA_SEMANAQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHRE_HORA_INICIALQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHRE_HORA_FINALQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHRE_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters) as List<T_HORARIO_RECEBIMENTODTO>;
+                var result = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

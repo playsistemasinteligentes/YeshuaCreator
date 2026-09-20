@@ -128,7 +128,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID
+                                    public string? PRO_ID
                                     {
                                         get => _inner.PRO_ID;
                                         set
@@ -142,7 +142,7 @@
                                         }
                                     }
 
-                                    public string ITO_OBS
+                                    public string? ITO_OBS
                                     {
                                         get => _inner.ITO_OBS;
                                         set
@@ -226,7 +226,7 @@
                                         }
                                     }
 
-                                    public string ITO_STATUS
+                                    public string? ITO_STATUS
                                     {
                                         get => _inner.ITO_STATUS;
                                         set
@@ -296,7 +296,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID_COMPOSICAO
+                                    public string? GRP_ID_COMPOSICAO
                                     {
                                         get => _inner.GRP_ID_COMPOSICAO;
                                         set

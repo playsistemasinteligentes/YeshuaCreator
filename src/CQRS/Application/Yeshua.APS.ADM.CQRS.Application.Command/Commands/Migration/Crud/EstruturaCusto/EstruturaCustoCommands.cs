@@ -15,7 +15,7 @@ namespace Command.Write
     {
         public int EST_ID { get; set; }
         public int? ITO_ID { get; set; }
-        public string ORD_ID { get; set; }
+        public string? ORD_ID { get; set; }
         public string PRO_ID { get; set; }
         public string PRO_ID_PRODUTO { get; set; }
         public string PRO_ID_COMPONENTE { get; set; }

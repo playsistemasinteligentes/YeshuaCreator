@@ -14,8 +14,8 @@ namespace Command.Read
     public struct UnidadeReadCommand : ICommandRead
     {
         public int? UNI_ID { get; set; }
-        public string DEESCRICAO { get; set; }
-        public string UN { get; set; }
+        public string? DEESCRICAO { get; set; }
+        public string? UN { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

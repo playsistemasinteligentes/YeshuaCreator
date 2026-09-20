@@ -7,6 +7,13 @@ using System.Text;
 
 namespace Shered.DB.Connection
 {
+    public readonly record struct RepositoryTelemetrySelection(
+        bool CaptureCounters,
+        bool EmitEvents)
+    {
+        public bool Enabled => CaptureCounters || EmitEvents;
+    }
+
     public sealed class RepositoryTelemetry
     {
         private static readonly ConcurrentDictionary<string, string> QueryIds = new();
@@ -17,6 +24,21 @@ namespace Shered.DB.Connection
         {
             _logger = logger;
             _context = context;
+        }
+
+        public RepositoryTelemetrySelection Evaluate(string operation)
+        {
+            // OBS: F-EXP-04 - capacidades decididas na borda antes do custo de medicao.
+            var captureCounters = _logger
+                .Evaluate("RepositoryCounters", operation)
+                .Enabled;
+            var eventDecision = _logger.Evaluate("RepositoryEvents", operation);
+            var emitEvents = eventDecision.Enabled &&
+                (eventDecision.Level.Equals("Trace", StringComparison.OrdinalIgnoreCase) ||
+                 eventDecision.Level.Equals("Debug", StringComparison.OrdinalIgnoreCase) ||
+                 !eventDecision.Depth.Equals("D0", StringComparison.OrdinalIgnoreCase));
+
+            return new RepositoryTelemetrySelection(captureCounters, emitEvents);
         }
 
         public string GetQueryId(string sql)
@@ -34,8 +56,10 @@ namespace Shered.DB.Connection
             string queryId,
             long startedAt,
             bool succeeded,
+            RepositoryTelemetrySelection selection,
             Exception? exception = null)
         {
+            // OBS: F-EXP-04 - nunca recebe SQL nem parametros, somente o identificador opaco.
             var durationMs = (long)Stopwatch
                 .GetElapsedTime(startedAt)
                 .TotalMilliseconds;
@@ -45,6 +69,8 @@ namespace Shered.DB.Connection
                 _context.TraceId,
                 succeeded,
                 durationMs,
+                selection.CaptureCounters,
+                selection.EmitEvents,
                 exception);
         }
 

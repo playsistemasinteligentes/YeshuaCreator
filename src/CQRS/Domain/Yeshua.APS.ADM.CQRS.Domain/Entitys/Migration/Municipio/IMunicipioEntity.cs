@@ -21,14 +21,14 @@
                     public interface IMunicipioEntity
 {
     string MUN_ID { get; set; }
-    string MUN_NOME { get; set; }
-    string UF_COD { get; set; }
-    string MUN_CODIGO_IBGE { get; set; }
+    string? MUN_NOME { get; set; }
+    string? UF_COD { get; set; }
+    string? MUN_CODIGO_IBGE { get; set; }
     Decimal? MUN_LATITUDE { get; set; }
     Decimal? MUN_LONGITUDE { get; set; }
-    string MUN_ID_INTEGRACAO_ERP { get; set; }
-    string MUN_CODIGO_SIAFI { get; set; }
-    string MUN_CODIGO_CNPJ { get; set; }
+    string? MUN_ID_INTEGRACAO_ERP { get; set; }
+    string? MUN_CODIGO_SIAFI { get; set; }
+    string? MUN_CODIGO_CNPJ { get; set; }
     Decimal? MUN_DISTANCIA_KM { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

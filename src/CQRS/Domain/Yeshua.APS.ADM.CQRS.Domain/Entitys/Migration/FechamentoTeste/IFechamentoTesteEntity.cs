@@ -23,7 +23,7 @@
     int? Id { get; set; }
     int FEC_ID { get; set; }
     int? FEC_QTD { get; set; }
-    string GRP_ID { get; set; }
+    string? GRP_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

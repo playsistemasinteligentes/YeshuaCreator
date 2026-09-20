@@ -13,22 +13,22 @@ namespace Command.Read
 {
     public struct ConsultaPedidoReadCommand : ICommandRead
     {
-        public string PedidoId { get; set; }
-        public string ClienteId { get; set; }
-        public string ClienteNome { get; set; }
-        public string RazaoSocial { get; set; }
-        public string ProdutoId { get; set; }
-        public string ProdutoDescricao { get; set; }
-        public string Status { get; set; }
-        public string Estagio { get; set; }
+        public string? PedidoId { get; set; }
+        public string? ClienteId { get; set; }
+        public string? ClienteNome { get; set; }
+        public string? RazaoSocial { get; set; }
+        public string? ProdutoId { get; set; }
+        public string? ProdutoDescricao { get; set; }
+        public string? Status { get; set; }
+        public string? Estagio { get; set; }
         public DateTime? DataEntregaDe { get; set; }
         public DateTime? DataEntregaAte { get; set; }
         public DateTime? EmbarqueAlvo { get; set; }
         public Decimal? Quantidade { get; set; }
         public Decimal? SaldoAProduzir { get; set; }
         public Decimal? SaldoAExpedir { get; set; }
-        public string CorFila { get; set; }
-        public string PedidoCliente { get; set; }
+        public string? CorFila { get; set; }
+        public string? PedidoCliente { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

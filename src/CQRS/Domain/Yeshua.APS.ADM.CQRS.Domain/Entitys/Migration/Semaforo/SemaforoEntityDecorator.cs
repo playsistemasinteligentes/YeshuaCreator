@@ -87,7 +87,7 @@
                                         }
                                     }
 
-                                    public string SEM_STATUS
+                                    public string? SEM_STATUS
                                     {
                                         get => _inner.SEM_STATUS;
                                         set
@@ -101,7 +101,7 @@
                                         }
                                     }
 
-                                    public string SEM_ORIGEM
+                                    public string? SEM_ORIGEM
                                     {
                                         get => _inner.SEM_ORIGEM;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string SEM_ID_CONEXAO
+                                    public string? SEM_ID_CONEXAO
                                     {
                                         get => _inner.SEM_ID_CONEXAO;
                                         set

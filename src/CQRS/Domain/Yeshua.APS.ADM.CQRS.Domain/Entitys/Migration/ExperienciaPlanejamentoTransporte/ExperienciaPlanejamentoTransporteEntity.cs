@@ -22,23 +22,23 @@
 {
     public int? Id { get; set; }
     public int Tipo { get; set; }
-    public string Referencia { get; set; }
-    public string PedidoId { get; set; }
-    public string ClienteId { get; set; }
-    public string Municipio { get; set; }
-    public string Regiao { get; set; }
-    public string RotaId { get; set; }
+    public string? Referencia { get; set; }
+    public string? PedidoId { get; set; }
+    public string? ClienteId { get; set; }
+    public string? Municipio { get; set; }
+    public string? Regiao { get; set; }
+    public string? RotaId { get; set; }
     public Decimal? Peso { get; set; }
     public Decimal? Volume { get; set; }
-    public string Observacao { get; set; }
+    public string? Observacao { get; set; }
     public DateTime CriadoEm { get; set; }
     public string CriadoPor { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ExperienciaPlanejamentoTransporteEntity(int? id, int tipo, string referencia, string pedidoid, string clienteid, string municipio, string regiao, string rotaid, Decimal? peso, Decimal? volume, string observacao, DateTime criadoem, string criadopor ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ExperienciaPlanejamentoTransporteEntity(int? id, int tipo, string? referencia, string? pedidoid, string? clienteid, string? municipio, string? regiao, string? rotaid, Decimal? peso, Decimal? volume, string? observacao, DateTime criadoem, string criadopor ){
  Id = id; 
  Tipo = tipo; 
  Referencia = referencia; 
@@ -58,7 +58,7 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(CriadoEm == null || CriadoEm < (new DateTime(1800, 1, 1)))
+   if(CriadoEm < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado Em deve ser informado.");
    if(string.IsNullOrEmpty(CriadoPor))
    this._erroMensagem.Add("Criado Por deve ser informado.");

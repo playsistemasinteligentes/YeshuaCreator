@@ -23,10 +23,10 @@
     int? Id { get; set; }
     string OPE_TIPO_REGISTRO { get; set; }
     string OPE_ID { get; set; }
-    string GMA_ID { get; set; }
+    string? GMA_ID { get; set; }
     string MAQ_ID { get; set; }
     string PRO_ID { get; set; }
-    string OPE_EXCECAO { get; set; }
+    string? OPE_EXCECAO { get; set; }
     int ROT_SEQ_TRANFORMACAO { get; set; }
     string ORD_ID { get; set; }
     int FPR_SEQ_REPETICAO { get; set; }

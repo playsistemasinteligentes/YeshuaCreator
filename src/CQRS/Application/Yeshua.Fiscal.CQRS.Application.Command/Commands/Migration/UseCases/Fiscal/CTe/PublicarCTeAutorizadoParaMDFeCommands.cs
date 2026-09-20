@@ -15,10 +15,13 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record PublicarCTeAutorizadoParaMDFeInputCommand : ICommand
+public partial record PublicarCTeAutorizadoParaMDFeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int TentativaEmissaoId { get; set; }
     public string ChaveAcessoCTe { get; set; } = string.Empty;
+
+    public string OperationalEntity => "CTeSaidaMDFe";
+    public string? OperationalRecordId => null;
 }
 
 public partial record PublicarCTeAutorizadoParaMDFeOutputCommand : ICommand

@@ -85,7 +85,7 @@
                                         }
                                     }
 
-                                    public string VIS_FORMULA
+                                    public string? VIS_FORMULA
                                     {
                                         get => _inner.VIS_FORMULA;
                                         set

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<SubOcorrenciaDTO> getSubOcorrencia(Command.Read.SubOcorrenciaReadCommand command )
         {
-            DataPagination<SubOcorrenciaDTO> customResult = null;
+            var customResult = new DataPagination<SubOcorrenciaDTO>();
             var customHandled = false;
             TryGetSubOcorrenciaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<SubOcorrenciaTenantIDDTO> getSubOcorrenciaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SubOcorrenciaTenantIDDTO> lista;
             var query = _query.SubOcorrenciaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<SubOcorrenciaTenantIDDTO>(query.Query,query.Parameters) as List<SubOcorrenciaTenantIDDTO>;
+                var lista = _unitOfWork.Query<SubOcorrenciaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<SubOcorrenciaUserIdDTO> getSubOcorrenciaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SubOcorrenciaUserIdDTO> lista;
             var query = _query.SubOcorrenciaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<SubOcorrenciaUserIdDTO>(query.Query,query.Parameters) as List<SubOcorrenciaUserIdDTO>;
+                var lista = _unitOfWork.Query<SubOcorrenciaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySUB_IDQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySUB_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters) as List<SubOcorrenciaDTO>;
+                var result = _unitOfWork.Query<SubOcorrenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

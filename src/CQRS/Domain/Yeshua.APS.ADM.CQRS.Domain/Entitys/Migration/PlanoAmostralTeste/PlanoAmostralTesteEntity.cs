@@ -30,7 +30,7 @@
     public int? PAT_QTD_CAIXAS_ATE { get; set; }
     public int? PAT_N_AMOSTRAGEM { get; set; }
     public Decimal? PAT_PERCENT_ESPECIF { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal PlanoAmostralTesteEntity(Decimal? grp_tipo, int pat_id, int? pat_qtd_caixas_de, int? pat_qtd_caixas_ate, int? pat_n_amostragem, Decimal? pat_percent_especif ){
  GRP_TIPO = grp_tipo; 
  PAT_ID = pat_id; 

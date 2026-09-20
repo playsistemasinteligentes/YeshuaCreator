@@ -22,10 +22,10 @@
 {
     int? Id { get; set; }
     int MDT_ID { get; set; }
-    string MDT_DESC { get; set; }
+    string? MDT_DESC { get; set; }
     Decimal? MDT_VALOR_ESPERADO { get; set; }
     Decimal? MDT_ENCONTRADO { get; set; }
-    string UNI_ID { get; set; }
+    string? UNI_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

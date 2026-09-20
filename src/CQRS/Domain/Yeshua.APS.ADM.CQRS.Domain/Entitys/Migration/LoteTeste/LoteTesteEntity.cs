@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal LoteTesteEntity(int? id, int lt_id, int? tes_id, int? rl_id ){
  Id = id; 
  LT_ID = lt_id; 

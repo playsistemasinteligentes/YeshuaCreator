@@ -67,7 +67,7 @@ namespace Read.Repository
             if (cached != null) return cached;
             var result = _inner.getyConfigArctetureReadFKTenantID(command );
             if (result != null) _cacheFKTenantID.Set(key, result,"yConfigArcteture");
-            return result;
+            return result ?? System.Array.Empty<yConfigArctetureTenantIDDTO>();
         }
         public IEnumerable<yConfigArctetureUserIdDTO> getyConfigArctetureReadFKUserId(object command )
         {
@@ -82,7 +82,7 @@ namespace Read.Repository
             if (cached != null) return cached;
             var result = _inner.getyConfigArctetureReadFKUserId(command );
             if (result != null) _cacheFKUserId.Set(key, result,"yConfigArcteture");
-            return result;
+            return result ?? System.Array.Empty<yConfigArctetureUserIdDTO>();
         }
         public bool ExistsById(int value )
         {

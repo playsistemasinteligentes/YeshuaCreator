@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ConsultaPedidoDTO> getConsultaPedido(Command.Read.ConsultaPedidoReadCommand command )
         {
-            DataPagination<ConsultaPedidoDTO> customResult = null;
+            var customResult = new DataPagination<ConsultaPedidoDTO>();
             var customHandled = false;
             TryGetConsultaPedidoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultaPedidoProdutoIdDTO> getConsultaPedidoReadFKProdutoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultaPedidoProdutoIdDTO> lista;
             var query = _query.ConsultaPedidoProdutoIdQuery(command );
 
-                lista = _unitOfWork.Query<ConsultaPedidoProdutoIdDTO>(query.Query,query.Parameters) as List<ConsultaPedidoProdutoIdDTO>;
+                var lista = _unitOfWork.Query<ConsultaPedidoProdutoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -344,7 +343,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidoIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -352,7 +351,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByClienteIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -360,7 +359,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByClienteNomeQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -368,7 +367,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRazaoSocialQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -376,7 +375,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProdutoIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -384,7 +383,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProdutoDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -392,7 +391,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -400,7 +399,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEstagioQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -408,7 +407,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataEntregaDeQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -416,7 +415,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataEntregaAteQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -424,7 +423,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmbarqueAlvoQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -432,7 +431,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadeQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -440,7 +439,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySaldoAProduzirQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -448,7 +447,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySaldoAExpedirQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -456,7 +455,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorFilaQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -464,7 +463,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidoClienteQuery(value );
 
-                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters) as List<ConsultaPedidoDTO>;
+                var result = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

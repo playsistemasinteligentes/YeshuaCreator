@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICargosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICargosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CargosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cargos = new CargosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RGO_ID, c.RGO_DESCRICAO);
                  var domainResult = CargosDomainBehavior.Apply(cargos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(cargos);
-                     return Success("OK", cargos);
+                     return Task.FromResult(Success("OK", cargos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cargos);
+                    return Task.FromResult(Error(e, cargos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -208,7 +208,7 @@
                                         }
                                     }
 
-                                    public string FAT_ID
+                                    public string? FAT_ID
                                     {
                                         get => _inner.FAT_ID;
                                         set
@@ -222,7 +222,7 @@
                                         }
                                     }
 
-                                    public string DIM_SUBDIMENSAO_ID
+                                    public string? DIM_SUBDIMENSAO_ID
                                     {
                                         get => _inner.DIM_SUBDIMENSAO_ID;
                                         set
@@ -236,7 +236,7 @@
                                         }
                                     }
 
-                                    public string PER_ID
+                                    public string? PER_ID
                                     {
                                         get => _inner.PER_ID;
                                         set
@@ -250,7 +250,7 @@
                                         }
                                     }
 
-                                    public string DOM_EMPRESA
+                                    public string? DOM_EMPRESA
                                     {
                                         get => _inner.DOM_EMPRESA;
                                         set
@@ -264,7 +264,7 @@
                                         }
                                     }
 
-                                    public string DOM_FILIAL
+                                    public string? DOM_FILIAL
                                     {
                                         get => _inner.DOM_FILIAL;
                                         set

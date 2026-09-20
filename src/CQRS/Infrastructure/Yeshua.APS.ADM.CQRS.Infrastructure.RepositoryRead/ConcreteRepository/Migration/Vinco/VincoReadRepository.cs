@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<VincoDTO> getVinco(Command.Read.VincoReadCommand command )
         {
-            DataPagination<VincoDTO> customResult = null;
+            var customResult = new DataPagination<VincoDTO>();
             var customHandled = false;
             TryGetVincoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<VincoTenantIDDTO> getVincoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VincoTenantIDDTO> lista;
             var query = _query.VincoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<VincoTenantIDDTO>(query.Query,query.Parameters) as List<VincoTenantIDDTO>;
+                var lista = _unitOfWork.Query<VincoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<VincoUserIdDTO> getVincoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VincoUserIdDTO> lista;
             var query = _query.VincoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<VincoUserIdDTO>(query.Query,query.Parameters) as List<VincoUserIdDTO>;
+                var lista = _unitOfWork.Query<VincoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIN_IDQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIN_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIN_ID_DESLOCAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters) as List<VincoDTO>;
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

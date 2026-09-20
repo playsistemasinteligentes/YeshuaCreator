@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRestricoesDeRodagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRestricoesDeRodagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RestricoesDeRodagemCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var restricoesderodagem = new RestricoesDeRodagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RES_ID, c.RES_TIPO, c.RES_HORA_INI, c.RES_HORA_FIM, c.RES_VELOCIDADE_HORA_RUSH, c.TVE_ID, c.MAP_ID);
                  var domainResult = RestricoesDeRodagemDomainBehavior.Apply(restricoesderodagem, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(restricoesderodagem);
-                     return Success("OK", restricoesderodagem);
+                     return Task.FromResult(Success("OK", restricoesderodagem));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, restricoesderodagem);
+                    return Task.FromResult(Error(e, restricoesderodagem));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

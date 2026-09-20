@@ -14,7 +14,7 @@ namespace Command.Write
     public struct GrupoRecursoCrudCommand : ICommand
     {
         public string GRE_ID { get; set; }
-        public string GRE_DESCRICAO { get; set; }
+        public string? GRE_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

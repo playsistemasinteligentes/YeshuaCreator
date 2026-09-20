@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_FeedbackMovEstoqueEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_FeedbackMovEstoqueEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_FeedbackMovEstoqueCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_feedbackmovestoque = new T_FeedbackMovEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FeedbackId, c.MovimentoEstoqueId);
                  var domainResult = T_FeedbackMovEstoqueDomainBehavior.Apply(t_feedbackmovestoque, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(t_feedbackmovestoque);
-                     return Success("OK", t_feedbackmovestoque);
+                     return Task.FromResult(Success("OK", t_feedbackmovestoque));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_feedbackmovestoque);
+                    return Task.FromResult(Error(e, t_feedbackmovestoque));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

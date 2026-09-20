@@ -19,11 +19,11 @@ namespace Repositorio.Outputs
     public partial record SemaforoDTO
     {
     public int id { get; set; }
-    public string sem_id { get; set; }
-    public string sem_status { get; set; }
-    public string sem_origem { get; set; }
+    public string sem_id { get; set; } = string.Empty;
+    public string sem_status { get; set; } = string.Empty;
+    public string sem_origem { get; set; } = string.Empty;
     public DateTime sem_emissao { get; set; }
-    public string sem_id_conexao { get; set; }
+    public string sem_id_conexao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

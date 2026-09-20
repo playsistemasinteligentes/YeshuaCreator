@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal T_USER_GRUPOEntity(int? id, int gru_id, int id_usuario ){
  Id = id; 
  GRU_ID = gru_id; 

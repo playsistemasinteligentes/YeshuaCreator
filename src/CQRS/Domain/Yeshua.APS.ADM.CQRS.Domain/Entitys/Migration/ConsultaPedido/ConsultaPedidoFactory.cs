@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IConsultaPedidoEntity Create(string pedidoid, string clienteid, string clientenome, string razaosocial, string produtoid, string produtodescricao, string status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string corfila, string pedidocliente )
+                                    } public IConsultaPedidoEntity Create(string pedidoid, string clienteid, string clientenome, string? razaosocial, string produtoid, string produtodescricao, string? status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string? corfila, string? pedidocliente )
                             {
                                 return Create(null, pedidoid, clienteid, clientenome, razaosocial, produtoid, produtodescricao, status, estagio, dataentregade, dataentregaate, embarquealvo, quantidade, saldoaproduzir, saldoaexpedir, corfila, pedidocliente);
                             }
 
                             public IConsultaPedidoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string clienteid, string clientenome, string razaosocial, string produtoid, string produtodescricao, string status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string corfila, string pedidocliente )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string clienteid, string clientenome, string? razaosocial, string produtoid, string produtodescricao, string? status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string? corfila, string? pedidocliente )
                             {
                             var entity = new ConsultaPedidoEntity(pedidoid, clienteid, clientenome, razaosocial, produtoid, produtodescricao, status, estagio, dataentregade, dataentregaate, embarquealvo, quantidade, saldoaproduzir, saldoaexpedir, corfila, pedidocliente );
 

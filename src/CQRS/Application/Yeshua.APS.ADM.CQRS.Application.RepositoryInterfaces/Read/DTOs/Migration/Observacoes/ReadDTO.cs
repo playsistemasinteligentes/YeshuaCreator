@@ -19,13 +19,13 @@ namespace Repositorio.Outputs
     public partial record ObservacoesDTO
     {
     public int obs_id { get; set; }
-    public string obs_tipo { get; set; }
-    public string obs_descricao { get; set; }
-    public string cli_id { get; set; }
-    public string maq_id { get; set; }
-    public string pro_id { get; set; }
+    public string obs_tipo { get; set; } = string.Empty;
+    public string obs_descricao { get; set; } = string.Empty;
+    public string cli_id { get; set; } = string.Empty;
+    public string maq_id { get; set; } = string.Empty;
+    public string pro_id { get; set; } = string.Empty;
     public int rot_seq_tranformacao { get; set; }
-    public string obs_integracao { get; set; }
+    public string obs_integracao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

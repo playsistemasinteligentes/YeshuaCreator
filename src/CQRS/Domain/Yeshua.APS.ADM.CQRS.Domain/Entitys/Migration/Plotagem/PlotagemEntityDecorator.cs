@@ -90,7 +90,7 @@
                                         }
                                     }
 
-                                    public string PLO_NOME
+                                    public string? PLO_NOME
                                     {
                                         get => _inner.PLO_NOME;
                                         set
@@ -104,7 +104,7 @@
                                         }
                                     }
 
-                                    public string PLO_DIMENSAO
+                                    public string? PLO_DIMENSAO
                                     {
                                         get => _inner.PLO_DIMENSAO;
                                         set
@@ -118,7 +118,7 @@
                                         }
                                     }
 
-                                    public string PLO_X
+                                    public string? PLO_X
                                     {
                                         get => _inner.PLO_X;
                                         set
@@ -132,7 +132,7 @@
                                         }
                                     }
 
-                                    public string PLO_Y
+                                    public string? PLO_Y
                                     {
                                         get => _inner.PLO_Y;
                                         set
@@ -146,7 +146,7 @@
                                         }
                                     }
 
-                                    public string PLO_Z
+                                    public string? PLO_Z
                                     {
                                         get => _inner.PLO_Z;
                                         set
@@ -160,7 +160,7 @@
                                         }
                                     }
 
-                                    public string PLO_GRAFICO
+                                    public string? PLO_GRAFICO
                                     {
                                         get => _inner.PLO_GRAFICO;
                                         set

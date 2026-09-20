@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMensagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMensagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MensagemCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mensagem = new MensagemFactory(_logger, _domainTrackingPolicy).Create(context, c.MEN_ID, c.MEN_SEND, c.MEN_EMISSION, c.MEN_STATUS, c.MEN_RECEIVE, c.MEN_TYPE, c.MEN_QTD_TRY_SEND, c.MEN_DATE_TRY_SEND);
                  var domainResult = MensagemDomainBehavior.Apply(mensagem, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(mensagem);
-                     return Success("OK", mensagem);
+                     return Task.FromResult(Success("OK", mensagem));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mensagem);
+                    return Task.FromResult(Error(e, mensagem));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

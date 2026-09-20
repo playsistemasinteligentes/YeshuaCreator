@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IEstruturaCustoEntity Create(int est_id, int? ito_id, string ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao )
+                                    } public IEstruturaCustoEntity Create(int est_id, int? ito_id, string? ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao )
                             {
                                 return Create(null, est_id, ito_id, ord_id, pro_id, pro_id_produto, pro_id_componente, pro_tipo_custo, pro_grupo_contabil, est_ordem, est_grupo, est_quant, est_valor_total, est_data_base, est_base_producao, est_nivel, fpr_seq_repeticao);
                             }
 
                             public IEstruturaCustoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int est_id, int? ito_id, string ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int est_id, int? ito_id, string? ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao )
                             {
                             var entity = new EstruturaCustoEntity(est_id, ito_id, ord_id, pro_id, pro_id_produto, pro_id_componente, pro_tipo_custo, pro_grupo_contabil, est_ordem, est_grupo, est_quant, est_valor_total, est_data_base, est_base_producao, est_nivel, fpr_seq_repeticao );
 

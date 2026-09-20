@@ -74,7 +74,7 @@
                                         }
                                     }
 
-                                    public string REL_NOME_RELATORIO
+                                    public string? REL_NOME_RELATORIO
                                     {
                                         get => _inner.REL_NOME_RELATORIO;
                                         set

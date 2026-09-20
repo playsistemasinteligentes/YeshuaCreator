@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record ConsultasDTO
     {
     public int id { get; set; }
-    public string con_casas_decimais { get; set; }
-    public string con_conexao { get; set; }
+    public string con_casas_decimais { get; set; } = string.Empty;
+    public string con_conexao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

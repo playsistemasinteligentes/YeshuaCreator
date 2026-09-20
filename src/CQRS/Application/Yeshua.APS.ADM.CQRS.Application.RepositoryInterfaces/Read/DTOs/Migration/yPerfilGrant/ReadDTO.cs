@@ -20,7 +20,7 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int perfilid { get; set; }
-    public string grantid { get; set; }
+    public string grantid { get; set; } = string.Empty;
     public bool cangrant { get; set; }
     public bool cancreate { get; set; }
     public bool canread { get; set; }

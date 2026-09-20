@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string MEM_DESCRICAO
+                                    public string? MEM_DESCRICAO
                                     {
                                         get => _inner.MEM_DESCRICAO;
                                         set

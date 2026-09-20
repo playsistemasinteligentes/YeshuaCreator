@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<CabvisaoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<CabvisaoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.CabvisaoReadCommand c) 
              {    
                 var CabvisaoReadRepository = _repository.getCabvisao(c);
-                return Success("OK", CabvisaoReadRepository);
+                return Task.FromResult(Success("OK", CabvisaoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

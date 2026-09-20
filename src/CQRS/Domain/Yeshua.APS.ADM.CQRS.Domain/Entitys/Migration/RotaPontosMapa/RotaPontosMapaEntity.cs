@@ -27,14 +27,14 @@
     public Decimal? ROT_CUSTO_TOTAL { get; set; }
     public string PON_ID_ROTEIRO { get; set; }
     public int? ROT_ORDEM_ROTEIRO { get; set; }
-    public string ROT_TIPO { get; set; }
+    public string? ROT_TIPO { get; set; }
     public Decimal? ROT_DISTANCIA { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal RotaPontosMapaEntity(int? id, string rot_id, string pon_id_destino, string pon_id_origem, Decimal? rot_custo_total, string pon_id_roteiro, int? rot_ordem_roteiro, string rot_tipo, Decimal? rot_distancia ){
+    private List<string> _erroMensagem = new List<string>();
+ internal RotaPontosMapaEntity(int? id, string rot_id, string pon_id_destino, string pon_id_origem, Decimal? rot_custo_total, string pon_id_roteiro, int? rot_ordem_roteiro, string? rot_tipo, Decimal? rot_distancia ){
  Id = id; 
  ROT_ID = rot_id; 
  PON_ID_DESTINO = pon_id_destino; 

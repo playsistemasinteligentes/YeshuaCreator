@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record OcorrenciaTIP_IDDTO
     {
     public int id { get; set; }
-    public string descricao { get; set; }
+    public string descricao { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

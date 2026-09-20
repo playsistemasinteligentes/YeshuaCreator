@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ITemplateDeTestesEntity Create(int? id, string descricao, string observacao )
+                                    } public ITemplateDeTestesEntity Create(int? id, string? descricao, string? observacao )
                             {
                                 return Create(null, id, descricao, observacao);
                             }
 
                             public ITemplateDeTestesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string descricao, string observacao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? descricao, string? observacao )
                             {
                             var entity = new TemplateDeTestesEntity(id, descricao, observacao );
 

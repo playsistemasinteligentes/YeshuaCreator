@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITemplateDeTestesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITemplateDeTestesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TemplateDeTestesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var templatedetestes = new TemplateDeTestesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Observacao);
                  var domainResult = TemplateDeTestesDomainBehavior.Apply(templatedetestes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(templatedetestes);
-                     return Success("OK", templatedetestes);
+                     return Task.FromResult(Success("OK", templatedetestes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, templatedetestes);
+                    return Task.FromResult(Error(e, templatedetestes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<SemaforoDTO> getSemaforo(Command.Read.SemaforoReadCommand command )
         {
-            DataPagination<SemaforoDTO> customResult = null;
+            var customResult = new DataPagination<SemaforoDTO>();
             var customHandled = false;
             TryGetSemaforoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<SemaforoTenantIDDTO> getSemaforoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SemaforoTenantIDDTO> lista;
             var query = _query.SemaforoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<SemaforoTenantIDDTO>(query.Query,query.Parameters) as List<SemaforoTenantIDDTO>;
+                var lista = _unitOfWork.Query<SemaforoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<SemaforoUserIdDTO> getSemaforoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SemaforoUserIdDTO> lista;
             var query = _query.SemaforoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<SemaforoUserIdDTO>(query.Query,query.Parameters) as List<SemaforoUserIdDTO>;
+                var lista = _unitOfWork.Query<SemaforoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEM_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEM_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEM_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEM_ID_CONEXAOQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters) as List<SemaforoDTO>;
+                var result = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -70,7 +70,7 @@
                                         }
                                     }
 
-                                    public string Descricao
+                                    public string? Descricao
                                     {
                                         get => _inner.Descricao;
                                         set
@@ -140,7 +140,7 @@
                                         }
                                     }
 
-                                    public string Observacao
+                                    public string? Observacao
                                     {
                                         get => _inner.Observacao;
                                         set

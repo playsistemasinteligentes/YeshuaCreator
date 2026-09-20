@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IT_IndicadoresEntity Create(int ind_id, string ind_descricao, int neg_id, string desc_calculo, int ind_tipocomparador, int? ind_grafico, string ind_conexao, DateTime? ind_dtcriacao, string resposavelind, string resposavelcarga, string procextracao, string per_id, string dim_id, string dom_empresa, string dom_filial )
+                                    } public IT_IndicadoresEntity Create(int ind_id, string ind_descricao, int neg_id, string? desc_calculo, int ind_tipocomparador, int? ind_grafico, string? ind_conexao, DateTime? ind_dtcriacao, string? resposavelind, string? resposavelcarga, string? procextracao, string? per_id, string? dim_id, string? dom_empresa, string? dom_filial )
                             {
                                 return Create(null, ind_id, ind_descricao, neg_id, desc_calculo, ind_tipocomparador, ind_grafico, ind_conexao, ind_dtcriacao, resposavelind, resposavelcarga, procextracao, per_id, dim_id, dom_empresa, dom_filial);
                             }
 
                             public IT_IndicadoresEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int ind_id, string ind_descricao, int neg_id, string desc_calculo, int ind_tipocomparador, int? ind_grafico, string ind_conexao, DateTime? ind_dtcriacao, string resposavelind, string resposavelcarga, string procextracao, string per_id, string dim_id, string dom_empresa, string dom_filial )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int ind_id, string ind_descricao, int neg_id, string? desc_calculo, int ind_tipocomparador, int? ind_grafico, string? ind_conexao, DateTime? ind_dtcriacao, string? resposavelind, string? resposavelcarga, string? procextracao, string? per_id, string? dim_id, string? dom_empresa, string? dom_filial )
                             {
                             var entity = new T_IndicadoresEntity(ind_id, ind_descricao, neg_id, desc_calculo, ind_tipocomparador, ind_grafico, ind_conexao, ind_dtcriacao, resposavelind, resposavelcarga, procextracao, per_id, dim_id, dom_empresa, dom_filial );
 

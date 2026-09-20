@@ -21,13 +21,13 @@
                     public interface IObservacoesEntity
 {
     int OBS_ID { get; set; }
-    string OBS_TIPO { get; set; }
-    string OBS_DESCRICAO { get; set; }
-    string CLI_ID { get; set; }
-    string MAQ_ID { get; set; }
-    string PRO_ID { get; set; }
+    string? OBS_TIPO { get; set; }
+    string? OBS_DESCRICAO { get; set; }
+    string? CLI_ID { get; set; }
+    string? MAQ_ID { get; set; }
+    string? PRO_ID { get; set; }
     int? ROT_SEQ_TRANFORMACAO { get; set; }
-    string OBS_INTEGRACAO { get; set; }
+    string? OBS_INTEGRACAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

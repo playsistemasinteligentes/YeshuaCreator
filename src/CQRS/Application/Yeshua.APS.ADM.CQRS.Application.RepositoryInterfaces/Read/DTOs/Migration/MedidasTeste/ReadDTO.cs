@@ -20,10 +20,10 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int mdt_id { get; set; }
-    public string mdt_desc { get; set; }
+    public string mdt_desc { get; set; } = string.Empty;
     public Decimal mdt_valor_esperado { get; set; }
     public Decimal mdt_encontrado { get; set; }
-    public string uni_id { get; set; }
+    public string uni_id { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

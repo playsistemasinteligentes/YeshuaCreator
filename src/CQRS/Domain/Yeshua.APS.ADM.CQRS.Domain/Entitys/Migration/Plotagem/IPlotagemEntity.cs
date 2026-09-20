@@ -22,12 +22,12 @@
 {
     int? Id { get; set; }
     int PLO_ID { get; set; }
-    string PLO_NOME { get; set; }
-    string PLO_DIMENSAO { get; set; }
-    string PLO_X { get; set; }
-    string PLO_Y { get; set; }
-    string PLO_Z { get; set; }
-    string PLO_GRAFICO { get; set; }
+    string? PLO_NOME { get; set; }
+    string? PLO_DIMENSAO { get; set; }
+    string? PLO_X { get; set; }
+    string? PLO_Y { get; set; }
+    string? PLO_Z { get; set; }
+    string? PLO_GRAFICO { get; set; }
     int? CON_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

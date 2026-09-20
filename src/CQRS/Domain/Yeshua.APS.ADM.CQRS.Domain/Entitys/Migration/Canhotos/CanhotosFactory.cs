@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICanhotosEntity Create(int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega )
+                                    } public ICanhotosEntity Create(int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string? can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega )
                             {
                                 return Create(null, id, car_id, ord_id, not_id, can_data_entrega, can_img, can_lat_entrega, can_long_entrega);
                             }
 
                             public ICanhotosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string? can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega )
                             {
                             var entity = new CanhotosEntity(id, car_id, ord_id, not_id, can_data_entrega, can_img, can_lat_entrega, can_long_entrega );
 

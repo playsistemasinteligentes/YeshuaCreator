@@ -130,7 +130,7 @@ const stepStageMap = {
 export async function renderContingenciaFiscal() {
     injectCss();
     const host = await prepareHost();
-    const html = await fetch(`/Custon/pages/contingencia-fiscal.html?v=${assetVersion}`).then(r => r.text());
+    const html = await fetch(`/Custon/Apps/Fiscal/pages/contingencia-fiscal.html?v=${assetVersion}`).then(r => r.text());
     host.innerHTML = html;
     host.classList.remove('hidden');
 
@@ -160,7 +160,7 @@ function injectCss() {
     const link = document.createElement('link');
     link.id = cssId;
     link.rel = 'stylesheet';
-    link.href = `/Custon/pages/contingencia-fiscal.css?v=${assetVersion}`;
+    link.href = `/Custon/Apps/Fiscal/pages/contingencia-fiscal.css?v=${assetVersion}`;
     document.head.appendChild(link);
 }
 

@@ -15,7 +15,7 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public string TDI_ID { get; set; }
-        public string TDI_DESCRICAO { get; set; }
+        public string? TDI_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

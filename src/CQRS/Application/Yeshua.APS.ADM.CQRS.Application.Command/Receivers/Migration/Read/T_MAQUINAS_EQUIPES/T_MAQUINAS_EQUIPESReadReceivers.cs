@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<T_MAQUINAS_EQUIPESDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<T_MAQUINAS_EQUIPESDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.T_MAQUINAS_EQUIPESReadCommand c) 
              {    
                 var T_MAQUINAS_EQUIPESReadRepository = _repository.getT_MAQUINAS_EQUIPES(c);
-                return Success("OK", T_MAQUINAS_EQUIPESReadRepository);
+                return Task.FromResult(Success("OK", T_MAQUINAS_EQUIPESReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

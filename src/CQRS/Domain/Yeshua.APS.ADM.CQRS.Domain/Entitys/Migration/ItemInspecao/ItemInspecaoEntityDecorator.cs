@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string ITI_DESC
+                                    public string? ITI_DESC
                                     {
                                         get => _inner.ITI_DESC;
                                         set

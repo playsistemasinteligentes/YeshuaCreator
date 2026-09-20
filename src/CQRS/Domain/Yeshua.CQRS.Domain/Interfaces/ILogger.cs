@@ -36,9 +36,20 @@ namespace Dominio.Interfaces
         long Value,
         DateTimeOffset ObservedAtUtc);
 
+    public sealed record SagaTelemetryEventSnapshot(
+        string Saga,
+        string Step,
+        string CorrelationId,
+        string Phase,
+        int Attempt,
+        string ExecutionId,
+        string? CausationId,
+        DateTimeOffset ObservedAtUtc);
+
     public sealed record OperationalTelemetrySnapshot(
         IReadOnlyList<CommandTelemetrySnapshot> Commands,
         IReadOnlyList<RepositoryTelemetrySnapshot> Repositories,
+        IReadOnlyList<SagaTelemetryEventSnapshot> Sagas,
         IReadOnlyList<OperationalMetricSnapshot> Metrics,
         DateTimeOffset ObservedAtUtc);
 
@@ -80,6 +91,11 @@ namespace Dominio.Interfaces
 
     public interface ILogger
     {
+        OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation = null,
+            string? entity = null,
+            string? recordId = null);
         void Info(string message);
         void CommandStarted(string commandName);
         void CommandFinished(
@@ -100,6 +116,8 @@ namespace Dominio.Interfaces
             string traceId,
             bool succeeded,
             long durationMs,
+            bool captureCounter,
+            bool emitEvent,
             Exception? exception = null);
         void DomainValueChanged(
             string entity,
@@ -108,6 +126,14 @@ namespace Dominio.Interfaces
             string? operation,
             string? recordId,
             object? value);
+        void Saga(
+            string saga,
+            string step,
+            string correlationId,
+            string phase,
+            int attempt = 0,
+            string? executionId = null,
+            string? causationId = null);
         void Metric(string component, string metric, long value);
         OperationalTelemetrySnapshot Snapshot();
     }

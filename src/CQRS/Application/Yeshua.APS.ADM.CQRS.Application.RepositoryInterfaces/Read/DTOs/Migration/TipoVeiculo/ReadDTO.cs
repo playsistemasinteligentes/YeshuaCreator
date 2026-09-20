@@ -20,7 +20,7 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int tip_id { get; set; }
-    public string tip_descricao { get; set; }
+    public string tip_descricao { get; set; } = string.Empty;
     public int tip_qtd_disponivel { get; set; }
     public Decimal tip_valor_km { get; set; }
     public Decimal tip_valor_diaria { get; set; }

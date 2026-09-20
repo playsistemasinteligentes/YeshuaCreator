@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<PendenciasInterfaceDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<PendenciasInterfaceDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.PendenciasInterfaceReadCommand c) 
              {    
                 var PendenciasInterfaceReadRepository = _repository.getPendenciasInterface(c);
-                return Success("OK", PendenciasInterfaceReadRepository);
+                return Task.FromResult(Success("OK", PendenciasInterfaceReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

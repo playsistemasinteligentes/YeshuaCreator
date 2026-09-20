@@ -26,28 +26,28 @@
     public int? MET_ID { get; set; }
     public int? UNI_ID { get; set; }
     public DateTime MED_DATA { get; set; }
-    public string MED_VALOR { get; set; }
-    public string MED_AC_ANO { get; set; }
-    public string MED_DATAMEDICAO { get; set; }
+    public string? MED_VALOR { get; set; }
+    public string? MED_AC_ANO { get; set; }
+    public string? MED_DATAMEDICAO { get; set; }
     public Decimal? MED_PONDERACAO { get; set; }
-    public string DIM_ID { get; set; }
-    public string DIM_DESCRICAO { get; set; }
-    public string DIM_SUBDIMENSAO_ID { get; set; }
-    public string DIM_SUB_DESCRICAO { get; set; }
-    public string PER_ID { get; set; }
-    public string PER_DESCRICAO { get; set; }
-    public string FAT_ID { get; set; }
-    public string FAT_DESCRICAO { get; set; }
-    public string MED_SQL { get; set; }
-    public string DOM_EMPRESA { get; set; }
-    public string DOM_FILIAL { get; set; }
-    public string MED_VALOR_DISPER { get; set; }
+    public string? DIM_ID { get; set; }
+    public string? DIM_DESCRICAO { get; set; }
+    public string? DIM_SUBDIMENSAO_ID { get; set; }
+    public string? DIM_SUB_DESCRICAO { get; set; }
+    public string? PER_ID { get; set; }
+    public string? PER_DESCRICAO { get; set; }
+    public string? FAT_ID { get; set; }
+    public string? FAT_DESCRICAO { get; set; }
+    public string? MED_SQL { get; set; }
+    public string? DOM_EMPRESA { get; set; }
+    public string? DOM_FILIAL { get; set; }
+    public string? MED_VALOR_DISPER { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal T_MedicoesEntity(int? id, int med_id, int? ind_id, int? met_id, int? uni_id, DateTime med_data, string med_valor, string med_ac_ano, string med_datamedicao, Decimal? med_ponderacao, string dim_id, string dim_descricao, string dim_subdimensao_id, string dim_sub_descricao, string per_id, string per_descricao, string fat_id, string fat_descricao, string med_sql, string dom_empresa, string dom_filial, string med_valor_disper ){
+    private List<string> _erroMensagem = new List<string>();
+ internal T_MedicoesEntity(int? id, int med_id, int? ind_id, int? met_id, int? uni_id, DateTime med_data, string? med_valor, string? med_ac_ano, string? med_datamedicao, Decimal? med_ponderacao, string? dim_id, string? dim_descricao, string? dim_subdimensao_id, string? dim_sub_descricao, string? per_id, string? per_descricao, string? fat_id, string? fat_descricao, string? med_sql, string? dom_empresa, string? dom_filial, string? med_valor_disper ){
  Id = id; 
  MED_ID = med_id; 
  IND_ID = ind_id; 
@@ -76,7 +76,7 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(MED_DATA == null || MED_DATA < (new DateTime(1800, 1, 1)))
+   if(MED_DATA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("MED DATA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

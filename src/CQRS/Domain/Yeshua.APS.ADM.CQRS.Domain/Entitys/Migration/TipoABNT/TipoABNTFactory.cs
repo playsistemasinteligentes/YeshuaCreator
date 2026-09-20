@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ITipoABNTEntity Create(int? id, string abn_id, string abn_descricao )
+                                    } public ITipoABNTEntity Create(int? id, string abn_id, string? abn_descricao )
                             {
                                 return Create(null, id, abn_id, abn_descricao);
                             }
 
                             public ITipoABNTEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string abn_id, string abn_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string abn_id, string? abn_descricao )
                             {
                             var entity = new TipoABNTEntity(id, abn_id, abn_descricao );
 

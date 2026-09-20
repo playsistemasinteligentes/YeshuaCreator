@@ -31,6 +31,19 @@ namespace Command.Patterns.Command
             TCommand command,
             CancellationToken cancellationToken = default)
         {
+            // OBS: F-EXP-00 - encerra o caminho de telemetria antes de medir ou alocar.
+            string? entity = null;
+            string? recordId = null;
+            if (command is IOperationalTelemetryCommand operationalCommand)
+            {
+                entity = operationalCommand.OperationalEntity;
+                recordId = operationalCommand.OperationalRecordId;
+            }
+
+            var telemetry = _logger.Evaluate("Command", CommandName, entity, recordId);
+            if (!telemetry.Enabled)
+                return await ActionAsync(command, cancellationToken);
+
             var traceId = _context.TraceId;
             var startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
 

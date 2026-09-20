@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IGrupoMaquinaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IGrupoMaquinaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.GrupoMaquinaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var grupomaquina = new GrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Status, c.GMA_TIPO_PLANEJAMENTO);
                  var domainResult = GrupoMaquinaDomainBehavior.Apply(grupomaquina, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(grupomaquina);
-                     return Success("OK", grupomaquina);
+                     return Task.FromResult(Success("OK", grupomaquina));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, grupomaquina);
+                    return Task.FromResult(Error(e, grupomaquina));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

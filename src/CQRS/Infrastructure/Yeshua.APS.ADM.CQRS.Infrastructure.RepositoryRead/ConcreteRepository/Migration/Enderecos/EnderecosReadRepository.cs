@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<EnderecosDTO> getEnderecos(Command.Read.EnderecosReadCommand command )
         {
-            DataPagination<EnderecosDTO> customResult = null;
+            var customResult = new DataPagination<EnderecosDTO>();
             var customHandled = false;
             TryGetEnderecosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EnderecosTenantIDDTO> getEnderecosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EnderecosTenantIDDTO> lista;
             var query = _query.EnderecosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EnderecosTenantIDDTO>(query.Query,query.Parameters) as List<EnderecosTenantIDDTO>;
+                var lista = _unitOfWork.Query<EnderecosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EnderecosUserIdDTO> getEnderecosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EnderecosUserIdDTO> lista;
             var query = _query.EnderecosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EnderecosUserIdDTO>(query.Query,query.Parameters) as List<EnderecosUserIdDTO>;
+                var lista = _unitOfWork.Query<EnderecosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEND_IDQuery(value );
 
-                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters) as List<EnderecosDTO>;
+                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEND_GRUPOQuery(value );
 
-                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters) as List<EnderecosDTO>;
+                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters) as List<EnderecosDTO>;
+                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters) as List<EnderecosDTO>;
+                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters) as List<EnderecosDTO>;
+                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters) as List<EnderecosDTO>;
+                var result = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct CompensacaoReadFKOND_IDCommand : ICommand
     {
-        public string OND_ID { get; set; }
+        public string? OND_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

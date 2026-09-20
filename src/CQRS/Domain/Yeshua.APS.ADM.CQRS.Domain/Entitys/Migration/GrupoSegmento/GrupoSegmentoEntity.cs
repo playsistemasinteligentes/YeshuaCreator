@@ -22,14 +22,14 @@
 {
     public int? Id { get; set; }
     public string GRS_ID { get; set; }
-    public string GRS_DESCRICAO { get; set; }
-    public string GRS_INTEGRACAO_ERP { get; set; }
+    public string? GRS_DESCRICAO { get; set; }
+    public string? GRS_INTEGRACAO_ERP { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal GrupoSegmentoEntity(int? id, string grs_id, string grs_descricao, string grs_integracao_erp ){
+    private List<string> _erroMensagem = new List<string>();
+ internal GrupoSegmentoEntity(int? id, string grs_id, string? grs_descricao, string? grs_integracao_erp ){
  Id = id; 
  GRS_ID = grs_id; 
  GRS_DESCRICAO = grs_descricao; 

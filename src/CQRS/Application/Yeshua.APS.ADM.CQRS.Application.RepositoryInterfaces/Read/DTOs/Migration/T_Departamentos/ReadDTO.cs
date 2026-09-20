@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record T_DepartamentosDTO
     {
     public int dep_id { get; set; }
-    public string dep_nome { get; set; }
+    public string dep_nome { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

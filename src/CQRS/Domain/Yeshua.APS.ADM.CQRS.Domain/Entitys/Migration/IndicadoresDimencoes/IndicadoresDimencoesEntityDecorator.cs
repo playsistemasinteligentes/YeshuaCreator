@@ -115,7 +115,7 @@
                                         }
                                     }
 
-                                    public string DIM_SQL
+                                    public string? DIM_SQL
                                     {
                                         get => _inner.DIM_SQL;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string DIM_CONEXAO
+                                    public string? DIM_CONEXAO
                                     {
                                         get => _inner.DIM_CONEXAO;
                                         set

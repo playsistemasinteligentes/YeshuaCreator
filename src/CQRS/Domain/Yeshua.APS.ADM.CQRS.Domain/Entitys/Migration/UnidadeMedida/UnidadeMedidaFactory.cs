@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IUnidadeMedidaEntity Create(string uni_id, string uni_descricao, string uni_escala_tempo )
+                                    } public IUnidadeMedidaEntity Create(string uni_id, string uni_descricao, string? uni_escala_tempo )
                             {
                                 return Create(null, uni_id, uni_descricao, uni_escala_tempo);
                             }
 
                             public IUnidadeMedidaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string uni_id, string uni_descricao, string uni_escala_tempo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string uni_id, string uni_descricao, string? uni_escala_tempo )
                             {
                             var entity = new UnidadeMedidaEntity(uni_id, uni_descricao, uni_escala_tempo );
 

@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record CabvisaoDTO
     {
     public int cab_id { get; set; }
-    public string cab_desc { get; set; }
+    public string cab_desc { get; set; } = string.Empty;
     public int cab_status { get; set; }
     public int use_id { get; set; }
     public int tenantid { get; set; }

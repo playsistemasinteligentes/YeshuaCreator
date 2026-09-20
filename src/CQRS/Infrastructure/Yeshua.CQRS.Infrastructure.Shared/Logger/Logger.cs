@@ -10,6 +10,7 @@ namespace Shered.Logger
     {
         private readonly ConcurrentDictionary<string, CommandState> _commands = new();
         private readonly ConcurrentDictionary<RepositoryKey, RepositoryState> _repositories = new();
+        private readonly ConcurrentQueue<SagaTelemetryEventSnapshot> _sagas = new();
         private readonly ConcurrentDictionary<string, OperationalMetricSnapshot> _metrics = new();
         private readonly IOperationalTelemetryPolicy? _policy;
         private readonly bool _localDetailEnabled = string.Equals(
@@ -24,6 +25,30 @@ namespace Shered.Logger
         public Logger(IOperationalTelemetryPolicy policy)
         {
             _policy = policy;
+        }
+
+        public OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation = null,
+            string? entity = null,
+            string? recordId = null)
+        {
+            if (_policy is null)
+            {
+                return new OperationalTelemetryDecision(
+                    true,
+                    "Information",
+                    "D0");
+            }
+
+            try
+            {
+                return _policy.Evaluate(component, operation, entity, recordId);
+            }
+            catch
+            {
+                return new OperationalTelemetryDecision(false, "None", "D0");
+            }
         }
 
         public void Info(string message)
@@ -135,29 +160,34 @@ namespace Shered.Logger
             string traceId,
             bool succeeded,
             long durationMs,
+            bool captureCounter,
+            bool emitEvent,
             Exception? exception = null)
         {
-            var now = DateTimeOffset.UtcNow;
-            var key = new RepositoryKey(operation, queryId);
-            var state = _repositories.GetOrAdd(
-                key,
-                static value => new RepositoryState(value.Operation, value.QueryId));
-
-            lock (state.Sync)
+            if (captureCounter)
             {
-                state.Executions++;
-                state.LastFinishedAtUtc = now;
-                state.LastDurationMs = durationMs;
-                state.MaximumDurationMs = Math.Max(state.MaximumDurationMs, durationMs);
-                state.TotalDurationMs += durationMs;
-                if (!succeeded)
+                var now = DateTimeOffset.UtcNow;
+                var key = new RepositoryKey(operation, queryId);
+                var state = _repositories.GetOrAdd(
+                    key,
+                    static value => new RepositoryState(value.Operation, value.QueryId));
+
+                lock (state.Sync)
                 {
-                    state.Failures++;
-                    state.LastFailureAtUtc = now;
+                    state.Executions++;
+                    state.LastFinishedAtUtc = now;
+                    state.LastDurationMs = durationMs;
+                    state.MaximumDurationMs = Math.Max(state.MaximumDurationMs, durationMs);
+                    state.TotalDurationMs += durationMs;
+                    if (!succeeded)
+                    {
+                        state.Failures++;
+                        state.LastFailureAtUtc = now;
+                    }
                 }
             }
 
-            if (!succeeded || DetailEnabled("Repository", operation))
+            if (emitEvent)
             {
                 WriteRepository(
                     succeeded ? "Information" : "Error",
@@ -178,6 +208,9 @@ namespace Shered.Logger
             string? recordId,
             object? value)
         {
+            if (!Evaluate("DomainTracker", operation, entity, recordId).Enabled)
+                return;
+
             WriteDomainValueChanged(
                 entity,
                 field,
@@ -189,12 +222,47 @@ namespace Shered.Logger
 
         public void Metric(string component, string metric, long value)
         {
+            if (!Evaluate(component, metric).Enabled)
+                return;
+
             var snapshot = new OperationalMetricSnapshot(
                 component,
                 metric,
                 value,
                 DateTimeOffset.UtcNow);
             _metrics[$"{component}:{metric}"] = snapshot;
+        }
+
+        public void Saga(
+            string saga,
+            string step,
+            string correlationId,
+            string phase,
+            int attempt = 0,
+            string? executionId = null,
+            string? causationId = null)
+        {
+            try
+            {
+                var snapshot = new SagaTelemetryEventSnapshot(
+                    saga,
+                    step,
+                    correlationId,
+                    phase,
+                    attempt,
+                    executionId ?? string.Empty,
+                    causationId,
+                    DateTimeOffset.UtcNow);
+                _sagas.Enqueue(snapshot);
+                while (_sagas.Count > 512)
+                    _sagas.TryDequeue(out _);
+
+                WriteSaga(snapshot);
+            }
+            catch
+            {
+                // A telemetria nunca interrompe a saga.
+            }
         }
 
         public OperationalTelemetrySnapshot Snapshot()
@@ -220,6 +288,7 @@ namespace Shered.Logger
             return new OperationalTelemetrySnapshot(
                 commands,
                 repositories,
+                _sagas.ToArray(),
                 _metrics.Values.OrderBy(item => item.Component).ThenBy(item => item.Metric).ToArray(),
                 DateTimeOffset.UtcNow);
         }
@@ -311,6 +380,30 @@ namespace Shered.Logger
                     writer.WriteString("ExceptionMessage", exception.Message);
                 }
 
+                WriteFooter(writer, buffer);
+            }
+            catch
+            {
+                // A escrita de log nunca interrompe o fluxo de negocio.
+            }
+        }
+
+        private static void WriteSaga(SagaTelemetryEventSnapshot snapshot)
+        {
+            try
+            {
+                var buffer = new ArrayBufferWriter<byte>(384);
+                using var writer = new Utf8JsonWriter(buffer);
+                WriteHeader(writer, "Information", "Saga");
+                writer.WriteString("Saga", snapshot.Saga);
+                writer.WriteString("Step", snapshot.Step);
+                writer.WriteString("CorrelationId", snapshot.CorrelationId);
+                writer.WriteString("Phase", snapshot.Phase);
+                writer.WriteNumber("Attempt", snapshot.Attempt);
+                if (!string.IsNullOrWhiteSpace(snapshot.ExecutionId))
+                    writer.WriteString("ExecutionId", snapshot.ExecutionId);
+                if (!string.IsNullOrWhiteSpace(snapshot.CausationId))
+                    writer.WriteString("CausationId", snapshot.CausationId);
                 WriteFooter(writer, buffer);
             }
             catch

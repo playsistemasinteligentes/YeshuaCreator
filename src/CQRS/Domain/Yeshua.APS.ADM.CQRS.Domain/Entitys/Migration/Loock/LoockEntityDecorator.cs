@@ -71,7 +71,7 @@
                                         }
                                     }
 
-                                    public string LOO_ID
+                                    public string? LOO_ID
                                     {
                                         get => _inner.LOO_ID;
                                         set
@@ -85,7 +85,7 @@
                                         }
                                     }
 
-                                    public string LOO_DESCRICAO
+                                    public string? LOO_DESCRICAO
                                     {
                                         get => _inner.LOO_DESCRICAO;
                                         set
@@ -99,7 +99,7 @@
                                         }
                                     }
 
-                                    public string LOO_CONTEUDO
+                                    public string? LOO_CONTEUDO
                                     {
                                         get => _inner.LOO_CONTEUDO;
                                         set

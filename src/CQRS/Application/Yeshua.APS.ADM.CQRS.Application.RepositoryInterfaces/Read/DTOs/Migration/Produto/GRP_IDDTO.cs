@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record ProdutoGRP_IDDTO
     {
-    public string grp_id { get; set; }
+    public string grp_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

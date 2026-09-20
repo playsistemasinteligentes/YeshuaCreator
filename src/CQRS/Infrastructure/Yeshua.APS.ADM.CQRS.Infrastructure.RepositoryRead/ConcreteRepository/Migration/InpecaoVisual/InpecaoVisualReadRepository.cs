@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<InpecaoVisualDTO> getInpecaoVisual(Command.Read.InpecaoVisualReadCommand command )
         {
-            DataPagination<InpecaoVisualDTO> customResult = null;
+            var customResult = new DataPagination<InpecaoVisualDTO>();
             var customHandled = false;
             TryGetInpecaoVisualCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<InpecaoVisualTenantIDDTO> getInpecaoVisualReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InpecaoVisualTenantIDDTO> lista;
             var query = _query.InpecaoVisualTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<InpecaoVisualTenantIDDTO>(query.Query,query.Parameters) as List<InpecaoVisualTenantIDDTO>;
+                var lista = _unitOfWork.Query<InpecaoVisualTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<InpecaoVisualUserIdDTO> getInpecaoVisualReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InpecaoVisualUserIdDTO> lista;
             var query = _query.InpecaoVisualUserIdQuery(command );
 
-                lista = _unitOfWork.Query<InpecaoVisualUserIdDTO>(query.Query,query.Parameters) as List<InpecaoVisualUserIdDTO>;
+                var lista = _unitOfWork.Query<InpecaoVisualUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters) as List<InpecaoVisualDTO>;
+                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_IDQuery(value );
 
-                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters) as List<InpecaoVisualDTO>;
+                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters) as List<InpecaoVisualDTO>;
+                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters) as List<InpecaoVisualDTO>;
+                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters) as List<InpecaoVisualDTO>;
+                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters) as List<InpecaoVisualDTO>;
+                var result = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

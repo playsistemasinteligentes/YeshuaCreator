@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IVariavelPlotagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IVariavelPlotagemEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.VariavelPlotagemCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var variavelplotagem = new VariavelPlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VAR_ID, c.PLO_ID);
                  var domainResult = VariavelPlotagemDomainBehavior.Apply(variavelplotagem, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(variavelplotagem);
-                     return Success("OK", variavelplotagem);
+                     return Task.FromResult(Success("OK", variavelplotagem));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, variavelplotagem);
+                    return Task.FromResult(Error(e, variavelplotagem));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

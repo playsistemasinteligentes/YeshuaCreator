@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MaquinaGrupoMaquinaDTO> getMaquinaGrupoMaquina(Command.Read.MaquinaGrupoMaquinaReadCommand command )
         {
-            DataPagination<MaquinaGrupoMaquinaDTO> customResult = null;
+            var customResult = new DataPagination<MaquinaGrupoMaquinaDTO>();
             var customHandled = false;
             TryGetMaquinaGrupoMaquinaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaGrupoMaquinaTenantIDDTO> getMaquinaGrupoMaquinaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaGrupoMaquinaTenantIDDTO> lista;
             var query = _query.MaquinaGrupoMaquinaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaGrupoMaquinaTenantIDDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaTenantIDDTO>;
+                var lista = _unitOfWork.Query<MaquinaGrupoMaquinaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaGrupoMaquinaUserIdDTO> getMaquinaGrupoMaquinaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaGrupoMaquinaUserIdDTO> lista;
             var query = _query.MaquinaGrupoMaquinaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaGrupoMaquinaUserIdDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaUserIdDTO>;
+                var lista = _unitOfWork.Query<MaquinaGrupoMaquinaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGMA_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters) as List<MaquinaGrupoMaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaGrupoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

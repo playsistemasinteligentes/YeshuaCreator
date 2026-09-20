@@ -15,8 +15,8 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public int VER_ID { get; set; }
-        public string VER_STATUS { get; set; }
-        public string VER_OBS { get; set; }
+        public string? VER_STATUS { get; set; }
+        public string? VER_OBS { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

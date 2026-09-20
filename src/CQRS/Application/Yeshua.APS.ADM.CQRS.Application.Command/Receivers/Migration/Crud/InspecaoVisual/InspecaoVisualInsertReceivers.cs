@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IInspecaoVisualEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IInspecaoVisualEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.InspecaoVisualCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var inspecaovisual = new InspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.IPV_ID, c.IPV_VALOR, c.IPV_ID_OPERADOR, c.IPV_ID_LIBERACAO, c.IPV_OBS, c.IPV_DATA_COLETA, c.IPV_DATA_AVAL, c.TIV_ID, c.TURN_ID, c.TURM_ID, c.ORD_ID, c.ROT_PRO_ID, c.ROT_MAQ_ID, c.ROT_SEQ_TRANSFORMACAO, c.FPR_SEQ_REPETICAO, c.IPV_STATUS_LIBERACAO, c.IPV_VALOR_MEDIDA);
                  var domainResult = InspecaoVisualDomainBehavior.Apply(inspecaovisual, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(inspecaovisual);
-                     return Success("OK", inspecaovisual);
+                     return Task.FromResult(Success("OK", inspecaovisual));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, inspecaovisual);
+                    return Task.FromResult(Error(e, inspecaovisual));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

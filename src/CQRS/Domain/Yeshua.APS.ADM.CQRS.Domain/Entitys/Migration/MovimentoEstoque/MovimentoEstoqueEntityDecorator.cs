@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string OrderId
+                                    public string? OrderId
                                     {
                                         get => _inner.OrderId;
                                         set
@@ -157,7 +157,7 @@
                                         }
                                     }
 
-                                    public string TurnoId
+                                    public string? TurnoId
                                     {
                                         get => _inner.TurnoId;
                                         set
@@ -171,7 +171,7 @@
                                         }
                                     }
 
-                                    public string TurmaId
+                                    public string? TurmaId
                                     {
                                         get => _inner.TurmaId;
                                         set
@@ -241,7 +241,7 @@
                                         }
                                     }
 
-                                    public string DiaTurma
+                                    public string? DiaTurma
                                     {
                                         get => _inner.DiaTurma;
                                         set
@@ -255,7 +255,7 @@
                                         }
                                     }
 
-                                    public string Lote
+                                    public string? Lote
                                     {
                                         get => _inner.Lote;
                                         set
@@ -269,7 +269,7 @@
                                         }
                                     }
 
-                                    public string SubLote
+                                    public string? SubLote
                                     {
                                         get => _inner.SubLote;
                                         set
@@ -283,7 +283,7 @@
                                         }
                                     }
 
-                                    public string MaquinaId
+                                    public string? MaquinaId
                                     {
                                         get => _inner.MaquinaId;
                                         set
@@ -311,7 +311,7 @@
                                         }
                                     }
 
-                                    public string Observacao
+                                    public string? Observacao
                                     {
                                         get => _inner.Observacao;
                                         set
@@ -325,7 +325,7 @@
                                         }
                                     }
 
-                                    public string OcorrenciaId
+                                    public string? OcorrenciaId
                                     {
                                         get => _inner.OcorrenciaId;
                                         set
@@ -339,7 +339,7 @@
                                         }
                                     }
 
-                                    public string Armazem
+                                    public string? Armazem
                                     {
                                         get => _inner.Armazem;
                                         set
@@ -353,7 +353,7 @@
                                         }
                                     }
 
-                                    public string Endereco
+                                    public string? Endereco
                                     {
                                         get => _inner.Endereco;
                                         set
@@ -367,7 +367,7 @@
                                         }
                                     }
 
-                                    public string Estorno
+                                    public string? Estorno
                                     {
                                         get => _inner.Estorno;
                                         set
@@ -409,7 +409,7 @@
                                         }
                                     }
 
-                                    public string ObsOpParcial
+                                    public string? ObsOpParcial
                                     {
                                         get => _inner.ObsOpParcial;
                                         set
@@ -423,7 +423,7 @@
                                         }
                                     }
 
-                                    public string OcoIdOpParcial
+                                    public string? OcoIdOpParcial
                                     {
                                         get => _inner.OcoIdOpParcial;
                                         set
@@ -437,7 +437,7 @@
                                         }
                                     }
 
-                                    public string MOV_ID_INTEGRACAO
+                                    public string? MOV_ID_INTEGRACAO
                                     {
                                         get => _inner.MOV_ID_INTEGRACAO;
                                         set
@@ -451,7 +451,7 @@
                                         }
                                     }
 
-                                    public string MOV_ID_INTEGRACAO_ERP
+                                    public string? MOV_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.MOV_ID_INTEGRACAO_ERP;
                                         set
@@ -465,7 +465,7 @@
                                         }
                                     }
 
-                                    public string CAR_ID
+                                    public string? CAR_ID
                                     {
                                         get => _inner.CAR_ID;
                                         set
@@ -493,7 +493,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_DESTINO
+                                    public string? PRO_ID_DESTINO
                                     {
                                         get => _inner.PRO_ID_DESTINO;
                                         set
@@ -507,7 +507,7 @@
                                         }
                                     }
 
-                                    public string MOV_LOTE_DESTINO
+                                    public string? MOV_LOTE_DESTINO
                                     {
                                         get => _inner.MOV_LOTE_DESTINO;
                                         set
@@ -521,7 +521,7 @@
                                         }
                                     }
 
-                                    public string MOV_SUB_LOTE_DESTINO
+                                    public string? MOV_SUB_LOTE_DESTINO
                                     {
                                         get => _inner.MOV_SUB_LOTE_DESTINO;
                                         set
@@ -549,7 +549,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_ORIGEM
+                                    public string? PRO_ID_ORIGEM
                                     {
                                         get => _inner.PRO_ID_ORIGEM;
                                         set
@@ -563,7 +563,7 @@
                                         }
                                     }
 
-                                    public string MOV_LOTE_ORIGEM
+                                    public string? MOV_LOTE_ORIGEM
                                     {
                                         get => _inner.MOV_LOTE_ORIGEM;
                                         set
@@ -577,7 +577,7 @@
                                         }
                                     }
 
-                                    public string MOV_SUB_LOTE_ORIGEM
+                                    public string? MOV_SUB_LOTE_ORIGEM
                                     {
                                         get => _inner.MOV_SUB_LOTE_ORIGEM;
                                         set
@@ -605,7 +605,7 @@
                                         }
                                     }
 
-                                    public string MOV_DOC
+                                    public string? MOV_DOC
                                     {
                                         get => _inner.MOV_DOC;
                                         set
@@ -619,7 +619,7 @@
                                         }
                                     }
 
-                                    public string MOV_APROVEITAMENTO
+                                    public string? MOV_APROVEITAMENTO
                                     {
                                         get => _inner.MOV_APROVEITAMENTO;
                                         set
@@ -633,7 +633,7 @@
                                         }
                                     }
 
-                                    public string MOV_RETIDO
+                                    public string? MOV_RETIDO
                                     {
                                         get => _inner.MOV_RETIDO;
                                         set
@@ -647,7 +647,7 @@
                                         }
                                     }
 
-                                    public string MOV_VINCOS_ONDULADEIRA
+                                    public string? MOV_VINCOS_ONDULADEIRA
                                     {
                                         get => _inner.MOV_VINCOS_ONDULADEIRA;
                                         set
@@ -661,7 +661,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID
+                                    public string? BOL_ID
                                     {
                                         get => _inner.BOL_ID;
                                         set
@@ -675,7 +675,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID_ORIGEM
+                                    public string? ORD_ID_ORIGEM
                                     {
                                         get => _inner.ORD_ID_ORIGEM;
                                         set
@@ -717,7 +717,7 @@
                                         }
                                     }
 
-                                    public string MOV_TIPO_CUSTO
+                                    public string? MOV_TIPO_CUSTO
                                     {
                                         get => _inner.MOV_TIPO_CUSTO;
                                         set
@@ -731,7 +731,7 @@
                                         }
                                     }
 
-                                    public string MOV_GRUPO_CONTABIL
+                                    public string? MOV_GRUPO_CONTABIL
                                     {
                                         get => _inner.MOV_GRUPO_CONTABIL;
                                         set
@@ -745,7 +745,7 @@
                                         }
                                     }
 
-                                    public string FOR_ID
+                                    public string? FOR_ID
                                     {
                                         get => _inner.FOR_ID;
                                         set
@@ -759,7 +759,7 @@
                                         }
                                     }
 
-                                    public string CLI_ID
+                                    public string? CLI_ID
                                     {
                                         get => _inner.CLI_ID;
                                         set

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICorridasOnduladeiraEstudoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICorridasOnduladeiraEstudoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CorridasOnduladeiraEstudoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var corridasonduladeiraestudo = new CorridasOnduladeiraEstudoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.BOL_ID, c.BOL_ID_ORIGEM, c.PRO_LARGURA_PECA, c.PRO_LARGURA_PECA_PROGRAMADO, c.PRO_COMPRIMENTO_PECA, c.PRO_COMPRIMENTO_PECA_PROGRAMADO, c.PRO_UTILIZOU_REFILE_OBRIGATORIO, c.PRO_VINCOS_RECALCULADOS, c.COR_SOLVER, c.COR_GRAMATURA_PAPEIS_PROGRAMADOS, c.COR_CUSTO_PAPEIS_PROGRAMADOS, c.COR_GRAMATURA_RESINA_PROGRAMADOS, c.COR_CUSTO_RESINA_PROGRAMADOS, c.COR_TOLERANCIA_MENOS, c.COR_TOLERANCIA_MAIS, c.COR_PILHAS_POR_PALETE, c.COR_M_LINEAR_REALIZADO, c.PRO_ID_PALETE, c.COR_STATUS_PALETE, c.COR_GRUPO_PRODUTIVO);
                  var domainResult = CorridasOnduladeiraEstudoDomainBehavior.Apply(corridasonduladeiraestudo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(corridasonduladeiraestudo);
-                     return Success("OK", corridasonduladeiraestudo);
+                     return Task.FromResult(Success("OK", corridasonduladeiraestudo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, corridasonduladeiraestudo);
+                    return Task.FromResult(Error(e, corridasonduladeiraestudo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string PLA_NATUREZA
+                                    public string? PLA_NATUREZA
                                     {
                                         get => _inner.PLA_NATUREZA;
                                         set

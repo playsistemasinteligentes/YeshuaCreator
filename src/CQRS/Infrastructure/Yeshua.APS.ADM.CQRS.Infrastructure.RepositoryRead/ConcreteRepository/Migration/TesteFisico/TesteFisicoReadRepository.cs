@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TesteFisicoDTO> getTesteFisico(Command.Read.TesteFisicoReadCommand command )
         {
-            DataPagination<TesteFisicoDTO> customResult = null;
+            var customResult = new DataPagination<TesteFisicoDTO>();
             var customHandled = false;
             TryGetTesteFisicoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TesteFisicoUSR_IDDTO> getTesteFisicoReadFKUSR_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TesteFisicoUSR_IDDTO> lista;
             var query = _query.TesteFisicoUSR_IDQuery(command );
 
-                lista = _unitOfWork.Query<TesteFisicoUSR_IDDTO>(query.Query,query.Parameters) as List<TesteFisicoUSR_IDDTO>;
+                var lista = _unitOfWork.Query<TesteFisicoUSR_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TesteFisicoORD_IDDTO> getTesteFisicoReadFKORD_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TesteFisicoORD_IDDTO> lista;
             var query = _query.TesteFisicoORD_IDQuery(command );
 
-                lista = _unitOfWork.Query<TesteFisicoORD_IDDTO>(query.Query,query.Parameters) as List<TesteFisicoORD_IDDTO>;
+                var lista = _unitOfWork.Query<TesteFisicoORD_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<TesteFisicoTenantIDDTO> getTesteFisicoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TesteFisicoTenantIDDTO> lista;
             var query = _query.TesteFisicoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TesteFisicoTenantIDDTO>(query.Query,query.Parameters) as List<TesteFisicoTenantIDDTO>;
+                var lista = _unitOfWork.Query<TesteFisicoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<TesteFisicoUserIdDTO> getTesteFisicoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TesteFisicoUserIdDTO> lista;
             var query = _query.TesteFisicoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TesteFisicoUserIdDTO>(query.Query,query.Parameters) as List<TesteFisicoUserIdDTO>;
+                var lista = _unitOfWork.Query<TesteFisicoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -462,7 +458,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -470,7 +466,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_IDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -478,7 +474,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_IDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -486,7 +482,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSR_IDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -494,7 +490,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_NOME_TECNICOQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -502,7 +498,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_AMOSTRAQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -510,7 +506,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_OPQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -518,7 +514,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_VALOR_NUMERICOQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -526,7 +522,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_VALOR_DATAQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -534,7 +530,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_VALOR_TEXTOQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -542,7 +538,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTES_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -550,7 +546,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -558,7 +554,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -566,7 +562,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -574,7 +570,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -582,7 +578,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_TRANFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -590,7 +586,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -598,7 +594,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -606,7 +602,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -614,7 +610,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters) as List<TesteFisicoDTO>;
+                var result = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

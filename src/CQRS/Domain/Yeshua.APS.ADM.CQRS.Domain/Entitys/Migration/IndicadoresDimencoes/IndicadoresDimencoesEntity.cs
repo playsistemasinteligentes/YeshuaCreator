@@ -24,14 +24,14 @@
     public int DIM_ID { get; set; }
     public int IND_ID { get; set; }
     public string DIM_DESCRICAO { get; set; }
-    public string DIM_SQL { get; set; }
-    public string DIM_CONEXAO { get; set; }
+    public string? DIM_SQL { get; set; }
+    public string? DIM_CONEXAO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal IndicadoresDimencoesEntity(int? id, int dim_id, int ind_id, string dim_descricao, string dim_sql, string dim_conexao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal IndicadoresDimencoesEntity(int? id, int dim_id, int ind_id, string dim_descricao, string? dim_sql, string? dim_conexao ){
  Id = id; 
  DIM_ID = dim_id; 
  IND_ID = ind_id; 

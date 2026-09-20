@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IyModuleEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IyModuleEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yModuleCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var ymodule = new yModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description);
                  var domainResult = yModuleDomainBehavior.Apply(ymodule, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(ymodule);
-                     return Success("OK", ymodule);
+                     return Task.FromResult(Success("OK", ymodule));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, ymodule);
+                    return Task.FromResult(Error(e, ymodule));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPeriodicidadeTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPeriodicidadeTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PeriodicidadeTesteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var periodicidadeteste = new PeriodicidadeTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.PER_QTD, c.UNI_ID, c.GRP_ID);
                  var domainResult = PeriodicidadeTesteDomainBehavior.Apply(periodicidadeteste, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(periodicidadeteste);
-                     return Success("OK", periodicidadeteste);
+                     return Task.FromResult(Success("OK", periodicidadeteste));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, periodicidadeteste);
+                    return Task.FromResult(Error(e, periodicidadeteste));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

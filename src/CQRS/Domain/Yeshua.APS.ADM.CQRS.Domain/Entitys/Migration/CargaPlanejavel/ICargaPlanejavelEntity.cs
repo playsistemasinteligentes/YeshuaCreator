@@ -21,9 +21,9 @@
                     public interface ICargaPlanejavelEntity
 {
     string CargaId { get; set; }
-    string Status { get; set; }
-    string TransportadoraId { get; set; }
-    string VeiculoId { get; set; }
+    string? Status { get; set; }
+    string? TransportadoraId { get; set; }
+    string? VeiculoId { get; set; }
     int? TipoVeiculoId { get; set; }
     Decimal? PesoTeorico { get; set; }
     Decimal? VolumeTeorico { get; set; }
@@ -31,7 +31,7 @@
     DateTime? FimJanelaEmbarque { get; set; }
     DateTime? EmbarqueAlvo { get; set; }
     int? QuantidadePedidos { get; set; }
-    string AlertasResumo { get; set; }
+    string? AlertasResumo { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

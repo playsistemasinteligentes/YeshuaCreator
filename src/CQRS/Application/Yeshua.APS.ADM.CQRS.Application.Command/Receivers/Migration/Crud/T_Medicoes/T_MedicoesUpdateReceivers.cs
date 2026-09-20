@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_MedicoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_MedicoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_MedicoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_medicoes = new T_MedicoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MED_ID, c.IND_ID, c.MET_ID, c.UNI_ID, c.MED_DATA, c.MED_VALOR, c.MED_AC_ANO, c.MED_DATAMEDICAO, c.MED_PONDERACAO, c.DIM_ID, c.DIM_DESCRICAO, c.DIM_SUBDIMENSAO_ID, c.DIM_SUB_DESCRICAO, c.PER_ID, c.PER_DESCRICAO, c.FAT_ID, c.FAT_DESCRICAO, c.MED_SQL, c.DOM_EMPRESA, c.DOM_FILIAL, c.MED_VALOR_DISPER);
                  var domainResult = T_MedicoesDomainBehavior.Apply(t_medicoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(t_medicoes);
-                     return Success("OK", t_medicoes);
+                     return Task.FromResult(Success("OK", t_medicoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_medicoes);
+                    return Task.FromResult(Error(e, t_medicoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

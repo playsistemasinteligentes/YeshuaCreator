@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<RoteiroPedidoMaquinaIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<RoteiroPedidoMaquinaIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var RoteiroPedidoReadRepository = _repository.getRoteiroPedidoReadFKMaquinaId(c);
-                return Success("OK", RoteiroPedidoReadRepository);
+                return Task.FromResult(Success("OK", RoteiroPedidoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

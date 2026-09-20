@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IUsuariosCargaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IUsuariosCargaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.UsuariosCargaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var usuarioscarga = new UsuariosCargaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.USE_ID, c.CAR_ID, c.RGO_ID);
                  var domainResult = UsuariosCargaDomainBehavior.Apply(usuarioscarga, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(usuarioscarga);
-                     return Success("OK", usuarioscarga);
+                     return Task.FromResult(Success("OK", usuarioscarga));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, usuarioscarga);
+                    return Task.FromResult(Error(e, usuarioscarga));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

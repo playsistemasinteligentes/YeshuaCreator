@@ -14,10 +14,10 @@ namespace Command.Read
     public struct TemposLogisticosReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string TMP_TIPO_TEMPO { get; set; }
-        public string TMP_TIPO_CARGA { get; set; }
+        public string? TMP_TIPO_TEMPO { get; set; }
+        public string? TMP_TIPO_CARGA { get; set; }
         public Decimal? TMP_TEMPO_MEDIO_UNITARIO { get; set; }
-        public string CLI_ID { get; set; }
+        public string? CLI_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_NegocioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_NegocioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_NegocioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_negocio = new T_NegocioFactory(_logger, _domainTrackingPolicy).Create(context, c.NEG_ID, c.NEG_DESCRICAO);
                  var domainResult = T_NegocioDomainBehavior.Apply(t_negocio, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(t_negocio);
-                     return Success("OK", t_negocio);
+                     return Task.FromResult(Success("OK", t_negocio));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_negocio);
+                    return Task.FromResult(Error(e, t_negocio));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

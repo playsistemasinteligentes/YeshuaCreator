@@ -23,6 +23,11 @@ public sealed record OperationalLoggingPolicy(
     DateTimeOffset UpdatedAtUtc,
     string Source);
 
+public sealed record OperationalLoggingPolicyUpdate(
+    string DefaultLevel,
+    string DefaultDepth,
+    IReadOnlyList<DiagnosticTarget>? Targets);
+
 public sealed record DiagnosticTarget(
     string? Component,
     string? Operation,

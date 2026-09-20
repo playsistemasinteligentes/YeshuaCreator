@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoInspecaoVisualEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoInspecaoVisualEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoInspecaoVisualCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipoinspecaovisual = new TipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TIV_ID, c.TIV_NOME, c.TIV_DESCRICAO, c.TIV_FECHAMENTO, c.TIV_AMOSTRA_ALEATORIA, c.TIV_N_AMOSTRAS, c.TIV_MEDIDA, c.TIV_ESPECIFICACAO, c.TIV_TOL_MAIS, c.TIV_TOL_MENOS);
                  var domainResult = TipoInspecaoVisualDomainBehavior.Apply(tipoinspecaovisual, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(tipoinspecaovisual);
-                     return Success("OK", tipoinspecaovisual);
+                     return Task.FromResult(Success("OK", tipoinspecaovisual));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipoinspecaovisual);
+                    return Task.FromResult(Error(e, tipoinspecaovisual));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

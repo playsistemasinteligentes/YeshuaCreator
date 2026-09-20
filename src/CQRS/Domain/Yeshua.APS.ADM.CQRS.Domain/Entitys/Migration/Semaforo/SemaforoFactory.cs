@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ISemaforoEntity Create(int? id, string sem_id, string sem_status, string sem_origem, DateTime? sem_emissao, string sem_id_conexao )
+                                    } public ISemaforoEntity Create(int? id, string sem_id, string? sem_status, string? sem_origem, DateTime? sem_emissao, string? sem_id_conexao )
                             {
                                 return Create(null, id, sem_id, sem_status, sem_origem, sem_emissao, sem_id_conexao);
                             }
 
                             public ISemaforoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string sem_id, string sem_status, string sem_origem, DateTime? sem_emissao, string sem_id_conexao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string sem_id, string? sem_status, string? sem_origem, DateTime? sem_emissao, string? sem_id_conexao )
                             {
                             var entity = new SemaforoEntity(id, sem_id, sem_status, sem_origem, sem_emissao, sem_id_conexao );
 

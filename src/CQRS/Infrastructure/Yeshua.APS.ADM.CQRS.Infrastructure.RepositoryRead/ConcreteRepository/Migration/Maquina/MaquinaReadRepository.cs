@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MaquinaDTO> getMaquina(Command.Read.MaquinaReadCommand command )
         {
-            DataPagination<MaquinaDTO> customResult = null;
+            var customResult = new DataPagination<MaquinaDTO>();
             var customHandled = false;
             TryGetMaquinaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaTenantIDDTO> getMaquinaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaTenantIDDTO> lista;
             var query = _query.MaquinaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaTenantIDDTO>(query.Query,query.Parameters) as List<MaquinaTenantIDDTO>;
+                var lista = _unitOfWork.Query<MaquinaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaUserIdDTO> getMaquinaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaUserIdDTO> lista;
             var query = _query.MaquinaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaUserIdDTO>(query.Query,query.Parameters) as List<MaquinaUserIdDTO>;
+                var lista = _unitOfWork.Query<MaquinaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaCAL_IDDTO> getMaquinaReadFKCAL_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaCAL_IDDTO> lista;
             var query = _query.MaquinaCAL_IDQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaCAL_IDDTO>(query.Query,query.Parameters) as List<MaquinaCAL_IDDTO>;
+                var lista = _unitOfWork.Query<MaquinaCAL_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -1276,7 +1273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1284,7 +1281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1292,7 +1289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1300,7 +1297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1308,7 +1305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1316,7 +1313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1324,7 +1321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1332,7 +1329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1340,7 +1337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_CONTROL_IPQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1348,7 +1345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGMA_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1356,7 +1353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ULTIMA_ATUALIZACAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1364,7 +1361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_SIRENE_SEMAFOROQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1372,7 +1369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COR_SEMAFOROQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1380,7 +1377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ID_MAQ_PAIQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1388,7 +1385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TIPO_CONTADORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1396,7 +1393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TIPO_PLANEJAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1404,7 +1401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_AVALIA_CUSTOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1412,7 +1409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_ID_OP_PRODUZINDOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1420,7 +1417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_CONGELA_FILAQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1428,7 +1425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TEMPO_MIN_PARADAQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1436,7 +1433,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_QTD_CORESQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1444,7 +1441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ID_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1452,7 +1449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ID_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1460,7 +1457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_HIERARQUIA_SEQ_TRANSFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1468,7 +1465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEQU_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1476,7 +1473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_PERCENTUAL_INICIO_PASSO_ANTERIORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1484,7 +1481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ACOMPANHA_LOTE_PILOTOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1492,7 +1489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ID_SENSORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1500,7 +1497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_DEBOUNCING_LOWQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1508,7 +1505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_DEBOUNCING_HIGHTQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1516,7 +1513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TIPO_SINALQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1524,7 +1521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1532,7 +1529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_CHAPA_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1540,7 +1537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_CHAPA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1548,7 +1545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LARGURA_CHAPA_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1556,7 +1553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LARGURA_CHAPA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1564,7 +1561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1572,7 +1569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1580,7 +1577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1588,7 +1585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIORQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1596,7 +1593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_ENTRE_VINCO_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1604,7 +1601,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_ENTRE_VINCO_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1612,7 +1609,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LARGURA_ENTRE_VINCO_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1620,7 +1617,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LARGURA_ENTRE_VINCO_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1628,7 +1625,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ALTURA_ENTRE_VINCO_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1636,7 +1633,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ALTURA_ENTRE_VINCO_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1644,7 +1641,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1652,7 +1649,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1660,7 +1657,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ABA_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1668,7 +1665,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ABA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1676,7 +1673,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LAP_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1684,7 +1681,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LAP_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1692,7 +1689,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ONDASQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1700,7 +1697,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_PROLONGA_LAPQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1708,7 +1705,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LARGURA_IMPRESSAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1716,7 +1713,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_COMPRIMENTO_IMPRESSAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1724,7 +1721,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ROLO_DISPOSITIVO_DEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1732,7 +1729,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_ROLO_DISPOSITIVO_ATEQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1740,7 +1737,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_FAMILIASQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1748,7 +1745,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_REFILE_MINIMOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1756,7 +1753,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_LARGURA_UTILQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1764,7 +1761,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TOTAL_ACOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1772,7 +1769,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_FECHAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1780,7 +1777,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_OPERACAO_VINCARQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1788,7 +1785,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_OPERACAO_MONTA_DIVISAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1796,7 +1793,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_OPERACAO_SERRARQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1804,7 +1801,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TIPO_LAPQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1812,7 +1809,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_INDICE_PARADAS_POR_OPQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1820,7 +1817,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_PERDA_MAXIMAQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1828,7 +1825,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TOTAL_PECAS_REFILANDOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1836,7 +1833,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TOTAL_PECAS_NAO_REFILANDOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1844,7 +1841,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_TOTAL_VINCOSQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters) as List<MaquinaDTO>;
+                var result = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

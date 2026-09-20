@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_MetasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_MetasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_MetasCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_metas = new T_MetasFactory(_logger, _domainTrackingPolicy).Create(context, c.MET_ID, c.MET_DTINICIO, c.MET_DTFIM, c.MET_ALVO, c.MET_TIPOALVO, c.IND_ID, c.MET_RANGE01, c.MET_RANGE02, c.MET_RANGE03, c.DIM_ID, c.FAT_ID, c.DIM_SUBDIMENSAO_ID, c.PER_ID, c.DOM_EMPRESA, c.DOM_FILIAL);
                  var domainResult = T_MetasDomainBehavior.Apply(t_metas, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(t_metas);
-                     return Success("OK", t_metas);
+                     return Task.FromResult(Success("OK", t_metas));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_metas);
+                    return Task.FromResult(Error(e, t_metas));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

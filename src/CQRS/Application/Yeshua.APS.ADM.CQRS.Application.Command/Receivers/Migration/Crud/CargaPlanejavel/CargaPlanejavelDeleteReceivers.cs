@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICargaPlanejavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICargaPlanejavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CargaPlanejavelCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cargaplanejavel = new CargaPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.CargaId, c.Status, c.TransportadoraId, c.VeiculoId, c.TipoVeiculoId, c.PesoTeorico, c.VolumeTeorico, c.InicioJanelaEmbarque, c.FimJanelaEmbarque, c.EmbarqueAlvo, c.QuantidadePedidos, c.AlertasResumo);
                  var domainResult = CargaPlanejavelDomainBehavior.Apply(cargaplanejavel, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(cargaplanejavel);
-                     return Success("OK", cargaplanejavel);
+                     return Task.FromResult(Success("OK", cargaplanejavel));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cargaplanejavel);
+                    return Task.FromResult(Error(e, cargaplanejavel));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

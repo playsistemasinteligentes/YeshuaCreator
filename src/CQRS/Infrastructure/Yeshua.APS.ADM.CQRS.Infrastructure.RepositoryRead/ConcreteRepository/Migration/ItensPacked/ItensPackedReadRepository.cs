@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItensPackedDTO> getItensPacked(Command.Read.ItensPackedReadCommand command )
         {
-            DataPagination<ItensPackedDTO> customResult = null;
+            var customResult = new DataPagination<ItensPackedDTO>();
             var customHandled = false;
             TryGetItensPackedCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensPackedORD_IDDTO> getItensPackedReadFKORD_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensPackedORD_IDDTO> lista;
             var query = _query.ItensPackedORD_IDQuery(command );
 
-                lista = _unitOfWork.Query<ItensPackedORD_IDDTO>(query.Query,query.Parameters) as List<ItensPackedORD_IDDTO>;
+                var lista = _unitOfWork.Query<ItensPackedORD_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensPackedTenantIDDTO> getItensPackedReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensPackedTenantIDDTO> lista;
             var query = _query.ItensPackedTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItensPackedTenantIDDTO>(query.Query,query.Parameters) as List<ItensPackedTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItensPackedTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensPackedUserIdDTO> getItensPackedReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensPackedUserIdDTO> lista;
             var query = _query.ItensPackedUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItensPackedUserIdDTO>(query.Query,query.Parameters) as List<ItensPackedUserIdDTO>;
+                var lista = _unitOfWork.Query<ItensPackedUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -412,7 +409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -420,7 +417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_COORDCQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_COORDLQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -436,7 +433,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_COORDAQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_DIMCQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_DIMLQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_DIMAQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPA_QTD_POR_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters) as List<ItensPackedDTO>;
+                var result = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

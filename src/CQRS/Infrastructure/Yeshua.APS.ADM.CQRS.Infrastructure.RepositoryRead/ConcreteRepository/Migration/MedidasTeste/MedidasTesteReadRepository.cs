@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MedidasTesteDTO> getMedidasTeste(Command.Read.MedidasTesteReadCommand command )
         {
-            DataPagination<MedidasTesteDTO> customResult = null;
+            var customResult = new DataPagination<MedidasTesteDTO>();
             var customHandled = false;
             TryGetMedidasTesteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MedidasTesteTenantIDDTO> getMedidasTesteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MedidasTesteTenantIDDTO> lista;
             var query = _query.MedidasTesteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MedidasTesteTenantIDDTO>(query.Query,query.Parameters) as List<MedidasTesteTenantIDDTO>;
+                var lista = _unitOfWork.Query<MedidasTesteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MedidasTesteUserIdDTO> getMedidasTesteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MedidasTesteUserIdDTO> lista;
             var query = _query.MedidasTesteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MedidasTesteUserIdDTO>(query.Query,query.Parameters) as List<MedidasTesteUserIdDTO>;
+                var lista = _unitOfWork.Query<MedidasTesteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDT_IDQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDT_DESCQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDT_VALOR_ESPERADOQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDT_ENCONTRADOQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters) as List<MedidasTesteDTO>;
+                var result = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

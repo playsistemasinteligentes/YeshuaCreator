@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PerfilObjetoControlavelDTO> getPerfilObjetoControlavel(Command.Read.PerfilObjetoControlavelReadCommand command )
         {
-            DataPagination<PerfilObjetoControlavelDTO> customResult = null;
+            var customResult = new DataPagination<PerfilObjetoControlavelDTO>();
             var customHandled = false;
             TryGetPerfilObjetoControlavelCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PerfilObjetoControlavelPER_IDDTO> getPerfilObjetoControlavelReadFKPER_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PerfilObjetoControlavelPER_IDDTO> lista;
             var query = _query.PerfilObjetoControlavelPER_IDQuery(command );
 
-                lista = _unitOfWork.Query<PerfilObjetoControlavelPER_IDDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelPER_IDDTO>;
+                var lista = _unitOfWork.Query<PerfilObjetoControlavelPER_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PerfilObjetoControlavelTenantIDDTO> getPerfilObjetoControlavelReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PerfilObjetoControlavelTenantIDDTO> lista;
             var query = _query.PerfilObjetoControlavelTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PerfilObjetoControlavelTenantIDDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelTenantIDDTO>;
+                var lista = _unitOfWork.Query<PerfilObjetoControlavelTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<PerfilObjetoControlavelUserIdDTO> getPerfilObjetoControlavelReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PerfilObjetoControlavelUserIdDTO> lista;
             var query = _query.PerfilObjetoControlavelUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PerfilObjetoControlavelUserIdDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelUserIdDTO>;
+                var lista = _unitOfWork.Query<PerfilObjetoControlavelUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_IDQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOBJ_IDQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPEO_ACAOQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters) as List<PerfilObjetoControlavelDTO>;
+                var result = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

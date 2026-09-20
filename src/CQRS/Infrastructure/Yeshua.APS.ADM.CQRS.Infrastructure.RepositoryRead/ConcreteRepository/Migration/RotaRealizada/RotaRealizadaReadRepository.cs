@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RotaRealizadaDTO> getRotaRealizada(Command.Read.RotaRealizadaReadCommand command )
         {
-            DataPagination<RotaRealizadaDTO> customResult = null;
+            var customResult = new DataPagination<RotaRealizadaDTO>();
             var customHandled = false;
             TryGetRotaRealizadaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RotaRealizadaTenantIDDTO> getRotaRealizadaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RotaRealizadaTenantIDDTO> lista;
             var query = _query.RotaRealizadaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RotaRealizadaTenantIDDTO>(query.Query,query.Parameters) as List<RotaRealizadaTenantIDDTO>;
+                var lista = _unitOfWork.Query<RotaRealizadaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RotaRealizadaUserIdDTO> getRotaRealizadaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RotaRealizadaUserIdDTO> lista;
             var query = _query.RotaRealizadaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RotaRealizadaUserIdDTO>(query.Query,query.Parameters) as List<RotaRealizadaUserIdDTO>;
+                var lista = _unitOfWork.Query<RotaRealizadaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_IDQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_DATA_HORAQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_LATQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_LONGQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters) as List<RotaRealizadaDTO>;
+                var result = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

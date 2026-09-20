@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string UNI_ESCALA_TEMPO
+                                    public string? UNI_ESCALA_TEMPO
                                     {
                                         get => _inner.UNI_ESCALA_TEMPO;
                                         set

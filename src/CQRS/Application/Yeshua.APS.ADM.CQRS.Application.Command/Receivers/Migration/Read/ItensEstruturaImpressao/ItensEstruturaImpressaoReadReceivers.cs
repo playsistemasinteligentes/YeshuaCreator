@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<ItensEstruturaImpressaoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<ItensEstruturaImpressaoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.ItensEstruturaImpressaoReadCommand c) 
              {    
                 var ItensEstruturaImpressaoReadRepository = _repository.getItensEstruturaImpressao(c);
-                return Success("OK", ItensEstruturaImpressaoReadRepository);
+                return Task.FromResult(Success("OK", ItensEstruturaImpressaoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

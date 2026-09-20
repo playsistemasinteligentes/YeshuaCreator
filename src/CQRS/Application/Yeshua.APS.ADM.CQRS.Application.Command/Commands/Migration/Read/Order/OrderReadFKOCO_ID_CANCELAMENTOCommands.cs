@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct OrderReadFKOCO_ID_CANCELAMENTOCommand : ICommand
     {
-        public string OCO_ID { get; set; }
+        public string? OCO_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MovimentoEstoqueDTO> getMovimentoEstoque(Command.Read.MovimentoEstoqueReadCommand command )
         {
-            DataPagination<MovimentoEstoqueDTO> customResult = null;
+            var customResult = new DataPagination<MovimentoEstoqueDTO>();
             var customHandled = false;
             TryGetMovimentoEstoqueCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueOrderIdDTO> getMovimentoEstoqueReadFKOrderId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueOrderIdDTO> lista;
             var query = _query.MovimentoEstoqueOrderIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueOrderIdDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueOrderIdDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueOrderIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueTipoDTO> getMovimentoEstoqueReadFKTipo(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueTipoDTO> lista;
             var query = _query.MovimentoEstoqueTipoQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueTipoDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueTipoDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueTipoDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueTurnoIdDTO> getMovimentoEstoqueReadFKTurnoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueTurnoIdDTO> lista;
             var query = _query.MovimentoEstoqueTurnoIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueTurnoIdDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueTurnoIdDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueTurnoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueTurmaIdDTO> getMovimentoEstoqueReadFKTurmaId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueTurmaIdDTO> lista;
             var query = _query.MovimentoEstoqueTurmaIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueTurmaIdDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueTurmaIdDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueTurmaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -140,10 +136,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueOcorrenciaIdDTO> getMovimentoEstoqueReadFKOcorrenciaId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueOcorrenciaIdDTO> lista;
             var query = _query.MovimentoEstoqueOcorrenciaIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueOcorrenciaIdDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueOcorrenciaIdDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueOcorrenciaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -158,10 +153,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueCLI_IDDTO> getMovimentoEstoqueReadFKCLI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueCLI_IDDTO> lista;
             var query = _query.MovimentoEstoqueCLI_IDQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueCLI_IDDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueCLI_IDDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueCLI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -176,10 +170,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueTenantIDDTO> getMovimentoEstoqueReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueTenantIDDTO> lista;
             var query = _query.MovimentoEstoqueTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueTenantIDDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueTenantIDDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -194,10 +187,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentoEstoqueUserIdDTO> getMovimentoEstoqueReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentoEstoqueUserIdDTO> lista;
             var query = _query.MovimentoEstoqueUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentoEstoqueUserIdDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueUserIdDTO>;
+                var lista = _unitOfWork.Query<MovimentoEstoqueUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -1046,7 +1038,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1054,7 +1046,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProdutoIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1062,7 +1054,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOrderIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1070,7 +1062,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1078,7 +1070,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTurnoIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1086,7 +1078,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTurmaIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1094,7 +1086,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadeQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1102,7 +1094,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_PESO_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1110,7 +1102,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataHoraCriacaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1118,7 +1110,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataHoraEmissaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1126,7 +1118,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDiaTurmaQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1134,7 +1126,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLoteQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1142,7 +1134,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySubLoteQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1150,7 +1142,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMaquinaIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1158,7 +1150,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1166,7 +1158,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObservacaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1174,7 +1166,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOcorrenciaIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1182,7 +1174,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByArmazemQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1190,7 +1182,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEnderecoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1198,7 +1190,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEstornoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1206,7 +1198,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySequenciaTransformacaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1214,7 +1206,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySequenciaRepeticaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1222,7 +1214,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObsOpParcialQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1230,7 +1222,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOcoIdOpParcialQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1238,7 +1230,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_ID_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1246,7 +1238,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_ID_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1254,7 +1246,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1262,7 +1254,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_ID_DESTINOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1270,7 +1262,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_DESTINOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1278,7 +1270,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_LOTE_DESTINOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1286,7 +1278,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_SUB_LOTE_DESTINOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1294,7 +1286,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_ID_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1302,7 +1294,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1310,7 +1302,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_LOTE_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1318,7 +1310,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_SUB_LOTE_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1326,7 +1318,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_TYPEQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1334,7 +1326,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_DOCQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1342,7 +1334,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_APROVEITAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1350,7 +1342,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_RETIDOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1358,7 +1350,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_VINCOS_ONDULADEIRAQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1366,7 +1358,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1374,7 +1366,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ID_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1382,7 +1374,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1390,7 +1382,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVER_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1398,7 +1390,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_TIPO_CUSTOQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1406,7 +1398,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_GRUPO_CONTABILQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1414,7 +1406,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFOR_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1422,7 +1414,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1430,7 +1422,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1438,7 +1430,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1446,7 +1438,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1454,7 +1446,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters) as List<MovimentoEstoqueDTO>;
+                var result = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

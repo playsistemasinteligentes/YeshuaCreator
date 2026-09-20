@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoInspecaoVisualDTO> getTipoInspecaoVisual(Command.Read.TipoInspecaoVisualReadCommand command )
         {
-            DataPagination<TipoInspecaoVisualDTO> customResult = null;
+            var customResult = new DataPagination<TipoInspecaoVisualDTO>();
             var customHandled = false;
             TryGetTipoInspecaoVisualCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoInspecaoVisualTenantIDDTO> getTipoInspecaoVisualReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoInspecaoVisualTenantIDDTO> lista;
             var query = _query.TipoInspecaoVisualTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoInspecaoVisualTenantIDDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoInspecaoVisualTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoInspecaoVisualUserIdDTO> getTipoInspecaoVisualReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoInspecaoVisualUserIdDTO> lista;
             var query = _query.TipoInspecaoVisualUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoInspecaoVisualUserIdDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoInspecaoVisualUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_FECHAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_AMOSTRA_ALEATORIAQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_N_AMOSTRASQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_MEDIDAQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_ESPECIFICACAOQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_TOL_MAISQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_TOL_MENOSQuery(value );
 
-                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters) as List<TipoInspecaoVisualDTO>;
+                var result = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

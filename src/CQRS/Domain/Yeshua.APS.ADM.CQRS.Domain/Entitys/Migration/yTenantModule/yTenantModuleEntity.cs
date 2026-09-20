@@ -21,17 +21,17 @@
                     public partial class yTenantModuleEntity : IyTenantModuleEntity
 {
     public int? Id { get; set; }
-    public string ModuleId { get; set; }
+    public string? ModuleId { get; set; }
     public int? TenantID { get; set; }
     public DateTime? ValidUntil { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal yTenantModuleEntity(int? id, string moduleid, DateTime? validuntil ){
+    private List<string> _erroMensagem = new List<string>();
+ internal yTenantModuleEntity(int? id, string? moduleid, DateTime? validuntil ){
  Id = id; 
  ModuleId = moduleid; 
- ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
+ ValidUntil = validuntil.HasValue && validuntil.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validuntil; 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

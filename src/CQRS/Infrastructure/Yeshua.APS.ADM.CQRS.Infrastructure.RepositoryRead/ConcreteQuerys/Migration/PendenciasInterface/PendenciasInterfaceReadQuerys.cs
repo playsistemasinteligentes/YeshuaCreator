@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel PendenciasInterfaceQuery(Command.Read.PendenciasInterfaceReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -70,7 +69,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         public QueryModel PendenciasInterfaceTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -101,7 +99,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         public QueryModel PendenciasInterfaceUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -131,7 +128,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_STATUS_OUTQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -149,7 +145,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_PROTOCOLO_OUTQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -167,7 +162,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_ID_PROTOCOLO_OUTQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -185,7 +179,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_STATUS_INQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -203,7 +196,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_PROTOCOLO_INQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -221,7 +213,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_ID_PROTOCOLO_INQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -239,7 +230,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByDATA_ENTRADAQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -257,7 +247,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -275,7 +264,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -293,7 +281,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -311,7 +298,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -329,7 +315,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel ExistsByPEN_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -347,7 +332,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_STATUS_OUTQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -365,7 +349,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_PROTOCOLO_OUTQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -383,7 +366,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_ID_PROTOCOLO_OUTQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -401,7 +383,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_STATUS_INQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -419,7 +400,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_PROTOCOLO_INQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -437,7 +417,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_ID_PROTOCOLO_INQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -455,7 +434,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByDATA_ENTRADAQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -473,7 +451,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -491,7 +468,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -509,7 +485,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -527,7 +502,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -545,7 +519,6 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
         }
         public QueryModel FirstByPEN_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

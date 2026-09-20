@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TemplateTipoInspecaoVisualEntity(int tti_id, int? tiv_id, int? tem_id ){
  TTI_ID = tti_id; 
  TIV_ID = tiv_id; 

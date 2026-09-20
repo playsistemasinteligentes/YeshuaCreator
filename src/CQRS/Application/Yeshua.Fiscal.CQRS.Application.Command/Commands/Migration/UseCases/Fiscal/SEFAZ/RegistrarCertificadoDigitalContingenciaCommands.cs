@@ -15,13 +15,16 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record RegistrarCertificadoDigitalContingenciaInputCommand : ICommand
+public partial record RegistrarCertificadoDigitalContingenciaInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int EntradaFiscalContingenciaId { get; set; }
     public string DocumentoTitular { get; set; } = string.Empty;
     public string Apelido { get; set; } = string.Empty;
     public string ArquivoPfxBase64 { get; set; } = string.Empty;
     public string Senha { get; set; } = string.Empty;
+
+    public string OperationalEntity => "CertificadoDigital";
+    public string? OperationalRecordId => null;
 }
 
 public partial record RegistrarCertificadoDigitalContingenciaOutputCommand : ICommand

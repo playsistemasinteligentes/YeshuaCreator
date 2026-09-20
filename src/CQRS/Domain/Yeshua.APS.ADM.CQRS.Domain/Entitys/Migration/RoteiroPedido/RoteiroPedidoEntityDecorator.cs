@@ -142,7 +142,7 @@
                                         }
                                     }
 
-                                    public string TipoPlanejamento
+                                    public string? TipoPlanejamento
                                     {
                                         get => _inner.TipoPlanejamento;
                                         set
@@ -268,7 +268,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set

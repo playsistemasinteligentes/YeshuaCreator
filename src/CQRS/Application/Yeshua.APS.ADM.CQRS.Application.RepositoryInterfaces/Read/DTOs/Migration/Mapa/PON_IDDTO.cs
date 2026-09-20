@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record MapaPON_IDDTO
     {
-    public string pon_id { get; set; }
+    public string pon_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

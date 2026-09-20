@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ImpressoraDTO> getImpressora(Command.Read.ImpressoraReadCommand command )
         {
-            DataPagination<ImpressoraDTO> customResult = null;
+            var customResult = new DataPagination<ImpressoraDTO>();
             var customHandled = false;
             TryGetImpressoraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ImpressoraTenantIDDTO> getImpressoraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ImpressoraTenantIDDTO> lista;
             var query = _query.ImpressoraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ImpressoraTenantIDDTO>(query.Query,query.Parameters) as List<ImpressoraTenantIDDTO>;
+                var lista = _unitOfWork.Query<ImpressoraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ImpressoraUserIdDTO> getImpressoraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ImpressoraUserIdDTO> lista;
             var query = _query.ImpressoraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ImpressoraUserIdDTO>(query.Query,query.Parameters) as List<ImpressoraUserIdDTO>;
+                var lista = _unitOfWork.Query<ImpressoraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIMP_IDQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIMP_IPQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIMP_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters) as List<ImpressoraDTO>;
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

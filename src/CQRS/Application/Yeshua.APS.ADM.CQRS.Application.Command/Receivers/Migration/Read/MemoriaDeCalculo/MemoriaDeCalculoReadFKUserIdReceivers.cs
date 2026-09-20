@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<MemoriaDeCalculoUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<MemoriaDeCalculoUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var MemoriaDeCalculoReadRepository = _repository.getMemoriaDeCalculoReadFKUserId(c);
-                return Success("OK", MemoriaDeCalculoReadRepository);
+                return Task.FromResult(Success("OK", MemoriaDeCalculoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

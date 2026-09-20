@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<TemplateTipoInspecaoVisualTenantIDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<TemplateTipoInspecaoVisualTenantIDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var TemplateTipoInspecaoVisualReadRepository = _repository.getTemplateTipoInspecaoVisualReadFKTenantID(c);
-                return Success("OK", TemplateTipoInspecaoVisualReadRepository);
+                return Task.FromResult(Success("OK", TemplateTipoInspecaoVisualReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

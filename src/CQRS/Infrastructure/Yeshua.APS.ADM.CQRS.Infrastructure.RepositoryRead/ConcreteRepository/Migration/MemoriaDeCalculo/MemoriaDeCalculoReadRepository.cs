@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MemoriaDeCalculoDTO> getMemoriaDeCalculo(Command.Read.MemoriaDeCalculoReadCommand command )
         {
-            DataPagination<MemoriaDeCalculoDTO> customResult = null;
+            var customResult = new DataPagination<MemoriaDeCalculoDTO>();
             var customHandled = false;
             TryGetMemoriaDeCalculoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MemoriaDeCalculoTenantIDDTO> getMemoriaDeCalculoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MemoriaDeCalculoTenantIDDTO> lista;
             var query = _query.MemoriaDeCalculoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MemoriaDeCalculoTenantIDDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoTenantIDDTO>;
+                var lista = _unitOfWork.Query<MemoriaDeCalculoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MemoriaDeCalculoUserIdDTO> getMemoriaDeCalculoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MemoriaDeCalculoUserIdDTO> lista;
             var query = _query.MemoriaDeCalculoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MemoriaDeCalculoUserIdDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoUserIdDTO>;
+                var lista = _unitOfWork.Query<MemoriaDeCalculoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORC_IDQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEM_VALORQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMEM_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters) as List<MemoriaDeCalculoDTO>;
+                var result = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -11,17 +11,21 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record ListarCargasAbertasPlanejamentoTransporteInputCommand : ICommand
+public partial record ListarCargasAbertasPlanejamentoTransporteInputCommand : ICommand, IOperationalTelemetryCommand
 {
-    public string ContextoId { get; set; }
+    public string ContextoId { get; set; } = string.Empty;
+
+    public string OperationalEntity => "CargaPlanejavel";
+    public string? OperationalRecordId => null;
 }
 
 public partial record ListarCargasAbertasPlanejamentoTransporteOutputCommand : ICommand
 {
-    public List<CargaPlanejamentoEnvelope> Cargas { get; set; }
+    public List<CargaPlanejamentoEnvelope> Cargas { get; set; } = default!;
 }
 
 }

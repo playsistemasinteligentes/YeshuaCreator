@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CondicaoPagamentoDTO> getCondicaoPagamento(Command.Read.CondicaoPagamentoReadCommand command )
         {
-            DataPagination<CondicaoPagamentoDTO> customResult = null;
+            var customResult = new DataPagination<CondicaoPagamentoDTO>();
             var customHandled = false;
             TryGetCondicaoPagamentoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CondicaoPagamentoTenantIDDTO> getCondicaoPagamentoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CondicaoPagamentoTenantIDDTO> lista;
             var query = _query.CondicaoPagamentoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CondicaoPagamentoTenantIDDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoTenantIDDTO>;
+                var lista = _unitOfWork.Query<CondicaoPagamentoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CondicaoPagamentoUserIdDTO> getCondicaoPagamentoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CondicaoPagamentoUserIdDTO> lista;
             var query = _query.CondicaoPagamentoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CondicaoPagamentoUserIdDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoUserIdDTO>;
+                var lista = _unitOfWork.Query<CondicaoPagamentoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_PARCELASQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_VALOR_ACRECIMOQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters) as List<CondicaoPagamentoDTO>;
+                var result = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

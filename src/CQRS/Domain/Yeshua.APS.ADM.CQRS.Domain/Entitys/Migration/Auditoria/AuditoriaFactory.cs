@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IAuditoriaEntity Create(int id, DateTime data, int use_id, string rotina, string historico, string chave )
+                                    } public IAuditoriaEntity Create(int id, DateTime data, int use_id, string rotina, string? historico, string? chave )
                             {
                                 return Create(null, id, data, use_id, rotina, historico, chave);
                             }
 
                             public IAuditoriaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, DateTime data, int use_id, string rotina, string historico, string chave )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, DateTime data, int use_id, string rotina, string? historico, string? chave )
                             {
                             var entity = new AuditoriaEntity(id, data, use_id, rotina, historico, chave );
 

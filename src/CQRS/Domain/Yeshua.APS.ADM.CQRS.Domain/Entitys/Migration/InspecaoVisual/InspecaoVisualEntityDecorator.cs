@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string IPV_VALOR
+                                    public string? IPV_VALOR
                                     {
                                         get => _inner.IPV_VALOR;
                                         set
@@ -126,7 +126,7 @@
                                         }
                                     }
 
-                                    public string IPV_OBS
+                                    public string? IPV_OBS
                                     {
                                         get => _inner.IPV_OBS;
                                         set
@@ -182,7 +182,7 @@
                                         }
                                     }
 
-                                    public string TURN_ID
+                                    public string? TURN_ID
                                     {
                                         get => _inner.TURN_ID;
                                         set
@@ -196,7 +196,7 @@
                                         }
                                     }
 
-                                    public string TURM_ID
+                                    public string? TURM_ID
                                     {
                                         get => _inner.TURM_ID;
                                         set
@@ -210,7 +210,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set
@@ -224,7 +224,7 @@
                                         }
                                     }
 
-                                    public string ROT_PRO_ID
+                                    public string? ROT_PRO_ID
                                     {
                                         get => _inner.ROT_PRO_ID;
                                         set
@@ -238,7 +238,7 @@
                                         }
                                     }
 
-                                    public string ROT_MAQ_ID
+                                    public string? ROT_MAQ_ID
                                     {
                                         get => _inner.ROT_MAQ_ID;
                                         set
@@ -280,7 +280,7 @@
                                         }
                                     }
 
-                                    public string IPV_STATUS_LIBERACAO
+                                    public string? IPV_STATUS_LIBERACAO
                                     {
                                         get => _inner.IPV_STATUS_LIBERACAO;
                                         set

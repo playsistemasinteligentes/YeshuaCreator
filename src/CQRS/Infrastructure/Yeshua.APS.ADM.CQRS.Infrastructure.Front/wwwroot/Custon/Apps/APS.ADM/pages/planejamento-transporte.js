@@ -24,7 +24,7 @@ const state = {
 export async function renderPlanejamentoTransporte() {
     injectCss();
     const host = await prepareHost();
-    const html = await fetch('/Custon/pages/planejamento-transporte.html').then(r => r.text());
+    const html = await fetch('/Custon/Apps/APS.ADM/pages/planejamento-transporte.html').then(r => r.text());
     host.innerHTML = html;
     host.classList.remove('hidden');
 
@@ -55,7 +55,7 @@ function injectCss() {
     const link = document.createElement('link');
     link.id = cssId;
     link.rel = 'stylesheet';
-    link.href = '/Custon/pages/planejamento-transporte.css';
+    link.href = '/Custon/Apps/APS.ADM/pages/planejamento-transporte.css';
     document.head.appendChild(link);
 }
 

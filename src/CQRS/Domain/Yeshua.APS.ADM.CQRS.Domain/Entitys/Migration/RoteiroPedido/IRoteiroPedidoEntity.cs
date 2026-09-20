@@ -25,7 +25,7 @@
     string ProdutoId { get; set; }
     int SequenciaTransformacao { get; set; }
     string StatusCadastro { get; set; }
-    string TipoPlanejamento { get; set; }
+    string? TipoPlanejamento { get; set; }
     int CalendarioId { get; set; }
     Decimal? HierarquiaSequenciaTransformacao { get; set; }
     int? ProximaSequenciaTransformacao { get; set; }
@@ -34,7 +34,7 @@
     Decimal? TempoSetupAjuste { get; set; }
     Decimal? PecasPorPulso { get; set; }
     Decimal? PrioridadeInformada { get; set; }
-    string Status { get; set; }
+    string? Status { get; set; }
     string Operacoes { get; set; }
     string ExcecaoOperacoes { get; set; }
     string LinhaDireta { get; set; }

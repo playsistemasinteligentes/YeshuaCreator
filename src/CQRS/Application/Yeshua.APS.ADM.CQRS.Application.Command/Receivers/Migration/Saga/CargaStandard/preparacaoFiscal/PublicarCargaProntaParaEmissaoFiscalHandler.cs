@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -20,7 +20,7 @@ namespace Command.Receivers
     {
         public string Key => CargaStandardSaga.STEP_6;
 
-        public bool RequiresExternalStimulus => true;
+        public bool RequiresExternalStimulus => false;
 
         public void Execute(SagaBase saga, SagaStepBase step)
         {
@@ -42,9 +42,8 @@ namespace Command.Receivers
                     step.SetPendingApply();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                saga.MarkFailed(ex.Message);
                 throw;
             }
         }
@@ -57,9 +56,8 @@ namespace Command.Receivers
                 CustomApplyResponse(saga, step, payload);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                saga.MarkFailed(ex.Message);
                 throw;
             }
         }

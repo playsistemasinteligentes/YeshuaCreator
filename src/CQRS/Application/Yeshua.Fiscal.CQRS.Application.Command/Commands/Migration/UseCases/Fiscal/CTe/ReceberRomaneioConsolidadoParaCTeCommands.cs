@@ -15,7 +15,7 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record ReceberRomaneioConsolidadoParaCTeInputCommand : ICommand
+public partial record ReceberRomaneioConsolidadoParaCTeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string CorrelationId { get; set; } = string.Empty;
     public int TenantId { get; set; }
@@ -35,6 +35,9 @@ public partial record ReceberRomaneioConsolidadoParaCTeInputCommand : ICommand
     public string PreferenciasFiscaisJson { get; set; } = string.Empty;
     public string PayloadHash { get; set; } = string.Empty;
     public string PayloadStorageKey { get; set; } = string.Empty;
+
+    public string OperationalEntity => "CTeRomaneioConsolidado";
+    public string? OperationalRecordId => CorrelationId;
 }
 
 public partial record ReceberRomaneioConsolidadoParaCTeOutputCommand : ICommand

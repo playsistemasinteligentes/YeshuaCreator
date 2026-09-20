@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IRecursosEntity Create(string rec_id, string rec_descricao, int? cal_id, string rec_control_ip, string gre_id )
+                                    } public IRecursosEntity Create(string rec_id, string rec_descricao, int? cal_id, string? rec_control_ip, string? gre_id )
                             {
                                 return Create(null, rec_id, rec_descricao, cal_id, rec_control_ip, gre_id);
                             }
 
                             public IRecursosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string rec_id, string rec_descricao, int? cal_id, string rec_control_ip, string gre_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string rec_id, string rec_descricao, int? cal_id, string? rec_control_ip, string? gre_id )
                             {
                             var entity = new RecursosEntity(rec_id, rec_descricao, cal_id, rec_control_ip, gre_id );
 

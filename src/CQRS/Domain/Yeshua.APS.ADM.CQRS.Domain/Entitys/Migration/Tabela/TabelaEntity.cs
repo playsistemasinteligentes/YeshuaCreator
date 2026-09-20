@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TabelaEntity(int id_tabela, string codigo, string nome ){
  ID_TABELA = id_tabela; 
  CODIGO = codigo; 

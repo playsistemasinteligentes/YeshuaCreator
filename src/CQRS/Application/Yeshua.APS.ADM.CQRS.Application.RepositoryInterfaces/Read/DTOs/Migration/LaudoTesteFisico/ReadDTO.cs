@@ -22,10 +22,10 @@ namespace Repositorio.Outputs
     public int ltf_id { get; set; }
     public DateTime ltf_emissao { get; set; }
     public Decimal ltf_valor { get; set; }
-    public string ltf_obs { get; set; }
-    public string ltf_status { get; set; }
-    public string ord_id { get; set; }
-    public string rot_pro_id { get; set; }
+    public string ltf_obs { get; set; } = string.Empty;
+    public string ltf_status { get; set; } = string.Empty;
+    public string ord_id { get; set; } = string.Empty;
+    public string rot_pro_id { get; set; } = string.Empty;
     public int fpr_seq_repeticao { get; set; }
     public int use_id { get; set; }
     public int tenantid { get; set; }

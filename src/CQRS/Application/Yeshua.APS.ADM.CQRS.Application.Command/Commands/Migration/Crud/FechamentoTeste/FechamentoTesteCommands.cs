@@ -16,7 +16,7 @@ namespace Command.Write
         public int? Id { get; set; }
         public int FEC_ID { get; set; }
         public int? FEC_QTD { get; set; }
-        public string GRP_ID { get; set; }
+        public string? GRP_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

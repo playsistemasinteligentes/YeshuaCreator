@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<ExperienciaPlanejamentoTransporteDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<ExperienciaPlanejamentoTransporteDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.ExperienciaPlanejamentoTransporteReadCommand c) 
              {    
                 var ExperienciaPlanejamentoTransporteReadRepository = _repository.getExperienciaPlanejamentoTransporte(c);
-                return Success("OK", ExperienciaPlanejamentoTransporteReadRepository);
+                return Task.FromResult(Success("OK", ExperienciaPlanejamentoTransporteReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

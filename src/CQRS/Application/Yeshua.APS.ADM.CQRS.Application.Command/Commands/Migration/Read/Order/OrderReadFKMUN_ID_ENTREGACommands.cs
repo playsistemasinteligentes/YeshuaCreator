@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct OrderReadFKMUN_ID_ENTREGACommand : ICommand
     {
-        public string MUN_ID { get; set; }
+        public string? MUN_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

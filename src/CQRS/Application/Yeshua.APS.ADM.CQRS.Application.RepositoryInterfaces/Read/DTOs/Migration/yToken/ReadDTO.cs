@@ -19,9 +19,9 @@ namespace Repositorio.Outputs
     public partial record yTokenDTO
     {
     public int id { get; set; }
-    public string tokenhash { get; set; }
-    public string description { get; set; }
-    public string connectorkey { get; set; }
+    public string tokenhash { get; set; } = string.Empty;
+    public string description { get; set; } = string.Empty;
+    public string connectorkey { get; set; } = string.Empty;
     public bool active { get; set; }
     public DateTime validuntil { get; set; }
     public DateTime createdat { get; set; }

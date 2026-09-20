@@ -22,10 +22,10 @@
 {
     int? Id { get; set; }
     int PRE_ID { get; set; }
-    string PRE_DESCRICAO { get; set; }
-    string PRE_NAMESPACE { get; set; }
-    string PRE_TIPO { get; set; }
-    string PRE_VALOR { get; set; }
+    string? PRE_DESCRICAO { get; set; }
+    string? PRE_NAMESPACE { get; set; }
+    string? PRE_TIPO { get; set; }
+    string? PRE_VALOR { get; set; }
     int? USE_ID { get; set; }
     int? PER_ID { get; set; }
     int? TenantID { get; set; }

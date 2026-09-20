@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<UnidadeDTO> getUnidade(Command.Read.UnidadeReadCommand command )
         {
-            DataPagination<UnidadeDTO> customResult = null;
+            var customResult = new DataPagination<UnidadeDTO>();
             var customHandled = false;
             TryGetUnidadeCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<UnidadeTenantIDDTO> getUnidadeReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UnidadeTenantIDDTO> lista;
             var query = _query.UnidadeTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<UnidadeTenantIDDTO>(query.Query,query.Parameters) as List<UnidadeTenantIDDTO>;
+                var lista = _unitOfWork.Query<UnidadeTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<UnidadeUserIdDTO> getUnidadeReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UnidadeUserIdDTO> lista;
             var query = _query.UnidadeUserIdQuery(command );
 
-                lista = _unitOfWork.Query<UnidadeUserIdDTO>(query.Query,query.Parameters) as List<UnidadeUserIdDTO>;
+                var lista = _unitOfWork.Query<UnidadeUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDEESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters) as List<UnidadeDTO>;
+                var result = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

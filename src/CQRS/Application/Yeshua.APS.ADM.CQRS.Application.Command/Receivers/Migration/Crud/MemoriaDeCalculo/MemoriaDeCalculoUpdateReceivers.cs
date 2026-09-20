@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMemoriaDeCalculoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMemoriaDeCalculoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MemoriaDeCalculoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var memoriadecalculo = new MemoriaDeCalculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MEM_ID, c.ORC_ID, c.MEM_VALOR, c.MEM_DESCRICAO);
                  var domainResult = MemoriaDeCalculoDomainBehavior.Apply(memoriadecalculo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(memoriadecalculo);
-                     return Success("OK", memoriadecalculo);
+                     return Task.FromResult(Success("OK", memoriadecalculo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, memoriadecalculo);
+                    return Task.FromResult(Error(e, memoriadecalculo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

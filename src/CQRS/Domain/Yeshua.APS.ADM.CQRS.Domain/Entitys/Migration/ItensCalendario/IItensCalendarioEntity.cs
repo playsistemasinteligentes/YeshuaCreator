@@ -23,13 +23,13 @@
     int ICA_ID { get; set; }
     DateTime ICA_DATA_DE { get; set; }
     DateTime ICA_DATA_ATE { get; set; }
-    string ICA_OBSERVACAO { get; set; }
+    string? ICA_OBSERVACAO { get; set; }
     int ICA_TIPO { get; set; }
-    string URM_ID { get; set; }
-    string URN_ID { get; set; }
+    string? URM_ID { get; set; }
+    string? URN_ID { get; set; }
     int CAL_ID { get; set; }
-    string MAQ_ID { get; set; }
-    string PRO_ID { get; set; }
+    string? MAQ_ID { get; set; }
+    string? PRO_ID { get; set; }
     int? ICA_LIMPESA_MAQUINA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

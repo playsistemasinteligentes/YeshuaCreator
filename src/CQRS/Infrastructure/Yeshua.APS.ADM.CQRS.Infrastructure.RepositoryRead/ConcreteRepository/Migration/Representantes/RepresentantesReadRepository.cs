@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RepresentantesDTO> getRepresentantes(Command.Read.RepresentantesReadCommand command )
         {
-            DataPagination<RepresentantesDTO> customResult = null;
+            var customResult = new DataPagination<RepresentantesDTO>();
             var customHandled = false;
             TryGetRepresentantesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RepresentantesTenantIDDTO> getRepresentantesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RepresentantesTenantIDDTO> lista;
             var query = _query.RepresentantesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RepresentantesTenantIDDTO>(query.Query,query.Parameters) as List<RepresentantesTenantIDDTO>;
+                var lista = _unitOfWork.Query<RepresentantesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RepresentantesUserIdDTO> getRepresentantesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RepresentantesUserIdDTO> lista;
             var query = _query.RepresentantesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RepresentantesUserIdDTO>(query.Query,query.Parameters) as List<RepresentantesUserIdDTO>;
+                var lista = _unitOfWork.Query<RepresentantesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREP_IDQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREP_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters) as List<RepresentantesDTO>;
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

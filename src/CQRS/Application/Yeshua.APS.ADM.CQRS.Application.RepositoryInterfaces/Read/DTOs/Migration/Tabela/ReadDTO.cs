@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record TabelaDTO
     {
     public int id_tabela { get; set; }
-    public string codigo { get; set; }
-    public string nome { get; set; }
+    public string codigo { get; set; } = string.Empty;
+    public string nome { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

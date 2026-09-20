@@ -13,16 +13,16 @@ namespace Command.Read
 {
     public struct OpcaoPlanejamentoTransporteReadCommand : ICommandRead
     {
-        public string OpcaoId { get; set; }
-        public string GrupoDecisaoId { get; set; }
+        public string? OpcaoId { get; set; }
+        public string? GrupoDecisaoId { get; set; }
         public Decimal? Peso { get; set; }
         public Decimal? Volume { get; set; }
         public Decimal? CustoEstimado { get; set; }
         public Decimal? AderenciaCubagem { get; set; }
         public Decimal? AderenciaJanelaEntrega { get; set; }
-        public string RiscoResumo { get; set; }
-        public string PedidosResumo { get; set; }
-        public string OpcoesConflitantesResumo { get; set; }
+        public string? RiscoResumo { get; set; }
+        public string? PedidosResumo { get; set; }
+        public string? OpcoesConflitantesResumo { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IRestricoesDeRodagemEntity Create(int? id, int res_id, string res_tipo, string res_hora_ini, string res_hora_fim, Decimal? res_velocidade_hora_rush, int? tve_id, int? map_id )
+                                    } public IRestricoesDeRodagemEntity Create(int? id, int res_id, string res_tipo, string? res_hora_ini, string? res_hora_fim, Decimal? res_velocidade_hora_rush, int? tve_id, int? map_id )
                             {
                                 return Create(null, id, res_id, res_tipo, res_hora_ini, res_hora_fim, res_velocidade_hora_rush, tve_id, map_id);
                             }
 
                             public IRestricoesDeRodagemEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int res_id, string res_tipo, string res_hora_ini, string res_hora_fim, Decimal? res_velocidade_hora_rush, int? tve_id, int? map_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int res_id, string res_tipo, string? res_hora_ini, string? res_hora_fim, Decimal? res_velocidade_hora_rush, int? tve_id, int? map_id )
                             {
                             var entity = new RestricoesDeRodagemEntity(id, res_id, res_tipo, res_hora_ini, res_hora_fim, res_velocidade_hora_rush, tve_id, map_id );
 

@@ -124,7 +124,7 @@ public static class StaticModules
         menuGroup0_0.AddSubMenu(new SubMenu("OpcaoPlanejamentoTransporte", "/getMetaDataOpcaoPlanejamentoTransporte", "crud", "", ""));
         menuGroup0_0.AddSubMenu(new SubMenu("CenarioPlanejamentoTransporte", "/getMetaDataCenarioPlanejamentoTransporte", "crud", "", ""));
         menuGroup0_0.AddSubMenu(new SubMenu("ExperienciaPlanejamentoTransporte", "/getMetaDataExperienciaPlanejamentoTransporte", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0_0);
+        Modules[Modules.Count - 1].Menus.Add(menuGroup0_0);
         var menuGroup0_1 = new Menu("Tabelas Legado", "", "menuGroup");
         menuGroup0_1.AddSubMenu(new SubMenu("T_AGENDA_SCHEDULE", "/getMetaDataT_AGENDA_SCHEDULE", "crud", "", ""));
         menuGroup0_1.AddSubMenu(new SubMenu("T_Departamentos", "/getMetaDataT_Departamentos", "crud", "", ""));
@@ -139,7 +139,7 @@ public static class StaticModules
         menuGroup0_1.AddSubMenu(new SubMenu("T_Negocio", "/getMetaDataT_Negocio", "crud", "", ""));
         menuGroup0_1.AddSubMenu(new SubMenu("T_PREFERENCIAS", "/getMetaDataT_PREFERENCIAS", "crud", "", ""));
         menuGroup0_1.AddSubMenu(new SubMenu("T_USER_GRUPO", "/getMetaDataT_USER_GRUPO", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0_1);
+        Modules[Modules.Count - 1].Menus.Add(menuGroup0_1);
         var menuGroup0_3 = new Menu("Cadastros APS", "", "menuGroup");
         menuGroup0_3.AddSubMenu(new SubMenu("Produto", "/getMetaDataProduto", "crud", "", ""));
         menuGroup0_3.AddSubMenu(new SubMenu("Maquina", "/getMetaDataMaquina", "crud", "", ""));
@@ -293,23 +293,23 @@ public static class StaticModules
         menuGroup0_3.AddSubMenu(new SubMenu("TemplateTipoInspecaoVisual", "/getMetaDataTemplateTipoInspecaoVisual", "crud", "", ""));
         menuGroup0_3.AddSubMenu(new SubMenu("TemplateTipoTeste", "/getMetaDataTemplateTipoTeste", "crud", "", ""));
         menuGroup0_3.AddSubMenu(new SubMenu("TipoAvaliacao", "/getMetaDataTipoAvaliacao", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0_3);
+        Modules[Modules.Count - 1].Menus.Add(menuGroup0_3);
         Modules.Add(new Module("ADM", "Administrativo"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("ySagaStep", "/getMetaDataySagaStep", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yOutbox", "/getMetaDatayOutbox", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yInbox", "/getMetaDatayInbox", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yToken", "/getMetaDatayToken", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yTenant", "/getMetaDatayTenant", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yUser", "/getMetaDatayUser", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yConfigArcteture", "/getMetaDatayConfigArcteture", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yConfigNotification", "/getMetaDatayConfigNotification", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yPerfil", "/getMetaDatayPerfil", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yTenantModule", "/getMetaDatayTenantModule", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yUserModule", "/getMetaDatayUserModule", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yPerfilGrant", "/getMetaDatayPerfilGrant", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(new Menu("yUserGrant", "/getMetaDatayUserGrant", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("ySagaStep", "/getMetaDataySagaStep", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yOutbox", "/getMetaDatayOutbox", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yInbox", "/getMetaDatayInbox", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yToken", "/getMetaDatayToken", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yTenant", "/getMetaDatayTenant", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yUser", "/getMetaDatayUser", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yConfigArcteture", "/getMetaDatayConfigArcteture", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yConfigNotification", "/getMetaDatayConfigNotification", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yPerfil", "/getMetaDatayPerfil", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yTenantModule", "/getMetaDatayTenantModule", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yUserModule", "/getMetaDatayUserModule", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yPerfilGrant", "/getMetaDatayPerfilGrant", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yUserGrant", "/getMetaDatayUserGrant", "crud", "", ""));
     }
 }
 

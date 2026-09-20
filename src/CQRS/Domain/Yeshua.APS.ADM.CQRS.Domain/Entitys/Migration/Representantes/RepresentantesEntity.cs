@@ -22,13 +22,13 @@
 {
     public int? Id { get; set; }
     public int REP_ID { get; set; }
-    public string REP_NOME { get; set; }
+    public string? REP_NOME { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal RepresentantesEntity(int? id, int rep_id, string rep_nome ){
+    private List<string> _erroMensagem = new List<string>();
+ internal RepresentantesEntity(int? id, int rep_id, string? rep_nome ){
  Id = id; 
  REP_ID = rep_id; 
  REP_NOME = rep_nome; 

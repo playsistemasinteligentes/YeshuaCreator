@@ -71,7 +71,7 @@
                                         }
                                     }
 
-                                    public string HTML_ESTRUTURA
+                                    public string? HTML_ESTRUTURA
                                     {
                                         get => _inner.HTML_ESTRUTURA;
                                         set
@@ -85,7 +85,7 @@
                                         }
                                     }
 
-                                    public string CLI_ID
+                                    public string? CLI_ID
                                     {
                                         get => _inner.CLI_ID;
                                         set
@@ -99,7 +99,7 @@
                                         }
                                     }
 
-                                    public string EST_DESCRICAO
+                                    public string? EST_DESCRICAO
                                     {
                                         get => _inner.EST_DESCRICAO;
                                         set

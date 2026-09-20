@@ -14,8 +14,8 @@ namespace Command.Read
     public struct MaquinaGrupoMaquinaReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string GMA_ID { get; set; }
-        public string MAQ_ID { get; set; }
+        public string? GMA_ID { get; set; }
+        public string? MAQ_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

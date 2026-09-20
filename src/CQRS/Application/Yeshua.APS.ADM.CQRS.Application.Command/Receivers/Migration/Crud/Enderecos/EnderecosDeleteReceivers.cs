@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnderecosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnderecosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EnderecosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var enderecos = new EnderecosFactory(_logger, _domainTrackingPolicy).Create(context, c.END_ID, c.END_GRUPO);
                  var domainResult = EnderecosDomainBehavior.Apply(enderecos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(enderecos);
-                     return Success("OK", enderecos);
+                     return Task.FromResult(Success("OK", enderecos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, enderecos);
+                    return Task.FromResult(Error(e, enderecos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

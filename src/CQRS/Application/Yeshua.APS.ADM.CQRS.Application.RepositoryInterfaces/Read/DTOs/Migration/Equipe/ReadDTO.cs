@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record EquipeDTO
     {
     public int id { get; set; }
-    public string equ_id { get; set; }
+    public string equ_id { get; set; } = string.Empty;
     public Decimal equ_hierarquia_seq_transformacao { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

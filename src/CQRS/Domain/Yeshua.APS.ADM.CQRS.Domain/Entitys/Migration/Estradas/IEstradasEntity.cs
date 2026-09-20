@@ -22,7 +22,7 @@
 {
     int? Id { get; set; }
     int EST_ID { get; set; }
-    string EST_DESCRICAO { get; set; }
+    string? EST_DESCRICAO { get; set; }
     int? EST_ID_LIGACAO_PONTO_A { get; set; }
     int? EST_ID_LIGACAO_PONTO_B { get; set; }
     int? TenantID { get; set; }

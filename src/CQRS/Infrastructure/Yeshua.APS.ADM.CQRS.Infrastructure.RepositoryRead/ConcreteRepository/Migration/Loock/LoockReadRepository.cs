@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<LoockDTO> getLoock(Command.Read.LoockReadCommand command )
         {
-            DataPagination<LoockDTO> customResult = null;
+            var customResult = new DataPagination<LoockDTO>();
             var customHandled = false;
             TryGetLoockCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<LoockTenantIDDTO> getLoockReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LoockTenantIDDTO> lista;
             var query = _query.LoockTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<LoockTenantIDDTO>(query.Query,query.Parameters) as List<LoockTenantIDDTO>;
+                var lista = _unitOfWork.Query<LoockTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<LoockUserIdDTO> getLoockReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LoockUserIdDTO> lista;
             var query = _query.LoockUserIdQuery(command );
 
-                lista = _unitOfWork.Query<LoockUserIdDTO>(query.Query,query.Parameters) as List<LoockUserIdDTO>;
+                var lista = _unitOfWork.Query<LoockUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOO_IDQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOO_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOO_CONTEUDOQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters) as List<LoockDTO>;
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

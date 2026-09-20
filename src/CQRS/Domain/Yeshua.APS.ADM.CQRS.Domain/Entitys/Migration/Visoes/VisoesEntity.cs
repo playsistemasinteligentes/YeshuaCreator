@@ -22,14 +22,14 @@
 {
     public int VIS_ID { get; set; }
     public int VIS_PLANID { get; set; }
-    public string VIS_FORMULA { get; set; }
+    public string? VIS_FORMULA { get; set; }
     public int CAB_ID { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal VisoesEntity(int vis_id, int vis_planid, string vis_formula, int cab_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal VisoesEntity(int vis_id, int vis_planid, string? vis_formula, int cab_id ){
  VIS_ID = vis_id; 
  VIS_PLANID = vis_planid; 
  VIS_FORMULA = vis_formula; 

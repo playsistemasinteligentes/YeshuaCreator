@@ -15,9 +15,12 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record GerarDamdfeInputCommand : ICommand
+public partial record GerarDamdfeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public List<string> ChavesAcesso { get; set; } = default!;
+
+    public string OperationalEntity => "MDFeTentativaEmissao";
+    public string? OperationalRecordId => null;
 }
 
 public partial record GerarDamdfeOutputCommand : ICommand

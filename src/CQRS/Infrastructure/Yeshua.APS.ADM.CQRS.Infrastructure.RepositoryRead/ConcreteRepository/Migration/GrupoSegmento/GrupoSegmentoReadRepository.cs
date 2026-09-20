@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<GrupoSegmentoDTO> getGrupoSegmento(Command.Read.GrupoSegmentoReadCommand command )
         {
-            DataPagination<GrupoSegmentoDTO> customResult = null;
+            var customResult = new DataPagination<GrupoSegmentoDTO>();
             var customHandled = false;
             TryGetGrupoSegmentoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoSegmentoTenantIDDTO> getGrupoSegmentoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoSegmentoTenantIDDTO> lista;
             var query = _query.GrupoSegmentoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoSegmentoTenantIDDTO>(query.Query,query.Parameters) as List<GrupoSegmentoTenantIDDTO>;
+                var lista = _unitOfWork.Query<GrupoSegmentoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoSegmentoUserIdDTO> getGrupoSegmentoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoSegmentoUserIdDTO> lista;
             var query = _query.GrupoSegmentoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<GrupoSegmentoUserIdDTO>(query.Query,query.Parameters) as List<GrupoSegmentoUserIdDTO>;
+                var lista = _unitOfWork.Query<GrupoSegmentoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRS_IDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRS_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRS_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters) as List<GrupoSegmentoDTO>;
+                var result = _unitOfWork.Query<GrupoSegmentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IItensPackedEntity Create(int? id, int ipa_id, string car_id, string pro_id, string ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete )
+                                    } public IItensPackedEntity Create(int? id, int ipa_id, string car_id, string? pro_id, string? ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete )
                             {
                                 return Create(null, id, ipa_id, car_id, pro_id, ord_id, ipa_coordc, ipa_coordl, ipa_coorda, ipa_dimc, ipa_diml, ipa_dima, ipa_qtd_por_palete);
                             }
 
                             public IItensPackedEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ipa_id, string car_id, string pro_id, string ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ipa_id, string car_id, string? pro_id, string? ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete )
                             {
                             var entity = new ItensPackedEntity(id, ipa_id, car_id, pro_id, ord_id, ipa_coordc, ipa_coordl, ipa_coorda, ipa_dimc, ipa_diml, ipa_dima, ipa_qtd_por_palete );
 

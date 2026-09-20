@@ -1,4 +1,5 @@
 ﻿using Command.Interfaces;
+using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
 using RepositoryInterfaces.Patterns.Saga;
 using System;
@@ -8,6 +9,13 @@ namespace Command.Patterns
 {
     public class SagaExecutor : ISagaExecutor
     {
+        private readonly ILogger _logger;
+
+        public SagaExecutor(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public void Execute(SagaBase saga, ISagaHandlerResolver resolver)
         {
             var step = saga.GetCurrent();
@@ -20,6 +28,8 @@ namespace Command.Patterns
             if (!handlers.TryGetValue(step.Key, out var handler))
                 throw new Exception($"Handler não encontrado: {step.Key}");
 
+            var telemetry = _logger.Evaluate("Saga", saga.Type, step.Key);
+
             try
             {
                 // 🔒 não faz nada
@@ -29,22 +39,51 @@ namespace Command.Patterns
                 // ▶ EXECUTA
                 if (step.Status == SagaStepStatus.Pending)
                 {
-                    step.SetInProgress(); 
+                    var sagaStarting = step.Order == 1 && step.ExecutionCount == 0;
+
+                    step.SetInProgress();
+                    if (telemetry.Enabled && sagaStarting)
+                        Record(saga, step, "SagaStarted");
+
+                    if (telemetry.Enabled)
+                        Record(saga, step, "StepStarted");
+
                     handler.Execute(saga, step);
+
+                    if (telemetry.Enabled && step.Status == SagaStepStatus.WaitingResponse)
+                        Record(saga, step, "Waiting");
                 }
 
                 // 📥 APLICA
                 if (step.Status == SagaStepStatus.PendingApply)
                 {
+                    if (telemetry.Enabled)
+                        Record(saga, step, "Resumed");
+
                     handler.ApplyResponse(saga, step, step.Payload);
 
                     if (step.Status == SagaStepStatus.PendingApply)
                         saga.CompleteCurrentStep(step.Payload);
+
+                    if (telemetry.Enabled && step.Status == SagaStepStatus.Completed)
+                        Record(saga, step, "StepCompleted");
                 }
+
+                if (telemetry.Enabled && saga.Status == SagaStatus.Completed)
+                    Record(saga, step, "SagaCompleted");
             }
             catch (Exception e)
             {
                 HandleFailure(saga, step, e);
+                if (telemetry.Enabled)
+                {
+                    Record(
+                        saga,
+                        step,
+                        saga.Status == SagaStatus.Failed
+                            ? "Failed"
+                            : "RetryScheduled");
+                }
             }
         }
 
@@ -98,6 +137,17 @@ namespace Command.Patterns
                 step.SetFailed(e.Message);
                 saga.MarkFailed(e.Message);
             }
+        }
+
+        private void Record(SagaBase saga, SagaStepBase step, string phase)
+        {
+            _logger.Saga(
+                saga.Type,
+                step.Key,
+                saga.CorrelationId.ToString("D"),
+                phase,
+                step.ExecutionCount,
+                step.CorrelationId + ":" + step.ExecutionCount);
         }
     }
 }

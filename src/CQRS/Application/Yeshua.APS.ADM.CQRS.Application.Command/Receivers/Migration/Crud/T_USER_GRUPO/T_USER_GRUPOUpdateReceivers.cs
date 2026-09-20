@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_USER_GRUPOEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_USER_GRUPOEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_USER_GRUPOCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_user_grupo = new T_USER_GRUPOFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRU_ID, c.ID_USUARIO);
                  var domainResult = T_USER_GRUPODomainBehavior.Apply(t_user_grupo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(t_user_grupo);
-                     return Success("OK", t_user_grupo);
+                     return Task.FromResult(Success("OK", t_user_grupo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_user_grupo);
+                    return Task.FromResult(Error(e, t_user_grupo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

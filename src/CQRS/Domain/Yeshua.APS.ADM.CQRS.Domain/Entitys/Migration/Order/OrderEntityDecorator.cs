@@ -127,7 +127,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID_RESERVA
+                                    public string? ORD_ID_RESERVA
                                     {
                                         get => _inner.ORD_ID_RESERVA;
                                         set
@@ -295,7 +295,7 @@
                                         }
                                     }
 
-                                    public string HASH_KEY
+                                    public string? HASH_KEY
                                     {
                                         get => _inner.HASH_KEY;
                                         set
@@ -421,7 +421,7 @@
                                         }
                                     }
 
-                                    public string ORD_MIT
+                                    public string? ORD_MIT
                                     {
                                         get => _inner.ORD_MIT;
                                         set
@@ -435,7 +435,7 @@
                                         }
                                     }
 
-                                    public string CAR_TIPO_CARREGAMENTO
+                                    public string? CAR_TIPO_CARREGAMENTO
                                     {
                                         get => _inner.CAR_TIPO_CARREGAMENTO;
                                         set
@@ -449,7 +449,7 @@
                                         }
                                     }
 
-                                    public string ORD_STATUS
+                                    public string? ORD_STATUS
                                     {
                                         get => _inner.ORD_STATUS;
                                         set
@@ -477,7 +477,7 @@
                                         }
                                     }
 
-                                    public string ORD_ENDERECO_ENTREGA
+                                    public string? ORD_ENDERECO_ENTREGA
                                     {
                                         get => _inner.ORD_ENDERECO_ENTREGA;
                                         set
@@ -491,7 +491,7 @@
                                         }
                                     }
 
-                                    public string ORD_BAIRRO_ENTREGA
+                                    public string? ORD_BAIRRO_ENTREGA
                                     {
                                         get => _inner.ORD_BAIRRO_ENTREGA;
                                         set
@@ -505,7 +505,7 @@
                                         }
                                     }
 
-                                    public string UF_ID_ENTREGA
+                                    public string? UF_ID_ENTREGA
                                     {
                                         get => _inner.UF_ID_ENTREGA;
                                         set
@@ -519,7 +519,7 @@
                                         }
                                     }
 
-                                    public string ORD_CEP_ENTREGA
+                                    public string? ORD_CEP_ENTREGA
                                     {
                                         get => _inner.ORD_CEP_ENTREGA;
                                         set
@@ -533,7 +533,7 @@
                                         }
                                     }
 
-                                    public string MUN_ID_ENTREGA
+                                    public string? MUN_ID_ENTREGA
                                     {
                                         get => _inner.MUN_ID_ENTREGA;
                                         set
@@ -603,7 +603,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID
+                                    public string? GRP_ID
                                     {
                                         get => _inner.GRP_ID;
                                         set
@@ -617,7 +617,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID_INTEGRACAO
+                                    public string? ORD_ID_INTEGRACAO
                                     {
                                         get => _inner.ORD_ID_INTEGRACAO;
                                         set
@@ -631,7 +631,7 @@
                                         }
                                     }
 
-                                    public string ORD_OBSERVACAO_OTIMIZADOR
+                                    public string? ORD_OBSERVACAO_OTIMIZADOR
                                     {
                                         get => _inner.ORD_OBSERVACAO_OTIMIZADOR;
                                         set
@@ -645,7 +645,7 @@
                                         }
                                     }
 
-                                    public string ORD_COR_FILA
+                                    public string? ORD_COR_FILA
                                     {
                                         get => _inner.ORD_COR_FILA;
                                         set
@@ -659,7 +659,7 @@
                                         }
                                     }
 
-                                    public string ORD_PED_CLI
+                                    public string? ORD_PED_CLI
                                     {
                                         get => _inner.ORD_PED_CLI;
                                         set
@@ -673,7 +673,7 @@
                                         }
                                     }
 
-                                    public string ORD_OP_INTEGRACAO
+                                    public string? ORD_OP_INTEGRACAO
                                     {
                                         get => _inner.ORD_OP_INTEGRACAO;
                                         set
@@ -687,7 +687,7 @@
                                         }
                                     }
 
-                                    public string ORD_LOTE_PILOTO
+                                    public string? ORD_LOTE_PILOTO
                                     {
                                         get => _inner.ORD_LOTE_PILOTO;
                                         set
@@ -729,7 +729,7 @@
                                         }
                                     }
 
-                                    public string REP_ID
+                                    public string? REP_ID
                                     {
                                         get => _inner.REP_ID;
                                         set
@@ -743,7 +743,7 @@
                                         }
                                     }
 
-                                    public string ORD_RESINA
+                                    public string? ORD_RESINA
                                     {
                                         get => _inner.ORD_RESINA;
                                         set
@@ -757,7 +757,7 @@
                                         }
                                     }
 
-                                    public string ORD_ENDURECEDOR_MIOLO
+                                    public string? ORD_ENDURECEDOR_MIOLO
                                     {
                                         get => _inner.ORD_ENDURECEDOR_MIOLO;
                                         set
@@ -771,7 +771,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_INTEGRACAO_ERP
+                                    public string? PRO_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.PRO_ID_INTEGRACAO_ERP;
                                         set
@@ -785,7 +785,7 @@
                                         }
                                     }
 
-                                    public string ORD_VINCOS_ONDULADEIRA
+                                    public string? ORD_VINCOS_ONDULADEIRA
                                     {
                                         get => _inner.ORD_VINCOS_ONDULADEIRA;
                                         set
@@ -855,7 +855,7 @@
                                         }
                                     }
 
-                                    public string ORD_STATUS_PLANEJAMENTO
+                                    public string? ORD_STATUS_PLANEJAMENTO
                                     {
                                         get => _inner.ORD_STATUS_PLANEJAMENTO;
                                         set
@@ -925,7 +925,7 @@
                                         }
                                     }
 
-                                    public string ORD_TRAVA_COMPOSICAO
+                                    public string? ORD_TRAVA_COMPOSICAO
                                     {
                                         get => _inner.ORD_TRAVA_COMPOSICAO;
                                         set
@@ -953,7 +953,7 @@
                                         }
                                     }
 
-                                    public string ORD_PROMOVE_RESINA
+                                    public string? ORD_PROMOVE_RESINA
                                     {
                                         get => _inner.ORD_PROMOVE_RESINA;
                                         set
@@ -995,7 +995,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID_CANCELAMENTO
+                                    public string? OCO_ID_CANCELAMENTO
                                     {
                                         get => _inner.OCO_ID_CANCELAMENTO;
                                         set
@@ -1009,7 +1009,7 @@
                                         }
                                     }
 
-                                    public string TMP_TIPO_CARGA
+                                    public string? TMP_TIPO_CARGA
                                     {
                                         get => _inner.TMP_TIPO_CARGA;
                                         set
@@ -1022,7 +1022,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_PALETE
+                                    public string? PRO_ID_PALETE
                                     {
                                         get => _inner.PRO_ID_PALETE;
                                         set
@@ -1035,7 +1035,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_TAMPO
+                                    public string? PRO_ID_TAMPO
                                     {
                                         get => _inner.PRO_ID_TAMPO;
                                         set
@@ -1087,7 +1087,7 @@
                                         }
                                     }
 
-                                    public string ORD_STATUS_ESTATISTICA
+                                    public string? ORD_STATUS_ESTATISTICA
                                     {
                                         get => _inner.ORD_STATUS_ESTATISTICA;
                                         set
@@ -1113,7 +1113,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID_MOTIVO_ATRASO
+                                    public string? OCO_ID_MOTIVO_ATRASO
                                     {
                                         get => _inner.OCO_ID_MOTIVO_ATRASO;
                                         set

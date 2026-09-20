@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<TesteFisicoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<TesteFisicoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.TesteFisicoReadCommand c) 
              {    
                 var TesteFisicoReadRepository = _repository.getTesteFisico(c);
-                return Success("OK", TesteFisicoReadRepository);
+                return Task.FromResult(Success("OK", TesteFisicoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

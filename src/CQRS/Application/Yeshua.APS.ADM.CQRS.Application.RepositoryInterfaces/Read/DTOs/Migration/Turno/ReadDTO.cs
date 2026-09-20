@@ -18,8 +18,8 @@ namespace Repositorio.Outputs
 {
     public partial record TurnoDTO
     {
-    public string id { get; set; }
-    public string descricao { get; set; }
+    public string id { get; set; } = string.Empty;
+    public string descricao { get; set; } = string.Empty;
     public int turn_prioridade { get; set; }
     public DateTime turn_hora_ini_dia1 { get; set; }
     public DateTime turn_hora_fim_dia1 { get; set; }

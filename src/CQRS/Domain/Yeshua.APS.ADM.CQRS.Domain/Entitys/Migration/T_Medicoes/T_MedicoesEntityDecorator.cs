@@ -159,7 +159,7 @@
                                         }
                                     }
 
-                                    public string MED_VALOR
+                                    public string? MED_VALOR
                                     {
                                         get => _inner.MED_VALOR;
                                         set
@@ -173,7 +173,7 @@
                                         }
                                     }
 
-                                    public string MED_AC_ANO
+                                    public string? MED_AC_ANO
                                     {
                                         get => _inner.MED_AC_ANO;
                                         set
@@ -187,7 +187,7 @@
                                         }
                                     }
 
-                                    public string MED_DATAMEDICAO
+                                    public string? MED_DATAMEDICAO
                                     {
                                         get => _inner.MED_DATAMEDICAO;
                                         set
@@ -215,7 +215,7 @@
                                         }
                                     }
 
-                                    public string DIM_ID
+                                    public string? DIM_ID
                                     {
                                         get => _inner.DIM_ID;
                                         set
@@ -229,7 +229,7 @@
                                         }
                                     }
 
-                                    public string DIM_DESCRICAO
+                                    public string? DIM_DESCRICAO
                                     {
                                         get => _inner.DIM_DESCRICAO;
                                         set
@@ -243,7 +243,7 @@
                                         }
                                     }
 
-                                    public string DIM_SUBDIMENSAO_ID
+                                    public string? DIM_SUBDIMENSAO_ID
                                     {
                                         get => _inner.DIM_SUBDIMENSAO_ID;
                                         set
@@ -257,7 +257,7 @@
                                         }
                                     }
 
-                                    public string DIM_SUB_DESCRICAO
+                                    public string? DIM_SUB_DESCRICAO
                                     {
                                         get => _inner.DIM_SUB_DESCRICAO;
                                         set
@@ -271,7 +271,7 @@
                                         }
                                     }
 
-                                    public string PER_ID
+                                    public string? PER_ID
                                     {
                                         get => _inner.PER_ID;
                                         set
@@ -285,7 +285,7 @@
                                         }
                                     }
 
-                                    public string PER_DESCRICAO
+                                    public string? PER_DESCRICAO
                                     {
                                         get => _inner.PER_DESCRICAO;
                                         set
@@ -299,7 +299,7 @@
                                         }
                                     }
 
-                                    public string FAT_ID
+                                    public string? FAT_ID
                                     {
                                         get => _inner.FAT_ID;
                                         set
@@ -313,7 +313,7 @@
                                         }
                                     }
 
-                                    public string FAT_DESCRICAO
+                                    public string? FAT_DESCRICAO
                                     {
                                         get => _inner.FAT_DESCRICAO;
                                         set
@@ -327,7 +327,7 @@
                                         }
                                     }
 
-                                    public string MED_SQL
+                                    public string? MED_SQL
                                     {
                                         get => _inner.MED_SQL;
                                         set
@@ -341,7 +341,7 @@
                                         }
                                     }
 
-                                    public string DOM_EMPRESA
+                                    public string? DOM_EMPRESA
                                     {
                                         get => _inner.DOM_EMPRESA;
                                         set
@@ -355,7 +355,7 @@
                                         }
                                     }
 
-                                    public string DOM_FILIAL
+                                    public string? DOM_FILIAL
                                     {
                                         get => _inner.DOM_FILIAL;
                                         set
@@ -369,7 +369,7 @@
                                         }
                                     }
 
-                                    public string MED_VALOR_DISPER
+                                    public string? MED_VALOR_DISPER
                                     {
                                         get => _inner.MED_VALOR_DISPER;
                                         set

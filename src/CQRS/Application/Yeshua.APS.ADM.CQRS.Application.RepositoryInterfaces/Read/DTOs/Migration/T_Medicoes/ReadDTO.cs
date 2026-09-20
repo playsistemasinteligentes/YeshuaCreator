@@ -24,22 +24,22 @@ namespace Repositorio.Outputs
     public int met_id { get; set; }
     public int uni_id { get; set; }
     public DateTime med_data { get; set; }
-    public string med_valor { get; set; }
-    public string med_ac_ano { get; set; }
-    public string med_datamedicao { get; set; }
+    public string med_valor { get; set; } = string.Empty;
+    public string med_ac_ano { get; set; } = string.Empty;
+    public string med_datamedicao { get; set; } = string.Empty;
     public Decimal med_ponderacao { get; set; }
-    public string dim_id { get; set; }
-    public string dim_descricao { get; set; }
-    public string dim_subdimensao_id { get; set; }
-    public string dim_sub_descricao { get; set; }
-    public string per_id { get; set; }
-    public string per_descricao { get; set; }
-    public string fat_id { get; set; }
-    public string fat_descricao { get; set; }
-    public string med_sql { get; set; }
-    public string dom_empresa { get; set; }
-    public string dom_filial { get; set; }
-    public string med_valor_disper { get; set; }
+    public string dim_id { get; set; } = string.Empty;
+    public string dim_descricao { get; set; } = string.Empty;
+    public string dim_subdimensao_id { get; set; } = string.Empty;
+    public string dim_sub_descricao { get; set; } = string.Empty;
+    public string per_id { get; set; } = string.Empty;
+    public string per_descricao { get; set; } = string.Empty;
+    public string fat_id { get; set; } = string.Empty;
+    public string fat_descricao { get; set; } = string.Empty;
+    public string med_sql { get; set; } = string.Empty;
+    public string dom_empresa { get; set; } = string.Empty;
+    public string dom_filial { get; set; } = string.Empty;
+    public string med_valor_disper { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

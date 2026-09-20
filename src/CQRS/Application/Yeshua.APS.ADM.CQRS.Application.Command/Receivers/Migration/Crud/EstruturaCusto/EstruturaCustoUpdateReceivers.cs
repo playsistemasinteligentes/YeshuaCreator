@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEstruturaCustoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEstruturaCustoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EstruturaCustoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var estruturacusto = new EstruturaCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.ITO_ID, c.ORD_ID, c.PRO_ID, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.PRO_TIPO_CUSTO, c.PRO_GRUPO_CONTABIL, c.EST_ORDEM, c.EST_GRUPO, c.EST_QUANT, c.EST_VALOR_TOTAL, c.EST_DATA_BASE, c.EST_BASE_PRODUCAO, c.EST_NIVEL, c.FPR_SEQ_REPETICAO);
                  var domainResult = EstruturaCustoDomainBehavior.Apply(estruturacusto, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(estruturacusto);
-                     return Success("OK", estruturacusto);
+                     return Task.FromResult(Success("OK", estruturacusto));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, estruturacusto);
+                    return Task.FromResult(Error(e, estruturacusto));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

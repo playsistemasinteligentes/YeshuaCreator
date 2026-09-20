@@ -27,9 +27,9 @@
     Decimal? CustoEstimado { get; set; }
     Decimal? AderenciaCubagem { get; set; }
     Decimal? AderenciaJanelaEntrega { get; set; }
-    string RiscoResumo { get; set; }
-    string PedidosResumo { get; set; }
-    string OpcoesConflitantesResumo { get; set; }
+    string? RiscoResumo { get; set; }
+    string? PedidosResumo { get; set; }
+    string? OpcoesConflitantesResumo { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

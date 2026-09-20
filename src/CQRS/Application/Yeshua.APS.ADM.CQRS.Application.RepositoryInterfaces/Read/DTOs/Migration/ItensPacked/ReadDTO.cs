@@ -20,9 +20,9 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int ipa_id { get; set; }
-    public string car_id { get; set; }
-    public string pro_id { get; set; }
-    public string ord_id { get; set; }
+    public string car_id { get; set; } = string.Empty;
+    public string pro_id { get; set; } = string.Empty;
+    public string ord_id { get; set; } = string.Empty;
     public Decimal ipa_coordc { get; set; }
     public Decimal ipa_coordl { get; set; }
     public Decimal ipa_coorda { get; set; }

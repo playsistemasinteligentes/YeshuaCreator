@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string TCA_DESCRICAO
+                                    public string? TCA_DESCRICAO
                                     {
                                         get => _inner.TCA_DESCRICAO;
                                         set

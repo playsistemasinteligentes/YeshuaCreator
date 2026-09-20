@@ -70,7 +70,7 @@
                                         }
                                     }
 
-                                    public string IMP_IP
+                                    public string? IMP_IP
                                     {
                                         get => _inner.IMP_IP;
                                         set
@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string IMP_NOME
+                                    public string? IMP_NOME
                                     {
                                         get => _inner.IMP_NOME;
                                         set

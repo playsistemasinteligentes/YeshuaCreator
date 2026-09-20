@@ -24,22 +24,22 @@
     public string LOGS_TABLE { get; set; }
     public string LOGS_KEY { get; set; }
     public string LOGS_KEY1 { get; set; }
-    public string LOGS_KEY2 { get; set; }
-    public string LOGS_KEY3 { get; set; }
-    public string LOGS_KEY4 { get; set; }
-    public string LOGS_COLUMN { get; set; }
-    public string LOGS_BEFORE { get; set; }
-    public string LOGS_AFTER { get; set; }
+    public string? LOGS_KEY2 { get; set; }
+    public string? LOGS_KEY3 { get; set; }
+    public string? LOGS_KEY4 { get; set; }
+    public string? LOGS_COLUMN { get; set; }
+    public string? LOGS_BEFORE { get; set; }
+    public string? LOGS_AFTER { get; set; }
     public string LOGS_ACTION { get; set; }
     public DateTime LOGS_DATE { get; set; }
     public int USE_ID { get; set; }
-    public string LOGS_ORIGEM { get; set; }
+    public string? LOGS_ORIGEM { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal LogsDatabaseEntity(int logs_id, string logs_table, string logs_key, string logs_key1, string logs_key2, string logs_key3, string logs_key4, string logs_column, string logs_before, string logs_after, string logs_action, DateTime logs_date, int use_id, string logs_origem ){
+    private List<string> _erroMensagem = new List<string>();
+ internal LogsDatabaseEntity(int logs_id, string logs_table, string logs_key, string logs_key1, string? logs_key2, string? logs_key3, string? logs_key4, string? logs_column, string? logs_before, string? logs_after, string logs_action, DateTime logs_date, int use_id, string? logs_origem ){
  LOGS_ID = logs_id; 
  LOGS_TABLE = logs_table; 
  LOGS_KEY = logs_key; 
@@ -68,7 +68,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("LOGS KEY1 deve ser informado.");
    if(string.IsNullOrEmpty(LOGS_ACTION))
    this._erroMensagem.Add("LOGS ACTION deve ser informado.");
-   if(LOGS_DATE == null || LOGS_DATE < (new DateTime(1800, 1, 1)))
+   if(LOGS_DATE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("LOGS DATE deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

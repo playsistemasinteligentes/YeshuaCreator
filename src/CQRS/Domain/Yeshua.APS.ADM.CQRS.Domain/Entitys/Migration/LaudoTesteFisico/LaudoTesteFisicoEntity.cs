@@ -24,21 +24,21 @@
     public int LTF_ID { get; set; }
     public DateTime? LTF_EMISSAO { get; set; }
     public Decimal? LTF_VALOR { get; set; }
-    public string LTF_OBS { get; set; }
-    public string LTF_STATUS { get; set; }
-    public string ORD_ID { get; set; }
-    public string ROT_PRO_ID { get; set; }
+    public string? LTF_OBS { get; set; }
+    public string? LTF_STATUS { get; set; }
+    public string? ORD_ID { get; set; }
+    public string? ROT_PRO_ID { get; set; }
     public int? FPR_SEQ_REPETICAO { get; set; }
     public int? USE_ID { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal LaudoTesteFisicoEntity(int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string ltf_obs, string ltf_status, string ord_id, string rot_pro_id, int? fpr_seq_repeticao, int? use_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal LaudoTesteFisicoEntity(int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string? ltf_obs, string? ltf_status, string? ord_id, string? rot_pro_id, int? fpr_seq_repeticao, int? use_id ){
  Id = id; 
  LTF_ID = ltf_id; 
- LTF_EMISSAO = (ltf_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : ltf_emissao; 
+ LTF_EMISSAO = ltf_emissao.HasValue && ltf_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ltf_emissao; 
  LTF_VALOR = ltf_valor; 
  LTF_OBS = ltf_obs; 
  LTF_STATUS = ltf_status; 

@@ -21,8 +21,8 @@
                     public interface ITipoTesteEntity
 {
     Decimal? TT_ESPECIFICACAO { get; set; }
-    string TT_ORIGEM_ESPECIFICACAO { get; set; }
-    string TT_IMPRIME_NO_LAUDO { get; set; }
+    string? TT_ORIGEM_ESPECIFICACAO { get; set; }
+    string? TT_IMPRIME_NO_LAUDO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
@@ -32,7 +32,7 @@
     string TT_DESC { get; set; }
     Decimal? TT_TOL_MAIS { get; set; }
     Decimal? TT_TOL_MENOS { get; set; }
-    string TT_NORMA { get; set; }
+    string? TT_NORMA { get; set; }
     string TT_INICIO_PROCESSO { get; set; }
     int TA_ID { get; set; }
     string UNI_ID { get; set; }

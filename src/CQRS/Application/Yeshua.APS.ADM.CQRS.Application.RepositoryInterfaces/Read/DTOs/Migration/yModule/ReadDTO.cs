@@ -18,8 +18,8 @@ namespace Repositorio.Outputs
 {
     public partial record yModuleDTO
     {
-    public string id { get; set; }
-    public string description { get; set; }
+    public string id { get; set; } = string.Empty;
+    public string description { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

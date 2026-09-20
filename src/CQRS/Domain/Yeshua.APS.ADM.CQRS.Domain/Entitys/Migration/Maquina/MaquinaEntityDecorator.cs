@@ -113,7 +113,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
-                                    public string Id
+                                    public string? Id
                                     {
                                         get => _inner.Id;
                                         set
@@ -127,7 +127,7 @@
                                         }
                                     }
 
-                                    public string Descricao
+                                    public string? Descricao
                                     {
                                         get => _inner.Descricao;
                                         set
@@ -141,7 +141,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -225,7 +225,7 @@
                                         }
                                     }
 
-                                    public string MAQ_CONTROL_IP
+                                    public string? MAQ_CONTROL_IP
                                     {
                                         get => _inner.MAQ_CONTROL_IP;
                                         set
@@ -281,7 +281,7 @@
                                         }
                                     }
 
-                                    public string MAQ_COR_SEMAFORO
+                                    public string? MAQ_COR_SEMAFORO
                                     {
                                         get => _inner.MAQ_COR_SEMAFORO;
                                         set
@@ -295,7 +295,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID_MAQ_PAI
+                                    public string? MAQ_ID_MAQ_PAI
                                     {
                                         get => _inner.MAQ_ID_MAQ_PAI;
                                         set
@@ -323,7 +323,7 @@
                                         }
                                     }
 
-                                    public string MAQ_TIPO_PLANEJAMENTO
+                                    public string? MAQ_TIPO_PLANEJAMENTO
                                     {
                                         get => _inner.MAQ_TIPO_PLANEJAMENTO;
                                         set
@@ -407,7 +407,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID_INTEGRACAO
+                                    public string? MAQ_ID_INTEGRACAO
                                     {
                                         get => _inner.MAQ_ID_INTEGRACAO;
                                         set
@@ -421,7 +421,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID_INTEGRACAO_ERP
+                                    public string? MAQ_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.MAQ_ID_INTEGRACAO_ERP;
                                         set
@@ -449,7 +449,7 @@
                                         }
                                     }
 
-                                    public string EQU_ID
+                                    public string? EQU_ID
                                     {
                                         get => _inner.EQU_ID;
                                         set
@@ -477,7 +477,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ACOMPANHA_LOTE_PILOTO
+                                    public string? MAQ_ACOMPANHA_LOTE_PILOTO
                                     {
                                         get => _inner.MAQ_ACOMPANHA_LOTE_PILOTO;
                                         set
@@ -841,7 +841,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ONDAS
+                                    public string? MAQ_ONDAS
                                     {
                                         get => _inner.MAQ_ONDAS;
                                         set
@@ -855,7 +855,7 @@
                                         }
                                     }
 
-                                    public string MAQ_PROLONGA_LAP
+                                    public string? MAQ_PROLONGA_LAP
                                     {
                                         get => _inner.MAQ_PROLONGA_LAP;
                                         set
@@ -925,7 +925,7 @@
                                         }
                                     }
 
-                                    public string MAQ_FAMILIAS
+                                    public string? MAQ_FAMILIAS
                                     {
                                         get => _inner.MAQ_FAMILIAS;
                                         set
@@ -981,7 +981,7 @@
                                         }
                                     }
 
-                                    public string MAQ_FECHAMENTO
+                                    public string? MAQ_FECHAMENTO
                                     {
                                         get => _inner.MAQ_FECHAMENTO;
                                         set
@@ -1035,7 +1035,7 @@
                                         }
                                     }
 
-                                    public string MAQ_TIPO_LAP
+                                    public string? MAQ_TIPO_LAP
                                     {
                                         get => _inner.MAQ_TIPO_LAP;
                                         set

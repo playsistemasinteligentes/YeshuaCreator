@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<UsuarioPerfilPER_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<UsuarioPerfilPER_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var UsuarioPerfilReadRepository = _repository.getUsuarioPerfilReadFKPER_ID(c);
-                return Success("OK", UsuarioPerfilReadRepository);
+                return Task.FromResult(Success("OK", UsuarioPerfilReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

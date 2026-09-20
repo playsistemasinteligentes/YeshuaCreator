@@ -21,10 +21,10 @@
                     public interface ITempoSetupOnduladeiraEntity
 {
     int TEM_ID { get; set; }
-    string OND_ID_DE { get; set; }
-    string OND_ID_PARA { get; set; }
-    string TEM_RESINA_DE { get; set; }
-    string TEM_RESINA_PARA { get; set; }
+    string? OND_ID_DE { get; set; }
+    string? OND_ID_PARA { get; set; }
+    string? TEM_RESINA_DE { get; set; }
+    string? TEM_RESINA_PARA { get; set; }
     int? TEM_TEMPO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

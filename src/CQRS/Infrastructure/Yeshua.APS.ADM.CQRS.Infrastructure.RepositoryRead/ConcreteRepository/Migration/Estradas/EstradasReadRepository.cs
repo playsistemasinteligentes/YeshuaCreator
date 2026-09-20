@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<EstradasDTO> getEstradas(Command.Read.EstradasReadCommand command )
         {
-            DataPagination<EstradasDTO> customResult = null;
+            var customResult = new DataPagination<EstradasDTO>();
             var customHandled = false;
             TryGetEstradasCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EstradasTenantIDDTO> getEstradasReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstradasTenantIDDTO> lista;
             var query = _query.EstradasTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EstradasTenantIDDTO>(query.Query,query.Parameters) as List<EstradasTenantIDDTO>;
+                var lista = _unitOfWork.Query<EstradasTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EstradasUserIdDTO> getEstradasReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EstradasUserIdDTO> lista;
             var query = _query.EstradasUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EstradasUserIdDTO>(query.Query,query.Parameters) as List<EstradasUserIdDTO>;
+                var lista = _unitOfWork.Query<EstradasUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_IDQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_ID_LIGACAO_PONTO_AQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEST_ID_LIGACAO_PONTO_BQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters) as List<EstradasDTO>;
+                var result = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

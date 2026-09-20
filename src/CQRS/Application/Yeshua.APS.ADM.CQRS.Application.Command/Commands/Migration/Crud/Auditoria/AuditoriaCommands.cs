@@ -17,8 +17,8 @@ namespace Command.Write
         public DateTime DATA { get; set; }
         public int USE_ID { get; set; }
         public string ROTINA { get; set; }
-        public string HISTORICO { get; set; }
-        public string CHAVE { get; set; }
+        public string? HISTORICO { get; set; }
+        public string? CHAVE { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

@@ -75,7 +75,7 @@
                                         }
                                     }
 
-                                    public string MEN_SEND
+                                    public string? MEN_SEND
                                     {
                                         get => _inner.MEN_SEND;
                                         set
@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string MEN_STATUS
+                                    public string? MEN_STATUS
                                     {
                                         get => _inner.MEN_STATUS;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string MEN_RECEIVE
+                                    public string? MEN_RECEIVE
                                     {
                                         get => _inner.MEN_RECEIVE;
                                         set
@@ -131,7 +131,7 @@
                                         }
                                     }
 
-                                    public string MEN_TYPE
+                                    public string? MEN_TYPE
                                     {
                                         get => _inner.MEN_TYPE;
                                         set

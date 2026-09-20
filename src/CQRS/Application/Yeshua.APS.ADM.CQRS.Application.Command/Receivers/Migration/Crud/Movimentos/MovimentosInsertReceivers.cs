@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMovimentosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMovimentosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MovimentosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var movimentos = new MovimentosFactory(_logger, _domainTrackingPolicy).Create(context, c.MOV_ID, c.MOV_DATA, c.MOV_VALOR, c.MOV_PLAID, c.MOV_UNID, c.Tr_Unidade_UNI_ID);
                  var domainResult = MovimentosDomainBehavior.Apply(movimentos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(movimentos);
-                     return Success("OK", movimentos);
+                     return Task.FromResult(Success("OK", movimentos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, movimentos);
+                    return Task.FromResult(Error(e, movimentos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

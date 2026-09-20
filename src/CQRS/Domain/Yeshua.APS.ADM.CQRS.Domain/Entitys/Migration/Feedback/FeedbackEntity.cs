@@ -24,28 +24,28 @@
     public DateTime DataInicial { get; set; }
     public DateTime Datafinal { get; set; }
     public string MaquinaId { get; set; }
-    public string OcorrenciaId { get; set; }
-    public string TurnoId { get; set; }
-    public string TurmaId { get; set; }
+    public string? OcorrenciaId { get; set; }
+    public string? TurnoId { get; set; }
+    public string? TurmaId { get; set; }
     public int UsuarioId { get; set; }
-    public string OrderId { get; set; }
-    public string ProdutoId { get; set; }
-    public string Observacoes { get; set; }
+    public string? OrderId { get; set; }
+    public string? ProdutoId { get; set; }
+    public string? Observacoes { get; set; }
     public Decimal Grupo { get; set; }
-    public string DiaTurma { get; set; }
+    public string? DiaTurma { get; set; }
     public int? SequenciaTransformacao { get; set; }
     public int? SequenciaRepeticao { get; set; }
     public Decimal QuantidadePulsos { get; set; }
     public Decimal? QuantidadePecasPorPulso { get; set; }
     public Decimal? FEE_QTD_TOTAL_PRODUCAO_AJUSTADA { get; set; }
-    public string BOL_ID { get; set; }
+    public string? BOL_ID { get; set; }
     public int? COR_SEQUENCIA { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal FeedbackEntity(int id, DateTime datainicial, DateTime datafinal, string maquinaid, string ocorrenciaid, string turnoid, string turmaid, int usuarioid, string orderid, string produtoid, string observacoes, Decimal grupo, string diaturma, int? sequenciatransformacao, int? sequenciarepeticao, Decimal quantidadepulsos, Decimal? quantidadepecasporpulso, Decimal? fee_qtd_total_producao_ajustada, string bol_id, int? cor_sequencia ){
+    private List<string> _erroMensagem = new List<string>();
+ internal FeedbackEntity(int id, DateTime datainicial, DateTime datafinal, string maquinaid, string? ocorrenciaid, string? turnoid, string? turmaid, int usuarioid, string? orderid, string? produtoid, string? observacoes, Decimal grupo, string? diaturma, int? sequenciatransformacao, int? sequenciarepeticao, Decimal quantidadepulsos, Decimal? quantidadepecasporpulso, Decimal? fee_qtd_total_producao_ajustada, string? bol_id, int? cor_sequencia ){
  Id = id; 
  DataInicial = (datainicial < (new DateTime(1800, 1, 1))) ? DateTime.Now : datainicial; 
  Datafinal = (datafinal < (new DateTime(1800, 1, 1))) ? DateTime.Now : datafinal; 
@@ -72,9 +72,9 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(DataInicial == null || DataInicial < (new DateTime(1800, 1, 1)))
+   if(DataInicial < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataInicial deve ser informado.");
-   if(Datafinal == null || Datafinal < (new DateTime(1800, 1, 1)))
+   if(Datafinal < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Datafinal deve ser informado.");
    if(string.IsNullOrEmpty(MaquinaId))
    this._erroMensagem.Add("MaquinaId deve ser informado.");

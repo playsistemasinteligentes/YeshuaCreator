@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IConsultasGruposEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IConsultasGruposEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ConsultasGruposCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var consultasgrupos = new ConsultasGruposFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_ID, c.GRU_ID);
                  var domainResult = ConsultasGruposDomainBehavior.Apply(consultasgrupos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(consultasgrupos);
-                     return Success("OK", consultasgrupos);
+                     return Task.FromResult(Success("OK", consultasgrupos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, consultasgrupos);
+                    return Task.FromResult(Error(e, consultasgrupos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

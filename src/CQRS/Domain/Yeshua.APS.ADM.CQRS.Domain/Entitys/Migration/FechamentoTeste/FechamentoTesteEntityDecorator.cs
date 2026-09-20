@@ -99,7 +99,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID
+                                    public string? GRP_ID
                                     {
                                         get => _inner.GRP_ID;
                                         set

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoTesteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipoteste = new TipoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.TT_ESPECIFICACAO, c.TT_ORIGEM_ESPECIFICACAO, c.TT_IMPRIME_NO_LAUDO, c.TT_ID, c.TT_NOME, c.TT_DESC, c.TT_TOL_MAIS, c.TT_TOL_MENOS, c.TT_NORMA, c.TT_INICIO_PROCESSO, c.TA_ID, c.UNI_ID, c.TT_N_AMOSTRAS_P_TESTE, c.TT_MAX_DEF_CRITICO, c.TT_MAX_DEF_GRAVE);
                  var domainResult = TipoTesteDomainBehavior.Apply(tipoteste, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(tipoteste);
-                     return Success("OK", tipoteste);
+                     return Task.FromResult(Success("OK", tipoteste));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipoteste);
+                    return Task.FromResult(Error(e, tipoteste));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

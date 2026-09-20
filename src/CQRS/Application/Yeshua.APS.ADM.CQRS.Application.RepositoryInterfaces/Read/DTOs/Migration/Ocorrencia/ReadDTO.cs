@@ -18,14 +18,14 @@ namespace Repositorio.Outputs
 {
     public partial record OcorrenciaDTO
     {
-    public string oco_id { get; set; }
-    public string oco_descricao { get; set; }
+    public string oco_id { get; set; } = string.Empty;
+    public string oco_descricao { get; set; } = string.Empty;
     public int tip_id { get; set; }
-    public string gma_id { get; set; }
-    public string maq_id { get; set; }
+    public string gma_id { get; set; } = string.Empty;
+    public string maq_id { get; set; } = string.Empty;
     public int spr { get; set; }
-    public string oco_sub_tipo { get; set; }
-    public string sub_id { get; set; }
+    public string oco_sub_tipo { get; set; } = string.Empty;
+    public string sub_id { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

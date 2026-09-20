@@ -119,7 +119,7 @@
                                         }
                                     }
 
-                                    public string LTF_OBS
+                                    public string? LTF_OBS
                                     {
                                         get => _inner.LTF_OBS;
                                         set
@@ -133,7 +133,7 @@
                                         }
                                     }
 
-                                    public string LTF_STATUS
+                                    public string? LTF_STATUS
                                     {
                                         get => _inner.LTF_STATUS;
                                         set
@@ -147,7 +147,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set
@@ -161,7 +161,7 @@
                                         }
                                     }
 
-                                    public string ROT_PRO_ID
+                                    public string? ROT_PRO_ID
                                     {
                                         get => _inner.ROT_PRO_ID;
                                         set

@@ -24,21 +24,21 @@
     string MaquinaId { get; set; }
     string ProdutoId { get; set; }
     int SequenciaTransformacao { get; set; }
-    string GrupoMaquinaId { get; set; }
+    string? GrupoMaquinaId { get; set; }
     Decimal? PecasPorPulso { get; set; }
     Decimal? PrioridadeInformada { get; set; }
-    string Acao { get; set; }
+    string? Acao { get; set; }
     Decimal Performance { get; set; }
     Decimal? TempoSetup { get; set; }
     Decimal? TempoSetupAjuste { get; set; }
     int? ProximaSequenciaTransformacao { get; set; }
-    string Status { get; set; }
+    string? Status { get; set; }
     Decimal? HierarquiaSequenciaTransformacao { get; set; }
     int? AvaliaCusto { get; set; }
-    string Operacoes { get; set; }
-    string ExcecaoOperacoes { get; set; }
+    string? Operacoes { get; set; }
+    string? ExcecaoOperacoes { get; set; }
     Decimal? PercentualInicioPassoAnterior { get; set; }
-    string LinhaDireta { get; set; }
+    string? LinhaDireta { get; set; }
     int? TemplateDeTestesId { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

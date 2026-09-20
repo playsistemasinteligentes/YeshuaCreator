@@ -18,8 +18,8 @@ namespace Repositorio.Outputs
 {
     public partial record TurmaDTO
     {
-    public string id { get; set; }
-    public string descricao { get; set; }
+    public string id { get; set; } = string.Empty;
+    public string descricao { get; set; } = string.Empty;
     public DateTime turm_hora_ini_dia1 { get; set; }
     public DateTime turm_hora_fim_dia1 { get; set; }
     public DateTime turm_hora_ini_dia2 { get; set; }

@@ -1,4 +1,4 @@
-import { loadDataMenu, buildMenu } from './menu.js?v=20260903-menu4';
+import { loadDataMenu, buildMenu } from './menu.js?v=20260920-operational01';
 import { buildCrud } from './crud.js';
 import { buildRegister } from './viewsScripts/register.js';
 import { buildForgot } from './viewsScripts/forgot.js';
@@ -83,6 +83,10 @@ function attachEvents(route) {
 }
 
 async function tryHandleCustomPage(route) {
+    if (window.yeshuaAppExtensionReady) {
+        await window.yeshuaAppExtensionReady;
+    }
+
     const routeName = String(route || '').replace('#', '');
     const handler = window.yeshuaExtensions?.pages?.[routeName];
     if (typeof handler !== 'function') return false;

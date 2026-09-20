@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<VariavelPlotagemDTO> getVariavelPlotagem(Command.Read.VariavelPlotagemReadCommand command )
         {
-            DataPagination<VariavelPlotagemDTO> customResult = null;
+            var customResult = new DataPagination<VariavelPlotagemDTO>();
             var customHandled = false;
             TryGetVariavelPlotagemCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<VariavelPlotagemTenantIDDTO> getVariavelPlotagemReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VariavelPlotagemTenantIDDTO> lista;
             var query = _query.VariavelPlotagemTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<VariavelPlotagemTenantIDDTO>(query.Query,query.Parameters) as List<VariavelPlotagemTenantIDDTO>;
+                var lista = _unitOfWork.Query<VariavelPlotagemTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<VariavelPlotagemUserIdDTO> getVariavelPlotagemReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VariavelPlotagemUserIdDTO> lista;
             var query = _query.VariavelPlotagemUserIdQuery(command );
 
-                lista = _unitOfWork.Query<VariavelPlotagemUserIdDTO>(query.Query,query.Parameters) as List<VariavelPlotagemUserIdDTO>;
+                var lista = _unitOfWork.Query<VariavelPlotagemUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_IDQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters) as List<VariavelPlotagemDTO>;
+                var result = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

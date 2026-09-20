@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ILoockEntity Create(int? id, string loo_id, string loo_descricao, string loo_conteudo )
+                                    } public ILoockEntity Create(int? id, string? loo_id, string? loo_descricao, string? loo_conteudo )
                             {
                                 return Create(null, id, loo_id, loo_descricao, loo_conteudo);
                             }
 
                             public ILoockEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string loo_id, string loo_descricao, string loo_conteudo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? loo_id, string? loo_descricao, string? loo_conteudo )
                             {
                             var entity = new LoockEntity(id, loo_id, loo_descricao, loo_conteudo );
 

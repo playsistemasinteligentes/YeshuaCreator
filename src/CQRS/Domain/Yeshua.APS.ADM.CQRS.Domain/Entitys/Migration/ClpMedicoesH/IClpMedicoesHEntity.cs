@@ -28,15 +28,15 @@
     Decimal QTD { get; set; }
     Decimal? GRUPO { get; set; }
     int? STATUS { get; set; }
-    string URN_ID { get; set; }
-    string URM_ID { get; set; }
+    string? URN_ID { get; set; }
+    string? URM_ID { get; set; }
     int ID_LOTE_CLP { get; set; }
-    string OCO_ID { get; set; }
+    string? OCO_ID { get; set; }
     int? FASE { get; set; }
-    string CLP_ORIGEM { get; set; }
+    string? CLP_ORIGEM { get; set; }
     int? CLP_LOTE { get; set; }
     int? COMPACTA { get; set; }
-    string BOL_ID { get; set; }
+    string? BOL_ID { get; set; }
     int? COR_SEQUENCIA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

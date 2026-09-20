@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CotasDTO> getCotas(Command.Read.CotasReadCommand command )
         {
-            DataPagination<CotasDTO> customResult = null;
+            var customResult = new DataPagination<CotasDTO>();
             var customHandled = false;
             TryGetCotasCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CotasTenantIDDTO> getCotasReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CotasTenantIDDTO> lista;
             var query = _query.CotasTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CotasTenantIDDTO>(query.Query,query.Parameters) as List<CotasTenantIDDTO>;
+                var lista = _unitOfWork.Query<CotasTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CotasUserIdDTO> getCotasReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CotasUserIdDTO> lista;
             var query = _query.CotasUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CotasUserIdDTO>(query.Query,query.Parameters) as List<CotasUserIdDTO>;
+                var lista = _unitOfWork.Query<CotasUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOT_IDQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOT_DATA_DEQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOT_DATA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOT_VALORQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOT_OCUPADOQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREP_IDQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters) as List<CotasDTO>;
+                var result = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

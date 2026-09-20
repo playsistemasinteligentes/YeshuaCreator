@@ -23,8 +23,8 @@
     public int? Id { get; set; }
     public int IPA_ID { get; set; }
     public string CAR_ID { get; set; }
-    public string PRO_ID { get; set; }
-    public string ORD_ID { get; set; }
+    public string? PRO_ID { get; set; }
+    public string? ORD_ID { get; set; }
     public Decimal? IPA_COORDC { get; set; }
     public Decimal? IPA_COORDL { get; set; }
     public Decimal? IPA_COORDA { get; set; }
@@ -36,8 +36,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ItensPackedEntity(int? id, int ipa_id, string car_id, string pro_id, string ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ItensPackedEntity(int? id, int ipa_id, string car_id, string? pro_id, string? ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete ){
  Id = id; 
  IPA_ID = ipa_id; 
  CAR_ID = car_id; 

@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct ItensOrcamentoReadFKGRP_ID_COMPOSICAOCommand : ICommand
     {
-        public string GRP_ID { get; set; }
+        public string? GRP_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

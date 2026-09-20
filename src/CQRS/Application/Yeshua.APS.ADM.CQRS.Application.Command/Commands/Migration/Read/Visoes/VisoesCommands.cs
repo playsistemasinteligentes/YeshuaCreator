@@ -15,7 +15,7 @@ namespace Command.Read
     {
         public int? VIS_ID { get; set; }
         public int? VIS_PLANID { get; set; }
-        public string VIS_FORMULA { get; set; }
+        public string? VIS_FORMULA { get; set; }
         public int? CAB_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

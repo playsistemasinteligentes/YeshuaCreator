@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TiposVincoProdutosDTO> getTiposVincoProdutos(Command.Read.TiposVincoProdutosReadCommand command )
         {
-            DataPagination<TiposVincoProdutosDTO> customResult = null;
+            var customResult = new DataPagination<TiposVincoProdutosDTO>();
             var customHandled = false;
             TryGetTiposVincoProdutosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TiposVincoProdutosTenantIDDTO> getTiposVincoProdutosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TiposVincoProdutosTenantIDDTO> lista;
             var query = _query.TiposVincoProdutosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TiposVincoProdutosTenantIDDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosTenantIDDTO>;
+                var lista = _unitOfWork.Query<TiposVincoProdutosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TiposVincoProdutosUserIdDTO> getTiposVincoProdutosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TiposVincoProdutosUserIdDTO> lista;
             var query = _query.TiposVincoProdutosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TiposVincoProdutosUserIdDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosUserIdDTO>;
+                var lista = _unitOfWork.Query<TiposVincoProdutosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosDTO>;
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstById2Query(value );
 
-                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosDTO>;
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosDTO>;
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosDTO>;
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosDTO>;
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters) as List<TiposVincoProdutosDTO>;
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

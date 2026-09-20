@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IClpMedicoesHEntity Create(int id, string maquina_id, DateTime data_ini, DateTime data_fim, DateTime? clp_emissao, Decimal qtd, Decimal? grupo, int? status, string urn_id, string urm_id, int id_lote_clp, string oco_id, int? fase, string clp_origem, int? clp_lote, int? compacta, string bol_id, int? cor_sequencia )
+                                    } public IClpMedicoesHEntity Create(int id, string maquina_id, DateTime data_ini, DateTime data_fim, DateTime? clp_emissao, Decimal qtd, Decimal? grupo, int? status, string? urn_id, string? urm_id, int id_lote_clp, string? oco_id, int? fase, string? clp_origem, int? clp_lote, int? compacta, string? bol_id, int? cor_sequencia )
                             {
                                 return Create(null, id, maquina_id, data_ini, data_fim, clp_emissao, qtd, grupo, status, urn_id, urm_id, id_lote_clp, oco_id, fase, clp_origem, clp_lote, compacta, bol_id, cor_sequencia);
                             }
 
                             public IClpMedicoesHEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string maquina_id, DateTime data_ini, DateTime data_fim, DateTime? clp_emissao, Decimal qtd, Decimal? grupo, int? status, string urn_id, string urm_id, int id_lote_clp, string oco_id, int? fase, string clp_origem, int? clp_lote, int? compacta, string bol_id, int? cor_sequencia )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string maquina_id, DateTime data_ini, DateTime data_fim, DateTime? clp_emissao, Decimal qtd, Decimal? grupo, int? status, string? urn_id, string? urm_id, int id_lote_clp, string? oco_id, int? fase, string? clp_origem, int? clp_lote, int? compacta, string? bol_id, int? cor_sequencia )
                             {
                             var entity = new ClpMedicoesHEntity(id, maquina_id, data_ini, data_fim, clp_emissao, qtd, grupo, status, urn_id, urm_id, id_lote_clp, oco_id, fase, clp_origem, clp_lote, compacta, bol_id, cor_sequencia );
 

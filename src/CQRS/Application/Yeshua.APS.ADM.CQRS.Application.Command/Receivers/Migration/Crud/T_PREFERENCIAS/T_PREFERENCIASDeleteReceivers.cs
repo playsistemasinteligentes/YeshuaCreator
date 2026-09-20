@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_PREFERENCIASEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_PREFERENCIASEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_PREFERENCIASCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_preferencias = new T_PREFERENCIASFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PRE_ID, c.PRE_DESCRICAO, c.PRE_NAMESPACE, c.PRE_TIPO, c.PRE_VALOR, c.USE_ID, c.PER_ID);
                  var domainResult = T_PREFERENCIASDomainBehavior.Apply(t_preferencias, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(t_preferencias);
-                     return Success("OK", t_preferencias);
+                     return Task.FromResult(Success("OK", t_preferencias));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_preferencias);
+                    return Task.FromResult(Error(e, t_preferencias));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

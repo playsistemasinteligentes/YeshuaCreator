@@ -14,7 +14,7 @@ namespace Command.Read
     public struct RotaRealizadaReadCommand : ICommandRead
     {
         public int? ROT_ID { get; set; }
-        public string CAR_ID { get; set; }
+        public string? CAR_ID { get; set; }
         public DateTime? ROT_DATA_HORA { get; set; }
         public Decimal? ROT_LAT { get; set; }
         public Decimal? ROT_LONG { get; set; }

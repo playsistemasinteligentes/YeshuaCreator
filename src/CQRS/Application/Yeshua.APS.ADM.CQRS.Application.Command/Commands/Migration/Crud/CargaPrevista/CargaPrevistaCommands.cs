@@ -33,17 +33,17 @@ namespace Command.Write
         public Decimal? CAR_PESO_EMBALAGEM { get; set; }
         public Decimal? CAR_PESO_ENTRADA { get; set; }
         public Decimal? CAR_PESO_SAIDA { get; set; }
-        public string CAR_ID_DOCA { get; set; }
-        public string VEI_PLACA { get; set; }
+        public string? CAR_ID_DOCA { get; set; }
+        public string? VEI_PLACA { get; set; }
         public int? TIP_ID { get; set; }
-        public string TRA_ID { get; set; }
+        public string? TRA_ID { get; set; }
         public Decimal? CAR_GRUPO_PRODUTIVO { get; set; }
-        public string ROT_ID { get; set; }
-        public string CAR_OBSERVACAO_DE_TRANSPORTE { get; set; }
-        public string CAR_JUSTIFICATIVA_DE_CARREGAMENTO { get; set; }
-        public string OCO_ID { get; set; }
-        public string CAR_ID_JUNTADA { get; set; }
-        public string CAR_OBSERVACAO_OTIMIZADOR { get; set; }
+        public string? ROT_ID { get; set; }
+        public string? CAR_OBSERVACAO_DE_TRANSPORTE { get; set; }
+        public string? CAR_JUSTIFICATIVA_DE_CARREGAMENTO { get; set; }
+        public string? OCO_ID { get; set; }
+        public string? CAR_ID_JUNTADA { get; set; }
+        public string? CAR_OBSERVACAO_OTIMIZADOR { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

@@ -22,19 +22,19 @@
 {
     public int? Id { get; set; }
     public string BOL_ID { get; set; }
-    public string BOL_ID_ORIGEM { get; set; }
-    public string BOL_SOLVER { get; set; }
-    public string BOL_INTEGRACAO { get; set; }
+    public string? BOL_ID_ORIGEM { get; set; }
+    public string? BOL_SOLVER { get; set; }
+    public string? BOL_INTEGRACAO { get; set; }
     public Decimal? BOL_SEQUENCIA { get; set; }
     public Decimal GRP_PAP_GRAMATURA_PROGRAMADO { get; set; }
     public string GRP_ID_PROGRAMADO { get; set; }
-    public string GRP_PAPEL1_PROGRAMADO { get; set; }
-    public string GRP_PAPEL2_PROGRAMADO { get; set; }
-    public string GRP_PAPEL3_PROGRAMADO { get; set; }
-    public string GRP_PAPEL4_PROGRAMADO { get; set; }
-    public string GRP_PAPEL5_PROGRAMADO { get; set; }
-    public string BOL_STATUS_INTERFACE { get; set; }
-    public string BOL_TIPO { get; set; }
+    public string? GRP_PAPEL1_PROGRAMADO { get; set; }
+    public string? GRP_PAPEL2_PROGRAMADO { get; set; }
+    public string? GRP_PAPEL3_PROGRAMADO { get; set; }
+    public string? GRP_PAPEL4_PROGRAMADO { get; set; }
+    public string? GRP_PAPEL5_PROGRAMADO { get; set; }
+    public string? BOL_STATUS_INTERFACE { get; set; }
+    public string? BOL_TIPO { get; set; }
     public int? BOL_FORMATO { get; set; }
     public Decimal? BOL_GRAMATURA_PAPEIS_PROGRAMADOS { get; set; }
     public Decimal? BOL_GRAMATURA_PAPEIS_REALIZADO { get; set; }
@@ -47,8 +47,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal BoletimEstudoEntity(int? id, string bol_id, string bol_id_origem, string bol_solver, string bol_integracao, Decimal? bol_sequencia, Decimal grp_pap_gramatura_programado, string grp_id_programado, string grp_papel1_programado, string grp_papel2_programado, string grp_papel3_programado, string grp_papel4_programado, string grp_papel5_programado, string bol_status_interface, string bol_tipo, int? bol_formato, Decimal? bol_gramatura_papeis_programados, Decimal? bol_gramatura_papeis_realizado, Decimal? bol_custo_papeis_programados, Decimal? bol_custo_papeis_realizado, Decimal? bol_gramatura_resina_programados, Decimal? bol_custo_resina_programados, int? bol_refile_obrigatorio ){
+    private List<string> _erroMensagem = new List<string>();
+ internal BoletimEstudoEntity(int? id, string bol_id, string? bol_id_origem, string? bol_solver, string? bol_integracao, Decimal? bol_sequencia, Decimal grp_pap_gramatura_programado, string grp_id_programado, string? grp_papel1_programado, string? grp_papel2_programado, string? grp_papel3_programado, string? grp_papel4_programado, string? grp_papel5_programado, string? bol_status_interface, string? bol_tipo, int? bol_formato, Decimal? bol_gramatura_papeis_programados, Decimal? bol_gramatura_papeis_realizado, Decimal? bol_custo_papeis_programados, Decimal? bol_custo_papeis_realizado, Decimal? bol_gramatura_resina_programados, Decimal? bol_custo_resina_programados, int? bol_refile_obrigatorio ){
  Id = id; 
  BOL_ID = bol_id; 
  BOL_ID_ORIGEM = bol_id_origem; 

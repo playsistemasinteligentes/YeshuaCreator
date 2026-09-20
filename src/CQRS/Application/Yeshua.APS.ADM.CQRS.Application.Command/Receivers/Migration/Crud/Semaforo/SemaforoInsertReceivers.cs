@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ISemaforoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ISemaforoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.SemaforoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var semaforo = new SemaforoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEM_ID, c.SEM_STATUS, c.SEM_ORIGEM, c.SEM_EMISSAO, c.SEM_ID_CONEXAO);
                  var domainResult = SemaforoDomainBehavior.Apply(semaforo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(semaforo);
-                     return Success("OK", semaforo);
+                     return Task.FromResult(Success("OK", semaforo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, semaforo);
+                    return Task.FromResult(Error(e, semaforo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

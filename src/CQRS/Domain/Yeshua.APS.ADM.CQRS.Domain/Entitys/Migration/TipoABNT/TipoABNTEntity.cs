@@ -22,13 +22,13 @@
 {
     public int? Id { get; set; }
     public string ABN_ID { get; set; }
-    public string ABN_DESCRICAO { get; set; }
+    public string? ABN_DESCRICAO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal TipoABNTEntity(int? id, string abn_id, string abn_descricao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal TipoABNTEntity(int? id, string abn_id, string? abn_descricao ){
  Id = id; 
  ABN_ID = abn_id; 
  ABN_DESCRICAO = abn_descricao; 

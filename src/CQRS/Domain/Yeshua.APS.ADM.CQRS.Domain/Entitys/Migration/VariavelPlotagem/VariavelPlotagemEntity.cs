@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal VariavelPlotagemEntity(int? id, int var_id, int plo_id ){
  Id = id; 
  VAR_ID = var_id; 

@@ -51,7 +51,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
-                                    public string Id
+                                    public string? Id
                                     {
                                         get => _inner.Id;
                                         set
@@ -65,7 +65,7 @@
                                         }
                                     }
 
-                                    public string Description
+                                    public string? Description
                                     {
                                         get => _inner.Description;
                                         set

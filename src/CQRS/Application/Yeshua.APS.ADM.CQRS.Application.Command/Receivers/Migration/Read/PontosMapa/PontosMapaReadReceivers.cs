@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<PontosMapaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<PontosMapaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.PontosMapaReadCommand c) 
              {    
                 var PontosMapaReadRepository = _repository.getPontosMapa(c);
-                return Success("OK", PontosMapaReadRepository);
+                return Task.FromResult(Success("OK", PontosMapaReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPendenciasInterfaceEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPendenciasInterfaceEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PendenciasInterfaceCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var pendenciasinterface = new PendenciasInterfaceFactory(_logger, _domainTrackingPolicy).Create(context, c.PEN_STATUS_OUT, c.PEN_PROTOCOLO_OUT, c.PEN_ID_PROTOCOLO_OUT, c.PEN_STATUS_IN, c.PEN_PROTOCOLO_IN, c.PEN_ID_PROTOCOLO_IN, c.DATA_ENTRADA, c.PEN_ID);
                  var domainResult = PendenciasInterfaceDomainBehavior.Apply(pendenciasinterface, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(pendenciasinterface);
-                     return Success("OK", pendenciasinterface);
+                     return Task.FromResult(Success("OK", pendenciasinterface));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, pendenciasinterface);
+                    return Task.FromResult(Error(e, pendenciasinterface));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

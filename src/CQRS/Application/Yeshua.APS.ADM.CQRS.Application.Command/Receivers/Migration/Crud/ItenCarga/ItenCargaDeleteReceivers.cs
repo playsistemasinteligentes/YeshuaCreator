@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IItenCargaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IItenCargaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ItenCargaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var itencarga = new ItenCargaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.ITC_ENTREGA_PLANEJADA, c.ITC_ENTREGA_REALIZADA, c.ITC_ORDEM_ENTREGA, c.ITC_QTD_PLANEJADA, c.ITC_QTD_REALIZADA, c.ORD_HASH_KEY, c.NOT_ID, c.NOT_EMISSAO);
                  var domainResult = ItenCargaDomainBehavior.Apply(itencarga, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(itencarga);
-                     return Success("OK", itencarga);
+                     return Task.FromResult(Success("OK", itencarga));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, itencarga);
+                    return Task.FromResult(Error(e, itencarga));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

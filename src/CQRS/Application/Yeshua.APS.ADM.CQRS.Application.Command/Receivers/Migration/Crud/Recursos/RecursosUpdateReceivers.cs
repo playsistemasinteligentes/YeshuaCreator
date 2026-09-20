@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRecursosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRecursosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RecursosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var recursos = new RecursosFactory(_logger, _domainTrackingPolicy).Create(context, c.REC_ID, c.REC_DESCRICAO, c.CAL_ID, c.REC_CONTROL_IP, c.GRE_ID);
                  var domainResult = RecursosDomainBehavior.Apply(recursos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(recursos);
-                     return Success("OK", recursos);
+                     return Task.FromResult(Success("OK", recursos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, recursos);
+                    return Task.FromResult(Error(e, recursos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

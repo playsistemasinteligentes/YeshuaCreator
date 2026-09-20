@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct ItenCargaReadFKORD_IDCommand : ICommand
     {
-        public string ORD_ID { get; set; }
+        public string? ORD_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

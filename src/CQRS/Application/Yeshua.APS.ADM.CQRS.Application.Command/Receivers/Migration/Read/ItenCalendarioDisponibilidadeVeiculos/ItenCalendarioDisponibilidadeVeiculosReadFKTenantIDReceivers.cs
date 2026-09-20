@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var ItenCalendarioDisponibilidadeVeiculosReadRepository = _repository.getItenCalendarioDisponibilidadeVeiculosReadFKTenantID(c);
-                return Success("OK", ItenCalendarioDisponibilidadeVeiculosReadRepository);
+                return Task.FromResult(Success("OK", ItenCalendarioDisponibilidadeVeiculosReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

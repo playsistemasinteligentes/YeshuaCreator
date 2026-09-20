@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICompensacaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICompensacaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CompensacaoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var compensacao = new CompensacaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.COM_ID, c.GRP_ID, c.OND_ID, c.COM_VINCO1_OND, c.COM_VINCO2_OND, c.COM_VINCO3_OND, c.COM_VINCO4_OND, c.COM_VINCO5_OND, c.COM_VINCO6_OND, c.COM_VINCO7_OND, c.COM_VINCO8_OND, c.COM_VINCO9_OND, c.COM_VINCO10_OND, c.COM_VINCO1_CONVERSAO, c.COM_VINCO2_CONVERSAO, c.COM_VINCO3_CONVERSAO, c.COM_VINCO4_CONVERSAO, c.COM_VINCO5_CONVERSAO, c.COM_VINCO6_CONVERSAO, c.COM_VINCO7_CONVERSAO, c.COM_VINCO8_CONVERSAO, c.COM_VINCO9_CONVERSAO, c.COM_VINCO10_CONVERSAO);
                  var domainResult = CompensacaoDomainBehavior.Apply(compensacao, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(compensacao);
-                     return Success("OK", compensacao);
+                     return Task.FromResult(Success("OK", compensacao));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, compensacao);
+                    return Task.FromResult(Error(e, compensacao));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

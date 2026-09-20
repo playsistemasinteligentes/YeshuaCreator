@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEstradasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEstradasEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EstradasCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var estradas = new EstradasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_ID, c.EST_DESCRICAO, c.EST_ID_LIGACAO_PONTO_A, c.EST_ID_LIGACAO_PONTO_B);
                  var domainResult = EstradasDomainBehavior.Apply(estradas, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(estradas);
-                     return Success("OK", estradas);
+                     return Task.FromResult(Success("OK", estradas));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, estradas);
+                    return Task.FromResult(Error(e, estradas));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -27,7 +27,7 @@
     Decimal? ROT_CUSTO_TOTAL { get; set; }
     string PON_ID_ROTEIRO { get; set; }
     int? ROT_ORDEM_ROTEIRO { get; set; }
-    string ROT_TIPO { get; set; }
+    string? ROT_TIPO { get; set; }
     Decimal? ROT_DISTANCIA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

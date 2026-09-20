@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPlanocontasEntity Create(int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string pla_natureza )
+                                    } public IPlanocontasEntity Create(int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string? pla_natureza )
                             {
                                 return Create(null, pla_id, pla_codigo, pla_descricao, pla_tipo, pla_natureza);
                             }
 
                             public IPlanocontasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string pla_natureza )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string? pla_natureza )
                             {
                             var entity = new PlanocontasEntity(pla_id, pla_codigo, pla_descricao, pla_tipo, pla_natureza );
 

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IUniuserEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IUniuserEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.UniuserCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var uniuser = new UniuserFactory(_logger, _domainTrackingPolicy).Create(context, c.USERGRU_ID, c.UNI_ID, c.USE_ID);
                  var domainResult = UniuserDomainBehavior.Apply(uniuser, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(uniuser);
-                     return Success("OK", uniuser);
+                     return Task.FromResult(Success("OK", uniuser));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, uniuser);
+                    return Task.FromResult(Error(e, uniuser));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IOpcaoPlanejamentoTransporteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IOpcaoPlanejamentoTransporteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.OpcaoPlanejamentoTransporteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var opcaoplanejamentotransporte = new OpcaoPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.OpcaoId, c.GrupoDecisaoId, c.Peso, c.Volume, c.CustoEstimado, c.AderenciaCubagem, c.AderenciaJanelaEntrega, c.RiscoResumo, c.PedidosResumo, c.OpcoesConflitantesResumo);
                  var domainResult = OpcaoPlanejamentoTransporteDomainBehavior.Apply(opcaoplanejamentotransporte, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(opcaoplanejamentotransporte);
-                     return Success("OK", opcaoplanejamentotransporte);
+                     return Task.FromResult(Success("OK", opcaoplanejamentotransporte));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, opcaoplanejamentotransporte);
+                    return Task.FromResult(Error(e, opcaoplanejamentotransporte));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

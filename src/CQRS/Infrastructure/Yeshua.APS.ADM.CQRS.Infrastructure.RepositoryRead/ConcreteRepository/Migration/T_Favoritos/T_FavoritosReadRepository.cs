@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_FavoritosDTO> getT_Favoritos(Command.Read.T_FavoritosReadCommand command )
         {
-            DataPagination<T_FavoritosDTO> customResult = null;
+            var customResult = new DataPagination<T_FavoritosDTO>();
             var customHandled = false;
             TryGetT_FavoritosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FavoritosUSE_IDDTO> getT_FavoritosReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FavoritosUSE_IDDTO> lista;
             var query = _query.T_FavoritosUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<T_FavoritosUSE_IDDTO>(query.Query,query.Parameters) as List<T_FavoritosUSE_IDDTO>;
+                var lista = _unitOfWork.Query<T_FavoritosUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FavoritosID_INDICADORDTO> getT_FavoritosReadFKID_INDICADOR(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FavoritosID_INDICADORDTO> lista;
             var query = _query.T_FavoritosID_INDICADORQuery(command );
 
-                lista = _unitOfWork.Query<T_FavoritosID_INDICADORDTO>(query.Query,query.Parameters) as List<T_FavoritosID_INDICADORDTO>;
+                var lista = _unitOfWork.Query<T_FavoritosID_INDICADORDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FavoritosTenantIDDTO> getT_FavoritosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FavoritosTenantIDDTO> lista;
             var query = _query.T_FavoritosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_FavoritosTenantIDDTO>(query.Query,query.Parameters) as List<T_FavoritosTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_FavoritosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FavoritosUserIdDTO> getT_FavoritosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FavoritosUserIdDTO> lista;
             var query = _query.T_FavoritosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_FavoritosUserIdDTO>(query.Query,query.Parameters) as List<T_FavoritosUserIdDTO>;
+                var lista = _unitOfWork.Query<T_FavoritosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -254,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIDFAVORITOQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByID_INDICADORQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters) as List<T_FavoritosDTO>;
+                var result = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

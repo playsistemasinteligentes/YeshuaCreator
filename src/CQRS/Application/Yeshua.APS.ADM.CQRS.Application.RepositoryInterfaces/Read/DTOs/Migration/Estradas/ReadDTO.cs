@@ -20,7 +20,7 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int est_id { get; set; }
-    public string est_descricao { get; set; }
+    public string est_descricao { get; set; } = string.Empty;
     public int est_id_ligacao_ponto_a { get; set; }
     public int est_id_ligacao_ponto_b { get; set; }
     public int tenantid { get; set; }

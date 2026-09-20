@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<IndicadoresDimencoesUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<IndicadoresDimencoesUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var IndicadoresDimencoesReadRepository = _repository.getIndicadoresDimencoesReadFKUserId(c);
-                return Success("OK", IndicadoresDimencoesReadRepository);
+                return Task.FromResult(Success("OK", IndicadoresDimencoesReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

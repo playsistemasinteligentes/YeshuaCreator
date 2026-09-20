@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel PontosMapaQuery(Command.Read.PontosMapaReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -64,7 +63,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         public QueryModel PontosMapaTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -95,7 +93,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         public QueryModel PontosMapaUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -126,7 +123,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         public QueryModel PontosMapaMUN_IDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [MUN_ID] from [Municipio] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -154,7 +150,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByPON_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -172,7 +167,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByPON_DESCRICAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -190,7 +184,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByPON_TIPOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -208,7 +201,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByPON_LATITUDEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -226,7 +218,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByPON_LONGITUDEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -244,7 +235,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByPON_DISTANCIA_KMQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -262,7 +252,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -280,7 +269,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -298,7 +286,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -316,7 +303,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -334,7 +320,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel ExistsByMUN_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -352,7 +337,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByPON_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -370,7 +354,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByPON_DESCRICAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -388,7 +371,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByPON_TIPOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -406,7 +388,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByPON_LATITUDEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -424,7 +405,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByPON_LONGITUDEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -442,7 +422,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByPON_DISTANCIA_KMQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -460,7 +439,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -478,7 +456,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -496,7 +473,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -514,7 +490,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -532,7 +507,6 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
         }
         public QueryModel FirstByMUN_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

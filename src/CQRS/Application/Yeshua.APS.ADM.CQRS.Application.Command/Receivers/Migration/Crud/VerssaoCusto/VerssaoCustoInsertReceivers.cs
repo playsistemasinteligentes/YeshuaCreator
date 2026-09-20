@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IVerssaoCustoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IVerssaoCustoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.VerssaoCustoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var verssaocusto = new VerssaoCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VER_ID, c.VER_STATUS, c.VER_DATA_VERSSAO_CUSTO, c.VER_OBS);
                  var domainResult = VerssaoCustoDomainBehavior.Apply(verssaocusto, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(verssaocusto);
-                     return Success("OK", verssaocusto);
+                     return Task.FromResult(Success("OK", verssaocusto));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, verssaocusto);
+                    return Task.FromResult(Error(e, verssaocusto));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

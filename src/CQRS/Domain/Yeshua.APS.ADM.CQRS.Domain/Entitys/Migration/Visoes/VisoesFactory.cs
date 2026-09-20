@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IVisoesEntity Create(int vis_id, int vis_planid, string vis_formula, int cab_id )
+                                    } public IVisoesEntity Create(int vis_id, int vis_planid, string? vis_formula, int cab_id )
                             {
                                 return Create(null, vis_id, vis_planid, vis_formula, cab_id);
                             }
 
                             public IVisoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int vis_id, int vis_planid, string vis_formula, int cab_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int vis_id, int vis_planid, string? vis_formula, int cab_id )
                             {
                             var entity = new VisoesEntity(vis_id, vis_planid, vis_formula, cab_id );
 

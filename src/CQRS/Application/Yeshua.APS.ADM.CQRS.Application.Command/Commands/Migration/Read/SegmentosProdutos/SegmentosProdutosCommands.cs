@@ -14,9 +14,9 @@ namespace Command.Read
     public struct SegmentosProdutosReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string GRS_ID { get; set; }
-        public string PRO_ID { get; set; }
-        public string SEG_ID { get; set; }
+        public string? GRS_ID { get; set; }
+        public string? PRO_ID { get; set; }
+        public string? SEG_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

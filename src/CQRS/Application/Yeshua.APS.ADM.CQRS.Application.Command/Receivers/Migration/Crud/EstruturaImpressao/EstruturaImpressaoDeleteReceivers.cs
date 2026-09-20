@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEstruturaImpressaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEstruturaImpressaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EstruturaImpressaoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var estruturaimpressao = new EstruturaImpressaoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.HTML_ESTRUTURA, c.CLI_ID, c.EST_DESCRICAO);
                  var domainResult = EstruturaImpressaoDomainBehavior.Apply(estruturaimpressao, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(estruturaimpressao);
-                     return Success("OK", estruturaimpressao);
+                     return Task.FromResult(Success("OK", estruturaimpressao));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, estruturaimpressao);
+                    return Task.FromResult(Error(e, estruturaimpressao));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -100,7 +100,7 @@
                                         }
                                     }
 
-                                    public string TIP_DESCRICAO
+                                    public string? TIP_DESCRICAO
                                     {
                                         get => _inner.TIP_DESCRICAO;
                                         set

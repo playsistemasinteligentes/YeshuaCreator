@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_AGENDA_SCHEDULEEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_AGENDA_SCHEDULEEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_AGENDA_SCHEDULECrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_agenda_schedule = new T_AGENDA_SCHEDULEFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AGE_ID, c.AGE_DATA_ESPECIFICA, c.AGE_HORARIO_INICIO, c.AGE_HORARIO_FIM, c.AGE_SEGUNDA, c.AGE_TERCA, c.AGE_QUARTA, c.AGE_QUINTA, c.AGE_SEXTA, c.AGE_SABADO, c.AGE_DOMINGO, c.AGE_INTERVALO, c.AGE_ORDEM_EXECUCAO, c.AGE_PARAMETROS, c.AGE_EXCECAO, c.AGE_DESCRICAO);
                  var domainResult = T_AGENDA_SCHEDULEDomainBehavior.Apply(t_agenda_schedule, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(t_agenda_schedule);
-                     return Success("OK", t_agenda_schedule);
+                     return Task.FromResult(Success("OK", t_agenda_schedule));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_agenda_schedule);
+                    return Task.FromResult(Error(e, t_agenda_schedule));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

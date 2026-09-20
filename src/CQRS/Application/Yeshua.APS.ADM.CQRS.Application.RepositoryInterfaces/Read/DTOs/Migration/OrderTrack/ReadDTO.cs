@@ -22,8 +22,8 @@ namespace Repositorio.Outputs
     public int otk_id { get; set; }
     public Decimal otk_sequencia { get; set; }
     public int otk_verssao { get; set; }
-    public string ord_id { get; set; }
-    public string otk_evento { get; set; }
+    public string ord_id { get; set; } = string.Empty;
+    public string otk_evento { get; set; } = string.Empty;
     public DateTime otk_data_necessidade_de { get; set; }
     public DateTime otk_data_necessidade_ate { get; set; }
     public DateTime otk_data_prevista { get; set; }

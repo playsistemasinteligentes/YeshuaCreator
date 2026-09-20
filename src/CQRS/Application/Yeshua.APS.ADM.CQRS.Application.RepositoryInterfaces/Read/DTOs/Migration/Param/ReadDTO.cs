@@ -18,9 +18,9 @@ namespace Repositorio.Outputs
 {
     public partial record ParamDTO
     {
-    public string par_id { get; set; }
-    public string par_descricao { get; set; }
-    public string par_valor_s { get; set; }
+    public string par_id { get; set; } = string.Empty;
+    public string par_descricao { get; set; } = string.Empty;
+    public string par_valor_s { get; set; } = string.Empty;
     public Decimal par_valor_n { get; set; }
     public DateTime par_valor_d { get; set; }
     public int tenantid { get; set; }

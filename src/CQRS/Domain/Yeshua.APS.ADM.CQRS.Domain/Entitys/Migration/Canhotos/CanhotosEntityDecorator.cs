@@ -131,7 +131,7 @@
                                         }
                                     }
 
-                                    public string CAN_IMG
+                                    public string? CAN_IMG
                                     {
                                         get => _inner.CAN_IMG;
                                         set

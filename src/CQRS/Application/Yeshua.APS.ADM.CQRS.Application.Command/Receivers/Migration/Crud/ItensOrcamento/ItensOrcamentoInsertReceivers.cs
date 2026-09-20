@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IItensOrcamentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IItensOrcamentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ItensOrcamentoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var itensorcamento = new ItensOrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITO_ID, c.ORC_ID, c.TIP_ID, c.PRO_ID, c.ITO_OBS, c.ITO_QUANTIDADE, c.ITO_CUSTO, c.ITO_MARGEM, c.ITO_VALOR_UNITARIO, c.ITO_VERSSAO_CUSTO, c.ITO_STATUS, c.ITO_ERP_CUSTOS_FIXOS, c.ITO_ERP_CUSTOS_VARIAVEIS, c.ITO_ERP_DESPESAS_VAR_VENDA, c.ITO_ERP_IMPOSTOS, c.GRP_ID_COMPOSICAO, c.ITO_LARGURA, c.ITO_COMPRIMENTO);
                  var domainResult = ItensOrcamentoDomainBehavior.Apply(itensorcamento, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(itensorcamento);
-                     return Success("OK", itensorcamento);
+                     return Task.FromResult(Success("OK", itensorcamento));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, itensorcamento);
+                    return Task.FromResult(Error(e, itensorcamento));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

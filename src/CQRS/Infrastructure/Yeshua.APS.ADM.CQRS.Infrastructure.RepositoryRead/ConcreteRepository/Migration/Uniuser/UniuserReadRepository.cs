@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<UniuserDTO> getUniuser(Command.Read.UniuserReadCommand command )
         {
-            DataPagination<UniuserDTO> customResult = null;
+            var customResult = new DataPagination<UniuserDTO>();
             var customHandled = false;
             TryGetUniuserCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<UniuserUNI_IDDTO> getUniuserReadFKUNI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UniuserUNI_IDDTO> lista;
             var query = _query.UniuserUNI_IDQuery(command );
 
-                lista = _unitOfWork.Query<UniuserUNI_IDDTO>(query.Query,query.Parameters) as List<UniuserUNI_IDDTO>;
+                var lista = _unitOfWork.Query<UniuserUNI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<UniuserUSE_IDDTO> getUniuserReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UniuserUSE_IDDTO> lista;
             var query = _query.UniuserUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<UniuserUSE_IDDTO>(query.Query,query.Parameters) as List<UniuserUSE_IDDTO>;
+                var lista = _unitOfWork.Query<UniuserUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<UniuserTenantIDDTO> getUniuserReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UniuserTenantIDDTO> lista;
             var query = _query.UniuserTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<UniuserTenantIDDTO>(query.Query,query.Parameters) as List<UniuserTenantIDDTO>;
+                var lista = _unitOfWork.Query<UniuserTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<UniuserUserIdDTO> getUniuserReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UniuserUserIdDTO> lista;
             var query = _query.UniuserUserIdQuery(command );
 
-                lista = _unitOfWork.Query<UniuserUserIdDTO>(query.Query,query.Parameters) as List<UniuserUserIdDTO>;
+                var lista = _unitOfWork.Query<UniuserUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -254,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSERGRU_IDQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters) as List<UniuserDTO>;
+                var result = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

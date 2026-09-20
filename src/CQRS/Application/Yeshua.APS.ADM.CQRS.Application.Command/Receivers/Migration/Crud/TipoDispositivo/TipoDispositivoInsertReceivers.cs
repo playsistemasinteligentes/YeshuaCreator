@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoDispositivoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoDispositivoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoDispositivoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipodispositivo = new TipoDispositivoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TDI_ID, c.TDI_DESCRICAO);
                  var domainResult = TipoDispositivoDomainBehavior.Apply(tipodispositivo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(tipodispositivo);
-                     return Success("OK", tipodispositivo);
+                     return Task.FromResult(Success("OK", tipodispositivo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipodispositivo);
+                    return Task.FromResult(Error(e, tipodispositivo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

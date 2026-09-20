@@ -104,7 +104,7 @@
                                         }
                                     }
 
-                                    public string FilePath
+                                    public string? FilePath
                                     {
                                         get => _inner.FilePath;
                                         set
@@ -132,7 +132,7 @@
                                         }
                                     }
 
-                                    public string EntityType
+                                    public string? EntityType
                                     {
                                         get => _inner.EntityType;
                                         set
@@ -146,7 +146,7 @@
                                         }
                                     }
 
-                                    public string EntityId
+                                    public string? EntityId
                                     {
                                         get => _inner.EntityId;
                                         set

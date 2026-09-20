@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IExperienciaPlanejamentoTransporteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IExperienciaPlanejamentoTransporteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ExperienciaPlanejamentoTransporteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var experienciaplanejamentotransporte = new ExperienciaPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Tipo, c.Referencia, c.PedidoId, c.ClienteId, c.Municipio, c.Regiao, c.RotaId, c.Peso, c.Volume, c.Observacao, c.CriadoEm, c.CriadoPor);
                  var domainResult = ExperienciaPlanejamentoTransporteDomainBehavior.Apply(experienciaplanejamentotransporte, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(experienciaplanejamentotransporte);
-                     return Success("OK", experienciaplanejamentotransporte);
+                     return Task.FromResult(Success("OK", experienciaplanejamentotransporte));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, experienciaplanejamentotransporte);
+                    return Task.FromResult(Error(e, experienciaplanejamentotransporte));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

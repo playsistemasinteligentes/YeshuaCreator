@@ -24,13 +24,13 @@
     public string PLA_CODIGO { get; set; }
     public string PLA_DESCRICAO { get; set; }
     public int PLA_TIPO { get; set; }
-    public string PLA_NATUREZA { get; set; }
+    public string? PLA_NATUREZA { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal PlanocontasEntity(int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string pla_natureza ){
+    private List<string> _erroMensagem = new List<string>();
+ internal PlanocontasEntity(int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string? pla_natureza ){
  PLA_ID = pla_id; 
  PLA_CODIGO = pla_codigo; 
  PLA_DESCRICAO = pla_descricao; 

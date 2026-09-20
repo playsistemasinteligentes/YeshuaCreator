@@ -30,17 +30,17 @@
     public Decimal? MET_RANGE02 { get; set; }
     public Decimal? MET_RANGE03 { get; set; }
     public int? DIM_ID { get; set; }
-    public string FAT_ID { get; set; }
-    public string DIM_SUBDIMENSAO_ID { get; set; }
-    public string PER_ID { get; set; }
-    public string DOM_EMPRESA { get; set; }
-    public string DOM_FILIAL { get; set; }
+    public string? FAT_ID { get; set; }
+    public string? DIM_SUBDIMENSAO_ID { get; set; }
+    public string? PER_ID { get; set; }
+    public string? DOM_EMPRESA { get; set; }
+    public string? DOM_FILIAL { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal T_MetasEntity(int met_id, string met_dtinicio, string met_dtfim, string met_alvo, int met_tipoalvo, int ind_id, Decimal? met_range01, Decimal? met_range02, Decimal? met_range03, int? dim_id, string fat_id, string dim_subdimensao_id, string per_id, string dom_empresa, string dom_filial ){
+    private List<string> _erroMensagem = new List<string>();
+ internal T_MetasEntity(int met_id, string met_dtinicio, string met_dtfim, string met_alvo, int met_tipoalvo, int ind_id, Decimal? met_range01, Decimal? met_range02, Decimal? met_range03, int? dim_id, string? fat_id, string? dim_subdimensao_id, string? per_id, string? dom_empresa, string? dom_filial ){
  MET_ID = met_id; 
  MET_DTINICIO = met_dtinicio; 
  MET_DTFIM = met_dtfim; 

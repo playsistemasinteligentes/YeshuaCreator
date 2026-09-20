@@ -25,7 +25,7 @@
     string ORD_ID { get; set; }
     string NOT_ID { get; set; }
     DateTime? CAN_DATA_ENTREGA { get; set; }
-    string CAN_IMG { get; set; }
+    string? CAN_IMG { get; set; }
     Decimal? CAN_LAT_ENTREGA { get; set; }
     Decimal? CAN_LONG_ENTREGA { get; set; }
     int? TenantID { get; set; }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PlanocontasDTO> getPlanocontas(Command.Read.PlanocontasReadCommand command )
         {
-            DataPagination<PlanocontasDTO> customResult = null;
+            var customResult = new DataPagination<PlanocontasDTO>();
             var customHandled = false;
             TryGetPlanocontasCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PlanocontasTenantIDDTO> getPlanocontasReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PlanocontasTenantIDDTO> lista;
             var query = _query.PlanocontasTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PlanocontasTenantIDDTO>(query.Query,query.Parameters) as List<PlanocontasTenantIDDTO>;
+                var lista = _unitOfWork.Query<PlanocontasTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PlanocontasUserIdDTO> getPlanocontasReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PlanocontasUserIdDTO> lista;
             var query = _query.PlanocontasUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PlanocontasUserIdDTO>(query.Query,query.Parameters) as List<PlanocontasUserIdDTO>;
+                var lista = _unitOfWork.Query<PlanocontasUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLA_IDQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLA_CODIGOQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLA_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLA_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLA_NATUREZAQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters) as List<PlanocontasDTO>;
+                var result = _unitOfWork.Query<PlanocontasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

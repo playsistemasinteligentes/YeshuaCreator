@@ -46,10 +46,11 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<InformarDadosTransporteCargaOutputCommand> retorno = Success("OK", null);
+                 State<InformarDadosTransporteCargaOutputCommand> retorno = Success("OK");
                  return await _sagaStepInvoker.Invoke(
                      "CargaStandard",
                      "aguardarDadosTransporte",
+                     "Deferred",
                      comand,
                      retorno,
                      CustomActionHookAsync,
@@ -61,7 +62,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<InformarDadosTransporteCargaOutputCommand>> CustomActionHookAsync(State<InformarDadosTransporteCargaOutputCommand> state, InformarDadosTransporteCargaInputCommand comand, CancellationToken cancellationToken);

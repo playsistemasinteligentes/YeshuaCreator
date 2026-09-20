@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record RotaPontosMapaPON_ID_DESTINODTO
     {
-    public string pon_id { get; set; }
+    public string pon_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

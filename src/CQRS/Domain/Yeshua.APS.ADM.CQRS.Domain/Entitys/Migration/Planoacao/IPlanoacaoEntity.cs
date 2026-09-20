@@ -23,13 +23,13 @@
     int PLA_ID { get; set; }
     string PLA_DESCRICAO { get; set; }
     int? MET_ID { get; set; }
-    string PLA_STATUS { get; set; }
+    string? PLA_STATUS { get; set; }
     DateTime? PLA_DATA { get; set; }
-    string PLA_METAPERIODO { get; set; }
-    string PLA_VLRPERIODO { get; set; }
-    string PLA_METACULADO { get; set; }
-    string PLA_VLRACUMULADO { get; set; }
-    string PLA_REFERENCIA { get; set; }
+    string? PLA_METAPERIODO { get; set; }
+    string? PLA_VLRPERIODO { get; set; }
+    string? PLA_METACULADO { get; set; }
+    string? PLA_VLRACUMULADO { get; set; }
+    string? PLA_REFERENCIA { get; set; }
     int USE_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

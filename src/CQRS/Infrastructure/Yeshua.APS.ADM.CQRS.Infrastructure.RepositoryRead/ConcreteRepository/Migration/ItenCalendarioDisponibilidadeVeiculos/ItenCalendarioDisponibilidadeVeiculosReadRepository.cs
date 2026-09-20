@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItenCalendarioDisponibilidadeVeiculosDTO> getItenCalendarioDisponibilidadeVeiculos(Command.Read.ItenCalendarioDisponibilidadeVeiculosReadCommand command )
         {
-            DataPagination<ItenCalendarioDisponibilidadeVeiculosDTO> customResult = null;
+            var customResult = new DataPagination<ItenCalendarioDisponibilidadeVeiculosDTO>();
             var customHandled = false;
             TryGetItenCalendarioDisponibilidadeVeiculosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO> getItenCalendarioDisponibilidadeVeiculosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO> lista;
             var query = _query.ItenCalendarioDisponibilidadeVeiculosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItenCalendarioDisponibilidadeVeiculosUserIdDTO> getItenCalendarioDisponibilidadeVeiculosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItenCalendarioDisponibilidadeVeiculosUserIdDTO> lista;
             var query = _query.ItenCalendarioDisponibilidadeVeiculosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosUserIdDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosUserIdDTO>;
+                var lista = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIDV_QTDQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<ItenCalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

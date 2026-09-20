@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItensEstruturaImpressaoDTO> getItensEstruturaImpressao(Command.Read.ItensEstruturaImpressaoReadCommand command )
         {
-            DataPagination<ItensEstruturaImpressaoDTO> customResult = null;
+            var customResult = new DataPagination<ItensEstruturaImpressaoDTO>();
             var customHandled = false;
             TryGetItensEstruturaImpressaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensEstruturaImpressaoTenantIDDTO> getItensEstruturaImpressaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensEstruturaImpressaoTenantIDDTO> lista;
             var query = _query.ItensEstruturaImpressaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItensEstruturaImpressaoTenantIDDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItensEstruturaImpressaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensEstruturaImpressaoUserIdDTO> getItensEstruturaImpressaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensEstruturaImpressaoUserIdDTO> lista;
             var query = _query.ItensEstruturaImpressaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItensEstruturaImpressaoUserIdDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoUserIdDTO>;
+                var lista = _unitOfWork.Query<ItensEstruturaImpressaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIES_CUSTOM_FONT_SIZEQuery(value );
 
-                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters) as List<ItensEstruturaImpressaoDTO>;
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

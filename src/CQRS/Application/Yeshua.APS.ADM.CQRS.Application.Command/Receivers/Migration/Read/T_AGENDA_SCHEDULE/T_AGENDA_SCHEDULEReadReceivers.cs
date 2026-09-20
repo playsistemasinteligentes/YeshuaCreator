@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<T_AGENDA_SCHEDULEDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<T_AGENDA_SCHEDULEDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.T_AGENDA_SCHEDULEReadCommand c) 
              {    
                 var T_AGENDA_SCHEDULEReadRepository = _repository.getT_AGENDA_SCHEDULE(c);
-                return Success("OK", T_AGENDA_SCHEDULEReadRepository);
+                return Task.FromResult(Success("OK", T_AGENDA_SCHEDULEReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

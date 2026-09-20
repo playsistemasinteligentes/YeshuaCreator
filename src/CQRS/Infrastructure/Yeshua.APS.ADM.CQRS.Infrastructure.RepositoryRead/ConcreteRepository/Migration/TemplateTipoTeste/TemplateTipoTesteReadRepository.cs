@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TemplateTipoTesteDTO> getTemplateTipoTeste(Command.Read.TemplateTipoTesteReadCommand command )
         {
-            DataPagination<TemplateTipoTesteDTO> customResult = null;
+            var customResult = new DataPagination<TemplateTipoTesteDTO>();
             var customHandled = false;
             TryGetTemplateTipoTesteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TemplateTipoTesteTT_IDDTO> getTemplateTipoTesteReadFKTT_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemplateTipoTesteTT_IDDTO> lista;
             var query = _query.TemplateTipoTesteTT_IDQuery(command );
 
-                lista = _unitOfWork.Query<TemplateTipoTesteTT_IDDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteTT_IDDTO>;
+                var lista = _unitOfWork.Query<TemplateTipoTesteTT_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TemplateTipoTesteTEM_IDDTO> getTemplateTipoTesteReadFKTEM_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemplateTipoTesteTEM_IDDTO> lista;
             var query = _query.TemplateTipoTesteTEM_IDQuery(command );
 
-                lista = _unitOfWork.Query<TemplateTipoTesteTEM_IDDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteTEM_IDDTO>;
+                var lista = _unitOfWork.Query<TemplateTipoTesteTEM_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<TemplateTipoTesteTenantIDDTO> getTemplateTipoTesteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemplateTipoTesteTenantIDDTO> lista;
             var query = _query.TemplateTipoTesteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TemplateTipoTesteTenantIDDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteTenantIDDTO>;
+                var lista = _unitOfWork.Query<TemplateTipoTesteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<TemplateTipoTesteUserIdDTO> getTemplateTipoTesteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemplateTipoTesteUserIdDTO> lista;
             var query = _query.TemplateTipoTesteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TemplateTipoTesteUserIdDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteUserIdDTO>;
+                var lista = _unitOfWork.Query<TemplateTipoTesteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -254,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTTT_IDQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTT_IDQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters) as List<TemplateTipoTesteDTO>;
+                var result = _unitOfWork.Query<TemplateTipoTesteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

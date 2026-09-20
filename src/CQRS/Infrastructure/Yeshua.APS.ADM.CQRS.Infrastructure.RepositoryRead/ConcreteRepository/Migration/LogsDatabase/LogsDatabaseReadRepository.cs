@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<LogsDatabaseDTO> getLogsDatabase(Command.Read.LogsDatabaseReadCommand command )
         {
-            DataPagination<LogsDatabaseDTO> customResult = null;
+            var customResult = new DataPagination<LogsDatabaseDTO>();
             var customHandled = false;
             TryGetLogsDatabaseCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<LogsDatabaseUSE_IDDTO> getLogsDatabaseReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LogsDatabaseUSE_IDDTO> lista;
             var query = _query.LogsDatabaseUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<LogsDatabaseUSE_IDDTO>(query.Query,query.Parameters) as List<LogsDatabaseUSE_IDDTO>;
+                var lista = _unitOfWork.Query<LogsDatabaseUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<LogsDatabaseTenantIDDTO> getLogsDatabaseReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LogsDatabaseTenantIDDTO> lista;
             var query = _query.LogsDatabaseTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<LogsDatabaseTenantIDDTO>(query.Query,query.Parameters) as List<LogsDatabaseTenantIDDTO>;
+                var lista = _unitOfWork.Query<LogsDatabaseTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<LogsDatabaseUserIdDTO> getLogsDatabaseReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LogsDatabaseUserIdDTO> lista;
             var query = _query.LogsDatabaseUserIdQuery(command );
 
-                lista = _unitOfWork.Query<LogsDatabaseUserIdDTO>(query.Query,query.Parameters) as List<LogsDatabaseUserIdDTO>;
+                var lista = _unitOfWork.Query<LogsDatabaseUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -412,7 +409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_IDQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -420,7 +417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_TABLEQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_KEYQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -436,7 +433,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_KEY1Query(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_KEY2Query(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_KEY3Query(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_KEY4Query(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_COLUMNQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_BEFOREQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_AFTERQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_ACTIONQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_DATEQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLOGS_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters) as List<LogsDatabaseDTO>;
+                var result = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

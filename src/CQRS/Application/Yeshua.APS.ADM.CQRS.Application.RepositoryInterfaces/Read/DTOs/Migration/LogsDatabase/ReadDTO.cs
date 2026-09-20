@@ -19,19 +19,19 @@ namespace Repositorio.Outputs
     public partial record LogsDatabaseDTO
     {
     public int logs_id { get; set; }
-    public string logs_table { get; set; }
-    public string logs_key { get; set; }
-    public string logs_key1 { get; set; }
-    public string logs_key2 { get; set; }
-    public string logs_key3 { get; set; }
-    public string logs_key4 { get; set; }
-    public string logs_column { get; set; }
-    public string logs_before { get; set; }
-    public string logs_after { get; set; }
-    public string logs_action { get; set; }
+    public string logs_table { get; set; } = string.Empty;
+    public string logs_key { get; set; } = string.Empty;
+    public string logs_key1 { get; set; } = string.Empty;
+    public string logs_key2 { get; set; } = string.Empty;
+    public string logs_key3 { get; set; } = string.Empty;
+    public string logs_key4 { get; set; } = string.Empty;
+    public string logs_column { get; set; } = string.Empty;
+    public string logs_before { get; set; } = string.Empty;
+    public string logs_after { get; set; } = string.Empty;
+    public string logs_action { get; set; } = string.Empty;
     public DateTime logs_date { get; set; }
     public int use_id { get; set; }
-    public string logs_origem { get; set; }
+    public string logs_origem { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

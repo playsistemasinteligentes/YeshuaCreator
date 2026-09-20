@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CalendarioDTO> getCalendario(Command.Read.CalendarioReadCommand command )
         {
-            DataPagination<CalendarioDTO> customResult = null;
+            var customResult = new DataPagination<CalendarioDTO>();
             var customHandled = false;
             TryGetCalendarioCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CalendarioTenantIDDTO> getCalendarioReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CalendarioTenantIDDTO> lista;
             var query = _query.CalendarioTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CalendarioTenantIDDTO>(query.Query,query.Parameters) as List<CalendarioTenantIDDTO>;
+                var lista = _unitOfWork.Query<CalendarioTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CalendarioUserIdDTO> getCalendarioReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CalendarioUserIdDTO> lista;
             var query = _query.CalendarioUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CalendarioUserIdDTO>(query.Query,query.Parameters) as List<CalendarioUserIdDTO>;
+                var lista = _unitOfWork.Query<CalendarioUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_IDQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_DIVIDE_DIA_EMQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters) as List<CalendarioDTO>;
+                var result = _unitOfWork.Query<CalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

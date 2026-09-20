@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<CondicaoPagamentoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<CondicaoPagamentoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.CondicaoPagamentoReadCommand c) 
              {    
                 var CondicaoPagamentoReadRepository = _repository.getCondicaoPagamento(c);
-                return Success("OK", CondicaoPagamentoReadRepository);
+                return Task.FromResult(Success("OK", CondicaoPagamentoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TiposVincoOndasDTO> getTiposVincoOndas(Command.Read.TiposVincoOndasReadCommand command )
         {
-            DataPagination<TiposVincoOndasDTO> customResult = null;
+            var customResult = new DataPagination<TiposVincoOndasDTO>();
             var customHandled = false;
             TryGetTiposVincoOndasCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TiposVincoOndasTenantIDDTO> getTiposVincoOndasReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TiposVincoOndasTenantIDDTO> lista;
             var query = _query.TiposVincoOndasTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TiposVincoOndasTenantIDDTO>(query.Query,query.Parameters) as List<TiposVincoOndasTenantIDDTO>;
+                var lista = _unitOfWork.Query<TiposVincoOndasTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TiposVincoOndasUserIdDTO> getTiposVincoOndasReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TiposVincoOndasUserIdDTO> lista;
             var query = _query.TiposVincoOndasUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TiposVincoOndasUserIdDTO>(query.Query,query.Parameters) as List<TiposVincoOndasUserIdDTO>;
+                var lista = _unitOfWork.Query<TiposVincoOndasUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters) as List<TiposVincoOndasDTO>;
+                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstById2Query(value );
 
-                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters) as List<TiposVincoOndasDTO>;
+                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters) as List<TiposVincoOndasDTO>;
+                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters) as List<TiposVincoOndasDTO>;
+                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters) as List<TiposVincoOndasDTO>;
+                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters) as List<TiposVincoOndasDTO>;
+                var result = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

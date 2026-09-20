@@ -22,7 +22,7 @@
 {
     int VIS_ID { get; set; }
     int VIS_PLANID { get; set; }
-    string VIS_FORMULA { get; set; }
+    string? VIS_FORMULA { get; set; }
     int CAB_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

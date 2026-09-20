@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICargosEntity Create(int? id, string rgo_id, string rgo_descricao )
+                                    } public ICargosEntity Create(int? id, string rgo_id, string? rgo_descricao )
                             {
                                 return Create(null, id, rgo_id, rgo_descricao);
                             }
 
                             public ICargosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string rgo_id, string rgo_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string rgo_id, string? rgo_descricao )
                             {
                             var entity = new CargosEntity(id, rgo_id, rgo_descricao );
 

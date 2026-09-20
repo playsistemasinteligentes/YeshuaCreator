@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoABNTDTO> getTipoABNT(Command.Read.TipoABNTReadCommand command )
         {
-            DataPagination<TipoABNTDTO> customResult = null;
+            var customResult = new DataPagination<TipoABNTDTO>();
             var customHandled = false;
             TryGetTipoABNTCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoABNTTenantIDDTO> getTipoABNTReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoABNTTenantIDDTO> lista;
             var query = _query.TipoABNTTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoABNTTenantIDDTO>(query.Query,query.Parameters) as List<TipoABNTTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoABNTTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoABNTUserIdDTO> getTipoABNTReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoABNTUserIdDTO> lista;
             var query = _query.TipoABNTUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoABNTUserIdDTO>(query.Query,query.Parameters) as List<TipoABNTUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoABNTUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByABN_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByABN_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters) as List<TipoABNTDTO>;
+                var result = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

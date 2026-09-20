@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITemplateTipoTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITemplateTipoTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TemplateTipoTesteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var templatetipoteste = new TemplateTipoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.TTT_ID, c.TT_ID, c.TEM_ID);
                  var domainResult = TemplateTipoTesteDomainBehavior.Apply(templatetipoteste, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(templatetipoteste);
-                     return Success("OK", templatetipoteste);
+                     return Task.FromResult(Success("OK", templatetipoteste));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, templatetipoteste);
+                    return Task.FromResult(Error(e, templatetipoteste));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

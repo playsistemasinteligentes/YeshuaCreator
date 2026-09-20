@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CabvisaoDTO> getCabvisao(Command.Read.CabvisaoReadCommand command )
         {
-            DataPagination<CabvisaoDTO> customResult = null;
+            var customResult = new DataPagination<CabvisaoDTO>();
             var customHandled = false;
             TryGetCabvisaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CabvisaoUSE_IDDTO> getCabvisaoReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CabvisaoUSE_IDDTO> lista;
             var query = _query.CabvisaoUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<CabvisaoUSE_IDDTO>(query.Query,query.Parameters) as List<CabvisaoUSE_IDDTO>;
+                var lista = _unitOfWork.Query<CabvisaoUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CabvisaoTenantIDDTO> getCabvisaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CabvisaoTenantIDDTO> lista;
             var query = _query.CabvisaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CabvisaoTenantIDDTO>(query.Query,query.Parameters) as List<CabvisaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<CabvisaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<CabvisaoUserIdDTO> getCabvisaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CabvisaoUserIdDTO> lista;
             var query = _query.CabvisaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CabvisaoUserIdDTO>(query.Query,query.Parameters) as List<CabvisaoUserIdDTO>;
+                var lista = _unitOfWork.Query<CabvisaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAB_IDQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAB_DESCQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAB_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters) as List<CabvisaoDTO>;
+                var result = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

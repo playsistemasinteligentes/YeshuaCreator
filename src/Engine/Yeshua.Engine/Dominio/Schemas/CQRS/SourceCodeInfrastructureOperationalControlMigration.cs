@@ -35,6 +35,11 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 DateTimeOffset UpdatedAtUtc,
                 string Source);
 
+            public sealed record OperationalLoggingPolicyUpdate(
+                string DefaultLevel,
+                string DefaultDepth,
+                IReadOnlyList<DiagnosticTarget>? Targets);
+
             public sealed record DiagnosticTarget(
                 string? Component,
                 string? Operation,
@@ -106,6 +111,27 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     }
 
                     Interlocked.Exchange(ref _current, policy);
+                }
+
+                public OperationalLoggingPolicy ApplyLocal(OperationalLoggingPolicyUpdate update)
+                {
+                    var current = Current;
+                    var policy = current with
+                    {
+                        Revision = Guid.NewGuid().ToString("N"),
+                        DefaultLevel = string.IsNullOrWhiteSpace(update.DefaultLevel)
+                            ? current.DefaultLevel
+                            : update.DefaultLevel,
+                        DefaultDepth = string.IsNullOrWhiteSpace(update.DefaultDepth)
+                            ? current.DefaultDepth
+                            : update.DefaultDepth,
+                        Targets = update.Targets ?? [],
+                        UpdatedAtUtc = DateTimeOffset.UtcNow,
+                        Source = "LocalRuntime"
+                    };
+
+                    Replace(policy);
+                    return policy;
                 }
 
             public OperationalLoggingDecision Evaluate(OperationalLoggingContext context)

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPoliticaOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPoliticaOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PoliticaOnduladeiraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var politicaonduladeira = new PoliticaOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.POL_ID, c.POL_NIVEL, c.POL_PROMOCAO, c.POL_DIAS_ANTECIPACAO, c.POL_METROS_LINEARES);
                  var domainResult = PoliticaOnduladeiraDomainBehavior.Apply(politicaonduladeira, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(politicaonduladeira);
-                     return Success("OK", politicaonduladeira);
+                     return Task.FromResult(Success("OK", politicaonduladeira));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, politicaonduladeira);
+                    return Task.FromResult(Error(e, politicaonduladeira));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -105,7 +105,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID
+                                    public string? GRP_ID
                                     {
                                         get => _inner.GRP_ID;
                                         set
@@ -119,7 +119,7 @@
                                         }
                                     }
 
-                                    public string OND_ID
+                                    public string? OND_ID
                                     {
                                         get => _inner.OND_ID;
                                         set

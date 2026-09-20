@@ -100,7 +100,7 @@
                                         }
                                     }
 
-                                    public string REC_CONTROL_IP
+                                    public string? REC_CONTROL_IP
                                     {
                                         get => _inner.REC_CONTROL_IP;
                                         set
@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string GRE_ID
+                                    public string? GRE_ID
                                     {
                                         get => _inner.GRE_ID;
                                         set

@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal CorConfiguracaoGraficoEntity(string cor_id, Decimal cor_percentual_ini, Decimal cor_percentual_fim, string cor_descricao ){
  COR_ID = cor_id; 
  COR_PERCENTUAL_INI = cor_percentual_ini; 

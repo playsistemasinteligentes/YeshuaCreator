@@ -31,7 +31,8 @@ namespace Command.Receivers.UseCase
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public ListarCargasAbertasPlanejamentoTransporteHandler(
             Dominio.Interfaces.ILogger logger,
-            Aplication.Interfaces.Services.IExecutionContext context)
+            Aplication.Interfaces.Services.IExecutionContext context
+)
             : base(logger, context)
         {
             _logger = logger;
@@ -43,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<ListarCargasAbertasPlanejamentoTransporteOutputCommand> retorno = Success("OK", null);
+                 State<ListarCargasAbertasPlanejamentoTransporteOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<ListarCargasAbertasPlanejamentoTransporteOutputCommand> e)
@@ -52,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<ListarCargasAbertasPlanejamentoTransporteOutputCommand>> CustomActionHookAsync(State<ListarCargasAbertasPlanejamentoTransporteOutputCommand> state, ListarCargasAbertasPlanejamentoTransporteInputCommand comand, CancellationToken cancellationToken);

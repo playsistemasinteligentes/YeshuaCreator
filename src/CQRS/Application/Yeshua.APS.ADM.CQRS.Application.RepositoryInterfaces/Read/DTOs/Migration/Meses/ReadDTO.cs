@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record MesesDTO
     {
-    public string mes { get; set; }
+    public string mes { get; set; } = string.Empty;
     public int fator { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

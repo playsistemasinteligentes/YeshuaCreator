@@ -24,27 +24,27 @@
     public int ITO_ID { get; set; }
     public int? ORC_ID { get; set; }
     public int? TIP_ID { get; set; }
-    public string PRO_ID { get; set; }
-    public string ITO_OBS { get; set; }
+    public string? PRO_ID { get; set; }
+    public string? ITO_OBS { get; set; }
     public Decimal? ITO_QUANTIDADE { get; set; }
     public Decimal? ITO_CUSTO { get; set; }
     public Decimal? ITO_MARGEM { get; set; }
     public Decimal? ITO_VALOR_UNITARIO { get; set; }
     public DateTime? ITO_VERSSAO_CUSTO { get; set; }
-    public string ITO_STATUS { get; set; }
+    public string? ITO_STATUS { get; set; }
     public Decimal? ITO_ERP_CUSTOS_FIXOS { get; set; }
     public Decimal? ITO_ERP_CUSTOS_VARIAVEIS { get; set; }
     public Decimal? ITO_ERP_DESPESAS_VAR_VENDA { get; set; }
     public Decimal? ITO_ERP_IMPOSTOS { get; set; }
-    public string GRP_ID_COMPOSICAO { get; set; }
+    public string? GRP_ID_COMPOSICAO { get; set; }
     public Decimal? ITO_LARGURA { get; set; }
     public Decimal? ITO_COMPRIMENTO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ItensOrcamentoEntity(int? id, int ito_id, int? orc_id, int? tip_id, string pro_id, string ito_obs, Decimal? ito_quantidade, Decimal? ito_custo, Decimal? ito_margem, Decimal? ito_valor_unitario, DateTime? ito_verssao_custo, string ito_status, Decimal? ito_erp_custos_fixos, Decimal? ito_erp_custos_variaveis, Decimal? ito_erp_despesas_var_venda, Decimal? ito_erp_impostos, string grp_id_composicao, Decimal? ito_largura, Decimal? ito_comprimento ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ItensOrcamentoEntity(int? id, int ito_id, int? orc_id, int? tip_id, string? pro_id, string? ito_obs, Decimal? ito_quantidade, Decimal? ito_custo, Decimal? ito_margem, Decimal? ito_valor_unitario, DateTime? ito_verssao_custo, string? ito_status, Decimal? ito_erp_custos_fixos, Decimal? ito_erp_custos_variaveis, Decimal? ito_erp_despesas_var_venda, Decimal? ito_erp_impostos, string? grp_id_composicao, Decimal? ito_largura, Decimal? ito_comprimento ){
  Id = id; 
  ITO_ID = ito_id; 
  ORC_ID = orc_id; 
@@ -55,7 +55,7 @@
  ITO_CUSTO = ito_custo; 
  ITO_MARGEM = ito_margem; 
  ITO_VALOR_UNITARIO = ito_valor_unitario; 
- ITO_VERSSAO_CUSTO = (ito_verssao_custo < (new DateTime(1800, 1, 1))) ? DateTime.Now : ito_verssao_custo; 
+ ITO_VERSSAO_CUSTO = ito_verssao_custo.HasValue && ito_verssao_custo.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ito_verssao_custo; 
  ITO_STATUS = ito_status; 
  ITO_ERP_CUSTOS_FIXOS = ito_erp_custos_fixos; 
  ITO_ERP_CUSTOS_VARIAVEIS = ito_erp_custos_variaveis; 

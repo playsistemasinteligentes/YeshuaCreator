@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string ABN_DESCRICAO
+                                    public string? ABN_DESCRICAO
                                     {
                                         get => _inner.ABN_DESCRICAO;
                                         set

@@ -148,7 +148,7 @@
                                         }
                                     }
 
-                                    public string TIV_NOME
+                                    public string? TIV_NOME
                                     {
                                         get => _inner.TIV_NOME;
                                         set
@@ -162,7 +162,7 @@
                                         }
                                     }
 
-                                    public string TIV_DESCRICAO
+                                    public string? TIV_DESCRICAO
                                     {
                                         get => _inner.TIV_DESCRICAO;
                                         set
@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string TIV_FECHAMENTO
+                                    public string? TIV_FECHAMENTO
                                     {
                                         get => _inner.TIV_FECHAMENTO;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string TIV_AMOSTRA_ALEATORIA
+                                    public string? TIV_AMOSTRA_ALEATORIA
                                     {
                                         get => _inner.TIV_AMOSTRA_ALEATORIA;
                                         set
@@ -218,7 +218,7 @@
                                         }
                                     }
 
-                                    public string TIV_MEDIDA
+                                    public string? TIV_MEDIDA
                                     {
                                         get => _inner.TIV_MEDIDA;
                                         set

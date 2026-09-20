@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRelatoriosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRelatoriosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RelatoriosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var relatorios = new RelatoriosFactory(_logger, _domainTrackingPolicy).Create(context, c.REL_ID, c.REL_NOME_RELATORIO, c.REL_NOME_CAMPO, c.REL_TIPO_CAMPO, c.REL_POS_X, c.REL_POS_Y, c.REL_TAMANHO_FONTE);
                  var domainResult = RelatoriosDomainBehavior.Apply(relatorios, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(relatorios);
-                     return Success("OK", relatorios);
+                     return Task.FromResult(Success("OK", relatorios));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, relatorios);
+                    return Task.FromResult(Error(e, relatorios));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

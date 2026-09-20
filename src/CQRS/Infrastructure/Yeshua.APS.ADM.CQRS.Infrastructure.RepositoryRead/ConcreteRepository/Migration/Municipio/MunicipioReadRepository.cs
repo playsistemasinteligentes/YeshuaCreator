@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MunicipioDTO> getMunicipio(Command.Read.MunicipioReadCommand command )
         {
-            DataPagination<MunicipioDTO> customResult = null;
+            var customResult = new DataPagination<MunicipioDTO>();
             var customHandled = false;
             TryGetMunicipioCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MunicipioTenantIDDTO> getMunicipioReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MunicipioTenantIDDTO> lista;
             var query = _query.MunicipioTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MunicipioTenantIDDTO>(query.Query,query.Parameters) as List<MunicipioTenantIDDTO>;
+                var lista = _unitOfWork.Query<MunicipioTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MunicipioUserIdDTO> getMunicipioReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MunicipioUserIdDTO> lista;
             var query = _query.MunicipioUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MunicipioUserIdDTO>(query.Query,query.Parameters) as List<MunicipioUserIdDTO>;
+                var lista = _unitOfWork.Query<MunicipioUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_IDQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUF_CODQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_CODIGO_IBGEQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_LATITUDEQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_LONGITUDEQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_ID_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_CODIGO_SIAFIQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_CODIGO_CNPJQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_DISTANCIA_KMQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters) as List<MunicipioDTO>;
+                var result = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

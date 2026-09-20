@@ -20,9 +20,9 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int par_id { get; set; }
-    public string pro_id { get; set; }
-    public string cus_id { get; set; }
-    public string par_valor { get; set; }
+    public string pro_id { get; set; } = string.Empty;
+    public string cus_id { get; set; } = string.Empty;
+    public string par_valor { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IConsultasEntity Create(int? id, string con_casas_decimais, string con_conexao )
+                                    } public IConsultasEntity Create(int? id, string? con_casas_decimais, string? con_conexao )
                             {
                                 return Create(null, id, con_casas_decimais, con_conexao);
                             }
 
                             public IConsultasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string con_casas_decimais, string con_conexao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? con_casas_decimais, string? con_conexao )
                             {
                             var entity = new ConsultasEntity(id, con_casas_decimais, con_conexao );
 

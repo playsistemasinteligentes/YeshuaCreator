@@ -23,25 +23,25 @@
     public int PLA_ID { get; set; }
     public string PLA_DESCRICAO { get; set; }
     public int? MET_ID { get; set; }
-    public string PLA_STATUS { get; set; }
+    public string? PLA_STATUS { get; set; }
     public DateTime? PLA_DATA { get; set; }
-    public string PLA_METAPERIODO { get; set; }
-    public string PLA_VLRPERIODO { get; set; }
-    public string PLA_METACULADO { get; set; }
-    public string PLA_VLRACUMULADO { get; set; }
-    public string PLA_REFERENCIA { get; set; }
+    public string? PLA_METAPERIODO { get; set; }
+    public string? PLA_VLRPERIODO { get; set; }
+    public string? PLA_METACULADO { get; set; }
+    public string? PLA_VLRACUMULADO { get; set; }
+    public string? PLA_REFERENCIA { get; set; }
     public int USE_ID { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal PlanoacaoEntity(int pla_id, string pla_descricao, int? met_id, string pla_status, DateTime? pla_data, string pla_metaperiodo, string pla_vlrperiodo, string pla_metaculado, string pla_vlracumulado, string pla_referencia, int use_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal PlanoacaoEntity(int pla_id, string pla_descricao, int? met_id, string? pla_status, DateTime? pla_data, string? pla_metaperiodo, string? pla_vlrperiodo, string? pla_metaculado, string? pla_vlracumulado, string? pla_referencia, int use_id ){
  PLA_ID = pla_id; 
  PLA_DESCRICAO = pla_descricao; 
  MET_ID = met_id; 
  PLA_STATUS = pla_status; 
- PLA_DATA = (pla_data < (new DateTime(1800, 1, 1))) ? DateTime.Now : pla_data; 
+ PLA_DATA = pla_data.HasValue && pla_data.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : pla_data; 
  PLA_METAPERIODO = pla_metaperiodo; 
  PLA_VLRPERIODO = pla_vlrperiodo; 
  PLA_METACULADO = pla_metaculado; 

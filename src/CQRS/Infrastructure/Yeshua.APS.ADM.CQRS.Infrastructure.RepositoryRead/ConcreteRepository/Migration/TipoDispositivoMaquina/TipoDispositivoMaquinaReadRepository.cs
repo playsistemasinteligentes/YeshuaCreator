@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoDispositivoMaquinaDTO> getTipoDispositivoMaquina(Command.Read.TipoDispositivoMaquinaReadCommand command )
         {
-            DataPagination<TipoDispositivoMaquinaDTO> customResult = null;
+            var customResult = new DataPagination<TipoDispositivoMaquinaDTO>();
             var customHandled = false;
             TryGetTipoDispositivoMaquinaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoDispositivoMaquinaTenantIDDTO> getTipoDispositivoMaquinaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoDispositivoMaquinaTenantIDDTO> lista;
             var query = _query.TipoDispositivoMaquinaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoDispositivoMaquinaTenantIDDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoDispositivoMaquinaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoDispositivoMaquinaUserIdDTO> getTipoDispositivoMaquinaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoDispositivoMaquinaUserIdDTO> lista;
             var query = _query.TipoDispositivoMaquinaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoDispositivoMaquinaUserIdDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoDispositivoMaquinaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTDI_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters) as List<TipoDispositivoMaquinaDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoMaquinaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

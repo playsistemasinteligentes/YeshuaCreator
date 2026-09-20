@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IEstruturaImpressaoEntity Create(int est_id, string html_estrutura, string cli_id, string est_descricao )
+                                    } public IEstruturaImpressaoEntity Create(int est_id, string? html_estrutura, string? cli_id, string? est_descricao )
                             {
                                 return Create(null, est_id, html_estrutura, cli_id, est_descricao);
                             }
 
                             public IEstruturaImpressaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int est_id, string html_estrutura, string cli_id, string est_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int est_id, string? html_estrutura, string? cli_id, string? est_descricao )
                             {
                             var entity = new EstruturaImpressaoEntity(est_id, html_estrutura, cli_id, est_descricao );
 

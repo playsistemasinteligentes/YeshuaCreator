@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TemplateTipoTesteEntity(int ttt_id, int tt_id, int tem_id ){
  TTT_ID = ttt_id; 
  TT_ID = tt_id; 

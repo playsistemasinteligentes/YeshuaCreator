@@ -22,15 +22,15 @@
 {
     int? Id { get; set; }
     string TRA_ID { get; set; }
-    string TRA_NOME { get; set; }
-    string TRA_CNPJ { get; set; }
-    string TRA_INSCRICAO_ESTADUAL { get; set; }
-    string TRA_RNTRC { get; set; }
-    string TRA_EMAIL { get; set; }
-    string TRA_RESPONSAVEL { get; set; }
-    string TRA_FONE { get; set; }
-    string TRA_ID_INTEGRACAO { get; set; }
-    string TRA_ID_INTEGRACAO_ERP { get; set; }
+    string? TRA_NOME { get; set; }
+    string? TRA_CNPJ { get; set; }
+    string? TRA_INSCRICAO_ESTADUAL { get; set; }
+    string? TRA_RNTRC { get; set; }
+    string? TRA_EMAIL { get; set; }
+    string? TRA_RESPONSAVEL { get; set; }
+    string? TRA_FONE { get; set; }
+    string? TRA_ID_INTEGRACAO { get; set; }
+    string? TRA_ID_INTEGRACAO_ERP { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

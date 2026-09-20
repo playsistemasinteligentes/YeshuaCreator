@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<BoletimEstudoDTO> getBoletimEstudo(Command.Read.BoletimEstudoReadCommand command )
         {
-            DataPagination<BoletimEstudoDTO> customResult = null;
+            var customResult = new DataPagination<BoletimEstudoDTO>();
             var customHandled = false;
             TryGetBoletimEstudoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<BoletimEstudoTenantIDDTO> getBoletimEstudoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<BoletimEstudoTenantIDDTO> lista;
             var query = _query.BoletimEstudoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<BoletimEstudoTenantIDDTO>(query.Query,query.Parameters) as List<BoletimEstudoTenantIDDTO>;
+                var lista = _unitOfWork.Query<BoletimEstudoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<BoletimEstudoUserIdDTO> getBoletimEstudoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<BoletimEstudoUserIdDTO> lista;
             var query = _query.BoletimEstudoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<BoletimEstudoUserIdDTO>(query.Query,query.Parameters) as List<BoletimEstudoUserIdDTO>;
+                var lista = _unitOfWork.Query<BoletimEstudoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_ID_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_SOLVERQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAP_GRAMATURA_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_ID_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL1_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -610,7 +608,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL2_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -618,7 +616,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL3_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -626,7 +624,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL4_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -634,7 +632,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_PAPEL5_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -642,7 +640,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_STATUS_INTERFACEQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -650,7 +648,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -658,7 +656,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_FORMATOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -666,7 +664,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_GRAMATURA_PAPEIS_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -674,7 +672,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_GRAMATURA_PAPEIS_REALIZADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -682,7 +680,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_CUSTO_PAPEIS_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -690,7 +688,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_CUSTO_PAPEIS_REALIZADOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -698,7 +696,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_GRAMATURA_RESINA_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -706,7 +704,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_CUSTO_RESINA_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -714,7 +712,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_REFILE_OBRIGATORIOQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -722,7 +720,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -730,7 +728,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -738,7 +736,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -746,7 +744,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters) as List<BoletimEstudoDTO>;
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

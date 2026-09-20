@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ITipoDispositivoEntity Create(int? id, string tdi_id, string tdi_descricao )
+                                    } public ITipoDispositivoEntity Create(int? id, string tdi_id, string? tdi_descricao )
                             {
                                 return Create(null, id, tdi_id, tdi_descricao);
                             }
 
                             public ITipoDispositivoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tdi_id, string tdi_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tdi_id, string? tdi_descricao )
                             {
                             var entity = new TipoDispositivoEntity(id, tdi_id, tdi_descricao );
 

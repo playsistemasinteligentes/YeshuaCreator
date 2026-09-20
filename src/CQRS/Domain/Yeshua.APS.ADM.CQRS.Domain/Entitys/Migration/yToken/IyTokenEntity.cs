@@ -22,7 +22,7 @@
 {
     int? Id { get; set; }
     string TokenHash { get; set; }
-    string Description { get; set; }
+    string? Description { get; set; }
     string ConnectorKey { get; set; }
     bool Active { get; set; }
     DateTime? ValidUntil { get; set; }

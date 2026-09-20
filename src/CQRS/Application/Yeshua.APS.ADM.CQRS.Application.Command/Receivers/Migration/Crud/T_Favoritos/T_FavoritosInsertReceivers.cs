@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_FavoritosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_FavoritosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_FavoritosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_favoritos = new T_FavoritosFactory(_logger, _domainTrackingPolicy).Create(context, c.IDFAVORITO, c.USE_ID, c.ID_INDICADOR);
                  var domainResult = T_FavoritosDomainBehavior.Apply(t_favoritos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(t_favoritos);
-                     return Success("OK", t_favoritos);
+                     return Task.FromResult(Success("OK", t_favoritos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_favoritos);
+                    return Task.FromResult(Error(e, t_favoritos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

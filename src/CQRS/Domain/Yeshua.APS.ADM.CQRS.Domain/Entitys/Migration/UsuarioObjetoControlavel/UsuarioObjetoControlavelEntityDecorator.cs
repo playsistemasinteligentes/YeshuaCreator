@@ -99,7 +99,7 @@
                                         }
                                     }
 
-                                    public string USU_OBJETO_ACAO
+                                    public string? USU_OBJETO_ACAO
                                     {
                                         get => _inner.USU_OBJETO_ACAO;
                                         set

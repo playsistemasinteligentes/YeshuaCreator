@@ -61,7 +61,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
-                                    public string PEN_STATUS_OUT
+                                    public string? PEN_STATUS_OUT
                                     {
                                         get => _inner.PEN_STATUS_OUT;
                                         set
@@ -75,7 +75,7 @@
                                         }
                                     }
 
-                                    public string PEN_PROTOCOLO_OUT
+                                    public string? PEN_PROTOCOLO_OUT
                                     {
                                         get => _inner.PEN_PROTOCOLO_OUT;
                                         set
@@ -89,7 +89,7 @@
                                         }
                                     }
 
-                                    public string PEN_ID_PROTOCOLO_OUT
+                                    public string? PEN_ID_PROTOCOLO_OUT
                                     {
                                         get => _inner.PEN_ID_PROTOCOLO_OUT;
                                         set
@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string PEN_STATUS_IN
+                                    public string? PEN_STATUS_IN
                                     {
                                         get => _inner.PEN_STATUS_IN;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string PEN_PROTOCOLO_IN
+                                    public string? PEN_PROTOCOLO_IN
                                     {
                                         get => _inner.PEN_PROTOCOLO_IN;
                                         set
@@ -131,7 +131,7 @@
                                         }
                                     }
 
-                                    public string PEN_ID_PROTOCOLO_IN
+                                    public string? PEN_ID_PROTOCOLO_IN
                                     {
                                         get => _inner.PEN_ID_PROTOCOLO_IN;
                                         set

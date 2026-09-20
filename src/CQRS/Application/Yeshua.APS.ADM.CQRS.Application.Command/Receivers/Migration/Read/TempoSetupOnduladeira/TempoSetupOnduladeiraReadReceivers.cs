@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<TempoSetupOnduladeiraDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<TempoSetupOnduladeiraDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.TempoSetupOnduladeiraReadCommand c) 
              {    
                 var TempoSetupOnduladeiraReadRepository = _repository.getTempoSetupOnduladeira(c);
-                return Success("OK", TempoSetupOnduladeiraReadRepository);
+                return Task.FromResult(Success("OK", TempoSetupOnduladeiraReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

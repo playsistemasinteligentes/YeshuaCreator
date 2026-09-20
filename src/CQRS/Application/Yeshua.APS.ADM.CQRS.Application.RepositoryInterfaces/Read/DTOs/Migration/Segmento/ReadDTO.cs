@@ -19,11 +19,11 @@ namespace Repositorio.Outputs
     public partial record SegmentoDTO
     {
     public int id { get; set; }
-    public string seg_id { get; set; }
-    public string seg_descricao { get; set; }
-    public string seg_id_seguimento_pai { get; set; }
-    public string grs_id { get; set; }
-    public string seg_integracao_erp { get; set; }
+    public string seg_id { get; set; } = string.Empty;
+    public string seg_descricao { get; set; } = string.Empty;
+    public string seg_id_seguimento_pai { get; set; } = string.Empty;
+    public string grs_id { get; set; } = string.Empty;
+    public string seg_integracao_erp { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

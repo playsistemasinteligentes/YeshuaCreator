@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MesesDTO> getMeses(Command.Read.MesesReadCommand command )
         {
-            DataPagination<MesesDTO> customResult = null;
+            var customResult = new DataPagination<MesesDTO>();
             var customHandled = false;
             TryGetMesesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MesesTenantIDDTO> getMesesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MesesTenantIDDTO> lista;
             var query = _query.MesesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MesesTenantIDDTO>(query.Query,query.Parameters) as List<MesesTenantIDDTO>;
+                var lista = _unitOfWork.Query<MesesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MesesUserIdDTO> getMesesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MesesUserIdDTO> lista;
             var query = _query.MesesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MesesUserIdDTO>(query.Query,query.Parameters) as List<MesesUserIdDTO>;
+                var lista = _unitOfWork.Query<MesesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMESQuery(value );
 
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters) as List<MesesDTO>;
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByfatorQuery(value );
 
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters) as List<MesesDTO>;
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters) as List<MesesDTO>;
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters) as List<MesesDTO>;
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters) as List<MesesDTO>;
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters) as List<MesesDTO>;
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

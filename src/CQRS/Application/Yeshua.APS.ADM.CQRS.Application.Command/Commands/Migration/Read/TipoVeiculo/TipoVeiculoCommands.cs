@@ -15,7 +15,7 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? TIP_ID { get; set; }
-        public string TIP_DESCRICAO { get; set; }
+        public string? TIP_DESCRICAO { get; set; }
         public int? TIP_QTD_DISPONIVEL { get; set; }
         public Decimal? TIP_VALOR_KM { get; set; }
         public Decimal? TIP_VALOR_DIARIA { get; set; }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TempoSetupOnduladeiraDTO> getTempoSetupOnduladeira(Command.Read.TempoSetupOnduladeiraReadCommand command )
         {
-            DataPagination<TempoSetupOnduladeiraDTO> customResult = null;
+            var customResult = new DataPagination<TempoSetupOnduladeiraDTO>();
             var customHandled = false;
             TryGetTempoSetupOnduladeiraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TempoSetupOnduladeiraOND_ID_DEDTO> getTempoSetupOnduladeiraReadFKOND_ID_DE(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TempoSetupOnduladeiraOND_ID_DEDTO> lista;
             var query = _query.TempoSetupOnduladeiraOND_ID_DEQuery(command );
 
-                lista = _unitOfWork.Query<TempoSetupOnduladeiraOND_ID_DEDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraOND_ID_DEDTO>;
+                var lista = _unitOfWork.Query<TempoSetupOnduladeiraOND_ID_DEDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TempoSetupOnduladeiraTenantIDDTO> getTempoSetupOnduladeiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TempoSetupOnduladeiraTenantIDDTO> lista;
             var query = _query.TempoSetupOnduladeiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TempoSetupOnduladeiraTenantIDDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<TempoSetupOnduladeiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<TempoSetupOnduladeiraUserIdDTO> getTempoSetupOnduladeiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TempoSetupOnduladeiraUserIdDTO> lista;
             var query = _query.TempoSetupOnduladeiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TempoSetupOnduladeiraUserIdDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraUserIdDTO>;
+                var lista = _unitOfWork.Query<TempoSetupOnduladeiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_IDQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_ID_DEQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_ID_PARAQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_RESINA_DEQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_RESINA_PARAQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTEM_TEMPOQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters) as List<TempoSetupOnduladeiraDTO>;
+                var result = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -101,7 +101,7 @@
                                         }
                                     }
 
-                                    public string SEG_ID_SEGUIMENTO_PAI
+                                    public string? SEG_ID_SEGUIMENTO_PAI
                                     {
                                         get => _inner.SEG_ID_SEGUIMENTO_PAI;
                                         set
@@ -115,7 +115,7 @@
                                         }
                                     }
 
-                                    public string GRS_ID
+                                    public string? GRS_ID
                                     {
                                         get => _inner.GRS_ID;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string SEG_INTEGRACAO_ERP
+                                    public string? SEG_INTEGRACAO_ERP
                                     {
                                         get => _inner.SEG_INTEGRACAO_ERP;
                                         set

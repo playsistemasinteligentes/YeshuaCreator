@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoInspecaoItensEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoInspecaoItensEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoInspecaoItensCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipoinspecaoitens = new TipoInspecaoItensFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TII_ID, c.TIV_ID, c.ITI_ID);
                  var domainResult = TipoInspecaoItensDomainBehavior.Apply(tipoinspecaoitens, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(tipoinspecaoitens);
-                     return Success("OK", tipoinspecaoitens);
+                     return Task.FromResult(Success("OK", tipoinspecaoitens));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipoinspecaoitens);
+                    return Task.FromResult(Error(e, tipoinspecaoitens));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

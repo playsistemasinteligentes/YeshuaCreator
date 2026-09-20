@@ -112,7 +112,7 @@
                                         }
                                     }
 
-                                    public string AGE_HORARIO_INICIO
+                                    public string? AGE_HORARIO_INICIO
                                     {
                                         get => _inner.AGE_HORARIO_INICIO;
                                         set
@@ -126,7 +126,7 @@
                                         }
                                     }
 
-                                    public string AGE_HORARIO_FIM
+                                    public string? AGE_HORARIO_FIM
                                     {
                                         get => _inner.AGE_HORARIO_FIM;
                                         set
@@ -140,7 +140,7 @@
                                         }
                                     }
 
-                                    public string AGE_SEGUNDA
+                                    public string? AGE_SEGUNDA
                                     {
                                         get => _inner.AGE_SEGUNDA;
                                         set
@@ -154,7 +154,7 @@
                                         }
                                     }
 
-                                    public string AGE_TERCA
+                                    public string? AGE_TERCA
                                     {
                                         get => _inner.AGE_TERCA;
                                         set
@@ -168,7 +168,7 @@
                                         }
                                     }
 
-                                    public string AGE_QUARTA
+                                    public string? AGE_QUARTA
                                     {
                                         get => _inner.AGE_QUARTA;
                                         set
@@ -182,7 +182,7 @@
                                         }
                                     }
 
-                                    public string AGE_QUINTA
+                                    public string? AGE_QUINTA
                                     {
                                         get => _inner.AGE_QUINTA;
                                         set
@@ -196,7 +196,7 @@
                                         }
                                     }
 
-                                    public string AGE_SEXTA
+                                    public string? AGE_SEXTA
                                     {
                                         get => _inner.AGE_SEXTA;
                                         set
@@ -210,7 +210,7 @@
                                         }
                                     }
 
-                                    public string AGE_SABADO
+                                    public string? AGE_SABADO
                                     {
                                         get => _inner.AGE_SABADO;
                                         set
@@ -224,7 +224,7 @@
                                         }
                                     }
 
-                                    public string AGE_DOMINGO
+                                    public string? AGE_DOMINGO
                                     {
                                         get => _inner.AGE_DOMINGO;
                                         set
@@ -252,7 +252,7 @@
                                         }
                                     }
 
-                                    public string AGE_ORDEM_EXECUCAO
+                                    public string? AGE_ORDEM_EXECUCAO
                                     {
                                         get => _inner.AGE_ORDEM_EXECUCAO;
                                         set
@@ -266,7 +266,7 @@
                                         }
                                     }
 
-                                    public string AGE_PARAMETROS
+                                    public string? AGE_PARAMETROS
                                     {
                                         get => _inner.AGE_PARAMETROS;
                                         set
@@ -280,7 +280,7 @@
                                         }
                                     }
 
-                                    public string AGE_EXCECAO
+                                    public string? AGE_EXCECAO
                                     {
                                         get => _inner.AGE_EXCECAO;
                                         set
@@ -294,7 +294,7 @@
                                         }
                                     }
 
-                                    public string AGE_DESCRICAO
+                                    public string? AGE_DESCRICAO
                                     {
                                         get => _inner.AGE_DESCRICAO;
                                         set

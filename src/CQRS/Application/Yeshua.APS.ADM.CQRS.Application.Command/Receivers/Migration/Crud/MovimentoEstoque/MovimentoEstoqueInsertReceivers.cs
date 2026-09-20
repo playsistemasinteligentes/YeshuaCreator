@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMovimentoEstoqueEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMovimentoEstoqueEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MovimentoEstoqueCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var movimentoestoque = new MovimentoEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProdutoId, c.OrderId, c.Tipo, c.TurnoId, c.TurmaId, c.Quantidade, c.MOV_PESO_UNITARIO, c.DataHoraCriacao, c.DataHoraEmissao, c.DiaTurma, c.Lote, c.SubLote, c.MaquinaId, c.USE_ID, c.Observacao, c.OcorrenciaId, c.Armazem, c.Endereco, c.Estorno, c.SequenciaTransformacao, c.SequenciaRepeticao, c.ObsOpParcial, c.OcoIdOpParcial, c.MOV_ID_INTEGRACAO, c.MOV_ID_INTEGRACAO_ERP, c.CAR_ID, c.MOV_ID_DESTINO, c.PRO_ID_DESTINO, c.MOV_LOTE_DESTINO, c.MOV_SUB_LOTE_DESTINO, c.MOV_ID_ORIGEM, c.PRO_ID_ORIGEM, c.MOV_LOTE_ORIGEM, c.MOV_SUB_LOTE_ORIGEM, c.MOV_TYPE, c.MOV_DOC, c.MOV_APROVEITAMENTO, c.MOV_RETIDO, c.MOV_VINCOS_ONDULADEIRA, c.BOL_ID, c.ORD_ID_ORIGEM, c.COR_SEQUENCIA, c.VER_ID, c.MOV_TIPO_CUSTO, c.MOV_GRUPO_CONTABIL, c.FOR_ID, c.CLI_ID);
                  var domainResult = MovimentoEstoqueDomainBehavior.Apply(movimentoestoque, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(movimentoestoque);
-                     return Success("OK", movimentoestoque);
+                     return Task.FromResult(Success("OK", movimentoestoque));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, movimentoestoque);
+                    return Task.FromResult(Error(e, movimentoestoque));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

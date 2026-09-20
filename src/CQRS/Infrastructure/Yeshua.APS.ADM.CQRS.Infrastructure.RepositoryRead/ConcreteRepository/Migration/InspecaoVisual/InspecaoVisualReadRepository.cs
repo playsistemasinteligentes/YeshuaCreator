@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<InspecaoVisualDTO> getInspecaoVisual(Command.Read.InspecaoVisualReadCommand command )
         {
-            DataPagination<InspecaoVisualDTO> customResult = null;
+            var customResult = new DataPagination<InspecaoVisualDTO>();
             var customHandled = false;
             TryGetInspecaoVisualCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<InspecaoVisualTURN_IDDTO> getInspecaoVisualReadFKTURN_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InspecaoVisualTURN_IDDTO> lista;
             var query = _query.InspecaoVisualTURN_IDQuery(command );
 
-                lista = _unitOfWork.Query<InspecaoVisualTURN_IDDTO>(query.Query,query.Parameters) as List<InspecaoVisualTURN_IDDTO>;
+                var lista = _unitOfWork.Query<InspecaoVisualTURN_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<InspecaoVisualTURM_IDDTO> getInspecaoVisualReadFKTURM_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InspecaoVisualTURM_IDDTO> lista;
             var query = _query.InspecaoVisualTURM_IDQuery(command );
 
-                lista = _unitOfWork.Query<InspecaoVisualTURM_IDDTO>(query.Query,query.Parameters) as List<InspecaoVisualTURM_IDDTO>;
+                var lista = _unitOfWork.Query<InspecaoVisualTURM_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<InspecaoVisualTenantIDDTO> getInspecaoVisualReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InspecaoVisualTenantIDDTO> lista;
             var query = _query.InspecaoVisualTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<InspecaoVisualTenantIDDTO>(query.Query,query.Parameters) as List<InspecaoVisualTenantIDDTO>;
+                var lista = _unitOfWork.Query<InspecaoVisualTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<InspecaoVisualUserIdDTO> getInspecaoVisualReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InspecaoVisualUserIdDTO> lista;
             var query = _query.InspecaoVisualUserIdQuery(command );
 
-                lista = _unitOfWork.Query<InspecaoVisualUserIdDTO>(query.Query,query.Parameters) as List<InspecaoVisualUserIdDTO>;
+                var lista = _unitOfWork.Query<InspecaoVisualUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -478,7 +474,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -486,7 +482,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_VALORQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -494,7 +490,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_ID_OPERADORQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -502,7 +498,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_ID_LIBERACAOQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -510,7 +506,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_OBSQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -518,7 +514,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_DATA_COLETAQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -526,7 +522,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_DATA_AVALQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -534,7 +530,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIV_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -542,7 +538,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -550,7 +546,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -558,7 +554,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -566,7 +562,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_PRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -574,7 +570,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_MAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -582,7 +578,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_SEQ_TRANSFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -590,7 +586,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -598,7 +594,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_STATUS_LIBERACAOQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -606,7 +602,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIPV_VALOR_MEDIDAQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -614,7 +610,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -622,7 +618,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -630,7 +626,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -638,7 +634,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters) as List<InspecaoVisualDTO>;
+                var result = _unitOfWork.Query<InspecaoVisualDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

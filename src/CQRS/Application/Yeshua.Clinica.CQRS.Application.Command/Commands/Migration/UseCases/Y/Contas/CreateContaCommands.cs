@@ -15,7 +15,7 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record CreateContaInputCommand : ICommand
+public partial record CreateContaInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string CpfCnpj { get; set; } = string.Empty;
     public string nome { get; set; } = string.Empty;
@@ -23,6 +23,9 @@ public partial record CreateContaInputCommand : ICommand
     public string phone { get; set; } = string.Empty;
     public string password { get; set; } = string.Empty;
     public string confirmpassword { get; set; } = string.Empty;
+
+    public string OperationalEntity => "yTenant";
+    public string? OperationalRecordId => null;
 }
 
 public partial record CreateContaOutputCommand : ICommand

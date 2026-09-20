@@ -30,11 +30,11 @@
     Decimal? MET_RANGE02 { get; set; }
     Decimal? MET_RANGE03 { get; set; }
     int? DIM_ID { get; set; }
-    string FAT_ID { get; set; }
-    string DIM_SUBDIMENSAO_ID { get; set; }
-    string PER_ID { get; set; }
-    string DOM_EMPRESA { get; set; }
-    string DOM_FILIAL { get; set; }
+    string? FAT_ID { get; set; }
+    string? DIM_SUBDIMENSAO_ID { get; set; }
+    string? PER_ID { get; set; }
+    string? DOM_EMPRESA { get; set; }
+    string? DOM_FILIAL { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

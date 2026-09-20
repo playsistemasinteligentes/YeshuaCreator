@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OrderDTO> getOrder(Command.Read.OrderReadCommand command )
         {
-            DataPagination<OrderDTO> customResult = null;
+            var customResult = new DataPagination<OrderDTO>();
             var customHandled = false;
             TryGetOrderCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderCLI_IDDTO> getOrderReadFKCLI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderCLI_IDDTO> lista;
             var query = _query.OrderCLI_IDQuery(command );
 
-                lista = _unitOfWork.Query<OrderCLI_IDDTO>(query.Query,query.Parameters) as List<OrderCLI_IDDTO>;
+                var lista = _unitOfWork.Query<OrderCLI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderMUN_ID_ENTREGADTO> getOrderReadFKMUN_ID_ENTREGA(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderMUN_ID_ENTREGADTO> lista;
             var query = _query.OrderMUN_ID_ENTREGAQuery(command );
 
-                lista = _unitOfWork.Query<OrderMUN_ID_ENTREGADTO>(query.Query,query.Parameters) as List<OrderMUN_ID_ENTREGADTO>;
+                var lista = _unitOfWork.Query<OrderMUN_ID_ENTREGADTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderORD_REGIAO_ENTREGADTO> getOrderReadFKORD_REGIAO_ENTREGA(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderORD_REGIAO_ENTREGADTO> lista;
             var query = _query.OrderORD_REGIAO_ENTREGAQuery(command );
 
-                lista = _unitOfWork.Query<OrderORD_REGIAO_ENTREGADTO>(query.Query,query.Parameters) as List<OrderORD_REGIAO_ENTREGADTO>;
+                var lista = _unitOfWork.Query<OrderORD_REGIAO_ENTREGADTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderOCO_ID_CANCELAMENTODTO> getOrderReadFKOCO_ID_CANCELAMENTO(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderOCO_ID_CANCELAMENTODTO> lista;
             var query = _query.OrderOCO_ID_CANCELAMENTOQuery(command );
 
-                lista = _unitOfWork.Query<OrderOCO_ID_CANCELAMENTODTO>(query.Query,query.Parameters) as List<OrderOCO_ID_CANCELAMENTODTO>;
+                var lista = _unitOfWork.Query<OrderOCO_ID_CANCELAMENTODTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -140,10 +136,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderTenantIDDTO> getOrderReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderTenantIDDTO> lista;
             var query = _query.OrderTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<OrderTenantIDDTO>(query.Query,query.Parameters) as List<OrderTenantIDDTO>;
+                var lista = _unitOfWork.Query<OrderTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -158,10 +153,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderUserIdDTO> getOrderReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderUserIdDTO> lista;
             var query = _query.OrderUserIdQuery(command );
 
-                lista = _unitOfWork.Query<OrderUserIdDTO>(query.Query,query.Parameters) as List<OrderUserIdDTO>;
+                var lista = _unitOfWork.Query<OrderUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -1426,7 +1420,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1434,7 +1428,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ID_RESERVAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1442,7 +1436,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ID_CONJUNTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1450,7 +1444,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1458,7 +1452,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_CONJUNTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1466,7 +1460,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1474,7 +1468,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PRECO_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1482,7 +1476,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_QUANTIDADEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1490,7 +1484,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_DATA_ENTREGA_DEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1498,7 +1492,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_DATA_ENTREGA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1506,7 +1500,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1514,7 +1508,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TOLERANCIA_MAISQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1522,7 +1516,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TOLERANCIA_MENOSQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1530,7 +1524,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHASH_KEYQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1538,7 +1532,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_INICIO_JANELA_EMBARQUEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1546,7 +1540,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_FIM_JANELA_EMBARQUEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1554,7 +1548,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_EMBARQUE_ALVOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1562,7 +1556,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_INICIO_GRUPO_PRODUTIVOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1570,7 +1564,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_FIM_GRUPO_PRODUTIVOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1578,7 +1572,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PESO_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1586,7 +1580,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PESO_UNITARIO_BRUTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1594,7 +1588,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_M2_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1602,7 +1596,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_MITQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1610,7 +1604,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_TIPO_CARREGAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1618,7 +1612,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1626,7 +1620,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TIPO_FRETEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1634,7 +1628,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ENDERECO_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1642,7 +1636,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_BAIRRO_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1650,7 +1644,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUF_ID_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1658,7 +1652,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_CEP_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1666,7 +1660,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_ID_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1674,7 +1668,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_REGIAO_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1682,7 +1676,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_LARGURAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1690,7 +1684,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_COMPRIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1698,7 +1692,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_GRAMATURAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1706,7 +1700,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRP_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1714,7 +1708,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ID_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1722,7 +1716,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_OBSERVACAO_OTIMIZADORQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1730,7 +1724,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_COR_FILAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1738,7 +1732,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PED_CLIQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1746,7 +1740,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_OP_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1754,7 +1748,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_LOTE_PILOTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1762,7 +1756,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PRIORIDADEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1770,7 +1764,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1778,7 +1772,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREP_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1786,7 +1780,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_RESINAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1794,7 +1788,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ENDURECEDOR_MIOLOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1802,7 +1796,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1810,7 +1804,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_VINCOS_ONDULADEIRAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1818,7 +1812,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ERP_CUSTOS_FIXOSQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1826,7 +1820,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ERP_CUSTOS_VARIAVEISQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1834,7 +1828,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ERP_DESPESAS_VAR_VENDAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1842,7 +1836,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_ERP_IMPOSTOSQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1850,7 +1844,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_STATUS_PLANEJAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1858,7 +1852,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TOLERANCIA_DIMENSAO_CHAPA_DEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1866,7 +1860,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TOLERANCIA_DIMENSAO_CHAPA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1874,7 +1868,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PROMOVE_DEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1882,7 +1876,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PROMOVE_ATEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1890,7 +1884,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TRAVA_COMPOSICAOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1898,7 +1892,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_TRAVA_RESINAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1906,7 +1900,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PROMOVE_RESINAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1914,7 +1908,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_LATITUDE_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1922,7 +1916,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_LONGITUDE_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1930,7 +1924,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_ID_CANCELAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1938,7 +1932,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTMP_TIPO_CARGAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1946,7 +1940,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1954,7 +1948,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_TAMPOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1962,7 +1956,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_PILHAS_POR_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1970,7 +1964,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_CHAPAS_POR_PILHAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1978,7 +1972,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_DATA_CANCELAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1986,7 +1980,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_STATUS_ESTATISTICAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1994,7 +1988,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_DATA_ESTATISTICAQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -2002,7 +1996,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_ID_MOTIVO_ATRASOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -2010,7 +2004,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_VERSSAOQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -2018,7 +2012,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -2026,7 +2020,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -2034,7 +2028,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -2042,7 +2036,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters) as List<OrderDTO>;
+                var result = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

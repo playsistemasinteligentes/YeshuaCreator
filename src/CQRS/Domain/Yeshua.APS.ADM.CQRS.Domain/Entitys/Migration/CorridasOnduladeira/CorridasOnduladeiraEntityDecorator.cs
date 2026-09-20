@@ -92,7 +92,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
-                                    public string BOL_ID
+                                    public string? BOL_ID
                                     {
                                         get => _inner.BOL_ID;
                                         set
@@ -106,7 +106,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID_ORIGEM
+                                    public string? BOL_ID_ORIGEM
                                     {
                                         get => _inner.BOL_ID_ORIGEM;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string PRO_VINCOS_RECALCULADOS
+                                    public string? PRO_VINCOS_RECALCULADOS
                                     {
                                         get => _inner.PRO_VINCOS_RECALCULADOS;
                                         set
@@ -204,7 +204,7 @@
                                         }
                                     }
 
-                                    public string COR_SOLVER
+                                    public string? COR_SOLVER
                                     {
                                         get => _inner.COR_SOLVER;
                                         set
@@ -316,7 +316,7 @@
                                         }
                                     }
 
-                                    public string COR_COR_FILA
+                                    public string? COR_COR_FILA
                                     {
                                         get => _inner.COR_COR_FILA;
                                         set
@@ -344,7 +344,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID_PALETE
+                                    public string? PRO_ID_PALETE
                                     {
                                         get => _inner.PRO_ID_PALETE;
                                         set
@@ -358,7 +358,7 @@
                                         }
                                     }
 
-                                    public string COR_STATUS_PALETE
+                                    public string? COR_STATUS_PALETE
                                     {
                                         get => _inner.COR_STATUS_PALETE;
                                         set
@@ -456,7 +456,7 @@
                                         }
                                     }
 
-                                    public string COR_STATUS
+                                    public string? COR_STATUS
                                     {
                                         get => _inner.COR_STATUS;
                                         set
@@ -470,7 +470,7 @@
                                         }
                                     }
 
-                                    public string COR_STATUS_INTERFACE
+                                    public string? COR_STATUS_INTERFACE
                                     {
                                         get => _inner.COR_STATUS_INTERFACE;
                                         set
@@ -484,7 +484,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID
+                                    public string? MAQ_ID
                                     {
                                         get => _inner.MAQ_ID;
                                         set
@@ -540,7 +540,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set
@@ -638,7 +638,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID
+                                    public string? PRO_ID
                                     {
                                         get => _inner.PRO_ID;
                                         set

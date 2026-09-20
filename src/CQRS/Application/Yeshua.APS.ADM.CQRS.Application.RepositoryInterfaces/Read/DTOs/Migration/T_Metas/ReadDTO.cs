@@ -19,20 +19,20 @@ namespace Repositorio.Outputs
     public partial record T_MetasDTO
     {
     public int met_id { get; set; }
-    public string met_dtinicio { get; set; }
-    public string met_dtfim { get; set; }
-    public string met_alvo { get; set; }
+    public string met_dtinicio { get; set; } = string.Empty;
+    public string met_dtfim { get; set; } = string.Empty;
+    public string met_alvo { get; set; } = string.Empty;
     public int met_tipoalvo { get; set; }
     public int ind_id { get; set; }
     public Decimal met_range01 { get; set; }
     public Decimal met_range02 { get; set; }
     public Decimal met_range03 { get; set; }
     public int dim_id { get; set; }
-    public string fat_id { get; set; }
-    public string dim_subdimensao_id { get; set; }
-    public string per_id { get; set; }
-    public string dom_empresa { get; set; }
-    public string dom_filial { get; set; }
+    public string fat_id { get; set; } = string.Empty;
+    public string dim_subdimensao_id { get; set; } = string.Empty;
+    public string per_id { get; set; } = string.Empty;
+    public string dom_empresa { get; set; } = string.Empty;
+    public string dom_filial { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

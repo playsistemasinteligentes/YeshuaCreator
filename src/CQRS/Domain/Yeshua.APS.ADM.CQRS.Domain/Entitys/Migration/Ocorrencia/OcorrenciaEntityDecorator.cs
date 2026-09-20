@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string GMA_ID
+                                    public string? GMA_ID
                                     {
                                         get => _inner.GMA_ID;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID
+                                    public string? MAQ_ID
                                     {
                                         get => _inner.MAQ_ID;
                                         set
@@ -145,7 +145,7 @@
                                         }
                                     }
 
-                                    public string OCO_SUB_TIPO
+                                    public string? OCO_SUB_TIPO
                                     {
                                         get => _inner.OCO_SUB_TIPO;
                                         set
@@ -159,7 +159,7 @@
                                         }
                                     }
 
-                                    public string SUB_ID
+                                    public string? SUB_ID
                                     {
                                         get => _inner.SUB_ID;
                                         set

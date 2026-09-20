@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CorridasOnduladeiraDTO> getCorridasOnduladeira(Command.Read.CorridasOnduladeiraReadCommand command )
         {
-            DataPagination<CorridasOnduladeiraDTO> customResult = null;
+            var customResult = new DataPagination<CorridasOnduladeiraDTO>();
             var customHandled = false;
             TryGetCorridasOnduladeiraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CorridasOnduladeiraTenantIDDTO> getCorridasOnduladeiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CorridasOnduladeiraTenantIDDTO> lista;
             var query = _query.CorridasOnduladeiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CorridasOnduladeiraTenantIDDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<CorridasOnduladeiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CorridasOnduladeiraUserIdDTO> getCorridasOnduladeiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CorridasOnduladeiraUserIdDTO> lista;
             var query = _query.CorridasOnduladeiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CorridasOnduladeiraUserIdDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraUserIdDTO>;
+                var lista = _unitOfWork.Query<CorridasOnduladeiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -794,7 +792,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -802,7 +800,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_ID_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -810,7 +808,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_LARGURA_PECAQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -818,7 +816,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_LARGURA_PECA_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -826,7 +824,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_COMPRIMENTO_PECAQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -834,7 +832,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_COMPRIMENTO_PECA_PROGRAMADOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -842,7 +840,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_UTILIZOU_REFILE_OBRIGATORIOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -850,7 +848,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_VINCOS_RECALCULADOSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -858,7 +856,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SOLVERQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -866,7 +864,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_GRAMATURA_PAPEIS_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -874,7 +872,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_CUSTO_PAPEIS_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -882,7 +880,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_GRAMATURA_RESINA_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -890,7 +888,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_CUSTO_RESINA_PROGRAMADOSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -898,7 +896,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_TOLERANCIA_MENOSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -906,7 +904,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_TOLERANCIA_MAISQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -914,7 +912,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_PILHAS_POR_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -922,7 +920,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_COR_FILAQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -930,7 +928,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_M_LINEAR_REALIZADOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -938,7 +936,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_ID_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -946,7 +944,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_STATUS_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -954,7 +952,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_GRUPO_PRODUTIVOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -962,7 +960,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -970,7 +968,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -978,7 +976,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -986,7 +984,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -994,7 +992,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_IDQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1002,7 +1000,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1010,7 +1008,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_STATUS_INTERFACEQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1018,7 +1016,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1026,7 +1024,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_ID_INTERFACEQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1034,7 +1032,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1042,7 +1040,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIA_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1050,7 +1048,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1058,7 +1056,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1066,7 +1064,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_SEQ_TRANFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1074,7 +1072,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_FACAOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1082,7 +1080,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_FORMATO_BOBINAQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1090,7 +1088,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_INICIO_PREVISTOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1098,7 +1096,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_FIM_PREVISTOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1106,7 +1104,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1114,7 +1112,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_QTD_PLANEJADOQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1122,7 +1120,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_QTD_PACASQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1130,7 +1128,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_PECAS_LARGURAQuery(value );
 
-                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters) as List<CorridasOnduladeiraDTO>;
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

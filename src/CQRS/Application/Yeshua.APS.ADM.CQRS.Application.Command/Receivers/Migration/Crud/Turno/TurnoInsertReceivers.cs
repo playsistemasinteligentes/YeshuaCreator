@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITurnoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITurnoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TurnoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var turno = new TurnoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.TURN_PRIORIDADE, c.TURN_HORA_INI_DIA1, c.TURN_HORA_FIM_DIA1, c.TURN_HORA_INI_DIA2, c.TURN_HORA_FIM_DIA2, c.TURN_HORA_INI_DIA3, c.TURN_HORA_FIM_DIA3, c.TURN_HORA_INI_DIA4, c.TURN_HORA_FIM_DIA4, c.TURN_HORA_INI_DIA5, c.TURN_HORA_FIM_DIA5, c.TURN_HORA_INI_DIA6, c.TURN_HORA_FIM_DIA6, c.TURN_HORA_INI_DIA7, c.TURN_HORA_FIM_DIA7);
                  var domainResult = TurnoDomainBehavior.Apply(turno, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(turno);
-                     return Success("OK", turno);
+                     return Task.FromResult(Success("OK", turno));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, turno);
+                    return Task.FromResult(Error(e, turno));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

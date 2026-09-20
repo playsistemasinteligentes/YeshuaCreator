@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IOrderTrackEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IOrderTrackEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.OrderTrackCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var ordertrack = new OrderTrackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OTK_ID, c.OTK_SEQUENCIA, c.OTK_VERSSAO, c.ORD_ID, c.OTK_EVENTO, c.OTK_DATA_NECESSIDADE_DE, c.OTK_DATA_NECESSIDADE_ATE, c.OTK_DATA_PREVISTA, c.OTK_DATA_REALIZADA, c.FPR_ID);
                  var domainResult = OrderTrackDomainBehavior.Apply(ordertrack, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(ordertrack);
-                     return Success("OK", ordertrack);
+                     return Task.FromResult(Success("OK", ordertrack));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, ordertrack);
+                    return Task.FromResult(Error(e, ordertrack));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -70,7 +70,7 @@
                                         }
                                     }
 
-                                    public string CON_CASAS_DECIMAIS
+                                    public string? CON_CASAS_DECIMAIS
                                     {
                                         get => _inner.CON_CASAS_DECIMAIS;
                                         set
@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string CON_CONEXAO
+                                    public string? CON_CONEXAO
                                     {
                                         get => _inner.CON_CONEXAO;
                                         set

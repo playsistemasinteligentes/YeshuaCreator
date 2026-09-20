@@ -26,12 +26,12 @@
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
-    string TIV_NOME { get; set; }
-    string TIV_DESCRICAO { get; set; }
-    string TIV_FECHAMENTO { get; set; }
-    string TIV_AMOSTRA_ALEATORIA { get; set; }
+    string? TIV_NOME { get; set; }
+    string? TIV_DESCRICAO { get; set; }
+    string? TIV_FECHAMENTO { get; set; }
+    string? TIV_AMOSTRA_ALEATORIA { get; set; }
     int? TIV_N_AMOSTRAS { get; set; }
-    string TIV_MEDIDA { get; set; }
+    string? TIV_MEDIDA { get; set; }
     Decimal? TIV_ESPECIFICACAO { get; set; }
     Decimal? TIV_TOL_MAIS { get; set; }
     Decimal? TIV_TOL_MENOS { get; set; }

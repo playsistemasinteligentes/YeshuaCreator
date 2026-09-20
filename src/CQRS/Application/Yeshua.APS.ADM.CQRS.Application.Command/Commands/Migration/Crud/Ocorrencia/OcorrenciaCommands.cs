@@ -16,11 +16,11 @@ namespace Command.Write
         public string OCO_ID { get; set; }
         public string OCO_DESCRICAO { get; set; }
         public int TIP_ID { get; set; }
-        public string GMA_ID { get; set; }
-        public string MAQ_ID { get; set; }
+        public string? GMA_ID { get; set; }
+        public string? MAQ_ID { get; set; }
         public int? SPR { get; set; }
-        public string OCO_SUB_TIPO { get; set; }
-        public string SUB_ID { get; set; }
+        public string? OCO_SUB_TIPO { get; set; }
+        public string? SUB_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

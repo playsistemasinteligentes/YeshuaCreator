@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_FeedbackMovEstoqueDTO> getT_FeedbackMovEstoque(Command.Read.T_FeedbackMovEstoqueReadCommand command )
         {
-            DataPagination<T_FeedbackMovEstoqueDTO> customResult = null;
+            var customResult = new DataPagination<T_FeedbackMovEstoqueDTO>();
             var customHandled = false;
             TryGetT_FeedbackMovEstoqueCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FeedbackMovEstoqueFeedbackIdDTO> getT_FeedbackMovEstoqueReadFKFeedbackId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FeedbackMovEstoqueFeedbackIdDTO> lista;
             var query = _query.T_FeedbackMovEstoqueFeedbackIdQuery(command );
 
-                lista = _unitOfWork.Query<T_FeedbackMovEstoqueFeedbackIdDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueFeedbackIdDTO>;
+                var lista = _unitOfWork.Query<T_FeedbackMovEstoqueFeedbackIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FeedbackMovEstoqueMovimentoEstoqueIdDTO> getT_FeedbackMovEstoqueReadFKMovimentoEstoqueId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FeedbackMovEstoqueMovimentoEstoqueIdDTO> lista;
             var query = _query.T_FeedbackMovEstoqueMovimentoEstoqueIdQuery(command );
 
-                lista = _unitOfWork.Query<T_FeedbackMovEstoqueMovimentoEstoqueIdDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueMovimentoEstoqueIdDTO>;
+                var lista = _unitOfWork.Query<T_FeedbackMovEstoqueMovimentoEstoqueIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FeedbackMovEstoqueTenantIDDTO> getT_FeedbackMovEstoqueReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FeedbackMovEstoqueTenantIDDTO> lista;
             var query = _query.T_FeedbackMovEstoqueTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_FeedbackMovEstoqueTenantIDDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_FeedbackMovEstoqueTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<T_FeedbackMovEstoqueUserIdDTO> getT_FeedbackMovEstoqueReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_FeedbackMovEstoqueUserIdDTO> lista;
             var query = _query.T_FeedbackMovEstoqueUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_FeedbackMovEstoqueUserIdDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueUserIdDTO>;
+                var lista = _unitOfWork.Query<T_FeedbackMovEstoqueUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -254,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -262,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFeedbackIdQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMovimentoEstoqueIdQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters) as List<T_FeedbackMovEstoqueDTO>;
+                var result = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

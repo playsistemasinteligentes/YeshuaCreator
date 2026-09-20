@@ -43,7 +43,9 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                         sp.GetRequiredService<OperationalLoggingPolicyState>());
                     builder.Services.AddSingleton<Dominio.Interfaces.IDomainTrackingPolicy>(sp =>
                         sp.GetRequiredService<OperationalLoggingPolicyState>());
-                    builder.Services.AddHostedService<OperationalPolicySynchronizer>();
+                    builder.Services.AddSingleton<OperationalPolicySynchronizer>();
+                    builder.Services.AddHostedService(sp =>
+                        sp.GetRequiredService<OperationalPolicySynchronizer>());
 
                     builder.Services.AddScoped<UnitOfWork>();
                     builder.Services.AddScoped<RepositoryTelemetry>();
@@ -65,6 +67,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
                     builder.Services.AddTransient<SagaResolverRegistry>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaStepContinuation, SagaStepContinuation>();
                     builder.Services.AddScoped<OutboxService>();
 
 

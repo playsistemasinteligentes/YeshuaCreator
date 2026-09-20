@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record TipoAvaliacaoDTO
     {
     public int ta_id { get; set; }
-    public string ta_desc { get; set; }
+    public string ta_desc { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoMovimentoEstoqueEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoMovimentoEstoqueEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoMovimentoEstoqueCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipomovimentoestoque = new TipoMovimentoEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.TIP_ID, c.TIP_DESCRICAO, c.TIP_TYPE, c.SPR);
                  var domainResult = TipoMovimentoEstoqueDomainBehavior.Apply(tipomovimentoestoque, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(tipomovimentoestoque);
-                     return Success("OK", tipomovimentoestoque);
+                     return Task.FromResult(Success("OK", tipomovimentoestoque));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipomovimentoestoque);
+                    return Task.FromResult(Error(e, tipomovimentoestoque));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

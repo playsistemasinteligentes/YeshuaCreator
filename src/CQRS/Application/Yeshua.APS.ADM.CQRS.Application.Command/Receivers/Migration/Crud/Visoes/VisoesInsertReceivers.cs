@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IVisoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IVisoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.VisoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var visoes = new VisoesFactory(_logger, _domainTrackingPolicy).Create(context, c.VIS_ID, c.VIS_PLANID, c.VIS_FORMULA, c.CAB_ID);
                  var domainResult = VisoesDomainBehavior.Apply(visoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(visoes);
-                     return Success("OK", visoes);
+                     return Task.FromResult(Success("OK", visoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, visoes);
+                    return Task.FromResult(Error(e, visoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

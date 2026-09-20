@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct MesesReadCommand : ICommandRead
     {
-        public string MES { get; set; }
+        public string? MES { get; set; }
         public int? fator { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

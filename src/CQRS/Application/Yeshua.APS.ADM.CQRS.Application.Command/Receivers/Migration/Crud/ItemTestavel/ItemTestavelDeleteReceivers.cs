@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IItemTestavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IItemTestavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ItemTestavelCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var itemtestavel = new ItemTestavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITE_ID, c.ITE_DESCRICAO, c.ITE_OBS, c.ITE_NUMERO_DE_TESTES, c.ITE_CONDICIONAL_DE_AVALIACAO, c.ITE_VALOR_DA_CONDICIONAL, c.ITE_VALOR_CALCULADO_DA_CONDICIONAL, c.ITE_TIPO_AVALIACAO_FINAL);
                  var domainResult = ItemTestavelDomainBehavior.Apply(itemtestavel, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(itemtestavel);
-                     return Success("OK", itemtestavel);
+                     return Task.FromResult(Success("OK", itemtestavel));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, itemtestavel);
+                    return Task.FromResult(Error(e, itemtestavel));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

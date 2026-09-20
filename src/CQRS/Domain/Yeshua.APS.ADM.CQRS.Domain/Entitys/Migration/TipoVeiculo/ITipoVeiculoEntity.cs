@@ -22,7 +22,7 @@
 {
     int? Id { get; set; }
     int TIP_ID { get; set; }
-    string TIP_DESCRICAO { get; set; }
+    string? TIP_DESCRICAO { get; set; }
     int? TIP_QTD_DISPONIVEL { get; set; }
     Decimal? TIP_VALOR_KM { get; set; }
     Decimal? TIP_VALOR_DIARIA { get; set; }

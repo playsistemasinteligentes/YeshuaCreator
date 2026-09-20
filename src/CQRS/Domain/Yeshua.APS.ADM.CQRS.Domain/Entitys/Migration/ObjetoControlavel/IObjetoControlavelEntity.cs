@@ -22,9 +22,9 @@
 {
     int? Id { get; set; }
     string OBJ_ID { get; set; }
-    string OBJ_DESCRICAO { get; set; }
-    string OBJ_TIPO { get; set; }
-    string OBJ_GRUPO { get; set; }
+    string? OBJ_DESCRICAO { get; set; }
+    string? OBJ_TIPO { get; set; }
+    string? OBJ_GRUPO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

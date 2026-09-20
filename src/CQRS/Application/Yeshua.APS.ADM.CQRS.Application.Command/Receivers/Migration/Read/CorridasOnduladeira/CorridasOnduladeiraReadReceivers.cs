@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<CorridasOnduladeiraDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<CorridasOnduladeiraDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.CorridasOnduladeiraReadCommand c) 
              {    
                 var CorridasOnduladeiraReadRepository = _repository.getCorridasOnduladeira(c);
-                return Success("OK", CorridasOnduladeiraReadRepository);
+                return Task.FromResult(Success("OK", CorridasOnduladeiraReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

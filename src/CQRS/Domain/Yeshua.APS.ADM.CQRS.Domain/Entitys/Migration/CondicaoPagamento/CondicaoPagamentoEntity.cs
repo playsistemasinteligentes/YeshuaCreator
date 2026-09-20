@@ -22,16 +22,16 @@
 {
     public int? Id { get; set; }
     public string CON_ID { get; set; }
-    public string CON_DESCRICAO { get; set; }
+    public string? CON_DESCRICAO { get; set; }
     public int? CON_PARCELAS { get; set; }
     public Decimal? CON_VALOR_ACRECIMO { get; set; }
-    public string CON_INTEGRACAO_ERP { get; set; }
+    public string? CON_INTEGRACAO_ERP { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CondicaoPagamentoEntity(int? id, string con_id, string con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string con_integracao_erp ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CondicaoPagamentoEntity(int? id, string con_id, string? con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string? con_integracao_erp ){
  Id = id; 
  CON_ID = con_id; 
  CON_DESCRICAO = con_descricao; 

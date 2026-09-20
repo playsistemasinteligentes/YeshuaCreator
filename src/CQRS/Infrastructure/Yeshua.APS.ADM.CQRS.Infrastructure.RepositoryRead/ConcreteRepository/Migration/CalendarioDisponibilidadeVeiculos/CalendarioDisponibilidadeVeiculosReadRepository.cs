@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CalendarioDisponibilidadeVeiculosDTO> getCalendarioDisponibilidadeVeiculos(Command.Read.CalendarioDisponibilidadeVeiculosReadCommand command )
         {
-            DataPagination<CalendarioDisponibilidadeVeiculosDTO> customResult = null;
+            var customResult = new DataPagination<CalendarioDisponibilidadeVeiculosDTO>();
             var customHandled = false;
             TryGetCalendarioDisponibilidadeVeiculosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CalendarioDisponibilidadeVeiculosTenantIDDTO> getCalendarioDisponibilidadeVeiculosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CalendarioDisponibilidadeVeiculosTenantIDDTO> lista;
             var query = _query.CalendarioDisponibilidadeVeiculosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosTenantIDDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosTenantIDDTO>;
+                var lista = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CalendarioDisponibilidadeVeiculosUserIdDTO> getCalendarioDisponibilidadeVeiculosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CalendarioDisponibilidadeVeiculosUserIdDTO> lista;
             var query = _query.CalendarioDisponibilidadeVeiculosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosUserIdDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosUserIdDTO>;
+                var lista = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_IDQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_DATA_DEQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_DATA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_SEGUNDAQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_TERCAQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_QUARTAQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_QUINTAQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_SEXTAQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_SABADOQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCDV_DOMINGOQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters) as List<CalendarioDisponibilidadeVeiculosDTO>;
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

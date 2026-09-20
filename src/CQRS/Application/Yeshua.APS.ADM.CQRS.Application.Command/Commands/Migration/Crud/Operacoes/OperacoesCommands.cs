@@ -16,10 +16,10 @@ namespace Command.Write
         public int? Id { get; set; }
         public string OPE_TIPO_REGISTRO { get; set; }
         public string OPE_ID { get; set; }
-        public string GMA_ID { get; set; }
+        public string? GMA_ID { get; set; }
         public string MAQ_ID { get; set; }
         public string PRO_ID { get; set; }
-        public string OPE_EXCECAO { get; set; }
+        public string? OPE_EXCECAO { get; set; }
         public int ROT_SEQ_TRANFORMACAO { get; set; }
         public string ORD_ID { get; set; }
         public int FPR_SEQ_REPETICAO { get; set; }

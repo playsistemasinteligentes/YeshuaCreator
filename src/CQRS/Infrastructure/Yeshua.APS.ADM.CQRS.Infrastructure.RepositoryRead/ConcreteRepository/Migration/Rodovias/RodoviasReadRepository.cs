@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RodoviasDTO> getRodovias(Command.Read.RodoviasReadCommand command )
         {
-            DataPagination<RodoviasDTO> customResult = null;
+            var customResult = new DataPagination<RodoviasDTO>();
             var customHandled = false;
             TryGetRodoviasCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RodoviasTenantIDDTO> getRodoviasReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RodoviasTenantIDDTO> lista;
             var query = _query.RodoviasTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RodoviasTenantIDDTO>(query.Query,query.Parameters) as List<RodoviasTenantIDDTO>;
+                var lista = _unitOfWork.Query<RodoviasTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RodoviasUserIdDTO> getRodoviasReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RodoviasUserIdDTO> lista;
             var query = _query.RodoviasUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RodoviasUserIdDTO>(query.Query,query.Parameters) as List<RodoviasUserIdDTO>;
+                var lista = _unitOfWork.Query<RodoviasUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROD_IDQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROD_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters) as List<RodoviasDTO>;
+                var result = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

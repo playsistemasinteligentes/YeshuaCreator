@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OrcamentoDTO> getOrcamento(Command.Read.OrcamentoReadCommand command )
         {
-            DataPagination<OrcamentoDTO> customResult = null;
+            var customResult = new DataPagination<OrcamentoDTO>();
             var customHandled = false;
             TryGetOrcamentoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<OrcamentoCLI_IDDTO> getOrcamentoReadFKCLI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrcamentoCLI_IDDTO> lista;
             var query = _query.OrcamentoCLI_IDQuery(command );
 
-                lista = _unitOfWork.Query<OrcamentoCLI_IDDTO>(query.Query,query.Parameters) as List<OrcamentoCLI_IDDTO>;
+                var lista = _unitOfWork.Query<OrcamentoCLI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<OrcamentoTenantIDDTO> getOrcamentoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrcamentoTenantIDDTO> lista;
             var query = _query.OrcamentoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<OrcamentoTenantIDDTO>(query.Query,query.Parameters) as List<OrcamentoTenantIDDTO>;
+                var lista = _unitOfWork.Query<OrcamentoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<OrcamentoUserIdDTO> getOrcamentoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrcamentoUserIdDTO> lista;
             var query = _query.OrcamentoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<OrcamentoUserIdDTO>(query.Query,query.Parameters) as List<OrcamentoUserIdDTO>;
+                var lista = _unitOfWork.Query<OrcamentoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORC_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREP_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORC_TIPO_FRETEQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORC_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVER_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters) as List<OrcamentoDTO>;
+                var result = _unitOfWork.Query<OrcamentoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

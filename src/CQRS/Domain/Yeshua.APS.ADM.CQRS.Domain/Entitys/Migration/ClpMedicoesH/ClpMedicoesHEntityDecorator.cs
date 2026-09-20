@@ -183,7 +183,7 @@
                                         }
                                     }
 
-                                    public string URN_ID
+                                    public string? URN_ID
                                     {
                                         get => _inner.URN_ID;
                                         set
@@ -197,7 +197,7 @@
                                         }
                                     }
 
-                                    public string URM_ID
+                                    public string? URM_ID
                                     {
                                         get => _inner.URM_ID;
                                         set
@@ -225,7 +225,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID
+                                    public string? OCO_ID
                                     {
                                         get => _inner.OCO_ID;
                                         set
@@ -253,7 +253,7 @@
                                         }
                                     }
 
-                                    public string CLP_ORIGEM
+                                    public string? CLP_ORIGEM
                                     {
                                         get => _inner.CLP_ORIGEM;
                                         set
@@ -295,7 +295,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID
+                                    public string? BOL_ID
                                     {
                                         get => _inner.BOL_ID;
                                         set

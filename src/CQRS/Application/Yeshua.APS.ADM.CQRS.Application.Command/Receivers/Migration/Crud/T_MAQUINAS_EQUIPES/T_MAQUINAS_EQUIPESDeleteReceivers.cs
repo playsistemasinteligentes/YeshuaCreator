@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_MAQUINAS_EQUIPESEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_MAQUINAS_EQUIPESEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_MAQUINAS_EQUIPESCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_maquinas_equipes = new T_MAQUINAS_EQUIPESFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MAQ_ID, c.EQU_ID, c.CAL_ID, c.CLI_ID);
                  var domainResult = T_MAQUINAS_EQUIPESDomainBehavior.Apply(t_maquinas_equipes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(t_maquinas_equipes);
-                     return Success("OK", t_maquinas_equipes);
+                     return Task.FromResult(Success("OK", t_maquinas_equipes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_maquinas_equipes);
+                    return Task.FromResult(Error(e, t_maquinas_equipes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

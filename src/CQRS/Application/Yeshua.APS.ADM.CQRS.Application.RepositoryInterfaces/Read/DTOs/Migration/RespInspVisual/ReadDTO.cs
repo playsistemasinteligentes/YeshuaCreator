@@ -22,7 +22,7 @@ namespace Repositorio.Outputs
     public int riv_id { get; set; }
     public int ipv_id { get; set; }
     public int iti_id { get; set; }
-    public string riv_status { get; set; }
+    public string riv_status { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

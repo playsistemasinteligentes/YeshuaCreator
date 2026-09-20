@@ -21,8 +21,8 @@
                     public partial class TipoTesteEntity : ITipoTesteEntity
 {
     public Decimal? TT_ESPECIFICACAO { get; set; }
-    public string TT_ORIGEM_ESPECIFICACAO { get; set; }
-    public string TT_IMPRIME_NO_LAUDO { get; set; }
+    public string? TT_ORIGEM_ESPECIFICACAO { get; set; }
+    public string? TT_IMPRIME_NO_LAUDO { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,15 +32,15 @@
     public string TT_DESC { get; set; }
     public Decimal? TT_TOL_MAIS { get; set; }
     public Decimal? TT_TOL_MENOS { get; set; }
-    public string TT_NORMA { get; set; }
+    public string? TT_NORMA { get; set; }
     public string TT_INICIO_PROCESSO { get; set; }
     public int TA_ID { get; set; }
     public string UNI_ID { get; set; }
     public int? TT_N_AMOSTRAS_P_TESTE { get; set; }
     public int? TT_MAX_DEF_CRITICO { get; set; }
     public int? TT_MAX_DEF_GRAVE { get; set; }
-    private List<string> _erroMensagem = null;
- internal TipoTesteEntity(Decimal? tt_especificacao, string tt_origem_especificacao, string tt_imprime_no_laudo, int tt_id, string tt_nome, string tt_desc, Decimal? tt_tol_mais, Decimal? tt_tol_menos, string tt_norma, string tt_inicio_processo, int ta_id, string uni_id, int? tt_n_amostras_p_teste, int? tt_max_def_critico, int? tt_max_def_grave ){
+    private List<string> _erroMensagem = new List<string>();
+ internal TipoTesteEntity(Decimal? tt_especificacao, string? tt_origem_especificacao, string? tt_imprime_no_laudo, int tt_id, string tt_nome, string tt_desc, Decimal? tt_tol_mais, Decimal? tt_tol_menos, string? tt_norma, string tt_inicio_processo, int ta_id, string uni_id, int? tt_n_amostras_p_teste, int? tt_max_def_critico, int? tt_max_def_grave ){
  TT_ESPECIFICACAO = tt_especificacao; 
  TT_ORIGEM_ESPECIFICACAO = tt_origem_especificacao; 
  TT_IMPRIME_NO_LAUDO = tt_imprime_no_laudo; 

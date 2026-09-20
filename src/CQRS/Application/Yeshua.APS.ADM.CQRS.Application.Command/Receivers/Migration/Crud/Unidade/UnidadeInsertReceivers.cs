@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IUnidadeEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IUnidadeEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.UnidadeCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var unidade = new UnidadeFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.DEESCRICAO, c.UN);
                  var domainResult = UnidadeDomainBehavior.Apply(unidade, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(unidade);
-                     return Success("OK", unidade);
+                     return Task.FromResult(Success("OK", unidade));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, unidade);
+                    return Task.FromResult(Error(e, unidade));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

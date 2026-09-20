@@ -116,7 +116,7 @@
                                         }
                                     }
 
-                                    public string TURM_ID
+                                    public string? TURM_ID
                                     {
                                         get => _inner.TURM_ID;
                                         set
@@ -144,7 +144,7 @@
                                         }
                                     }
 
-                                    public string USE_CODERP
+                                    public string? USE_CODERP
                                     {
                                         get => _inner.USE_CODERP;
                                         set

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OrderTrackDTO> getOrderTrack(Command.Read.OrderTrackReadCommand command )
         {
-            DataPagination<OrderTrackDTO> customResult = null;
+            var customResult = new DataPagination<OrderTrackDTO>();
             var customHandled = false;
             TryGetOrderTrackCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderTrackORD_IDDTO> getOrderTrackReadFKORD_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderTrackORD_IDDTO> lista;
             var query = _query.OrderTrackORD_IDQuery(command );
 
-                lista = _unitOfWork.Query<OrderTrackORD_IDDTO>(query.Query,query.Parameters) as List<OrderTrackORD_IDDTO>;
+                var lista = _unitOfWork.Query<OrderTrackORD_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderTrackTenantIDDTO> getOrderTrackReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderTrackTenantIDDTO> lista;
             var query = _query.OrderTrackTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<OrderTrackTenantIDDTO>(query.Query,query.Parameters) as List<OrderTrackTenantIDDTO>;
+                var lista = _unitOfWork.Query<OrderTrackTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<OrderTrackUserIdDTO> getOrderTrackReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OrderTrackUserIdDTO> lista;
             var query = _query.OrderTrackUserIdQuery(command );
 
-                lista = _unitOfWork.Query<OrderTrackUserIdDTO>(query.Query,query.Parameters) as List<OrderTrackUserIdDTO>;
+                var lista = _unitOfWork.Query<OrderTrackUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_VERSSAOQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_EVENTOQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -412,7 +409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_DATA_NECESSIDADE_DEQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -420,7 +417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_DATA_NECESSIDADE_ATEQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_DATA_PREVISTAQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -436,7 +433,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOTK_DATA_REALIZADAQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_IDQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters) as List<OrderTrackDTO>;
+                var result = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

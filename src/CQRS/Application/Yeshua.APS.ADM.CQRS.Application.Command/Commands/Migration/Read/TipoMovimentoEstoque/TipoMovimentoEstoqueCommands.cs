@@ -13,8 +13,8 @@ namespace Command.Read
 {
     public struct TipoMovimentoEstoqueReadCommand : ICommandRead
     {
-        public string TIP_ID { get; set; }
-        public string TIP_DESCRICAO { get; set; }
+        public string? TIP_ID { get; set; }
+        public string? TIP_DESCRICAO { get; set; }
         public int? TIP_TYPE { get; set; }
         public int? SPR { get; set; }
         public int? TenantID { get; set; }

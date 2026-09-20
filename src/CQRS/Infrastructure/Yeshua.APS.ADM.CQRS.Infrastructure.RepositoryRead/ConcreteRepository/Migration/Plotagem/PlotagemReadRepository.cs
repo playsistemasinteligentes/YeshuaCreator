@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PlotagemDTO> getPlotagem(Command.Read.PlotagemReadCommand command )
         {
-            DataPagination<PlotagemDTO> customResult = null;
+            var customResult = new DataPagination<PlotagemDTO>();
             var customHandled = false;
             TryGetPlotagemCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PlotagemTenantIDDTO> getPlotagemReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PlotagemTenantIDDTO> lista;
             var query = _query.PlotagemTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PlotagemTenantIDDTO>(query.Query,query.Parameters) as List<PlotagemTenantIDDTO>;
+                var lista = _unitOfWork.Query<PlotagemTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PlotagemUserIdDTO> getPlotagemReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PlotagemUserIdDTO> lista;
             var query = _query.PlotagemUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PlotagemUserIdDTO>(query.Query,query.Parameters) as List<PlotagemUserIdDTO>;
+                var lista = _unitOfWork.Query<PlotagemUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_IDQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_DIMENSAOQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_XQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_YQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_ZQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPLO_GRAFICOQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters) as List<PlotagemDTO>;
+                var result = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -18,7 +18,7 @@ namespace Command.Write
         public string ProdutoId { get; set; }
         public int SequenciaTransformacao { get; set; }
         public string StatusCadastro { get; set; }
-        public string TipoPlanejamento { get; set; }
+        public string? TipoPlanejamento { get; set; }
         public int CalendarioId { get; set; }
         public Decimal? HierarquiaSequenciaTransformacao { get; set; }
         public int? ProximaSequenciaTransformacao { get; set; }
@@ -27,7 +27,7 @@ namespace Command.Write
         public Decimal? TempoSetupAjuste { get; set; }
         public Decimal? PecasPorPulso { get; set; }
         public Decimal? PrioridadeInformada { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public string Operacoes { get; set; }
         public string ExcecaoOperacoes { get; set; }
         public string LinhaDireta { get; set; }

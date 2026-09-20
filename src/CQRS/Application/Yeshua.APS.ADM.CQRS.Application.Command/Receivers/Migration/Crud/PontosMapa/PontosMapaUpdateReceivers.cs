@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPontosMapaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPontosMapaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PontosMapaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var pontosmapa = new PontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.PON_ID, c.PON_DESCRICAO, c.PON_TIPO, c.PON_LATITUDE, c.PON_LONGITUDE, c.PON_DISTANCIA_KM, c.MUN_ID);
                  var domainResult = PontosMapaDomainBehavior.Apply(pontosmapa, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(pontosmapa);
-                     return Success("OK", pontosmapa);
+                     return Task.FromResult(Success("OK", pontosmapa));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, pontosmapa);
+                    return Task.FromResult(Error(e, pontosmapa));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

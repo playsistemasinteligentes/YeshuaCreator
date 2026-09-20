@@ -18,12 +18,12 @@ namespace Repositorio.Outputs
 {
     public partial record RoteiroPedidoDTO
     {
-    public string pedidoid { get; set; }
-    public string maquinaid { get; set; }
-    public string produtoid { get; set; }
+    public string pedidoid { get; set; } = string.Empty;
+    public string maquinaid { get; set; } = string.Empty;
+    public string produtoid { get; set; } = string.Empty;
     public int sequenciatransformacao { get; set; }
-    public string statuscadastro { get; set; }
-    public string tipoplanejamento { get; set; }
+    public string statuscadastro { get; set; } = string.Empty;
+    public string tipoplanejamento { get; set; } = string.Empty;
     public int calendarioid { get; set; }
     public Decimal hierarquiasequenciatransformacao { get; set; }
     public int proximasequenciatransformacao { get; set; }
@@ -32,10 +32,10 @@ namespace Repositorio.Outputs
     public Decimal temposetupajuste { get; set; }
     public Decimal pecasporpulso { get; set; }
     public Decimal prioridadeinformada { get; set; }
-    public string status { get; set; }
-    public string operacoes { get; set; }
-    public string excecaooperacoes { get; set; }
-    public string linhadireta { get; set; }
+    public string status { get; set; } = string.Empty;
+    public string operacoes { get; set; } = string.Empty;
+    public string excecaooperacoes { get; set; } = string.Empty;
+    public string linhadireta { get; set; } = string.Empty;
     public int avaliacusto { get; set; }
     public Decimal percentualiniciopassoanterior { get; set; }
     public Decimal maquinalargurautil { get; set; }

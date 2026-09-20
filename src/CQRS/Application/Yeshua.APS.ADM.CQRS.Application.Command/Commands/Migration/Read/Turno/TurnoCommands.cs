@@ -13,8 +13,8 @@ namespace Command.Read
 {
     public struct TurnoReadCommand : ICommandRead
     {
-        public string Id { get; set; }
-        public string Descricao { get; set; }
+        public string? Id { get; set; }
+        public string? Descricao { get; set; }
         public int? TURN_PRIORIDADE { get; set; }
         public DateTime? TURN_HORA_INI_DIA1 { get; set; }
         public DateTime? TURN_HORA_FIM_DIA1 { get; set; }

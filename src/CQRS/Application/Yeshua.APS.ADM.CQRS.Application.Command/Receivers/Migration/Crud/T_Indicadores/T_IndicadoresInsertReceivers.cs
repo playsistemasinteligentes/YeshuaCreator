@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_IndicadoresEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_IndicadoresEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_IndicadoresCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_indicadores = new T_IndicadoresFactory(_logger, _domainTrackingPolicy).Create(context, c.IND_ID, c.IND_DESCRICAO, c.NEG_ID, c.DESC_CALCULO, c.IND_TIPOCOMPARADOR, c.IND_GRAFICO, c.IND_CONEXAO, c.IND_DTCRIACAO, c.RESPOSAVELIND, c.RESPOSAVELCARGA, c.PROCEXTRACAO, c.PER_ID, c.DIM_ID, c.DOM_EMPRESA, c.DOM_FILIAL);
                  var domainResult = T_IndicadoresDomainBehavior.Apply(t_indicadores, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(t_indicadores);
-                     return Success("OK", t_indicadores);
+                     return Task.FromResult(Success("OK", t_indicadores));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_indicadores);
+                    return Task.FromResult(Error(e, t_indicadores));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

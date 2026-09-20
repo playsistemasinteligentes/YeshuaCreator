@@ -89,7 +89,7 @@
                                         }
                                     }
 
-                                    public string REP_ID
+                                    public string? REP_ID
                                     {
                                         get => _inner.REP_ID;
                                         set
@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string CON_ID
+                                    public string? CON_ID
                                     {
                                         get => _inner.CON_ID;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string ORC_TIPO_FRETE
+                                    public string? ORC_TIPO_FRETE
                                     {
                                         get => _inner.ORC_TIPO_FRETE;
                                         set
@@ -145,7 +145,7 @@
                                         }
                                     }
 
-                                    public string CLI_ID
+                                    public string? CLI_ID
                                     {
                                         get => _inner.CLI_ID;
                                         set

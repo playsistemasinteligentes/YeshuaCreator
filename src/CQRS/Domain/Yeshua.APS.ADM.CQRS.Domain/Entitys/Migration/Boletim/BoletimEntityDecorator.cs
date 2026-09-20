@@ -105,7 +105,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID_ORIGEM
+                                    public string? BOL_ID_ORIGEM
                                     {
                                         get => _inner.BOL_ID_ORIGEM;
                                         set
@@ -119,7 +119,7 @@
                                         }
                                     }
 
-                                    public string BOL_SOLVER
+                                    public string? BOL_SOLVER
                                     {
                                         get => _inner.BOL_SOLVER;
                                         set
@@ -133,7 +133,7 @@
                                         }
                                     }
 
-                                    public string BOL_INTEGRACAO
+                                    public string? BOL_INTEGRACAO
                                     {
                                         get => _inner.BOL_INTEGRACAO;
                                         set
@@ -189,7 +189,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL1_PROGRAMADO
+                                    public string? GRP_PAPEL1_PROGRAMADO
                                     {
                                         get => _inner.GRP_PAPEL1_PROGRAMADO;
                                         set
@@ -203,7 +203,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL2_PROGRAMADO
+                                    public string? GRP_PAPEL2_PROGRAMADO
                                     {
                                         get => _inner.GRP_PAPEL2_PROGRAMADO;
                                         set
@@ -217,7 +217,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL3_PROGRAMADO
+                                    public string? GRP_PAPEL3_PROGRAMADO
                                     {
                                         get => _inner.GRP_PAPEL3_PROGRAMADO;
                                         set
@@ -231,7 +231,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL4_PROGRAMADO
+                                    public string? GRP_PAPEL4_PROGRAMADO
                                     {
                                         get => _inner.GRP_PAPEL4_PROGRAMADO;
                                         set
@@ -245,7 +245,7 @@
                                         }
                                     }
 
-                                    public string GRP_PAPEL5_PROGRAMADO
+                                    public string? GRP_PAPEL5_PROGRAMADO
                                     {
                                         get => _inner.GRP_PAPEL5_PROGRAMADO;
                                         set
@@ -259,7 +259,7 @@
                                         }
                                     }
 
-                                    public string BOL_STATUS_INTERFACE
+                                    public string? BOL_STATUS_INTERFACE
                                     {
                                         get => _inner.BOL_STATUS_INTERFACE;
                                         set
@@ -273,7 +273,7 @@
                                         }
                                     }
 
-                                    public string BOL_TIPO
+                                    public string? BOL_TIPO
                                     {
                                         get => _inner.BOL_TIPO;
                                         set
@@ -399,7 +399,7 @@
                                         }
                                     }
 
-                                    public string BOL_OBS
+                                    public string? BOL_OBS
                                     {
                                         get => _inner.BOL_OBS;
                                         set

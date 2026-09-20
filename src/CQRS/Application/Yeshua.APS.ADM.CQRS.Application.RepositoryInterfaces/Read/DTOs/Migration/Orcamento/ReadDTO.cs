@@ -20,11 +20,11 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int orc_id { get; set; }
-    public string rep_id { get; set; }
-    public string con_id { get; set; }
-    public string orc_tipo_frete { get; set; }
+    public string rep_id { get; set; } = string.Empty;
+    public string con_id { get; set; } = string.Empty;
+    public string orc_tipo_frete { get; set; } = string.Empty;
     public DateTime orc_emissao { get; set; }
-    public string cli_id { get; set; }
+    public string cli_id { get; set; } = string.Empty;
     public int ver_id { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

@@ -14,7 +14,7 @@ namespace Command.Read
     public struct CabvisaoReadCommand : ICommandRead
     {
         public int? CAB_ID { get; set; }
-        public string CAB_DESC { get; set; }
+        public string? CAB_DESC { get; set; }
         public int? CAB_STATUS { get; set; }
         public int? USE_ID { get; set; }
         public int? TenantID { get; set; }

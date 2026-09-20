@@ -11,20 +11,24 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record RemoverPedidoDaCargaPlanejamentoTransporteInputCommand : ICommand
+public partial record RemoverPedidoDaCargaPlanejamentoTransporteInputCommand : ICommand, IOperationalTelemetryCommand
 {
-    public string CargaId { get; set; }
-    public string PedidoId { get; set; }
-    public string Motivo { get; set; }
+    public string CargaId { get; set; } = string.Empty;
+    public string PedidoId { get; set; } = string.Empty;
+    public string Motivo { get; set; } = string.Empty;
+
+    public string OperationalEntity => "Carga";
+    public string? OperationalRecordId => CargaId;
 }
 
 public partial record RemoverPedidoDaCargaPlanejamentoTransporteOutputCommand : ICommand
 {
     public bool Sucesso { get; set; }
-    public string Mensagem { get; set; }
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

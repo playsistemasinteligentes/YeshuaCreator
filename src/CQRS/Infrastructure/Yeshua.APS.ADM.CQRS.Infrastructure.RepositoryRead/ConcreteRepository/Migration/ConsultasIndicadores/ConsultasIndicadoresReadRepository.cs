@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ConsultasIndicadoresDTO> getConsultasIndicadores(Command.Read.ConsultasIndicadoresReadCommand command )
         {
-            DataPagination<ConsultasIndicadoresDTO> customResult = null;
+            var customResult = new DataPagination<ConsultasIndicadoresDTO>();
             var customHandled = false;
             TryGetConsultasIndicadoresCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultasIndicadoresTenantIDDTO> getConsultasIndicadoresReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultasIndicadoresTenantIDDTO> lista;
             var query = _query.ConsultasIndicadoresTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ConsultasIndicadoresTenantIDDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresTenantIDDTO>;
+                var lista = _unitOfWork.Query<ConsultasIndicadoresTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ConsultasIndicadoresUserIdDTO> getConsultasIndicadoresReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ConsultasIndicadoresUserIdDTO> lista;
             var query = _query.ConsultasIndicadoresUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ConsultasIndicadoresUserIdDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresUserIdDTO>;
+                var lista = _unitOfWork.Query<ConsultasIndicadoresUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCON_IDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIND_IDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters) as List<ConsultasIndicadoresDTO>;
+                var result = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

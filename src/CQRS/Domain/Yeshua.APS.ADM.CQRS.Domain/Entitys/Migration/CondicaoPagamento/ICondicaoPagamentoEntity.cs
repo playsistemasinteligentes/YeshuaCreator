@@ -22,10 +22,10 @@
 {
     int? Id { get; set; }
     string CON_ID { get; set; }
-    string CON_DESCRICAO { get; set; }
+    string? CON_DESCRICAO { get; set; }
     int? CON_PARCELAS { get; set; }
     Decimal? CON_VALOR_ACRECIMO { get; set; }
-    string CON_INTEGRACAO_ERP { get; set; }
+    string? CON_INTEGRACAO_ERP { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

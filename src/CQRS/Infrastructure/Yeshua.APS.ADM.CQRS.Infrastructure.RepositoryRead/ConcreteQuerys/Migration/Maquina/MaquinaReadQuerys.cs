@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel MaquinaQuery(Command.Read.MaquinaReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -124,7 +123,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         public QueryModel MaquinaTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -155,7 +153,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         public QueryModel MaquinaUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -186,7 +183,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         public QueryModel MaquinaCAL_IDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [CAL_ID] from [Calendario] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -214,7 +210,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -232,7 +227,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -250,7 +244,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -268,7 +261,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -286,7 +278,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -304,7 +295,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -322,7 +312,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -340,7 +329,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByCAL_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -358,7 +346,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_CONTROL_IPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -376,7 +363,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByGMA_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -394,7 +380,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ULTIMA_ATUALIZACAOQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -412,7 +397,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_SIRENE_SEMAFOROQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -430,7 +414,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COR_SEMAFOROQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -448,7 +431,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ID_MAQ_PAIQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -466,7 +448,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TIPO_CONTADORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -484,7 +465,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TIPO_PLANEJAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -502,7 +482,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_AVALIA_CUSTOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -520,7 +499,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByFPR_ID_OP_PRODUZINDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -538,7 +516,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_CONGELA_FILAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -556,7 +533,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TEMPO_MIN_PARADAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -574,7 +550,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_QTD_CORESQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -592,7 +567,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ID_INTEGRACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -610,7 +584,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ID_INTEGRACAO_ERPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -628,7 +601,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_HIERARQUIA_SEQ_TRANSFORMACAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -646,7 +618,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByEQU_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -664,7 +635,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_PERCENTUAL_INICIO_PASSO_ANTERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -682,7 +652,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ACOMPANHA_LOTE_PILOTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -700,7 +669,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ID_SENSORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -718,7 +686,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_DEBOUNCING_LOWQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -736,7 +703,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_DEBOUNCING_HIGHTQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -754,7 +720,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TIPO_SINALQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -772,7 +737,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByTEM_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -790,7 +754,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_CHAPA_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -808,7 +771,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_CHAPA_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -826,7 +788,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LARGURA_CHAPA_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -844,7 +805,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LARGURA_CHAPA_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -862,7 +822,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -880,7 +839,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -898,7 +856,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -916,7 +873,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -934,7 +890,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -952,7 +907,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -970,7 +924,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LARGURA_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -988,7 +941,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LARGURA_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1006,7 +958,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ALTURA_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1024,7 +975,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ALTURA_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1042,7 +992,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1060,7 +1009,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1078,7 +1026,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ABA_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1096,7 +1043,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ABA_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1114,7 +1060,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LAP_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1132,7 +1077,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LAP_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1150,7 +1094,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ONDASQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1168,7 +1111,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_PROLONGA_LAPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1186,7 +1128,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LARGURA_IMPRESSAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1204,7 +1145,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_COMPRIMENTO_IMPRESSAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1222,7 +1162,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ROLO_DISPOSITIVO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1240,7 +1179,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_ROLO_DISPOSITIVO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1258,7 +1196,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_FAMILIASQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1276,7 +1213,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_REFILE_MINIMOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1294,7 +1230,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_LARGURA_UTILQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1312,7 +1247,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TOTAL_ACOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1330,7 +1264,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_FECHAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1348,7 +1281,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_OPERACAO_VINCARQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1366,7 +1298,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_OPERACAO_MONTA_DIVISAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1384,7 +1315,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_OPERACAO_SERRARQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1402,7 +1332,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TIPO_LAPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1420,7 +1349,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_INDICE_PARADAS_POR_OPQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1438,7 +1366,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_PERDA_MAXIMAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1456,7 +1383,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TOTAL_PECAS_REFILANDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1474,7 +1400,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TOTAL_PECAS_NAO_REFILANDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1492,7 +1417,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel ExistsByMAQ_TOTAL_VINCOSQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1510,7 +1434,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1528,7 +1451,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByDescricaoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1546,7 +1468,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByStatusQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1564,7 +1485,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1582,7 +1502,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1600,7 +1519,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1618,7 +1536,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1636,7 +1553,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByCAL_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1654,7 +1570,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_CONTROL_IPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1672,7 +1587,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByGMA_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1690,7 +1604,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ULTIMA_ATUALIZACAOQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1708,7 +1621,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_SIRENE_SEMAFOROQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1726,7 +1638,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COR_SEMAFOROQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1744,7 +1655,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ID_MAQ_PAIQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1762,7 +1672,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TIPO_CONTADORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1780,7 +1689,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TIPO_PLANEJAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1798,7 +1706,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_AVALIA_CUSTOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1816,7 +1723,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByFPR_ID_OP_PRODUZINDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1834,7 +1740,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_CONGELA_FILAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1852,7 +1757,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TEMPO_MIN_PARADAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1870,7 +1774,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_QTD_CORESQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1888,7 +1791,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ID_INTEGRACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1906,7 +1808,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ID_INTEGRACAO_ERPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1924,7 +1825,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_HIERARQUIA_SEQ_TRANSFORMACAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1942,7 +1842,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByEQU_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1960,7 +1859,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_PERCENTUAL_INICIO_PASSO_ANTERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1978,7 +1876,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ACOMPANHA_LOTE_PILOTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -1996,7 +1893,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ID_SENSORQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2014,7 +1910,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_DEBOUNCING_LOWQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2032,7 +1927,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_DEBOUNCING_HIGHTQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2050,7 +1944,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TIPO_SINALQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2068,7 +1961,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByTEM_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2086,7 +1978,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_CHAPA_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2104,7 +1995,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_CHAPA_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2122,7 +2012,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LARGURA_CHAPA_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2140,7 +2029,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LARGURA_CHAPA_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2158,7 +2046,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2176,7 +2063,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2194,7 +2080,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2212,7 +2097,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIORQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2230,7 +2114,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2248,7 +2131,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2266,7 +2148,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LARGURA_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2284,7 +2165,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LARGURA_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2302,7 +2182,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ALTURA_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2320,7 +2199,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ALTURA_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2338,7 +2216,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2356,7 +2233,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2374,7 +2250,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ABA_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2392,7 +2267,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ABA_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2410,7 +2284,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LAP_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2428,7 +2301,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LAP_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2446,7 +2318,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ONDASQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2464,7 +2335,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_PROLONGA_LAPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2482,7 +2352,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LARGURA_IMPRESSAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2500,7 +2369,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_COMPRIMENTO_IMPRESSAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2518,7 +2386,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ROLO_DISPOSITIVO_DEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2536,7 +2403,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_ROLO_DISPOSITIVO_ATEQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2554,7 +2420,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_FAMILIASQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2572,7 +2437,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_REFILE_MINIMOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2590,7 +2454,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_LARGURA_UTILQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2608,7 +2471,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TOTAL_ACOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2626,7 +2488,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_FECHAMENTOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2644,7 +2505,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_OPERACAO_VINCARQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2662,7 +2522,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_OPERACAO_MONTA_DIVISAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2680,7 +2539,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_OPERACAO_SERRARQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2698,7 +2556,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TIPO_LAPQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2716,7 +2573,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_INDICE_PARADAS_POR_OPQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2734,7 +2590,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_PERDA_MAXIMAQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2752,7 +2607,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TOTAL_PECAS_REFILANDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2770,7 +2624,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TOTAL_PECAS_NAO_REFILANDOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -2788,7 +2641,6 @@ if (Command.MAQ_TOTAL_VINCOS.HasValue) whereClauses.Add($"[MAQ_TOTAL_VINCOS] = @
         }
         public QueryModel FirstByMAQ_TOTAL_VINCOSQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

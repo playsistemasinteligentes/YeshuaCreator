@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICanhotosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICanhotosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CanhotosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var canhotos = new CanhotosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.NOT_ID, c.CAN_DATA_ENTREGA, c.CAN_IMG, c.CAN_LAT_ENTREGA, c.CAN_LONG_ENTREGA);
                  var domainResult = CanhotosDomainBehavior.Apply(canhotos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(canhotos);
-                     return Success("OK", canhotos);
+                     return Task.FromResult(Success("OK", canhotos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, canhotos);
+                    return Task.FromResult(Error(e, canhotos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

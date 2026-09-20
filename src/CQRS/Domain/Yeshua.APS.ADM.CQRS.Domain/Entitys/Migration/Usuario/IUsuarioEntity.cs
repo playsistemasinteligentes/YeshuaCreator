@@ -24,9 +24,9 @@
     string USE_NOME { get; set; }
     string USE_EMAIL { get; set; }
     string USE_SENHA { get; set; }
-    string TURM_ID { get; set; }
+    string? TURM_ID { get; set; }
     int USE_ATIVO { get; set; }
-    string USE_CODERP { get; set; }
+    string? USE_CODERP { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

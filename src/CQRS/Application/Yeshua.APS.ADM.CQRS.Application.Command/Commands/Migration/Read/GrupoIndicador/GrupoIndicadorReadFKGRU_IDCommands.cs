@@ -14,7 +14,7 @@ namespace Command.Read
     public struct GrupoIndicadorReadFKGRU_IDCommand : ICommand
     {
         public int? GRU_ID { get; set; }
-        public string NOME { get; set; }
+        public string? NOME { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

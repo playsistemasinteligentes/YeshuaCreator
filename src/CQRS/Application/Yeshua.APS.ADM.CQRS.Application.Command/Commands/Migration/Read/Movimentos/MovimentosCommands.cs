@@ -14,7 +14,7 @@ namespace Command.Read
     public struct MovimentosReadCommand : ICommandRead
     {
         public int? MOV_ID { get; set; }
-        public string MOV_DATA { get; set; }
+        public string? MOV_DATA { get; set; }
         public Decimal? MOV_VALOR { get; set; }
         public int? MOV_PLAID { get; set; }
         public int? MOV_UNID { get; set; }

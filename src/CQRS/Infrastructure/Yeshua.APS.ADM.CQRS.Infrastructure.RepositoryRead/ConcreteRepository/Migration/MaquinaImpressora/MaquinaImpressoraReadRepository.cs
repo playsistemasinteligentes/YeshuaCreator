@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MaquinaImpressoraDTO> getMaquinaImpressora(Command.Read.MaquinaImpressoraReadCommand command )
         {
-            DataPagination<MaquinaImpressoraDTO> customResult = null;
+            var customResult = new DataPagination<MaquinaImpressoraDTO>();
             var customHandled = false;
             TryGetMaquinaImpressoraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaImpressoraIMP_IDDTO> getMaquinaImpressoraReadFKIMP_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaImpressoraIMP_IDDTO> lista;
             var query = _query.MaquinaImpressoraIMP_IDQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaImpressoraIMP_IDDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraIMP_IDDTO>;
+                var lista = _unitOfWork.Query<MaquinaImpressoraIMP_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaImpressoraTenantIDDTO> getMaquinaImpressoraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaImpressoraTenantIDDTO> lista;
             var query = _query.MaquinaImpressoraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaImpressoraTenantIDDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraTenantIDDTO>;
+                var lista = _unitOfWork.Query<MaquinaImpressoraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MaquinaImpressoraUserIdDTO> getMaquinaImpressoraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MaquinaImpressoraUserIdDTO> lista;
             var query = _query.MaquinaImpressoraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MaquinaImpressoraUserIdDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraUserIdDTO>;
+                var lista = _unitOfWork.Query<MaquinaImpressoraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IMP_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIMP_IDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAI_FACAOQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters) as List<MaquinaImpressoraDTO>;
+                var result = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

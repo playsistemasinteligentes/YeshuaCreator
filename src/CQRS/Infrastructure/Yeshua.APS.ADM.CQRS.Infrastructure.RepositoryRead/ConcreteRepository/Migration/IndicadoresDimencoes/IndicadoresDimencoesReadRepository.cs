@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<IndicadoresDimencoesDTO> getIndicadoresDimencoes(Command.Read.IndicadoresDimencoesReadCommand command )
         {
-            DataPagination<IndicadoresDimencoesDTO> customResult = null;
+            var customResult = new DataPagination<IndicadoresDimencoesDTO>();
             var customHandled = false;
             TryGetIndicadoresDimencoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDimencoesIND_IDDTO> getIndicadoresDimencoesReadFKIND_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDimencoesIND_IDDTO> lista;
             var query = _query.IndicadoresDimencoesIND_IDQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDimencoesIND_IDDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesIND_IDDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDimencoesIND_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDimencoesTenantIDDTO> getIndicadoresDimencoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDimencoesTenantIDDTO> lista;
             var query = _query.IndicadoresDimencoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDimencoesTenantIDDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDimencoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<IndicadoresDimencoesUserIdDTO> getIndicadoresDimencoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<IndicadoresDimencoesUserIdDTO> lista;
             var query = _query.IndicadoresDimencoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<IndicadoresDimencoesUserIdDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesUserIdDTO>;
+                var lista = _unitOfWork.Query<IndicadoresDimencoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_IDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIND_IDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_SQLQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_CONEXAOQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters) as List<IndicadoresDimencoesDTO>;
+                var result = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

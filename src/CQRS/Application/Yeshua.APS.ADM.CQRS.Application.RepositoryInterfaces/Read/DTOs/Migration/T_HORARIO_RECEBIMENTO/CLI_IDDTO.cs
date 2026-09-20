@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record T_HORARIO_RECEBIMENTOCLI_IDDTO
     {
-    public string cli_id { get; set; }
+    public string cli_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

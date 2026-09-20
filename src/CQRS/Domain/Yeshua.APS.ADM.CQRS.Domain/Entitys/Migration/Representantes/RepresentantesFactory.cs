@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IRepresentantesEntity Create(int? id, int rep_id, string rep_nome )
+                                    } public IRepresentantesEntity Create(int? id, int rep_id, string? rep_nome )
                             {
                                 return Create(null, id, rep_id, rep_nome);
                             }
 
                             public IRepresentantesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rep_id, string rep_nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rep_id, string? rep_nome )
                             {
                             var entity = new RepresentantesEntity(id, rep_id, rep_nome );
 

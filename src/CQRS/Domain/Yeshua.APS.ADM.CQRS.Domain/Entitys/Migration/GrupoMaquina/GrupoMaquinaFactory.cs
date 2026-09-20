@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IGrupoMaquinaEntity Create(string id, string descricao, string status, string gma_tipo_planejamento )
+                                    } public IGrupoMaquinaEntity Create(string? id, string? descricao, string? status, string? gma_tipo_planejamento )
                             {
                                 return Create(null, id, descricao, status, gma_tipo_planejamento);
                             }
 
                             public IGrupoMaquinaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string id, string descricao, string status, string gma_tipo_planejamento )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? descricao, string? status, string? gma_tipo_planejamento )
                             {
                             var entity = new GrupoMaquinaEntity(id, descricao, status, gma_tipo_planejamento );
 

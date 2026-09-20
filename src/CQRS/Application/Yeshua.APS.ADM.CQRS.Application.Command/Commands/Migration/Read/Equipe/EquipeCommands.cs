@@ -14,7 +14,7 @@ namespace Command.Read
     public struct EquipeReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string EQU_ID { get; set; }
+        public string? EQU_ID { get; set; }
         public Decimal? EQU_HIERARQUIA_SEQ_TRANSFORMACAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<OrderTrackDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<OrderTrackDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.OrderTrackReadCommand c) 
              {    
                 var OrderTrackReadRepository = _repository.getOrderTrack(c);
-                return Success("OK", OrderTrackReadRepository);
+                return Task.FromResult(Success("OK", OrderTrackReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

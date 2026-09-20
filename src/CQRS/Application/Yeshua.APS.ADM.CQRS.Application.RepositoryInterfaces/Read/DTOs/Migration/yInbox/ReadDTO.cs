@@ -19,16 +19,16 @@ namespace Repositorio.Outputs
     public partial record yInboxDTO
     {
     public int id { get; set; }
-    public string messageid { get; set; }
-    public string type { get; set; }
-    public string entitytype { get; set; }
-    public string entityid { get; set; }
-    public string correlationid { get; set; }
-    public string payload { get; set; }
+    public string messageid { get; set; } = string.Empty;
+    public string type { get; set; } = string.Empty;
+    public string entitytype { get; set; } = string.Empty;
+    public string entityid { get; set; } = string.Empty;
+    public string correlationid { get; set; } = string.Empty;
+    public string payload { get; set; } = string.Empty;
     public int status { get; set; }
     public DateTime createdat { get; set; }
     public int retrycount { get; set; }
-    public string lasterror { get; set; }
+    public string lasterror { get; set; } = string.Empty;
     public DateTime processingat { get; set; }
     public DateTime nextattemptat { get; set; }
     public int sagaid { get; set; }

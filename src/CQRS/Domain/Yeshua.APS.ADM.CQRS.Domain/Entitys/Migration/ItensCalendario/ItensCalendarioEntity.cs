@@ -23,20 +23,20 @@
     public int ICA_ID { get; set; }
     public DateTime ICA_DATA_DE { get; set; }
     public DateTime ICA_DATA_ATE { get; set; }
-    public string ICA_OBSERVACAO { get; set; }
+    public string? ICA_OBSERVACAO { get; set; }
     public int ICA_TIPO { get; set; }
-    public string URM_ID { get; set; }
-    public string URN_ID { get; set; }
+    public string? URM_ID { get; set; }
+    public string? URN_ID { get; set; }
     public int CAL_ID { get; set; }
-    public string MAQ_ID { get; set; }
-    public string PRO_ID { get; set; }
+    public string? MAQ_ID { get; set; }
+    public string? PRO_ID { get; set; }
     public int? ICA_LIMPESA_MAQUINA { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ItensCalendarioEntity(int ica_id, DateTime ica_data_de, DateTime ica_data_ate, string ica_observacao, int ica_tipo, string urm_id, string urn_id, int cal_id, string maq_id, string pro_id, int? ica_limpesa_maquina ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ItensCalendarioEntity(int ica_id, DateTime ica_data_de, DateTime ica_data_ate, string? ica_observacao, int ica_tipo, string? urm_id, string? urn_id, int cal_id, string? maq_id, string? pro_id, int? ica_limpesa_maquina ){
  ICA_ID = ica_id; 
  ICA_DATA_DE = (ica_data_de < (new DateTime(1800, 1, 1))) ? DateTime.Now : ica_data_de; 
  ICA_DATA_ATE = (ica_data_ate < (new DateTime(1800, 1, 1))) ? DateTime.Now : ica_data_ate; 
@@ -54,9 +54,9 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(ICA_DATA_DE == null || ICA_DATA_DE < (new DateTime(1800, 1, 1)))
+   if(ICA_DATA_DE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ICA DATA DE deve ser informado.");
-   if(ICA_DATA_ATE == null || ICA_DATA_ATE < (new DateTime(1800, 1, 1)))
+   if(ICA_DATA_ATE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ICA DATA ATE deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

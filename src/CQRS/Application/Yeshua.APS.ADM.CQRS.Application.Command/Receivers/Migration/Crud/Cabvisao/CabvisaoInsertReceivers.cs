@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICabvisaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICabvisaoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CabvisaoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cabvisao = new CabvisaoFactory(_logger, _domainTrackingPolicy).Create(context, c.CAB_ID, c.CAB_DESC, c.CAB_STATUS, c.USE_ID);
                  var domainResult = CabvisaoDomainBehavior.Apply(cabvisao, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(cabvisao);
-                     return Success("OK", cabvisao);
+                     return Task.FromResult(Success("OK", cabvisao));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cabvisao);
+                    return Task.FromResult(Error(e, cabvisao));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

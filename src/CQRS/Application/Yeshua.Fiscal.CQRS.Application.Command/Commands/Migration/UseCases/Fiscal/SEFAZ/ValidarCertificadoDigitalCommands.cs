@@ -15,9 +15,12 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record ValidarCertificadoDigitalInputCommand : ICommand
+public partial record ValidarCertificadoDigitalInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int CertificadoDigitalId { get; set; }
+
+    public string OperationalEntity => "CertificadoDigital";
+    public string? OperationalRecordId => null;
 }
 
 public partial record ValidarCertificadoDigitalOutputCommand : ICommand

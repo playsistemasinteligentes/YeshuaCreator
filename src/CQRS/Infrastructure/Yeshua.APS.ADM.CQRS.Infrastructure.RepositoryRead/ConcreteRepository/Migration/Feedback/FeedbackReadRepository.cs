@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<FeedbackDTO> getFeedback(Command.Read.FeedbackReadCommand command )
         {
-            DataPagination<FeedbackDTO> customResult = null;
+            var customResult = new DataPagination<FeedbackDTO>();
             var customHandled = false;
             TryGetFeedbackCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<FeedbackOcorrenciaIdDTO> getFeedbackReadFKOcorrenciaId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FeedbackOcorrenciaIdDTO> lista;
             var query = _query.FeedbackOcorrenciaIdQuery(command );
 
-                lista = _unitOfWork.Query<FeedbackOcorrenciaIdDTO>(query.Query,query.Parameters) as List<FeedbackOcorrenciaIdDTO>;
+                var lista = _unitOfWork.Query<FeedbackOcorrenciaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<FeedbackTurnoIdDTO> getFeedbackReadFKTurnoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FeedbackTurnoIdDTO> lista;
             var query = _query.FeedbackTurnoIdQuery(command );
 
-                lista = _unitOfWork.Query<FeedbackTurnoIdDTO>(query.Query,query.Parameters) as List<FeedbackTurnoIdDTO>;
+                var lista = _unitOfWork.Query<FeedbackTurnoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<FeedbackTurmaIdDTO> getFeedbackReadFKTurmaId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FeedbackTurmaIdDTO> lista;
             var query = _query.FeedbackTurmaIdQuery(command );
 
-                lista = _unitOfWork.Query<FeedbackTurmaIdDTO>(query.Query,query.Parameters) as List<FeedbackTurmaIdDTO>;
+                var lista = _unitOfWork.Query<FeedbackTurmaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<FeedbackUsuarioIdDTO> getFeedbackReadFKUsuarioId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FeedbackUsuarioIdDTO> lista;
             var query = _query.FeedbackUsuarioIdQuery(command );
 
-                lista = _unitOfWork.Query<FeedbackUsuarioIdDTO>(query.Query,query.Parameters) as List<FeedbackUsuarioIdDTO>;
+                var lista = _unitOfWork.Query<FeedbackUsuarioIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -140,10 +136,9 @@ namespace Read.Repository
 
         private IEnumerable<FeedbackTenantIDDTO> getFeedbackReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FeedbackTenantIDDTO> lista;
             var query = _query.FeedbackTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<FeedbackTenantIDDTO>(query.Query,query.Parameters) as List<FeedbackTenantIDDTO>;
+                var lista = _unitOfWork.Query<FeedbackTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -158,10 +153,9 @@ namespace Read.Repository
 
         private IEnumerable<FeedbackUserIdDTO> getFeedbackReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<FeedbackUserIdDTO> lista;
             var query = _query.FeedbackUserIdQuery(command );
 
-                lista = _unitOfWork.Query<FeedbackUserIdDTO>(query.Query,query.Parameters) as List<FeedbackUserIdDTO>;
+                var lista = _unitOfWork.Query<FeedbackUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -562,7 +556,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +564,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataInicialQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +572,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDatafinalQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +580,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMaquinaIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +588,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOcorrenciaIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +596,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTurnoIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -610,7 +604,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTurmaIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -618,7 +612,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUsuarioIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -626,7 +620,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOrderIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -634,7 +628,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProdutoIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -642,7 +636,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObservacoesQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -650,7 +644,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -658,7 +652,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDiaTurmaQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -666,7 +660,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySequenciaTransformacaoQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -674,7 +668,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySequenciaRepeticaoQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -682,7 +676,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadePulsosQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -690,7 +684,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadePecasPorPulsoQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -698,7 +692,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFEE_QTD_TOTAL_PRODUCAO_AJUSTADAQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -706,7 +700,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -714,7 +708,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -722,7 +716,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -730,7 +724,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -738,7 +732,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -746,7 +740,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters) as List<FeedbackDTO>;
+                var result = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

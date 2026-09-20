@@ -92,7 +92,7 @@
                                         }
                                     }
 
-                                    public string TRA_NOME
+                                    public string? TRA_NOME
                                     {
                                         get => _inner.TRA_NOME;
                                         set
@@ -106,7 +106,7 @@
                                         }
                                     }
 
-                                    public string TRA_CNPJ
+                                    public string? TRA_CNPJ
                                     {
                                         get => _inner.TRA_CNPJ;
                                         set
@@ -120,7 +120,7 @@
                                         }
                                     }
 
-                                    public string TRA_INSCRICAO_ESTADUAL
+                                    public string? TRA_INSCRICAO_ESTADUAL
                                     {
                                         get => _inner.TRA_INSCRICAO_ESTADUAL;
                                         set
@@ -134,7 +134,7 @@
                                         }
                                     }
 
-                                    public string TRA_RNTRC
+                                    public string? TRA_RNTRC
                                     {
                                         get => _inner.TRA_RNTRC;
                                         set
@@ -148,7 +148,7 @@
                                         }
                                     }
 
-                                    public string TRA_EMAIL
+                                    public string? TRA_EMAIL
                                     {
                                         get => _inner.TRA_EMAIL;
                                         set
@@ -162,7 +162,7 @@
                                         }
                                     }
 
-                                    public string TRA_RESPONSAVEL
+                                    public string? TRA_RESPONSAVEL
                                     {
                                         get => _inner.TRA_RESPONSAVEL;
                                         set
@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string TRA_FONE
+                                    public string? TRA_FONE
                                     {
                                         get => _inner.TRA_FONE;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string TRA_ID_INTEGRACAO
+                                    public string? TRA_ID_INTEGRACAO
                                     {
                                         get => _inner.TRA_ID_INTEGRACAO;
                                         set
@@ -204,7 +204,7 @@
                                         }
                                     }
 
-                                    public string TRA_ID_INTEGRACAO_ERP
+                                    public string? TRA_ID_INTEGRACAO_ERP
                                     {
                                         get => _inner.TRA_ID_INTEGRACAO_ERP;
                                         set

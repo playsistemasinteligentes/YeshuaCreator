@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICondicaoPagamentoEntity Create(int? id, string con_id, string con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string con_integracao_erp )
+                                    } public ICondicaoPagamentoEntity Create(int? id, string con_id, string? con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string? con_integracao_erp )
                             {
                                 return Create(null, id, con_id, con_descricao, con_parcelas, con_valor_acrecimo, con_integracao_erp);
                             }
 
                             public ICondicaoPagamentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string con_id, string con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string con_integracao_erp )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string con_id, string? con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string? con_integracao_erp )
                             {
                             var entity = new CondicaoPagamentoEntity(id, con_id, con_descricao, con_parcelas, con_valor_acrecimo, con_integracao_erp );
 

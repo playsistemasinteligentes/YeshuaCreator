@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IGrupoSegmentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IGrupoSegmentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.GrupoSegmentoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var gruposegmento = new GrupoSegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.GRS_DESCRICAO, c.GRS_INTEGRACAO_ERP);
                  var domainResult = GrupoSegmentoDomainBehavior.Apply(gruposegmento, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(gruposegmento);
-                     return Success("OK", gruposegmento);
+                     return Task.FromResult(Success("OK", gruposegmento));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, gruposegmento);
+                    return Task.FromResult(Error(e, gruposegmento));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

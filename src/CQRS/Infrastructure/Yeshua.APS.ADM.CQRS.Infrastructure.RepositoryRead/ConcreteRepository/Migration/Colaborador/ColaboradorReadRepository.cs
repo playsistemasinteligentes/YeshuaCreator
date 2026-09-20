@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ColaboradorDTO> getColaborador(Command.Read.ColaboradorReadCommand command )
         {
-            DataPagination<ColaboradorDTO> customResult = null;
+            var customResult = new DataPagination<ColaboradorDTO>();
             var customHandled = false;
             TryGetColaboradorCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ColaboradorTURM_idDTO> getColaboradorReadFKTURM_id(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ColaboradorTURM_idDTO> lista;
             var query = _query.ColaboradorTURM_idQuery(command );
 
-                lista = _unitOfWork.Query<ColaboradorTURM_idDTO>(query.Query,query.Parameters) as List<ColaboradorTURM_idDTO>;
+                var lista = _unitOfWork.Query<ColaboradorTURM_idDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ColaboradorTenantIDDTO> getColaboradorReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ColaboradorTenantIDDTO> lista;
             var query = _query.ColaboradorTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ColaboradorTenantIDDTO>(query.Query,query.Parameters) as List<ColaboradorTenantIDDTO>;
+                var lista = _unitOfWork.Query<ColaboradorTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ColaboradorUserIdDTO> getColaboradorReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ColaboradorUserIdDTO> lista;
             var query = _query.ColaboradorUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ColaboradorUserIdDTO>(query.Query,query.Parameters) as List<ColaboradorUserIdDTO>;
+                var lista = _unitOfWork.Query<ColaboradorUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOL_CPFQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOL_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOL_NASCIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOL_EMAILQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOL_MATRICULAQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_idQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters) as List<ColaboradorDTO>;
+                var result = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

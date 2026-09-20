@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PedidoPlanejavelDTO> getPedidoPlanejavel(Command.Read.PedidoPlanejavelReadCommand command )
         {
-            DataPagination<PedidoPlanejavelDTO> customResult = null;
+            var customResult = new DataPagination<PedidoPlanejavelDTO>();
             var customHandled = false;
             TryGetPedidoPlanejavelCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -358,7 +358,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidoIdQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -366,7 +366,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByClienteIdQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -374,7 +374,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByClienteNomeQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -382,7 +382,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEstadoQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -390,7 +390,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -398,7 +398,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRegiaoQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -406,7 +406,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBairroQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -414,7 +414,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRotaIdQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -422,7 +422,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmbarqueAlvoQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -430,7 +430,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataEntregaDeQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -438,7 +438,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataEntregaAteQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -446,7 +446,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -454,7 +454,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -462,7 +462,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySaldoAExpedirQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -470,7 +470,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -478,7 +478,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCargaAtualIdQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -486,7 +486,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVersaoPlanejamentoQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -494,7 +494,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAlertasResumoQuery(value );
 
-                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters) as List<PedidoPlanejavelDTO>;
+                var result = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

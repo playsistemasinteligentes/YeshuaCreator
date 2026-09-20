@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICalendarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICalendarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CalendarioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var calendario = new CalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.CAL_ID, c.CAL_DESCRICAO, c.CAL_DIVIDE_DIA_EM);
                  var domainResult = CalendarioDomainBehavior.Apply(calendario, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(calendario);
-                     return Success("OK", calendario);
+                     return Task.FromResult(Success("OK", calendario));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, calendario);
+                    return Task.FromResult(Error(e, calendario));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

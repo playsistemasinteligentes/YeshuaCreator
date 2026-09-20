@@ -27,11 +27,11 @@
     public Decimal? CustoEstimado { get; set; }
     public Decimal? AderenciaCubagem { get; set; }
     public Decimal? AderenciaJanelaEntrega { get; set; }
-    public string RiscoResumo { get; set; }
-    public string PedidosResumo { get; set; }
-    public string OpcoesConflitantesResumo { get; set; }
-    private List<string> _erroMensagem = null;
- internal OpcaoPlanejamentoTransporteEntity(string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string riscoresumo, string pedidosresumo, string opcoesconflitantesresumo ){
+    public string? RiscoResumo { get; set; }
+    public string? PedidosResumo { get; set; }
+    public string? OpcoesConflitantesResumo { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal OpcaoPlanejamentoTransporteEntity(string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string? riscoresumo, string? pedidosresumo, string? opcoesconflitantesresumo ){
  OpcaoId = opcaoid; 
  GrupoDecisaoId = grupodecisaoid; 
  Peso = peso; 

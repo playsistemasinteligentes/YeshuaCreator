@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_PREFERENCIASDTO> getT_PREFERENCIAS(Command.Read.T_PREFERENCIASReadCommand command )
         {
-            DataPagination<T_PREFERENCIASDTO> customResult = null;
+            var customResult = new DataPagination<T_PREFERENCIASDTO>();
             var customHandled = false;
             TryGetT_PREFERENCIASCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_PREFERENCIASTenantIDDTO> getT_PREFERENCIASReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_PREFERENCIASTenantIDDTO> lista;
             var query = _query.T_PREFERENCIASTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_PREFERENCIASTenantIDDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_PREFERENCIASTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_PREFERENCIASUserIdDTO> getT_PREFERENCIASReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_PREFERENCIASUserIdDTO> lista;
             var query = _query.T_PREFERENCIASUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_PREFERENCIASUserIdDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASUserIdDTO>;
+                var lista = _unitOfWork.Query<T_PREFERENCIASUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRE_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRE_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRE_NAMESPACEQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRE_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRE_VALORQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters) as List<T_PREFERENCIASDTO>;
+                var result = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

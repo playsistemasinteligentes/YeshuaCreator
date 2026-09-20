@@ -19,12 +19,12 @@ namespace Repositorio.Outputs
     public partial record TemplateDeTestesDTO
     {
     public int id { get; set; }
-    public string descricao { get; set; }
+    public string descricao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
-    public string observacao { get; set; }
+    public string observacao { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

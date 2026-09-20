@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<Unidade_UnidadeDTO> getUnidade_Unidade(Command.Read.Unidade_UnidadeReadCommand command )
         {
-            DataPagination<Unidade_UnidadeDTO> customResult = null;
+            var customResult = new DataPagination<Unidade_UnidadeDTO>();
             var customHandled = false;
             TryGetUnidade_UnidadeCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<Unidade_UnidadeTenantIDDTO> getUnidade_UnidadeReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<Unidade_UnidadeTenantIDDTO> lista;
             var query = _query.Unidade_UnidadeTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<Unidade_UnidadeTenantIDDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeTenantIDDTO>;
+                var lista = _unitOfWork.Query<Unidade_UnidadeTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<Unidade_UnidadeUserIdDTO> getUnidade_UnidadeReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<Unidade_UnidadeUserIdDTO> lista;
             var query = _query.Unidade_UnidadeUserIdQuery(command );
 
-                lista = _unitOfWork.Query<Unidade_UnidadeUserIdDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeUserIdDTO>;
+                var lista = _unitOfWork.Query<Unidade_UnidadeUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeDTO>;
+                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeDTO>;
+                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeDTO>;
+                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeDTO>;
+                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeDTO>;
+                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters) as List<Unidade_UnidadeDTO>;
+                var result = _unitOfWork.Query<Unidade_UnidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

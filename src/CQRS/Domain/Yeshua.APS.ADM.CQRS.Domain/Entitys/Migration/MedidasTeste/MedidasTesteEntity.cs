@@ -22,16 +22,16 @@
 {
     public int? Id { get; set; }
     public int MDT_ID { get; set; }
-    public string MDT_DESC { get; set; }
+    public string? MDT_DESC { get; set; }
     public Decimal? MDT_VALOR_ESPERADO { get; set; }
     public Decimal? MDT_ENCONTRADO { get; set; }
-    public string UNI_ID { get; set; }
+    public string? UNI_ID { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal MedidasTesteEntity(int? id, int mdt_id, string mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string uni_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal MedidasTesteEntity(int? id, int mdt_id, string? mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string? uni_id ){
  Id = id; 
  MDT_ID = mdt_id; 
  MDT_DESC = mdt_desc; 

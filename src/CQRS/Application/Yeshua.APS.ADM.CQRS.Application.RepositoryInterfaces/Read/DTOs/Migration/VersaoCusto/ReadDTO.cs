@@ -20,8 +20,8 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int ver_id { get; set; }
-    public string ver_status { get; set; }
-    public string ver_obs { get; set; }
+    public string ver_status { get; set; } = string.Empty;
+    public string ver_obs { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

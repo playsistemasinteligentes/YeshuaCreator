@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICenarioPlanejamentoTransporteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICenarioPlanejamentoTransporteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CenarioPlanejamentoTransporteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cenarioplanejamentotransporte = new CenarioPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.CenarioId, c.Descricao, c.Objetivo, c.QuantidadeCargas, c.QuantidadePedidosNaoAtendidos, c.CustoTotal, c.AderenciaCubagem, c.AtrasoPrevisto, c.AlertasResumo);
                  var domainResult = CenarioPlanejamentoTransporteDomainBehavior.Apply(cenarioplanejamentotransporte, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(cenarioplanejamentotransporte);
-                     return Success("OK", cenarioplanejamentotransporte);
+                     return Task.FromResult(Success("OK", cenarioplanejamentotransporte));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cenarioplanejamentotransporte);
+                    return Task.FromResult(Error(e, cenarioplanejamentotransporte));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

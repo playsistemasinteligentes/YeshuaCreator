@@ -18,8 +18,8 @@ namespace Repositorio.Outputs
 {
     public partial record FeedbackTurmaIdDTO
     {
-    public string id { get; set; }
-    public string descricao { get; set; }
+    public string id { get; set; } = string.Empty;
+    public string descricao { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

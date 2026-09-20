@@ -18,9 +18,9 @@ namespace Repositorio.Outputs
 {
     public partial record PontosMapaDTO
     {
-    public string pon_id { get; set; }
-    public string pon_descricao { get; set; }
-    public string pon_tipo { get; set; }
+    public string pon_id { get; set; } = string.Empty;
+    public string pon_descricao { get; set; } = string.Empty;
+    public string pon_tipo { get; set; } = string.Empty;
     public Decimal pon_latitude { get; set; }
     public Decimal pon_longitude { get; set; }
     public Decimal pon_distancia_km { get; set; }
@@ -28,7 +28,7 @@ namespace Repositorio.Outputs
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
-    public string mun_id { get; set; }
+    public string mun_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

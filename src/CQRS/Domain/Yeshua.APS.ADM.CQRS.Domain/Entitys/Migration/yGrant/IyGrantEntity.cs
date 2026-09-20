@@ -20,8 +20,8 @@
                 {
                     public interface IyGrantEntity
 {
-    string Id { get; set; }
-    string Description { get; set; }
+    string? Id { get; set; }
+    string? Description { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

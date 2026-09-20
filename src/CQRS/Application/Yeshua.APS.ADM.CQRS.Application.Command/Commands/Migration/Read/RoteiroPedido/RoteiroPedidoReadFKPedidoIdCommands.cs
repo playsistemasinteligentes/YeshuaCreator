@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct RoteiroPedidoReadFKPedidoIdCommand : ICommand
     {
-        public string PedidoId { get; set; }
+        public string? PedidoId { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

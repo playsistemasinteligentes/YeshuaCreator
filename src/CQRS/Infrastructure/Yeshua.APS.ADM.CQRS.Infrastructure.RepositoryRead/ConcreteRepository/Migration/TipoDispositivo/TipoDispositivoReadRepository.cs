@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TipoDispositivoDTO> getTipoDispositivo(Command.Read.TipoDispositivoReadCommand command )
         {
-            DataPagination<TipoDispositivoDTO> customResult = null;
+            var customResult = new DataPagination<TipoDispositivoDTO>();
             var customHandled = false;
             TryGetTipoDispositivoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoDispositivoTenantIDDTO> getTipoDispositivoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoDispositivoTenantIDDTO> lista;
             var query = _query.TipoDispositivoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TipoDispositivoTenantIDDTO>(query.Query,query.Parameters) as List<TipoDispositivoTenantIDDTO>;
+                var lista = _unitOfWork.Query<TipoDispositivoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TipoDispositivoUserIdDTO> getTipoDispositivoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TipoDispositivoUserIdDTO> lista;
             var query = _query.TipoDispositivoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TipoDispositivoUserIdDTO>(query.Query,query.Parameters) as List<TipoDispositivoUserIdDTO>;
+                var lista = _unitOfWork.Query<TipoDispositivoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTDI_IDQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTDI_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters) as List<TipoDispositivoDTO>;
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

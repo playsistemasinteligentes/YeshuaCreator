@@ -107,7 +107,7 @@
                                         }
                                     }
 
-                                    public string RazaoSocial
+                                    public string? RazaoSocial
                                     {
                                         get => _inner.RazaoSocial;
                                         set
@@ -149,7 +149,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -261,7 +261,7 @@
                                         }
                                     }
 
-                                    public string CorFila
+                                    public string? CorFila
                                     {
                                         get => _inner.CorFila;
                                         set
@@ -275,7 +275,7 @@
                                         }
                                     }
 
-                                    public string PedidoCliente
+                                    public string? PedidoCliente
                                     {
                                         get => _inner.PedidoCliente;
                                         set

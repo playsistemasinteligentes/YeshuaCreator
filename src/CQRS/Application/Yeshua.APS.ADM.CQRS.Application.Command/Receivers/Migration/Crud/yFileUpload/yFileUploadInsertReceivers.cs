@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IyFileUploadEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IyFileUploadEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yFileUploadCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var yfileupload = new yFileUploadFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Type, c.Status, c.FilePath, c.FileSize, c.EntityType, c.EntityId, c.CreatedAt, c.CompletedAt);
                  var domainResult = yFileUploadDomainBehavior.Apply(yfileupload, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(yfileupload);
-                     return Success("OK", yfileupload);
+                     return Task.FromResult(Success("OK", yfileupload));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, yfileupload);
+                    return Task.FromResult(Error(e, yfileupload));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

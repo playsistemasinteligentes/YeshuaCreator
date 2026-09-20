@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RotaPontosMapaDTO> getRotaPontosMapa(Command.Read.RotaPontosMapaReadCommand command )
         {
-            DataPagination<RotaPontosMapaDTO> customResult = null;
+            var customResult = new DataPagination<RotaPontosMapaDTO>();
             var customHandled = false;
             TryGetRotaPontosMapaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RotaPontosMapaPON_ID_DESTINODTO> getRotaPontosMapaReadFKPON_ID_DESTINO(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RotaPontosMapaPON_ID_DESTINODTO> lista;
             var query = _query.RotaPontosMapaPON_ID_DESTINOQuery(command );
 
-                lista = _unitOfWork.Query<RotaPontosMapaPON_ID_DESTINODTO>(query.Query,query.Parameters) as List<RotaPontosMapaPON_ID_DESTINODTO>;
+                var lista = _unitOfWork.Query<RotaPontosMapaPON_ID_DESTINODTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RotaPontosMapaTenantIDDTO> getRotaPontosMapaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RotaPontosMapaTenantIDDTO> lista;
             var query = _query.RotaPontosMapaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RotaPontosMapaTenantIDDTO>(query.Query,query.Parameters) as List<RotaPontosMapaTenantIDDTO>;
+                var lista = _unitOfWork.Query<RotaPontosMapaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<RotaPontosMapaUserIdDTO> getRotaPontosMapaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RotaPontosMapaUserIdDTO> lista;
             var query = _query.RotaPontosMapaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RotaPontosMapaUserIdDTO>(query.Query,query.Parameters) as List<RotaPontosMapaUserIdDTO>;
+                var lista = _unitOfWork.Query<RotaPontosMapaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_IDQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_ID_DESTINOQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_ID_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_CUSTO_TOTALQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_ID_ROTEIROQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_ORDEM_ROTEIROQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_DISTANCIAQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -412,7 +409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -420,7 +417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters) as List<RotaPontosMapaDTO>;
+                var result = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

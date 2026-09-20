@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMemoriaDeCalculoEntity Create(int? id, int mem_id, int? orc_id, Decimal? mem_valor, string mem_descricao )
+                                    } public IMemoriaDeCalculoEntity Create(int? id, int mem_id, int? orc_id, Decimal? mem_valor, string? mem_descricao )
                             {
                                 return Create(null, id, mem_id, orc_id, mem_valor, mem_descricao);
                             }
 
                             public IMemoriaDeCalculoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mem_id, int? orc_id, Decimal? mem_valor, string mem_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mem_id, int? orc_id, Decimal? mem_valor, string? mem_descricao )
                             {
                             var entity = new MemoriaDeCalculoEntity(id, mem_id, orc_id, mem_valor, mem_descricao );
 

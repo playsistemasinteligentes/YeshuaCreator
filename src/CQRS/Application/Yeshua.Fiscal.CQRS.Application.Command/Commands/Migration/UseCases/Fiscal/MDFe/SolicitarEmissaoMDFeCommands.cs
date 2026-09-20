@@ -15,7 +15,7 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record SolicitarEmissaoMDFeInputCommand : ICommand
+public partial record SolicitarEmissaoMDFeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string CorrelationId { get; set; } = string.Empty;
     public string CargaId { get; set; } = string.Empty;
@@ -24,6 +24,9 @@ public partial record SolicitarEmissaoMDFeInputCommand : ICommand
     public string UFDescarregamento { get; set; } = string.Empty;
     public string PlacaVeiculo { get; set; } = string.Empty;
     public string DocumentosOriginariosJson { get; set; } = string.Empty;
+
+    public string OperationalEntity => "MDFeSolicitacaoFiscal";
+    public string? OperationalRecordId => CorrelationId;
 }
 
 public partial record SolicitarEmissaoMDFeOutputCommand : ICommand

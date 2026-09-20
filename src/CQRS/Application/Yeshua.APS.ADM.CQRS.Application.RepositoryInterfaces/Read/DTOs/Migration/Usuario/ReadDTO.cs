@@ -19,12 +19,12 @@ namespace Repositorio.Outputs
     public partial record UsuarioDTO
     {
     public int use_id { get; set; }
-    public string use_nome { get; set; }
-    public string use_email { get; set; }
-    public string use_senha { get; set; }
-    public string turm_id { get; set; }
+    public string use_nome { get; set; } = string.Empty;
+    public string use_email { get; set; } = string.Empty;
+    public string use_senha { get; set; } = string.Empty;
+    public string turm_id { get; set; } = string.Empty;
     public int use_ativo { get; set; }
-    public string use_coderp { get; set; }
+    public string use_coderp { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

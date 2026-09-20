@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ITipoCarroceriaEntity Create(int? id, string tca_id, string tca_descricao )
+                                    } public ITipoCarroceriaEntity Create(int? id, string tca_id, string? tca_descricao )
                             {
                                 return Create(null, id, tca_id, tca_descricao);
                             }
 
                             public ITipoCarroceriaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tca_id, string tca_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tca_id, string? tca_descricao )
                             {
                             var entity = new TipoCarroceriaEntity(id, tca_id, tca_descricao );
 

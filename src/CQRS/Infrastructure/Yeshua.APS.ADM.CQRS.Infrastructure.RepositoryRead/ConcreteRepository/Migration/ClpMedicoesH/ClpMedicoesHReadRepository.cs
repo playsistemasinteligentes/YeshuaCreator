@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ClpMedicoesHDTO> getClpMedicoesH(Command.Read.ClpMedicoesHReadCommand command )
         {
-            DataPagination<ClpMedicoesHDTO> customResult = null;
+            var customResult = new DataPagination<ClpMedicoesHDTO>();
             var customHandled = false;
             TryGetClpMedicoesHCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ClpMedicoesHTenantIDDTO> getClpMedicoesHReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClpMedicoesHTenantIDDTO> lista;
             var query = _query.ClpMedicoesHTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ClpMedicoesHTenantIDDTO>(query.Query,query.Parameters) as List<ClpMedicoesHTenantIDDTO>;
+                var lista = _unitOfWork.Query<ClpMedicoesHTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ClpMedicoesHUserIdDTO> getClpMedicoesHReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClpMedicoesHUserIdDTO> lista;
             var query = _query.ClpMedicoesHUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ClpMedicoesHUserIdDTO>(query.Query,query.Parameters) as List<ClpMedicoesHUserIdDTO>;
+                var lista = _unitOfWork.Query<ClpMedicoesHUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQUINA_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDATA_INIQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDATA_FIMQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLP_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQTDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGRUPOQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySTATUSQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByURN_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByURM_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByID_LOTE_CLPQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFASEQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLP_ORIGEMQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLP_LOTEQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOMPACTAQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -610,7 +608,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -618,7 +616,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -626,7 +624,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters) as List<ClpMedicoesHDTO>;
+                var result = _unitOfWork.Query<ClpMedicoesHDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

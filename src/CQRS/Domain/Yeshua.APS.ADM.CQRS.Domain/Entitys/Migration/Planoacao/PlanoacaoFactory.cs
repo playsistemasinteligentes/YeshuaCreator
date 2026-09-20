@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPlanoacaoEntity Create(int pla_id, string pla_descricao, int? met_id, string pla_status, DateTime? pla_data, string pla_metaperiodo, string pla_vlrperiodo, string pla_metaculado, string pla_vlracumulado, string pla_referencia, int use_id )
+                                    } public IPlanoacaoEntity Create(int pla_id, string pla_descricao, int? met_id, string? pla_status, DateTime? pla_data, string? pla_metaperiodo, string? pla_vlrperiodo, string? pla_metaculado, string? pla_vlracumulado, string? pla_referencia, int use_id )
                             {
                                 return Create(null, pla_id, pla_descricao, met_id, pla_status, pla_data, pla_metaperiodo, pla_vlrperiodo, pla_metaculado, pla_vlracumulado, pla_referencia, use_id);
                             }
 
                             public IPlanoacaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_descricao, int? met_id, string pla_status, DateTime? pla_data, string pla_metaperiodo, string pla_vlrperiodo, string pla_metaculado, string pla_vlracumulado, string pla_referencia, int use_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_descricao, int? met_id, string? pla_status, DateTime? pla_data, string? pla_metaperiodo, string? pla_vlrperiodo, string? pla_metaculado, string? pla_vlracumulado, string? pla_referencia, int use_id )
                             {
                             var entity = new PlanoacaoEntity(pla_id, pla_descricao, met_id, pla_status, pla_data, pla_metaperiodo, pla_vlrperiodo, pla_metaculado, pla_vlracumulado, pla_referencia, use_id );
 

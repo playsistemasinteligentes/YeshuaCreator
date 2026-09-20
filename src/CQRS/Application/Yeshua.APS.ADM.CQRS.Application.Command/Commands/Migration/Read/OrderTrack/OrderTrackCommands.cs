@@ -17,8 +17,8 @@ namespace Command.Read
         public int? OTK_ID { get; set; }
         public Decimal? OTK_SEQUENCIA { get; set; }
         public int? OTK_VERSSAO { get; set; }
-        public string ORD_ID { get; set; }
-        public string OTK_EVENTO { get; set; }
+        public string? ORD_ID { get; set; }
+        public string? OTK_EVENTO { get; set; }
         public DateTime? OTK_DATA_NECESSIDADE_DE { get; set; }
         public DateTime? OTK_DATA_NECESSIDADE_ATE { get; set; }
         public DateTime? OTK_DATA_PREVISTA { get; set; }

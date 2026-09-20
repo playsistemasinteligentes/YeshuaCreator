@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<T_HORARIO_RECEBIMENTODTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<T_HORARIO_RECEBIMENTODTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.T_HORARIO_RECEBIMENTOReadCommand c) 
              {    
                 var T_HORARIO_RECEBIMENTOReadRepository = _repository.getT_HORARIO_RECEBIMENTO(c);
-                return Success("OK", T_HORARIO_RECEBIMENTOReadRepository);
+                return Task.FromResult(Success("OK", T_HORARIO_RECEBIMENTOReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

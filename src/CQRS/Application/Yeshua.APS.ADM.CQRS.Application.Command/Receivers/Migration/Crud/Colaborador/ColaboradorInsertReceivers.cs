@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IColaboradorEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IColaboradorEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ColaboradorCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var colaborador = new ColaboradorFactory(_logger, _domainTrackingPolicy).Create(context, c.COL_CPF, c.COL_NOME, c.COL_NASCIMENTO, c.COL_EMAIL, c.COL_MATRICULA, c.TURM_id);
                  var domainResult = ColaboradorDomainBehavior.Apply(colaborador, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(colaborador);
-                     return Success("OK", colaborador);
+                     return Task.FromResult(Success("OK", colaborador));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, colaborador);
+                    return Task.FromResult(Error(e, colaborador));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

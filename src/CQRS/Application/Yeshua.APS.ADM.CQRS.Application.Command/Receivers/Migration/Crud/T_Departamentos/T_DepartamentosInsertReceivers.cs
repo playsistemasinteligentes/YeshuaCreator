@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IT_DepartamentosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IT_DepartamentosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.T_DepartamentosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var t_departamentos = new T_DepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.DEP_ID, c.DEP_NOME);
                  var domainResult = T_DepartamentosDomainBehavior.Apply(t_departamentos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(t_departamentos);
-                     return Success("OK", t_departamentos);
+                     return Task.FromResult(Success("OK", t_departamentos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, t_departamentos);
+                    return Task.FromResult(Error(e, t_departamentos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

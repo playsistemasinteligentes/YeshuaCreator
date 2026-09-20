@@ -19,9 +19,9 @@ namespace Repositorio.Outputs
     public partial record T_GrupoDTO
     {
     public int gru_id { get; set; }
-    public string nome { get; set; }
+    public string nome { get; set; } = string.Empty;
     public int exibelista { get; set; }
-    public string gru_descricao { get; set; }
+    public string gru_descricao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

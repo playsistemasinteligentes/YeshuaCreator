@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<yConfigArctetureDTO> getyConfigArcteture(Command.Read.yConfigArctetureReadCommand command )
         {
-            DataPagination<yConfigArctetureDTO> customResult = null;
+            var customResult = new DataPagination<yConfigArctetureDTO>();
             var customHandled = false;
             TryGetyConfigArctetureCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<yConfigArctetureTenantIDDTO> getyConfigArctetureReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yConfigArctetureTenantIDDTO> lista;
             var query = _query.yConfigArctetureTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<yConfigArctetureTenantIDDTO>(query.Query,query.Parameters) as List<yConfigArctetureTenantIDDTO>;
+                var lista = _unitOfWork.Query<yConfigArctetureTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<yConfigArctetureUserIdDTO> getyConfigArctetureReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yConfigArctetureUserIdDTO> lista;
             var query = _query.yConfigArctetureUserIdQuery(command );
 
-                lista = _unitOfWork.Query<yConfigArctetureUserIdDTO>(query.Query,query.Parameters) as List<yConfigArctetureUserIdDTO>;
+                var lista = _unitOfWork.Query<yConfigArctetureUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAuditTrackerActivedQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAuditCRUDActivedQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters) as List<yConfigArctetureDTO>;
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

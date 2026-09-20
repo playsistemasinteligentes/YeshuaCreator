@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<UnidadeMedidaDTO> getUnidadeMedida(Command.Read.UnidadeMedidaReadCommand command )
         {
-            DataPagination<UnidadeMedidaDTO> customResult = null;
+            var customResult = new DataPagination<UnidadeMedidaDTO>();
             var customHandled = false;
             TryGetUnidadeMedidaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<UnidadeMedidaTenantIDDTO> getUnidadeMedidaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UnidadeMedidaTenantIDDTO> lista;
             var query = _query.UnidadeMedidaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<UnidadeMedidaTenantIDDTO>(query.Query,query.Parameters) as List<UnidadeMedidaTenantIDDTO>;
+                var lista = _unitOfWork.Query<UnidadeMedidaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<UnidadeMedidaUserIdDTO> getUnidadeMedidaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<UnidadeMedidaUserIdDTO> lista;
             var query = _query.UnidadeMedidaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<UnidadeMedidaUserIdDTO>(query.Query,query.Parameters) as List<UnidadeMedidaUserIdDTO>;
+                var lista = _unitOfWork.Query<UnidadeMedidaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_ESCALA_TEMPOQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters) as List<UnidadeMedidaDTO>;
+                var result = _unitOfWork.Query<UnidadeMedidaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

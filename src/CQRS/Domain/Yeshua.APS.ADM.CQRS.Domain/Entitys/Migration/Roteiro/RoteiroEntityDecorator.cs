@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string GrupoMaquinaId
+                                    public string? GrupoMaquinaId
                                     {
                                         get => _inner.GrupoMaquinaId;
                                         set
@@ -171,7 +171,7 @@
                                         }
                                     }
 
-                                    public string Acao
+                                    public string? Acao
                                     {
                                         get => _inner.Acao;
                                         set
@@ -241,7 +241,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -283,7 +283,7 @@
                                         }
                                     }
 
-                                    public string Operacoes
+                                    public string? Operacoes
                                     {
                                         get => _inner.Operacoes;
                                         set
@@ -297,7 +297,7 @@
                                         }
                                     }
 
-                                    public string ExcecaoOperacoes
+                                    public string? ExcecaoOperacoes
                                     {
                                         get => _inner.ExcecaoOperacoes;
                                         set
@@ -325,7 +325,7 @@
                                         }
                                     }
 
-                                    public string LinhaDireta
+                                    public string? LinhaDireta
                                     {
                                         get => _inner.LinhaDireta;
                                         set

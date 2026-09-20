@@ -69,7 +69,7 @@
                                         }
                                     }
 
-                                    public string GRE_DESCRICAO
+                                    public string? GRE_DESCRICAO
                                     {
                                         get => _inner.GRE_DESCRICAO;
                                         set

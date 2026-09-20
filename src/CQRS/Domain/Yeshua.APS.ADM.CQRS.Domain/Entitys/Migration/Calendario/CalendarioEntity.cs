@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal CalendarioEntity(int cal_id, string cal_descricao, int? cal_divide_dia_em ){
  CAL_ID = cal_id; 
  CAL_DESCRICAO = cal_descricao; 

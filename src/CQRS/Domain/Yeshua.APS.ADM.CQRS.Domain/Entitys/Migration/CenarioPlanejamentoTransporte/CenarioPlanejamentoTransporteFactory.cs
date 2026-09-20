@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICenarioPlanejamentoTransporteEntity Create(string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string alertasresumo )
+                                    } public ICenarioPlanejamentoTransporteEntity Create(string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string? alertasresumo )
                             {
                                 return Create(null, cenarioid, descricao, objetivo, quantidadecargas, quantidadepedidosnaoatendidos, custototal, aderenciacubagem, atrasoprevisto, alertasresumo);
                             }
 
                             public ICenarioPlanejamentoTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string alertasresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string? alertasresumo )
                             {
                             var entity = new CenarioPlanejamentoTransporteEntity(cenarioid, descricao, objetivo, quantidadecargas, quantidadepedidosnaoatendidos, custototal, aderenciacubagem, atrasoprevisto, alertasresumo );
 

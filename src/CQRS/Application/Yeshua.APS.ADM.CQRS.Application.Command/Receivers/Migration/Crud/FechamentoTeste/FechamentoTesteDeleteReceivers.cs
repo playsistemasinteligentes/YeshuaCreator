@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IFechamentoTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IFechamentoTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.FechamentoTesteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var fechamentoteste = new FechamentoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FEC_ID, c.FEC_QTD, c.GRP_ID);
                  var domainResult = FechamentoTesteDomainBehavior.Apply(fechamentoteste, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(fechamentoteste);
-                     return Success("OK", fechamentoteste);
+                     return Task.FromResult(Success("OK", fechamentoteste));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, fechamentoteste);
+                    return Task.FromResult(Error(e, fechamentoteste));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

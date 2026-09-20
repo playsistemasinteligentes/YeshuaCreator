@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record MovimentosDTO
     {
     public int mov_id { get; set; }
-    public string mov_data { get; set; }
+    public string mov_data { get; set; } = string.Empty;
     public Decimal mov_valor { get; set; }
     public int mov_plaid { get; set; }
     public int mov_unid { get; set; }

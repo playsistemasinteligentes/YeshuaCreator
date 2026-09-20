@@ -13,8 +13,8 @@ namespace Command.Read
 {
     public struct TargetProdutoReadFKTURN_IDCommand : ICommand
     {
-        public string Id { get; set; }
-        public string Descricao { get; set; }
+        public string? Id { get; set; }
+        public string? Descricao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

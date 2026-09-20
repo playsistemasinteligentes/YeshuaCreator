@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IConsultaPedidoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IConsultaPedidoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ConsultaPedidoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var consultapedido = new ConsultaPedidoFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.ClienteId, c.ClienteNome, c.RazaoSocial, c.ProdutoId, c.ProdutoDescricao, c.Status, c.Estagio, c.DataEntregaDe, c.DataEntregaAte, c.EmbarqueAlvo, c.Quantidade, c.SaldoAProduzir, c.SaldoAExpedir, c.CorFila, c.PedidoCliente);
                  var domainResult = ConsultaPedidoDomainBehavior.Apply(consultapedido, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(consultapedido);
-                     return Success("OK", consultapedido);
+                     return Task.FromResult(Success("OK", consultapedido));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, consultapedido);
+                    return Task.FromResult(Error(e, consultapedido));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

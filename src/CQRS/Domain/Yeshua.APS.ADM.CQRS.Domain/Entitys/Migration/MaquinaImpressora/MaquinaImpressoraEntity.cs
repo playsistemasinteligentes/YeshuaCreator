@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal MaquinaImpressoraEntity(int maq_imp_id, string maq_id, int imp_id, int mai_facao ){
  MAQ_IMP_ID = maq_imp_id; 
  MAQ_ID = maq_id; 

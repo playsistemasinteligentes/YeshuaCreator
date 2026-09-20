@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ResultMedidaEntity(int? id, int rsm_id, int? rl_id, int? mdt_id ){
  Id = id; 
  RSM_ID = rsm_id; 

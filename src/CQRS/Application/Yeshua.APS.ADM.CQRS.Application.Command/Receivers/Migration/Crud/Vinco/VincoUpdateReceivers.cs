@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IVincoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IVincoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.VincoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var vinco = new VincoFactory(_logger, _domainTrackingPolicy).Create(context, c.VIN_ID, c.VIN_DESCRICAO, c.VIN_ID_DESLOCAMENTO);
                  var domainResult = VincoDomainBehavior.Apply(vinco, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(vinco);
-                     return Success("OK", vinco);
+                     return Task.FromResult(Success("OK", vinco));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, vinco);
+                    return Task.FromResult(Error(e, vinco));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

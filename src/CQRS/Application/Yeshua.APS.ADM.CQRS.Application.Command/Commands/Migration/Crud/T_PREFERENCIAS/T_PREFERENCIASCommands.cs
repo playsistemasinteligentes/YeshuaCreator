@@ -15,10 +15,10 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public int PRE_ID { get; set; }
-        public string PRE_DESCRICAO { get; set; }
-        public string PRE_NAMESPACE { get; set; }
-        public string PRE_TIPO { get; set; }
-        public string PRE_VALOR { get; set; }
+        public string? PRE_DESCRICAO { get; set; }
+        public string? PRE_NAMESPACE { get; set; }
+        public string? PRE_TIPO { get; set; }
+        public string? PRE_VALOR { get; set; }
         public int? USE_ID { get; set; }
         public int? PER_ID { get; set; }
         public int? TenantID { get; set; }

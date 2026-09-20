@@ -110,7 +110,7 @@
                                         }
                                     }
 
-                                    public string DESC_CALCULO
+                                    public string? DESC_CALCULO
                                     {
                                         get => _inner.DESC_CALCULO;
                                         set
@@ -152,7 +152,7 @@
                                         }
                                     }
 
-                                    public string IND_CONEXAO
+                                    public string? IND_CONEXAO
                                     {
                                         get => _inner.IND_CONEXAO;
                                         set
@@ -180,7 +180,7 @@
                                         }
                                     }
 
-                                    public string RESPOSAVELIND
+                                    public string? RESPOSAVELIND
                                     {
                                         get => _inner.RESPOSAVELIND;
                                         set
@@ -194,7 +194,7 @@
                                         }
                                     }
 
-                                    public string RESPOSAVELCARGA
+                                    public string? RESPOSAVELCARGA
                                     {
                                         get => _inner.RESPOSAVELCARGA;
                                         set
@@ -208,7 +208,7 @@
                                         }
                                     }
 
-                                    public string PROCEXTRACAO
+                                    public string? PROCEXTRACAO
                                     {
                                         get => _inner.PROCEXTRACAO;
                                         set
@@ -222,7 +222,7 @@
                                         }
                                     }
 
-                                    public string PER_ID
+                                    public string? PER_ID
                                     {
                                         get => _inner.PER_ID;
                                         set
@@ -236,7 +236,7 @@
                                         }
                                     }
 
-                                    public string DIM_ID
+                                    public string? DIM_ID
                                     {
                                         get => _inner.DIM_ID;
                                         set
@@ -250,7 +250,7 @@
                                         }
                                     }
 
-                                    public string DOM_EMPRESA
+                                    public string? DOM_EMPRESA
                                     {
                                         get => _inner.DOM_EMPRESA;
                                         set
@@ -264,7 +264,7 @@
                                         }
                                     }
 
-                                    public string DOM_FILIAL
+                                    public string? DOM_FILIAL
                                     {
                                         get => _inner.DOM_FILIAL;
                                         set

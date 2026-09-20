@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRespInspVisualEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRespInspVisualEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RespInspVisualCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var respinspvisual = new RespInspVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RIV_ID, c.IPV_ID, c.ITI_ID, c.RIV_STATUS);
                  var domainResult = RespInspVisualDomainBehavior.Apply(respinspvisual, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(respinspvisual);
-                     return Success("OK", respinspvisual);
+                     return Task.FromResult(Success("OK", respinspvisual));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, respinspvisual);
+                    return Task.FromResult(Error(e, respinspvisual));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

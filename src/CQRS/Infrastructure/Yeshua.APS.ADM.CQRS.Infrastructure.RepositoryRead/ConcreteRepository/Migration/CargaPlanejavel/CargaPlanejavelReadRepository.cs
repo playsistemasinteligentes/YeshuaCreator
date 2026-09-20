@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CargaPlanejavelDTO> getCargaPlanejavel(Command.Read.CargaPlanejavelReadCommand command )
         {
-            DataPagination<CargaPlanejavelDTO> customResult = null;
+            var customResult = new DataPagination<CargaPlanejavelDTO>();
             var customHandled = false;
             TryGetCargaPlanejavelCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -262,7 +262,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCargaIdQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -270,7 +270,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +278,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTransportadoraIdQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +286,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVeiculoIdQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +294,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoVeiculoIdQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +302,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoTeoricoQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -310,7 +310,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeTeoricoQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -318,7 +318,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByInicioJanelaEmbarqueQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -326,7 +326,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFimJanelaEmbarqueQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -334,7 +334,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmbarqueAlvoQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -342,7 +342,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadePedidosQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -350,7 +350,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAlertasResumoQuery(value );
 
-                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters) as List<CargaPlanejavelDTO>;
+                var result = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

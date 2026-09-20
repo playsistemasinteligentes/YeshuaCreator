@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPlotagemEntity Create(int? id, int plo_id, string plo_nome, string plo_dimensao, string plo_x, string plo_y, string plo_z, string plo_grafico, int? con_id )
+                                    } public IPlotagemEntity Create(int? id, int plo_id, string? plo_nome, string? plo_dimensao, string? plo_x, string? plo_y, string? plo_z, string? plo_grafico, int? con_id )
                             {
                                 return Create(null, id, plo_id, plo_nome, plo_dimensao, plo_x, plo_y, plo_z, plo_grafico, con_id);
                             }
 
                             public IPlotagemEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int plo_id, string plo_nome, string plo_dimensao, string plo_x, string plo_y, string plo_z, string plo_grafico, int? con_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int plo_id, string? plo_nome, string? plo_dimensao, string? plo_x, string? plo_y, string? plo_z, string? plo_grafico, int? con_id )
                             {
                             var entity = new PlotagemEntity(id, plo_id, plo_nome, plo_dimensao, plo_x, plo_y, plo_z, plo_grafico, con_id );
 

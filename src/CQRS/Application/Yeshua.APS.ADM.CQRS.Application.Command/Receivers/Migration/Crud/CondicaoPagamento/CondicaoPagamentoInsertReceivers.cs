@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICondicaoPagamentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICondicaoPagamentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CondicaoPagamentoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var condicaopagamento = new CondicaoPagamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_ID, c.CON_DESCRICAO, c.CON_PARCELAS, c.CON_VALOR_ACRECIMO, c.CON_INTEGRACAO_ERP);
                  var domainResult = CondicaoPagamentoDomainBehavior.Apply(condicaopagamento, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(condicaopagamento);
-                     return Success("OK", condicaopagamento);
+                     return Task.FromResult(Success("OK", condicaopagamento));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, condicaopagamento);
+                    return Task.FromResult(Error(e, condicaopagamento));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

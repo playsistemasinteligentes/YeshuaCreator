@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ClienteDTO> getCliente(Command.Read.ClienteReadCommand command )
         {
-            DataPagination<ClienteDTO> customResult = null;
+            var customResult = new DataPagination<ClienteDTO>();
             var customHandled = false;
             TryGetClienteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ClienteMUN_ID_ENTREGADTO> getClienteReadFKMUN_ID_ENTREGA(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClienteMUN_ID_ENTREGADTO> lista;
             var query = _query.ClienteMUN_ID_ENTREGAQuery(command );
 
-                lista = _unitOfWork.Query<ClienteMUN_ID_ENTREGADTO>(query.Query,query.Parameters) as List<ClienteMUN_ID_ENTREGADTO>;
+                var lista = _unitOfWork.Query<ClienteMUN_ID_ENTREGADTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ClienteTenantIDDTO> getClienteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClienteTenantIDDTO> lista;
             var query = _query.ClienteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ClienteTenantIDDTO>(query.Query,query.Parameters) as List<ClienteTenantIDDTO>;
+                var lista = _unitOfWork.Query<ClienteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ClienteUserIdDTO> getClienteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClienteUserIdDTO> lista;
             var query = _query.ClienteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ClienteUserIdDTO>(query.Query,query.Parameters) as List<ClienteUserIdDTO>;
+                var lista = _unitOfWork.Query<ClienteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -620,7 +617,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -628,7 +625,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_NOMEQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -636,7 +633,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_FONEQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -644,7 +641,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_OBSQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -652,7 +649,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_ENDERECO_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -660,7 +657,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_CPF_CNPJQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -668,7 +665,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_BAIRRO_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -676,7 +673,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_CEP_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -684,7 +681,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_EMAILQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -692,7 +689,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -700,7 +697,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMUN_ID_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -708,7 +705,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_TRANSLADOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -716,7 +713,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_REGIAO_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -724,7 +721,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_EXIGENTE_NA_IMPRESSAOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -732,7 +729,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -740,7 +737,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_TEMPO_DESCARREGAMENTO_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -748,7 +745,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_PERCENTUAL_JANELA_EMBARQUEQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -756,7 +753,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREP_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -764,7 +761,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_RAZAO_SOCIALQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -772,7 +769,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_EMAIL_MONITORAMENTO_TRANSPORTEQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -780,7 +777,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_CONTATOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -788,7 +785,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_SETORQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -796,7 +793,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySEG_IDQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -804,7 +801,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -812,7 +809,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_INTEGRACAO_ERPQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -820,7 +817,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_LATITUDE_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -828,7 +825,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_LONGITUDE_ENTREGAQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -836,7 +833,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -844,7 +841,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -852,7 +849,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -860,7 +857,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters) as List<ClienteDTO>;
+                var result = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

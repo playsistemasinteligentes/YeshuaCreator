@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CargaDTO> getCarga(Command.Read.CargaReadCommand command )
         {
-            DataPagination<CargaDTO> customResult = null;
+            var customResult = new DataPagination<CargaDTO>();
             var customHandled = false;
             TryGetCargaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CargaOCO_IDDTO> getCargaReadFKOCO_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CargaOCO_IDDTO> lista;
             var query = _query.CargaOCO_IDQuery(command );
 
-                lista = _unitOfWork.Query<CargaOCO_IDDTO>(query.Query,query.Parameters) as List<CargaOCO_IDDTO>;
+                var lista = _unitOfWork.Query<CargaOCO_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CargaTenantIDDTO> getCargaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CargaTenantIDDTO> lista;
             var query = _query.CargaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CargaTenantIDDTO>(query.Query,query.Parameters) as List<CargaTenantIDDTO>;
+                var lista = _unitOfWork.Query<CargaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<CargaUserIdDTO> getCargaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CargaUserIdDTO> lista;
             var query = _query.CargaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CargaUserIdDTO>(query.Query,query.Parameters) as List<CargaUserIdDTO>;
+                var lista = _unitOfWork.Query<CargaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -844,7 +841,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -852,7 +849,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -860,7 +857,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PREVISAO_MATERIA_PRIMAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -868,7 +865,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_INICIO_PREVISTOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -876,7 +873,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_INICIO_REALIZADOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -884,7 +881,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_FIM_PREVISTOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -892,7 +889,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_FIM_REALIZADOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -900,7 +897,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_INICIO_JANELA_EMBARQUEQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -908,7 +905,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_FIM_JANELA_EMBARQUEQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -916,7 +913,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_EMBARQUE_ALVOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -924,7 +921,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -932,7 +929,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PESO_TEORICOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -940,7 +937,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_VOLUME_TEORICOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -948,7 +945,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PESO_REALQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -956,7 +953,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_VOLUME_REALQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -964,7 +961,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PESO_EMBALAGEMQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -972,7 +969,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PESO_ENTRADAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -980,7 +977,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PESO_SAIDAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -988,7 +985,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_ID_DOCAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -996,7 +993,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_PLACAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1004,7 +1001,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1012,7 +1009,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTRA_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1020,7 +1017,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_GRUPO_PRODUTIVOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1028,7 +1025,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1036,7 +1033,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_OBSERVACAO_DE_TRANSPORTEQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1044,7 +1041,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_JUSTIFICATIVA_DE_CARREGAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1052,7 +1049,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1060,7 +1057,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_ID_JUNTADAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1068,7 +1065,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_OBSERVACAO_OTIMIZADORQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1076,7 +1073,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_ID_INTEGRACAO_BALANCAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1084,7 +1081,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_PESAGEM_LIBERADAQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1092,7 +1089,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_OBS_LIERACAOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1100,7 +1097,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_ID_LIERACAOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1108,7 +1105,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_ENTRADA_VEICULOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1116,7 +1113,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_SAIDA_VEICULOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1124,7 +1121,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_ROMANEIO_CONSOLIDADOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1132,7 +1129,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DIA_TURMA_ROMANEIO_CONSOLIDADOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1140,7 +1137,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DIFERENCA_PESAGEMQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1148,7 +1145,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAR_DATA_AGENCIAMENTOQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1156,7 +1153,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1164,7 +1161,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1172,7 +1169,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1180,7 +1177,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1188,7 +1185,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1196,7 +1193,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters) as List<CargaDTO>;
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

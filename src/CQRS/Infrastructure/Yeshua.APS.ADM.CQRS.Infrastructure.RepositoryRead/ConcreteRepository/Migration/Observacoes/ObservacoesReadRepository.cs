@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ObservacoesDTO> getObservacoes(Command.Read.ObservacoesReadCommand command )
         {
-            DataPagination<ObservacoesDTO> customResult = null;
+            var customResult = new DataPagination<ObservacoesDTO>();
             var customHandled = false;
             TryGetObservacoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ObservacoesCLI_IDDTO> getObservacoesReadFKCLI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ObservacoesCLI_IDDTO> lista;
             var query = _query.ObservacoesCLI_IDQuery(command );
 
-                lista = _unitOfWork.Query<ObservacoesCLI_IDDTO>(query.Query,query.Parameters) as List<ObservacoesCLI_IDDTO>;
+                var lista = _unitOfWork.Query<ObservacoesCLI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ObservacoesTenantIDDTO> getObservacoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ObservacoesTenantIDDTO> lista;
             var query = _query.ObservacoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ObservacoesTenantIDDTO>(query.Query,query.Parameters) as List<ObservacoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<ObservacoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ObservacoesUserIdDTO> getObservacoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ObservacoesUserIdDTO> lista;
             var query = _query.ObservacoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ObservacoesUserIdDTO>(query.Query,query.Parameters) as List<ObservacoesUserIdDTO>;
+                var lista = _unitOfWork.Query<ObservacoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOBS_IDQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOBS_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOBS_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_SEQ_TRANFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOBS_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters) as List<ObservacoesDTO>;
+                var result = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

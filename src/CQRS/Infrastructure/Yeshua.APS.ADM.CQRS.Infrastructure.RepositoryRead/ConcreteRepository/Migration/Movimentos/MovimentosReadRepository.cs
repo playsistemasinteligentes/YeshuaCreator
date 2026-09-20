@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MovimentosDTO> getMovimentos(Command.Read.MovimentosReadCommand command )
         {
-            DataPagination<MovimentosDTO> customResult = null;
+            var customResult = new DataPagination<MovimentosDTO>();
             var customHandled = false;
             TryGetMovimentosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentosMOV_PLAIDDTO> getMovimentosReadFKMOV_PLAID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentosMOV_PLAIDDTO> lista;
             var query = _query.MovimentosMOV_PLAIDQuery(command );
 
-                lista = _unitOfWork.Query<MovimentosMOV_PLAIDDTO>(query.Query,query.Parameters) as List<MovimentosMOV_PLAIDDTO>;
+                var lista = _unitOfWork.Query<MovimentosMOV_PLAIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentosTr_Unidade_UNI_IDDTO> getMovimentosReadFKTr_Unidade_UNI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentosTr_Unidade_UNI_IDDTO> lista;
             var query = _query.MovimentosTr_Unidade_UNI_IDQuery(command );
 
-                lista = _unitOfWork.Query<MovimentosTr_Unidade_UNI_IDDTO>(query.Query,query.Parameters) as List<MovimentosTr_Unidade_UNI_IDDTO>;
+                var lista = _unitOfWork.Query<MovimentosTr_Unidade_UNI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentosTenantIDDTO> getMovimentosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentosTenantIDDTO> lista;
             var query = _query.MovimentosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MovimentosTenantIDDTO>(query.Query,query.Parameters) as List<MovimentosTenantIDDTO>;
+                var lista = _unitOfWork.Query<MovimentosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentosUserIdDTO> getMovimentosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentosUserIdDTO> lista;
             var query = _query.MovimentosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentosUserIdDTO>(query.Query,query.Parameters) as List<MovimentosUserIdDTO>;
+                var lista = _unitOfWork.Query<MovimentosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -310,7 +306,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_DATAQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -318,7 +314,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_VALORQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -326,7 +322,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_PLAIDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -334,7 +330,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_UNIDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -342,7 +338,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTr_Unidade_UNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -350,7 +346,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -358,7 +354,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -366,7 +362,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -374,7 +370,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters) as List<MovimentosDTO>;
+                var result = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

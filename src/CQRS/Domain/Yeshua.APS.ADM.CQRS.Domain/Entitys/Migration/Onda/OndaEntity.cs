@@ -32,7 +32,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal OndaEntity(string ond_id, Decimal ond_espessura, Decimal? ond_peso_cola, Decimal? ond_rendimento_onda_1, Decimal? ond_rendimento_onda_2, int? ond_profundidade_vinco, string ond_id_integracao, int vin_id ){
  OND_ID = ond_id; 
  OND_ESPESSURA = ond_espessura; 

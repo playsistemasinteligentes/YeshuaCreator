@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record TipoOcorrenciaDTO
     {
     public int id { get; set; }
-    public string descricao { get; set; }
+    public string descricao { get; set; } = string.Empty;
     public int spr { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

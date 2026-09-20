@@ -24,12 +24,12 @@ namespace Repositorio.Outputs
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
-    public string tiv_nome { get; set; }
-    public string tiv_descricao { get; set; }
-    public string tiv_fechamento { get; set; }
-    public string tiv_amostra_aleatoria { get; set; }
+    public string tiv_nome { get; set; } = string.Empty;
+    public string tiv_descricao { get; set; } = string.Empty;
+    public string tiv_fechamento { get; set; } = string.Empty;
+    public string tiv_amostra_aleatoria { get; set; } = string.Empty;
     public int tiv_n_amostras { get; set; }
-    public string tiv_medida { get; set; }
+    public string tiv_medida { get; set; } = string.Empty;
     public Decimal tiv_especificacao { get; set; }
     public Decimal tiv_tol_mais { get; set; }
     public Decimal tiv_tol_menos { get; set; }

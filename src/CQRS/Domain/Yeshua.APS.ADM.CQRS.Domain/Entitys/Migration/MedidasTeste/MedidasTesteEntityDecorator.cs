@@ -87,7 +87,7 @@
                                         }
                                     }
 
-                                    public string MDT_DESC
+                                    public string? MDT_DESC
                                     {
                                         get => _inner.MDT_DESC;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string UNI_ID
+                                    public string? UNI_ID
                                     {
                                         get => _inner.UNI_ID;
                                         set

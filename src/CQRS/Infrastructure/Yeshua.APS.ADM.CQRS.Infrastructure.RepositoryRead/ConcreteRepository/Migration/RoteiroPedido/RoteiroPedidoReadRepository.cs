@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RoteiroPedidoDTO> getRoteiroPedido(Command.Read.RoteiroPedidoReadCommand command )
         {
-            DataPagination<RoteiroPedidoDTO> customResult = null;
+            var customResult = new DataPagination<RoteiroPedidoDTO>();
             var customHandled = false;
             TryGetRoteiroPedidoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RoteiroPedidoPedidoIdDTO> getRoteiroPedidoReadFKPedidoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RoteiroPedidoPedidoIdDTO> lista;
             var query = _query.RoteiroPedidoPedidoIdQuery(command );
 
-                lista = _unitOfWork.Query<RoteiroPedidoPedidoIdDTO>(query.Query,query.Parameters) as List<RoteiroPedidoPedidoIdDTO>;
+                var lista = _unitOfWork.Query<RoteiroPedidoPedidoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RoteiroPedidoMaquinaIdDTO> getRoteiroPedidoReadFKMaquinaId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RoteiroPedidoMaquinaIdDTO> lista;
             var query = _query.RoteiroPedidoMaquinaIdQuery(command );
 
-                lista = _unitOfWork.Query<RoteiroPedidoMaquinaIdDTO>(query.Query,query.Parameters) as List<RoteiroPedidoMaquinaIdDTO>;
+                var lista = _unitOfWork.Query<RoteiroPedidoMaquinaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<RoteiroPedidoProdutoIdDTO> getRoteiroPedidoReadFKProdutoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RoteiroPedidoProdutoIdDTO> lista;
             var query = _query.RoteiroPedidoProdutoIdQuery(command );
 
-                lista = _unitOfWork.Query<RoteiroPedidoProdutoIdDTO>(query.Query,query.Parameters) as List<RoteiroPedidoProdutoIdDTO>;
+                var lista = _unitOfWork.Query<RoteiroPedidoProdutoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidoIdQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMaquinaIdQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProdutoIdQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySequenciaTransformacaoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusCadastroQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoPlanejamentoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCalendarioIdQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByHierarquiaSequenciaTransformacaoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProximaSequenciaTransformacaoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPerformanceQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTempoSetupQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -580,7 +577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTempoSetupAjusteQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -588,7 +585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPecasPorPulsoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -596,7 +593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPrioridadeInformadaQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -604,7 +601,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -612,7 +609,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOperacoesQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -620,7 +617,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByExcecaoOperacoesQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -628,7 +625,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLinhaDiretaQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -636,7 +633,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAvaliaCustoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -644,7 +641,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPercentualInicioPassoAnteriorQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -652,7 +649,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMaquinaLarguraUtilQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -660,7 +657,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoTipoQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -668,7 +665,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoPerformanceMetroLinearQuery(value );
 
-                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters) as List<RoteiroPedidoDTO>;
+                var result = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

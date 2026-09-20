@@ -14,8 +14,8 @@ namespace Command.Read
     public struct SubOcorrenciaReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string SUB_ID { get; set; }
-        public string SUB_DESCRICAO { get; set; }
+        public string? SUB_ID { get; set; }
+        public string? SUB_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

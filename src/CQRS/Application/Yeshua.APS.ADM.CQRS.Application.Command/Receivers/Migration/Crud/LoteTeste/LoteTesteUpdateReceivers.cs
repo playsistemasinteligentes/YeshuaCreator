@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ILoteTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ILoteTesteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.LoteTesteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var loteteste = new LoteTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LT_ID, c.TES_ID, c.RL_ID);
                  var domainResult = LoteTesteDomainBehavior.Apply(loteteste, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(loteteste);
-                     return Success("OK", loteteste);
+                     return Task.FromResult(Success("OK", loteteste));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, loteteste);
+                    return Task.FromResult(Error(e, loteteste));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

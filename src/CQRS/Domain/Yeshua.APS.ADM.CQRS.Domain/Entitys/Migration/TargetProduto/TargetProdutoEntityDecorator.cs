@@ -138,7 +138,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set
@@ -180,7 +180,7 @@
                                         }
                                     }
 
-                                    public string UNI_ID
+                                    public string? UNI_ID
                                     {
                                         get => _inner.UNI_ID;
                                         set
@@ -194,7 +194,7 @@
                                         }
                                     }
 
-                                    public string TURM_ID
+                                    public string? TURM_ID
                                     {
                                         get => _inner.TURM_ID;
                                         set
@@ -208,7 +208,7 @@
                                         }
                                     }
 
-                                    public string TURN_ID
+                                    public string? TURN_ID
                                     {
                                         get => _inner.TURN_ID;
                                         set
@@ -390,7 +390,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID_PERFORMANCE
+                                    public string? OCO_ID_PERFORMANCE
                                     {
                                         get => _inner.OCO_ID_PERFORMANCE;
                                         set
@@ -404,7 +404,7 @@
                                         }
                                     }
 
-                                    public string TAR_OBS_PERFORMANCE
+                                    public string? TAR_OBS_PERFORMANCE
                                     {
                                         get => _inner.TAR_OBS_PERFORMANCE;
                                         set
@@ -418,7 +418,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID_SETUP
+                                    public string? OCO_ID_SETUP
                                     {
                                         get => _inner.OCO_ID_SETUP;
                                         set
@@ -432,7 +432,7 @@
                                         }
                                     }
 
-                                    public string TAR_OBS_SETUP
+                                    public string? TAR_OBS_SETUP
                                     {
                                         get => _inner.TAR_OBS_SETUP;
                                         set
@@ -446,7 +446,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID_SETUPA
+                                    public string? OCO_ID_SETUPA
                                     {
                                         get => _inner.OCO_ID_SETUPA;
                                         set
@@ -460,7 +460,7 @@
                                         }
                                     }
 
-                                    public string TAR_OBS_SETUPA
+                                    public string? TAR_OBS_SETUPA
                                     {
                                         get => _inner.TAR_OBS_SETUPA;
                                         set
@@ -474,7 +474,7 @@
                                         }
                                     }
 
-                                    public string TAR_TIPO_FEEDBACK_PERFORMANCE
+                                    public string? TAR_TIPO_FEEDBACK_PERFORMANCE
                                     {
                                         get => _inner.TAR_TIPO_FEEDBACK_PERFORMANCE;
                                         set
@@ -488,7 +488,7 @@
                                         }
                                     }
 
-                                    public string TAR_TIPO_FEEDBACK_SETUP
+                                    public string? TAR_TIPO_FEEDBACK_SETUP
                                     {
                                         get => _inner.TAR_TIPO_FEEDBACK_SETUP;
                                         set
@@ -502,7 +502,7 @@
                                         }
                                     }
 
-                                    public string TAR_TIPO_FEEDBACK_SETUP_AJUSTE
+                                    public string? TAR_TIPO_FEEDBACK_SETUP_AJUSTE
                                     {
                                         get => _inner.TAR_TIPO_FEEDBACK_SETUP_AJUSTE;
                                         set
@@ -726,7 +726,7 @@
                                         }
                                     }
 
-                                    public string TAR_OBS_OP_PARCIAL
+                                    public string? TAR_OBS_OP_PARCIAL
                                     {
                                         get => _inner.TAR_OBS_OP_PARCIAL;
                                         set
@@ -740,7 +740,7 @@
                                         }
                                     }
 
-                                    public string TAR_OCO_ID_OP_PARCIAL
+                                    public string? TAR_OCO_ID_OP_PARCIAL
                                     {
                                         get => _inner.TAR_OCO_ID_OP_PARCIAL;
                                         set
@@ -754,7 +754,7 @@
                                         }
                                     }
 
-                                    public string TAR_COR_PERFORMANCE
+                                    public string? TAR_COR_PERFORMANCE
                                     {
                                         get => _inner.TAR_COR_PERFORMANCE;
                                         set
@@ -768,7 +768,7 @@
                                         }
                                     }
 
-                                    public string TAR_COR_SETUP_GERAL
+                                    public string? TAR_COR_SETUP_GERAL
                                     {
                                         get => _inner.TAR_COR_SETUP_GERAL;
                                         set
@@ -782,7 +782,7 @@
                                         }
                                     }
 
-                                    public string TAR_COR_SETUP
+                                    public string? TAR_COR_SETUP
                                     {
                                         get => _inner.TAR_COR_SETUP;
                                         set
@@ -796,7 +796,7 @@
                                         }
                                     }
 
-                                    public string TAR_COR_SETUPA
+                                    public string? TAR_COR_SETUPA
                                     {
                                         get => _inner.TAR_COR_SETUPA;
                                         set
@@ -880,7 +880,7 @@
                                         }
                                     }
 
-                                    public string TAR_APROVADO
+                                    public string? TAR_APROVADO
                                     {
                                         get => _inner.TAR_APROVADO;
                                         set

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IItensCalendarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IItensCalendarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ItensCalendarioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var itenscalendario = new ItensCalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.ICA_ID, c.ICA_DATA_DE, c.ICA_DATA_ATE, c.ICA_OBSERVACAO, c.ICA_TIPO, c.URM_ID, c.URN_ID, c.CAL_ID, c.MAQ_ID, c.PRO_ID, c.ICA_LIMPESA_MAQUINA);
                  var domainResult = ItensCalendarioDomainBehavior.Apply(itenscalendario, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(itenscalendario);
-                     return Success("OK", itenscalendario);
+                     return Task.FromResult(Success("OK", itenscalendario));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, itenscalendario);
+                    return Task.FromResult(Error(e, itenscalendario));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

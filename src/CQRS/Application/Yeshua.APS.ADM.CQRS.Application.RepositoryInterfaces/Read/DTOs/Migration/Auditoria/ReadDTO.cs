@@ -21,9 +21,9 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public DateTime data { get; set; }
     public int use_id { get; set; }
-    public string rotina { get; set; }
-    public string historico { get; set; }
-    public string chave { get; set; }
+    public string rotina { get; set; } = string.Empty;
+    public string historico { get; set; } = string.Empty;
+    public string chave { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

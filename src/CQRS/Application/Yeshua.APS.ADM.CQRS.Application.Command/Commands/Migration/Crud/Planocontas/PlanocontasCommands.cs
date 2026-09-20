@@ -17,7 +17,7 @@ namespace Command.Write
         public string PLA_CODIGO { get; set; }
         public string PLA_DESCRICAO { get; set; }
         public int PLA_TIPO { get; set; }
-        public string PLA_NATUREZA { get; set; }
+        public string? PLA_NATUREZA { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

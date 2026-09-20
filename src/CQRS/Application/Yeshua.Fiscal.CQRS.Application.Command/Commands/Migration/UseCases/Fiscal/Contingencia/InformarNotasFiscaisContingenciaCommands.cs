@@ -15,7 +15,7 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record InformarNotasFiscaisContingenciaInputCommand : ICommand
+public partial record InformarNotasFiscaisContingenciaInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string CorrelationId { get; set; } = string.Empty;
     public int TenantId { get; set; }
@@ -26,6 +26,9 @@ public partial record InformarNotasFiscaisContingenciaInputCommand : ICommand
     public string DadosComplementaresJson { get; set; } = string.Empty;
     public string PayloadHash { get; set; } = string.Empty;
     public string PayloadStorageKey { get; set; } = string.Empty;
+
+    public string OperationalEntity => "EntradaFiscalContingencia";
+    public string? OperationalRecordId => CorrelationId;
 }
 
 public partial record InformarNotasFiscaisContingenciaOutputCommand : ICommand, ISagaStepStimulusOutput

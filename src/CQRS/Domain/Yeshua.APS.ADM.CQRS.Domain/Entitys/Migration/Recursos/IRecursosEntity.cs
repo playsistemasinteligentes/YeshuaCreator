@@ -23,8 +23,8 @@
     string REC_ID { get; set; }
     string REC_DESCRICAO { get; set; }
     int? CAL_ID { get; set; }
-    string REC_CONTROL_IP { get; set; }
-    string GRE_ID { get; set; }
+    string? REC_CONTROL_IP { get; set; }
+    string? GRE_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

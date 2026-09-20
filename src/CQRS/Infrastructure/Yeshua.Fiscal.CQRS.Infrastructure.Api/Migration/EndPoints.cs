@@ -28,6 +28,958 @@ app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvide
     Results.Ok(identityProvider.Current))
     .AllowAnonymous();
 
+app.MapPut("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyState policyState, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update) =>
+    Results.Ok(policyState.ApplyLocal(update)))
+    .RequireAuthorization();
+
+app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        application = identityProvider.Current.Application,
+        components = new[]
+        {
+            new { id = "Command", title = "Commands", description = "Execucao, falha e duracao dos commands." },
+            new { id = "Saga", title = "Sagas", description = "Execucao e transicao dos steps de saga." },
+            new { id = "RepositoryCounters", title = "Repositorios - contadores", description = "Contadores e tempos agregados de acesso a dados." },
+            new { id = "RepositoryEvents", title = "Repositorios - eventos", description = "Eventos detalhados das operacoes de repositorio." },
+            new { id = "DomainTracker", title = "Rastreamento de dominio", description = "Alteracoes das entidades e campos selecionados." }
+        },
+        entities = new object[]
+        {
+            new
+            {
+                name = "CertificadoDigital",
+                title = "Certificado Digital",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Apelido", title = "Apelido" },
+                    new { name = "DocumentoTitular", title = "Documento Titular" },
+                    new { name = "StorageKey", title = "Arquivo" },
+                    new { name = "Thumbprint", title = "Thumbprint" },
+                    new { name = "ValidoDe", title = "Valido de" },
+                    new { name = "ValidoAte", title = "Valido ate" },
+                    new { name = "Ativo", title = "Ativo" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "SenhaStorageKey", title = "Senha no Storage" },
+                }
+            },
+            new
+            {
+                name = "ContingenciaFiscal",
+                title = "Contingencia Fiscal",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "EmissaoFiscalTransporteId", title = "Emissao Fiscal" },
+                    new { name = "EntradaFiscalContingenciaId", title = "Entrada Contingencia" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "TipoSolicitante", title = "Tipo Solicitante" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "EmitenteDocumento", title = "Emitente" },
+                    new { name = "TomadorDocumento", title = "Tomador" },
+                    new { name = "TransportadorDocumento", title = "Transportador" },
+                    new { name = "QuantidadeDocumentos", title = "Quantidade Documentos" },
+                    new { name = "QuantidadeCTe", title = "Quantidade CT-e" },
+                    new { name = "QuantidadeMDFe", title = "Quantidade MDF-e" },
+                    new { name = "ValorCarga", title = "Valor Carga" },
+                    new { name = "PesoBruto", title = "Peso Bruto" },
+                    new { name = "UltimaMensagem", title = "Ultima Mensagem" },
+                    new { name = "CriadoEmUtc", title = "Criado em UTC" },
+                    new { name = "AtualizadoEmUtc", title = "Atualizado em UTC" },
+                    new { name = "ConcluidoEmUtc", title = "Concluido em UTC" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeDocumentoOriginario",
+                title = "Documento Originario CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CTeSolicitacaoFiscalId", title = "Solicitacao CT-e" },
+                    new { name = "DocumentoFiscalOriginarioId", title = "Documento Originario" },
+                    new { name = "TipoDocumento", title = "Tipo Documento" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "Numero", title = "Numero" },
+                    new { name = "Serie", title = "Serie" },
+                    new { name = "EmitenteDocumento", title = "Emitente Documento" },
+                    new { name = "DestinatarioDocumento", title = "Destinatario Documento" },
+                    new { name = "ValorDocumento", title = "Valor Documento" },
+                    new { name = "PesoBruto", title = "Peso Bruto" },
+                    new { name = "SnapshotJson", title = "Snapshot" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeEntradaOficial",
+                title = "Entrada Oficial CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "SourceApplication", title = "Aplicacao Origem" },
+                    new { name = "SourceModule", title = "Modulo Origem" },
+                    new { name = "SourceMessageId", title = "Mensagem Origem" },
+                    new { name = "MessageType", title = "Tipo da Mensagem" },
+                    new { name = "MessageVersion", title = "Versao da Mensagem" },
+                    new { name = "ReceivedAtUtc", title = "Recebido em UTC" },
+                    new { name = "PayloadHash", title = "Hash do Payload" },
+                    new { name = "PayloadStorageKey", title = "Storage do Payload" },
+                    new { name = "Status", title = "Status da Entrada" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeParticipanteSnapshot",
+                title = "Participante CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CTeSolicitacaoFiscalId", title = "Solicitacao CT-e" },
+                    new { name = "Papel", title = "Papel" },
+                    new { name = "Documento", title = "Documento" },
+                    new { name = "Nome", title = "Nome" },
+                    new { name = "InscricaoEstadual", title = "Inscricao Estadual" },
+                    new { name = "UF", title = "UF" },
+                    new { name = "MunicipioCodigoIbge", title = "Municipio IBGE" },
+                    new { name = "EnderecoJson", title = "Endereco" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeRomaneioConsolidado",
+                title = "Romaneio Consolidado Para CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "EntradaOficialId", title = "Entrada Oficial" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "RomaneioId", title = "Romaneio" },
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "ConsolidadoEmUtc", title = "Consolidado em UTC" },
+                    new { name = "UFInicio", title = "UF Inicio" },
+                    new { name = "UFFim", title = "UF Fim" },
+                    new { name = "MunicipioInicioCodigoIbge", title = "Municipio Inicio" },
+                    new { name = "MunicipioFimCodigoIbge", title = "Municipio Fim" },
+                    new { name = "EmitenteDocumento", title = "Emitente Documento" },
+                    new { name = "TomadorDocumento", title = "Tomador Documento" },
+                    new { name = "RotaSnapshotJson", title = "Snapshot da Rota" },
+                    new { name = "CargaSnapshotJson", title = "Snapshot da Carga" },
+                    new { name = "PreferenciasFiscaisJson", title = "Preferencias Fiscais" },
+                    new { name = "Status", title = "Status do Romaneio" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeSaidaMDFe",
+                title = "Saida CT-e para MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CTeTentativaEmissaoId", title = "Tentativa CT-e" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "ChaveAcessoCTe", title = "Chave CT-e" },
+                    new { name = "SnapshotHash", title = "Hash Snapshot" },
+                    new { name = "OutboxMessageId", title = "Mensagem Outbox" },
+                    new { name = "PublicadoEmUtc", title = "Publicado em UTC" },
+                    new { name = "UltimoErro", title = "Ultimo Erro" },
+                    new { name = "Status", title = "Status da Saida" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeSolicitacaoFiscal",
+                title = "Solicitacao Fiscal CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "EntradaOficialId", title = "Entrada Oficial" },
+                    new { name = "RomaneioConsolidadoId", title = "Romaneio Consolidado" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "UFEmitente", title = "UF Emitente" },
+                    new { name = "EmitenteDocumento", title = "Emitente Documento" },
+                    new { name = "ProdutoFiscal", title = "Produto Fiscal" },
+                    new { name = "TipoCTe", title = "Tipo CT-e" },
+                    new { name = "TipoServico", title = "Tipo Servico" },
+                    new { name = "Modal", title = "Modal" },
+                    new { name = "Globalizado", title = "Globalizado" },
+                    new { name = "UFInicio", title = "UF Inicio" },
+                    new { name = "UFFim", title = "UF Fim" },
+                    new { name = "MunicipioInicioCodigoIbge", title = "Municipio Inicio" },
+                    new { name = "MunicipioFimCodigoIbge", title = "Municipio Fim" },
+                    new { name = "ValorServico", title = "Valor Servico" },
+                    new { name = "ValorCarga", title = "Valor Carga" },
+                    new { name = "PreferenciasManifestoJson", title = "Preferencias Manifesto" },
+                    new { name = "Status", title = "Status da Solicitacao" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "CTeTentativaEmissao",
+                title = "Tentativa de Emissao CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CTeSolicitacaoFiscalId", title = "Solicitacao CT-e" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "Numero", title = "Numero" },
+                    new { name = "Serie", title = "Serie" },
+                    new { name = "Tentativa", title = "Tentativa" },
+                    new { name = "XmlAssinadoStorageKey", title = "XML Assinado" },
+                    new { name = "XmlProcStorageKey", title = "procCTe" },
+                    new { name = "XmlHash", title = "Hash XML" },
+                    new { name = "CodigoRetorno", title = "cStat" },
+                    new { name = "MensagemRetorno", title = "xMotivo" },
+                    new { name = "ProtocoloAutorizacao", title = "Protocolo" },
+                    new { name = "EnviadoEmUtc", title = "Enviado em UTC" },
+                    new { name = "AutorizadoEmUtc", title = "Autorizado em UTC" },
+                    new { name = "Status", title = "Status da Emissao" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "DocumentoFiscal",
+                title = "Documento Fiscal",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "ProdutoFiscal", title = "Produto Fiscal" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "Serie", title = "Serie" },
+                    new { name = "Numero", title = "Numero" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "UFEmitente", title = "UF Emitente" },
+                    new { name = "EmitenteDocumento", title = "Emitente Documento" },
+                    new { name = "DestinatarioDocumento", title = "Destinatario Documento" },
+                    new { name = "XmlStorageKey", title = "XML" },
+                    new { name = "XmlHash", title = "Hash XML" },
+                    new { name = "ProtocoloAutorizacao", title = "Protocolo" },
+                    new { name = "CodigoRetorno", title = "cStat" },
+                    new { name = "MensagemRetorno", title = "xMotivo" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "DocumentoFiscalOriginario",
+                title = "Documento Fiscal Originario",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "DocumentoFiscalId", title = "Documento Fiscal" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "SourceApplication", title = "Aplicacao Origem" },
+                    new { name = "SourceModule", title = "Modulo Origem" },
+                    new { name = "SourceMessageId", title = "Mensagem Origem" },
+                    new { name = "TipoDocumento", title = "Tipo Documento" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "Numero", title = "Numero" },
+                    new { name = "Serie", title = "Serie" },
+                    new { name = "EmitenteDocumento", title = "Emitente Documento" },
+                    new { name = "DestinatarioDocumento", title = "Destinatario Documento" },
+                    new { name = "ValorDocumento", title = "Valor Documento" },
+                    new { name = "PesoBruto", title = "Peso Bruto" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "SnapshotJson", title = "Snapshot" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "EmissaoFiscalTransporte",
+                title = "Emissao Fiscal Transporte",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "OrigemFluxo", title = "Origem do Fluxo" },
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "RomaneioId", title = "Romaneio" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "EmitenteDocumento", title = "Emitente" },
+                    new { name = "TomadorDocumento", title = "Tomador" },
+                    new { name = "TransportadorDocumento", title = "Transportador" },
+                    new { name = "UFInicio", title = "UF Inicio" },
+                    new { name = "UFFim", title = "UF Fim" },
+                    new { name = "MunicipioInicioCodigoIbge", title = "Municipio Inicio" },
+                    new { name = "MunicipioFimCodigoIbge", title = "Municipio Fim" },
+                    new { name = "QuantidadeNFe", title = "Quantidade NF-e" },
+                    new { name = "QuantidadeCTe", title = "Quantidade CT-e" },
+                    new { name = "QuantidadeMDFe", title = "Quantidade MDF-e" },
+                    new { name = "ValorCarga", title = "Valor Carga" },
+                    new { name = "PesoBruto", title = "Peso Bruto" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "UltimaMensagem", title = "Ultima Mensagem" },
+                    new { name = "CriadoEmUtc", title = "Criado em UTC" },
+                    new { name = "AtualizadoEmUtc", title = "Atualizado em UTC" },
+                    new { name = "ConcluidoEmUtc", title = "Concluido em UTC" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "EmissaoFiscalTransporteDocumento",
+                title = "Documento da Emissao Fiscal",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "EmissaoFiscalTransporteId", title = "Emissao Fiscal" },
+                    new { name = "DocumentoFiscalId", title = "Documento Fiscal" },
+                    new { name = "DocumentoFiscalOriginarioId", title = "Documento Originario" },
+                    new { name = "NFeProdutoSnapshotId", title = "NF-e Produto" },
+                    new { name = "ProdutoFiscal", title = "Produto Fiscal" },
+                    new { name = "Papel", title = "Papel" },
+                    new { name = "TipoEvento", title = "Tipo Evento" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "XmlStorageKey", title = "XML" },
+                    new { name = "PdfStorageKey", title = "PDF" },
+                    new { name = "Protocolo", title = "Protocolo" },
+                    new { name = "CodigoRetorno", title = "cStat" },
+                    new { name = "MensagemRetorno", title = "xMotivo" },
+                    new { name = "CriadoEmUtc", title = "Criado em UTC" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "EntradaFiscalContingencia",
+                title = "Entrada Fiscal Contingencia",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "TipoSolicitante", title = "Tipo Solicitante" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "SourceApplication", title = "Aplicacao Origem" },
+                    new { name = "SourceModule", title = "Modulo Origem" },
+                    new { name = "SourceMessageId", title = "Mensagem Origem" },
+                    new { name = "EmitenteFiscalDocumento", title = "Emitente Fiscal" },
+                    new { name = "TomadorDocumento", title = "Tomador" },
+                    new { name = "TransportadorDocumento", title = "Transportador" },
+                    new { name = "RemetenteDocumento", title = "Remetente" },
+                    new { name = "DestinatarioDocumento", title = "Destinatario" },
+                    new { name = "UFInicio", title = "UF Inicio" },
+                    new { name = "UFFim", title = "UF Fim" },
+                    new { name = "MunicipioInicioCodigoIbge", title = "Municipio Inicio" },
+                    new { name = "MunicipioFimCodigoIbge", title = "Municipio Fim" },
+                    new { name = "RNTRC", title = "RNTRC" },
+                    new { name = "PlacaVeiculo", title = "Placa Veiculo" },
+                    new { name = "UFVeiculo", title = "UF Veiculo" },
+                    new { name = "CondutorDocumento", title = "CPF Condutor" },
+                    new { name = "CondutorNome", title = "Nome Condutor" },
+                    new { name = "QuantidadeDocumentos", title = "Quantidade Documentos" },
+                    new { name = "ValorCarga", title = "Valor Carga" },
+                    new { name = "PesoBruto", title = "Peso Bruto" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "PendenciasJson", title = "Pendencias" },
+                    new { name = "SnapshotJson", title = "Snapshot" },
+                    new { name = "EmissaoFiscalCorrelationId", title = "CorrelationId Emissao Fiscal" },
+                    new { name = "EmissaoFiscalSagaId", title = "Saga Emissao Fiscal" },
+                    new { name = "CriadoEmUtc", title = "Criado em UTC" },
+                    new { name = "AtualizadoEmUtc", title = "Atualizado em UTC" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "CertificadoDigitalId", title = "Certificado Digital" },
+                }
+            },
+            new
+            {
+                name = "MDFe",
+                title = "MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "Serie", title = "Serie" },
+                    new { name = "Numero", title = "Numero" },
+                    new { name = "UfCarregamento", title = "UF de Carregamento" },
+                    new { name = "UfDescarregamento", title = "UF de Descarregamento" },
+                    new { name = "PlacaVeiculo", title = "Placa do Veiculo" },
+                    new { name = "EmitidoEm", title = "Emitido em" },
+                    new { name = "AutorizadoEm", title = "Autorizado em" },
+                    new { name = "IniciadoEm", title = "Inicio do Transporte" },
+                    new { name = "EncerradoEm", title = "Encerrado em" },
+                    new { name = "CanceladoEm", title = "Cancelado em" },
+                    new { name = "Situacao", title = "Situacao do MDF-e" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFeCondutor",
+                title = "Condutor MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e" },
+                    new { name = "Nome", title = "Nome" },
+                    new { name = "Documento", title = "Documento" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFeDocumentoOriginario",
+                title = "Documento Originario MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e" },
+                    new { name = "DocumentoFiscalOriginarioId", title = "Documento Originario" },
+                    new { name = "TipoDocumento", title = "Tipo Documento" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "SnapshotJson", title = "Snapshot" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFeEncerramento",
+                title = "Encerramento MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MDFeId", title = "MDF-e" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "UfCarregamento", title = "UF de Carregamento" },
+                    new { name = "UfDescarregamento", title = "UF de Descarregamento" },
+                    new { name = "PlacaVeiculo", title = "Placa do Veiculo" },
+                    new { name = "SolicitadoEm", title = "Solicitado em" },
+                    new { name = "AutorizadoEm", title = "Autorizado em" },
+                    new { name = "Protocolo", title = "Protocolo SEFAZ" },
+                    new { name = "CodigoRetorno", title = "Codigo de Retorno" },
+                    new { name = "MensagemRetorno", title = "Mensagem de Retorno" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFePercurso",
+                title = "Percurso MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e" },
+                    new { name = "UF", title = "UF" },
+                    new { name = "Ordem", title = "Ordem" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFeSolicitacaoFiscal",
+                title = "Solicitacao Fiscal MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "UFCarregamento", title = "UF de Carregamento" },
+                    new { name = "UFDescarregamento", title = "UF de Descarregamento" },
+                    new { name = "PlacaVeiculo", title = "Placa do Veiculo" },
+                    new { name = "CondutorDocumento", title = "Documento do Condutor" },
+                    new { name = "DocumentosOriginariosJson", title = "Documentos Originarios" },
+                    new { name = "TransporteSnapshotJson", title = "Snapshot Transporte" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFeTentativaEmissao",
+                title = "Tentativa de Emissao MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "Numero", title = "Numero" },
+                    new { name = "Serie", title = "Serie" },
+                    new { name = "Tentativa", title = "Tentativa" },
+                    new { name = "XmlAssinadoStorageKey", title = "XML Assinado" },
+                    new { name = "XmlProcStorageKey", title = "procMDFe" },
+                    new { name = "XmlHash", title = "Hash XML" },
+                    new { name = "CodigoRetorno", title = "cStat" },
+                    new { name = "MensagemRetorno", title = "xMotivo" },
+                    new { name = "ProtocoloAutorizacao", title = "Protocolo" },
+                    new { name = "EnviadoEmUtc", title = "Enviado em UTC" },
+                    new { name = "AutorizadoEmUtc", title = "Autorizado em UTC" },
+                    new { name = "Status", title = "Status da Emissao" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MDFeVeiculo",
+                title = "Veiculo MDF-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e" },
+                    new { name = "Placa", title = "Placa" },
+                    new { name = "Renavam", title = "Renavam" },
+                    new { name = "Tara", title = "Tara" },
+                    new { name = "CapacidadeKg", title = "Capacidade KG" },
+                    new { name = "CapacidadeM3", title = "Capacidade M3" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "NFeProdutoSnapshot",
+                title = "NF-e de Produto",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "DocumentoFiscalOriginarioId", title = "Documento Originario" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "CargaId", title = "Carga" },
+                    new { name = "PedidoId", title = "Pedido" },
+                    new { name = "ChaveAcesso", title = "Chave de Acesso" },
+                    new { name = "EmitenteDocumento", title = "Emitente Documento" },
+                    new { name = "DestinatarioDocumento", title = "Destinatario Documento" },
+                    new { name = "UFOrigem", title = "UF Origem" },
+                    new { name = "UFDestino", title = "UF Destino" },
+                    new { name = "MunicipioOrigemCodigoIbge", title = "Municipio Origem" },
+                    new { name = "MunicipioDestinoCodigoIbge", title = "Municipio Destino" },
+                    new { name = "ValorDocumento", title = "Valor Documento" },
+                    new { name = "PesoBruto", title = "Peso Bruto" },
+                    new { name = "Volume", title = "Volume" },
+                    new { name = "XmlStorageKey", title = "XML" },
+                    new { name = "SnapshotJson", title = "Snapshot" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "SefazEndpoint",
+                title = "Endpoint SEFAZ",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ProdutoFiscal", title = "Produto Fiscal" },
+                    new { name = "UF", title = "UF" },
+                    new { name = "Ambiente", title = "Ambiente" },
+                    new { name = "Servico", title = "Servico" },
+                    new { name = "Versao", title = "Versao" },
+                    new { name = "Url", title = "URL" },
+                    new { name = "Ativo", title = "Ativo" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yConfigArcteture",
+                title = "yConfigArcteture",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "AuditTrackerActived", title = "AuditTrackerActived" },
+                    new { name = "AuditCRUDActived", title = "AuditCRUDActived" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yConfigNotification",
+                title = "yConfigNotification",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "EmailSmtpClient", title = "EmailSmtpClient" },
+                    new { name = "EmailPort", title = "EmailPort" },
+                    new { name = "EmailUserName", title = "EmailUserName" },
+                    new { name = "EmailPassword", title = "EmailPassword" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yFileUpload",
+                title = "yFileUpload",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Type", title = "Tipo do Arquivo" },
+                    new { name = "Status", title = "Status do Upload" },
+                    new { name = "FilePath", title = "Caminho do Arquivo" },
+                    new { name = "FileSize", title = "Tamanho do Arquivo" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yGrant",
+                title = "yGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yInbox",
+                title = "yInbox",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MessageId", title = "Message Id" },
+                    new { name = "Type", title = "Tipo da Mensagem" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CorrelationId", title = "Correlation Id" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "LastError", title = "Último Erro" },
+                    new { name = "ProcessingAt", title = "Processando em" },
+                    new { name = "NextAttemptAt", title = "Próxima tentativa" },
+                    new { name = "SagaId", title = "SagaId" },
+                    new { name = "SagaStepId", title = "SagaStepId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yModule",
+                title = "yModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                }
+            },
+            new
+            {
+                name = "yOutbox",
+                title = "yOutbox",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MessageId", title = "Message Id" },
+                    new { name = "Type", title = "Tipo da Mensagem" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CorrelationId", title = "Correlation Id" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TransportType", title = "Tipo de Transporte" },
+                    new { name = "TransportData", title = "Dados do transporte" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "SentAt", title = "Enviado em" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "LastError", title = "Último Erro" },
+                    new { name = "ProcessingAt", title = "Processando em" },
+                    new { name = "NextAttemptAt", title = "Próxima tentativa" },
+                    new { name = "SagaId", title = "SagaId" },
+                    new { name = "SagaStepId", title = "SagaStepId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yPerfil",
+                title = "yPerfil",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yPerfilGrant",
+                title = "yPerfilGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PerfilId", title = "ID Perfil" },
+                    new { name = "GrantId", title = "ID Permição" },
+                    new { name = "CanGrant", title = "Permite acessar" },
+                    new { name = "CanCreate", title = "Permite Criar" },
+                    new { name = "CanRead", title = "Permite Ler" },
+                    new { name = "CanUpdate", title = "Permite Atualizar" },
+                    new { name = "CanDelete", title = "Permite Deletar" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ySaga",
+                title = "ySaga",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Type", title = "Type" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "KeyCurrentStep", title = "Key Step Atual" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "NextExecutionAt", title = "Proxima execucao" },
+                    new { name = "LockedAt", title = "LockedAt" },
+                    new { name = "LockedBy", title = "LockedBy" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ySagaStep",
+                title = "ySagaStep",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "SagaId", title = "Saga" },
+                    new { name = "StepKey", title = "Step Key" },
+                    new { name = "IndexOrder", title = "Index Order" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "ExecutionCount", title = "Execuções" },
+                    new { name = "LastExecutionAt", title = "Última Execução" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "ErrorMessage", title = "Erro" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yTenant",
+                title = "yTenant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CnpjCpf", title = "Cnpj/Cpf" },
+                    new { name = "Nome", title = "Nome" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yTenantModule",
+                title = "yTenantModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ModuleId", title = "ID Modulo" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yToken",
+                title = "yToken",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "TokenHash", title = "Hash do Token" },
+                    new { name = "Description", title = "Descricao" },
+                    new { name = "ConnectorKey", title = "Conector" },
+                    new { name = "Active", title = "Ativo" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "LastUsedAt", title = "Ultimo uso" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yUser",
+                title = "yUser",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Nome", title = "Nome Usuario" },
+                    new { name = "Email", title = "Email" },
+                    new { name = "Senha", title = "Senha" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yUserGrant",
+                title = "yUserGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PerfilId", title = "ID Perfil" },
+                    new { name = "GrantId", title = "ID Permição" },
+                    new { name = "CanGrant", title = "Permite acessar" },
+                    new { name = "CanCreate", title = "Permite Criar" },
+                    new { name = "CanRead", title = "Permite Ler" },
+                    new { name = "CanUpdate", title = "Permite Atualizar" },
+                    new { name = "CanDelete", title = "Permite Deletar" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yUserModule",
+                title = "yUserModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ModuleId", title = "ID Modulo" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+        }
+    }))
+    .RequireAuthorization();
+
 app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILogger logger) =>
     Results.Ok(logger.Snapshot()))
     .AllowAnonymous();

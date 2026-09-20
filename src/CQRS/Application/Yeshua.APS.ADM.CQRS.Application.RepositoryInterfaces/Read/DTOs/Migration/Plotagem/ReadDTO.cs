@@ -20,12 +20,12 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int plo_id { get; set; }
-    public string plo_nome { get; set; }
-    public string plo_dimensao { get; set; }
-    public string plo_x { get; set; }
-    public string plo_y { get; set; }
-    public string plo_z { get; set; }
-    public string plo_grafico { get; set; }
+    public string plo_nome { get; set; } = string.Empty;
+    public string plo_dimensao { get; set; } = string.Empty;
+    public string plo_x { get; set; } = string.Empty;
+    public string plo_y { get; set; } = string.Empty;
+    public string plo_z { get; set; } = string.Empty;
+    public string plo_grafico { get; set; } = string.Empty;
     public int con_id { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

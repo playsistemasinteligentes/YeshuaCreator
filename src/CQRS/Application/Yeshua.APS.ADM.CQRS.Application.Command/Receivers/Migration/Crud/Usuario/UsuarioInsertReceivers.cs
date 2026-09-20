@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IUsuarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IUsuarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.UsuarioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var usuario = new UsuarioFactory(_logger, _domainTrackingPolicy).Create(context, c.USE_ID, c.USE_NOME, c.USE_EMAIL, c.USE_SENHA, c.TURM_ID, c.USE_ATIVO, c.USE_CODERP);
                  var domainResult = UsuarioDomainBehavior.Apply(usuario, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(usuario);
-                     return Success("OK", usuario);
+                     return Task.FromResult(Success("OK", usuario));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, usuario);
+                    return Task.FromResult(Error(e, usuario));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

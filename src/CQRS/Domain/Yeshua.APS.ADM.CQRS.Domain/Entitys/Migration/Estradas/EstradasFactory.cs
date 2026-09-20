@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IEstradasEntity Create(int? id, int est_id, string est_descricao, int? est_id_ligacao_ponto_a, int? est_id_ligacao_ponto_b )
+                                    } public IEstradasEntity Create(int? id, int est_id, string? est_descricao, int? est_id_ligacao_ponto_a, int? est_id_ligacao_ponto_b )
                             {
                                 return Create(null, id, est_id, est_descricao, est_id_ligacao_ponto_a, est_id_ligacao_ponto_b);
                             }
 
                             public IEstradasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int est_id, string est_descricao, int? est_id_ligacao_ponto_a, int? est_id_ligacao_ponto_b )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int est_id, string? est_descricao, int? est_id_ligacao_ponto_a, int? est_id_ligacao_ponto_b )
                             {
                             var entity = new EstradasEntity(id, est_id, est_descricao, est_id_ligacao_ponto_a, est_id_ligacao_ponto_b );
 

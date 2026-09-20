@@ -18,14 +18,14 @@ namespace Repositorio.Outputs
 {
     public partial record GrupoMaquinaDTO
     {
-    public string id { get; set; }
-    public string descricao { get; set; }
-    public string status { get; set; }
+    public string id { get; set; } = string.Empty;
+    public string descricao { get; set; } = string.Empty;
+    public string status { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
-    public string gma_tipo_planejamento { get; set; }
+    public string gma_tipo_planejamento { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

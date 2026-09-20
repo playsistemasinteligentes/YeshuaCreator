@@ -15,9 +15,12 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record ObterXmlCTeInputCommand : ICommand
+public partial record ObterXmlCTeInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string ChaveAcesso { get; set; } = string.Empty;
+
+    public string OperationalEntity => "CTeTentativaEmissao";
+    public string? OperationalRecordId => null;
 }
 
 public partial record ObterXmlCTeOutputCommand : ICommand

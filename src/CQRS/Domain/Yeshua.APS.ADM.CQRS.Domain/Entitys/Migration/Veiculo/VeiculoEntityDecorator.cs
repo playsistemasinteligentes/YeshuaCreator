@@ -97,7 +97,7 @@
                                         }
                                     }
 
-                                    public string VEI_UF
+                                    public string? VEI_UF
                                     {
                                         get => _inner.VEI_UF;
                                         set
@@ -181,7 +181,7 @@
                                         }
                                     }
 
-                                    public string VEI_MODELO
+                                    public string? VEI_MODELO
                                     {
                                         get => _inner.VEI_MODELO;
                                         set
@@ -195,7 +195,7 @@
                                         }
                                     }
 
-                                    public string VEI_NOME_MOTORISTA
+                                    public string? VEI_NOME_MOTORISTA
                                     {
                                         get => _inner.VEI_NOME_MOTORISTA;
                                         set
@@ -209,7 +209,7 @@
                                         }
                                     }
 
-                                    public string VEI_DADOS_CONTATO
+                                    public string? VEI_DADOS_CONTATO
                                     {
                                         get => _inner.VEI_DADOS_CONTATO;
                                         set
@@ -223,7 +223,7 @@
                                         }
                                     }
 
-                                    public string VEI_CPF_MOTORISTA
+                                    public string? VEI_CPF_MOTORISTA
                                     {
                                         get => _inner.VEI_CPF_MOTORISTA;
                                         set
@@ -237,7 +237,7 @@
                                         }
                                     }
 
-                                    public string TCA_ID
+                                    public string? TCA_ID
                                     {
                                         get => _inner.TCA_ID;
                                         set
@@ -279,7 +279,7 @@
                                         }
                                     }
 
-                                    public string VEI_STATUS
+                                    public string? VEI_STATUS
                                     {
                                         get => _inner.VEI_STATUS;
                                         set

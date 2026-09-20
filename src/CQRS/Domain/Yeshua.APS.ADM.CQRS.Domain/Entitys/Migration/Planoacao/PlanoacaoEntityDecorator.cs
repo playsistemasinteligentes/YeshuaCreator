@@ -106,7 +106,7 @@
                                         }
                                     }
 
-                                    public string PLA_STATUS
+                                    public string? PLA_STATUS
                                     {
                                         get => _inner.PLA_STATUS;
                                         set
@@ -134,7 +134,7 @@
                                         }
                                     }
 
-                                    public string PLA_METAPERIODO
+                                    public string? PLA_METAPERIODO
                                     {
                                         get => _inner.PLA_METAPERIODO;
                                         set
@@ -148,7 +148,7 @@
                                         }
                                     }
 
-                                    public string PLA_VLRPERIODO
+                                    public string? PLA_VLRPERIODO
                                     {
                                         get => _inner.PLA_VLRPERIODO;
                                         set
@@ -162,7 +162,7 @@
                                         }
                                     }
 
-                                    public string PLA_METACULADO
+                                    public string? PLA_METACULADO
                                     {
                                         get => _inner.PLA_METACULADO;
                                         set
@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string PLA_VLRACUMULADO
+                                    public string? PLA_VLRACUMULADO
                                     {
                                         get => _inner.PLA_VLRACUMULADO;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string PLA_REFERENCIA
+                                    public string? PLA_REFERENCIA
                                     {
                                         get => _inner.PLA_REFERENCIA;
                                         set

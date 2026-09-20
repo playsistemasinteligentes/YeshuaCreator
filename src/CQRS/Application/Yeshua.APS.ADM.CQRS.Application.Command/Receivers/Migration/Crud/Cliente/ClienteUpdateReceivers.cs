@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IClienteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IClienteEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ClienteCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cliente = new ClienteFactory(_logger, _domainTrackingPolicy).Create(context, c.CLI_ID, c.CLI_NOME, c.CLI_FONE, c.CLI_OBS, c.CLI_ENDERECO_ENTREGA, c.CLI_CPF_CNPJ, c.CLI_BAIRRO_ENTREGA, c.CLI_CEP_ENTREGA, c.CLI_EMAIL, c.CLI_INTEGRACAO, c.MUN_ID_ENTREGA, c.CLI_TRANSLADO, c.CLI_REGIAO_ENTREGA, c.CLI_EXIGENTE_NA_IMPRESSAO, c.CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, c.CLI_TEMPO_DESCARREGAMENTO_UNITARIO, c.CLI_PERCENTUAL_JANELA_EMBARQUE, c.REP_ID, c.CLI_RAZAO_SOCIAL, c.CLI_EMAIL_MONITORAMENTO_TRANSPORTE, c.CLI_CONTATO, c.CLI_SETOR, c.SEG_ID, c.CLI_TIPO, c.CLI_INTEGRACAO_ERP, c.CLI_LATITUDE_ENTREGA, c.CLI_LONGITUDE_ENTREGA);
                  var domainResult = ClienteDomainBehavior.Apply(cliente, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(cliente);
-                     return Success("OK", cliente);
+                     return Task.FromResult(Success("OK", cliente));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cliente);
+                    return Task.FromResult(Error(e, cliente));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

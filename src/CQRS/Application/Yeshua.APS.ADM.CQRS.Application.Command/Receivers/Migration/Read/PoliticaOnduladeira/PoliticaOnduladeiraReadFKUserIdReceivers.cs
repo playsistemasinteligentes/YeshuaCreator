@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<PoliticaOnduladeiraUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<PoliticaOnduladeiraUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var PoliticaOnduladeiraReadRepository = _repository.getPoliticaOnduladeiraReadFKUserId(c);
-                return Success("OK", PoliticaOnduladeiraReadRepository);
+                return Task.FromResult(Success("OK", PoliticaOnduladeiraReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

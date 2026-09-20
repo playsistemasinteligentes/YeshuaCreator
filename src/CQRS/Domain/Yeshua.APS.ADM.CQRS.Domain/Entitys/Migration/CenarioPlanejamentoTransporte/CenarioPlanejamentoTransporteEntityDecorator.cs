@@ -170,7 +170,7 @@
                                         }
                                     }
 
-                                    public string AlertasResumo
+                                    public string? AlertasResumo
                                     {
                                         get => _inner.AlertasResumo;
                                         set

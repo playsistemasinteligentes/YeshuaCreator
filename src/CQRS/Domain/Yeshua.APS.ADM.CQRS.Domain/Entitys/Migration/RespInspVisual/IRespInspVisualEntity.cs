@@ -24,7 +24,7 @@
     int RIV_ID { get; set; }
     int? IPV_ID { get; set; }
     int? ITI_ID { get; set; }
-    string RIV_STATUS { get; set; }
+    string? RIV_STATUS { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

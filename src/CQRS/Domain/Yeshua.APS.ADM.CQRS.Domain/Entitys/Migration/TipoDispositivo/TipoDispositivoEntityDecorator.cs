@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string TDI_DESCRICAO
+                                    public string? TDI_DESCRICAO
                                     {
                                         get => _inner.TDI_DESCRICAO;
                                         set

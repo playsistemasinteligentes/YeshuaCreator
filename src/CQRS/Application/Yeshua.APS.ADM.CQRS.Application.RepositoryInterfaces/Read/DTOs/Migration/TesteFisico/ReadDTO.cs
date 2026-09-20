@@ -22,16 +22,16 @@ namespace Repositorio.Outputs
     public int tes_id { get; set; }
     public int ite_id { get; set; }
     public int usr_id { get; set; }
-    public string tes_nome_tecnico { get; set; }
+    public string tes_nome_tecnico { get; set; } = string.Empty;
     public int tes_amostra { get; set; }
-    public string tes_op { get; set; }
+    public string tes_op { get; set; } = string.Empty;
     public Decimal tes_valor_numerico { get; set; }
     public DateTime tes_valor_data { get; set; }
-    public string tes_valor_texto { get; set; }
+    public string tes_valor_texto { get; set; } = string.Empty;
     public DateTime tes_emissao { get; set; }
-    public string ord_id { get; set; }
-    public string pro_id { get; set; }
-    public string maq_id { get; set; }
+    public string ord_id { get; set; } = string.Empty;
+    public string pro_id { get; set; } = string.Empty;
+    public string maq_id { get; set; } = string.Empty;
     public int fpr_seq_repeticao { get; set; }
     public int fpr_seq_tranformacao { get; set; }
     public int tenantid { get; set; }

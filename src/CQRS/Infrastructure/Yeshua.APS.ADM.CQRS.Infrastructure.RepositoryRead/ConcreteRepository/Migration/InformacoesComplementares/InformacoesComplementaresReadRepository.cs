@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<InformacoesComplementaresDTO> getInformacoesComplementares(Command.Read.InformacoesComplementaresReadCommand command )
         {
-            DataPagination<InformacoesComplementaresDTO> customResult = null;
+            var customResult = new DataPagination<InformacoesComplementaresDTO>();
             var customHandled = false;
             TryGetInformacoesComplementaresCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<InformacoesComplementaresMET_IDDTO> getInformacoesComplementaresReadFKMET_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InformacoesComplementaresMET_IDDTO> lista;
             var query = _query.InformacoesComplementaresMET_IDQuery(command );
 
-                lista = _unitOfWork.Query<InformacoesComplementaresMET_IDDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresMET_IDDTO>;
+                var lista = _unitOfWork.Query<InformacoesComplementaresMET_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<InformacoesComplementaresTenantIDDTO> getInformacoesComplementaresReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InformacoesComplementaresTenantIDDTO> lista;
             var query = _query.InformacoesComplementaresTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<InformacoesComplementaresTenantIDDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresTenantIDDTO>;
+                var lista = _unitOfWork.Query<InformacoesComplementaresTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<InformacoesComplementaresUserIdDTO> getInformacoesComplementaresReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<InformacoesComplementaresUserIdDTO> lista;
             var query = _query.InformacoesComplementaresUserIdQuery(command );
 
-                lista = _unitOfWork.Query<InformacoesComplementaresUserIdDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresUserIdDTO>;
+                var lista = _unitOfWork.Query<InformacoesComplementaresUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByINF_IDQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByINF_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByINF_VALORQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMET_IDQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByINF_DATAQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters) as List<InformacoesComplementaresDTO>;
+                var result = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

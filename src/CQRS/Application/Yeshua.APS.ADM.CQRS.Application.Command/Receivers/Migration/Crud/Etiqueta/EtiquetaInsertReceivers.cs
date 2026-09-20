@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEtiquetaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEtiquetaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EtiquetaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var etiqueta = new EtiquetaFactory(_logger, _domainTrackingPolicy).Create(context, c.ETI_ID, c.ETI_EMISSAO, c.ETI_CODIGO_BARRAS, c.ETI_SEQUENCIA, c.ETI_NUMERO_COPIAS, c.ETI_STATUS, c.ETI_DATA_FABRICACAO, c.ETI_COD_BARRAS_ORIGINAL, c.ETI_OP_ORIGINAL, c.MAQ_ID, c.IMP_ID, c.USE_ID, c.ORD_ID, c.ROT_PRO_ID, c.ROT_SEQ_TRANFORMACAO, c.FPR_SEQ_REPETICAO, c.ETI_QUANTIDADE_PALETE, c.ETI_LOTE, c.ETI_SUB_LOTE, c.ETI_IMPRIMIR_DE, c.ETI_IMPRIMIR_ATE, c.BOL_ID, c.COR_SEQUENCIA);
                  var domainResult = EtiquetaDomainBehavior.Apply(etiqueta, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(etiqueta);
-                     return Success("OK", etiqueta);
+                     return Task.FromResult(Success("OK", etiqueta));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, etiqueta);
+                    return Task.FromResult(Error(e, etiqueta));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

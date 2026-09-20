@@ -1,4 +1,4 @@
-﻿import { loadDataCrud } from './crud.js';
+import { loadDataCrud } from './crud.js';
 
 export function buildMenu() {
     const btnToggleMenu = document.getElementById('btn-toggle-menu');
@@ -24,6 +24,7 @@ export async function loadDataMenu() {
 
         if (!response.ok) throw new Error('Token inválido ou expirado');
 
+        await waitForApplicationExtension();
         const menuItems = extendMenuItems(await response.json());
         const menuList = document.getElementById('menu');
         if (!menuList) return;
@@ -139,15 +140,45 @@ function closeCustomPage() {
 }
 
 function extendMenuItems(menuItems) {
+    const items = Array.isArray(menuItems) ? menuItems : [];
     const menuExtension = window.yeshuaExtensions?.menu;
-    if (typeof menuExtension?.extend !== 'function') return menuItems;
+    let extendedItems = items;
 
-    try {
-        const extended = menuExtension.extend(menuItems);
-        return Array.isArray(extended) ? extended : menuItems;
-    } catch (error) {
-        console.error('Yeshua menu extension failed', error);
-        return menuItems;
+    if (typeof menuExtension?.extend === 'function') {
+        try {
+            const extended = menuExtension.extend(items);
+            extendedItems = Array.isArray(extended) ? extended : items;
+        } catch (error) {
+            console.error('Yeshua menu extension failed', error);
+        }
+    }
+
+    appendOperationalMenu(extendedItems);
+    return extendedItems;
+}
+
+function appendOperationalMenu(items) {
+    let module = items.find(item => item?.id === 'yeshua-operational');
+    if (!module) {
+        module = { id: 'yeshua-operational', description: 'Operacao', children: [] };
+        items.push(module);
+    }
+
+    module.children = Array.isArray(module.children) ? module.children : [];
+    if (!module.children.some(item => item?.page === 'operational-control')) {
+        module.children.push({
+            description: 'Controle operacional',
+            endpoint: '#operational-control',
+            type: 'customPage',
+            page: 'operational-control',
+            children: []
+        });
+    }
+}
+
+async function waitForApplicationExtension() {
+    if (window.yeshuaAppExtensionReady) {
+        await window.yeshuaAppExtensionReady;
     }
 }
 

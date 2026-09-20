@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEquipeEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEquipeEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EquipeCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var equipe = new EquipeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EQU_ID, c.EQU_HIERARQUIA_SEQ_TRANSFORMACAO);
                  var domainResult = EquipeDomainBehavior.Apply(equipe, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(equipe);
-                     return Success("OK", equipe);
+                     return Task.FromResult(Success("OK", equipe));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, equipe);
+                    return Task.FromResult(Error(e, equipe));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

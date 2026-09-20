@@ -28,7 +28,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal UsuariosCargaEntity(int? id, int use_id, string car_id, string rgo_id ){
  Id = id; 
  USE_ID = use_id; 

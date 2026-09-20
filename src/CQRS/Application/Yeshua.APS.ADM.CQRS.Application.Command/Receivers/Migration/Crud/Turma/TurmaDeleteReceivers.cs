@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITurmaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITurmaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TurmaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var turma = new TurmaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.TURM_HORA_INI_DIA1, c.TURM_HORA_FIM_DIA1, c.TURM_HORA_INI_DIA2, c.TURM_HORA_FIM_DIA2, c.TURM_HORA_INI_DIA3, c.TURM_HORA_FIM_DIA3, c.TURM_HORA_INI_DIA4, c.TURM_HORA_FIM_DIA4, c.TURM_HORA_INI_DIA5, c.TURM_HORA_FIM_DIA5, c.TURM_HORA_INI_DIA6, c.TURM_HORA_FIM_DIA6, c.TURM_HORA_INI_DIA7, c.TURM_HORA_FIM_DIA7);
                  var domainResult = TurmaDomainBehavior.Apply(turma, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(turma);
-                     return Success("OK", turma);
+                     return Task.FromResult(Success("OK", turma));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, turma);
+                    return Task.FromResult(Error(e, turma));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

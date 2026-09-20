@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ILoockEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ILoockEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.LoockCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var loock = new LoockFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LOO_ID, c.LOO_DESCRICAO, c.LOO_CONTEUDO);
                  var domainResult = LoockDomainBehavior.Apply(loock, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(loock);
-                     return Success("OK", loock);
+                     return Task.FromResult(Success("OK", loock));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, loock);
+                    return Task.FromResult(Error(e, loock));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

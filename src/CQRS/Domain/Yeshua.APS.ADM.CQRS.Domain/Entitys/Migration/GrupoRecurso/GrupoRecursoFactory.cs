@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IGrupoRecursoEntity Create(string gre_id, string gre_descricao )
+                                    } public IGrupoRecursoEntity Create(string gre_id, string? gre_descricao )
                             {
                                 return Create(null, gre_id, gre_descricao);
                             }
 
                             public IGrupoRecursoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string gre_id, string gre_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string gre_id, string? gre_descricao )
                             {
                             var entity = new GrupoRecursoEntity(gre_id, gre_descricao );
 

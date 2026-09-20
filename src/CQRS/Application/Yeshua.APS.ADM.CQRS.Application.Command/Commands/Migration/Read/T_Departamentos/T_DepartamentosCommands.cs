@@ -14,7 +14,7 @@ namespace Command.Read
     public struct T_DepartamentosReadCommand : ICommandRead
     {
         public int? DEP_ID { get; set; }
-        public string DEP_NOME { get; set; }
+        public string? DEP_NOME { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

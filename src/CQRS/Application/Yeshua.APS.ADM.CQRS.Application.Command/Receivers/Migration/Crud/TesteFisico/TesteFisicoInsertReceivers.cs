@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITesteFisicoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITesteFisicoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TesteFisicoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var testefisico = new TesteFisicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TES_ID, c.ITE_ID, c.USR_ID, c.TES_NOME_TECNICO, c.TES_AMOSTRA, c.TES_OP, c.TES_VALOR_NUMERICO, c.TES_VALOR_DATA, c.TES_VALOR_TEXTO, c.TES_EMISSAO, c.ORD_ID, c.PRO_ID, c.MAQ_ID, c.FPR_SEQ_REPETICAO, c.FPR_SEQ_TRANFORMACAO);
                  var domainResult = TesteFisicoDomainBehavior.Apply(testefisico, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(testefisico);
-                     return Success("OK", testefisico);
+                     return Task.FromResult(Success("OK", testefisico));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, testefisico);
+                    return Task.FromResult(Error(e, testefisico));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -24,7 +24,7 @@
     string PLA_CODIGO { get; set; }
     string PLA_DESCRICAO { get; set; }
     int PLA_TIPO { get; set; }
-    string PLA_NATUREZA { get; set; }
+    string? PLA_NATUREZA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

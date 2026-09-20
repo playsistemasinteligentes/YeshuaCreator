@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel TipoTesteQuery(Command.Read.TipoTesteReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -80,7 +79,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         public QueryModel TipoTesteTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -111,7 +109,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         public QueryModel TipoTesteUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -142,7 +139,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         public QueryModel TipoTesteTA_IDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [TA_ID] from [TipoAvaliacao] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -170,7 +166,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_ESPECIFICACAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -188,7 +183,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_ORIGEM_ESPECIFICACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -206,7 +200,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_IMPRIME_NO_LAUDOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -224,7 +217,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -242,7 +234,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -260,7 +251,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -278,7 +268,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -296,7 +285,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -314,7 +302,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_NOMEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -332,7 +319,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_DESCQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -350,7 +336,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_TOL_MAISQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -368,7 +353,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_TOL_MENOSQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -386,7 +370,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_NORMAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -404,7 +387,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_INICIO_PROCESSOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -422,7 +404,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTA_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -440,7 +421,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByUNI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -458,7 +438,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_N_AMOSTRAS_P_TESTEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -476,7 +455,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_MAX_DEF_CRITICOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -494,7 +472,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel ExistsByTT_MAX_DEF_GRAVEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -512,7 +489,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_ESPECIFICACAOQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -530,7 +506,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_ORIGEM_ESPECIFICACAOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -548,7 +523,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_IMPRIME_NO_LAUDOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -566,7 +540,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -584,7 +557,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -602,7 +574,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -620,7 +591,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -638,7 +608,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -656,7 +625,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_NOMEQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -674,7 +642,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_DESCQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -692,7 +659,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_TOL_MAISQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -710,7 +676,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_TOL_MENOSQuery(Decimal value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -728,7 +693,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_NORMAQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -746,7 +710,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_INICIO_PROCESSOQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -764,7 +727,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTA_IDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -782,7 +744,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByUNI_IDQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -800,7 +761,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_N_AMOSTRAS_P_TESTEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -818,7 +778,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_MAX_DEF_CRITICOQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -836,7 +795,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
         }
         public QueryModel FirstByTT_MAX_DEF_GRAVEQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<T_FeedbackMovEstoqueDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<T_FeedbackMovEstoqueDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.T_FeedbackMovEstoqueReadCommand c) 
              {    
                 var T_FeedbackMovEstoqueReadRepository = _repository.getT_FeedbackMovEstoque(c);
-                return Success("OK", T_FeedbackMovEstoqueReadRepository);
+                return Task.FromResult(Success("OK", T_FeedbackMovEstoqueReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

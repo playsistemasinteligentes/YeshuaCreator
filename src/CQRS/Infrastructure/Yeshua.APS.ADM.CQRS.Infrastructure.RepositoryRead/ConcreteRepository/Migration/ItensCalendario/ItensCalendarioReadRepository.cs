@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItensCalendarioDTO> getItensCalendario(Command.Read.ItensCalendarioReadCommand command )
         {
-            DataPagination<ItensCalendarioDTO> customResult = null;
+            var customResult = new DataPagination<ItensCalendarioDTO>();
             var customHandled = false;
             TryGetItensCalendarioCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensCalendarioURM_IDDTO> getItensCalendarioReadFKURM_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensCalendarioURM_IDDTO> lista;
             var query = _query.ItensCalendarioURM_IDQuery(command );
 
-                lista = _unitOfWork.Query<ItensCalendarioURM_IDDTO>(query.Query,query.Parameters) as List<ItensCalendarioURM_IDDTO>;
+                var lista = _unitOfWork.Query<ItensCalendarioURM_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensCalendarioURN_IDDTO> getItensCalendarioReadFKURN_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensCalendarioURN_IDDTO> lista;
             var query = _query.ItensCalendarioURN_IDQuery(command );
 
-                lista = _unitOfWork.Query<ItensCalendarioURN_IDDTO>(query.Query,query.Parameters) as List<ItensCalendarioURN_IDDTO>;
+                var lista = _unitOfWork.Query<ItensCalendarioURN_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensCalendarioCAL_IDDTO> getItensCalendarioReadFKCAL_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensCalendarioCAL_IDDTO> lista;
             var query = _query.ItensCalendarioCAL_IDQuery(command );
 
-                lista = _unitOfWork.Query<ItensCalendarioCAL_IDDTO>(query.Query,query.Parameters) as List<ItensCalendarioCAL_IDDTO>;
+                var lista = _unitOfWork.Query<ItensCalendarioCAL_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensCalendarioTenantIDDTO> getItensCalendarioReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensCalendarioTenantIDDTO> lista;
             var query = _query.ItensCalendarioTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItensCalendarioTenantIDDTO>(query.Query,query.Parameters) as List<ItensCalendarioTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItensCalendarioTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -140,10 +136,9 @@ namespace Read.Repository
 
         private IEnumerable<ItensCalendarioUserIdDTO> getItensCalendarioReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItensCalendarioUserIdDTO> lista;
             var query = _query.ItensCalendarioUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItensCalendarioUserIdDTO>(query.Query,query.Parameters) as List<ItensCalendarioUserIdDTO>;
+                var lista = _unitOfWork.Query<ItensCalendarioUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -400,7 +395,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByICA_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -408,7 +403,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByICA_DATA_DEQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -416,7 +411,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByICA_DATA_ATEQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -424,7 +419,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByICA_OBSERVACAOQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -432,7 +427,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByICA_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -440,7 +435,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByURM_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -448,7 +443,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByURN_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -456,7 +451,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -464,7 +459,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -472,7 +467,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -480,7 +475,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByICA_LIMPESA_MAQUINAQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -488,7 +483,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -496,7 +491,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -504,7 +499,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -512,7 +507,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters) as List<ItensCalendarioDTO>;
+                var result = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

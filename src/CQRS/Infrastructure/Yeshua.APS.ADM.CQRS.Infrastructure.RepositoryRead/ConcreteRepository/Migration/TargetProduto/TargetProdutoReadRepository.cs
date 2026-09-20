@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TargetProdutoDTO> getTargetProduto(Command.Read.TargetProdutoReadCommand command )
         {
-            DataPagination<TargetProdutoDTO> customResult = null;
+            var customResult = new DataPagination<TargetProdutoDTO>();
             var customHandled = false;
             TryGetTargetProdutoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoMOV_IDDTO> getTargetProdutoReadFKMOV_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoMOV_IDDTO> lista;
             var query = _query.TargetProdutoMOV_IDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoMOV_IDDTO>(query.Query,query.Parameters) as List<TargetProdutoMOV_IDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoMOV_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoORD_IDDTO> getTargetProdutoReadFKORD_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoORD_IDDTO> lista;
             var query = _query.TargetProdutoORD_IDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoORD_IDDTO>(query.Query,query.Parameters) as List<TargetProdutoORD_IDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoORD_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoUNI_IDDTO> getTargetProdutoReadFKUNI_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoUNI_IDDTO> lista;
             var query = _query.TargetProdutoUNI_IDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoUNI_IDDTO>(query.Query,query.Parameters) as List<TargetProdutoUNI_IDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoUNI_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoTURM_IDDTO> getTargetProdutoReadFKTURM_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoTURM_IDDTO> lista;
             var query = _query.TargetProdutoTURM_IDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoTURM_IDDTO>(query.Query,query.Parameters) as List<TargetProdutoTURM_IDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoTURM_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -140,10 +136,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoTURN_IDDTO> getTargetProdutoReadFKTURN_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoTURN_IDDTO> lista;
             var query = _query.TargetProdutoTURN_IDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoTURN_IDDTO>(query.Query,query.Parameters) as List<TargetProdutoTURN_IDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoTURN_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -158,10 +153,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoUSE_IDDTO> getTargetProdutoReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoUSE_IDDTO> lista;
             var query = _query.TargetProdutoUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoUSE_IDDTO>(query.Query,query.Parameters) as List<TargetProdutoUSE_IDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -176,10 +170,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoOCO_ID_PERFORMANCEDTO> getTargetProdutoReadFKOCO_ID_PERFORMANCE(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoOCO_ID_PERFORMANCEDTO> lista;
             var query = _query.TargetProdutoOCO_ID_PERFORMANCEQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoOCO_ID_PERFORMANCEDTO>(query.Query,query.Parameters) as List<TargetProdutoOCO_ID_PERFORMANCEDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoOCO_ID_PERFORMANCEDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -194,10 +187,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoTenantIDDTO> getTargetProdutoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoTenantIDDTO> lista;
             var query = _query.TargetProdutoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoTenantIDDTO>(query.Query,query.Parameters) as List<TargetProdutoTenantIDDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -212,10 +204,9 @@ namespace Read.Repository
 
         private IEnumerable<TargetProdutoUserIdDTO> getTargetProdutoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TargetProdutoUserIdDTO> lista;
             var query = _query.TargetProdutoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TargetProdutoUserIdDTO>(query.Query,query.Parameters) as List<TargetProdutoUserIdDTO>;
+                var lista = _unitOfWork.Query<TargetProdutoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -1208,7 +1199,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1216,7 +1207,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMOV_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1224,7 +1215,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1232,7 +1223,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1240,7 +1231,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1248,7 +1239,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1256,7 +1247,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURM_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1264,7 +1255,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTURN_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1272,7 +1263,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1280,7 +1271,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_DIA_TURMAQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1288,7 +1279,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_META_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1296,7 +1287,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_REALIZADO_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1304,7 +1295,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PERCENTUAL_REALIZADO_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1312,7 +1303,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PROXIMA_META_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1320,7 +1311,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_META_TEMPO_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1328,7 +1319,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_REALIZADO_TEMPO_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1336,7 +1327,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PROXIMA_META_TEMPO_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1344,7 +1335,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_META_TEMPO_SETUP_AJUSTEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1352,7 +1343,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_REALIZADO_TEMPO_SETUP_AJUSTEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1360,7 +1351,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PROXIMA_META_TEMPO_SETUP_AJUSTEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1368,7 +1359,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_ID_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1376,7 +1367,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_OBS_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1384,7 +1375,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_ID_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1392,7 +1383,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_OBS_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1400,7 +1391,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOCO_ID_SETUPAQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1408,7 +1399,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_OBS_SETUPAQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1416,7 +1407,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_TIPO_FEEDBACK_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1424,7 +1415,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_TIPO_FEEDBACK_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1432,7 +1423,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_TIPO_FEEDBACK_SETUP_AJUSTEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1440,7 +1431,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_QTD_SETUP_AJUSTEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1448,7 +1439,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_QTDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1456,7 +1447,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PARAMETRO_TIME_WORK_STOP_MACHINEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1464,7 +1455,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PARAMETRO_TEMPO_QUEBRA_DE_LOTEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1472,7 +1463,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_SEQ_TRANFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1480,7 +1471,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1488,7 +1479,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PERFORMANCE_MAX_VERDEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1496,7 +1487,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PERFORMANCE_MIN_VERDEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1504,7 +1495,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_SETUP_MAX_VERDEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1512,7 +1503,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_SETUP_MIN_VERDEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1520,7 +1511,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_SETUPA_MAX_VERDEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1528,7 +1519,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_SETUPA_MIN_VERDEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1536,7 +1527,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_PERFORMANCE_MIN_AMARELOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1544,7 +1535,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_SETUP_MAX_AMARELOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1552,7 +1543,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_SETUPA_MAX_AMARELOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1560,7 +1551,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_OBS_OP_PARCIALQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1568,7 +1559,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_OCO_ID_OP_PARCIALQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1576,7 +1567,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_COR_PERFORMANCEQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1584,7 +1575,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_COR_SETUP_GERALQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1592,7 +1583,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_COR_SETUPQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1600,7 +1591,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_COR_SETUPAQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1608,7 +1599,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_DIA_TURMA_DQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1616,7 +1607,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFEE_QTD_PECAS_POR_PULSOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1624,7 +1615,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_QTD_PERDASQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1632,7 +1623,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_DATA_INICIALQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1640,7 +1631,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_DATA_FINALQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1648,7 +1639,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_APROVADOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1656,7 +1647,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTAR_TEMPO_PRODUZINDOQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1664,7 +1655,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1672,7 +1663,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1680,7 +1671,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -1688,7 +1679,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters) as List<TargetProdutoDTO>;
+                var result = _unitOfWork.Query<TargetProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

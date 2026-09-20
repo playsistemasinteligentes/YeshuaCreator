@@ -22,9 +22,9 @@
 {
     int? Id { get; set; }
     int PER_ID { get; set; }
-    string PER_QTD { get; set; }
-    string UNI_ID { get; set; }
-    string GRP_ID { get; set; }
+    string? PER_QTD { get; set; }
+    string? UNI_ID { get; set; }
+    string? GRP_ID { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

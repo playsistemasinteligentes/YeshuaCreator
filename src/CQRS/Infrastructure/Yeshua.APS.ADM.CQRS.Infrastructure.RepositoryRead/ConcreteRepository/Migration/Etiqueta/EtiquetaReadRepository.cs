@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<EtiquetaDTO> getEtiqueta(Command.Read.EtiquetaReadCommand command )
         {
-            DataPagination<EtiquetaDTO> customResult = null;
+            var customResult = new DataPagination<EtiquetaDTO>();
             var customHandled = false;
             TryGetEtiquetaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EtiquetaUSE_IDDTO> getEtiquetaReadFKUSE_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EtiquetaUSE_IDDTO> lista;
             var query = _query.EtiquetaUSE_IDQuery(command );
 
-                lista = _unitOfWork.Query<EtiquetaUSE_IDDTO>(query.Query,query.Parameters) as List<EtiquetaUSE_IDDTO>;
+                var lista = _unitOfWork.Query<EtiquetaUSE_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EtiquetaORD_IDDTO> getEtiquetaReadFKORD_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EtiquetaORD_IDDTO> lista;
             var query = _query.EtiquetaORD_IDQuery(command );
 
-                lista = _unitOfWork.Query<EtiquetaORD_IDDTO>(query.Query,query.Parameters) as List<EtiquetaORD_IDDTO>;
+                var lista = _unitOfWork.Query<EtiquetaORD_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<EtiquetaTenantIDDTO> getEtiquetaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EtiquetaTenantIDDTO> lista;
             var query = _query.EtiquetaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EtiquetaTenantIDDTO>(query.Query,query.Parameters) as List<EtiquetaTenantIDDTO>;
+                var lista = _unitOfWork.Query<EtiquetaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<EtiquetaUserIdDTO> getEtiquetaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EtiquetaUserIdDTO> lista;
             var query = _query.EtiquetaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EtiquetaUserIdDTO>(query.Query,query.Parameters) as List<EtiquetaUserIdDTO>;
+                var lista = _unitOfWork.Query<EtiquetaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -574,7 +570,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -582,7 +578,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -590,7 +586,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_CODIGO_BARRASQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -598,7 +594,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -606,7 +602,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_NUMERO_COPIASQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -614,7 +610,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -622,7 +618,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_DATA_FABRICACAOQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -630,7 +626,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_COD_BARRAS_ORIGINALQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -638,7 +634,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_OP_ORIGINALQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -646,7 +642,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -654,7 +650,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIMP_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -662,7 +658,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -670,7 +666,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -678,7 +674,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_PRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -686,7 +682,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_SEQ_TRANFORMACAOQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -694,7 +690,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -702,7 +698,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_QUANTIDADE_PALETEQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -710,7 +706,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_LOTEQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -718,7 +714,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_SUB_LOTEQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -726,7 +722,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_IMPRIMIR_DEQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -734,7 +730,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByETI_IMPRIMIR_ATEQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -742,7 +738,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByBOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -750,7 +746,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCOR_SEQUENCIAQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -758,7 +754,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -766,7 +762,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -774,7 +770,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -782,7 +778,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters) as List<EtiquetaDTO>;
+                var result = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<PoliticaOnduladeiraDTO> getPoliticaOnduladeira(Command.Read.PoliticaOnduladeiraReadCommand command )
         {
-            DataPagination<PoliticaOnduladeiraDTO> customResult = null;
+            var customResult = new DataPagination<PoliticaOnduladeiraDTO>();
             var customHandled = false;
             TryGetPoliticaOnduladeiraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<PoliticaOnduladeiraTenantIDDTO> getPoliticaOnduladeiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PoliticaOnduladeiraTenantIDDTO> lista;
             var query = _query.PoliticaOnduladeiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<PoliticaOnduladeiraTenantIDDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<PoliticaOnduladeiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<PoliticaOnduladeiraUserIdDTO> getPoliticaOnduladeiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<PoliticaOnduladeiraUserIdDTO> lista;
             var query = _query.PoliticaOnduladeiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<PoliticaOnduladeiraUserIdDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraUserIdDTO>;
+                var lista = _unitOfWork.Query<PoliticaOnduladeiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPOL_IDQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPOL_NIVELQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPOL_PROMOCAOQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPOL_DIAS_ANTECIPACAOQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPOL_METROS_LINEARESQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters) as List<PoliticaOnduladeiraDTO>;
+                var result = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

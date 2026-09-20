@@ -253,7 +253,7 @@
                                         }
                                     }
 
-                                    public string FPR_OBS_PRODUCAO
+                                    public string? FPR_OBS_PRODUCAO
                                     {
                                         get => _inner.FPR_OBS_PRODUCAO;
                                         set
@@ -267,7 +267,7 @@
                                         }
                                     }
 
-                                    public string FPR_STATUS
+                                    public string? FPR_STATUS
                                     {
                                         get => _inner.FPR_STATUS;
                                         set
@@ -519,7 +519,7 @@
                                         }
                                     }
 
-                                    public string FPR_ID_INTEGRACAO
+                                    public string? FPR_ID_INTEGRACAO
                                     {
                                         get => _inner.FPR_ID_INTEGRACAO;
                                         set
@@ -533,7 +533,7 @@
                                         }
                                     }
 
-                                    public string FPR_TRUNCADO
+                                    public string? FPR_TRUNCADO
                                     {
                                         get => _inner.FPR_TRUNCADO;
                                         set
@@ -589,7 +589,7 @@
                                         }
                                     }
 
-                                    public string FPR_COR_FILA
+                                    public string? FPR_COR_FILA
                                     {
                                         get => _inner.FPR_COR_FILA;
                                         set
@@ -603,7 +603,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID_MANUAL
+                                    public string? MAQ_ID_MANUAL
                                     {
                                         get => _inner.MAQ_ID_MANUAL;
                                         set
@@ -617,7 +617,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID_RESTRINGIDA
+                                    public string? MAQ_ID_RESTRINGIDA
                                     {
                                         get => _inner.MAQ_ID_RESTRINGIDA;
                                         set
@@ -715,7 +715,7 @@
                                         }
                                     }
 
-                                    public string FPR_COR_BICO1
+                                    public string? FPR_COR_BICO1
                                     {
                                         get => _inner.FPR_COR_BICO1;
                                         set
@@ -729,7 +729,7 @@
                                         }
                                     }
 
-                                    public string FPR_COR_BICO2
+                                    public string? FPR_COR_BICO2
                                     {
                                         get => _inner.FPR_COR_BICO2;
                                         set
@@ -743,7 +743,7 @@
                                         }
                                     }
 
-                                    public string FPR_COR_BICO3
+                                    public string? FPR_COR_BICO3
                                     {
                                         get => _inner.FPR_COR_BICO3;
                                         set
@@ -757,7 +757,7 @@
                                         }
                                     }
 
-                                    public string FPR_COR_BICO4
+                                    public string? FPR_COR_BICO4
                                     {
                                         get => _inner.FPR_COR_BICO4;
                                         set
@@ -771,7 +771,7 @@
                                         }
                                     }
 
-                                    public string FPR_COR_BICO5
+                                    public string? FPR_COR_BICO5
                                     {
                                         get => _inner.FPR_COR_BICO5;
                                         set
@@ -799,7 +799,7 @@
                                         }
                                     }
 
-                                    public string FPR_ORD_ID_REPROGRAMADO
+                                    public string? FPR_ORD_ID_REPROGRAMADO
                                     {
                                         get => _inner.FPR_ORD_ID_REPROGRAMADO;
                                         set
@@ -883,7 +883,7 @@
                                         }
                                     }
 
-                                    public string EQU_ID
+                                    public string? EQU_ID
                                     {
                                         get => _inner.EQU_ID;
                                         set
@@ -925,7 +925,7 @@
                                         }
                                     }
 
-                                    public string FPR_MOTIVO_PULA_FILA
+                                    public string? FPR_MOTIVO_PULA_FILA
                                     {
                                         get => _inner.FPR_MOTIVO_PULA_FILA;
                                         set
@@ -939,7 +939,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID
+                                    public string? OCO_ID
                                     {
                                         get => _inner.OCO_ID;
                                         set
@@ -953,7 +953,7 @@
                                         }
                                     }
 
-                                    public string FPR_PESO_UNITARIO
+                                    public string? FPR_PESO_UNITARIO
                                     {
                                         get => _inner.FPR_PESO_UNITARIO;
                                         set
@@ -967,7 +967,7 @@
                                         }
                                     }
 
-                                    public string FPR_M2_UNITARIO
+                                    public string? FPR_M2_UNITARIO
                                     {
                                         get => _inner.FPR_M2_UNITARIO;
                                         set

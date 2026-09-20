@@ -15,8 +15,8 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? MAP_ID { get; set; }
-        public string PON_ID { get; set; }
-        public string PON_ID_VIZINHO { get; set; }
+        public string? PON_ID { get; set; }
+        public string? PON_ID_VIZINHO { get; set; }
         public Decimal? MAP_DISTANCIA { get; set; }
         public Decimal? MAP_CUSTO_PEDAGIO_POR_EIXO { get; set; }
         public int? ROD_ID { get; set; }

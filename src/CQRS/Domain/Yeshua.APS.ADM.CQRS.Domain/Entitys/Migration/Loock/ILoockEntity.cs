@@ -21,9 +21,9 @@
                     public interface ILoockEntity
 {
     int? Id { get; set; }
-    string LOO_ID { get; set; }
-    string LOO_DESCRICAO { get; set; }
-    string LOO_CONTEUDO { get; set; }
+    string? LOO_ID { get; set; }
+    string? LOO_DESCRICAO { get; set; }
+    string? LOO_CONTEUDO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

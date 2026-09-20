@@ -14,7 +14,7 @@ namespace Command.Read
     public struct TipoOcorrenciaReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
         public int? Spr { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

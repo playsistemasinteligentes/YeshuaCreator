@@ -82,7 +82,7 @@
                                         }
                                     }
 
-                                    public string TT_ORIGEM_ESPECIFICACAO
+                                    public string? TT_ORIGEM_ESPECIFICACAO
                                     {
                                         get => _inner.TT_ORIGEM_ESPECIFICACAO;
                                         set
@@ -96,7 +96,7 @@
                                         }
                                     }
 
-                                    public string TT_IMPRIME_NO_LAUDO
+                                    public string? TT_IMPRIME_NO_LAUDO
                                     {
                                         get => _inner.TT_IMPRIME_NO_LAUDO;
                                         set
@@ -236,7 +236,7 @@
                                         }
                                     }
 
-                                    public string TT_NORMA
+                                    public string? TT_NORMA
                                     {
                                         get => _inner.TT_NORMA;
                                         set

@@ -20,9 +20,9 @@ namespace Command.Write
         public Decimal? CustoEstimado { get; set; }
         public Decimal? AderenciaCubagem { get; set; }
         public Decimal? AderenciaJanelaEntrega { get; set; }
-        public string RiscoResumo { get; set; }
-        public string PedidosResumo { get; set; }
-        public string OpcoesConflitantesResumo { get; set; }
+        public string? RiscoResumo { get; set; }
+        public string? PedidosResumo { get; set; }
+        public string? OpcoesConflitantesResumo { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

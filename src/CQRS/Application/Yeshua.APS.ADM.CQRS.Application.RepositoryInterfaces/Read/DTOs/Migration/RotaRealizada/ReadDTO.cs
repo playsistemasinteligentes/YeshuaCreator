@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record RotaRealizadaDTO
     {
     public int rot_id { get; set; }
-    public string car_id { get; set; }
+    public string car_id { get; set; } = string.Empty;
     public DateTime rot_data_hora { get; set; }
     public Decimal rot_lat { get; set; }
     public Decimal rot_long { get; set; }

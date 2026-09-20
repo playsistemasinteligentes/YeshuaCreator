@@ -20,8 +20,8 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int map_id { get; set; }
-    public string pon_id { get; set; }
-    public string pon_id_vizinho { get; set; }
+    public string pon_id { get; set; } = string.Empty;
+    public string pon_id_vizinho { get; set; } = string.Empty;
     public Decimal map_distancia { get; set; }
     public Decimal map_custo_pedagio_por_eixo { get; set; }
     public int rod_id { get; set; }

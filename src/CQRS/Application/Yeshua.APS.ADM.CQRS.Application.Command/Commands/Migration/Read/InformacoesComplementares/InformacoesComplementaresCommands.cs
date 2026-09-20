@@ -14,10 +14,10 @@ namespace Command.Read
     public struct InformacoesComplementaresReadCommand : ICommandRead
     {
         public int? INF_ID { get; set; }
-        public string INF_DESCRICAO { get; set; }
+        public string? INF_DESCRICAO { get; set; }
         public Decimal? INF_VALOR { get; set; }
         public int? MET_ID { get; set; }
-        public string INF_DATA { get; set; }
+        public string? INF_DATA { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

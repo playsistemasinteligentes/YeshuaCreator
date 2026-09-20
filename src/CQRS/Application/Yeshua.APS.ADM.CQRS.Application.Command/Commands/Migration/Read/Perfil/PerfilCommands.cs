@@ -14,7 +14,7 @@ namespace Command.Read
     public struct PerfilReadCommand : ICommandRead
     {
         public int? PER_ID { get; set; }
-        public string PER_NOME { get; set; }
+        public string? PER_NOME { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

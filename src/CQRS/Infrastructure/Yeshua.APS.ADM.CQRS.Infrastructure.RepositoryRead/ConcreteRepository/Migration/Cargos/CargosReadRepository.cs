@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CargosDTO> getCargos(Command.Read.CargosReadCommand command )
         {
-            DataPagination<CargosDTO> customResult = null;
+            var customResult = new DataPagination<CargosDTO>();
             var customHandled = false;
             TryGetCargosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CargosTenantIDDTO> getCargosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CargosTenantIDDTO> lista;
             var query = _query.CargosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CargosTenantIDDTO>(query.Query,query.Parameters) as List<CargosTenantIDDTO>;
+                var lista = _unitOfWork.Query<CargosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CargosUserIdDTO> getCargosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CargosUserIdDTO> lista;
             var query = _query.CargosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CargosUserIdDTO>(query.Query,query.Parameters) as List<CargosUserIdDTO>;
+                var lista = _unitOfWork.Query<CargosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRGO_IDQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRGO_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters) as List<CargosDTO>;
+                var result = _unitOfWork.Query<CargosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -14,8 +14,8 @@ namespace Command.Read
     public struct ImpressoraReadCommand : ICommandRead
     {
         public int? IMP_ID { get; set; }
-        public string IMP_IP { get; set; }
-        public string IMP_NOME { get; set; }
+        public string? IMP_IP { get; set; }
+        public string? IMP_NOME { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

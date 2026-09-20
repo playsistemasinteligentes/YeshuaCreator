@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal IndicadoresDepartamentosEntity(int inddep_id, int dep_id, int ind_id ){
  INDDEP_ID = inddep_id; 
  DEP_ID = dep_id; 

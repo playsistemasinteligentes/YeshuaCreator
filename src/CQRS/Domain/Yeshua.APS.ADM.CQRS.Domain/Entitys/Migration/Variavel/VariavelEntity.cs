@@ -29,7 +29,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal VariavelEntity(int? id, int var_id, string var_descricao, int? con_id, int var_modo ){
  Id = id; 
  VAR_ID = var_id; 

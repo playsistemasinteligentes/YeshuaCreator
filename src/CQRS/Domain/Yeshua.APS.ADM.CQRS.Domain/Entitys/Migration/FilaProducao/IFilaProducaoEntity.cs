@@ -30,8 +30,8 @@
     DateTime FPR_DATA_FIM_MAXIMA { get; set; }
     int ROT_SEQ_TRANFORMACAO { get; set; }
     int FPR_SEQ_REPETICAO { get; set; }
-    string FPR_OBS_PRODUCAO { get; set; }
-    string FPR_STATUS { get; set; }
+    string? FPR_OBS_PRODUCAO { get; set; }
+    string? FPR_STATUS { get; set; }
     Decimal? FPR_TEMPO_DECORRIDO_SETUP { get; set; }
     Decimal? FPR_TEMPO_DECORRIDO_SETUPA { get; set; }
     Decimal? FPR_TEMPO_DECORRIDO_PERFORMANC { get; set; }
@@ -49,37 +49,37 @@
     DateTime? FPR_FIM_PREVISTO_ATUAL { get; set; }
     int? FPR_PRODUZINDO { get; set; }
     Decimal? FPR_ORDEM_NA_FILA { get; set; }
-    string FPR_ID_INTEGRACAO { get; set; }
-    string FPR_TRUNCADO { get; set; }
+    string? FPR_ID_INTEGRACAO { get; set; }
+    string? FPR_TRUNCADO { get; set; }
     DateTime? FPR_DATA_TRUNC_INI { get; set; }
     DateTime? FPR_DATA_TRUNC_FIM { get; set; }
     int FPR_ID { get; set; }
-    string FPR_COR_FILA { get; set; }
-    string MAQ_ID_MANUAL { get; set; }
-    string MAQ_ID_RESTRINGIDA { get; set; }
+    string? FPR_COR_FILA { get; set; }
+    string? MAQ_ID_MANUAL { get; set; }
+    string? MAQ_ID_RESTRINGIDA { get; set; }
     DateTime FPR_PREVISAO_MATERIA_PRIMA { get; set; }
     DateTime? FPR_DATA_NECESSIDADE_INICIO_PRODUCAO { get; set; }
     DateTime? FPR_DATA_NECESSIDADE_FIM_PRODUCAO { get; set; }
     Decimal? FPR_GRUPO_PRODUTIVO { get; set; }
     DateTime? FPR_INICIO_GRUPO_PRODUTIVO { get; set; }
     DateTime? FPR_FIM_GRUPO_PRODUTIVO { get; set; }
-    string FPR_COR_BICO1 { get; set; }
-    string FPR_COR_BICO2 { get; set; }
-    string FPR_COR_BICO3 { get; set; }
-    string FPR_COR_BICO4 { get; set; }
-    string FPR_COR_BICO5 { get; set; }
+    string? FPR_COR_BICO1 { get; set; }
+    string? FPR_COR_BICO2 { get; set; }
+    string? FPR_COR_BICO3 { get; set; }
+    string? FPR_COR_BICO4 { get; set; }
+    string? FPR_COR_BICO5 { get; set; }
     Decimal? FPR_META_SETUP { get; set; }
-    string FPR_ORD_ID_REPROGRAMADO { get; set; }
+    string? FPR_ORD_ID_REPROGRAMADO { get; set; }
     int? FPR_PRIORIDADE { get; set; }
     int? FPR_SEQ_INCLUSAO_FILA { get; set; }
     int? FPR_HIERARQUIA_SEQ_TRANSFORMACAO { get; set; }
     int? FPR_ID_ORIGEM { get; set; }
     DateTime? FPR_DATA_ENTREGA { get; set; }
-    string EQU_ID { get; set; }
+    string? EQU_ID { get; set; }
     Decimal? FPR_GRUPO_PRODUTIVO_MANUAL { get; set; }
     DateTime? FPR_EMISSAO { get; set; }
-    string FPR_MOTIVO_PULA_FILA { get; set; }
-    string OCO_ID { get; set; }
+    string? FPR_MOTIVO_PULA_FILA { get; set; }
+    string? OCO_ID { get; set; }
     Decimal? FPR_TOLERANCIA_MENOS { get; set; }
     Decimal? FPR_TOLERANCIA_MAIS { get; set; }
     DateTime? FPR_DATA_ENCERRAMENTO { get; set; }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ExperienciaPlanejamentoTransporteDTO> getExperienciaPlanejamentoTransporte(Command.Read.ExperienciaPlanejamentoTransporteReadCommand command )
         {
-            DataPagination<ExperienciaPlanejamentoTransporteDTO> customResult = null;
+            var customResult = new DataPagination<ExperienciaPlanejamentoTransporteDTO>();
             var customHandled = false;
             TryGetExperienciaPlanejamentoTransporteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ExperienciaPlanejamentoTransporteTenantIDDTO> getExperienciaPlanejamentoTransporteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ExperienciaPlanejamentoTransporteTenantIDDTO> lista;
             var query = _query.ExperienciaPlanejamentoTransporteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ExperienciaPlanejamentoTransporteTenantIDDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteTenantIDDTO>;
+                var lista = _unitOfWork.Query<ExperienciaPlanejamentoTransporteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ExperienciaPlanejamentoTransporteUserIdDTO> getExperienciaPlanejamentoTransporteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ExperienciaPlanejamentoTransporteUserIdDTO> lista;
             var query = _query.ExperienciaPlanejamentoTransporteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ExperienciaPlanejamentoTransporteUserIdDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteUserIdDTO>;
+                var lista = _unitOfWork.Query<ExperienciaPlanejamentoTransporteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByReferenciaQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidoIdQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByClienteIdQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRegiaoQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRotaIdQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObservacaoQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCriadoEmQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCriadoPorQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters) as List<ExperienciaPlanejamentoTransporteDTO>;
+                var result = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

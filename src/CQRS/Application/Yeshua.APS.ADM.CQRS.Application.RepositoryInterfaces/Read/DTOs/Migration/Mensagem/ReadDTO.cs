@@ -18,12 +18,12 @@ namespace Repositorio.Outputs
 {
     public partial record MensagemDTO
     {
-    public string men_id { get; set; }
-    public string men_send { get; set; }
+    public string men_id { get; set; } = string.Empty;
+    public string men_send { get; set; } = string.Empty;
     public DateTime men_emission { get; set; }
-    public string men_status { get; set; }
-    public string men_receive { get; set; }
-    public string men_type { get; set; }
+    public string men_status { get; set; } = string.Empty;
+    public string men_receive { get; set; } = string.Empty;
+    public string men_type { get; set; } = string.Empty;
     public Decimal men_qtd_try_send { get; set; }
     public DateTime men_date_try_send { get; set; }
     public int tenantid { get; set; }

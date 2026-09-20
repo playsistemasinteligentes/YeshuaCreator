@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPeriodicidadeTesteEntity Create(int? id, int per_id, string per_qtd, string uni_id, string grp_id )
+                                    } public IPeriodicidadeTesteEntity Create(int? id, int per_id, string? per_qtd, string? uni_id, string? grp_id )
                             {
                                 return Create(null, id, per_id, per_qtd, uni_id, grp_id);
                             }
 
                             public IPeriodicidadeTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string per_qtd, string uni_id, string grp_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string? per_qtd, string? uni_id, string? grp_id )
                             {
                             var entity = new PeriodicidadeTesteEntity(id, per_id, per_qtd, uni_id, grp_id );
 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<VerssaoCustoDTO> getVerssaoCusto(Command.Read.VerssaoCustoReadCommand command )
         {
-            DataPagination<VerssaoCustoDTO> customResult = null;
+            var customResult = new DataPagination<VerssaoCustoDTO>();
             var customHandled = false;
             TryGetVerssaoCustoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<VerssaoCustoTenantIDDTO> getVerssaoCustoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VerssaoCustoTenantIDDTO> lista;
             var query = _query.VerssaoCustoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<VerssaoCustoTenantIDDTO>(query.Query,query.Parameters) as List<VerssaoCustoTenantIDDTO>;
+                var lista = _unitOfWork.Query<VerssaoCustoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<VerssaoCustoUserIdDTO> getVerssaoCustoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VerssaoCustoUserIdDTO> lista;
             var query = _query.VerssaoCustoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<VerssaoCustoUserIdDTO>(query.Query,query.Parameters) as List<VerssaoCustoUserIdDTO>;
+                var lista = _unitOfWork.Query<VerssaoCustoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVER_IDQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVER_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVER_DATA_VERSSAO_CUSTOQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVER_OBSQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters) as List<VerssaoCustoDTO>;
+                var result = _unitOfWork.Query<VerssaoCustoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -364,7 +364,7 @@
                                         }
                                     }
 
-                                    public string CAR_ID_DOCA
+                                    public string? CAR_ID_DOCA
                                     {
                                         get => _inner.CAR_ID_DOCA;
                                         set
@@ -378,7 +378,7 @@
                                         }
                                     }
 
-                                    public string VEI_PLACA
+                                    public string? VEI_PLACA
                                     {
                                         get => _inner.VEI_PLACA;
                                         set
@@ -406,7 +406,7 @@
                                         }
                                     }
 
-                                    public string TRA_ID
+                                    public string? TRA_ID
                                     {
                                         get => _inner.TRA_ID;
                                         set
@@ -434,7 +434,7 @@
                                         }
                                     }
 
-                                    public string ROT_ID
+                                    public string? ROT_ID
                                     {
                                         get => _inner.ROT_ID;
                                         set
@@ -448,7 +448,7 @@
                                         }
                                     }
 
-                                    public string CAR_OBSERVACAO_DE_TRANSPORTE
+                                    public string? CAR_OBSERVACAO_DE_TRANSPORTE
                                     {
                                         get => _inner.CAR_OBSERVACAO_DE_TRANSPORTE;
                                         set
@@ -462,7 +462,7 @@
                                         }
                                     }
 
-                                    public string CAR_JUSTIFICATIVA_DE_CARREGAMENTO
+                                    public string? CAR_JUSTIFICATIVA_DE_CARREGAMENTO
                                     {
                                         get => _inner.CAR_JUSTIFICATIVA_DE_CARREGAMENTO;
                                         set
@@ -476,7 +476,7 @@
                                         }
                                     }
 
-                                    public string OCO_ID
+                                    public string? OCO_ID
                                     {
                                         get => _inner.OCO_ID;
                                         set
@@ -490,7 +490,7 @@
                                         }
                                     }
 
-                                    public string CAR_ID_JUNTADA
+                                    public string? CAR_ID_JUNTADA
                                     {
                                         get => _inner.CAR_ID_JUNTADA;
                                         set
@@ -504,7 +504,7 @@
                                         }
                                     }
 
-                                    public string CAR_OBSERVACAO_OTIMIZADOR
+                                    public string? CAR_OBSERVACAO_OTIMIZADOR
                                     {
                                         get => _inner.CAR_OBSERVACAO_OTIMIZADOR;
                                         set

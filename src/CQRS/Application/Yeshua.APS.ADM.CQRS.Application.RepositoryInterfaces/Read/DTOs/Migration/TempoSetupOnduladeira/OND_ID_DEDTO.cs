@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record TempoSetupOnduladeiraOND_ID_DEDTO
     {
-    public string ond_id { get; set; }
+    public string ond_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

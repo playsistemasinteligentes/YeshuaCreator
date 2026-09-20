@@ -90,7 +90,7 @@
                                         }
                                     }
 
-                                    public string ITE_DESCRICAO
+                                    public string? ITE_DESCRICAO
                                     {
                                         get => _inner.ITE_DESCRICAO;
                                         set
@@ -104,7 +104,7 @@
                                         }
                                     }
 
-                                    public string ITE_OBS
+                                    public string? ITE_OBS
                                     {
                                         get => _inner.ITE_OBS;
                                         set
@@ -132,7 +132,7 @@
                                         }
                                     }
 
-                                    public string ITE_CONDICIONAL_DE_AVALIACAO
+                                    public string? ITE_CONDICIONAL_DE_AVALIACAO
                                     {
                                         get => _inner.ITE_CONDICIONAL_DE_AVALIACAO;
                                         set
@@ -160,7 +160,7 @@
                                         }
                                     }
 
-                                    public string ITE_VALOR_CALCULADO_DA_CONDICIONAL
+                                    public string? ITE_VALOR_CALCULADO_DA_CONDICIONAL
                                     {
                                         get => _inner.ITE_VALOR_CALCULADO_DA_CONDICIONAL;
                                         set
@@ -174,7 +174,7 @@
                                         }
                                     }
 
-                                    public string ITE_TIPO_AVALIACAO_FINAL
+                                    public string? ITE_TIPO_AVALIACAO_FINAL
                                     {
                                         get => _inner.ITE_TIPO_AVALIACAO_FINAL;
                                         set

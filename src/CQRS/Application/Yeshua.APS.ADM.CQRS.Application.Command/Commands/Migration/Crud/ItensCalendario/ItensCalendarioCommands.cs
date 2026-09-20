@@ -16,13 +16,13 @@ namespace Command.Write
         public int ICA_ID { get; set; }
         public DateTime ICA_DATA_DE { get; set; }
         public DateTime ICA_DATA_ATE { get; set; }
-        public string ICA_OBSERVACAO { get; set; }
+        public string? ICA_OBSERVACAO { get; set; }
         public int ICA_TIPO { get; set; }
-        public string URM_ID { get; set; }
-        public string URN_ID { get; set; }
+        public string? URM_ID { get; set; }
+        public string? URN_ID { get; set; }
         public int CAL_ID { get; set; }
-        public string MAQ_ID { get; set; }
-        public string PRO_ID { get; set; }
+        public string? MAQ_ID { get; set; }
+        public string? PRO_ID { get; set; }
         public int? ICA_LIMPESA_MAQUINA { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

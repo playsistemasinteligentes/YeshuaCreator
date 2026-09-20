@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record ImpressoraDTO
     {
     public int imp_id { get; set; }
-    public string imp_ip { get; set; }
-    public string imp_nome { get; set; }
+    public string imp_ip { get; set; } = string.Empty;
+    public string imp_nome { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

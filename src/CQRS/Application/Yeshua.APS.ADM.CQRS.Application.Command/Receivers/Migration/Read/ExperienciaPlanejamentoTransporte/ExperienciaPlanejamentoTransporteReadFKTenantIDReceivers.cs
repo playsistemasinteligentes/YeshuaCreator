@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<ExperienciaPlanejamentoTransporteTenantIDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<ExperienciaPlanejamentoTransporteTenantIDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var ExperienciaPlanejamentoTransporteReadRepository = _repository.getExperienciaPlanejamentoTransporteReadFKTenantID(c);
-                return Success("OK", ExperienciaPlanejamentoTransporteReadRepository);
+                return Task.FromResult(Success("OK", ExperienciaPlanejamentoTransporteReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

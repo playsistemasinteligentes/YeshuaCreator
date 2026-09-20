@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RestricoesDeRodagemDTO> getRestricoesDeRodagem(Command.Read.RestricoesDeRodagemReadCommand command )
         {
-            DataPagination<RestricoesDeRodagemDTO> customResult = null;
+            var customResult = new DataPagination<RestricoesDeRodagemDTO>();
             var customHandled = false;
             TryGetRestricoesDeRodagemCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RestricoesDeRodagemTenantIDDTO> getRestricoesDeRodagemReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RestricoesDeRodagemTenantIDDTO> lista;
             var query = _query.RestricoesDeRodagemTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RestricoesDeRodagemTenantIDDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemTenantIDDTO>;
+                var lista = _unitOfWork.Query<RestricoesDeRodagemTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RestricoesDeRodagemUserIdDTO> getRestricoesDeRodagemReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RestricoesDeRodagemUserIdDTO> lista;
             var query = _query.RestricoesDeRodagemUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RestricoesDeRodagemUserIdDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemUserIdDTO>;
+                var lista = _unitOfWork.Query<RestricoesDeRodagemUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRES_IDQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRES_TIPOQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRES_HORA_INIQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRES_HORA_FIMQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRES_VELOCIDADE_HORA_RUSHQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTVE_IDQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAP_IDQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters) as List<RestricoesDeRodagemDTO>;
+                var result = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

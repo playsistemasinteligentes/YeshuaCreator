@@ -11,17 +11,21 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record ListarLentesPlanejamentoTransporteInputCommand : ICommand
+public partial record ListarLentesPlanejamentoTransporteInputCommand : ICommand, IOperationalTelemetryCommand
 {
-    public string ContextoId { get; set; }
+    public string ContextoId { get; set; } = string.Empty;
+
+    public string OperationalEntity => "PedidoPlanejavel";
+    public string? OperationalRecordId => null;
 }
 
 public partial record ListarLentesPlanejamentoTransporteOutputCommand : ICommand
 {
-    public List<PlanejamentoLenteResumo> Lentes { get; set; }
+    public List<PlanejamentoLenteResumo> Lentes { get; set; } = default!;
 }
 
 }

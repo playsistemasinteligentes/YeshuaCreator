@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRotaRealizadaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRotaRealizadaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RotaRealizadaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var rotarealizada = new RotaRealizadaFactory(_logger, _domainTrackingPolicy).Create(context, c.ROT_ID, c.CAR_ID, c.ROT_DATA_HORA, c.ROT_LAT, c.ROT_LONG);
                  var domainResult = RotaRealizadaDomainBehavior.Apply(rotarealizada, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(rotarealizada);
-                     return Success("OK", rotarealizada);
+                     return Task.FromResult(Success("OK", rotarealizada));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, rotarealizada);
+                    return Task.FromResult(Error(e, rotarealizada));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

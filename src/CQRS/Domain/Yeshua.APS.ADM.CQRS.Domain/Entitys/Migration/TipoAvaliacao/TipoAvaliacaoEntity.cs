@@ -26,7 +26,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal TipoAvaliacaoEntity(int ta_id, string ta_desc ){
  TA_ID = ta_id; 
  TA_DESC = ta_desc; 

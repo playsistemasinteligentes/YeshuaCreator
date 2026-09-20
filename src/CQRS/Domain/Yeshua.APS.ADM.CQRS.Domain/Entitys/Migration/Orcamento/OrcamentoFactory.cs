@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IOrcamentoEntity Create(int? id, int orc_id, string rep_id, string con_id, string orc_tipo_frete, DateTime? orc_emissao, string cli_id, int ver_id )
+                                    } public IOrcamentoEntity Create(int? id, int orc_id, string? rep_id, string? con_id, string? orc_tipo_frete, DateTime? orc_emissao, string? cli_id, int ver_id )
                             {
                                 return Create(null, id, orc_id, rep_id, con_id, orc_tipo_frete, orc_emissao, cli_id, ver_id);
                             }
 
                             public IOrcamentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int orc_id, string rep_id, string con_id, string orc_tipo_frete, DateTime? orc_emissao, string cli_id, int ver_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int orc_id, string? rep_id, string? con_id, string? orc_tipo_frete, DateTime? orc_emissao, string? cli_id, int ver_id )
                             {
                             var entity = new OrcamentoEntity(id, orc_id, rep_id, con_id, orc_tipo_frete, orc_emissao, cli_id, ver_id );
 

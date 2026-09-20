@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<RegistrosOnduladeiraDTO> getRegistrosOnduladeira(Command.Read.RegistrosOnduladeiraReadCommand command )
         {
-            DataPagination<RegistrosOnduladeiraDTO> customResult = null;
+            var customResult = new DataPagination<RegistrosOnduladeiraDTO>();
             var customHandled = false;
             TryGetRegistrosOnduladeiraCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<RegistrosOnduladeiraTenantIDDTO> getRegistrosOnduladeiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RegistrosOnduladeiraTenantIDDTO> lista;
             var query = _query.RegistrosOnduladeiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<RegistrosOnduladeiraTenantIDDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<RegistrosOnduladeiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<RegistrosOnduladeiraUserIdDTO> getRegistrosOnduladeiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<RegistrosOnduladeiraUserIdDTO> lista;
             var query = _query.RegistrosOnduladeiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<RegistrosOnduladeiraUserIdDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraUserIdDTO>;
+                var lista = _unitOfWork.Query<RegistrosOnduladeiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREG_IDQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREG_RESPOSTAQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREG_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByREG_DATA_INICIOQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters) as List<RegistrosOnduladeiraDTO>;
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

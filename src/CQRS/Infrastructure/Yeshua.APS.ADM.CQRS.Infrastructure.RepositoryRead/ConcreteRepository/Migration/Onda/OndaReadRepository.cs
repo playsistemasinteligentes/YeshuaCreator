@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OndaDTO> getOnda(Command.Read.OndaReadCommand command )
         {
-            DataPagination<OndaDTO> customResult = null;
+            var customResult = new DataPagination<OndaDTO>();
             var customHandled = false;
             TryGetOndaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<OndaVIN_IDDTO> getOndaReadFKVIN_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OndaVIN_IDDTO> lista;
             var query = _query.OndaVIN_IDQuery(command );
 
-                lista = _unitOfWork.Query<OndaVIN_IDDTO>(query.Query,query.Parameters) as List<OndaVIN_IDDTO>;
+                var lista = _unitOfWork.Query<OndaVIN_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<OndaTenantIDDTO> getOndaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OndaTenantIDDTO> lista;
             var query = _query.OndaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<OndaTenantIDDTO>(query.Query,query.Parameters) as List<OndaTenantIDDTO>;
+                var lista = _unitOfWork.Query<OndaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<OndaUserIdDTO> getOndaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OndaUserIdDTO> lista;
             var query = _query.OndaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<OndaUserIdDTO>(query.Query,query.Parameters) as List<OndaUserIdDTO>;
+                var lista = _unitOfWork.Query<OndaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_IDQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_ESPESSURAQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_PESO_COLAQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_RENDIMENTO_ONDA_1Query(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_RENDIMENTO_ONDA_2Query(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_PROFUNDIDADE_VINCOQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOND_ID_INTEGRACAOQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIN_IDQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters) as List<OndaDTO>;
+                var result = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

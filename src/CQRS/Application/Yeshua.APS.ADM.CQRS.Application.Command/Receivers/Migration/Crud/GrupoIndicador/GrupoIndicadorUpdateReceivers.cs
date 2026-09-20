@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IGrupoIndicadorEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IGrupoIndicadorEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.GrupoIndicadorCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var grupoindicador = new GrupoIndicadorFactory(_logger, _domainTrackingPolicy).Create(context, c.GRU_IND_ID, c.GRU_ID, c.IND_ID);
                  var domainResult = GrupoIndicadorDomainBehavior.Apply(grupoindicador, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(grupoindicador);
-                     return Success("OK", grupoindicador);
+                     return Task.FromResult(Success("OK", grupoindicador));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, grupoindicador);
+                    return Task.FromResult(Error(e, grupoindicador));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

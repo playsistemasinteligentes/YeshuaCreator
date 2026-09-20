@@ -24,19 +24,19 @@
     int ITO_ID { get; set; }
     int? ORC_ID { get; set; }
     int? TIP_ID { get; set; }
-    string PRO_ID { get; set; }
-    string ITO_OBS { get; set; }
+    string? PRO_ID { get; set; }
+    string? ITO_OBS { get; set; }
     Decimal? ITO_QUANTIDADE { get; set; }
     Decimal? ITO_CUSTO { get; set; }
     Decimal? ITO_MARGEM { get; set; }
     Decimal? ITO_VALOR_UNITARIO { get; set; }
     DateTime? ITO_VERSSAO_CUSTO { get; set; }
-    string ITO_STATUS { get; set; }
+    string? ITO_STATUS { get; set; }
     Decimal? ITO_ERP_CUSTOS_FIXOS { get; set; }
     Decimal? ITO_ERP_CUSTOS_VARIAVEIS { get; set; }
     Decimal? ITO_ERP_DESPESAS_VAR_VENDA { get; set; }
     Decimal? ITO_ERP_IMPOSTOS { get; set; }
-    string GRP_ID_COMPOSICAO { get; set; }
+    string? GRP_ID_COMPOSICAO { get; set; }
     Decimal? ITO_LARGURA { get; set; }
     Decimal? ITO_COMPRIMENTO { get; set; }
     int? TenantID { get; set; }

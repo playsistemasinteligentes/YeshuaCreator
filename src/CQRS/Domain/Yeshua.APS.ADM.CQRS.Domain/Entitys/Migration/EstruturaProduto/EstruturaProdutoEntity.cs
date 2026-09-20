@@ -33,7 +33,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal EstruturaProdutoEntity(int? id, DateTime est_data_validade, string pro_id_produto, string pro_id_componente, Decimal est_quant, DateTime est_data_inclusao, Decimal est_base_producao, string est_tipo_requisicao, string est_codigo_de_excecao ){
  Id = id; 
  EST_DATA_VALIDADE = (est_data_validade < (new DateTime(1800, 1, 1))) ? DateTime.Now : est_data_validade; 
@@ -50,13 +50,13 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(EST_DATA_VALIDADE == null || EST_DATA_VALIDADE < (new DateTime(1800, 1, 1)))
+   if(EST_DATA_VALIDADE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("EST DATA VALIDADE deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID_PRODUTO))
    this._erroMensagem.Add("PRO ID PRODUTO deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID_COMPONENTE))
    this._erroMensagem.Add("PRO ID COMPONENTE deve ser informado.");
-   if(EST_DATA_INCLUSAO == null || EST_DATA_INCLUSAO < (new DateTime(1800, 1, 1)))
+   if(EST_DATA_INCLUSAO < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("EST DATA INCLUSAO deve ser informado.");
    if(string.IsNullOrEmpty(EST_TIPO_REQUISICAO))
    this._erroMensagem.Add("EST TIPO REQUISICAO deve ser informado.");

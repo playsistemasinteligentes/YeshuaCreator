@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ISubOcorrenciaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ISubOcorrenciaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.SubOcorrenciaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var subocorrencia = new SubOcorrenciaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SUB_ID, c.SUB_DESCRICAO);
                  var domainResult = SubOcorrenciaDomainBehavior.Apply(subocorrencia, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(subocorrencia);
-                     return Success("OK", subocorrencia);
+                     return Task.FromResult(Success("OK", subocorrencia));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, subocorrencia);
+                    return Task.FromResult(Error(e, subocorrencia));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

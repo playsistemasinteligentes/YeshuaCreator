@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRoteiroPedidoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRoteiroPedidoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RoteiroPedidoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var roteiropedido = new RoteiroPedidoFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.StatusCadastro, c.TipoPlanejamento, c.CalendarioId, c.HierarquiaSequenciaTransformacao, c.ProximaSequenciaTransformacao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.PecasPorPulso, c.PrioridadeInformada, c.Status, c.Operacoes, c.ExcecaoOperacoes, c.LinhaDireta, c.AvaliaCusto, c.PercentualInicioPassoAnterior, c.MaquinaLarguraUtil, c.GrupoTipo, c.GrupoPerformanceMetroLinear);
                  var domainResult = RoteiroPedidoDomainBehavior.Apply(roteiropedido, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(roteiropedido);
-                     return Success("OK", roteiropedido);
+                     return Task.FromResult(Success("OK", roteiropedido));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, roteiropedido);
+                    return Task.FromResult(Error(e, roteiropedido));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

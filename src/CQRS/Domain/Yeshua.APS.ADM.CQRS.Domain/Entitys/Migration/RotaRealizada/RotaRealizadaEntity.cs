@@ -29,11 +29,11 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal RotaRealizadaEntity(int rot_id, string car_id, DateTime? rot_data_hora, Decimal? rot_lat, Decimal? rot_long ){
  ROT_ID = rot_id; 
  CAR_ID = car_id; 
- ROT_DATA_HORA = (rot_data_hora < (new DateTime(1800, 1, 1))) ? DateTime.Now : rot_data_hora; 
+ ROT_DATA_HORA = rot_data_hora.HasValue && rot_data_hora.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : rot_data_hora; 
  ROT_LAT = rot_lat; 
  ROT_LONG = rot_long; 
  Deleted = false; 

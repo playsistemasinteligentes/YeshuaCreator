@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IConfiguracoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IConfiguracoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ConfiguracoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var configuracoes = new ConfiguracoesFactory(_logger, _domainTrackingPolicy).Create(context, c.CON_ID);
                  var domainResult = ConfiguracoesDomainBehavior.Apply(configuracoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(configuracoes);
-                     return Success("OK", configuracoes);
+                     return Task.FromResult(Success("OK", configuracoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, configuracoes);
+                    return Task.FromResult(Error(e, configuracoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

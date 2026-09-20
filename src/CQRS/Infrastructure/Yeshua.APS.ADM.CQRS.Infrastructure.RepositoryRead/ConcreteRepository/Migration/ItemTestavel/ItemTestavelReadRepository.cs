@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ItemTestavelDTO> getItemTestavel(Command.Read.ItemTestavelReadCommand command )
         {
-            DataPagination<ItemTestavelDTO> customResult = null;
+            var customResult = new DataPagination<ItemTestavelDTO>();
             var customHandled = false;
             TryGetItemTestavelCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ItemTestavelTenantIDDTO> getItemTestavelReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItemTestavelTenantIDDTO> lista;
             var query = _query.ItemTestavelTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ItemTestavelTenantIDDTO>(query.Query,query.Parameters) as List<ItemTestavelTenantIDDTO>;
+                var lista = _unitOfWork.Query<ItemTestavelTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ItemTestavelUserIdDTO> getItemTestavelReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ItemTestavelUserIdDTO> lista;
             var query = _query.ItemTestavelUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ItemTestavelUserIdDTO>(query.Query,query.Parameters) as List<ItemTestavelUserIdDTO>;
+                var lista = _unitOfWork.Query<ItemTestavelUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_IDQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_OBSQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_NUMERO_DE_TESTESQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_CONDICIONAL_DE_AVALIACAOQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_VALOR_DA_CONDICIONALQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_VALOR_CALCULADO_DA_CONDICIONALQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByITE_TIPO_AVALIACAO_FINALQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters) as List<ItemTestavelDTO>;
+                var result = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

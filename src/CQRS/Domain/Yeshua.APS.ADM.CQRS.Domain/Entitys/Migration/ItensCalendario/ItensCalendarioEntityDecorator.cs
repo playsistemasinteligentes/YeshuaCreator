@@ -106,7 +106,7 @@
                                         }
                                     }
 
-                                    public string ICA_OBSERVACAO
+                                    public string? ICA_OBSERVACAO
                                     {
                                         get => _inner.ICA_OBSERVACAO;
                                         set
@@ -134,7 +134,7 @@
                                         }
                                     }
 
-                                    public string URM_ID
+                                    public string? URM_ID
                                     {
                                         get => _inner.URM_ID;
                                         set
@@ -148,7 +148,7 @@
                                         }
                                     }
 
-                                    public string URN_ID
+                                    public string? URN_ID
                                     {
                                         get => _inner.URN_ID;
                                         set
@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID
+                                    public string? MAQ_ID
                                     {
                                         get => _inner.MAQ_ID;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string PRO_ID
+                                    public string? PRO_ID
                                     {
                                         get => _inner.PRO_ID;
                                         set

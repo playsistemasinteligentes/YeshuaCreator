@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPedidoPlanejavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPedidoPlanejavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PedidoPlanejavelCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var pedidoplanejavel = new PedidoPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.ClienteId, c.ClienteNome, c.Estado, c.Municipio, c.Regiao, c.Bairro, c.RotaId, c.EmbarqueAlvo, c.DataEntregaDe, c.DataEntregaAte, c.Peso, c.Volume, c.SaldoAExpedir, c.Status, c.CargaAtualId, c.VersaoPlanejamento, c.AlertasResumo);
                  var domainResult = PedidoPlanejavelDomainBehavior.Apply(pedidoplanejavel, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(pedidoplanejavel);
-                     return Success("OK", pedidoplanejavel);
+                     return Task.FromResult(Success("OK", pedidoplanejavel));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, pedidoplanejavel);
+                    return Task.FromResult(Error(e, pedidoplanejavel));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

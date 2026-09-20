@@ -24,8 +24,8 @@
     int DIM_ID { get; set; }
     int IND_ID { get; set; }
     string DIM_DESCRICAO { get; set; }
-    string DIM_SQL { get; set; }
-    string DIM_CONEXAO { get; set; }
+    string? DIM_SQL { get; set; }
+    string? DIM_CONEXAO { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

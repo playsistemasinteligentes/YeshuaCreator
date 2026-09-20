@@ -123,7 +123,7 @@
                                         }
                                     }
 
-                                    public string LOGS_KEY2
+                                    public string? LOGS_KEY2
                                     {
                                         get => _inner.LOGS_KEY2;
                                         set
@@ -137,7 +137,7 @@
                                         }
                                     }
 
-                                    public string LOGS_KEY3
+                                    public string? LOGS_KEY3
                                     {
                                         get => _inner.LOGS_KEY3;
                                         set
@@ -151,7 +151,7 @@
                                         }
                                     }
 
-                                    public string LOGS_KEY4
+                                    public string? LOGS_KEY4
                                     {
                                         get => _inner.LOGS_KEY4;
                                         set
@@ -165,7 +165,7 @@
                                         }
                                     }
 
-                                    public string LOGS_COLUMN
+                                    public string? LOGS_COLUMN
                                     {
                                         get => _inner.LOGS_COLUMN;
                                         set
@@ -179,7 +179,7 @@
                                         }
                                     }
 
-                                    public string LOGS_BEFORE
+                                    public string? LOGS_BEFORE
                                     {
                                         get => _inner.LOGS_BEFORE;
                                         set
@@ -193,7 +193,7 @@
                                         }
                                     }
 
-                                    public string LOGS_AFTER
+                                    public string? LOGS_AFTER
                                     {
                                         get => _inner.LOGS_AFTER;
                                         set
@@ -249,7 +249,7 @@
                                         }
                                     }
 
-                                    public string LOGS_ORIGEM
+                                    public string? LOGS_ORIGEM
                                     {
                                         get => _inner.LOGS_ORIGEM;
                                         set

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMedicoesOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMedicoesOnduladeiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MedicoesOnduladeiraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var medicoesonduladeira = new MedicoesOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id);
                  var domainResult = MedicoesOnduladeiraDomainBehavior.Apply(medicoesonduladeira, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(medicoesonduladeira);
-                     return Success("OK", medicoesonduladeira);
+                     return Task.FromResult(Success("OK", medicoesonduladeira));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, medicoesonduladeira);
+                    return Task.FromResult(Error(e, medicoesonduladeira));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

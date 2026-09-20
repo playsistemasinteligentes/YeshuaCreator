@@ -160,7 +160,7 @@
                                         }
                                     }
 
-                                    public string ROT_TIPO
+                                    public string? ROT_TIPO
                                     {
                                         get => _inner.ROT_TIPO;
                                         set

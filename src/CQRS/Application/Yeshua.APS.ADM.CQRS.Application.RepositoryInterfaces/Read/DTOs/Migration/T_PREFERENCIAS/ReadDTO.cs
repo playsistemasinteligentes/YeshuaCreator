@@ -20,10 +20,10 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int pre_id { get; set; }
-    public string pre_descricao { get; set; }
-    public string pre_namespace { get; set; }
-    public string pre_tipo { get; set; }
-    public string pre_valor { get; set; }
+    public string pre_descricao { get; set; } = string.Empty;
+    public string pre_namespace { get; set; } = string.Empty;
+    public string pre_tipo { get; set; } = string.Empty;
+    public string pre_valor { get; set; } = string.Empty;
     public int use_id { get; set; }
     public int per_id { get; set; }
     public int tenantid { get; set; }

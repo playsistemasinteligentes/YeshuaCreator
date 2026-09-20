@@ -26,7 +26,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal T_DepartamentosEntity(int dep_id, string dep_nome ){
  DEP_ID = dep_id; 
  DEP_NOME = dep_nome; 

@@ -28,6 +28,553 @@ app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvide
     Results.Ok(identityProvider.Current))
     .AllowAnonymous();
 
+app.MapPut("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyState policyState, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update) =>
+    Results.Ok(policyState.ApplyLocal(update)))
+    .RequireAuthorization();
+
+app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        application = identityProvider.Current.Application,
+        components = new[]
+        {
+            new { id = "Command", title = "Commands", description = "Execucao, falha e duracao dos commands." },
+            new { id = "Saga", title = "Sagas", description = "Execucao e transicao dos steps de saga." },
+            new { id = "RepositoryCounters", title = "Repositorios - contadores", description = "Contadores e tempos agregados de acesso a dados." },
+            new { id = "RepositoryEvents", title = "Repositorios - eventos", description = "Eventos detalhados das operacoes de repositorio." },
+            new { id = "DomainTracker", title = "Rastreamento de dominio", description = "Alteracoes das entidades e campos selecionados." }
+        },
+        entities = new object[]
+        {
+            new
+            {
+                name = "Clinica",
+                title = "Clinica",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Nome", title = "Nome da Clínica" },
+                    new { name = "Endereco", title = "Endereço da Clínica" },
+                    new { name = "Telefone", title = "Telefone de Contato" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "DisponibilidadeAgenda",
+                title = "DisponibilidadeAgenda",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ProfissionalId", title = "Profissional" },
+                    new { name = "DataHora", title = "Horário Disponível" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Especialidade",
+                title = "Especialidade",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Descricao", title = "Descrição da Especialidade" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "GrupoServico",
+                title = "GrupoServico",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Descricao", title = "Descrição do Grupo de Serviços" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MovimentacaoFinanceira",
+                title = "MovimentacaoFinanceira",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PacienteId", title = "Paciente" },
+                    new { name = "ServicoId", title = "Serviço" },
+                    new { name = "Valor", title = "Valor da Transação" },
+                    new { name = "TipoMovimentacao", title = "Tipo de Movimentação" },
+                    new { name = "DataMovimentacao", title = "Data da Movimentação" },
+                    new { name = "SaldoAtual", title = "Saldo Atual" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "MovimentoFinanceiro",
+                title = "MovimentoFinanceiro",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "IdOrigem", title = "Identificador de Origem" },
+                    new { name = "ContaDebitoId", title = "Conta Débito" },
+                    new { name = "Valor", title = "Valor do Movimento" },
+                    new { name = "DataMovimento", title = "Data do Movimento" },
+                    new { name = "DataVencimento", title = "Data de Vencimento" },
+                    new { name = "Status", title = "Status do Movimento" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Paciente",
+                title = "Paciente",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Nome", title = "Nome do Paciente" },
+                    new { name = "Telefone", title = "Telefone de Contato" },
+                    new { name = "DataNascimento", title = "Data Nascimento" },
+                    new { name = "Genero", title = "Gênero" },
+                    new { name = "Escolaridade", title = "Escolaridade" },
+                    new { name = "Profissao", title = "Profissão" },
+                    new { name = "Endereco", title = "Endereço" },
+                    new { name = "NomeResponsavel", title = "Nome Responsavel" },
+                    new { name = "TelefoneResponsavel", title = "Telefone Responsavel" },
+                    new { name = "Observacao", title = "Observacao" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "PlanoConta",
+                title = "PlanoConta",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Codigo", title = "Código da Conta" },
+                    new { name = "Nome", title = "Nome da Conta" },
+                    new { name = "Tipo", title = "Tipo da Conta" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Profissional",
+                title = "Profissional",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Nome", title = "Nome do Profissional" },
+                    new { name = "EspecialidadeId", title = "Especialidade do Profissional" },
+                    new { name = "Telefone", title = "Telefone do Profissional" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Servico",
+                title = "Servico",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "GrupoServicoId", title = "Grupo de Serviço" },
+                    new { name = "Nome", title = "Nome do Serviço" },
+                    new { name = "Valor", title = "Valor do Serviço" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "Sesoes",
+                title = "Sesoes",
+                fields = new[]
+                {
+                    new { name = "PacienteId", title = "Paciente" },
+                    new { name = "DataInicio", title = "Data Inicio" },
+                    new { name = "DataFim", title = "Data Fim" },
+                    new { name = "StatusAgendamento", title = "Status do Agendamento" },
+                    new { name = "StatusProntuario", title = "Status Prontuario" },
+                    new { name = "Prontuario", title = "Prontuario" },
+                    new { name = "QueixaPrincipal", title = "Queixa Principal" },
+                    new { name = "RegistroDocumental", title = "Registro Documental" },
+                    new { name = "SintomasRelatados", title = "Sintomas relatados" },
+                    new { name = "MudancasDesdeUltimaSessaao", title = "Mudanças desde a última sessão" },
+                    new { name = "ComportamentoObservado", title = "Comportamento observado durante a sessão" },
+                    new { name = "EstadoEmocionalGeral", title = "Estado emocional geral" },
+                    new { name = "DiscursoPensamentos", title = "Discurso e pensamentos" },
+                    new { name = "UsoMedicacao", title = "Uso de Medicação" },
+                    new { name = "TecnicasUtilizadas", title = "Técnicas utilizadas" },
+                    new { name = "QuestionamentosReflexoesAbordadas", title = "Questionamentos e reflexões abordadas" },
+                    new { name = "ExerciciosTarefasSugeridas", title = "Exercícios ou tarefas de casa sugeridas" },
+                    new { name = "DiagnoosticoHipoteseDiagnoostica", title = "Diagnóstico ou Hipótese Diagnóstica" },
+                    new { name = "ObjetivosCurtoPrazo", title = "Objetivos a curto prazo" },
+                    new { name = "ObjetivosLongoPrazo", title = "Objetivos a longo prazo" },
+                    new { name = "FrequenciaSugeridaSessooes", title = "Frequência sugerida das sessões" },
+                    new { name = "EncaminhamentoOutrosProfissionais", title = "Encaminhamento para outros profissionais" },
+                    new { name = "InformacoesRelevantesFuturasConsultas", title = "Informações relevantes que podem ser úteis em futuras consultas" },
+                    new { name = "FeedbackPacienteSobreProcessoTerapeeutico", title = "Feedback do paciente sobre o processo terapêutico" },
+                    new { name = "Id", title = "ID" },
+                    new { name = "ServicoId", title = "Serviço" },
+                    new { name = "MovimentacaoFinanceiraId", title = "Financeiro" },
+                    new { name = "ProfissionalId", title = "Profissional" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yConfigArcteture",
+                title = "yConfigArcteture",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "AuditTrackerActived", title = "AuditTrackerActived" },
+                    new { name = "AuditCRUDActived", title = "AuditCRUDActived" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yConfigNotification",
+                title = "yConfigNotification",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "EmailSmtpClient", title = "EmailSmtpClient" },
+                    new { name = "EmailPort", title = "EmailPort" },
+                    new { name = "EmailUserName", title = "EmailUserName" },
+                    new { name = "EmailPassword", title = "EmailPassword" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yFileUpload",
+                title = "yFileUpload",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Type", title = "Tipo do Arquivo" },
+                    new { name = "Status", title = "Status do Upload" },
+                    new { name = "FilePath", title = "Caminho do Arquivo" },
+                    new { name = "FileSize", title = "Tamanho do Arquivo" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yGrant",
+                title = "yGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yInbox",
+                title = "yInbox",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MessageId", title = "Message Id" },
+                    new { name = "Type", title = "Tipo da Mensagem" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CorrelationId", title = "Correlation Id" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "LastError", title = "Último Erro" },
+                    new { name = "ProcessingAt", title = "Processando em" },
+                    new { name = "NextAttemptAt", title = "Próxima tentativa" },
+                    new { name = "SagaId", title = "SagaId" },
+                    new { name = "SagaStepId", title = "SagaStepId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yModule",
+                title = "yModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                }
+            },
+            new
+            {
+                name = "yOutbox",
+                title = "yOutbox",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "MessageId", title = "Message Id" },
+                    new { name = "Type", title = "Tipo da Mensagem" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "CorrelationId", title = "Correlation Id" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "TransportType", title = "Tipo de Transporte" },
+                    new { name = "TransportData", title = "Dados do transporte" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "SentAt", title = "Enviado em" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "LastError", title = "Último Erro" },
+                    new { name = "ProcessingAt", title = "Processando em" },
+                    new { name = "NextAttemptAt", title = "Próxima tentativa" },
+                    new { name = "SagaId", title = "SagaId" },
+                    new { name = "SagaStepId", title = "SagaStepId" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yPerfil",
+                title = "yPerfil",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Description", title = "Descrição" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yPerfilGrant",
+                title = "yPerfilGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PerfilId", title = "ID Perfil" },
+                    new { name = "GrantId", title = "ID Permição" },
+                    new { name = "CanGrant", title = "Permite acessar" },
+                    new { name = "CanCreate", title = "Permite Criar" },
+                    new { name = "CanRead", title = "Permite Ler" },
+                    new { name = "CanUpdate", title = "Permite Atualizar" },
+                    new { name = "CanDelete", title = "Permite Deletar" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ySaga",
+                title = "ySaga",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Type", title = "Type" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "KeyCurrentStep", title = "Key Step Atual" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "EntityType", title = "Entity Type" },
+                    new { name = "EntityId", title = "Entity Id" },
+                    new { name = "NextExecutionAt", title = "Proxima execucao" },
+                    new { name = "LockedAt", title = "LockedAt" },
+                    new { name = "LockedBy", title = "LockedBy" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "ySagaStep",
+                title = "ySagaStep",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "SagaId", title = "Saga" },
+                    new { name = "StepKey", title = "Step Key" },
+                    new { name = "IndexOrder", title = "Index Order" },
+                    new { name = "CorrelationId", title = "CorrelationId" },
+                    new { name = "Status", title = "Status" },
+                    new { name = "ExecutionCount", title = "Execuções" },
+                    new { name = "LastExecutionAt", title = "Última Execução" },
+                    new { name = "CompletedAt", title = "Finalizado em" },
+                    new { name = "ErrorMessage", title = "Erro" },
+                    new { name = "Payload", title = "Payload" },
+                    new { name = "RetryCount", title = "Tentativas" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yTenant",
+                title = "yTenant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "CnpjCpf", title = "Cnpj/Cpf" },
+                    new { name = "Nome", title = "Nome" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yTenantModule",
+                title = "yTenantModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ModuleId", title = "ID Modulo" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yToken",
+                title = "yToken",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "TokenHash", title = "Hash do Token" },
+                    new { name = "Description", title = "Descricao" },
+                    new { name = "ConnectorKey", title = "Conector" },
+                    new { name = "Active", title = "Ativo" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "CreatedAt", title = "Criado em" },
+                    new { name = "LastUsedAt", title = "Ultimo uso" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yUser",
+                title = "yUser",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "Nome", title = "Nome Usuario" },
+                    new { name = "Email", title = "Email" },
+                    new { name = "Senha", title = "Senha" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yUserGrant",
+                title = "yUserGrant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "PerfilId", title = "ID Perfil" },
+                    new { name = "GrantId", title = "ID Permição" },
+                    new { name = "CanGrant", title = "Permite acessar" },
+                    new { name = "CanCreate", title = "Permite Criar" },
+                    new { name = "CanRead", title = "Permite Ler" },
+                    new { name = "CanUpdate", title = "Permite Atualizar" },
+                    new { name = "CanDelete", title = "Permite Deletar" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
+                }
+            },
+            new
+            {
+                name = "yUserModule",
+                title = "yUserModule",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ModuleId", title = "ID Modulo" },
+                    new { name = "UserId", title = "User ID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                }
+            },
+        }
+    }))
+    .RequireAuthorization();
+
 app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILogger logger) =>
     Results.Ok(logger.Snapshot()))
     .AllowAnonymous();
@@ -3409,7 +3956,7 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
             new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "errormessage", label = "Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
@@ -3477,7 +4024,7 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
             new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
             new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
             new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3582,7 +4129,7 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
             new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
             new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },

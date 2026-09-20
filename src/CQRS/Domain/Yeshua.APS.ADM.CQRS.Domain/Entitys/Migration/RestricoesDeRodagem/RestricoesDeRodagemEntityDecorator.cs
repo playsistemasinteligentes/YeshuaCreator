@@ -103,7 +103,7 @@
                                         }
                                     }
 
-                                    public string RES_HORA_INI
+                                    public string? RES_HORA_INI
                                     {
                                         get => _inner.RES_HORA_INI;
                                         set
@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string RES_HORA_FIM
+                                    public string? RES_HORA_FIM
                                     {
                                         get => _inner.RES_HORA_FIM;
                                         set

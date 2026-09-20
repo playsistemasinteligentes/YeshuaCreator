@@ -18,9 +18,9 @@ namespace Repositorio.Outputs
 {
     public partial record UnidadeMedidaDTO
     {
-    public string uni_id { get; set; }
-    public string uni_descricao { get; set; }
-    public string uni_escala_tempo { get; set; }
+    public string uni_id { get; set; } = string.Empty;
+    public string uni_descricao { get; set; } = string.Empty;
+    public string uni_escala_tempo { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

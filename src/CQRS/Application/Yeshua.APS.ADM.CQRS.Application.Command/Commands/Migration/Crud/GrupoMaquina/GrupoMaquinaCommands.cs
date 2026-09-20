@@ -13,14 +13,14 @@ namespace Command.Write
 {
     public struct GrupoMaquinaCrudCommand : ICommand
     {
-        public string Id { get; set; }
-        public string Descricao { get; set; }
-        public string Status { get; set; }
+        public string? Id { get; set; }
+        public string? Descricao { get; set; }
+        public string? Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
-        public string GMA_TIPO_PLANEJAMENTO { get; set; }
+        public string? GMA_TIPO_PLANEJAMENTO { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

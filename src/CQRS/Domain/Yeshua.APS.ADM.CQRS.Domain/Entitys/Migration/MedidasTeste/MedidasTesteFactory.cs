@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMedidasTesteEntity Create(int? id, int mdt_id, string mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string uni_id )
+                                    } public IMedidasTesteEntity Create(int? id, int mdt_id, string? mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string? uni_id )
                             {
                                 return Create(null, id, mdt_id, mdt_desc, mdt_valor_esperado, mdt_encontrado, uni_id);
                             }
 
                             public IMedidasTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdt_id, string mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string uni_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdt_id, string? mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string? uni_id )
                             {
                             var entity = new MedidasTesteEntity(id, mdt_id, mdt_desc, mdt_valor_esperado, mdt_encontrado, uni_id );
 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<OptAlteracaoDimencoesDTO> getOptAlteracaoDimencoes(Command.Read.OptAlteracaoDimencoesReadCommand command )
         {
-            DataPagination<OptAlteracaoDimencoesDTO> customResult = null;
+            var customResult = new DataPagination<OptAlteracaoDimencoesDTO>();
             var customHandled = false;
             TryGetOptAlteracaoDimencoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<OptAlteracaoDimencoesTenantIDDTO> getOptAlteracaoDimencoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OptAlteracaoDimencoesTenantIDDTO> lista;
             var query = _query.OptAlteracaoDimencoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<OptAlteracaoDimencoesTenantIDDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<OptAlteracaoDimencoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<OptAlteracaoDimencoesUserIdDTO> getOptAlteracaoDimencoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<OptAlteracaoDimencoesUserIdDTO> lista;
             var query = _query.OptAlteracaoDimencoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<OptAlteracaoDimencoesUserIdDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesUserIdDTO>;
+                var lista = _unitOfWork.Query<OptAlteracaoDimencoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesDTO>;
+                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOAD_IDQuery(value );
 
-                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesDTO>;
+                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesDTO>;
+                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesDTO>;
+                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesDTO>;
+                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters) as List<OptAlteracaoDimencoesDTO>;
+                var result = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -27,7 +27,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal SubOcorrenciaEntity(int? id, string sub_id, string sub_descricao ){
  Id = id; 
  SUB_ID = sub_id; 

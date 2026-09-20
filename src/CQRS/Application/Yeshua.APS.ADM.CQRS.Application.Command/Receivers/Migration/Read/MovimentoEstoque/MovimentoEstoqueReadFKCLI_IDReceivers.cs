@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<MovimentoEstoqueCLI_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<MovimentoEstoqueCLI_IDDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var MovimentoEstoqueReadRepository = _repository.getMovimentoEstoqueReadFKCLI_ID(c);
-                return Success("OK", MovimentoEstoqueReadRepository);
+                return Task.FromResult(Success("OK", MovimentoEstoqueReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

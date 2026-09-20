@@ -57,7 +57,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
-                                    public string Id
+                                    public string? Id
                                     {
                                         get => _inner.Id;
                                         set
@@ -71,7 +71,7 @@
                                         }
                                     }
 
-                                    public string Descricao
+                                    public string? Descricao
                                     {
                                         get => _inner.Descricao;
                                         set
@@ -85,7 +85,7 @@
                                         }
                                     }
 
-                                    public string Status
+                                    public string? Status
                                     {
                                         get => _inner.Status;
                                         set
@@ -155,7 +155,7 @@
                                         }
                                     }
 
-                                    public string GMA_TIPO_PLANEJAMENTO
+                                    public string? GMA_TIPO_PLANEJAMENTO
                                     {
                                         get => _inner.GMA_TIPO_PLANEJAMENTO;
                                         set

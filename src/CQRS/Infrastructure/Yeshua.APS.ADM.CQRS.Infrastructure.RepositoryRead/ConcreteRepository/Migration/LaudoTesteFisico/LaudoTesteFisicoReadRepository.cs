@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<LaudoTesteFisicoDTO> getLaudoTesteFisico(Command.Read.LaudoTesteFisicoReadCommand command )
         {
-            DataPagination<LaudoTesteFisicoDTO> customResult = null;
+            var customResult = new DataPagination<LaudoTesteFisicoDTO>();
             var customHandled = false;
             TryGetLaudoTesteFisicoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<LaudoTesteFisicoTenantIDDTO> getLaudoTesteFisicoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LaudoTesteFisicoTenantIDDTO> lista;
             var query = _query.LaudoTesteFisicoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<LaudoTesteFisicoTenantIDDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoTenantIDDTO>;
+                var lista = _unitOfWork.Query<LaudoTesteFisicoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<LaudoTesteFisicoUserIdDTO> getLaudoTesteFisicoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<LaudoTesteFisicoUserIdDTO> lista;
             var query = _query.LaudoTesteFisicoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<LaudoTesteFisicoUserIdDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoUserIdDTO>;
+                var lista = _unitOfWork.Query<LaudoTesteFisicoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLTF_IDQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLTF_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLTF_VALORQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLTF_OBSQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLTF_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByORD_IDQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROT_PRO_IDQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFPR_SEQ_REPETICAOQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUSE_IDQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters) as List<LaudoTesteFisicoDTO>;
+                var result = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -20,13 +20,13 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int ite_id { get; set; }
-    public string ite_descricao { get; set; }
-    public string ite_obs { get; set; }
+    public string ite_descricao { get; set; } = string.Empty;
+    public string ite_obs { get; set; } = string.Empty;
     public int ite_numero_de_testes { get; set; }
-    public string ite_condicional_de_avaliacao { get; set; }
+    public string ite_condicional_de_avaliacao { get; set; } = string.Empty;
     public Decimal ite_valor_da_condicional { get; set; }
-    public string ite_valor_calculado_da_condicional { get; set; }
-    public string ite_tipo_avaliacao_final { get; set; }
+    public string ite_valor_calculado_da_condicional { get; set; } = string.Empty;
+    public string ite_tipo_avaliacao_final { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<ClpMedicoesHDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<ClpMedicoesHDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.ClpMedicoesHReadCommand c) 
              {    
                 var ClpMedicoesHReadRepository = _repository.getClpMedicoesH(c);
-                return Success("OK", ClpMedicoesHReadRepository);
+                return Task.FromResult(Success("OK", ClpMedicoesHReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -22,8 +22,8 @@
 {
     public int? Id { get; set; }
     public int COM_ID { get; set; }
-    public string GRP_ID { get; set; }
-    public string OND_ID { get; set; }
+    public string? GRP_ID { get; set; }
+    public string? OND_ID { get; set; }
     public int? COM_VINCO1_OND { get; set; }
     public int? COM_VINCO2_OND { get; set; }
     public int? COM_VINCO3_OND { get; set; }
@@ -48,8 +48,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CompensacaoEntity(int? id, int com_id, string grp_id, string ond_id, int? com_vinco1_ond, int? com_vinco2_ond, int? com_vinco3_ond, int? com_vinco4_ond, int? com_vinco5_ond, int? com_vinco6_ond, int? com_vinco7_ond, int? com_vinco8_ond, int? com_vinco9_ond, int? com_vinco10_ond, int? com_vinco1_conversao, int? com_vinco2_conversao, int? com_vinco3_conversao, int? com_vinco4_conversao, int? com_vinco5_conversao, int? com_vinco6_conversao, int? com_vinco7_conversao, int? com_vinco8_conversao, int? com_vinco9_conversao, int? com_vinco10_conversao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CompensacaoEntity(int? id, int com_id, string? grp_id, string? ond_id, int? com_vinco1_ond, int? com_vinco2_ond, int? com_vinco3_ond, int? com_vinco4_ond, int? com_vinco5_ond, int? com_vinco6_ond, int? com_vinco7_ond, int? com_vinco8_ond, int? com_vinco9_ond, int? com_vinco10_ond, int? com_vinco1_conversao, int? com_vinco2_conversao, int? com_vinco3_conversao, int? com_vinco4_conversao, int? com_vinco5_conversao, int? com_vinco6_conversao, int? com_vinco7_conversao, int? com_vinco8_conversao, int? com_vinco9_conversao, int? com_vinco10_conversao ){
  Id = id; 
  COM_ID = com_id; 
  GRP_ID = grp_id; 

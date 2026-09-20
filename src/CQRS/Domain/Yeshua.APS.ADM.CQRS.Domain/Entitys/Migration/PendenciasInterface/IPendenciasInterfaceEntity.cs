@@ -20,12 +20,12 @@
                 {
                     public interface IPendenciasInterfaceEntity
 {
-    string PEN_STATUS_OUT { get; set; }
-    string PEN_PROTOCOLO_OUT { get; set; }
-    string PEN_ID_PROTOCOLO_OUT { get; set; }
-    string PEN_STATUS_IN { get; set; }
-    string PEN_PROTOCOLO_IN { get; set; }
-    string PEN_ID_PROTOCOLO_IN { get; set; }
+    string? PEN_STATUS_OUT { get; set; }
+    string? PEN_PROTOCOLO_OUT { get; set; }
+    string? PEN_ID_PROTOCOLO_OUT { get; set; }
+    string? PEN_STATUS_IN { get; set; }
+    string? PEN_PROTOCOLO_IN { get; set; }
+    string? PEN_ID_PROTOCOLO_IN { get; set; }
     DateTime DATA_ENTRADA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

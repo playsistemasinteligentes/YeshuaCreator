@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICargaPrevistaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICargaPrevistaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CargaPrevistaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cargaprevista = new CargaPrevistaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.ITC_QTD_PLANEJADA, c.CAR_PREVISAO_MATERIA_PRIMA, c.CAR_DATA_INICIO_PREVISTO, c.CAR_DATA_INICIO_REALIZADO, c.CAR_DATA_FIM_PREVISTO, c.CAR_DATA_FIM_REALIZADO, c.CAR_INICIO_JANELA_EMBARQUE, c.CAR_FIM_JANELA_EMBARQUE, c.CAR_EMBARQUE_ALVO, c.CAR_STATUS, c.CAR_PESO_TEORICO, c.CAR_VOLUME_TEORICO, c.CAR_PESO_REAL, c.CAR_VOLUME_REAL, c.CAR_PESO_EMBALAGEM, c.CAR_PESO_ENTRADA, c.CAR_PESO_SAIDA, c.CAR_ID_DOCA, c.VEI_PLACA, c.TIP_ID, c.TRA_ID, c.CAR_GRUPO_PRODUTIVO, c.ROT_ID, c.CAR_OBSERVACAO_DE_TRANSPORTE, c.CAR_JUSTIFICATIVA_DE_CARREGAMENTO, c.OCO_ID, c.CAR_ID_JUNTADA, c.CAR_OBSERVACAO_OTIMIZADOR);
                  var domainResult = CargaPrevistaDomainBehavior.Apply(cargaprevista, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(cargaprevista);
-                     return Success("OK", cargaprevista);
+                     return Task.FromResult(Success("OK", cargaprevista));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cargaprevista);
+                    return Task.FromResult(Error(e, cargaprevista));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

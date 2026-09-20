@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct RotaPontosMapaReadFKPON_ID_DESTINOCommand : ICommand
     {
-        public string PON_ID { get; set; }
+        public string? PON_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

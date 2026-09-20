@@ -13,7 +13,7 @@ namespace Command.Read
 {
     public struct TargetProdutoReadFKOCO_ID_PERFORMANCECommand : ICommand
     {
-        public string OCO_ID { get; set; }
+        public string? OCO_ID { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

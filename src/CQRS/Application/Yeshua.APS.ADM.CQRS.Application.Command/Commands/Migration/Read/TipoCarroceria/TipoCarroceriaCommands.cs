@@ -14,8 +14,8 @@ namespace Command.Read
     public struct TipoCarroceriaReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string TCA_ID { get; set; }
-        public string TCA_DESCRICAO { get; set; }
+        public string? TCA_ID { get; set; }
+        public string? TCA_DESCRICAO { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

@@ -20,22 +20,22 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int id2 { get; set; }
-    public string maquinaid { get; set; }
+    public string maquinaid { get; set; } = string.Empty;
     public DateTime datainicio { get; set; }
     public DateTime datafim { get; set; }
     public DateTime emissao { get; set; }
     public Decimal quantidade { get; set; }
     public Decimal grupo { get; set; }
     public int status { get; set; }
-    public string turnoid { get; set; }
-    public string turmaid { get; set; }
+    public string turnoid { get; set; } = string.Empty;
+    public string turmaid { get; set; } = string.Empty;
     public int idloteclp { get; set; }
-    public string ocorrenciaid { get; set; }
+    public string ocorrenciaid { get; set; } = string.Empty;
     public int fase { get; set; }
-    public string clporigem { get; set; }
+    public string clporigem { get; set; } = string.Empty;
     public int clp_lote { get; set; }
     public int compacta { get; set; }
-    public string bol_id { get; set; }
+    public string bol_id { get; set; } = string.Empty;
     public int cor_sequencia { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

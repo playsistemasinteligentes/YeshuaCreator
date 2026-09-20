@@ -29,7 +29,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ParamEntity(string par_id, string par_descricao, string par_valor_s, Decimal par_valor_n, DateTime par_valor_d ){
  PAR_ID = par_id; 
  PAR_DESCRICAO = par_descricao; 
@@ -48,7 +48,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("PAR DESCRICAO deve ser informado.");
    if(string.IsNullOrEmpty(PAR_VALOR_S))
    this._erroMensagem.Add("PAR VALOR S deve ser informado.");
-   if(PAR_VALOR_D == null || PAR_VALOR_D < (new DateTime(1800, 1, 1)))
+   if(PAR_VALOR_D < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("PAR VALOR D deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

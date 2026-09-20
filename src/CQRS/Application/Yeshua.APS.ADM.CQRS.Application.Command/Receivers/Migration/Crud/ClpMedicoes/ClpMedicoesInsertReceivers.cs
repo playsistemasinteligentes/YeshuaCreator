@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IClpMedicoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IClpMedicoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ClpMedicoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var clpmedicoes = new ClpMedicoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2, c.MaquinaId, c.DataInicio, c.DataFim, c.Emissao, c.Quantidade, c.Grupo, c.Status, c.TurnoId, c.TurmaId, c.IdLoteClp, c.OcorrenciaId, c.Fase, c.ClpOrigem, c.CLP_LOTE, c.COMPACTA, c.BOL_ID, c.COR_SEQUENCIA);
                  var domainResult = ClpMedicoesDomainBehavior.Apply(clpmedicoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(clpmedicoes);
-                     return Success("OK", clpmedicoes);
+                     return Task.FromResult(Success("OK", clpmedicoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, clpmedicoes);
+                    return Task.FromResult(Error(e, clpmedicoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

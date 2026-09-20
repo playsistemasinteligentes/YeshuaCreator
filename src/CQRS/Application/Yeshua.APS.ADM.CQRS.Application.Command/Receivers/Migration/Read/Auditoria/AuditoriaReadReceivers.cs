@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<AuditoriaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<AuditoriaDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.AuditoriaReadCommand c) 
              {    
                 var AuditoriaReadRepository = _repository.getAuditoria(c);
-                return Success("OK", AuditoriaReadRepository);
+                return Task.FromResult(Success("OK", AuditoriaReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MapaDTO> getMapa(Command.Read.MapaReadCommand command )
         {
-            DataPagination<MapaDTO> customResult = null;
+            var customResult = new DataPagination<MapaDTO>();
             var customHandled = false;
             TryGetMapaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MapaPON_IDDTO> getMapaReadFKPON_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MapaPON_IDDTO> lista;
             var query = _query.MapaPON_IDQuery(command );
 
-                lista = _unitOfWork.Query<MapaPON_IDDTO>(query.Query,query.Parameters) as List<MapaPON_IDDTO>;
+                var lista = _unitOfWork.Query<MapaPON_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MapaTenantIDDTO> getMapaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MapaTenantIDDTO> lista;
             var query = _query.MapaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MapaTenantIDDTO>(query.Query,query.Parameters) as List<MapaTenantIDDTO>;
+                var lista = _unitOfWork.Query<MapaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MapaUserIdDTO> getMapaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MapaUserIdDTO> lista;
             var query = _query.MapaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MapaUserIdDTO>(query.Query,query.Parameters) as List<MapaUserIdDTO>;
+                var lista = _unitOfWork.Query<MapaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -316,7 +313,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -324,7 +321,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAP_IDQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_IDQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPON_ID_VIZINHOQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAP_DISTANCIAQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAP_CUSTO_PEDAGIO_POR_EIXOQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByROD_IDQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAP_ALTURA_RODQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters) as List<MapaDTO>;
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

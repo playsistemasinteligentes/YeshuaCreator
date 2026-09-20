@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<ConsultaPedidoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<ConsultaPedidoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.ConsultaPedidoReadCommand c) 
              {    
                 var ConsultaPedidoReadRepository = _repository.getConsultaPedido(c);
-                return Success("OK", ConsultaPedidoReadRepository);
+                return Task.FromResult(Success("OK", ConsultaPedidoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

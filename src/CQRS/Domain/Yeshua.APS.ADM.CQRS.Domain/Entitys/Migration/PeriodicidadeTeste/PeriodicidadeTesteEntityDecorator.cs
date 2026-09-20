@@ -86,7 +86,7 @@
                                         }
                                     }
 
-                                    public string PER_QTD
+                                    public string? PER_QTD
                                     {
                                         get => _inner.PER_QTD;
                                         set
@@ -100,7 +100,7 @@
                                         }
                                     }
 
-                                    public string UNI_ID
+                                    public string? UNI_ID
                                     {
                                         get => _inner.UNI_ID;
                                         set
@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string GRP_ID
+                                    public string? GRP_ID
                                     {
                                         get => _inner.GRP_ID;
                                         set

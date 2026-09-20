@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoCarroceriaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoCarroceriaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoCarroceriaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipocarroceria = new TipoCarroceriaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TCA_ID, c.TCA_DESCRICAO);
                  var domainResult = TipoCarroceriaDomainBehavior.Apply(tipocarroceria, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(tipocarroceria);
-                     return Success("OK", tipocarroceria);
+                     return Task.FromResult(Success("OK", tipocarroceria));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipocarroceria);
+                    return Task.FromResult(Error(e, tipocarroceria));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

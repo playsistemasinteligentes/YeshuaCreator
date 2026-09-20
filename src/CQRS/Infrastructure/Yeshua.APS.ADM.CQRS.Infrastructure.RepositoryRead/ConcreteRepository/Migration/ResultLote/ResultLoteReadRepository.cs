@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ResultLoteDTO> getResultLote(Command.Read.ResultLoteReadCommand command )
         {
-            DataPagination<ResultLoteDTO> customResult = null;
+            var customResult = new DataPagination<ResultLoteDTO>();
             var customHandled = false;
             TryGetResultLoteCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ResultLoteTenantIDDTO> getResultLoteReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ResultLoteTenantIDDTO> lista;
             var query = _query.ResultLoteTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ResultLoteTenantIDDTO>(query.Query,query.Parameters) as List<ResultLoteTenantIDDTO>;
+                var lista = _unitOfWork.Query<ResultLoteTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ResultLoteUserIdDTO> getResultLoteReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ResultLoteUserIdDTO> lista;
             var query = _query.ResultLoteUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ResultLoteUserIdDTO>(query.Query,query.Parameters) as List<ResultLoteUserIdDTO>;
+                var lista = _unitOfWork.Query<ResultLoteUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -186,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters) as List<ResultLoteDTO>;
+                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -194,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters) as List<ResultLoteDTO>;
+                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -202,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters) as List<ResultLoteDTO>;
+                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters) as List<ResultLoteDTO>;
+                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters) as List<ResultLoteDTO>;
+                var result = _unitOfWork.Query<ResultLoteDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

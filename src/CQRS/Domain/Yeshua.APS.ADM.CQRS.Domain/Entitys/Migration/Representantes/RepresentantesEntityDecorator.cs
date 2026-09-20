@@ -84,7 +84,7 @@
                                         }
                                     }
 
-                                    public string REP_NOME
+                                    public string? REP_NOME
                                     {
                                         get => _inner.REP_NOME;
                                         set

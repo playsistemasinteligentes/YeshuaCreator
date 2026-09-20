@@ -29,15 +29,15 @@
     Decimal Quantidade { get; set; }
     Decimal? Grupo { get; set; }
     int? Status { get; set; }
-    string TurnoId { get; set; }
-    string TurmaId { get; set; }
+    string? TurnoId { get; set; }
+    string? TurmaId { get; set; }
     int IdLoteClp { get; set; }
-    string OcorrenciaId { get; set; }
+    string? OcorrenciaId { get; set; }
     int? Fase { get; set; }
-    string ClpOrigem { get; set; }
+    string? ClpOrigem { get; set; }
     int? CLP_LOTE { get; set; }
     int? COMPACTA { get; set; }
-    string BOL_ID { get; set; }
+    string? BOL_ID { get; set; }
     int? COR_SEQUENCIA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

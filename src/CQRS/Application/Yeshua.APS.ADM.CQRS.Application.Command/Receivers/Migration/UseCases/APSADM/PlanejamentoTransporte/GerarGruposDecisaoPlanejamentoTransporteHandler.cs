@@ -31,7 +31,8 @@ namespace Command.Receivers.UseCase
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public GerarGruposDecisaoPlanejamentoTransporteHandler(
             Dominio.Interfaces.ILogger logger,
-            Aplication.Interfaces.Services.IExecutionContext context)
+            Aplication.Interfaces.Services.IExecutionContext context
+)
             : base(logger, context)
         {
             _logger = logger;
@@ -43,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<GerarGruposDecisaoPlanejamentoTransporteOutputCommand> retorno = Success("OK", null);
+                 State<GerarGruposDecisaoPlanejamentoTransporteOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<GerarGruposDecisaoPlanejamentoTransporteOutputCommand> e)
@@ -52,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<GerarGruposDecisaoPlanejamentoTransporteOutputCommand>> CustomActionHookAsync(State<GerarGruposDecisaoPlanejamentoTransporteOutputCommand> state, GerarGruposDecisaoPlanejamentoTransporteInputCommand comand, CancellationToken cancellationToken);

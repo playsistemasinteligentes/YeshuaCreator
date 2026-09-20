@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<CargaPlanejavelDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<CargaPlanejavelDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.CargaPlanejavelReadCommand c) 
              {    
                 var CargaPlanejavelReadRepository = _repository.getCargaPlanejavel(c);
-                return Success("OK", CargaPlanejavelReadRepository);
+                return Task.FromResult(Success("OK", CargaPlanejavelReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

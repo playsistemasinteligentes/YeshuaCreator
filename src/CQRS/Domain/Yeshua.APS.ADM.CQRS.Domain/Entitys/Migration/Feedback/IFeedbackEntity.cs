@@ -24,21 +24,21 @@
     DateTime DataInicial { get; set; }
     DateTime Datafinal { get; set; }
     string MaquinaId { get; set; }
-    string OcorrenciaId { get; set; }
-    string TurnoId { get; set; }
-    string TurmaId { get; set; }
+    string? OcorrenciaId { get; set; }
+    string? TurnoId { get; set; }
+    string? TurmaId { get; set; }
     int UsuarioId { get; set; }
-    string OrderId { get; set; }
-    string ProdutoId { get; set; }
-    string Observacoes { get; set; }
+    string? OrderId { get; set; }
+    string? ProdutoId { get; set; }
+    string? Observacoes { get; set; }
     Decimal Grupo { get; set; }
-    string DiaTurma { get; set; }
+    string? DiaTurma { get; set; }
     int? SequenciaTransformacao { get; set; }
     int? SequenciaRepeticao { get; set; }
     Decimal QuantidadePulsos { get; set; }
     Decimal? QuantidadePecasPorPulso { get; set; }
     Decimal? FEE_QTD_TOTAL_PRODUCAO_AJUSTADA { get; set; }
-    string BOL_ID { get; set; }
+    string? BOL_ID { get; set; }
     int? COR_SEQUENCIA { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

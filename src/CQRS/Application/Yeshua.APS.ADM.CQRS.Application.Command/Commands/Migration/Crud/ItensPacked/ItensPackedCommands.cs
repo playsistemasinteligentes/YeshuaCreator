@@ -16,8 +16,8 @@ namespace Command.Write
         public int? Id { get; set; }
         public int IPA_ID { get; set; }
         public string CAR_ID { get; set; }
-        public string PRO_ID { get; set; }
-        public string ORD_ID { get; set; }
+        public string? PRO_ID { get; set; }
+        public string? ORD_ID { get; set; }
         public Decimal? IPA_COORDC { get; set; }
         public Decimal? IPA_COORDL { get; set; }
         public Decimal? IPA_COORDA { get; set; }

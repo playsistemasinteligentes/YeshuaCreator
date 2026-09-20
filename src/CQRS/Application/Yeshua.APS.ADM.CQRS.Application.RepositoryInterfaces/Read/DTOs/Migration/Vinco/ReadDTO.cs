@@ -19,8 +19,8 @@ namespace Repositorio.Outputs
     public partial record VincoDTO
     {
     public int vin_id { get; set; }
-    public string vin_descricao { get; set; }
-    public string vin_id_deslocamento { get; set; }
+    public string vin_descricao { get; set; } = string.Empty;
+    public string vin_id_deslocamento { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

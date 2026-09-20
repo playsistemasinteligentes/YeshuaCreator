@@ -26,7 +26,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal PerfilEntity(int per_id, string per_nome ){
  PER_ID = per_id; 
  PER_NOME = per_nome; 

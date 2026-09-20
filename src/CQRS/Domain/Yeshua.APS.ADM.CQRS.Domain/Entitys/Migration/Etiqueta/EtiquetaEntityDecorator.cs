@@ -104,7 +104,7 @@
                                         }
                                     }
 
-                                    public string ETI_CODIGO_BARRAS
+                                    public string? ETI_CODIGO_BARRAS
                                     {
                                         get => _inner.ETI_CODIGO_BARRAS;
                                         set
@@ -146,7 +146,7 @@
                                         }
                                     }
 
-                                    public string ETI_STATUS
+                                    public string? ETI_STATUS
                                     {
                                         get => _inner.ETI_STATUS;
                                         set
@@ -174,7 +174,7 @@
                                         }
                                     }
 
-                                    public string ETI_COD_BARRAS_ORIGINAL
+                                    public string? ETI_COD_BARRAS_ORIGINAL
                                     {
                                         get => _inner.ETI_COD_BARRAS_ORIGINAL;
                                         set
@@ -188,7 +188,7 @@
                                         }
                                     }
 
-                                    public string ETI_OP_ORIGINAL
+                                    public string? ETI_OP_ORIGINAL
                                     {
                                         get => _inner.ETI_OP_ORIGINAL;
                                         set
@@ -202,7 +202,7 @@
                                         }
                                     }
 
-                                    public string MAQ_ID
+                                    public string? MAQ_ID
                                     {
                                         get => _inner.MAQ_ID;
                                         set
@@ -244,7 +244,7 @@
                                         }
                                     }
 
-                                    public string ORD_ID
+                                    public string? ORD_ID
                                     {
                                         get => _inner.ORD_ID;
                                         set
@@ -258,7 +258,7 @@
                                         }
                                     }
 
-                                    public string ROT_PRO_ID
+                                    public string? ROT_PRO_ID
                                     {
                                         get => _inner.ROT_PRO_ID;
                                         set
@@ -314,7 +314,7 @@
                                         }
                                     }
 
-                                    public string ETI_LOTE
+                                    public string? ETI_LOTE
                                     {
                                         get => _inner.ETI_LOTE;
                                         set
@@ -328,7 +328,7 @@
                                         }
                                     }
 
-                                    public string ETI_SUB_LOTE
+                                    public string? ETI_SUB_LOTE
                                     {
                                         get => _inner.ETI_SUB_LOTE;
                                         set
@@ -370,7 +370,7 @@
                                         }
                                     }
 
-                                    public string BOL_ID
+                                    public string? BOL_ID
                                     {
                                         get => _inner.BOL_ID;
                                         set

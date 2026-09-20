@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IItensPackedEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IItensPackedEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ItensPackedCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var itenspacked = new ItensPackedFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IPA_ID, c.CAR_ID, c.PRO_ID, c.ORD_ID, c.IPA_COORDC, c.IPA_COORDL, c.IPA_COORDA, c.IPA_DIMC, c.IPA_DIML, c.IPA_DIMA, c.IPA_QTD_POR_PALETE);
                  var domainResult = ItensPackedDomainBehavior.Apply(itenspacked, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(itenspacked);
-                     return Success("OK", itenspacked);
+                     return Task.FromResult(Success("OK", itenspacked));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, itenspacked);
+                    return Task.FromResult(Error(e, itenspacked));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

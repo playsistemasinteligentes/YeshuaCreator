@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IRoteiroEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IRoteiroEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.RoteiroCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var roteiro = new RoteiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.GrupoMaquinaId, c.PecasPorPulso, c.PrioridadeInformada, c.Acao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.ProximaSequenciaTransformacao, c.Status, c.HierarquiaSequenciaTransformacao, c.AvaliaCusto, c.Operacoes, c.ExcecaoOperacoes, c.PercentualInicioPassoAnterior, c.LinhaDireta, c.TemplateDeTestesId);
                  var domainResult = RoteiroDomainBehavior.Apply(roteiro, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(roteiro);
-                     return Success("OK", roteiro);
+                     return Task.FromResult(Success("OK", roteiro));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, roteiro);
+                    return Task.FromResult(Error(e, roteiro));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<TemposLogisticosDTO> getTemposLogisticos(Command.Read.TemposLogisticosReadCommand command )
         {
-            DataPagination<TemposLogisticosDTO> customResult = null;
+            var customResult = new DataPagination<TemposLogisticosDTO>();
             var customHandled = false;
             TryGetTemposLogisticosCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<TemposLogisticosTenantIDDTO> getTemposLogisticosReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemposLogisticosTenantIDDTO> lista;
             var query = _query.TemposLogisticosTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<TemposLogisticosTenantIDDTO>(query.Query,query.Parameters) as List<TemposLogisticosTenantIDDTO>;
+                var lista = _unitOfWork.Query<TemposLogisticosTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<TemposLogisticosUserIdDTO> getTemposLogisticosReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<TemposLogisticosUserIdDTO> lista;
             var query = _query.TemposLogisticosUserIdQuery(command );
 
-                lista = _unitOfWork.Query<TemposLogisticosUserIdDTO>(query.Query,query.Parameters) as List<TemposLogisticosUserIdDTO>;
+                var lista = _unitOfWork.Query<TemposLogisticosUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTMP_TIPO_TEMPOQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTMP_TIPO_CARGAQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTMP_TEMPO_MEDIO_UNITARIOQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters) as List<TemposLogisticosDTO>;
+                var result = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<VisoesDTO> getVisoes(Command.Read.VisoesReadCommand command )
         {
-            DataPagination<VisoesDTO> customResult = null;
+            var customResult = new DataPagination<VisoesDTO>();
             var customHandled = false;
             TryGetVisoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<VisoesVIS_PLANIDDTO> getVisoesReadFKVIS_PLANID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VisoesVIS_PLANIDDTO> lista;
             var query = _query.VisoesVIS_PLANIDQuery(command );
 
-                lista = _unitOfWork.Query<VisoesVIS_PLANIDDTO>(query.Query,query.Parameters) as List<VisoesVIS_PLANIDDTO>;
+                var lista = _unitOfWork.Query<VisoesVIS_PLANIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<VisoesCAB_IDDTO> getVisoesReadFKCAB_ID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VisoesCAB_IDDTO> lista;
             var query = _query.VisoesCAB_IDQuery(command );
 
-                lista = _unitOfWork.Query<VisoesCAB_IDDTO>(query.Query,query.Parameters) as List<VisoesCAB_IDDTO>;
+                var lista = _unitOfWork.Query<VisoesCAB_IDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<VisoesTenantIDDTO> getVisoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VisoesTenantIDDTO> lista;
             var query = _query.VisoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<VisoesTenantIDDTO>(query.Query,query.Parameters) as List<VisoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<VisoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -122,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<VisoesUserIdDTO> getVisoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VisoesUserIdDTO> lista;
             var query = _query.VisoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<VisoesUserIdDTO>(query.Query,query.Parameters) as List<VisoesUserIdDTO>;
+                var lista = _unitOfWork.Query<VisoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -270,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIS_IDQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -278,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIS_PLANIDQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -286,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVIS_FORMULAQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -294,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAB_IDQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -302,7 +298,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -310,7 +306,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -318,7 +314,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -326,7 +322,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters) as List<VisoesDTO>;
+                var result = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

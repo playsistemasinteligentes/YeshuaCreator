@@ -13,12 +13,12 @@ namespace Command.Read
 {
     public struct MensagemReadCommand : ICommandRead
     {
-        public string MEN_ID { get; set; }
-        public string MEN_SEND { get; set; }
+        public string? MEN_ID { get; set; }
+        public string? MEN_SEND { get; set; }
         public DateTime? MEN_EMISSION { get; set; }
-        public string MEN_STATUS { get; set; }
-        public string MEN_RECEIVE { get; set; }
-        public string MEN_TYPE { get; set; }
+        public string? MEN_STATUS { get; set; }
+        public string? MEN_RECEIVE { get; set; }
+        public string? MEN_TYPE { get; set; }
         public Decimal? MEN_QTD_TRY_SEND { get; set; }
         public DateTime? MEN_DATE_TRY_SEND { get; set; }
         public int? TenantID { get; set; }

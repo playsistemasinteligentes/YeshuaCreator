@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ITipoOcorrenciaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ITipoOcorrenciaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TipoOcorrenciaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var tipoocorrencia = new TipoOcorrenciaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Spr);
                  var domainResult = TipoOcorrenciaDomainBehavior.Apply(tipoocorrencia, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(tipoocorrencia);
-                     return Success("OK", tipoocorrencia);
+                     return Task.FromResult(Success("OK", tipoocorrencia));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, tipoocorrencia);
+                    return Task.FromResult(Error(e, tipoocorrencia));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

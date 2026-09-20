@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<UsuarioPerfilDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<UsuarioPerfilDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.UsuarioPerfilReadCommand c) 
              {    
                 var UsuarioPerfilReadRepository = _repository.getUsuarioPerfil(c);
-                return Success("OK", UsuarioPerfilReadRepository);
+                return Task.FromResult(Success("OK", UsuarioPerfilReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

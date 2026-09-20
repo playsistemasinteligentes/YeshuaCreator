@@ -20,20 +20,20 @@
                 {
                     public partial class PendenciasInterfaceEntity : IPendenciasInterfaceEntity
 {
-    public string PEN_STATUS_OUT { get; set; }
-    public string PEN_PROTOCOLO_OUT { get; set; }
-    public string PEN_ID_PROTOCOLO_OUT { get; set; }
-    public string PEN_STATUS_IN { get; set; }
-    public string PEN_PROTOCOLO_IN { get; set; }
-    public string PEN_ID_PROTOCOLO_IN { get; set; }
+    public string? PEN_STATUS_OUT { get; set; }
+    public string? PEN_PROTOCOLO_OUT { get; set; }
+    public string? PEN_ID_PROTOCOLO_OUT { get; set; }
+    public string? PEN_STATUS_IN { get; set; }
+    public string? PEN_PROTOCOLO_IN { get; set; }
+    public string? PEN_ID_PROTOCOLO_IN { get; set; }
     public DateTime DATA_ENTRADA { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public int PEN_ID { get; set; }
-    private List<string> _erroMensagem = null;
- internal PendenciasInterfaceEntity(string pen_status_out, string pen_protocolo_out, string pen_id_protocolo_out, string pen_status_in, string pen_protocolo_in, string pen_id_protocolo_in, DateTime data_entrada, int pen_id ){
+    private List<string> _erroMensagem = new List<string>();
+ internal PendenciasInterfaceEntity(string? pen_status_out, string? pen_protocolo_out, string? pen_id_protocolo_out, string? pen_status_in, string? pen_protocolo_in, string? pen_id_protocolo_in, DateTime data_entrada, int pen_id ){
  PEN_STATUS_OUT = pen_status_out; 
  PEN_PROTOCOLO_OUT = pen_protocolo_out; 
  PEN_ID_PROTOCOLO_OUT = pen_id_protocolo_out; 
@@ -48,7 +48,7 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(DATA_ENTRADA == null || DATA_ENTRADA < (new DateTime(1800, 1, 1)))
+   if(DATA_ENTRADA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DATA ENTRADA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

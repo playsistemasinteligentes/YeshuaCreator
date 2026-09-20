@@ -22,7 +22,7 @@
 {
     int? Id { get; set; }
     int REP_ID { get; set; }
-    string REP_NOME { get; set; }
+    string? REP_NOME { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

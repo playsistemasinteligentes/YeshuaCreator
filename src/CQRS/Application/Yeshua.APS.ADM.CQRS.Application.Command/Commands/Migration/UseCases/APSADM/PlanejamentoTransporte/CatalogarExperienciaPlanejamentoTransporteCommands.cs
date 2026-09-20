@@ -11,25 +11,29 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record CatalogarExperienciaPlanejamentoTransporteInputCommand : ICommand
+public partial record CatalogarExperienciaPlanejamentoTransporteInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int Tipo { get; set; }
-    public string Referencia { get; set; }
-    public string PedidoId { get; set; }
-    public string ClienteId { get; set; }
-    public string Municipio { get; set; }
-    public string Regiao { get; set; }
-    public string RotaId { get; set; }
-    public string Observacao { get; set; }
+    public string Referencia { get; set; } = string.Empty;
+    public string PedidoId { get; set; } = string.Empty;
+    public string ClienteId { get; set; } = string.Empty;
+    public string Municipio { get; set; } = string.Empty;
+    public string Regiao { get; set; } = string.Empty;
+    public string RotaId { get; set; } = string.Empty;
+    public string Observacao { get; set; } = string.Empty;
+
+    public string OperationalEntity => "ExperienciaPlanejamentoTransporte";
+    public string? OperationalRecordId => null;
 }
 
 public partial record CatalogarExperienciaPlanejamentoTransporteOutputCommand : ICommand
 {
     public bool Sucesso { get; set; }
-    public string Mensagem { get; set; }
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

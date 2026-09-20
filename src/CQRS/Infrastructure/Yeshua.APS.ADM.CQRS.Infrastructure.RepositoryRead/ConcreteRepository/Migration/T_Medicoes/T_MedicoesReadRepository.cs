@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_MedicoesDTO> getT_Medicoes(Command.Read.T_MedicoesReadCommand command )
         {
-            DataPagination<T_MedicoesDTO> customResult = null;
+            var customResult = new DataPagination<T_MedicoesDTO>();
             var customHandled = false;
             TryGetT_MedicoesCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_MedicoesTenantIDDTO> getT_MedicoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_MedicoesTenantIDDTO> lista;
             var query = _query.T_MedicoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_MedicoesTenantIDDTO>(query.Query,query.Parameters) as List<T_MedicoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_MedicoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_MedicoesUserIdDTO> getT_MedicoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_MedicoesUserIdDTO> lista;
             var query = _query.T_MedicoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_MedicoesUserIdDTO>(query.Query,query.Parameters) as List<T_MedicoesUserIdDTO>;
+                var lista = _unitOfWork.Query<T_MedicoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIND_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMET_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUNI_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_DATAQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_VALORQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_AC_ANOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -586,7 +584,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_DATAMEDICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -594,7 +592,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_PONDERACAOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -602,7 +600,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -610,7 +608,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -618,7 +616,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_SUBDIMENSAO_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -626,7 +624,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDIM_SUB_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -634,7 +632,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -642,7 +640,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPER_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -650,7 +648,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFAT_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -658,7 +656,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFAT_DESCRICAOQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -666,7 +664,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_SQLQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -674,7 +672,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDOM_EMPRESAQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -682,7 +680,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDOM_FILIALQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -690,7 +688,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMED_VALOR_DISPERQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -698,7 +696,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -706,7 +704,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -714,7 +712,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -722,7 +720,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters) as List<T_MedicoesDTO>;
+                var result = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

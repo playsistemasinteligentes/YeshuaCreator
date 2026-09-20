@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IItenCalendarioDisponibilidadeVeiculosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IItenCalendarioDisponibilidadeVeiculosEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.ItenCalendarioDisponibilidadeVeiculosCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var itencalendariodisponibilidadeveiculos = new ItenCalendarioDisponibilidadeVeiculosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CDV_ID, c.TIP_ID, c.IDV_QTD);
                  var domainResult = ItenCalendarioDisponibilidadeVeiculosDomainBehavior.Apply(itencalendariodisponibilidadeveiculos, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(itencalendariodisponibilidadeveiculos);
-                     return Success("OK", itencalendariodisponibilidadeveiculos);
+                     return Task.FromResult(Success("OK", itencalendariodisponibilidadeveiculos));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, itencalendariodisponibilidadeveiculos);
+                    return Task.FromResult(Error(e, itencalendariodisponibilidadeveiculos));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record MaquinaImpressoraDTO
     {
     public int maq_imp_id { get; set; }
-    public string maq_id { get; set; }
+    public string maq_id { get; set; } = string.Empty;
     public int imp_id { get; set; }
     public int mai_facao { get; set; }
     public int tenantid { get; set; }

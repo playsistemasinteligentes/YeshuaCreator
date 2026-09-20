@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<T_MAQUINAS_EQUIPESDTO> getT_MAQUINAS_EQUIPES(Command.Read.T_MAQUINAS_EQUIPESReadCommand command )
         {
-            DataPagination<T_MAQUINAS_EQUIPESDTO> customResult = null;
+            var customResult = new DataPagination<T_MAQUINAS_EQUIPESDTO>();
             var customHandled = false;
             TryGetT_MAQUINAS_EQUIPESCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<T_MAQUINAS_EQUIPESTenantIDDTO> getT_MAQUINAS_EQUIPESReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_MAQUINAS_EQUIPESTenantIDDTO> lista;
             var query = _query.T_MAQUINAS_EQUIPESTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<T_MAQUINAS_EQUIPESTenantIDDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESTenantIDDTO>;
+                var lista = _unitOfWork.Query<T_MAQUINAS_EQUIPESTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<T_MAQUINAS_EQUIPESUserIdDTO> getT_MAQUINAS_EQUIPESReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<T_MAQUINAS_EQUIPESUserIdDTO> lista;
             var query = _query.T_MAQUINAS_EQUIPESUserIdQuery(command );
 
-                lista = _unitOfWork.Query<T_MAQUINAS_EQUIPESUserIdDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESUserIdDTO>;
+                var lista = _unitOfWork.Query<T_MAQUINAS_EQUIPESUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMAQ_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEQU_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCAL_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCLI_IDQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters) as List<T_MAQUINAS_EQUIPESDTO>;
+                var result = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

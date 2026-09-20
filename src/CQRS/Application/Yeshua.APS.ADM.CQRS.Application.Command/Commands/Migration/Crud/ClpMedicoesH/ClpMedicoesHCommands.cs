@@ -21,15 +21,15 @@ namespace Command.Write
         public Decimal QTD { get; set; }
         public Decimal? GRUPO { get; set; }
         public int? STATUS { get; set; }
-        public string URN_ID { get; set; }
-        public string URM_ID { get; set; }
+        public string? URN_ID { get; set; }
+        public string? URM_ID { get; set; }
         public int ID_LOTE_CLP { get; set; }
-        public string OCO_ID { get; set; }
+        public string? OCO_ID { get; set; }
         public int? FASE { get; set; }
-        public string CLP_ORIGEM { get; set; }
+        public string? CLP_ORIGEM { get; set; }
         public int? CLP_LOTE { get; set; }
         public int? COMPACTA { get; set; }
-        public string BOL_ID { get; set; }
+        public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

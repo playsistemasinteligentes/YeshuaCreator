@@ -17,9 +17,9 @@ namespace Command.Write
         public string USE_NOME { get; set; }
         public string USE_EMAIL { get; set; }
         public string USE_SENHA { get; set; }
-        public string TURM_ID { get; set; }
+        public string? TURM_ID { get; set; }
         public int USE_ATIVO { get; set; }
-        public string USE_CODERP { get; set; }
+        public string? USE_CODERP { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

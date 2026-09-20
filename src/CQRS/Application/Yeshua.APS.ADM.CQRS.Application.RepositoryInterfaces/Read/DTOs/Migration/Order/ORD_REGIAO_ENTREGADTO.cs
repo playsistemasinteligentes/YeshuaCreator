@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record OrderORD_REGIAO_ENTREGADTO
     {
-    public string pon_id { get; set; }
+    public string pon_id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

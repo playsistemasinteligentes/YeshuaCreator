@@ -16,8 +16,8 @@ namespace Command.Write
         public string REC_ID { get; set; }
         public string REC_DESCRICAO { get; set; }
         public int? CAL_ID { get; set; }
-        public string REC_CONTROL_IP { get; set; }
-        public string GRE_ID { get; set; }
+        public string? REC_CONTROL_IP { get; set; }
+        public string? GRE_ID { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

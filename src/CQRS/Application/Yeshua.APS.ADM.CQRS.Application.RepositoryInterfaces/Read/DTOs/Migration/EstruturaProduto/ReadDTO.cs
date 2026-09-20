@@ -20,13 +20,13 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public DateTime est_data_validade { get; set; }
-    public string pro_id_produto { get; set; }
-    public string pro_id_componente { get; set; }
+    public string pro_id_produto { get; set; } = string.Empty;
+    public string pro_id_componente { get; set; } = string.Empty;
     public Decimal est_quant { get; set; }
     public DateTime est_data_inclusao { get; set; }
     public Decimal est_base_producao { get; set; }
-    public string est_tipo_requisicao { get; set; }
-    public string est_codigo_de_excecao { get; set; }
+    public string est_tipo_requisicao { get; set; } = string.Empty;
+    public string est_codigo_de_excecao { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

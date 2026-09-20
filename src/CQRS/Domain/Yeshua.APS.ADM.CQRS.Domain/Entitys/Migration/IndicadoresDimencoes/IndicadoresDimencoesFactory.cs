@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IIndicadoresDimencoesEntity Create(int? id, int dim_id, int ind_id, string dim_descricao, string dim_sql, string dim_conexao )
+                                    } public IIndicadoresDimencoesEntity Create(int? id, int dim_id, int ind_id, string dim_descricao, string? dim_sql, string? dim_conexao )
                             {
                                 return Create(null, id, dim_id, ind_id, dim_descricao, dim_sql, dim_conexao);
                             }
 
                             public IIndicadoresDimencoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int dim_id, int ind_id, string dim_descricao, string dim_sql, string dim_conexao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int dim_id, int ind_id, string dim_descricao, string? dim_sql, string? dim_conexao )
                             {
                             var entity = new IndicadoresDimencoesEntity(id, dim_id, ind_id, dim_descricao, dim_sql, dim_conexao );
 

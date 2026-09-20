@@ -15,10 +15,13 @@ using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
-public partial record LoginInputCommand : ICommand
+public partial record LoginInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string email { get; set; } = string.Empty;
     public string password { get; set; } = string.Empty;
+
+    public string OperationalEntity => "yUser";
+    public string? OperationalRecordId => null;
 }
 
 public partial record LoginOutputCommand : ICommand

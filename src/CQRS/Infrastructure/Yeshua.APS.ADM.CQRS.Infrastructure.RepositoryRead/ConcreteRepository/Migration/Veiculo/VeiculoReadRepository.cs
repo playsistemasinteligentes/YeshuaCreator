@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<VeiculoDTO> getVeiculo(Command.Read.VeiculoReadCommand command )
         {
-            DataPagination<VeiculoDTO> customResult = null;
+            var customResult = new DataPagination<VeiculoDTO>();
             var customHandled = false;
             TryGetVeiculoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<VeiculoTenantIDDTO> getVeiculoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VeiculoTenantIDDTO> lista;
             var query = _query.VeiculoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<VeiculoTenantIDDTO>(query.Query,query.Parameters) as List<VeiculoTenantIDDTO>;
+                var lista = _unitOfWork.Query<VeiculoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<VeiculoUserIdDTO> getVeiculoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<VeiculoUserIdDTO> lista;
             var query = _query.VeiculoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<VeiculoUserIdDTO>(query.Query,query.Parameters) as List<VeiculoUserIdDTO>;
+                var lista = _unitOfWork.Query<VeiculoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_PLACAQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_UFQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTIP_IDQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_CAPACIDADE_M3Query(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_CAPACIDADE_LARGURAQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_CAPACIDADE_COMPRIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -482,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_CAPACIDADE_ALTURAQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -490,7 +488,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_MODELOQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -498,7 +496,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_NOME_MOTORISTAQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -506,7 +504,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_DADOS_CONTATOQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -514,7 +512,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_CPF_MOTORISTAQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -522,7 +520,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTCA_IDQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -530,7 +528,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_EMISSAOQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -538,7 +536,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_VENCIMENTOQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -546,7 +544,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVEI_STATUSQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -554,7 +552,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -562,7 +560,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -570,7 +568,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -578,7 +576,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
