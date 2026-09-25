@@ -61,7 +61,22 @@ if (!string.IsNullOrWhiteSpace(connectionString))
     {
         Console.WriteLine("Try Migrations");
         migration.ADDSchema(new SqlServerSchema(unitOfWork));
-        migration.Build().Run();
+
+        var centralConnectionString = GS.I.MYC.CentralAuthorizationConectionString;
+        if (string.IsNullOrWhiteSpace(centralConnectionString))
+        {
+            Console.WriteLine("Central authorization connection not configured. Skipping authorization projection.");
+            migration.Build().Run();
+        }
+        else
+        {
+            using IDbConnection centralConnection = new SqlFactory(
+                EnumSqlConections.SqlServer,
+                centralConnectionString).SqlConnection();
+            using IUnitOfWork centralUnitOfWork = new UnitOfWork(centralConnection, true);
+            migration.ADDSchema(new CentralAuthorizationSchema(GS.I.MYC.Project, centralUnitOfWork));
+            migration.Build().Run();
+        }
     }
 }
 else

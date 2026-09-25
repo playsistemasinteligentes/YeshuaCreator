@@ -32,11 +32,21 @@ public sealed class GS
 
         MYC.Source = ResolveDefault(MYC.Source, FindSolutionRoot());
         MYC.Project = ResolveDefault(MYC.Project, "Central");
+        OverrideIfExists(
+            "MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING",
+            value => MYC.CentralAuthorizationConectionString = value);
     }
 
     private static string ResolveDefault(string? currentValue, string fallback)
     {
         return string.IsNullOrWhiteSpace(currentValue) ? fallback : currentValue;
+    }
+
+    private static void OverrideIfExists(string key, Action<string> setter)
+    {
+        var value = Environment.GetEnvironmentVariable(key);
+        if (!string.IsNullOrWhiteSpace(value))
+            setter(value);
     }
 
     private static string FindSolutionRoot()

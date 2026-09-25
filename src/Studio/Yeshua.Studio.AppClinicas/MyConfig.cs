@@ -11,6 +11,7 @@ namespace AppClinicas
         public MyConfig() { }
         public string ReadConectionString { get; set; }
         public string WriteConectionString { get; set; }
+        public string CentralAuthorizationConectionString { get; set; }
         public string Source { get; set; }
         public string Project { get; set; }
     }

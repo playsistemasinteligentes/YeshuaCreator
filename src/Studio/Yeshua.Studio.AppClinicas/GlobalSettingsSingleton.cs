@@ -34,6 +34,7 @@ public sealed class GS
             // 2️⃣ Override manual por variáveis de ambiente (se existirem)
             OverrideIfExists("MYCONFIG__READCONECTIONSTRING", v => MYC.ReadConectionString = v);
             OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", v => MYC.WriteConectionString = v);
+            OverrideIfExists("MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING", v => MYC.CentralAuthorizationConectionString = v);
 
         }
         catch (Exception ex)

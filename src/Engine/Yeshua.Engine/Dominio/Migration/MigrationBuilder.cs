@@ -100,6 +100,9 @@ namespace Dominio.Migration
                     AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
             }
 
+            foreach (var schema in _schemas.OfType<IMigrationProjectionSchema>())
+                schema.ApplyMigrations(migration);
+
             PreparMigrationsToCodeGenerete(migration);
 
             foreach (var schema in _schemas.OfType<ISchemaCodeGeneration>())

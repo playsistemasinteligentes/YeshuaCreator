@@ -384,6 +384,21 @@ Regra resumida:
 - A Central conhece apenas catalogos de aplicativos e suas rotas logicas. Ela
   nao declara, replica nem reconstrui os modulos ou menus internos dos outros
   Studios.
+- Definicoes centrais de autorizacao continuam tendo a DSL de cada Studio como
+  fonte. Na execucao normal do Studio, `CentralAuthorizationSchema` projeta no
+  banco Central somente modulos e scopes declarados pelas migrations daquele
+  aplicativo; nao existe chamada para a API Central nem copia de fonte entre
+  projetos.
+- A projecao central preserva semantica de migration e usa a identidade
+  composta `(ApplicationKey, MigrationId)`, permitindo que diferentes Studios
+  possuam `M000001`. O ledger `yAuthorizationMigrationVersion` e independente
+  da `MigrationVersion` do banco de cada aplicativo.
+- O hash da parte de autorizacao impede alteracao silenciosa de migration ja
+  aplicada. Mudancas posteriores de modulo ou permissao devem nascer em nova
+  migration.
+- O catalogo central armazena definicoes e sua origem; concessoes para tenant,
+  perfil e usuario continuam sendo responsabilidade da Central e nunca podem
+  ser sobrescritas pela execucao de um Studio.
 - A aquisicao de um aplicativo grava uma concessao de catalogo para o Tenant,
   sem usar `yTenantModule` ou `yUserModule`. Um novo login inclui os catalogos
   permitidos na claim `userCatalogs`.

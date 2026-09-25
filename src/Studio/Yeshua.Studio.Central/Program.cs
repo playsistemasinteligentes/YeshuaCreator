@@ -44,7 +44,23 @@ if (!args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
         using IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, connectionString).SqlConnection();
         using IUnitOfWork unitOfWork = new UnitOfWork(connection, true);
         migration.ADDSchema(new SqlServerSchema(unitOfWork));
-        migration.Build().Run();
+
+        var centralConnectionString = GS.I.MYC.CentralAuthorizationConectionString;
+        if (string.IsNullOrWhiteSpace(centralConnectionString)
+            || string.Equals(centralConnectionString, connectionString, StringComparison.Ordinal))
+        {
+            migration.ADDSchema(new CentralAuthorizationSchema(GS.I.MYC.Project, unitOfWork));
+            migration.Build().Run();
+        }
+        else
+        {
+            using IDbConnection centralConnection = new SqlFactory(
+                EnumSqlConections.SqlServer,
+                centralConnectionString).SqlConnection();
+            using IUnitOfWork centralUnitOfWork = new UnitOfWork(centralConnection, true);
+            migration.ADDSchema(new CentralAuthorizationSchema(GS.I.MYC.Project, centralUnitOfWork));
+            migration.Build().Run();
+        }
         return;
     }
 }
