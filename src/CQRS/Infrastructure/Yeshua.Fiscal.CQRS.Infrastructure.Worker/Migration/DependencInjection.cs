@@ -642,6 +642,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.AutorizarCTeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.PublicarCTeAutorizadoParaMDFeHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarSituacaoCTeHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.ObterXmlCTeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.GerarDacteHandler>();
@@ -651,6 +653,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.SolicitarEmissaoMDFeHand
 builder.Services.AddTransient<Command.Receivers.UseCase.AutorizarMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.EncerrarMDFeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarSituacaoMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ObterXmlMDFeHandler>();
 
@@ -673,6 +677,16 @@ builder.Services.AddTransient<Command.Receivers.UseCase.InformarResultadoEmissao
 builder.Services.AddTransient<Command.Receivers.UseCase.AcordarSagaTesteSyncPasso3Handler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.RegistrarCertificadoDigitalContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CancelarCTeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CorrigirCTeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CancelarMDFeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.IncluirCondutorMDFeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.EncerrarMDFePorChaveHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

@@ -13,6 +13,7 @@ namespace IRepository.Read
     public partial interface IySagaStepReadRepository
     {
         int SetPendingApply();
+        int SetPendingApplyByInboxId(int inboxId);
     }
 }
 

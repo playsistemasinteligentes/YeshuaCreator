@@ -1,0 +1,13 @@
+﻿{
+  "application": "APS.ADM",
+  "title": "APS.ADM",
+  "sharedFrontHost": "Central",
+  "apiBasePath": "/apps/aps-adm/yapi",
+  "menuEndpoint": "/getMenu",
+  "customAssetsPath": "/Custon/Apps/APS.ADM",
+  "hostingMode": "SharedContribution",
+  "modules": [
+    "ADM",
+    "APSADM"
+  ]
+}

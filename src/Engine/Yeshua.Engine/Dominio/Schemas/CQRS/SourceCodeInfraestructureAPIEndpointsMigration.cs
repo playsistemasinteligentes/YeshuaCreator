@@ -17,13 +17,15 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeInfraestructureAPIEndpointsMigration : SourceCodeBase
     {
         private readonly Migration.MigrationBase _migration;
+        private readonly string _applicationName;
 
 
 
-        public SourceCodeInfraestructureAPIEndpointsMigration(Migration.MigrationBase migration)
+        public SourceCodeInfraestructureAPIEndpointsMigration(Migration.MigrationBase migration, string applicationName)
             : base()
         {
             _migration = migration;
+            _applicationName = applicationName;
         }
 
         protected override StringBuilder GenerateCode()
@@ -151,13 +153,23 @@ namespace Dominio.Schemas.CQRS
                     app.MapGet(""{PREFIXO}/getMenu"", (HttpContext context) =>
                     {
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == ""userModules"")?.Value;
-                        if (modulesClaim == null)
+                        var catalogsClaim = context.User.Claims.FirstOrDefault(c => c.Type == ""userCatalogs"")?.Value;
+                        var hasCatalogAccess = (catalogsClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            .Contains(""{APPLICATION}"", StringComparer.OrdinalIgnoreCase);
+
+                        if (modulesClaim == null && !hasCatalogAccess)
                             return Results.Unauthorized();
 
-                        var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                        var userModules = StaticModules.Modules
-                            .Where(m => moduleKeys.Contains(m.Key))
-                            .ToList();
+                        var moduleKeys = (modulesClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var userModules = hasCatalogAccess
+                            ? StaticModules.Modules
+                                .Where(m => !m.Key.Equals(""ADM"", StringComparison.OrdinalIgnoreCase))
+                                .ToList()
+                            : StaticModules.Modules
+                                .Where(m => moduleKeys.Contains(m.Key, StringComparer.OrdinalIgnoreCase))
+                                .ToList();
 
                         var result = userModules.Select(m => new
                         {
@@ -183,7 +195,9 @@ namespace Dominio.Schemas.CQRS
 
                         return Results.Ok(result);
                     }).RequireAuthorization();
-            ").Replace("{PREFIXO}", prefixo);
+            ")
+                .Replace("{PREFIXO}", prefixo)
+                .Replace("{APPLICATION}", EscapeLiteral(_applicationName));
 
 
 

@@ -8,7 +8,7 @@ public class M000002 : MigrationBase
 {
     public override void Up()
     {
-        AddEntity("EntradaFiscalContingencia", "Entrada Fiscal Contingencia").AddModule("CONT")
+        AddEntity("EntradaFiscalContingencia", "Entrada Fiscal Contingencia").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
             .AddColumn("CargaId", "Carga").Varchar(80).NotNull().Group("Operacao")

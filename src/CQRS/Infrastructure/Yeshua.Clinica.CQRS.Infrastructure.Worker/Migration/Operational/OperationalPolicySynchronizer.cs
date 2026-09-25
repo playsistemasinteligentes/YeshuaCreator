@@ -18,22 +18,20 @@ namespace Yeshua.Generated.OperationalControl;
 public sealed class OperationalPolicySynchronizer : BackgroundService
 {
     private readonly OperationalLoggingPolicyState _state;
-    private readonly IRuntimeIdentityProvider _identityProvider;
     private readonly HttpClient _httpClient;
     private readonly string _endpoint;
     private readonly TimeSpan _refreshInterval;
     private readonly bool _enabled;
-    private bool _centralAvailable = true;
+    private bool _applicationApiAvailable = true;
 
     public OperationalPolicySynchronizer(
         OperationalLoggingPolicyState state,
-        IRuntimeIdentityProvider identityProvider,
         IConfiguration configuration)
     {
         _state = state;
-        _identityProvider = identityProvider;
-        _endpoint = (configuration["OperationalControl:Endpoint"] ?? "http://localhost:5728")
-            .TrimEnd('/');
+        _endpoint = configuration["OperationalControl:ApplicationApiBaseUrl"] is { Length: > 0 } baseUrl
+            ? $"{baseUrl.TrimEnd('/')}/yapi/operational/logging-policy"
+            : "http://localhost:7214/yapi/operational/logging-policy";
         _enabled = !bool.TryParse(
                 configuration["OperationalControl:Enabled"],
                 out var enabled) || enabled;
@@ -60,22 +58,12 @@ public sealed class OperationalPolicySynchronizer : BackgroundService
     {
         try
         {
-            var application = _identityProvider.Current.Application;
-            var environment = _identityProvider.Current.Environment;
-            var revision = Uri.EscapeDataString(_state.Current.Revision);
-            var url = $"{_endpoint}/api/operational-control/{Uri.EscapeDataString(application)}/{Uri.EscapeDataString(environment)}?currentRevision={revision}";
-            using var response = await _httpClient.GetAsync(url, cancellationToken);
-
-            if (response.StatusCode == HttpStatusCode.NotModified)
-            {
-                MarkCentralAvailable();
-                return;
-            }
+            using var response = await _httpClient.GetAsync(_endpoint, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
-                MarkCentralUnavailable(
-                    $"Operational control returned HTTP {(int)response.StatusCode}.");
+                MarkApplicationApiUnavailable(
+                    $"Application API returned HTTP {(int)response.StatusCode}.");
                 return;
             }
 
@@ -84,39 +72,39 @@ public sealed class OperationalPolicySynchronizer : BackgroundService
                 cancellationToken);
             if (policy is null)
             {
-                MarkCentralUnavailable("Operational control returned an empty policy.");
+                MarkApplicationApiUnavailable("Application API returned an empty policy.");
                 return;
             }
 
             _state.Replace(policy);
-            MarkCentralAvailable();
+            MarkApplicationApiAvailable();
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
         }
         catch (Exception exception)
         {
-            MarkCentralUnavailable(exception.Message);
+            MarkApplicationApiUnavailable(exception.Message);
         }
     }
 
-    private void MarkCentralUnavailable(string reason)
+    private void MarkApplicationApiUnavailable(string reason)
     {
-        if (!_centralAvailable)
+        if (!_applicationApiAvailable)
             return;
 
-        _centralAvailable = false;
+        _applicationApiAvailable = false;
         Console.WriteLine(
-            $"[OperationalControl] unavailable. Local policy remains active. Reason={reason}");
+            $"[OperationalControl] application API unavailable. Worker local policy remains active. Reason={reason}");
     }
 
-    private void MarkCentralAvailable()
+    private void MarkApplicationApiAvailable()
     {
-        if (_centralAvailable)
+        if (_applicationApiAvailable)
             return;
 
-        _centralAvailable = true;
-        Console.WriteLine("[OperationalControl] connection restored.");
+        _applicationApiAvailable = true;
+        Console.WriteLine("[OperationalControl] application API connection restored.");
     }
 
 }

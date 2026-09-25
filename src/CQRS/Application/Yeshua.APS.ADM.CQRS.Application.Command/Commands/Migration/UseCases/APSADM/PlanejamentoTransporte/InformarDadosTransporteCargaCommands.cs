@@ -36,6 +36,12 @@ public partial record InformarDadosTransporteCargaOutputCommand : ICommand, ISag
     public string Mensagem { get; set; } = string.Empty;
     public string CargaId { get; set; } = string.Empty;
     public string ProximoStep { get; set; } = string.Empty;
+    public bool Accepted { get; set; }
+    public int SagaId { get; set; }
+    public int SagaStepId { get; set; }
+    public int InboxId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
+    public string StepKey { get; set; } = string.Empty;
 }
 
 }

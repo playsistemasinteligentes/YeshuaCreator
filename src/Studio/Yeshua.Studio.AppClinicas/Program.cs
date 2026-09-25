@@ -11,10 +11,7 @@ var mode = GetExecutionMode(args);
 if (IsCleanupMode(mode))
 {
     Console.WriteLine("Running cleanup mode.");
-    var cleaner = new CSharpCQRS(
-        GS.I.MYC.Project,
-        GS.I.MYC.Source,
-        "Yeshua.Studio.AppClinicas");
+    var cleaner = CreateSchema();
     cleaner.CleanApplicationGeneratedMigration();
     cleaner.WriteApplicationCustonCleanupReport();
     return;
@@ -23,10 +20,7 @@ if (IsCleanupMode(mode))
 if (IsCustonReportMode(mode))
 {
     Console.WriteLine("Running Custon report mode.");
-    var reporter = new CSharpCQRS(
-        GS.I.MYC.Project,
-        GS.I.MYC.Source,
-        "Yeshua.Studio.AppClinicas");
+    var reporter = CreateSchema();
     reporter.WriteApplicationCustonCleanupReport();
     return;
 }
@@ -40,10 +34,7 @@ if (args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
 {
     Console.WriteLine("Running code generation only.");
     new MigrationBuilder()
-        .ADDSchema(new CSharpCQRS(
-            GS.I.MYC.Project,
-            GS.I.MYC.Source,
-            "Yeshua.Studio.AppClinicas"))
+        .ADDSchema(CreateSchema())
         .Build()
         .Run();
     return;
@@ -61,13 +52,19 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, co
 
         MigrationBuilder migration = new MigrationBuilder();
         if (!databaseOnly && !string.IsNullOrEmpty(GS.I.MYC.Source))
-            migration.ADDSchema(new CSharpCQRS(
-                GS.I.MYC.Project,
-                GS.I.MYC.Source,
-                "Yeshua.Studio.AppClinicas"));
+            migration.ADDSchema(CreateSchema());
         migration.ADDSchema(new SqlServerSchema(unitOfWork));
         migration.Build().Run();
     }
+}
+
+static CSharpCQRS CreateSchema()
+{
+    return new CSharpCQRS(
+            GS.I.MYC.Project,
+            GS.I.MYC.Source,
+            "Yeshua.Studio.AppClinicas")
+        .UseSharedFront("Central", "/apps/clinica/yapi");
 }
 
 static string GetExecutionMode(string[] args)

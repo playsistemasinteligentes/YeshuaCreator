@@ -1,0 +1,14 @@
+﻿{
+  "application": "Clinica",
+  "title": "Clinica",
+  "sharedFrontHost": "Central",
+  "apiBasePath": "/apps/clinica/yapi",
+  "menuEndpoint": "/getMenu",
+  "customAssetsPath": "/Custon/Apps/Clinica",
+  "hostingMode": "SharedContribution",
+  "modules": [
+    "ADM",
+    "FIN",
+    "PSI"
+  ]
+}

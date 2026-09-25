@@ -39,6 +39,28 @@ namespace Dominio.Schemas.CQRS
         public string _name { get; set; }
         public string _solutionDirectory { get; set; }
         private readonly string? _studioProjectName;
+        private FrontHostingMode _frontHostingMode = FrontHostingMode.ApplicationHost;
+        private string? _sharedFrontHostApplicationName;
+        private string? _frontApiBasePath;
+
+        public CSharpCQRS AddSharedFrontHost(string? apiBasePath = null)
+        {
+            _frontHostingMode = FrontHostingMode.SharedHost;
+            _sharedFrontHostApplicationName = GetApplicationName();
+            _frontApiBasePath = apiBasePath;
+            return this;
+        }
+
+        public CSharpCQRS UseSharedFront(string sharedFrontHostApplicationName, string? apiBasePath = null)
+        {
+            if (string.IsNullOrWhiteSpace(sharedFrontHostApplicationName))
+                throw new ArgumentException("O aplicativo host do Front compartilhado deve ser informado.", nameof(sharedFrontHostApplicationName));
+
+            _frontHostingMode = FrontHostingMode.SharedContribution;
+            _sharedFrontHostApplicationName = sharedFrontHostApplicationName.Trim();
+            _frontApiBasePath = apiBasePath;
+            return this;
+        }
 
         public void AppAplicationGenerateCommand(Migration.MigrationBase migration)
         {
@@ -950,7 +972,7 @@ namespace Dominio.Schemas.CQRS
         {
             var filePath = Path.Combine(GetPathAppInfraestructureGenerateAPI(), $"Migration\\EndPoints{migration.MigrationName}.cs");
             var filePathCuston = Path.Combine(GetPathAppInfraestructureGenerateAPI(), $"Custon\\EndPoints{migration.MigrationName}.cs");
-            var sourceCodeMigration = new SourceCodeInfraestructureAPIEndpointsMigration(migration);
+            var sourceCodeMigration = new SourceCodeInfraestructureAPIEndpointsMigration(migration, GetApplicationName());
             sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
 
             filePath = Path.Combine(GetPathAppInfraestructureGenerateAPI(), $"Migration\\DependencInjection{migration.MigrationName}.cs");
@@ -1728,21 +1750,14 @@ namespace Dominio.Schemas.CQRS
             new SourceCodeInfrastructureOperationalControlStateMigration(migration)
                 .WriteGeneratedCode(statePath);
 
-            foreach (var hostProjectName in new[]
-                     {
-                         GetApplicationInfrastructureApiProjectName(),
-                         GetApplicationInfrastructureWorkerProjectName()
-                     })
-            {
-                var synchronizerPath = Path.Combine(
-                    GetPathAppInfraestructure(),
-                    hostProjectName,
-                    "Migration",
-                    "Operational",
-                    "OperationalPolicySynchronizer.cs");
-                new SourceCodeInfrastructureOperationalControlSynchronizerMigration()
-                    .WriteGeneratedCode(synchronizerPath);
-            }
+            var synchronizerPath = Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureWorkerProjectName(),
+                "Migration",
+                "Operational",
+                "OperationalPolicySynchronizer.cs");
+            new SourceCodeInfrastructureOperationalControlSynchronizerMigration()
+                .WriteGeneratedCode(synchronizerPath);
         }
 
         public void AppInfraestructureGenerateReadConcreteQuerys(Migration.MigrationBase migration)
@@ -2253,7 +2268,8 @@ namespace Dominio.Schemas.CQRS
                 applicationInfrastructureFrontProjectDirectory,
                 $"{applicationInfrastructureFrontProjectName}.csproj");
 
-            if (!File.Exists(applicationInfrastructureFrontProjectPath))
+            if (_frontHostingMode != FrontHostingMode.SharedContribution
+                && !File.Exists(applicationInfrastructureFrontProjectPath))
             {
                 WriteText(
                     applicationInfrastructureFrontProjectPath,
@@ -2268,8 +2284,20 @@ namespace Dominio.Schemas.CQRS
 </Project>");
             }
 
-            EnsureApplicationInfrastructureFrontFiles(applicationInfrastructureFrontProjectDirectory);
-            AddProjectToSolution(applicationInfrastructureFrontProjectPath, "Yeshua.CQRS.Infrastructure");
+            if (_frontHostingMode == FrontHostingMode.SharedContribution)
+            {
+                EnsureApplicationFrontContribution(applicationInfrastructureFrontProjectDirectory, migration);
+                ComposeSharedFrontIfAvailable();
+            }
+            else
+            {
+                EnsureApplicationInfrastructureFrontFiles(applicationInfrastructureFrontProjectDirectory);
+                EnsureApplicationFrontContribution(applicationInfrastructureFrontProjectDirectory, migration);
+                AddProjectToSolution(applicationInfrastructureFrontProjectPath, "Yeshua.CQRS.Infrastructure");
+
+                if (_frontHostingMode == FrontHostingMode.SharedHost)
+                    ComposeSharedFrontIfAvailable();
+            }
         }
 
         private string GetApplicationDomainProjectName()
@@ -2645,6 +2673,166 @@ window.yeshuaAppExtensionReady = import('{applicationExtensionPath}')
                 Path.Combine(projectDirectory, "wwwroot", "Custon", "Apps", applicationName, "extensions.js"),
                 @"window.yeshuaExtensions = window.yeshuaExtensions || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};");
+        }
+
+        private void EnsureApplicationFrontContribution(
+            string projectDirectory,
+            Migration.MigrationBase migration)
+        {
+            var applicationName = GetApplicationName();
+            var applicationExtensionDirectory = Path.Combine(
+                projectDirectory,
+                "wwwroot",
+                "Custon",
+                "Apps",
+                applicationName);
+            Directory.CreateDirectory(applicationExtensionDirectory);
+
+            WriteTextIfMissing(
+                Path.Combine(applicationExtensionDirectory, "extensions.js"),
+                @"window.yeshuaExtensions = window.yeshuaExtensions || {};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};");
+
+            var sharedFrontHost = _frontHostingMode == FrontHostingMode.SharedHost
+                ? applicationName
+                : _sharedFrontHostApplicationName ?? applicationName;
+            var manifest = new JsonObject
+            {
+                ["application"] = applicationName,
+                ["title"] = applicationName,
+                ["sharedFrontHost"] = sharedFrontHost,
+                ["apiBasePath"] = ResolveFrontApiBasePath(applicationName),
+                ["menuEndpoint"] = "/getMenu",
+                ["customAssetsPath"] = $"/Custon/Apps/{applicationName}",
+                ["hostingMode"] = _frontHostingMode.ToString(),
+                ["modules"] = new JsonArray(migration.Modules
+                    .Select(module => module.Key)
+                    .Where(module => !string.IsNullOrWhiteSpace(module))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(module => module, StringComparer.OrdinalIgnoreCase)
+                    .Select(module => JsonValue.Create(module))
+                    .ToArray())
+            };
+
+            WriteText(
+                Path.Combine(projectDirectory, "front-contribution.json"),
+                manifest.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
+        }
+
+        private string ResolveFrontApiBasePath(string applicationName)
+        {
+            if (!string.IsNullOrWhiteSpace(_frontApiBasePath))
+                return "/" + _frontApiBasePath.Trim().TrimStart('/');
+
+            var routeKey = new string(applicationName
+                .ToLowerInvariant()
+                .Select(character => char.IsLetterOrDigit(character) ? character : '-')
+                .ToArray())
+                .Trim('-');
+            return $"/apps/{routeKey}/yapi";
+        }
+
+        private void ComposeSharedFrontIfAvailable()
+        {
+            var sharedFrontHost = _sharedFrontHostApplicationName ?? GetApplicationName();
+            var sharedFrontProjectName = $"Yeshua.{sharedFrontHost}.CQRS.Infrastructure.Front";
+            var sharedFrontProjectDirectory = Path.Combine(GetPathAppInfraestructure(), sharedFrontProjectName);
+            var sharedFrontWwwroot = Path.Combine(sharedFrontProjectDirectory, "wwwroot");
+            if (!Directory.Exists(sharedFrontWwwroot))
+                return;
+
+            var applications = new List<JsonObject>();
+            foreach (var frontProjectDirectory in Directory.GetDirectories(
+                         GetPathAppInfraestructure(),
+                         "Yeshua.*.CQRS.Infrastructure.Front",
+                         System.IO.SearchOption.TopDirectoryOnly))
+            {
+                var manifestPath = Path.Combine(frontProjectDirectory, "front-contribution.json");
+                if (!File.Exists(manifestPath))
+                    continue;
+
+                var manifest = JsonNode.Parse(File.ReadAllText(manifestPath)) as JsonObject;
+                if (manifest == null
+                    || !string.Equals(
+                        manifest["sharedFrontHost"]?.GetValue<string>(),
+                        sharedFrontHost,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                var applicationName = manifest["application"]?.GetValue<string>();
+                if (string.IsNullOrWhiteSpace(applicationName))
+                    continue;
+
+                var sourceDirectory = Path.Combine(
+                    frontProjectDirectory,
+                    "wwwroot",
+                    "Custon",
+                    "Apps",
+                    applicationName);
+                var destinationDirectory = Path.Combine(
+                    sharedFrontWwwroot,
+                    "Custon",
+                    "Apps",
+                    applicationName);
+                CopyFrontContribution(sourceDirectory, destinationDirectory);
+                applications.Add((JsonObject)manifest.DeepClone());
+            }
+
+            applications = applications
+                .OrderBy(application => application["application"]?.GetValue<string>(), StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            WriteText(
+                Path.Combine(sharedFrontWwwroot, "applications.json"),
+                JsonSerializer.Serialize(applications, new JsonSerializerOptions { WriteIndented = true }));
+
+            WriteText(
+                Path.Combine(sharedFrontWwwroot, "Custon", "extensions.js"),
+                $@"window.yeshuaExtensions = window.yeshuaExtensions || {{}};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {{}};
+window.yeshuaAppExtensionReady = Promise.resolve();
+window.yeshuaLoadApplicationExtension = customAssetsPath => {{
+    if (!customAssetsPath) return window.yeshuaAppExtensionReady;
+
+    window.yeshuaAppExtensionReady = import(`${{customAssetsPath}}/extensions.js`)
+        .catch(error => console.error('Falha ao carregar extensoes do aplicativo.', error));
+    return window.yeshuaAppExtensionReady;
+}};");
+        }
+
+        private static void CopyFrontContribution(string sourceDirectory, string destinationDirectory)
+        {
+            if (!Directory.Exists(sourceDirectory))
+                return;
+
+            if (string.Equals(
+                    Path.GetFullPath(sourceDirectory).TrimEnd(Path.DirectorySeparatorChar),
+                    Path.GetFullPath(destinationDirectory).TrimEnd(Path.DirectorySeparatorChar),
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            foreach (var sourceFile in Directory.GetFiles(
+                         sourceDirectory,
+                         "*",
+                         System.IO.SearchOption.AllDirectories))
+            {
+                var relativePath = Path.GetRelativePath(sourceDirectory, sourceFile);
+                var destinationFile = Path.Combine(destinationDirectory, relativePath);
+                var destinationFileDirectory = Path.GetDirectoryName(destinationFile);
+                if (!string.IsNullOrWhiteSpace(destinationFileDirectory))
+                    Directory.CreateDirectory(destinationFileDirectory);
+                File.Copy(sourceFile, destinationFile, overwrite: true);
+            }
+        }
+
+        private enum FrontHostingMode
+        {
+            ApplicationHost,
+            SharedHost,
+            SharedContribution
         }
 
         private int GetApplicationInfrastructureFrontPort()

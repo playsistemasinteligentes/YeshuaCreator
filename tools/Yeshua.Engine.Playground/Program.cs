@@ -1447,17 +1447,17 @@ internal sealed record MdfeEncerramentoParameters(
 {
     public const string TipoEvento = "110112";
 
-    // Perfil historico que ja provou encerramento real de MDF-e contra a SVRS.
-    public static MdfeEncerramentoParameters FixedMinasHistorico { get; } = new(
-        CodigoOrgao: 31,
+    // Perfil de producao para encerrar o MDF-e de SC no municipio final declarado no XML autorizado.
+    public static MdfeEncerramentoParameters FixedSantaCatarina { get; } = new(
+        CodigoOrgao: 42,
         Ambiente: 1,
-        Cnpj: "57152543000141",
-        ChaveAcesso: "31260757152543000141580200000056051000560591",
-        ProtocoloAutorizacao: "931260037261399",
-        CertificatePath: @"C:\Users\AngeloRicardoFontana\Downloads\57152543000141.pfx",
-        CertificatePassword: "27111983",
-        CodigoUfEncerramento: 31,
-        CodigoMunicipioEncerramento: 3167202,
+        Cnpj: "37395846000188",
+        ChaveAcesso: "42260937395846000188580050000074081000740892",
+        ProtocoloAutorizacao: "942260036761393",
+        CertificatePath: @"C:\Users\AngeloRicardoFontana\Downloads\37395846000188_.pfx",
+        CertificatePassword: "emp1030",
+        CodigoUfEncerramento: 42,
+        CodigoMunicipioEncerramento: 4204301,
         SequenciaEvento: 1);
 
     // Perfil Pernambuco. O documento e de PE, mas o encerramento pode ocorrer em outro municipio.
@@ -1477,12 +1477,12 @@ internal sealed record MdfeEncerramentoParameters(
     {
         var profile = GetArg(args, "--mdfe-perfil")
             ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_PERFIL")
-            ?? "minas";
+            ?? "sc";
 
         var fixedParameters = string.Equals(profile, "pe", StringComparison.OrdinalIgnoreCase) ||
                               string.Equals(profile, "pernambuco", StringComparison.OrdinalIgnoreCase)
             ? FixedPernambuco
-            : FixedMinasHistorico;
+            : FixedSantaCatarina;
 
         return fixedParameters with
         {
@@ -1820,6 +1820,18 @@ internal sealed record MdfeSefazPlaygroundOptions(
             path,
             password,
             X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.Exportable);
+
+        var now = DateTime.Now;
+        if (now < sourceCertificate.NotBefore || now > sourceCertificate.NotAfter)
+        {
+            throw new InvalidOperationException(
+                $"O certificado '{sourceCertificate.Subject}' nao esta vigente. " +
+                $"Validade: {sourceCertificate.NotBefore:dd/MM/yyyy HH:mm:ss} ate " +
+                $"{sourceCertificate.NotAfter:dd/MM/yyyy HH:mm:ss}.");
+        }
+
+        if (!sourceCertificate.HasPrivateKey)
+            throw new InvalidOperationException("O certificado nao possui chave privada RSA.");
 
         var storeCertificate = TryLoadCertificateFromCurrentUserStore(sourceCertificate.Thumbprint);
         if (storeCertificate is not null)

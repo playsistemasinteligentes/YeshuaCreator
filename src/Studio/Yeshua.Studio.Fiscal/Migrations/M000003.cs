@@ -47,7 +47,7 @@ public class M000003 : MigrationBase
                 .Enumerable(7, "Rejeitada")
                 .Enumerable(8, "FalhaTecnica");
 
-        AddEntity("ContingenciaFiscal", "Contingencia Fiscal").AddModule("CONT")
+        AddEntity("ContingenciaFiscal", "Contingencia Fiscal").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("EmissaoFiscalTransporteId", "Emissao Fiscal").FK("EmissaoFiscalTransporte", "Id").RelationTab("Contingencias", "Contingencias").Int().Group("Vinculo")
             .AddColumn("EntradaFiscalContingenciaId", "Entrada Contingencia").FK("EntradaFiscalContingencia", "Id").Int().Group("Vinculo")
@@ -81,7 +81,7 @@ public class M000003 : MigrationBase
                 .Enumerable(6, "Rejeitada")
                 .Enumerable(7, "FalhaTecnica");
 
-        AddEntity("EmissaoFiscalTransporteDocumento", "Documento da Emissao Fiscal").AddModule("DFE")
+        AddEntity("EmissaoFiscalTransporteDocumento", "Documento da Emissao Fiscal").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("EmissaoFiscalTransporteId", "Emissao Fiscal").FK("EmissaoFiscalTransporte", "Id").RelationTab("Documentos", "Documentos").Int().NotNull().Group("Vinculo")
             .AddColumn("DocumentoFiscalId", "Documento Fiscal").FK("DocumentoFiscal", "Id").Int().Group("Vinculo")
@@ -115,11 +115,11 @@ public class M000003 : MigrationBase
         AddMenuGroup("FIS", "Emissoes",
             "EmissaoFiscalTransporte");
 
-        AddMenuGroup("CONT", "Contingencia Fiscal",
+        AddMenuGroup("FIS", "Contingencia Fiscal",
             "ContingenciaFiscal",
             "EntradaFiscalContingencia");
 
-        AddMenuGroup("DFE", "Documentos Fiscais",
+        AddMenuGroup("FIS", "Documentos Fiscais",
             "EmissaoFiscalTransporteDocumento",
             "DocumentoFiscal",
             "DocumentoFiscalOriginario",

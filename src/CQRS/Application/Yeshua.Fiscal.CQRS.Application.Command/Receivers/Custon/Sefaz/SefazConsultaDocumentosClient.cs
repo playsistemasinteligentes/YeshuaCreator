@@ -55,7 +55,7 @@ namespace Command.Receivers
             return ConsultarAsync(chave, salvarXml: false).GetAwaiter().GetResult();
         }
 
-        private static async Task<SefazConsultaDocumentoResult> ConsultarAsync(string chave, bool salvarXml)
+        internal static async Task<SefazConsultaDocumentoResult> ConsultarAsync(string chave, bool salvarXml)
         {
             var baseOptions = CteRecepcaoSincV4Options.FromEnvironment();
             var endpoint = Environment.GetEnvironmentVariable("YESHUA_CTE_CONSULTA_ENDPOINT") ?? DefaultEndpoint;
@@ -178,7 +178,7 @@ namespace Command.Receivers
             return ConsultarAsync(chave, salvarXml: false).GetAwaiter().GetResult();
         }
 
-        private static async Task<SefazConsultaDocumentoResult> ConsultarAsync(string chave, bool salvarXml)
+        internal static async Task<SefazConsultaDocumentoResult> ConsultarAsync(string chave, bool salvarXml)
         {
             var baseOptions = MdfeRecepcaoSincOptions.FromEnvironment();
             var endpoint = Environment.GetEnvironmentVariable("YESHUA_MDFE_CONSULTA_ENDPOINT")

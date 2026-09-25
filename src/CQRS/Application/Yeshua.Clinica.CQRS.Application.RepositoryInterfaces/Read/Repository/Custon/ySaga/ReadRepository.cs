@@ -8,4 +8,16 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
 // </yeshua>
 
+using Repositorio.Outputs;
+using System;
+
+namespace IRepository.Read
+{
+    public partial interface IySagaReadRepository
+    {
+        bool TryClaimSagaForExecution(int sagaId, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
+        ySagaDTO? GetByIdWithSteps(int sagaId);
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

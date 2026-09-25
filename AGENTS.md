@@ -355,16 +355,60 @@ Regra resumida:
   topologia de Clinica no host de outro aplicativo.
 - `pendencia`: criar o Worker somente quando a DSL declarar fila, polling ou
   outro processamento em segundo plano.
+- O controle operacional pertence a cada aplicativo. A tela do aplicativo
+  atualiza o singleton da propria API; o Worker do mesmo aplicativo consulta
+  periodicamente essa API e atualiza seu singleton. Esse fluxo nao depende de
+  API operacional central, banco adicional nem Front central.
 
-## Front Por Aplicativo
+## Front Compartilhado
 
 - `Yeshua.CQRS.Infrastructure.Front` e a matriz do Front padrao.
-- A Engine cria `Yeshua.<Aplicativo>.CQRS.Infrastructure.Front` como um host
-  completo, independente e publicavel sem dependencia de runtime para a matriz.
-- A cada geracao, a Engine sincroniza o `wwwroot` padrao da matriz com cada
-  aplicativo.
-- `wwwroot/Custon` pertence ao aplicativo e nunca deve ser sobrescrito pela
-  sincronizacao da Engine.
+- Um aplicativo de Studio pode declarar `AddSharedFrontHost` para ser o unico
+  host publicavel do Front de uma instalacao. A primeira implementacao usa o
+  aplicativo `Central` para autenticacao e composicao visual.
+- Os demais aplicativos declaram `UseSharedFront`, continuam com API e Worker
+  independentes e produzem uma contribuicao de Front, nao um novo host para
+  publicacao.
+- Cada contribuicao possui manifesto com aplicativo, host compartilhado, rota
+  logica da API e caminho dos assets customizados. A Engine compoe esses
+  manifestos no host compartilhado sem copiar configuracoes de banco ou
+  infraestrutura dos aplicativos.
+- O Front chama rotas logicas como `/apps/clinica/yapi` e
+  `/apps/fiscal/yapi`; Nginx ou outro gateway resolve a API fisica. O navegador
+  nao deve conhecer portas ou nomes internos dos containers.
+- A central autentica e emite o token. Cada API de aplicativo valida o mesmo
+  token e continua sendo dona das suas regras e dados.
+- O catalogo do Front central nasce dos manifestos produzidos pela Engine para
+  cada aplicativo. Criar uma conta registra somente Tenant e usuario
+  proprietario, sem conceder modulos nem acoplar identidade ao catalogo.
+- A Central conhece apenas catalogos de aplicativos e suas rotas logicas. Ela
+  nao declara, replica nem reconstrui os modulos ou menus internos dos outros
+  Studios.
+- A aquisicao de um aplicativo grava uma concessao de catalogo para o Tenant,
+  sem usar `yTenantModule` ou `yUserModule`. Um novo login inclui os catalogos
+  permitidos na claim `userCatalogs`.
+- O Front mostra os catalogos permitidos e nao carrega todos os menus durante o
+  login. Quando o usuario entra em um aplicativo, o Front aponta para a API
+  indicada no manifesto e executa o mesmo `GET /getMenu` que o Front individual
+  executava anteriormente.
+- Cada API gera e entrega seu proprio menu a partir da DSL do respectivo Studio.
+  A claim de catalogo autoriza a entrada no aplicativo; modulos e grupos
+  internos continuam pertencendo exclusivamente ao aplicativo.
+- `userModules` permanece temporariamente como compatibilidade com os Fronts
+  individuais antigos, mas nao controla o catalogo compartilhado.
+- A troca de aplicativo no Front altera apenas a rota logica da API e recarrega
+  a contribuicao customizada correspondente. A primeira versao recarrega a
+  pagina ao trocar de aplicativo para evitar estado e extensoes cruzadas.
+- As tabelas internas Y continuam presentes em todos os aplicativos. Esta
+  mudanca nao centraliza, remove nem inventaria tabelas Y; preserva a futura
+  possibilidade de replicacao.
+- Durante a transicao, projetos de Front antigos podem permanecer no
+  repositorio como fonte das contribuicoes, mas deixam de ser unidades de
+  publicacao quando o Studio usa `UseSharedFront`.
+- A cada geracao do host compartilhado, a Engine sincroniza o `wwwroot` padrao
+  da matriz e agrega as contribuicoes conhecidas.
+- `wwwroot/Custon` e protegido e nunca deve ser sobrescrito pela sincronizacao
+  da matriz, salvo os carregadores e manifestos explicitamente gerados.
 - Telas customizadas completas de aplicativo devem ter ancora pequena na DSL
   como metadata de modulo, por exemplo `AddCustomPage`, para permitir menu,
   permissao, descoberta e operacao; HTML, CSS, JS e provedores continuam em
@@ -372,8 +416,7 @@ Regra resumida:
 - Todo artefato de Front especifico de aplicativo deve ficar em
   `wwwroot/Custon/Apps/<Aplicativo>`. O arquivo raiz
   `wwwroot/Custon/extensions.js` e um carregador gerado pela Engine; ele nao
-  deve acumular regras ou telas do aplicativo. Essa divisao prepara a futura
-  composicao de um Front central sem acoplar os aplicativos agora.
+  deve acumular regras ou telas do aplicativo.
 - Paginas operacionais genericas pertencem a matriz do Front. O catalogo de
   entidades e campos dessas paginas e gerado estaticamente pela Engine na API
   de cada aplicativo, sem reflection; a pagina generica compoe a interface a
@@ -515,6 +558,10 @@ os miolos customizados.
   duplicacao de SEFAZ, certificado, XML, protocolo, eventos e observabilidade.
   A separacao comercial continua possivel por modulo/permissao, sem exigir um
   Studio ou aplicativo tecnico separado para cada documento.
+- Na configuracao atual da plataforma, o aplicativo Fiscal possui um unico
+  modulo de acesso, `FIS`. CT-e, MDF-e, NF-e, entrada fiscal, SEFAZ e
+  contingencia sao grupos funcionais descendentes do menu Fiscal, nao modulos
+  independentes nem concessoes separadas no token.
 - Dentro do CT-e, separar entrada, normalizacao, orquestracao de emissao,
   rateio de frete, calculo fiscal, numeracao/chave, XML SEFAZ, assinatura,
   validacao XSD, cliente SEFAZ, interpretacao de retorno, eventos, DACTE,

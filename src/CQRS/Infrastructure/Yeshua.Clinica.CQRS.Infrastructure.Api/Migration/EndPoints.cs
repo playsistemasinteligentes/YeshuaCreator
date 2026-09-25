@@ -1364,13 +1364,23 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                     app.MapGet("/yapi/getMenu", (HttpContext context) =>
                     {
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;
-                        if (modulesClaim == null)
+                        var catalogsClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userCatalogs")?.Value;
+                        var hasCatalogAccess = (catalogsClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            .Contains("Clinica", StringComparer.OrdinalIgnoreCase);
+
+                        if (modulesClaim == null && !hasCatalogAccess)
                             return Results.Unauthorized();
 
-                        var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                        var userModules = StaticModules.Modules
-                            .Where(m => moduleKeys.Contains(m.Key))
-                            .ToList();
+                        var moduleKeys = (modulesClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var userModules = hasCatalogAccess
+                            ? StaticModules.Modules
+                                .Where(m => !m.Key.Equals("ADM", StringComparison.OrdinalIgnoreCase))
+                                .ToList()
+                            : StaticModules.Modules
+                                .Where(m => moduleKeys.Contains(m.Key, StringComparer.OrdinalIgnoreCase))
+                                .ToList();
 
                         var result = userModules.Select(m => new
                         {

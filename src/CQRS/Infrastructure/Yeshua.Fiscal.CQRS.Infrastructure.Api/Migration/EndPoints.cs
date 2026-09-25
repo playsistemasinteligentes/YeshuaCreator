@@ -2120,13 +2120,23 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                     app.MapGet("/yapi/getMenu", (HttpContext context) =>
                     {
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;
-                        if (modulesClaim == null)
+                        var catalogsClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userCatalogs")?.Value;
+                        var hasCatalogAccess = (catalogsClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            .Contains("Fiscal", StringComparer.OrdinalIgnoreCase);
+
+                        if (modulesClaim == null && !hasCatalogAccess)
                             return Results.Unauthorized();
 
-                        var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                        var userModules = StaticModules.Modules
-                            .Where(m => moduleKeys.Contains(m.Key))
-                            .ToList();
+                        var moduleKeys = (modulesClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var userModules = hasCatalogAccess
+                            ? StaticModules.Modules
+                                .Where(m => !m.Key.Equals("ADM", StringComparison.OrdinalIgnoreCase))
+                                .ToList()
+                            : StaticModules.Modules
+                                .Where(m => moduleKeys.Contains(m.Key, StringComparer.OrdinalIgnoreCase))
+                                .ToList();
 
                         var result = userModules.Select(m => new
                         {
@@ -8187,6 +8197,23 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/Fiscal/CTeUtilitariosConsultarSituacaoCTeUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarSituacaoCTeHandler receiver, [FromBody] Command.UseCase.ConsultarSituacaoCTeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/Fiscal/CTeUtilitariosObterXmlCTeUseCase", async ([FromServices] Command.Receivers.UseCase.ObterXmlCTeHandler receiver, [FromBody] Command.UseCase.ObterXmlCTeInputCommand command) =>
 {
 try
@@ -8256,6 +8283,23 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Fiscal/MDFeEncerrarMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.EncerrarMDFeHandler receiver, [FromBody] Command.UseCase.EncerrarMDFeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/MDFeUtilitariosConsultarSituacaoMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarSituacaoMDFeHandler receiver, [FromBody] Command.UseCase.ConsultarSituacaoMDFeInputCommand command) =>
 {
 try
 {
@@ -8443,6 +8487,91 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Fiscal/SEFAZRegistrarCertificadoDigitalContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.RegistrarCertificadoDigitalContingenciaHandler receiver, [FromBody] Command.UseCase.RegistrarCertificadoDigitalContingenciaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/CTeUtilitariosCancelarCTeUseCase", async ([FromServices] Command.Receivers.UseCase.CancelarCTeHandler receiver, [FromBody] Command.UseCase.CancelarCTeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/CTeUtilitariosCorrigirCTeUseCase", async ([FromServices] Command.Receivers.UseCase.CorrigirCTeHandler receiver, [FromBody] Command.UseCase.CorrigirCTeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/MDFeUtilitariosCancelarMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.CancelarMDFeHandler receiver, [FromBody] Command.UseCase.CancelarMDFeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/MDFeUtilitariosIncluirCondutorMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.IncluirCondutorMDFeHandler receiver, [FromBody] Command.UseCase.IncluirCondutorMDFeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/MDFeUtilitariosEncerrarMDFePorChaveUseCase", async ([FromServices] Command.Receivers.UseCase.EncerrarMDFePorChaveHandler receiver, [FromBody] Command.UseCase.EncerrarMDFePorChaveInputCommand command) =>
 {
 try
 {

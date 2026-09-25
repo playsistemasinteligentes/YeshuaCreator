@@ -28,17 +28,8 @@ app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvide
     Results.Ok(identityProvider.Current))
     .AllowAnonymous();
 
-app.MapPut("/yapi/operational/logging-policy", async ([FromServices] Yeshua.Generated.OperationalControl.OperationalPolicySynchronizer synchronizer, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update, CancellationToken cancellationToken) =>
-{
-    try
-    {
-        return Results.Ok(await synchronizer.ReplaceAsync(update, cancellationToken));
-    }
-    catch (HttpRequestException exception)
-    {
-        return Results.Problem(exception.Message, statusCode: StatusCodes.Status503ServiceUnavailable);
-    }
-})
+app.MapPut("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyState policyState, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update) =>
+    Results.Ok(policyState.ApplyLocal(update)))
     .RequireAuthorization();
 
 app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
@@ -9672,13 +9663,23 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                     app.MapGet("/yapi/getMenu", (HttpContext context) =>
                     {
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;
-                        if (modulesClaim == null)
+                        var catalogsClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userCatalogs")?.Value;
+                        var hasCatalogAccess = (catalogsClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            .Contains("APS.ADM", StringComparer.OrdinalIgnoreCase);
+
+                        if (modulesClaim == null && !hasCatalogAccess)
                             return Results.Unauthorized();
 
-                        var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                        var userModules = StaticModules.Modules
-                            .Where(m => moduleKeys.Contains(m.Key))
-                            .ToList();
+                        var moduleKeys = (modulesClaim ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var userModules = hasCatalogAccess
+                            ? StaticModules.Modules
+                                .Where(m => !m.Key.Equals("ADM", StringComparison.OrdinalIgnoreCase))
+                                .ToList()
+                            : StaticModules.Modules
+                                .Where(m => moduleKeys.Contains(m.Key, StringComparer.OrdinalIgnoreCase))
+                                .ToList();
 
                         var result = userModules.Select(m => new
                         {

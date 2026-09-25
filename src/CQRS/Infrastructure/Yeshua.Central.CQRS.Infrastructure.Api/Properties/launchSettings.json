@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "Yeshua.Central.CQRS.Infrastructure.Api": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:57500",
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    }
+  }
+}

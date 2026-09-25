@@ -1,0 +1,13 @@
+﻿{
+  "application": "Central",
+  "title": "Central",
+  "sharedFrontHost": "Central",
+  "apiBasePath": "/apps/central/yapi",
+  "menuEndpoint": "/getMenu",
+  "customAssetsPath": "/Custon/Apps/Central",
+  "hostingMode": "SharedHost",
+  "modules": [
+    "ADM",
+    "CENTRAL"
+  ]
+}

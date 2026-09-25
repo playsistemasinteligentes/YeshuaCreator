@@ -1,0 +1,13 @@
+﻿{
+  "application": "Fiscal",
+  "title": "Fiscal",
+  "sharedFrontHost": "Central",
+  "apiBasePath": "/apps/fiscal/yapi",
+  "menuEndpoint": "/getMenu",
+  "customAssetsPath": "/Custon/Apps/Fiscal",
+  "hostingMode": "SharedContribution",
+  "modules": [
+    "ADM",
+    "FIS"
+  ]
+}

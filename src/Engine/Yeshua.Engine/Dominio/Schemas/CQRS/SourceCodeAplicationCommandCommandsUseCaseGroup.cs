@@ -186,8 +186,9 @@ namespace Dominio.Schemas.CQRS
 
             _generatedTypes.Add(className);
 
+            var isSagaStepStimulusOutput = IsSagaStepStimulusOutput(className);
             var commandContracts = "ICommand";
-            if (IsSagaStepStimulusOutput(className))
+            if (isSagaStepStimulusOutput)
                 commandContracts += ", ISagaStepStimulusOutput";
             if (HasOperationalTelemetryMetadata(className))
                 commandContracts += ", IOperationalTelemetryCommand";
@@ -201,6 +202,9 @@ namespace Dominio.Schemas.CQRS
                 string propTypeName = GetFriendlyTypeName(prop.PropertyType);
                 sb.AppendLine($"    public {propTypeName} {prop.Name} {{ get; set; }}{DefaultInitializer(prop.PropertyType)}");
             }
+
+            if (isSagaStepStimulusOutput)
+                GenerateSagaStepStimulusOutputMembers(type, sb);
 
             GenerateOperationalTelemetryMetadata(type, className, sb);
 
@@ -231,6 +235,29 @@ namespace Dominio.Schemas.CQRS
                     }
                 }
             }
+        }
+
+        private void GenerateSagaStepStimulusOutputMembers(Type type, StringBuilder sb)
+        {
+            AppendMissingProperty(type, sb, "bool", "Accepted");
+            AppendMissingProperty(type, sb, "int", "SagaId");
+            AppendMissingProperty(type, sb, "int", "SagaStepId");
+            AppendMissingProperty(type, sb, "int", "InboxId");
+            AppendMissingProperty(type, sb, "string", "CorrelationId", " = string.Empty;");
+            AppendMissingProperty(type, sb, "string", "StepKey", " = string.Empty;");
+        }
+
+        private static void AppendMissingProperty(
+            Type type,
+            StringBuilder sb,
+            string propertyType,
+            string propertyName,
+            string initializer = "")
+        {
+            if (type.GetProperties().Any(property => property.Name == propertyName))
+                return;
+
+            sb.AppendLine($"    public {propertyType} {propertyName} {{ get; set; }}{initializer}");
         }
 
         private bool IsSagaStepStimulusOutput(string className)

@@ -11,14 +11,8 @@ public class M000001 : MigrationBase
         ConfigureSagaWorkers(loopMilliseconds: 500);
 
         AddModule("FIS", "Fiscal");
-        AddModule("DFE", "Documentos Fiscais Eletronicos");
-        AddModule("CTE", "CT-e");
-        AddModule("MDFE", "MDF-e");
-        AddModule("NFE", "NF-e");
-        AddModule("SEFAZ", "SEFAZ");
-        AddModule("CONT", "Contingencia Fiscal");
 
-        AddEntity("DocumentoFiscal", "Documento Fiscal").AddModule("DFE")
+        AddEntity("DocumentoFiscal", "Documento Fiscal").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
             .AddColumn("ProdutoFiscal", "Produto Fiscal").Int().NotNull().Group("Identificacao")
@@ -48,7 +42,7 @@ public class M000001 : MigrationBase
                 .Enumerable(6, "Cancelado")
                 .Enumerable(7, "FalhaTecnica");
 
-        AddEntity("DocumentoFiscalOriginario", "Documento Fiscal Originario").AddModule("DFE")
+        AddEntity("DocumentoFiscalOriginario", "Documento Fiscal Originario").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("DocumentoFiscalId", "Documento Fiscal").FK("DocumentoFiscal", "Id").Int().Group("Vinculo")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
@@ -70,7 +64,7 @@ public class M000001 : MigrationBase
                 .Enumerable(2, "Vinculado")
                 .Enumerable(3, "Rejeitado");
 
-        AddEntity("NFeProdutoSnapshot", "NF-e de Produto").AddModule("NFE")
+        AddEntity("NFeProdutoSnapshot", "NF-e de Produto").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("DocumentoFiscalOriginarioId", "Documento Originario").FK("DocumentoFiscalOriginario", "Id").Int().Group("Vinculo")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
@@ -94,7 +88,7 @@ public class M000001 : MigrationBase
                 .Enumerable(3, "VinculadaAoCTe")
                 .Enumerable(4, "Rejeitada");
 
-        AddEntity("CTeEntradaOficial", "Entrada Oficial CT-e").AddModule("CTE")
+        AddEntity("CTeEntradaOficial", "Entrada Oficial CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
             .AddColumn("SourceApplication", "Aplicacao Origem").Varchar(100).NotNull().Group("Origem")
@@ -112,7 +106,7 @@ public class M000001 : MigrationBase
                 .Enumerable(4, "Processada")
                 .Enumerable(5, "Falha");
 
-        AddEntity("CTeRomaneioConsolidado", "Romaneio Consolidado Para CT-e").AddModule("CTE")
+        AddEntity("CTeRomaneioConsolidado", "Romaneio Consolidado Para CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("EntradaOficialId", "Entrada Oficial").FK("CTeEntradaOficial", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
@@ -135,7 +129,7 @@ public class M000001 : MigrationBase
                 .Enumerable(4, "Rejeitado")
                 .Enumerable(5, "Processado");
 
-        AddEntity("CTeSolicitacaoFiscal", "Solicitacao Fiscal CT-e").AddModule("CTE")
+        AddEntity("CTeSolicitacaoFiscal", "Solicitacao Fiscal CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("EntradaOficialId", "Entrada Oficial").FK("CTeEntradaOficial", "Id").Int().Group("Vinculo")
             .AddColumn("RomaneioConsolidadoId", "Romaneio Consolidado").FK("CTeRomaneioConsolidado", "Id").Int().Group("Vinculo")
@@ -183,7 +177,7 @@ public class M000001 : MigrationBase
                 .Enumerable(5, "Rejeitada")
                 .Enumerable(6, "FalhaTecnica");
 
-        AddEntity("CTeDocumentoOriginario", "Documento Originario CT-e").AddModule("CTE")
+        AddEntity("CTeDocumentoOriginario", "Documento Originario CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CTeSolicitacaoFiscalId", "Solicitacao CT-e").FK("CTeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("DocumentoFiscalOriginarioId", "Documento Originario").FK("DocumentoFiscalOriginario", "Id").Int().Group("Vinculo")
@@ -197,7 +191,7 @@ public class M000001 : MigrationBase
             .AddColumn("PesoBruto", "Peso Bruto").Decimal(18, 6).Group("Valores")
             .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot");
 
-        AddEntity("CTeParticipanteSnapshot", "Participante CT-e").AddModule("CTE")
+        AddEntity("CTeParticipanteSnapshot", "Participante CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CTeSolicitacaoFiscalId", "Solicitacao CT-e").FK("CTeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("Papel", "Papel").Varchar(40).NotNull().Group("Identificacao")
@@ -208,7 +202,7 @@ public class M000001 : MigrationBase
             .AddColumn("MunicipioCodigoIbge", "Municipio IBGE").Varchar(7).Group("Endereco")
             .AddColumn("EnderecoJson", "Endereco").VarcharMax().Group("Endereco");
 
-        AddEntity("CTeTentativaEmissao", "Tentativa de Emissao CT-e").AddModule("CTE")
+        AddEntity("CTeTentativaEmissao", "Tentativa de Emissao CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CTeSolicitacaoFiscalId", "Solicitacao CT-e").FK("CTeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("ChaveAcesso", "Chave de Acesso").Varchar(44).Group("Identificacao")
@@ -230,7 +224,7 @@ public class M000001 : MigrationBase
                 .Enumerable(4, "Rejeitado")
                 .Enumerable(5, "FalhaTecnica");
 
-        AddEntity("CTeSaidaMDFe", "Saida CT-e para MDF-e").AddModule("CTE")
+        AddEntity("CTeSaidaMDFe", "Saida CT-e para MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CTeTentativaEmissaoId", "Tentativa CT-e").FK("CTeTentativaEmissao", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
@@ -246,7 +240,7 @@ public class M000001 : MigrationBase
                 .Enumerable(4, "ConsumidoPeloMDFe")
                 .Enumerable(5, "FalhaNaEntrega");
 
-        AddEntity("MDFe", "MDF-e").AddModule("MDFE")
+        AddEntity("MDFe", "MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("ChaveAcesso", "Chave de Acesso").Varchar(44).NotNull()
             .AddColumn("Serie", "Serie").Int().NotNull()
@@ -265,7 +259,7 @@ public class M000001 : MigrationBase
                 .Enumerable(3, "Encerrado")
                 .Enumerable(4, "Cancelado");
 
-        AddEntity("MDFeSolicitacaoFiscal", "Solicitacao Fiscal MDF-e").AddModule("MDFE")
+        AddEntity("MDFeSolicitacaoFiscal", "Solicitacao Fiscal MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull().Group("Origem")
             .AddColumn("CargaId", "Carga").Varchar(80).Group("Operacao")
@@ -285,7 +279,7 @@ public class M000001 : MigrationBase
                 .Enumerable(4, "Rejeitada")
                 .Enumerable(5, "FalhaTecnica");
 
-        AddEntity("MDFeDocumentoOriginario", "Documento Originario MDF-e").AddModule("MDFE")
+        AddEntity("MDFeDocumentoOriginario", "Documento Originario MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("MDFeSolicitacaoFiscalId", "Solicitacao MDF-e").FK("MDFeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("DocumentoFiscalOriginarioId", "Documento Originario").FK("DocumentoFiscalOriginario", "Id").Int().Group("Vinculo")
@@ -293,13 +287,13 @@ public class M000001 : MigrationBase
             .AddColumn("ChaveAcesso", "Chave de Acesso").Varchar(44).Group("Identificacao")
             .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot");
 
-        AddEntity("MDFePercurso", "Percurso MDF-e").AddModule("MDFE")
+        AddEntity("MDFePercurso", "Percurso MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("MDFeSolicitacaoFiscalId", "Solicitacao MDF-e").FK("MDFeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("UF", "UF").Varchar(2).NotNull().Group("Percurso")
             .AddColumn("Ordem", "Ordem").Int().NotNull().Group("Percurso");
 
-        AddEntity("MDFeVeiculo", "Veiculo MDF-e").AddModule("MDFE")
+        AddEntity("MDFeVeiculo", "Veiculo MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("MDFeSolicitacaoFiscalId", "Solicitacao MDF-e").FK("MDFeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("Placa", "Placa").Varchar(7).NotNull().Group("Veiculo")
@@ -308,13 +302,13 @@ public class M000001 : MigrationBase
             .AddColumn("CapacidadeKg", "Capacidade KG").Decimal(18, 6).Group("Veiculo")
             .AddColumn("CapacidadeM3", "Capacidade M3").Decimal(18, 6).Group("Veiculo");
 
-        AddEntity("MDFeCondutor", "Condutor MDF-e").AddModule("MDFE")
+        AddEntity("MDFeCondutor", "Condutor MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("MDFeSolicitacaoFiscalId", "Solicitacao MDF-e").FK("MDFeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("Nome", "Nome").Varchar(200).NotNull().Group("Condutor")
             .AddColumn("Documento", "Documento").Varchar(14).NotNull().Group("Condutor");
 
-        AddEntity("MDFeTentativaEmissao", "Tentativa de Emissao MDF-e").AddModule("MDFE")
+        AddEntity("MDFeTentativaEmissao", "Tentativa de Emissao MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("MDFeSolicitacaoFiscalId", "Solicitacao MDF-e").FK("MDFeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
             .AddColumn("ChaveAcesso", "Chave de Acesso").Varchar(44).Group("Identificacao")
@@ -336,7 +330,7 @@ public class M000001 : MigrationBase
                 .Enumerable(4, "Rejeitado")
                 .Enumerable(5, "FalhaTecnica");
 
-        AddEntity("MDFeEncerramento", "Encerramento MDF-e").AddModule("MDFE")
+        AddEntity("MDFeEncerramento", "Encerramento MDF-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("MDFeId", "MDF-e").FK("MDFe", "Id").Int().NotNull()
             .AddColumn("ChaveAcesso", "Chave de Acesso").Varchar(44).NotNull()
@@ -349,7 +343,7 @@ public class M000001 : MigrationBase
             .AddColumn("CodigoRetorno", "Codigo de Retorno").Varchar(10)
             .AddColumn("MensagemRetorno", "Mensagem de Retorno").Varchar(500);
 
-        AddEntity("SefazEndpoint", "Endpoint SEFAZ").AddModule("SEFAZ")
+        AddEntity("SefazEndpoint", "Endpoint SEFAZ").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("ProdutoFiscal", "Produto Fiscal").Int().NotNull().Group("Servico")
                 .Enumerable(55, "NFe")
@@ -366,7 +360,7 @@ public class M000001 : MigrationBase
                 .Enumerable(0, "Nao")
                 .Enumerable(1, "Sim");
 
-        AddEntity("CertificadoDigital", "Certificado Digital").AddModule("SEFAZ")
+        AddEntity("CertificadoDigital", "Certificado Digital").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("Apelido", "Apelido").Varchar(120).NotNull().Group("Identificacao")
             .AddColumn("DocumentoTitular", "Documento Titular").Varchar(14).NotNull().Group("Titular")
@@ -542,6 +536,17 @@ public class M000001 : MigrationBase
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("CTeUtilitarios")
             .AddCommand(
+                "ConsultarSituacaoCTe",
+                new ConsultarSituacaoCTeInput(string.Empty),
+                new ConsultarSituacaoCTeOutput(string.Empty, false, false, 0, string.Empty, string.Empty, 0))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.cte.utilitarios.situacao.consultar")
+            .AddEntity("CTeTentativaEmissao");
+
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("CTeUtilitarios")
+            .AddCommand(
                 "ObterXmlCTe",
                 new ObterXmlCTeInput(string.Empty),
                 new ObterXmlCTeOutput(string.Empty, string.Empty, string.Empty, string.Empty))
@@ -588,6 +593,17 @@ public class M000001 : MigrationBase
             .Authorization(Authorization.User)
             .AddScope("fiscal.mdfe.encerrar")
             .AddEntity("MDFe");
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("MDFeUtilitarios")
+            .AddCommand(
+                "ConsultarSituacaoMDFe",
+                new ConsultarSituacaoMDFeInput(string.Empty),
+                new ConsultarSituacaoMDFeOutput(string.Empty, false, false, 0, string.Empty, string.Empty, 0))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.mdfe.utilitarios.situacao.consultar")
+            .AddEntity("MDFeTentativaEmissao");
+
 
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("MDFeUtilitarios")
@@ -740,36 +756,36 @@ public class M000001 : MigrationBase
                 .AddStep("testeSyncPasso4")
                 .AddStep("testeSyncPasso5");
 
-        AddMenuGroup("DFE", "Entrada Fiscal",
+        AddMenuGroup("FIS", "Entrada Fiscal",
             "DocumentoFiscal",
             "DocumentoFiscalOriginario",
             "NFeProdutoSnapshot");
 
-        AddMenuGroup("CTE", "CT-e",
+        AddMenuGroup("FIS", "CT-e",
             "CTeEntradaOficial",
             "CTeRomaneioConsolidado",
             "CTeSolicitacaoFiscal",
             "CTeTentativaEmissao",
             "CTeSaidaMDFe");
 
-        AddMenuGroup("MDFE", "MDF-e",
+        AddMenuGroup("FIS", "MDF-e",
             "MDFe",
             "MDFeSolicitacaoFiscal",
             "MDFeTentativaEmissao",
             "MDFeEncerramento");
 
-        AddMenuGroup("SEFAZ", "Operacao SEFAZ",
+        AddMenuGroup("FIS", "Operacao SEFAZ",
             "SefazEndpoint",
             "CertificadoDigital");
 
         AddCustomPage(
-            "CONT",
+            "FIS",
             "Nova Contingencia Fiscal",
             "contingencia-fiscal",
             "fiscal.contingencia.tela",
             "Contingencia Fiscal");
 
-        AddMenuGroup("CONT", "Contingencia Fiscal",
+        AddMenuGroup("FIS", "Contingencia Fiscal",
             "Nova Contingencia Fiscal",
             "EntradaFiscalContingencia");
 
@@ -968,6 +984,18 @@ public sealed record PublicarCTeAutorizadoParaMDFeOutput(
     bool Publicado,
     string Mensagem);
 
+public sealed record ConsultarSituacaoCTeInput(string ChaveAcesso);
+
+public sealed record ConsultarSituacaoCTeOutput(
+    string ChaveAcesso,
+    bool Encontrado,
+    bool Autorizado,
+    int CodigoRetorno,
+    string Motivo,
+    string Protocolo,
+    int HttpStatusCode);
+
+
 public sealed record ObterXmlCTeInput(string ChaveAcesso);
 
 public sealed record ObterXmlCTeOutput(
@@ -1022,6 +1050,18 @@ public sealed record EncerrarMDFeOutput(
     string Protocolo,
     string Mensagem,
     DateTime? EncerradoEm);
+
+public sealed record ConsultarSituacaoMDFeInput(string ChaveAcesso);
+
+public sealed record ConsultarSituacaoMDFeOutput(
+    string ChaveAcesso,
+    bool Encontrado,
+    bool Autorizado,
+    int CodigoRetorno,
+    string Motivo,
+    string Protocolo,
+    int HttpStatusCode);
+
 
 public sealed record ObterXmlMDFeInput(string ChaveAcesso);
 

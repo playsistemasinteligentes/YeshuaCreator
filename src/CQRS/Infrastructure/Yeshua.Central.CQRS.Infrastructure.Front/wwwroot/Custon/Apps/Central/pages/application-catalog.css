@@ -1,0 +1,65 @@
+.application-catalog-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #172033;
+}
+
+.application-catalog-page header p {
+    margin: 0 0 4px;
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.application-catalog-page header h1 {
+    margin: 0 0 24px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.application-catalog-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.application-catalog-item {
+    border: 1px solid #d7ddea;
+    border-radius: 8px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 14px rgb(23 32 51 / 7%);
+}
+
+.application-catalog-item h2 {
+    margin: 0 0 8px;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.application-catalog-item p {
+    min-height: 48px;
+    margin: 0 0 16px;
+    color: #596579;
+}
+
+.application-catalog-item button {
+    border: 0;
+    border-radius: 6px;
+    background: #166534;
+    color: #fff;
+    padding: 10px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.application-catalog-item button[disabled] {
+    background: #94a3b8;
+    cursor: default;
+}
+
+#application-catalog-status {
+    min-height: 24px;
+    margin-bottom: 12px;
+    color: #166534;
+}

@@ -12,10 +12,7 @@ var mode = GetExecutionMode(args);
 if (IsCleanupMode(mode))
 {
     Console.WriteLine("Running cleanup mode.");
-    var cleaner = new CSharpCQRS(
-        GS.I.MYC.Project,
-        GS.I.MYC.Source,
-        "Yeshua.Studio.Fiscal");
+    var cleaner = CreateSchema();
     cleaner.CleanApplicationGeneratedMigration();
     cleaner.WriteApplicationCustonCleanupReport();
     return;
@@ -24,10 +21,7 @@ if (IsCleanupMode(mode))
 if (IsCustonReportMode(mode))
 {
     Console.WriteLine("Running Custon report mode.");
-    var reporter = new CSharpCQRS(
-        GS.I.MYC.Project,
-        GS.I.MYC.Source,
-        "Yeshua.Studio.Fiscal");
+    var reporter = CreateSchema();
     reporter.WriteApplicationCustonCleanupReport();
     return;
 }
@@ -41,10 +35,7 @@ if (args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
 {
     Console.WriteLine("Running code generation only.");
     new MigrationBuilder()
-        .ADDSchema(new CSharpCQRS(
-            GS.I.MYC.Project,
-            GS.I.MYC.Source,
-            "Yeshua.Studio.Fiscal"))
+        .ADDSchema(CreateSchema())
         .Build()
         .Run();
     return;
@@ -53,10 +44,7 @@ MigrationBuilder migration = new MigrationBuilder();
 
 if (!databaseOnly && !string.IsNullOrWhiteSpace(GS.I.MYC.Source))
 {
-    migration.ADDSchema(new CSharpCQRS(
-        GS.I.MYC.Project,
-        GS.I.MYC.Source,
-        "Yeshua.Studio.Fiscal"));
+    migration.ADDSchema(CreateSchema());
 }
 
 var connectionString = GS.I.MYC.ReadConectionString;
@@ -79,6 +67,15 @@ else
 {
     Console.WriteLine("No database connection configured. Running code generation only.");
     migration.Build().Run();
+}
+
+static CSharpCQRS CreateSchema()
+{
+    return new CSharpCQRS(
+            GS.I.MYC.Project,
+            GS.I.MYC.Source,
+            "Yeshua.Studio.Fiscal")
+        .UseSharedFront("Central", "/apps/fiscal/yapi");
 }
 
 static string GetExecutionMode(string[] args)

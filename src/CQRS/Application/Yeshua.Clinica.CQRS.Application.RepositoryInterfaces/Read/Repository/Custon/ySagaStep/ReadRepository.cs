@@ -8,4 +8,12 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
 // </yeshua>
 
+namespace IRepository.Read
+{
+    public partial interface IySagaStepReadRepository
+    {
+        int SetPendingApplyByInboxId(int inboxId);
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

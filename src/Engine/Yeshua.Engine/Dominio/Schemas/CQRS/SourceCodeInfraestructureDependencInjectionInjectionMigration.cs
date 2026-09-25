@@ -85,9 +85,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
             sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.IDomainTrackingPolicy>(sp =>");
             sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
-            sb.AppendLine("                    builder.Services.AddHostedService<OperationalPolicySynchronizer>();");
             if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
             {
+                sb.AppendLine("                    builder.Services.AddHostedService<OperationalPolicySynchronizer>();");
                 sb.AppendLine("                    builder.Services.AddHostedService<RuntimeIdentityReporter>();");
                 sb.AppendLine("                    builder.Services.AddSingleton<Microsoft.AspNetCore.Hosting.IStartupFilter, WorkerOperationalHealthStartupFilter>();");
             }
