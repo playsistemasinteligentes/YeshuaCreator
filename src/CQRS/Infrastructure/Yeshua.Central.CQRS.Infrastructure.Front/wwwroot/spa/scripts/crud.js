@@ -1314,7 +1314,8 @@ async function startProcess({ async = true, withProgress = false }) {
         // Posições
         const startX = window.innerWidth / 2;
         const startY = window.innerHeight / 2;
-        const target = document.getElementById("logout-header").getBoundingClientRect();
+        const targetElement = document.getElementById("user-menu-toggle") || processStatus;
+        const target = targetElement.getBoundingClientRect();
         const endX = target.left - 40;
         const endY = target.top + target.height / 2;
 

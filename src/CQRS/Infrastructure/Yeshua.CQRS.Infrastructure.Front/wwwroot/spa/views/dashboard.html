@@ -1,26 +1,35 @@
 ﻿<!-- 🔵 Barra superior -->
-<header class="flex justify-between items-center px-6 py-3 bg-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
-    <!-- 👉 Logo + título -->
-    <div class="flex items-center gap-3">
-        <!-- Ícone Play -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-        </svg>
-        <h1 class="text-lg font-bold">Play Sistemas Inteligentes</h1>
+<header class="yeshua-shell-header fixed top-0 left-0 right-0 z-50 text-white">
+    <div class="yeshua-announcement-bar">
+        <div class="yeshua-brand flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="yeshua-brand-mark text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+            <h1>Play Sistemas Inteligentes</h1>
+        </div>
+
+        <div class="yeshua-ad-ticker" role="region" aria-label="Publicidade da Play Sistemas Inteligentes">
+            <div class="yeshua-ad-ticker-track">
+                <span>Sua operação não pode parar. Conheça as soluções Play para contingência, automação e integração fiscal.</span>
+                <span aria-hidden="true">Sua operação não pode parar. Conheça as soluções Play para contingência, automação e integração fiscal.</span>
+            </div>
+        </div>
     </div>
 
-    <nav id="menu" class="hidden md:flex space-x-4">
-        <!-- JS vai injetar os links aqui -->
-    </nav>
-
-    <!-- 👉 Ações do usuário -->
-    <div class="flex items-center gap-4">
+    <div class="yeshua-app-header">
+        <div class="yeshua-navigation-start">
         <select id="application-selector"
                 class="hidden max-w-48 rounded border border-blue-400 bg-blue-700 px-3 py-2 text-sm text-white outline-none"
                 aria-label="Aplicativo"></select>
 
-        <!-- Botão hamburguer (só no mobile) -->
-        <button id="btn-toggle-menu" class="text-2xl md:hidden" aria-label="Toggle menu">☰</button>
+            <button id="btn-toggle-menu" class="text-2xl md:hidden" aria-label="Abrir menu">☰</button>
+
+            <nav id="menu" class="hidden md:flex">
+                <!-- JS injeta os menus do aplicativo aqui -->
+            </nav>
+        </div>
+
+        <div class="yeshua-header-actions flex items-center gap-4">
 
         <!-- Status do processamento -->
         <div id="process-status" class="hidden flex items-center gap-2 ml-2">
@@ -39,6 +48,39 @@
             </div>
         </div>
 
+        <div class="yeshua-user-area">
+            <button id="user-menu-toggle"
+                    type="button"
+                    class="yeshua-user-menu-toggle"
+                    aria-label="Abrir área do usuário"
+                    aria-haspopup="menu"
+                    aria-expanded="false">
+                <span class="yeshua-user-avatar" aria-hidden="true">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+            </button>
+
+            <section id="user-menu-panel" class="yeshua-user-menu-panel hidden" aria-label="Área do usuário">
+                <div class="yeshua-user-summary">
+                    <span class="yeshua-user-avatar yeshua-user-avatar-large" aria-hidden="true">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <div class="min-w-0">
+                        <strong id="user-menu-name">Minha conta</strong>
+                        <span id="user-menu-email"></span>
+                    </div>
+                </div>
+
+                <div class="yeshua-user-menu-section">
+                    <button id="user-operational-control" type="button" class="yeshua-user-menu-command">
+                        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                        <span><strong>Controle operacional</strong><small>Logs e diagnóstico do aplicativo</small></span>
+                    </button>
+                </div>
+
+            </section>
+        </div>
+
         <!-- Ícone logout -->
         <button id="logout-header" class="p-2 hover:bg-blue-700 rounded transition" aria-label="Sair">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,6 +88,7 @@
                       d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
             </svg>
         </button>
+    </div>
     </div>
 </header>
 
@@ -64,8 +107,8 @@
     </div>
 </div>
 
-<!-- Compensa altura da barra fixa -->
-<div class="h-16"></div>
+<!-- Compensa a altura das duas faixas fixas -->
+<div class="yeshua-header-spacer"></div>
 
 
 <!-- 🔍 Pesquisa + Resultados -->

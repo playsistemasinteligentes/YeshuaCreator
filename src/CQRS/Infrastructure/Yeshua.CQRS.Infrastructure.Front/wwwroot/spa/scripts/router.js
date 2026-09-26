@@ -1,5 +1,5 @@
-import { loadDataMenu, buildMenu, showModuleLoadError } from './menu.js?v=20260926-recoverable01';
-import { buildCrud } from './crud.js';
+import { loadDataMenu, buildMenu, showModuleLoadError } from './menu.js?v=20260926-userarea01';
+import { buildCrud } from './crud.js?v=20260926-userarea01';
 import { buildRegister } from './viewsScripts/register.js?v=20260926-auth-central01';
 import { buildForgot } from './viewsScripts/forgot.js?v=20260926-auth-central01';
 import {
@@ -7,6 +7,7 @@ import {
     getAuthenticationApi,
     initializeApplicationContext
 } from './application-context.js';
+import { bindUserArea } from './user-area.js';
 
 
 export async function handleRouting(hash) {
@@ -94,6 +95,7 @@ async function attachEvents(route) {
     if (route === '#dashboard') {
         await initializeApplicationContext(true);
         bindApplicationSelector();
+        bindUserArea();
         buildCrud();
         buildMenu();
         await loadDataMenu();

@@ -1,0 +1,834 @@
+:root {
+    --y-canvas: #f3f6f5;
+    --y-surface: #ffffff;
+    --y-surface-subtle: #f7f9f8;
+    --y-surface-selected: #e8f3ee;
+    --y-line: #d9e1de;
+    --y-line-strong: #bdcbc6;
+    --y-ink: #17211e;
+    --y-muted: #61706a;
+    --y-brand: #185a43;
+    --y-brand-strong: #104633;
+    --y-brand-soft: #dfeee8;
+    --y-accent: #2463a8;
+    --y-danger: #b42318;
+    --y-warning: #a15c07;
+    --y-success: #18794e;
+    --y-radius: 7px;
+    --y-radius-small: 5px;
+    --y-shadow: 0 8px 24px rgb(23 33 30 / 7%);
+    --y-control-height: 40px;
+    --y-page-gutter: 24px;
+    --y-panel-padding: 18px;
+    --y-section-gap: 16px;
+    --y-field-gap: 12px;
+    --y-announcement-height: 42px;
+    --y-navigation-height: 60px;
+    --y-header-height: calc(var(--y-announcement-height) + var(--y-navigation-height));
+    color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--y-canvas);
+}
+
+body {
+    min-width: 320px;
+    background: var(--y-canvas) !important;
+    color: var(--y-ink) !important;
+    letter-spacing: 0;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    letter-spacing: 0;
+}
+
+button,
+a,
+select,
+input[type="checkbox"] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--y-accent) !important;
+    outline-offset: 2px;
+}
+
+/* Application shell */
+.yeshua-shell-header {
+    height: var(--y-header-height);
+    background: #18372e;
+    box-shadow: 0 4px 16px rgb(16 36 30 / 18%);
+}
+
+.yeshua-announcement-bar {
+    display: flex;
+    height: var(--y-announcement-height);
+    align-items: stretch;
+    overflow: hidden;
+    border-bottom: 1px solid rgb(255 255 255 / 13%);
+    background: #102b24;
+}
+
+.yeshua-brand {
+    display: flex;
+    min-width: max-content;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid rgb(255 255 255 / 16%);
+    padding: 0 var(--y-page-gutter);
+}
+
+.yeshua-brand h1 {
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.yeshua-brand-mark {
+    width: 22px;
+    height: 22px;
+}
+
+.yeshua-ad-ticker {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    overflow: hidden;
+    color: rgb(255 255 255 / 83%);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.yeshua-ad-ticker-track {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    animation: yeshua-ad-ticker 28s linear infinite;
+    will-change: transform;
+}
+
+.yeshua-ad-ticker:hover .yeshua-ad-ticker-track,
+.yeshua-ad-ticker:focus-within .yeshua-ad-ticker-track {
+    animation-play-state: paused;
+}
+
+.yeshua-ad-ticker-track span {
+    min-width: 100vw;
+    padding-left: 48px;
+}
+
+@keyframes yeshua-ad-ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100vw); }
+}
+
+.yeshua-app-header {
+    display: flex;
+    height: var(--y-navigation-height);
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px var(--y-page-gutter) !important;
+    background: #18372e !important;
+    border-bottom: 1px solid rgb(255 255 255 / 10%);
+}
+
+.yeshua-navigation-start {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    gap: 10px;
+}
+
+.yeshua-header-actions {
+    min-width: max-content;
+    margin-left: 12px;
+}
+
+.yeshua-user-menu-toggle,
+#logout-header,
+#btn-toggle-menu {
+    display: inline-flex;
+    min-width: var(--y-control-height);
+    min-height: var(--y-control-height);
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgb(255 255 255 / 22%);
+    border-radius: var(--y-radius-small);
+    color: #ffffff;
+    transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.yeshua-user-menu-toggle:hover,
+#logout-header:hover,
+#btn-toggle-menu:hover {
+    background: rgb(255 255 255 / 12%) !important;
+    border-color: rgb(255 255 255 / 38%);
+}
+
+#btn-toggle-menu {
+    display: none;
+}
+
+#application-selector {
+    flex: 0 0 auto;
+    min-height: var(--y-control-height);
+    max-width: 200px;
+    border-color: rgb(255 255 255 / 24%) !important;
+    border-radius: var(--y-radius-small) !important;
+    background: #21483d !important;
+}
+
+.yeshua-user-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#menu {
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+}
+
+.yeshua-user-menu-toggle {
+    padding: 0;
+}
+
+.yeshua-user-avatar {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #ffffff;
+    color: var(--y-brand);
+    font-size: 14px;
+}
+
+.yeshua-user-avatar-large {
+    width: 42px;
+    height: 42px;
+    background: var(--y-brand-soft);
+    font-size: 18px;
+}
+
+.yeshua-user-menu-panel {
+    position: absolute;
+    z-index: 80;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 310px;
+    overflow: hidden;
+    border: 1px solid var(--y-line);
+    border-radius: var(--y-radius);
+    background: var(--y-surface);
+    color: var(--y-ink);
+    box-shadow: 0 18px 46px rgb(15 30 25 / 20%);
+}
+
+.yeshua-user-menu-panel.hidden {
+    display: none !important;
+}
+
+.yeshua-user-summary {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 11px;
+    border-bottom: 1px solid var(--y-line);
+    padding: 14px;
+}
+
+.yeshua-user-summary strong,
+.yeshua-user-summary span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.yeshua-user-summary strong {
+    font-size: 14px;
+}
+
+.yeshua-user-summary span {
+    margin-top: 2px;
+    color: var(--y-muted);
+    font-size: 12px;
+}
+
+.yeshua-user-menu-section {
+    border-bottom: 1px solid var(--y-line);
+    padding: 12px 14px;
+}
+
+.yeshua-user-menu-section-title {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--y-muted);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.yeshua-user-menu-command {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    gap: 11px;
+    border: 0;
+    background: transparent;
+    color: var(--y-ink);
+    padding: 7px 4px;
+    text-align: left;
+}
+
+.yeshua-user-menu-command > i {
+    width: 22px;
+    color: var(--y-brand);
+    text-align: center;
+}
+
+.yeshua-user-menu-command strong,
+.yeshua-user-menu-command small {
+    display: block;
+}
+
+.yeshua-user-menu-command strong {
+    font-size: 13px;
+}
+
+.yeshua-user-menu-command small {
+    margin-top: 2px;
+    color: var(--y-muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.yeshua-user-menu-command:hover {
+    background: var(--y-surface-subtle);
+}
+
+#menu > div > .menu-toggle,
+#menu > a {
+    min-height: var(--y-control-height);
+    align-items: center;
+    border-radius: var(--y-radius-small) !important;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+#menu > div > .menu-toggle:hover,
+#menu > a:hover {
+    background: rgb(255 255 255 / 10%) !important;
+}
+
+#menu .submenu {
+    border: 1px solid #31594e;
+    border-radius: var(--y-radius) !important;
+    background: #21483d !important;
+    box-shadow: 0 14px 36px rgb(14 34 28 / 24%) !important;
+}
+
+#menu .submenu > div:first-child {
+    background: #21483d !important;
+}
+
+#menu .submenu a:hover,
+#menu .submenu summary:hover {
+    background: #2d5a4e !important;
+}
+
+#menu .submenu details > div {
+    background: #193d33 !important;
+}
+
+.yeshua-header-spacer {
+    height: var(--y-header-height) !important;
+}
+
+#alertContainer {
+    top: calc(var(--y-header-height) + 12px) !important;
+}
+
+/* Shared form language */
+#app input:not([type="checkbox"]):not([type="radio"]),
+#app select,
+#app textarea,
+#modals-container input:not([type="checkbox"]):not([type="radio"]),
+#modals-container select,
+#modals-container textarea {
+    width: 100%;
+    min-height: var(--y-control-height);
+    border: 1px solid var(--y-line-strong) !important;
+    border-radius: var(--y-radius-small) !important;
+    background: var(--y-surface) !important;
+    color: var(--y-ink) !important;
+    padding: 8px 10px !important;
+    box-shadow: none !important;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+#app textarea,
+#modals-container textarea {
+    min-height: 92px;
+}
+
+#app input:focus,
+#app select:focus,
+#app textarea:focus,
+#modals-container input:focus,
+#modals-container select:focus,
+#modals-container textarea:focus {
+    border-color: var(--y-accent) !important;
+    box-shadow: 0 0 0 3px rgb(36 99 168 / 11%) !important;
+    outline: none !important;
+}
+
+#app label,
+#modals-container label {
+    color: var(--y-muted) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+#app button,
+#modals-container button {
+    border-radius: var(--y-radius-small) !important;
+}
+
+#btn-search,
+#btn-save,
+#btn-login,
+#btn-create-account,
+.yeshua-button-primary {
+    min-height: var(--y-control-height);
+    border: 1px solid var(--y-brand) !important;
+    background: var(--y-brand) !important;
+    color: #ffffff !important;
+    padding: 0 16px !important;
+    font-size: 13px;
+    font-weight: 750 !important;
+}
+
+#btn-search:hover,
+#btn-save:hover,
+#btn-login:hover,
+#btn-create-account:hover,
+.yeshua-button-primary:hover {
+    border-color: var(--y-brand-strong) !important;
+    background: var(--y-brand-strong) !important;
+}
+
+#btn-new,
+.yeshua-button-secondary {
+    min-height: var(--y-control-height);
+    border: 1px solid var(--y-line-strong) !important;
+    background: var(--y-surface) !important;
+    color: var(--y-ink) !important;
+    padding: 0 16px !important;
+    font-size: 13px;
+    font-weight: 750 !important;
+}
+
+#btn-new:hover,
+.yeshua-button-secondary:hover {
+    background: var(--y-surface-subtle) !important;
+}
+
+/* Generated CRUD */
+#crud-container {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: var(--y-page-gutter) !important;
+}
+
+#crud-container.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: var(--y-section-gap) !important;
+}
+
+#filtros-container,
+#resultados-container,
+#form-container,
+#module-load-error {
+    border: 1px solid var(--y-line) !important;
+    border-radius: var(--y-radius) !important;
+    background: var(--y-surface) !important;
+    padding: var(--y-panel-padding) !important;
+    box-shadow: var(--y-shadow) !important;
+}
+
+#filtros-container > div:first-child {
+    gap: 12px;
+}
+
+#filtros-simples,
+#filtros-avancados,
+#form-group .tab-pane {
+    gap: var(--y-field-gap) !important;
+}
+
+#resultados-container h2,
+#form-container h2 {
+    color: var(--y-ink) !important;
+    font-size: 17px !important;
+    line-height: 1.3;
+}
+
+#table-container > div:first-child,
+.entity-tab-pane {
+    overflow-x: auto;
+    border: 1px solid var(--y-line);
+    border-radius: var(--y-radius-small);
+}
+
+#table-container table,
+.entity-tab-pane table,
+#modal-tabela-fk table {
+    width: 100%;
+    border: 0 !important;
+    background: var(--y-surface);
+    box-shadow: none !important;
+}
+
+#table-container th,
+.entity-tab-pane th,
+#modal-tabela-fk th {
+    border: 0 !important;
+    border-bottom: 1px solid var(--y-line-strong) !important;
+    background: var(--y-surface-subtle) !important;
+    color: var(--y-muted) !important;
+    padding: 10px 12px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#table-container td,
+.entity-tab-pane td,
+#modal-tabela-fk td {
+    border: 0 !important;
+    border-bottom: 1px solid var(--y-line) !important;
+    color: var(--y-ink) !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+}
+
+#table-container tbody tr:last-child td,
+.entity-tab-pane tbody tr:last-child td,
+#modal-tabela-fk tbody tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+#table-container tbody tr:hover,
+.entity-tab-pane tbody tr:hover,
+#modal-tabela-fk tbody tr:hover {
+    background: var(--y-surface-selected) !important;
+}
+
+.tabs-buttons,
+#form-group > div > .flex.flex-wrap {
+    gap: 6px !important;
+    border-bottom: 1px solid var(--y-line);
+    padding-bottom: 8px;
+}
+
+.tabs-buttons button,
+#form-group > div > .flex.flex-wrap button {
+    min-height: 36px;
+    border-color: transparent !important;
+    color: var(--y-muted);
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.tabs-buttons button.bg-blue-500,
+#form-group > div > .flex.flex-wrap button.bg-blue-500 {
+    border-color: var(--y-brand) !important;
+    background: var(--y-brand) !important;
+    color: #ffffff !important;
+}
+
+#pagination-controls {
+    gap: 10px;
+}
+
+#pagination-controls button,
+#pagination-controls-fk button {
+    min-height: 34px;
+    border: 1px solid var(--y-line) !important;
+    background: var(--y-surface-subtle) !important;
+    color: var(--y-ink) !important;
+}
+
+/* Authentication */
+#login-screen,
+#create-account,
+#forgot-password {
+    width: calc(100% - 32px);
+    border: 1px solid var(--y-line);
+    border-radius: var(--y-radius) !important;
+    background: var(--y-surface) !important;
+    box-shadow: var(--y-shadow) !important;
+}
+
+#login-screen h2,
+#create-account h2,
+#forgot-password h2 {
+    color: var(--y-ink) !important;
+    font-size: 22px !important;
+}
+
+/* Modals */
+#modal-action,
+#modal-pesquisa-fk {
+    padding: 16px;
+    background: rgb(15 30 25 / 46%) !important;
+}
+
+#modal-action > div,
+#modal-pesquisa-fk > div {
+    border: 1px solid var(--y-line);
+    border-radius: var(--y-radius) !important;
+    background: var(--y-surface) !important;
+    box-shadow: 0 22px 54px rgb(15 30 25 / 24%) !important;
+}
+
+/* Custom pages consume the same tokens without losing domain layout. */
+.aps-transport-page,
+.fiscal-contingencia-page,
+.application-catalog-page {
+    color: var(--y-ink) !important;
+    padding: var(--y-page-gutter) !important;
+}
+
+.aps-transport-panel,
+.fiscal-contingencia-panel,
+.application-catalog-item,
+.fiscal-participant-card,
+.fiscal-modality-group,
+.fiscal-documento,
+.fiscal-saga-card {
+    border-color: var(--y-line) !important;
+    border-radius: var(--y-radius) !important;
+    background: var(--y-surface) !important;
+    box-shadow: none !important;
+}
+
+.aps-transport-page button.primary,
+.fiscal-contingencia-page button.primary,
+.application-catalog-item button {
+    border-color: var(--y-brand) !important;
+    background: var(--y-brand) !important;
+    color: #ffffff !important;
+}
+
+.aps-transport-page button.primary:hover,
+.fiscal-contingencia-page button.primary:hover,
+.application-catalog-item button:hover {
+    border-color: var(--y-brand-strong) !important;
+    background: var(--y-brand-strong) !important;
+}
+
+@media (max-width: 900px) {
+    .yeshua-app-header {
+        padding: 8px 12px !important;
+    }
+
+    .yeshua-brand {
+        padding: 0 12px;
+    }
+
+    #menu:not(.hidden) {
+        position: fixed;
+        top: var(--y-header-height);
+        right: 0;
+        left: 0;
+        display: flex !important;
+        max-height: calc(100vh - var(--y-header-height));
+        flex-direction: column;
+        gap: 4px;
+        overflow-y: auto;
+        border-top: 1px solid rgb(255 255 255 / 12%);
+        background: #18372e;
+        padding: 10px 12px 18px;
+        box-shadow: 0 14px 28px rgb(15 30 25 / 28%);
+    }
+
+    #menu .submenu {
+        position: static !important;
+        width: 100%;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin-top: 4px !important;
+        box-shadow: none !important;
+    }
+
+    #application-selector {
+        max-width: 132px;
+    }
+
+    #btn-toggle-menu {
+        display: inline-flex;
+    }
+
+}
+
+@media (max-width: 767px) {
+    :root {
+        --y-control-height: 44px;
+        --y-page-gutter: 12px;
+        --y-panel-padding: 13px;
+        --y-section-gap: 10px;
+    }
+
+    .yeshua-brand h1 {
+        font-size: 12px;
+    }
+
+    .yeshua-header-actions {
+        gap: 6px !important;
+    }
+
+    #application-selector {
+        max-width: 112px;
+        padding-right: 24px !important;
+    }
+
+    #filtros-container > div:first-child {
+        align-items: stretch !important;
+        flex-wrap: wrap;
+    }
+
+    #quick-search-container {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    #btn-search {
+        margin-left: auto;
+    }
+
+    #form-container > div:last-child,
+    #pagination-controls {
+        align-items: stretch !important;
+        flex-wrap: wrap;
+    }
+
+    #form-container > div:last-child button {
+        flex: 1 1 120px;
+    }
+
+    #pagination-controls > span {
+        order: -1;
+        width: 100%;
+        margin: 0 !important;
+        text-align: center;
+    }
+
+    #table-container .md\:hidden > div {
+        border-color: var(--y-line) !important;
+        border-radius: var(--y-radius) !important;
+        box-shadow: none !important;
+    }
+
+    #modal-action > div,
+    #modal-pesquisa-fk > div {
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+        padding: 14px !important;
+    }
+
+    .application-catalog-list {
+        grid-template-columns: 1fr !important;
+    }
+
+    .yeshua-user-menu-panel {
+        position: fixed;
+        top: calc(var(--y-header-height) + 8px);
+        right: 12px;
+        left: 12px;
+        width: auto;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 420px) {
+    .yeshua-app-header {
+        gap: 6px;
+    }
+
+    .yeshua-brand {
+        gap: 6px;
+        padding: 0 9px;
+    }
+
+    .yeshua-brand-mark {
+        width: 18px;
+        height: 18px;
+    }
+
+    .yeshua-brand h1 {
+        font-size: 11px;
+    }
+
+    .yeshua-ad-ticker-track span {
+        padding-left: 24px;
+    }
+
+    #application-selector {
+        max-width: 92px;
+        padding-right: 20px !important;
+        font-size: 12px !important;
+    }
+
+    .yeshua-user-menu-toggle,
+    #logout-header,
+    #btn-toggle-menu {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .yeshua-ad-ticker-track {
+        transform: none;
+    }
+}

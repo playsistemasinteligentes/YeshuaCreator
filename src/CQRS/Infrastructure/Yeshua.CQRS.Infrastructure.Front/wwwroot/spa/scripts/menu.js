@@ -1,4 +1,4 @@
-import { loadDataCrud } from './crud.js';
+import { loadDataCrud } from './crud.js?v=20260926-userarea01';
 
 export function buildMenu() {
     const btnToggleMenu = document.getElementById('btn-toggle-menu');
@@ -8,11 +8,14 @@ export function buildMenu() {
         menu.classList.toggle('hidden');
     });
 
-    // Ativa logout também no botão do header
     const logoutHeader = document.getElementById('logout-header');
-    if (logoutHeader) {
-        logoutHeader.addEventListener('click', handleLogout);
-    }
+    logoutHeader?.addEventListener('click', handleLogout);
+
+}
+function handleLogout(event) {
+    event.preventDefault();
+    localStorage.removeItem('token');
+    location.hash = '#login';
 }
 
 export async function loadDataMenu() {
@@ -202,27 +205,10 @@ function extendMenuItems(menuItems) {
         }
     }
 
-    appendOperationalMenu(extendedItems);
-    return extendedItems;
-}
-
-function appendOperationalMenu(items) {
-    let module = items.find(item => item?.id === 'yeshua-operational');
-    if (!module) {
-        module = { id: 'yeshua-operational', description: 'Operacao', children: [] };
-        items.push(module);
-    }
-
-    module.children = Array.isArray(module.children) ? module.children : [];
-    if (!module.children.some(item => item?.page === 'operational-control')) {
-        module.children.push({
-            description: 'Controle operacional',
-            endpoint: '#operational-control',
-            type: 'customPage',
-            page: 'operational-control',
-            children: []
-        });
-    }
+    return extendedItems.filter(item => {
+        const description = normalizeSearchText(item?.description);
+        return item?.id !== 'yeshua-operational' && description !== 'operacao';
+    });
 }
 
 async function waitForApplicationExtension() {
@@ -413,10 +399,4 @@ function closeAllSubmenus() {
     document.querySelectorAll('#menu [data-menu-group="true"]').forEach(s => s.open = false);
     document.querySelectorAll('#menu [data-menu-group-indicator="true"]').forEach(i => i.textContent = '+');
     document.querySelectorAll('#menu .menu-toggle svg').forEach(i => i.classList.remove('rotate-180'));
-}
-
-function handleLogout(e) {
-    e.preventDefault();
-    localStorage.removeItem('token');
-    location.hash = '#login';
 }
