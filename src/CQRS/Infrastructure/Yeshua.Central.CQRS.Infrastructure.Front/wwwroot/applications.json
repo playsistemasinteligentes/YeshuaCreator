@@ -2,11 +2,9 @@
   {
     "application": "APS.ADM",
     "title": "APS.ADM",
-    "sharedFrontHost": "Central",
     "apiBasePath": "/apps/aps-adm/yapi",
     "menuEndpoint": "/getMenu",
     "customAssetsPath": "/Custon/Apps/APS.ADM",
-    "hostingMode": "SharedContribution",
     "modules": [
       "ADM",
       "APSADM"
@@ -15,11 +13,9 @@
   {
     "application": "Central",
     "title": "Central",
-    "sharedFrontHost": "Central",
     "apiBasePath": "/apps/central/yapi",
     "menuEndpoint": "/getMenu",
     "customAssetsPath": "/Custon/Apps/Central",
-    "hostingMode": "SharedHost",
     "modules": [
       "ADM",
       "CENTRAL"
@@ -28,11 +24,9 @@
   {
     "application": "Clinica",
     "title": "Clinica",
-    "sharedFrontHost": "Central",
     "apiBasePath": "/apps/clinica/yapi",
     "menuEndpoint": "/getMenu",
     "customAssetsPath": "/Custon/Apps/Clinica",
-    "hostingMode": "SharedContribution",
     "modules": [
       "ADM",
       "FIN",
@@ -42,11 +36,9 @@
   {
     "application": "Fiscal",
     "title": "Fiscal",
-    "sharedFrontHost": "Central",
     "apiBasePath": "/apps/fiscal/yapi",
     "menuEndpoint": "/getMenu",
     "customAssetsPath": "/Custon/Apps/Fiscal",
-    "hostingMode": "SharedContribution",
     "modules": [
       "ADM",
       "FIS"

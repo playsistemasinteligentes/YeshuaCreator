@@ -10,7 +10,8 @@ export async function initializeApplicationContext(forceReload = false) {
     }
 
     const catalog = await loadApplicationCatalog();
-    const central = catalog.find(item => item.hostingMode === 'SharedHost') || catalog[0] || null;
+    const central = catalog.find(item =>
+        String(item.application).toUpperCase() === 'CENTRAL') || catalog[0] || null;
     environments.authenticationApi = central?.apiBasePath || '/yapi';
 
     availableApplications = filterAuthorizedApplications(catalog, central);

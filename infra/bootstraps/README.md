@@ -25,3 +25,11 @@ curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCrea
 O deploy sem argumento atualiza Shared, Central, Clinica, APS.ADM, Fiscal e
 recarrega o Nginx. Os argumentos `central`, `clinica`, `aps-adm`, `fiscal` e
 `shared` atualizam somente a unidade escolhida.
+
+Os nomes dos bancos ficam em `infra/docker/deploy.env`. Um deploy completo
+executa primeiro a migration da Central e depois as migrations dos aplicativos.
+Somente o Front da Central e publicado.
+
+O Nginx e validado e recarregado pelo deploy porque suas rotas conhecem os
+aplicativos publicados. A limpeza dos Fronts antigos e uma operacao manual e
+unica; ela nao faz parte do setup nem dos deploys seguintes.

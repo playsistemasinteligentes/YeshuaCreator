@@ -7,8 +7,15 @@ CENTRAL_DIR="$APP_DIR/infra/Central/DockerCompose"
 CLINICA_DIR="$APP_DIR/infra/Clinica/DockerCompose"
 APS_ADM_DIR="$APP_DIR/infra/APS.ADM/DockerCompose"
 FISCAL_DIR="$APP_DIR/infra/Fiscal/DockerCompose"
+DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
 TARGET="${1:-all}"
 LAYOUT_MARKER="/root/YeshuaDB/persistent/.multi-app-layout-v1"
+
+if [[ -f "$DEPLOY_ENV" ]]; then
+  set -a
+  source "$DEPLOY_ENV"
+  set +a
+fi
 
 exec 9>/var/lock/yeshua-deploy.lock
 flock 9
@@ -93,14 +100,16 @@ prepare_https_config() {
   fi
 }
 
-gateway_dependencies_ready() {
+assert_gateway_dependencies_ready() {
   local project service
+  local missing=()
+
   while read -r project service; do
     if [[ -z "$(docker ps \
       --filter "label=com.docker.compose.project=$project" \
       --filter "label=com.docker.compose.service=$service" \
       --format '{{.ID}}')" ]]; then
-      return 1
+      missing+=("$project/$service")
     fi
   done <<'EOF'
 playsis-central central-front
@@ -113,20 +122,38 @@ playsis-aps-adm aps-adm-worker
 playsis-fiscal fiscal-api
 playsis-fiscal fiscal-worker
 EOF
+
+  if (( ${#missing[@]} > 0 )); then
+    echo "Nao foi possivel atualizar o Nginx. Containers ausentes:" >&2
+    printf '  - %s\n' "${missing[@]}" >&2
+    return 1
+  fi
+}
+
+assert_central_front_route() {
+  if ! docker exec yeshua-nginx nginx -T 2>&1 \
+    | grep -F 'proxy_pass http://central_front_pool;' >/dev/null; then
+    echo "A configuracao ativa do Nginx nao aponta a raiz para central-front." >&2
+    return 1
+  fi
+
+  if ! docker exec yeshua-nginx wget -q -O /dev/null \
+    http://central-front:8080/spa/; then
+    echo "O Nginx nao consegue acessar o Front da Central." >&2
+    return 1
+  fi
 }
 
 deploy_gateway() {
   prepare_https_config
-
-  if ! gateway_dependencies_ready; then
-    echo "Nginx aguardando os aplicativos configurados no servidor."
-    return
-  fi
+  assert_gateway_dependencies_ready
 
   cd "$SHARED_DIR"
   docker compose up -d nginx
   docker exec yeshua-nginx nginx -t
   docker exec yeshua-nginx nginx -s reload
+  assert_central_front_route
+  echo "Gateway reconciliado: configuracao validada e recarregada."
 }
 
 deploy_clinica() {

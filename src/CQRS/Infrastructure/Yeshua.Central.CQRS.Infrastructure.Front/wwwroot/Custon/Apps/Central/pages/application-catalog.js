@@ -17,7 +17,7 @@ export async function renderApplicationCatalog() {
     const list = document.getElementById('application-catalog-list');
 
     applications
-        .filter(application => application.hostingMode !== 'SharedHost')
+        .filter(application => String(application.application).toUpperCase() !== 'CENTRAL')
         .forEach(application => list.appendChild(createApplicationItem(application, grantedCatalogs)));
 }
 

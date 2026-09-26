@@ -78,8 +78,7 @@ static CSharpCQRS CreateSchema()
     return new CSharpCQRS(
             GS.I.MYC.Project,
             GS.I.MYC.Source,
-            "Yeshua.Studio.AppClinicas")
-        .UseSharedFront("Central", "/apps/clinica/yapi");
+            "Yeshua.Studio.AppClinicas");
 }
 
 static string GetExecutionMode(string[] args)

@@ -90,8 +90,7 @@ static CSharpCQRS CreateSchema()
     return new CSharpCQRS(
             GS.I.MYC.Project,
             GS.I.MYC.Source,
-            "Yeshua.Studio.APS.ADM")
-        .UseSharedFront("Central", "/apps/aps-adm/yapi");
+            "Yeshua.Studio.APS.ADM");
 }
 
 static string GetExecutionMode(string[] args)

@@ -399,27 +399,28 @@ Regra resumida:
   periodicamente essa API e atualiza seu singleton. Esse fluxo nao depende de
   API operacional central, banco adicional nem Front central.
 
-## Front Compartilhado
+## Front Central
 
-- `Yeshua.CQRS.Infrastructure.Front` e a matriz do Front padrao.
-- Um aplicativo de Studio pode declarar `AddSharedFrontHost` para ser o unico
-  host publicavel do Front de uma instalacao. A primeira implementacao usa o
-  aplicativo `Central` para autenticacao e composicao visual.
-- Os demais aplicativos declaram `UseSharedFront`, continuam com API e Worker
-  independentes e produzem uma contribuicao de Front, nao um novo host para
-  publicacao.
-- Cada contribuicao possui manifesto com aplicativo, host compartilhado, rota
-  logica da API e caminho dos assets customizados. A Engine compoe esses
-  manifestos no host compartilhado sem copiar configuracoes de banco ou
-  infraestrutura dos aplicativos.
+- `Yeshua.Central.CQRS.Infrastructure.Front` e a unica fonte da verdade do
+  Front, o unico host publicavel e o unico lugar onde melhorias visuais,
+  paginas genericas, catalogo e customizacoes de tela devem ser alterados.
+- A Engine nao cria, sincroniza, replica nem compoe projetos de Front. A DSL
+  dos Studios continua gerando menus, permissoes e metadata entregues pelas
+  APIs, mas nao gera arquivos, manifestos ou projetos de Front.
+- Os projetos de Front dos demais aplicativos e o antigo
+  `Yeshua.CQRS.Infrastructure.Front` permanecem temporariamente no repositorio
+  apenas como acervo para revisao e futura exclusao. Eles nao sao atualizados
+  pela Engine nem publicados.
+- O catalogo de aplicativos, suas rotas logicas e os caminhos de assets sao
+  mantidos diretamente no Front Central, inicialmente em `applications.json`.
 - O Front chama rotas logicas como `/apps/clinica/yapi` e
   `/apps/fiscal/yapi`; Nginx ou outro gateway resolve a API fisica. O navegador
   nao deve conhecer portas ou nomes internos dos containers.
 - A central autentica e emite o token. Cada API de aplicativo valida o mesmo
   token e continua sendo dona das suas regras e dados.
-- O catalogo do Front central nasce dos manifestos produzidos pela Engine para
-  cada aplicativo. Criar uma conta registra somente Tenant e usuario
-  proprietario, sem conceder modulos nem acoplar identidade ao catalogo.
+- O catalogo do Front Central e mantido diretamente no proprio projeto. Criar
+  uma conta registra somente Tenant e usuario proprietario, sem conceder
+  modulos nem acoplar identidade ao catalogo.
 - A Central conhece apenas catalogos de aplicativos e suas rotas logicas. Ela
   nao declara, replica nem reconstrui os modulos ou menus internos dos outros
   Studios.
@@ -465,35 +466,35 @@ Regra resumida:
   permitidos na claim `userCatalogs`.
 - O Front mostra os catalogos permitidos e nao carrega todos os menus durante o
   login. Quando o usuario entra em um aplicativo, o Front aponta para a API
-  indicada no manifesto e executa o mesmo `GET /getMenu` que o Front individual
-  executava anteriormente.
+  indicada no catalogo central e executa `GET /getMenu`.
 - Cada API gera e entrega seu proprio menu a partir da DSL do respectivo Studio.
   A claim de catalogo autoriza a entrada no aplicativo; modulos e grupos
   internos continuam pertencendo exclusivamente ao aplicativo.
-- `userModules` permanece temporariamente como compatibilidade com os Fronts
-  individuais antigos, mas nao controla o catalogo compartilhado.
+- `userModules` permanece temporariamente como compatibilidade de autorizacao,
+  mas nao controla o catalogo central.
 - A troca de aplicativo no Front altera apenas a rota logica da API e recarrega
-  a contribuicao customizada correspondente. A primeira versao recarrega a
-  pagina ao trocar de aplicativo para evitar estado e extensoes cruzadas.
+  os assets customizados correspondentes que ja pertencem ao Front Central. A
+  primeira versao recarrega a pagina ao trocar de aplicativo para evitar estado
+  e extensoes cruzadas.
 - As tabelas internas Y continuam presentes em todos os aplicativos. Esta
   mudanca nao centraliza, remove nem inventaria tabelas Y; preserva a futura
   possibilidade de replicacao.
-- Durante a transicao, projetos de Front antigos podem permanecer no
-  repositorio como fonte das contribuicoes, mas deixam de ser unidades de
-  publicacao quando o Studio usa `UseSharedFront`.
-- A cada geracao do host compartilhado, a Engine sincroniza o `wwwroot` padrao
-  da matriz e agrega as contribuicoes conhecidas.
-- `wwwroot/Custon` e protegido e nunca deve ser sobrescrito pela sincronizacao
-  da matriz, salvo os carregadores e manifestos explicitamente gerados.
+- Durante a transicao, os projetos de Front antigos ficam congelados. Qualquer
+  codigo ainda util deve ser migrado conscientemente para o Front Central antes
+  da exclusao desses projetos; nao existe copia automatica.
+- Executar qualquer Studio nao pode alterar arquivos do Front Central nem dos
+  Fronts antigos.
+- `wwwroot/Custon` do Front Central e codigo normal da aplicacao e deve ser
+  editado diretamente, sem sobrescrita ou regeneracao pela Engine.
 - Telas customizadas completas de aplicativo devem ter ancora pequena na DSL
   como metadata de modulo, por exemplo `AddCustomPage`, para permitir menu,
-  permissao, descoberta e operacao; HTML, CSS, JS e provedores continuam em
-  `wwwroot/Custon` do aplicativo.
-- Todo artefato de Front especifico de aplicativo deve ficar em
+  permissao, descoberta e operacao; HTML, CSS, JS e provedores ficam no Front
+  Central em `wwwroot/Custon/Apps/<Aplicativo>`.
+- Todo artefato visual especifico de aplicativo deve ficar no Front Central em
   `wwwroot/Custon/Apps/<Aplicativo>`. O arquivo raiz
-  `wwwroot/Custon/extensions.js` e um carregador gerado pela Engine; ele nao
-  deve acumular regras ou telas do aplicativo.
-- Paginas operacionais genericas pertencem a matriz do Front. O catalogo de
+  `wwwroot/Custon/extensions.js` permanece apenas como carregador das
+  customizacoes mantidas no proprio Front Central.
+- Paginas operacionais genericas pertencem ao Front Central. O catalogo de
   entidades e campos dessas paginas e gerado estaticamente pela Engine na API
   de cada aplicativo, sem reflection; a pagina generica compoe a interface a
   partir desse catalogo local.
@@ -502,12 +503,12 @@ Regra resumida:
   O front padrao apenas renderiza a arvore entregue por `/getMenu`; regras
   especificas de organizacao nao devem ficar escondidas em extensoes custom
   quando forem parte da navegacao/permissao do aplicativo.
-- Melhorias genericas devem ser feitas na matriz e propagadas pela Engine;
-  nao copiar manualmente arquivos de um aplicativo para outro.
+- Melhorias genericas devem ser feitas diretamente no Front Central e nao sao
+  propagadas pela Engine.
 - Gravacao, upload de audio e futura transcricao sao capacidades genericas do
-  Front padrao, nao funcionalidades exclusivas de Clinica.
+  Front Central, nao funcionalidades exclusivas de Clinica.
 - Configuracoes de banco, certificados e outros dados de um aplicativo nao
-  podem ser copiados da matriz para os Fronts gerados.
+  pertencem ao Front Central.
 
 ## Smoke Tests De API Por Aplicativo
 

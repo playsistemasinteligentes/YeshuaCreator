@@ -45,7 +45,7 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:5728"
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__OperationalIntelligence: "Server=sqlserver,1433;Database=Context_CLINICA;User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
+      ConnectionStrings__OperationalIntelligence: "Server=sqlserver,1433;Database=${YESHUA_DB_OPERATIONAL_INTELLIGENCE:-YESHUA_OPERATIONAL_INTELLIGENCE};User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
     ports:
       - "127.0.0.1:5728:5728"
     restart: unless-stopped

@@ -4,6 +4,13 @@ set -euo pipefail
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/Central/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
+DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
+
+if [[ -f "$DEPLOY_ENV" ]]; then
+  set -a
+  source "$DEPLOY_ENV"
+  set +a
+fi
 
 if [[ "${YESHUA_SKIP_LOCK:-0}" != "1" ]]; then
   exec 9>/var/lock/yeshua-deploy.lock
@@ -25,6 +32,7 @@ fi
 
 cd "$COMPOSE_DIR"
 docker compose build
+echo "Executando migration Central no banco ${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL}..."
 docker compose run --rm central-migration
 docker compose up -d --remove-orphans --scale central-front=2 \
   central-api \

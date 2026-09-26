@@ -89,8 +89,7 @@ static CSharpCQRS CreateSchema()
     return new CSharpCQRS(
             GS.I.MYC.Project,
             GS.I.MYC.Source,
-            "Yeshua.Studio.Fiscal")
-        .UseSharedFront("Central", "/apps/fiscal/yapi");
+            "Yeshua.Studio.Fiscal");
 }
 
 static string GetExecutionMode(string[] args)

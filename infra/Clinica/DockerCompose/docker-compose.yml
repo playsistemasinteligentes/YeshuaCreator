@@ -12,8 +12,8 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
       JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Storage__Providers__Disk__Root: "/storage"
       Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
       Storage__Locations__volatile/ia/transcriptions/input: "Disk"
@@ -43,8 +43,8 @@ services:
       OperationalControl__Enabled: "true"
       OperationalControl__ApplicationApiBaseUrl: "http://clinica-api:7214"
       OperationalControl__RefreshSeconds: "5"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Storage__Providers__Disk__Root: "/storage"
       Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
       Storage__Locations__volatile/ia/transcriptions/input: "Disk"
@@ -71,9 +71,9 @@ services:
       context: ../../..
       dockerfile: infra/Clinica/DockerCompose/migration/Dockerfile
     environment:
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=CENTRAL_;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     restart: "no"
     networks:
       - yeshua-net

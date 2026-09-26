@@ -72,8 +72,7 @@ static CSharpCQRS CreateSchema()
     return new CSharpCQRS(
             GS.I.MYC.Project,
             GS.I.MYC.Source,
-            "Yeshua.Studio.Central")
-        .AddSharedFrontHost("/apps/central/yapi");
+            "Yeshua.Studio.Central");
 }
 
 static string GetExecutionMode(string[] args)
