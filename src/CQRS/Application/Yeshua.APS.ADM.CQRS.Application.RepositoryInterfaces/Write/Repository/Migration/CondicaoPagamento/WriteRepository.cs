@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateCON_PARCELAS(int id, int value);
         void UpdateCON_VALOR_ACRECIMO(int id, Decimal value);
         void UpdateCON_INTEGRACAO_ERP(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

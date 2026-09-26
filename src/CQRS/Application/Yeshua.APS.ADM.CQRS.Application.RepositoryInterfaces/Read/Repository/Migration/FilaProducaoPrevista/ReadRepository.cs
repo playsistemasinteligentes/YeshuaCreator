@@ -86,6 +86,7 @@ namespace IRepository.Read
         public bool ExistsByOCO_ID(string value );
         public bool ExistsByFPR_PESO_UNITARIO(string value );
         public bool ExistsByFPR_M2_UNITARIO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -152,6 +153,7 @@ namespace IRepository.Read
         public FilaProducaoPrevistaDTO FirstByOCO_ID(string value );
         public FilaProducaoPrevistaDTO FirstByFPR_PESO_UNITARIO(string value );
         public FilaProducaoPrevistaDTO FirstByFPR_M2_UNITARIO(string value );
+        public FilaProducaoPrevistaDTO FirstByOperationalEntityId(string value );
         public FilaProducaoPrevistaDTO FirstByTenantID(int value );
         public FilaProducaoPrevistaDTO FirstByDeleted(bool value );
         public FilaProducaoPrevistaDTO FirstByChanged(DateTime value );
@@ -218,6 +220,7 @@ namespace IRepository.Read
         public IEnumerable<FilaProducaoPrevistaDTO> GetAllByOCO_ID(string value );
         public IEnumerable<FilaProducaoPrevistaDTO> GetAllByFPR_PESO_UNITARIO(string value );
         public IEnumerable<FilaProducaoPrevistaDTO> GetAllByFPR_M2_UNITARIO(string value );
+        public IEnumerable<FilaProducaoPrevistaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<FilaProducaoPrevistaDTO> GetAllByTenantID(int value );
         public IEnumerable<FilaProducaoPrevistaDTO> GetAllByDeleted(bool value );
         public IEnumerable<FilaProducaoPrevistaDTO> GetAllByChanged(DateTime value );

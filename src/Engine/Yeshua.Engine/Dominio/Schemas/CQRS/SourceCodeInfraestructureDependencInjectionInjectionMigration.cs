@@ -73,8 +73,9 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("");
             sb.AppendLine("");
-            sb.AppendLine("                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(");
-            sb.AppendLine("                        _ => new RuntimeIdentityProvider(builder.Environment.EnvironmentName));");
+            sb.AppendLine("                    var runtimeIdentityProvider = new RuntimeIdentityProvider(builder.Environment.EnvironmentName);");
+            sb.AppendLine("                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(runtimeIdentityProvider);");
+            sb.AppendLine("                    builder.Services.AddYeshuaOperationalTelemetry(builder.Configuration, runtimeIdentityProvider.Current);");
             sb.AppendLine("                    builder.Services.AddSingleton<OperationalLoggingPolicyState>(sp =>");
             sb.AppendLine("                        new OperationalLoggingPolicyState(");
             sb.AppendLine("                            sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Application,");

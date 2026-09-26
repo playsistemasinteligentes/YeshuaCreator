@@ -21,6 +21,7 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public string abn_id { get; set; } = string.Empty;
     public string abn_descricao { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

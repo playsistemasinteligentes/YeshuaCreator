@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateLoock", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateLoockReceiver), commandName: "Command.Write.LoockCrudCommand");
                  var loock = new LoockFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LOO_ID, c.LOO_DESCRICAO, c.LOO_CONTEUDO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", loock.OperationalEntityId);
                  var domainResult = LoockDomainBehavior.Apply(loock, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

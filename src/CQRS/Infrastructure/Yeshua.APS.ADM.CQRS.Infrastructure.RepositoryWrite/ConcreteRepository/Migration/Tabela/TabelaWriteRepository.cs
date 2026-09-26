@@ -61,6 +61,11 @@ namespace Input.Repository.Tabela
             var query = _query.UpdateNOME(id_tabela, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id_tabela, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id_tabela, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int id_tabela, int value)
         {
             var query = _query.UpdateTenantID(id_tabela, value);

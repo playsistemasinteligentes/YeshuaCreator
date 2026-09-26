@@ -44,6 +44,7 @@ namespace IRepository.Write
         void UpdateETI_IMPRIMIR_ATE(int eti_id, int value);
         void UpdateBOL_ID(int eti_id, string value);
         void UpdateCOR_SEQUENCIA(int eti_id, int value);
+        void UpdateOperationalEntityId(int eti_id, string value);
         void UpdateTenantID(int eti_id, int value);
         void UpdateDeleted(int eti_id, bool value);
         void UpdateChanged(int eti_id, DateTime value);

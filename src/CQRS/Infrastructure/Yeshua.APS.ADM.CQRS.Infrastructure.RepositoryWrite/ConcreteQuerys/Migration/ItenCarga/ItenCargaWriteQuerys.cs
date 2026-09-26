@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItenCargaQuery(IItenCargaEntity ItenCarga)
         {
-            this.Query = $@" INSERT INTO [ItenCarga] ([CAR_ID], [ORD_ID], [ITC_ENTREGA_PLANEJADA], [ITC_ENTREGA_REALIZADA], [ITC_ORDEM_ENTREGA], [ITC_QTD_PLANEJADA], [ITC_QTD_REALIZADA], [ORD_HASH_KEY], [NOT_ID], [NOT_EMISSAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @ITC_ENTREGA_PLANEJADA, @ITC_ENTREGA_REALIZADA, @ITC_ORDEM_ENTREGA, @ITC_QTD_PLANEJADA, @ITC_QTD_REALIZADA, @ORD_HASH_KEY, @NOT_ID, @NOT_EMISSAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItenCarga] ([CAR_ID], [ORD_ID], [ITC_ENTREGA_PLANEJADA], [ITC_ENTREGA_REALIZADA], [ITC_ORDEM_ENTREGA], [ITC_QTD_PLANEJADA], [ITC_QTD_REALIZADA], [ORD_HASH_KEY], [NOT_ID], [NOT_EMISSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @ITC_ENTREGA_PLANEJADA, @ITC_ENTREGA_REALIZADA, @ITC_ORDEM_ENTREGA, @ITC_QTD_PLANEJADA, @ITC_QTD_REALIZADA, @ORD_HASH_KEY, @NOT_ID, @NOT_EMISSAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = ItenCarga.CAR_ID,
@@ -43,6 +43,7 @@ namespace Query.Write
                 ORD_HASH_KEY = ItenCarga.ORD_HASH_KEY,
                 NOT_ID = ItenCarga.NOT_ID,
                 NOT_EMISSAO = ItenCarga.NOT_EMISSAO,
+                OperationalEntityId = ItenCarga.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -167,6 +168,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 NOT_EMISSAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ItenCarga] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

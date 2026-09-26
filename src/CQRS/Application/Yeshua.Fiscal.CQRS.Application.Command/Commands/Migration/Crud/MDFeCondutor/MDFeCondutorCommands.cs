@@ -11,16 +11,19 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct MDFeCondutorCrudCommand : ICommand
+    public struct MDFeCondutorCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int MDFeSolicitacaoFiscalId { get; set; }
         public string Nome { get; set; }
         public string Documento { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "MDFeCondutor";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

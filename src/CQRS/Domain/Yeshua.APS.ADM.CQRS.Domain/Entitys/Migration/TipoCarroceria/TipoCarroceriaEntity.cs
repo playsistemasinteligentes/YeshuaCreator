@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public string TCA_ID { get; set; }
     public string? TCA_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  TCA_ID = tca_id; 
  TCA_DESCRICAO = tca_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

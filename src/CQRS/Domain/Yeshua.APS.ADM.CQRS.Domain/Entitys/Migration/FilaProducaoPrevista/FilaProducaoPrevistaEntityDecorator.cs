@@ -82,8 +82,8 @@
             public const ulong OCO_ID = 1UL << 59;
             public const ulong FPR_PESO_UNITARIO = 1UL << 60;
             public const ulong FPR_M2_UNITARIO = 1UL << 61;
-            public const ulong TenantID = 1UL << 62;
-            public const ulong Deleted = 1UL << 63;
+            public const ulong OperationalEntityId = 1UL << 62;
+            public const ulong TenantID = 1UL << 63;
         }
 
         public partial class FilaProducaoPrevistaDecorator : IFilaProducaoPrevistaEntity
@@ -980,6 +980,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1003,8 +1004,7 @@
                                             if (_inner.Deleted != value)
                                             {
                                                 _inner.Deleted = value;
-                                                if ((_trackingMask & FilaProducaoPrevistaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducaoPrevista", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+
                                             }
                                         }
                                     }

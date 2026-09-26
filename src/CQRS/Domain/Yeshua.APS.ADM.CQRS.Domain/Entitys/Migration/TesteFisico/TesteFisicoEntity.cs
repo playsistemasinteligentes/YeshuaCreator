@@ -36,6 +36,7 @@
     public string? MAQ_ID { get; set; }
     public int? FPR_SEQ_REPETICAO { get; set; }
     public int? FPR_SEQ_TRANFORMACAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -58,6 +59,7 @@
  MAQ_ID = maq_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  FPR_SEQ_TRANFORMACAO = fpr_seq_tranformacao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyPerfil", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyPerfilReceiver), commandName: "Command.Write.yPerfilCrudCommand");
                  var yperfil = new yPerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yperfil.OperationalEntityId);
                  var domainResult = yPerfilDomainBehavior.Apply(yperfil, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

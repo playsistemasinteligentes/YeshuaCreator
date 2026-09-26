@@ -77,10 +77,11 @@
             public const ulong TAR_DATA_FINAL = 1UL << 54;
             public const ulong TAR_APROVADO = 1UL << 55;
             public const ulong TAR_TEMPO_PRODUZINDO = 1UL << 56;
-            public const ulong TenantID = 1UL << 57;
-            public const ulong Deleted = 1UL << 58;
-            public const ulong Changed = 1UL << 59;
-            public const ulong UserId = 1UL << 60;
+            public const ulong OperationalEntityId = 1UL << 57;
+            public const ulong TenantID = 1UL << 58;
+            public const ulong Deleted = 1UL << 59;
+            public const ulong Changed = 1UL << 60;
+            public const ulong UserId = 1UL << 61;
         }
 
         public partial class TargetProdutoDecorator : ITargetProdutoEntity
@@ -907,6 +908,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

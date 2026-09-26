@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCargos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCargosReceiver), commandName: "Command.Write.CargosCrudCommand");
                  var cargos = new CargosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RGO_ID, c.RGO_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cargos.OperationalEntityId);
                  var domainResult = CargosDomainBehavior.Apply(cargos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

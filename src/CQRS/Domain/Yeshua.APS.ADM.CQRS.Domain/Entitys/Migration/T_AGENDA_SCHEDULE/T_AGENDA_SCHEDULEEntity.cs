@@ -37,6 +37,7 @@
     public string? AGE_PARAMETROS { get; set; }
     public string? AGE_EXCECAO { get; set; }
     public string? AGE_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -60,6 +61,7 @@
  AGE_PARAMETROS = age_parametros; 
  AGE_EXCECAO = age_excecao; 
  AGE_DESCRICAO = age_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

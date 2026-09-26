@@ -27,11 +27,12 @@
             public const ulong PEN_PROTOCOLO_IN = 1UL << 4;
             public const ulong PEN_ID_PROTOCOLO_IN = 1UL << 5;
             public const ulong DATA_ENTRADA = 1UL << 6;
-            public const ulong TenantID = 1UL << 7;
-            public const ulong Deleted = 1UL << 8;
-            public const ulong Changed = 1UL << 9;
-            public const ulong UserId = 1UL << 10;
-            public const ulong PEN_ID = 1UL << 11;
+            public const ulong OperationalEntityId = 1UL << 7;
+            public const ulong TenantID = 1UL << 8;
+            public const ulong Deleted = 1UL << 9;
+            public const ulong Changed = 1UL << 10;
+            public const ulong UserId = 1UL << 11;
+            public const ulong PEN_ID = 1UL << 12;
         }
 
         public partial class PendenciasInterfaceDecorator : IPendenciasInterfaceEntity
@@ -158,6 +159,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

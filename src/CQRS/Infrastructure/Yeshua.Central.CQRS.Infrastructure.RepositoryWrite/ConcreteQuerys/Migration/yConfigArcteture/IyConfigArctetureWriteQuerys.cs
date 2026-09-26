@@ -17,6 +17,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
         public QueryModel UpdateyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateAuditTrackerActived(int id, int value);
         QueryModel UpdateAuditCRUDActived(int id, int value);
         QueryModel UpdateTenantID(int id, int value);

@@ -45,6 +45,7 @@ namespace IRepository.Write
         void UpdateCOM_VINCO8_CONVERSAO(int id, int value);
         void UpdateCOM_VINCO9_CONVERSAO(int id, int value);
         void UpdateCOM_VINCO10_CONVERSAO(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

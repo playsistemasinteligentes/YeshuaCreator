@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMovimentacaoFinanceira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMovimentacaoFinanceiraReceiver), commandName: "Command.Write.MovimentacaoFinanceiraCrudCommand");
                  var movimentacaofinanceira = new MovimentacaoFinanceiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", movimentacaofinanceira.OperationalEntityId);
                  var domainResult = MovimentacaoFinanceiraDomainBehavior.Apply(movimentacaofinanceira, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

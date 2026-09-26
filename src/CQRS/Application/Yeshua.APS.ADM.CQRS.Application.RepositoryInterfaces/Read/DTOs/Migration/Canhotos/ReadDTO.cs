@@ -26,6 +26,7 @@ namespace Repositorio.Outputs
     public string can_img { get; set; } = string.Empty;
     public Decimal can_lat_entrega { get; set; }
     public Decimal can_long_entrega { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

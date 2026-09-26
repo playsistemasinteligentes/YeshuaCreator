@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateCOL_EMAIL(string col_cpf, string value);
         void UpdateCOL_MATRICULA(string col_cpf, string value);
         void UpdateTURM_id(string col_cpf, string value);
+        void UpdateOperationalEntityId(string col_cpf, string value);
         void UpdateTenantID(string col_cpf, int value);
         void UpdateDeleted(string col_cpf, bool value);
         void UpdateChanged(string col_cpf, DateTime value);

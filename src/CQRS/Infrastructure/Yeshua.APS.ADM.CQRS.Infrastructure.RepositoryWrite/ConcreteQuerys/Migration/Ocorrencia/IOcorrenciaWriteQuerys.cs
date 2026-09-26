@@ -24,6 +24,7 @@ namespace IQuery.Write
         QueryModel UpdateSPR(string oco_id, int value);
         QueryModel UpdateOCO_SUB_TIPO(string oco_id, string value);
         QueryModel UpdateSUB_ID(string oco_id, string value);
+        QueryModel UpdateOperationalEntityId(string oco_id, string value);
         QueryModel UpdateTenantID(string oco_id, int value);
         QueryModel UpdateDeleted(string oco_id, bool value);
         QueryModel UpdateChanged(string oco_id, DateTime value);

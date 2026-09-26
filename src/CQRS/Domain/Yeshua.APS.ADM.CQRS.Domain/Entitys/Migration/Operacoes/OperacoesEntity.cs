@@ -30,6 +30,7 @@
     public int ROT_SEQ_TRANFORMACAO { get; set; }
     public string ORD_ID { get; set; }
     public int FPR_SEQ_REPETICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -46,6 +47,7 @@
  ROT_SEQ_TRANFORMACAO = rot_seq_tranformacao; 
  ORD_ID = ord_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

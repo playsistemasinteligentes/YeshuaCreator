@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeEntradaOficial", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeEntradaOficialReceiver), commandName: "Command.Write.CTeEntradaOficialCrudCommand");
                  var cteentradaoficial = new CTeEntradaOficialFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.SourceApplication, c.SourceModule, c.SourceMessageId, c.MessageType, c.MessageVersion, c.ReceivedAtUtc, c.PayloadHash, c.PayloadStorageKey, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cteentradaoficial.OperationalEntityId);
                  var domainResult = CTeEntradaOficialDomainBehavior.Apply(cteentradaoficial, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

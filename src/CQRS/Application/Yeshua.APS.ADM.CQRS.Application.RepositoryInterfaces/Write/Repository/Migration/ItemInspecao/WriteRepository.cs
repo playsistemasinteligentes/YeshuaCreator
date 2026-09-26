@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IItemInspecaoEntity iteminspecao);
         void UpdateITI_ID(int id, int value);
         void UpdateITI_DESC(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

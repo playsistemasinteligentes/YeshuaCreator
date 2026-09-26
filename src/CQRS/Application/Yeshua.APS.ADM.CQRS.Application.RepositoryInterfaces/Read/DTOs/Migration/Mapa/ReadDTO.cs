@@ -26,6 +26,7 @@ namespace Repositorio.Outputs
     public Decimal map_custo_pedagio_por_eixo { get; set; }
     public int rod_id { get; set; }
     public Decimal map_altura_rod { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

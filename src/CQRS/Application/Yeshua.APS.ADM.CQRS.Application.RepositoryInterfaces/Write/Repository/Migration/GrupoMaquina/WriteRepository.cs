@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IGrupoMaquinaEntity grupomaquina);
         void UpdateDescricao(string id, string value);
         void UpdateStatus(string id, string value);
+        void UpdateOperationalEntityId(string id, string value);
         void UpdateTenantID(string id, int value);
         void UpdateDeleted(string id, bool value);
         void UpdateChanged(string id, DateTime value);

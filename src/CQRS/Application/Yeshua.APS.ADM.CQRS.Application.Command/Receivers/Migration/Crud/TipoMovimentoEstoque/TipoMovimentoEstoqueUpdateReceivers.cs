@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoMovimentoEstoque", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoMovimentoEstoqueReceiver), commandName: "Command.Write.TipoMovimentoEstoqueCrudCommand");
                  var tipomovimentoestoque = new TipoMovimentoEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.TIP_ID, c.TIP_DESCRICAO, c.TIP_TYPE, c.SPR);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipomovimentoestoque.OperationalEntityId);
                  var domainResult = TipoMovimentoEstoqueDomainBehavior.Apply(tipomovimentoestoque, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

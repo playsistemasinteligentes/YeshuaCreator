@@ -20,6 +20,7 @@ namespace IQuery.Read
         public QueryModel ExistsByTIP_DESCRICAOQuery(string value );
         public QueryModel ExistsByTIP_TYPEQuery(int value );
         public QueryModel ExistsBySPRQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -28,6 +29,7 @@ namespace IQuery.Read
         public QueryModel FirstByTIP_DESCRICAOQuery(string value );
         public QueryModel FirstByTIP_TYPEQuery(int value );
         public QueryModel FirstBySPRQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

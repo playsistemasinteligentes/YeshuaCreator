@@ -181,6 +181,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -277,6 +285,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public MapaDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<MapaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public MapaDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -368,6 +384,14 @@ namespace Read.Repository
         public IEnumerable<MapaDTO> GetAllByMAP_ALTURA_ROD(Decimal value )
         {
             var query = _query.FirstByMAP_ALTURA_RODQuery(value );
+
+                var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<MapaDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters).ToList();
                 return result;

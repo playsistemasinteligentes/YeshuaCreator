@@ -24,6 +24,7 @@
     int USE_ID { get; set; }
     string CAR_ID { get; set; }
     string RGO_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

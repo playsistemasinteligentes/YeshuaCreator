@@ -26,6 +26,7 @@
     public Decimal? MDT_VALOR_ESPERADO { get; set; }
     public Decimal? MDT_ENCONTRADO { get; set; }
     public string? UNI_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -38,6 +39,7 @@
  MDT_VALOR_ESPERADO = mdt_valor_esperado; 
  MDT_ENCONTRADO = mdt_encontrado; 
  UNI_ID = uni_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

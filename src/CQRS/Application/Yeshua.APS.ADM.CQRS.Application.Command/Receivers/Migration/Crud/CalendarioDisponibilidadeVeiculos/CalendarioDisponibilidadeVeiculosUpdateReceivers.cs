@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCalendarioDisponibilidadeVeiculos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCalendarioDisponibilidadeVeiculosReceiver), commandName: "Command.Write.CalendarioDisponibilidadeVeiculosCrudCommand");
                  var calendariodisponibilidadeveiculos = new CalendarioDisponibilidadeVeiculosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CDV_ID, c.CDV_DATA_DE, c.CDV_DATA_ATE, c.CDV_SEGUNDA, c.CDV_TERCA, c.CDV_QUARTA, c.CDV_QUINTA, c.CDV_SEXTA, c.CDV_SABADO, c.CDV_DOMINGO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", calendariodisponibilidadeveiculos.OperationalEntityId);
                  var domainResult = CalendarioDisponibilidadeVeiculosDomainBehavior.Apply(calendariodisponibilidadeveiculos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -51,6 +51,11 @@ namespace Input.Repository.yUserModule
             var query = _query.DeleteyUserModuleQuery(yUserModule);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateModuleId(int id, string value)
         {
             var query = _query.UpdateModuleId(id, value);

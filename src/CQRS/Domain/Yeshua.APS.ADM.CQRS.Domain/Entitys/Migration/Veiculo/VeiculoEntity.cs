@@ -36,6 +36,7 @@
     public DateTime? VEI_EMISSAO { get; set; }
     public DateTime? VEI_VENCIMENTO { get; set; }
     public string? VEI_STATUS { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -58,6 +59,7 @@
  VEI_EMISSAO = vei_emissao.HasValue && vei_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : vei_emissao; 
  VEI_VENCIMENTO = vei_vencimento.HasValue && vei_vencimento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : vei_vencimento; 
  VEI_STATUS = vei_status; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

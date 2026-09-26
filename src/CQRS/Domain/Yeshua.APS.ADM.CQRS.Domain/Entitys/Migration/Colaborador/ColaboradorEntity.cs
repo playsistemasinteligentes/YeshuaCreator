@@ -26,6 +26,7 @@
     public string COL_EMAIL { get; set; }
     public string COL_MATRICULA { get; set; }
     public string TURM_id { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -38,6 +39,7 @@
  COL_EMAIL = col_email; 
  COL_MATRICULA = col_matricula; 
  TURM_id = turm_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -35,6 +35,7 @@
     public string? DIM_ID { get; set; }
     public string? DOM_EMPRESA { get; set; }
     public string? DOM_FILIAL { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -56,6 +57,7 @@
  DIM_ID = dim_id; 
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

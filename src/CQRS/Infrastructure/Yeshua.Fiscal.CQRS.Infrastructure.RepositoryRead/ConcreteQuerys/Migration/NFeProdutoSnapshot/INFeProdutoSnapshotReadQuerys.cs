@@ -35,6 +35,7 @@ namespace IQuery.Read
         public QueryModel ExistsByXmlStorageKeyQuery(string value );
         public QueryModel ExistsBySnapshotJsonQuery(string value );
         public QueryModel ExistsByStatusQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -57,6 +58,7 @@ namespace IQuery.Read
         public QueryModel FirstByXmlStorageKeyQuery(string value );
         public QueryModel FirstBySnapshotJsonQuery(string value );
         public QueryModel FirstByStatusQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

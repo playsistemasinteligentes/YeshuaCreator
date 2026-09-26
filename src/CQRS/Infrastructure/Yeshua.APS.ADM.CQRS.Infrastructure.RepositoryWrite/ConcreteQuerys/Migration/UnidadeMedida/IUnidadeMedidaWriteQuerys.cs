@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateUnidadeMedidaQuery(IUnidadeMedidaEntity UnidadeMedida);
         QueryModel UpdateUNI_DESCRICAO(string uni_id, string value);
         QueryModel UpdateUNI_ESCALA_TEMPO(string uni_id, string value);
+        QueryModel UpdateOperationalEntityId(string uni_id, string value);
         QueryModel UpdateTenantID(string uni_id, int value);
         QueryModel UpdateDeleted(string uni_id, bool value);
         QueryModel UpdateChanged(string uni_id, DateTime value);

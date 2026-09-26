@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsByVIN_ID(int value );
         public bool ExistsByVIN_DESCRICAO(string value );
         public bool ExistsByVIN_ID_DESLOCAMENTO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public VincoDTO FirstByVIN_ID(int value );
         public VincoDTO FirstByVIN_DESCRICAO(string value );
         public VincoDTO FirstByVIN_ID_DESLOCAMENTO(string value );
+        public VincoDTO FirstByOperationalEntityId(string value );
         public VincoDTO FirstByTenantID(int value );
         public VincoDTO FirstByDeleted(bool value );
         public VincoDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<VincoDTO> GetAllByVIN_ID(int value );
         public IEnumerable<VincoDTO> GetAllByVIN_DESCRICAO(string value );
         public IEnumerable<VincoDTO> GetAllByVIN_ID_DESLOCAMENTO(string value );
+        public IEnumerable<VincoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VincoDTO> GetAllByTenantID(int value );
         public IEnumerable<VincoDTO> GetAllByDeleted(bool value );
         public IEnumerable<VincoDTO> GetAllByChanged(DateTime value );

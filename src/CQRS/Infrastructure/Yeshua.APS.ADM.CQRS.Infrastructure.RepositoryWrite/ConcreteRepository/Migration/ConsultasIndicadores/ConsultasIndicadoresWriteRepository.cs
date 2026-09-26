@@ -61,6 +61,11 @@ namespace Input.Repository.ConsultasIndicadores
             var query = _query.UpdateIND_ID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int id, int value)
         {
             var query = _query.UpdateTenantID(id, value);

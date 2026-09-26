@@ -35,6 +35,7 @@ namespace IRepository.Read
         public bool ExistsByDocumentosOriginariosJson(string value );
         public bool ExistsByTransporteSnapshotJson(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -50,6 +51,7 @@ namespace IRepository.Read
         public MDFeSolicitacaoFiscalDTO FirstByDocumentosOriginariosJson(string value );
         public MDFeSolicitacaoFiscalDTO FirstByTransporteSnapshotJson(string value );
         public MDFeSolicitacaoFiscalDTO FirstByStatus(int value );
+        public MDFeSolicitacaoFiscalDTO FirstByOperationalEntityId(string value );
         public MDFeSolicitacaoFiscalDTO FirstByTenantID(int value );
         public MDFeSolicitacaoFiscalDTO FirstByDeleted(bool value );
         public MDFeSolicitacaoFiscalDTO FirstByChanged(DateTime value );
@@ -65,6 +67,7 @@ namespace IRepository.Read
         public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByDocumentosOriginariosJson(string value );
         public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByTransporteSnapshotJson(string value );
         public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByStatus(int value );
+        public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeSolicitacaoFiscalDTO> GetAllByChanged(DateTime value );

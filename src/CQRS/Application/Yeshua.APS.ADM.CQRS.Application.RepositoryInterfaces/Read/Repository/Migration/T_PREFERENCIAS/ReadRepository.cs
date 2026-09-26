@@ -32,6 +32,7 @@ namespace IRepository.Read
         public bool ExistsByPRE_VALOR(string value );
         public bool ExistsByUSE_ID(int value );
         public bool ExistsByPER_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -44,6 +45,7 @@ namespace IRepository.Read
         public T_PREFERENCIASDTO FirstByPRE_VALOR(string value );
         public T_PREFERENCIASDTO FirstByUSE_ID(int value );
         public T_PREFERENCIASDTO FirstByPER_ID(int value );
+        public T_PREFERENCIASDTO FirstByOperationalEntityId(string value );
         public T_PREFERENCIASDTO FirstByTenantID(int value );
         public T_PREFERENCIASDTO FirstByDeleted(bool value );
         public T_PREFERENCIASDTO FirstByChanged(DateTime value );
@@ -56,6 +58,7 @@ namespace IRepository.Read
         public IEnumerable<T_PREFERENCIASDTO> GetAllByPRE_VALOR(string value );
         public IEnumerable<T_PREFERENCIASDTO> GetAllByUSE_ID(int value );
         public IEnumerable<T_PREFERENCIASDTO> GetAllByPER_ID(int value );
+        public IEnumerable<T_PREFERENCIASDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_PREFERENCIASDTO> GetAllByTenantID(int value );
         public IEnumerable<T_PREFERENCIASDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_PREFERENCIASDTO> GetAllByChanged(DateTime value );

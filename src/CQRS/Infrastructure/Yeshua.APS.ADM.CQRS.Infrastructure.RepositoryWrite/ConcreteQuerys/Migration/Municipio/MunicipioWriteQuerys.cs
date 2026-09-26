@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMunicipioQuery(IMunicipioEntity Municipio)
         {
-            this.Query = $@" INSERT INTO [Municipio] ([MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MUN_ID, @MUN_NOME, @UF_COD, @MUN_CODIGO_IBGE, @MUN_LATITUDE, @MUN_LONGITUDE, @MUN_ID_INTEGRACAO_ERP, @MUN_CODIGO_SIAFI, @MUN_CODIGO_CNPJ, @MUN_DISTANCIA_KM, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Municipio] ([MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MUN_ID, @MUN_NOME, @UF_COD, @MUN_CODIGO_IBGE, @MUN_LATITUDE, @MUN_LONGITUDE, @MUN_ID_INTEGRACAO_ERP, @MUN_CODIGO_SIAFI, @MUN_CODIGO_CNPJ, @MUN_DISTANCIA_KM, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MUN_ID = Municipio.MUN_ID,
@@ -43,6 +43,7 @@ namespace Query.Write
                 MUN_CODIGO_SIAFI = Municipio.MUN_CODIGO_SIAFI,
                 MUN_CODIGO_CNPJ = Municipio.MUN_CODIGO_CNPJ,
                 MUN_DISTANCIA_KM = Municipio.MUN_DISTANCIA_KM,
+                OperationalEntityId = Municipio.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -156,6 +157,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MUN_DISTANCIA_KM = value,
+                MUN_ID = mun_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string mun_id, string value)
+        {
+            this.Query = $@" UPDATE [Municipio] SET [OperationalEntityId] = @OperationalEntityId WHERE [MUN_ID] = @MUN_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 MUN_ID = mun_id,
             };
             return new QueryModel(this.Query, this.Parameters);

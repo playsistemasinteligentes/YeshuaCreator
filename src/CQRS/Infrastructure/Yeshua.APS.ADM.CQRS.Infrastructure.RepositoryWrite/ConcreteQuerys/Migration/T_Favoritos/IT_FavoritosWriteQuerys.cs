@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateT_FavoritosQuery(IT_FavoritosEntity T_Favoritos);
         QueryModel UpdateUSE_ID(int idfavorito, int value);
         QueryModel UpdateID_INDICADOR(int idfavorito, int value);
+        QueryModel UpdateOperationalEntityId(int idfavorito, string value);
         QueryModel UpdateTenantID(int idfavorito, int value);
         QueryModel UpdateDeleted(int idfavorito, bool value);
         QueryModel UpdateChanged(int idfavorito, DateTime value);

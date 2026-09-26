@@ -67,6 +67,7 @@ namespace IRepository.Write
         void UpdateGRP_PERCENTUAL_PERDA_MEDIA(string grp_id, Decimal value);
         void UpdateGRP_FILTRA_SEQ_TRANS(string grp_id, int value);
         void UpdateGRP_IMG_CAIXA(string grp_id, string value);
+        void UpdateOperationalEntityId(string grp_id, string value);
         void UpdateTenantID(string grp_id, int value);
         void UpdateDeleted(string grp_id, bool value);
         void UpdateChanged(string grp_id, DateTime value);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateSegmento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateSegmentoReceiver), commandName: "Command.Write.SegmentoCrudCommand");
                  var segmento = new SegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEG_ID, c.SEG_DESCRICAO, c.SEG_ID_SEGUIMENTO_PAI, c.GRS_ID, c.SEG_INTEGRACAO_ERP);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", segmento.OperationalEntityId);
                  var domainResult = SegmentoDomainBehavior.Apply(segmento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

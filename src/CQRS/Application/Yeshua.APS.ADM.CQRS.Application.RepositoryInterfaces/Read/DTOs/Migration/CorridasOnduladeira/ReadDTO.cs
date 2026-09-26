@@ -39,6 +39,7 @@ namespace Repositorio.Outputs
     public string pro_id_palete { get; set; } = string.Empty;
     public string cor_status_palete { get; set; } = string.Empty;
     public Decimal cor_grupo_produtivo { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

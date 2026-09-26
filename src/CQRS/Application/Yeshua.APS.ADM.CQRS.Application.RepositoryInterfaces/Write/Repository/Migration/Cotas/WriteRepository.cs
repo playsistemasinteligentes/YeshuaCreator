@@ -28,6 +28,7 @@ namespace IRepository.Write
         void UpdateCOT_VALOR(int id, Decimal value);
         void UpdateCOT_OCUPADO(int id, Decimal value);
         void UpdateREP_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

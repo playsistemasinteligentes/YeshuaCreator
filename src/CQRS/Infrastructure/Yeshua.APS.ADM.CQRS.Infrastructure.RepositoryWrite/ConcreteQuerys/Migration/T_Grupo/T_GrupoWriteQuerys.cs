@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirT_GrupoQuery(IT_GrupoEntity T_Grupo)
         {
-            this.Query = $@" INSERT INTO [T_Grupo] ([NOME], [EXIBELISTA], [GRU_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[GRU_ID] VALUES(@NOME, @EXIBELISTA, @GRU_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Grupo] ([NOME], [EXIBELISTA], [GRU_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[GRU_ID] VALUES(@NOME, @EXIBELISTA, @GRU_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 NOME = T_Grupo.NOME,
                 EXIBELISTA = T_Grupo.EXIBELISTA,
                 GRU_DESCRICAO = T_Grupo.GRU_DESCRICAO,
+                OperationalEntityId = T_Grupo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 GRU_DESCRICAO = value,
+                GRU_ID = gru_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int gru_id, string value)
+        {
+            this.Query = $@" UPDATE [T_Grupo] SET [OperationalEntityId] = @OperationalEntityId WHERE [GRU_ID] = @GRU_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 GRU_ID = gru_id,
             };
             return new QueryModel(this.Query, this.Parameters);

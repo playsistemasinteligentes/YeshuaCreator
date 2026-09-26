@@ -61,6 +61,11 @@ namespace Input.Repository.T_Favoritos
             var query = _query.UpdateID_INDICADOR(idfavorito, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int idfavorito, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(idfavorito, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int idfavorito, int value)
         {
             var query = _query.UpdateTenantID(idfavorito, value);

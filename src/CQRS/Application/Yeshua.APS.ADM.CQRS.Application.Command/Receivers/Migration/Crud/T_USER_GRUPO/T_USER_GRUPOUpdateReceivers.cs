@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_USER_GRUPO", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_USER_GRUPOReceiver), commandName: "Command.Write.T_USER_GRUPOCrudCommand");
                  var t_user_grupo = new T_USER_GRUPOFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRU_ID, c.ID_USUARIO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_user_grupo.OperationalEntityId);
                  var domainResult = T_USER_GRUPODomainBehavior.Apply(t_user_grupo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

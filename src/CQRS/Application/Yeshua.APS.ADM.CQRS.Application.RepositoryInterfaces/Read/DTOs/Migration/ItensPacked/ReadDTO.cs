@@ -30,6 +30,7 @@ namespace Repositorio.Outputs
     public Decimal ipa_diml { get; set; }
     public Decimal ipa_dima { get; set; }
     public Decimal ipa_qtd_por_palete { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

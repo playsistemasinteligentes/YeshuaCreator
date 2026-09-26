@@ -24,6 +24,7 @@
     public int TII_ID { get; set; }
     public int? TIV_ID { get; set; }
     public int? ITI_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  TII_ID = tii_id; 
  TIV_ID = tiv_id; 
  ITI_ID = iti_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

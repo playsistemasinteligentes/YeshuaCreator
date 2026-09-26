@@ -30,6 +30,7 @@ namespace IRepository.Read
         public bool ExistsByINF_VALOR(Decimal value );
         public bool ExistsByMET_ID(int value );
         public bool ExistsByINF_DATA(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -39,6 +40,7 @@ namespace IRepository.Read
         public InformacoesComplementaresDTO FirstByINF_VALOR(Decimal value );
         public InformacoesComplementaresDTO FirstByMET_ID(int value );
         public InformacoesComplementaresDTO FirstByINF_DATA(string value );
+        public InformacoesComplementaresDTO FirstByOperationalEntityId(string value );
         public InformacoesComplementaresDTO FirstByTenantID(int value );
         public InformacoesComplementaresDTO FirstByDeleted(bool value );
         public InformacoesComplementaresDTO FirstByChanged(DateTime value );
@@ -48,6 +50,7 @@ namespace IRepository.Read
         public IEnumerable<InformacoesComplementaresDTO> GetAllByINF_VALOR(Decimal value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByMET_ID(int value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByINF_DATA(string value );
+        public IEnumerable<InformacoesComplementaresDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByTenantID(int value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByDeleted(bool value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByChanged(DateTime value );

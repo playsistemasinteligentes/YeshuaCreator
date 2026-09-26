@@ -27,6 +27,7 @@
     public DateTime DataMovimento { get; set; }
     public DateTime? DataVencimento { get; set; }
     public int Status { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -40,6 +41,7 @@
  DataMovimento = (datamovimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datamovimento; 
  DataVencimento = datavencimento.HasValue && datavencimento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : datavencimento; 
  Status = status; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

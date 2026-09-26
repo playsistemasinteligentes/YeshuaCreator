@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItensCalendarioQuery(IItensCalendarioEntity ItensCalendario)
         {
-            this.Query = $@" INSERT INTO [ItensCalendario] ([ICA_DATA_DE], [ICA_DATA_ATE], [ICA_OBSERVACAO], [ICA_TIPO], [URM_ID], [URN_ID], [CAL_ID], [MAQ_ID], [PRO_ID], [ICA_LIMPESA_MAQUINA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ICA_ID] VALUES(@ICA_DATA_DE, @ICA_DATA_ATE, @ICA_OBSERVACAO, @ICA_TIPO, @URM_ID, @URN_ID, @CAL_ID, @MAQ_ID, @PRO_ID, @ICA_LIMPESA_MAQUINA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItensCalendario] ([ICA_DATA_DE], [ICA_DATA_ATE], [ICA_OBSERVACAO], [ICA_TIPO], [URM_ID], [URN_ID], [CAL_ID], [MAQ_ID], [PRO_ID], [ICA_LIMPESA_MAQUINA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ICA_ID] VALUES(@ICA_DATA_DE, @ICA_DATA_ATE, @ICA_OBSERVACAO, @ICA_TIPO, @URM_ID, @URN_ID, @CAL_ID, @MAQ_ID, @PRO_ID, @ICA_LIMPESA_MAQUINA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ICA_DATA_DE = ItensCalendario.ICA_DATA_DE,
@@ -43,6 +43,7 @@ namespace Query.Write
                 MAQ_ID = ItensCalendario.MAQ_ID,
                 PRO_ID = ItensCalendario.PRO_ID,
                 ICA_LIMPESA_MAQUINA = ItensCalendario.ICA_LIMPESA_MAQUINA,
+                OperationalEntityId = ItensCalendario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -167,6 +168,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ICA_LIMPESA_MAQUINA = value,
+                ICA_ID = ica_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int ica_id, string value)
+        {
+            this.Query = $@" UPDATE [ItensCalendario] SET [OperationalEntityId] = @OperationalEntityId WHERE [ICA_ID] = @ICA_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 ICA_ID = ica_id,
             };
             return new QueryModel(this.Query, this.Parameters);

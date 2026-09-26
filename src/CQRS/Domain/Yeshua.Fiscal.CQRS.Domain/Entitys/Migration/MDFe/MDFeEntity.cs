@@ -33,6 +33,7 @@
     public DateTime? EncerradoEm { get; set; }
     public DateTime? CanceladoEm { get; set; }
     public int Situacao { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -52,6 +53,7 @@
  EncerradoEm = encerradoem.HasValue && encerradoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : encerradoem; 
  CanceladoEm = canceladoem.HasValue && canceladoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : canceladoem; 
  Situacao = situacao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

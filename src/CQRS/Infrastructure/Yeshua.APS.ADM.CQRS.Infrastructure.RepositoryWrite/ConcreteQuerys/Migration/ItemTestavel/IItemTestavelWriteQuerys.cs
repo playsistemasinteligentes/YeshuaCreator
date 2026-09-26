@@ -25,6 +25,7 @@ namespace IQuery.Write
         QueryModel UpdateITE_VALOR_DA_CONDICIONAL(int id, Decimal value);
         QueryModel UpdateITE_VALOR_CALCULADO_DA_CONDICIONAL(int id, string value);
         QueryModel UpdateITE_TIPO_AVALIACAO_FINAL(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

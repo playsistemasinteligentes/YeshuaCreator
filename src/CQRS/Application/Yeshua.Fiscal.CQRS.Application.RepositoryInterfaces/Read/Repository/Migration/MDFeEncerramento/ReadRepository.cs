@@ -36,6 +36,7 @@ namespace IRepository.Read
         public bool ExistsByProtocolo(string value );
         public bool ExistsByCodigoRetorno(string value );
         public bool ExistsByMensagemRetorno(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -51,6 +52,7 @@ namespace IRepository.Read
         public MDFeEncerramentoDTO FirstByProtocolo(string value );
         public MDFeEncerramentoDTO FirstByCodigoRetorno(string value );
         public MDFeEncerramentoDTO FirstByMensagemRetorno(string value );
+        public MDFeEncerramentoDTO FirstByOperationalEntityId(string value );
         public MDFeEncerramentoDTO FirstByTenantID(int value );
         public MDFeEncerramentoDTO FirstByDeleted(bool value );
         public MDFeEncerramentoDTO FirstByChanged(DateTime value );
@@ -66,6 +68,7 @@ namespace IRepository.Read
         public IEnumerable<MDFeEncerramentoDTO> GetAllByProtocolo(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByCodigoRetorno(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByMensagemRetorno(string value );
+        public IEnumerable<MDFeEncerramentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByChanged(DateTime value );

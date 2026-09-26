@@ -38,6 +38,7 @@ namespace IQuery.Read
         public QueryModel ExistsByValorCargaQuery(Decimal value );
         public QueryModel ExistsByPreferenciasManifestoJsonQuery(string value );
         public QueryModel ExistsByStatusQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -62,6 +63,7 @@ namespace IQuery.Read
         public QueryModel FirstByValorCargaQuery(Decimal value );
         public QueryModel FirstByPreferenciasManifestoJsonQuery(string value );
         public QueryModel FirstByStatusQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

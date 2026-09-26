@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePaciente", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePacienteReceiver), commandName: "Command.Write.PacienteCrudCommand");
                  var paciente = new PacienteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.Observacao);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", paciente.OperationalEntityId);
                  var domainResult = PacienteDomainBehavior.Apply(paciente, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

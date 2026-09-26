@@ -75,6 +75,7 @@ namespace Repositorio.Outputs
     public DateTime tar_data_final { get; set; }
     public string tar_aprovado { get; set; } = string.Empty;
     public int tar_tempo_produzindo { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

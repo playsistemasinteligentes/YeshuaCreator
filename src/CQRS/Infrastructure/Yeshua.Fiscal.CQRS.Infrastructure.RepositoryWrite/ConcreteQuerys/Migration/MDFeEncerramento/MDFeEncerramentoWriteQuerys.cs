@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMDFeEncerramentoQuery(IMDFeEncerramentoEntity MDFeEncerramento)
         {
-            this.Query = $@" INSERT INTO [MDFeEncerramento] ([MDFeId], [ChaveAcesso], [UfCarregamento], [UfDescarregamento], [PlacaVeiculo], [SolicitadoEm], [AutorizadoEm], [Protocolo], [CodigoRetorno], [MensagemRetorno], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeId, @ChaveAcesso, @UfCarregamento, @UfDescarregamento, @PlacaVeiculo, @SolicitadoEm, @AutorizadoEm, @Protocolo, @CodigoRetorno, @MensagemRetorno, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFeEncerramento] ([MDFeId], [ChaveAcesso], [UfCarregamento], [UfDescarregamento], [PlacaVeiculo], [SolicitadoEm], [AutorizadoEm], [Protocolo], [CodigoRetorno], [MensagemRetorno], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeId, @ChaveAcesso, @UfCarregamento, @UfDescarregamento, @PlacaVeiculo, @SolicitadoEm, @AutorizadoEm, @Protocolo, @CodigoRetorno, @MensagemRetorno, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MDFeId = MDFeEncerramento.MDFeId,
@@ -43,6 +43,7 @@ namespace Query.Write
                 Protocolo = MDFeEncerramento.Protocolo,
                 CodigoRetorno = MDFeEncerramento.CodigoRetorno,
                 MensagemRetorno = MDFeEncerramento.MensagemRetorno,
+                OperationalEntityId = MDFeEncerramento.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -167,6 +168,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MensagemRetorno = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFeEncerramento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

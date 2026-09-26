@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateMDFeSolicitacaoFiscalId(int id, int value);
         void UpdateNome(int id, string value);
         void UpdateDocumento(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

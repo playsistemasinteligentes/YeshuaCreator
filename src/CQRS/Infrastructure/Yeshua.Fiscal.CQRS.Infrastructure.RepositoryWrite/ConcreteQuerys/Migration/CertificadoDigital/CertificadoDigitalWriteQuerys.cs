@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCertificadoDigitalQuery(ICertificadoDigitalEntity CertificadoDigital)
         {
-            this.Query = $@" INSERT INTO [CertificadoDigital] ([Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey]) OUTPUT INSERTED.[Id] VALUES(@Apelido, @DocumentoTitular, @StorageKey, @Thumbprint, @ValidoDe, @ValidoAte, @Ativo, @TenantID, @Deleted, @Changed, @UserId, @SenhaStorageKey) ";
+            this.Query = $@" INSERT INTO [CertificadoDigital] ([Apelido], [DocumentoTitular], [StorageKey], [Thumbprint], [ValidoDe], [ValidoAte], [Ativo], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [SenhaStorageKey]) OUTPUT INSERTED.[Id] VALUES(@Apelido, @DocumentoTitular, @StorageKey, @Thumbprint, @ValidoDe, @ValidoAte, @Ativo, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @SenhaStorageKey) ";
             this.Parameters = new
             {
                 Apelido = CertificadoDigital.Apelido,
@@ -40,6 +40,7 @@ namespace Query.Write
                 ValidoDe = CertificadoDigital.ValidoDe,
                 ValidoAte = CertificadoDigital.ValidoAte,
                 Ativo = CertificadoDigital.Ativo,
+                OperationalEntityId = CertificadoDigital.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -133,6 +134,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Ativo = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CertificadoDigital] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

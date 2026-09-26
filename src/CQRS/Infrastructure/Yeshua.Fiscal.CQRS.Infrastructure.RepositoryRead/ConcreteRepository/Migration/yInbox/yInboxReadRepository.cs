@@ -262,6 +262,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByDeletedQuery(value , TakeOffTenantID);
@@ -414,6 +422,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public yInboxDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yInboxDTO FirstByDeleted(bool value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
@@ -561,6 +577,14 @@ namespace Read.Repository
         public IEnumerable<yInboxDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<yInboxDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters).ToList();
                 return result;

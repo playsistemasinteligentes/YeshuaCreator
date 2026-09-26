@@ -24,6 +24,7 @@
     string? HTML_ESTRUTURA { get; set; }
     string? CLI_ID { get; set; }
     string? EST_DESCRICAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -25,6 +25,7 @@
     public string? PER_QTD { get; set; }
     public string? UNI_ID { get; set; }
     public string? GRP_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  PER_QTD = per_qtd; 
  UNI_ID = uni_id; 
  GRP_ID = grp_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

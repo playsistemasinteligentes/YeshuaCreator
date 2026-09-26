@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyConfigArcteture", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyConfigArctetureReceiver), commandName: "Command.Write.yConfigArctetureCrudCommand");
                  var yconfigarcteture = new yConfigArctetureFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yconfigarcteture.OperationalEntityId);
                  var domainResult = yConfigArctetureDomainBehavior.Apply(yconfigarcteture, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

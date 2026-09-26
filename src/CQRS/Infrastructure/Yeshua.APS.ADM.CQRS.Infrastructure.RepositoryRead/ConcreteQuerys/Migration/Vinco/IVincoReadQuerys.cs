@@ -19,6 +19,7 @@ namespace IQuery.Read
         public QueryModel ExistsByVIN_IDQuery(int value );
         public QueryModel ExistsByVIN_DESCRICAOQuery(string value );
         public QueryModel ExistsByVIN_ID_DESLOCAMENTOQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -26,6 +27,7 @@ namespace IQuery.Read
         public QueryModel FirstByVIN_IDQuery(int value );
         public QueryModel FirstByVIN_DESCRICAOQuery(string value );
         public QueryModel FirstByVIN_ID_DESLOCAMENTOQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

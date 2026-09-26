@@ -24,6 +24,7 @@ namespace IQuery.Read
         public QueryModel ExistsByTURM_IDQuery(string value );
         public QueryModel ExistsByUSE_ATIVOQuery(int value );
         public QueryModel ExistsByUSE_CODERPQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -35,6 +36,7 @@ namespace IQuery.Read
         public QueryModel FirstByTURM_IDQuery(string value );
         public QueryModel FirstByUSE_ATIVOQuery(int value );
         public QueryModel FirstByUSE_CODERPQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByABN_ID(string value );
         public bool ExistsByABN_DESCRICAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public TipoABNTDTO FirstById(int value );
         public TipoABNTDTO FirstByABN_ID(string value );
         public TipoABNTDTO FirstByABN_DESCRICAO(string value );
+        public TipoABNTDTO FirstByOperationalEntityId(string value );
         public TipoABNTDTO FirstByTenantID(int value );
         public TipoABNTDTO FirstByDeleted(bool value );
         public TipoABNTDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<TipoABNTDTO> GetAllById(int value );
         public IEnumerable<TipoABNTDTO> GetAllByABN_ID(string value );
         public IEnumerable<TipoABNTDTO> GetAllByABN_DESCRICAO(string value );
+        public IEnumerable<TipoABNTDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoABNTDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoABNTDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoABNTDTO> GetAllByChanged(DateTime value );

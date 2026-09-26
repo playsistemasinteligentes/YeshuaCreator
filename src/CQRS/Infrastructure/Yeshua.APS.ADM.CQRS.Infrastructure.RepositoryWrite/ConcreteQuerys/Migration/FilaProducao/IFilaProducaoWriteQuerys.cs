@@ -79,6 +79,7 @@ namespace IQuery.Write
         QueryModel UpdateFPR_TOLERANCIA_MENOS(int id, Decimal value);
         QueryModel UpdateFPR_TOLERANCIA_MAIS(int id, Decimal value);
         QueryModel UpdateFPR_DATA_ENCERRAMENTO(int id, DateTime value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

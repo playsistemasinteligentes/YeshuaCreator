@@ -36,6 +36,7 @@ namespace IRepository.Write
         void UpdateEnviadoEmUtc(int id, DateTime value);
         void UpdateAutorizadoEmUtc(int id, DateTime value);
         void UpdateStatus(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

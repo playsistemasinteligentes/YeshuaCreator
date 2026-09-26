@@ -90,6 +90,7 @@ namespace IQuery.Write
         QueryModel UpdateORD_DATA_ESTATISTICA(string ord_id, DateTime value);
         QueryModel UpdateOCO_ID_MOTIVO_ATRASO(string ord_id, string value);
         QueryModel UpdateOTK_VERSSAO(string ord_id, int value);
+        QueryModel UpdateOperationalEntityId(string ord_id, string value);
         QueryModel UpdateTenantID(string ord_id, int value);
         QueryModel UpdateDeleted(string ord_id, bool value);
         QueryModel UpdateChanged(string ord_id, DateTime value);

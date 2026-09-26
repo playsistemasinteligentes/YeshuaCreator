@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public int? ProfissionalId { get; set; }
     public DateTime DataHora { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  ProfissionalId = profissionalid; 
  DataHora = (datahora < (new DateTime(1800, 1, 1))) ? DateTime.Now : datahora; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

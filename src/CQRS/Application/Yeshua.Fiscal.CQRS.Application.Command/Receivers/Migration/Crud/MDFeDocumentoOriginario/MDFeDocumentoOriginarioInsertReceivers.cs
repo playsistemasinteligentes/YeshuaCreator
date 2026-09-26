@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeDocumentoOriginario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeDocumentoOriginarioReceiver), commandName: "Command.Write.MDFeDocumentoOriginarioCrudCommand");
                  var mdfedocumentooriginario = new MDFeDocumentoOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.DocumentoFiscalOriginarioId, c.TipoDocumento, c.ChaveAcesso, c.SnapshotJson);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfedocumentooriginario.OperationalEntityId);
                  var domainResult = MDFeDocumentoOriginarioDomainBehavior.Apply(mdfedocumentooriginario, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

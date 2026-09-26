@@ -18,12 +18,14 @@ namespace IQuery.Read
         public QueryModel MesesUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByMESQuery(string value );
         public QueryModel ExistsByfatorQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel FirstByMESQuery(string value );
         public QueryModel FirstByfatorQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

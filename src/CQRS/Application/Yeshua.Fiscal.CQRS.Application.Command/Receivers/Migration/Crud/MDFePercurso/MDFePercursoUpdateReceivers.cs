@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMDFePercurso", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMDFePercursoReceiver), commandName: "Command.Write.MDFePercursoCrudCommand");
                  var mdfepercurso = new MDFePercursoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.UF, c.Ordem);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfepercurso.OperationalEntityId);
                  var domainResult = MDFePercursoDomainBehavior.Apply(mdfepercurso, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTransportadora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTransportadoraReceiver), commandName: "Command.Write.TransportadoraCrudCommand");
                  var transportadora = new TransportadoraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TRA_ID, c.TRA_NOME, c.TRA_CNPJ, c.TRA_INSCRICAO_ESTADUAL, c.TRA_RNTRC, c.TRA_EMAIL, c.TRA_RESPONSAVEL, c.TRA_FONE, c.TRA_ID_INTEGRACAO, c.TRA_ID_INTEGRACAO_ERP);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", transportadora.OperationalEntityId);
                  var domainResult = TransportadoraDomainBehavior.Apply(transportadora, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

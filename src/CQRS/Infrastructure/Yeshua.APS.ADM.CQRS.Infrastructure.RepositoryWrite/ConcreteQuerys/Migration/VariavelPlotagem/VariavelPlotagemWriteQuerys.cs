@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirVariavelPlotagemQuery(IVariavelPlotagemEntity VariavelPlotagem)
         {
-            this.Query = $@" INSERT INTO [VariavelPlotagem] ([VAR_ID], [PLO_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VAR_ID, @PLO_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [VariavelPlotagem] ([VAR_ID], [PLO_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VAR_ID, @PLO_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VAR_ID = VariavelPlotagem.VAR_ID,
                 PLO_ID = VariavelPlotagem.PLO_ID,
+                OperationalEntityId = VariavelPlotagem.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 PLO_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

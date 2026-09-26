@@ -24,6 +24,7 @@
     public string TIP_DESCRICAO { get; set; }
     public int TIP_TYPE { get; set; }
     public int SPR { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  TIP_DESCRICAO = tip_descricao; 
  TIP_TYPE = tip_type; 
  SPR = spr; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

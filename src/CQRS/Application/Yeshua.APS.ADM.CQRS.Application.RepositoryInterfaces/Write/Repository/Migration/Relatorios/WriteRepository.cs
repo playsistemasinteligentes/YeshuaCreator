@@ -28,6 +28,7 @@ namespace IRepository.Write
         void UpdateREL_POS_X(int rel_id, int value);
         void UpdateREL_POS_Y(int rel_id, int value);
         void UpdateREL_TAMANHO_FONTE(int rel_id, int value);
+        void UpdateOperationalEntityId(int rel_id, string value);
         void UpdateTenantID(int rel_id, int value);
         void UpdateDeleted(int rel_id, bool value);
         void UpdateChanged(int rel_id, DateTime value);

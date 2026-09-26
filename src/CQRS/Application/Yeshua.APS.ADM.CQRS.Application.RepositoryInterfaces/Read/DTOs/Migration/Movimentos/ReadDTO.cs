@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public int mov_plaid { get; set; }
     public int mov_unid { get; set; }
     public int tr_unidade_uni_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

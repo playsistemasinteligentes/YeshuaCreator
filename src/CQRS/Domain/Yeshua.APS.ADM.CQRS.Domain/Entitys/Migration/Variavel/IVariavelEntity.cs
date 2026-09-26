@@ -25,6 +25,7 @@
     string VAR_DESCRICAO { get; set; }
     int? CON_ID { get; set; }
     int VAR_MODO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

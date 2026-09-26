@@ -1,5 +1,7 @@
 ﻿import { showAlert } from '../alerts.js';
 
+import { getAuthenticationApi } from '../application-context.js';
+
 export function buildRegister() {
     const form = document.getElementById('create-account-form');
     if (!form) return;
@@ -34,7 +36,7 @@ export function buildRegister() {
         }
 
         try {
-            const response = await fetch(`${environments.urlApi}/Y/ContascreateContaUseCase`, {
+            const response = await fetch(`${getAuthenticationApi()}/Y/ContascreateContaUseCase`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ cpfCnpj, nome, email, phone, password, confirmpassword })

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRegistrosOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRegistrosOnduladeiraReceiver), commandName: "Command.Write.RegistrosOnduladeiraCrudCommand");
                  var registrosonduladeira = new RegistrosOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REG_ID, c.REG_RESPOSTA, c.REG_STATUS, c.REG_DATA_INICIO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", registrosonduladeira.OperationalEntityId);
                  var domainResult = RegistrosOnduladeiraDomainBehavior.Apply(registrosonduladeira, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

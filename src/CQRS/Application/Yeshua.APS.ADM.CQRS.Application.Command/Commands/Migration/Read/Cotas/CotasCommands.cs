@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct CotasReadCommand : ICommandRead
+    public struct CotasReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int? COT_ID { get; set; }
@@ -20,11 +20,14 @@ namespace Command.Read
         public Decimal? COT_VALOR { get; set; }
         public Decimal? COT_OCUPADO { get; set; }
         public int? REP_ID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Cotas";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

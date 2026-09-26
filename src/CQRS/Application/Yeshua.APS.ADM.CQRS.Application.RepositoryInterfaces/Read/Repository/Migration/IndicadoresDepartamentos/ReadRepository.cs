@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByINDDEP_ID(int value );
         public bool ExistsByDEP_ID(int value );
         public bool ExistsByIND_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public IndicadoresDepartamentosDTO FirstByINDDEP_ID(int value );
         public IndicadoresDepartamentosDTO FirstByDEP_ID(int value );
         public IndicadoresDepartamentosDTO FirstByIND_ID(int value );
+        public IndicadoresDepartamentosDTO FirstByOperationalEntityId(string value );
         public IndicadoresDepartamentosDTO FirstByTenantID(int value );
         public IndicadoresDepartamentosDTO FirstByDeleted(bool value );
         public IndicadoresDepartamentosDTO FirstByChanged(DateTime value );
@@ -43,6 +45,7 @@ namespace IRepository.Read
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByINDDEP_ID(int value );
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByDEP_ID(int value );
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByIND_ID(int value );
+        public IEnumerable<IndicadoresDepartamentosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByTenantID(int value );
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByDeleted(bool value );
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByChanged(DateTime value );

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateySaga", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateySagaReceiver), commandName: "Command.Write.ySagaCrudCommand");
                  var ysaga = new ySagaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.Type, c.Status, c.KeyCurrentStep, c.CreatedAt, c.CompletedAt, c.EntityType, c.EntityId, c.NextExecutionAt, c.LockedAt, c.LockedBy);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ysaga.OperationalEntityId);
                  var domainResult = ySagaDomainBehavior.Apply(ysaga, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

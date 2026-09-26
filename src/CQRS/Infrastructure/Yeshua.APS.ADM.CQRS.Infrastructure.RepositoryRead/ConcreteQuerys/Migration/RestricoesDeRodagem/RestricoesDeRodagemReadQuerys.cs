@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] from [RestricoesDeRodagem] ";
+            this.Query = $@" select [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [RestricoesDeRodagem] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (Command.RES_ID.HasValue) dict["RES_ID"] = Command.RES_ID.Value;
@@ -49,6 +49,8 @@ if (Command.TVE_ID.HasValue) dict["TVE_ID"] = Command.TVE_ID.Value;
 if (Command.TVE_ID.HasValue) whereClauses.Add($"[TVE_ID] = @TVE_ID");
 if (Command.MAP_ID.HasValue) dict["MAP_ID"] = Command.MAP_ID.Value;
 if (Command.MAP_ID.HasValue) whereClauses.Add($"[MAP_ID] = @MAP_ID");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -262,6 +264,23 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [RestricoesDeRodagem] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -335,7 +354,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -352,7 +371,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -369,7 +388,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -386,7 +405,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -403,7 +422,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -420,7 +439,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -437,7 +456,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -454,7 +473,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -466,12 +485,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -488,7 +524,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -505,7 +541,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -522,7 +558,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
+            this.Query = $"SELECT [Id], [RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [RestricoesDeRodagem] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

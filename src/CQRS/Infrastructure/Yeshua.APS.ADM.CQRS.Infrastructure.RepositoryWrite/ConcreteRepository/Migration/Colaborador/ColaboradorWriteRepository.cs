@@ -76,6 +76,11 @@ namespace Input.Repository.Colaborador
             var query = _query.UpdateTURM_id(col_cpf, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string col_cpf, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(col_cpf, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string col_cpf, int value)
         {
             var query = _query.UpdateTenantID(col_cpf, value);

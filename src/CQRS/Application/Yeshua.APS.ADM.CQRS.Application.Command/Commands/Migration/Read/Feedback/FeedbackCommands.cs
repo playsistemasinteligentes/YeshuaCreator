@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct FeedbackReadCommand : ICommandRead
+    public struct FeedbackReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public DateTime? DataInicial { get; set; }
@@ -33,11 +33,14 @@ namespace Command.Read
         public Decimal? FEE_QTD_TOTAL_PRODUCAO_AJUSTADA { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Feedback";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

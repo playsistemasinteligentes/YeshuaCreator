@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyFileUpload", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyFileUploadReceiver), commandName: "Command.Write.yFileUploadCrudCommand");
                  var yfileupload = new yFileUploadFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Type, c.Status, c.FilePath, c.FileSize, c.EntityType, c.EntityId, c.CreatedAt, c.CompletedAt);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yfileupload.OperationalEntityId);
                  var domainResult = yFileUploadDomainBehavior.Apply(yfileupload, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

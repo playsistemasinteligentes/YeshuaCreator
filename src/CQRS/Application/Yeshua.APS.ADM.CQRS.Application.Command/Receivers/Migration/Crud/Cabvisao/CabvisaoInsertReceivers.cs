@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCabvisao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCabvisaoReceiver), commandName: "Command.Write.CabvisaoCrudCommand");
                  var cabvisao = new CabvisaoFactory(_logger, _domainTrackingPolicy).Create(context, c.CAB_ID, c.CAB_DESC, c.CAB_STATUS, c.USE_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cabvisao.OperationalEntityId);
                  var domainResult = CabvisaoDomainBehavior.Apply(cabvisao, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

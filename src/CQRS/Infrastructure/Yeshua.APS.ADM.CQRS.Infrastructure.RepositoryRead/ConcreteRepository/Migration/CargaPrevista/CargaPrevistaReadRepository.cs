@@ -348,6 +348,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -628,6 +636,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public CargaPrevistaDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<CargaPrevistaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public CargaPrevistaDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -903,6 +919,14 @@ namespace Read.Repository
         public IEnumerable<CargaPrevistaDTO> GetAllByCAR_OBSERVACAO_OTIMIZADOR(string value )
         {
             var query = _query.FirstByCAR_OBSERVACAO_OTIMIZADORQuery(value );
+
+                var result = _unitOfWork.Query<CargaPrevistaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<CargaPrevistaDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<CargaPrevistaDTO>(query.Query,query.Parameters).ToList();
                 return result;

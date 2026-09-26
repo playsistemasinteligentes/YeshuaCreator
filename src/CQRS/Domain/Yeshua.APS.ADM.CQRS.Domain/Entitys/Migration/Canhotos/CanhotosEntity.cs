@@ -28,6 +28,7 @@
     public string? CAN_IMG { get; set; }
     public Decimal? CAN_LAT_ENTREGA { get; set; }
     public Decimal? CAN_LONG_ENTREGA { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  CAN_IMG = can_img; 
  CAN_LAT_ENTREGA = can_lat_entrega; 
  CAN_LONG_ENTREGA = can_long_entrega; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

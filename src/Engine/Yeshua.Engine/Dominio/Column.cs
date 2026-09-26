@@ -48,6 +48,7 @@ namespace Dominio
         public bool IsPassword { get; private set; }
         public bool IsValueDefault { get; set; } = false;
         public string ValueDefault { get; internal set; }
+        public bool IsImmutable { get; private set; }
         public bool FrontEdit { get; set; } = true;
         public bool FrontVisibol { get; set; } = true;
         public bool WhereCanTakeOff { get; set; } = false;
@@ -257,6 +258,11 @@ namespace Dominio
             this.IsValueDefault = true;
             return this.Entity;
         }
+        public Entity Immutable()
+        {
+            IsImmutable = true;
+            return Entity;
+        }
         public Entity EditFront(bool value)
         {
             this.FrontEdit = value;
@@ -281,6 +287,7 @@ namespace Dominio
                 IsPassword = this.IsPassword,
                 IsValueDefault = this.IsValueDefault,
                 ValueDefault = this.ValueDefault,
+                IsImmutable = this.IsImmutable,
                 IsFK = this.IsFK,
                 IsKey = this.IsKey,
                 ColumnReference = this.ColumnReference,

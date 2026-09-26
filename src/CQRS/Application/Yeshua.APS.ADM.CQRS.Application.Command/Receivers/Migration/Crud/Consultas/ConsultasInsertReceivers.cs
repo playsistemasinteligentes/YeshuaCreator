@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertConsultas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertConsultasReceiver), commandName: "Command.Write.ConsultasCrudCommand");
                  var consultas = new ConsultasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_CASAS_DECIMAIS, c.CON_CONEXAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", consultas.OperationalEntityId);
                  var domainResult = ConsultasDomainBehavior.Apply(consultas, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

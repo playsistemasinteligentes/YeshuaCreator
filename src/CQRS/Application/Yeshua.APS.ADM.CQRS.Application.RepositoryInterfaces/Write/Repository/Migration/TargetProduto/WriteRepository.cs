@@ -78,6 +78,7 @@ namespace IRepository.Write
         void UpdateTAR_DATA_FINAL(int tar_id, DateTime value);
         void UpdateTAR_APROVADO(int tar_id, string value);
         void UpdateTAR_TEMPO_PRODUZINDO(int tar_id, int value);
+        void UpdateOperationalEntityId(int tar_id, string value);
         void UpdateTenantID(int tar_id, int value);
         void UpdateDeleted(int tar_id, bool value);
         void UpdateChanged(int tar_id, DateTime value);

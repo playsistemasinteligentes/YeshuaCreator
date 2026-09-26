@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOrderTrackQuery(IOrderTrackEntity OrderTrack)
         {
-            this.Query = $@" INSERT INTO [OrderTrack] ([OTK_ID], [OTK_SEQUENCIA], [OTK_VERSSAO], [ORD_ID], [OTK_EVENTO], [OTK_DATA_NECESSIDADE_DE], [OTK_DATA_NECESSIDADE_ATE], [OTK_DATA_PREVISTA], [OTK_DATA_REALIZADA], [FPR_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OTK_ID, @OTK_SEQUENCIA, @OTK_VERSSAO, @ORD_ID, @OTK_EVENTO, @OTK_DATA_NECESSIDADE_DE, @OTK_DATA_NECESSIDADE_ATE, @OTK_DATA_PREVISTA, @OTK_DATA_REALIZADA, @FPR_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [OrderTrack] ([OTK_ID], [OTK_SEQUENCIA], [OTK_VERSSAO], [ORD_ID], [OTK_EVENTO], [OTK_DATA_NECESSIDADE_DE], [OTK_DATA_NECESSIDADE_ATE], [OTK_DATA_PREVISTA], [OTK_DATA_REALIZADA], [FPR_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OTK_ID, @OTK_SEQUENCIA, @OTK_VERSSAO, @ORD_ID, @OTK_EVENTO, @OTK_DATA_NECESSIDADE_DE, @OTK_DATA_NECESSIDADE_ATE, @OTK_DATA_PREVISTA, @OTK_DATA_REALIZADA, @FPR_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OTK_ID = OrderTrack.OTK_ID,
@@ -43,6 +43,7 @@ namespace Query.Write
                 OTK_DATA_PREVISTA = OrderTrack.OTK_DATA_PREVISTA,
                 OTK_DATA_REALIZADA = OrderTrack.OTK_DATA_REALIZADA,
                 FPR_ID = OrderTrack.FPR_ID,
+                OperationalEntityId = OrderTrack.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -167,6 +168,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 FPR_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [OrderTrack] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

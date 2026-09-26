@@ -48,6 +48,7 @@
     public int? ServicoId { get; set; }
     public int? MovimentacaoFinanceiraId { get; set; }
     public int? ProfissionalId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -82,6 +83,7 @@
  ServicoId = servicoid; 
  MovimentacaoFinanceiraId = movimentacaofinanceiraid; 
  ProfissionalId = profissionalid; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

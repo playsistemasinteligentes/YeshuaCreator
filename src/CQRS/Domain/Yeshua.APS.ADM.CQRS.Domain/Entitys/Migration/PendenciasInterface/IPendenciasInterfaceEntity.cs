@@ -27,6 +27,7 @@
     string? PEN_PROTOCOLO_IN { get; set; }
     string? PEN_ID_PROTOCOLO_IN { get; set; }
     DateTime DATA_ENTRADA { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

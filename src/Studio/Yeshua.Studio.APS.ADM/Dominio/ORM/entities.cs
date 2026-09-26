@@ -17,6 +17,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? Id { get; set; }
         public string? Descricao { get; set; }
         public string? Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -167,6 +168,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? Id { get; set; }
         public string? Descricao { get; set; }
         public string? Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -248,6 +250,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? Id { get; set; }
         public string? Descricao { get; set; }
         public string? Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -263,6 +266,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public string? Descricao { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -300,6 +304,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? LinhaDireta { get; set; }
         public int? TemplateDeTestesId { get; set; }
         public TemplateDeTestes TemplateDeTestes { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -384,6 +389,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? AGE_PARAMETROS { get; set; }
         public string? AGE_EXCECAO { get; set; }
         public string? AGE_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -403,6 +409,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string ROTINA { get; set; }
         public string? HISTORICO { get; set; }
         public string? CHAVE { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -440,6 +447,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
         public int? BOL_REFILE_OBRIGATORIO { get; set; }
         public string? BOL_OBS { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -475,6 +483,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? BOL_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
         public Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
         public int? BOL_REFILE_OBRIGATORIO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -490,6 +499,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int CAL_ID { get; set; }
         public string CAL_DESCRICAO { get; set; }
         public int? CAL_DIVIDE_DIA_EM { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -513,6 +523,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? CDV_SEXTA { get; set; }
         public int? CDV_SABADO { get; set; }
         public int? CDV_DOMINGO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -533,6 +544,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? CAN_IMG { get; set; }
         public Decimal? CAN_LAT_ENTREGA { get; set; }
         public Decimal? CAN_LONG_ENTREGA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -587,6 +599,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? CAR_DATA_AGENCIAMENTO { get; set; }
         public string? TURN_ID { get; set; }
         public string? TURM_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -630,6 +643,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? OCO_ID { get; set; }
         public string? CAR_ID_JUNTADA { get; set; }
         public string? CAR_OBSERVACAO_OTIMIZADOR { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -645,6 +659,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string RGO_ID { get; set; }
         public string? RGO_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -685,6 +700,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? CLI_INTEGRACAO_ERP { get; set; }
         public Decimal? CLI_LATITUDE_ENTREGA { get; set; }
         public Decimal? CLI_LONGITUDE_ENTREGA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -716,6 +732,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? COMPACTA { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -746,6 +763,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? COMPACTA { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -765,6 +783,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string COL_MATRICULA { get; set; }
         public string TURM_id { get; set; }
         public Turma Turma { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -803,6 +822,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? COM_VINCO8_CONVERSAO { get; set; }
         public int? COM_VINCO9_CONVERSAO { get; set; }
         public int? COM_VINCO10_CONVERSAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -821,6 +841,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? CON_PARCELAS { get; set; }
         public Decimal? CON_VALOR_ACRECIMO { get; set; }
         public string? CON_INTEGRACAO_ERP { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -834,6 +855,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     public class Configuracoes
     {
         public int CON_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -849,6 +871,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string? CON_CASAS_DECIMAIS { get; set; }
         public string? CON_CONEXAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -864,6 +887,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int? CON_ID { get; set; }
         public int? GRU_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -879,6 +903,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int? CON_ID { get; set; }
         public int? IND_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -895,6 +920,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal COR_PERCENTUAL_INI { get; set; }
         public Decimal COR_PERCENTUAL_FIM { get; set; }
         public string COR_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -928,6 +954,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PRO_ID_PALETE { get; set; }
         public string? COR_STATUS_PALETE { get; set; }
         public Decimal? COR_GRUPO_PRODUTIVO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -979,6 +1006,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PRO_ID_PALETE { get; set; }
         public string? COR_STATUS_PALETE { get; set; }
         public Decimal? COR_GRUPO_PRODUTIVO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -998,6 +1026,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? COT_VALOR { get; set; }
         public Decimal? COT_OCUPADO { get; set; }
         public int REP_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1012,6 +1041,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int DEP_ID { get; set; }
         public string DEP_NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1026,6 +1056,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public string END_ID { get; set; }
         public string END_GRUPO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1041,6 +1072,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string EQU_ID { get; set; }
         public Decimal? EQU_HIERARQUIA_SEQ_TRANSFORMACAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1058,6 +1090,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? EST_DESCRICAO { get; set; }
         public int? EST_ID_LIGACAO_PONTO_A { get; set; }
         public int? EST_ID_LIGACAO_PONTO_B { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1087,6 +1120,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal EST_BASE_PRODUCAO { get; set; }
         public Decimal? EST_NIVEL { get; set; }
         public int? FPR_SEQ_REPETICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1104,6 +1138,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? CLI_ID { get; set; }
         public Cliente Cliente { get; set; }
         public string? EST_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1125,6 +1160,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal EST_BASE_PRODUCAO { get; set; }
         public string EST_TIPO_REQUISICAO { get; set; }
         public string EST_CODIGO_DE_EXCECAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1162,6 +1198,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? ETI_IMPRIMIR_ATE { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1179,6 +1216,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Usuario Usuario { get; set; }
         public int ID_INDICADOR { get; set; }
         public T_Indicadores T_Indicadores { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1195,6 +1233,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int FEC_ID { get; set; }
         public int? FEC_QTD { get; set; }
         public string? GRP_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1231,6 +1270,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? FEE_QTD_TOTAL_PRODUCAO_AJUSTADA { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1248,6 +1288,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Feedback Feedback { get; set; }
         public int MovimentoEstoqueId { get; set; }
         public MovimentoEstoque MovimentoEstoque { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1325,6 +1366,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? FPR_TOLERANCIA_MENOS { get; set; }
         public Decimal? FPR_TOLERANCIA_MAIS { get; set; }
         public DateTime? FPR_DATA_ENCERRAMENTO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1399,6 +1441,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? OCO_ID { get; set; }
         public string? FPR_PESO_UNITARIO { get; set; }
         public string? FPR_M2_UNITARIO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1415,6 +1458,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string NOME { get; set; }
         public int EXIBELISTA { get; set; }
         public string GRU_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1432,6 +1476,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public T_Grupo T_Grupo { get; set; }
         public int IND_ID { get; set; }
         public T_Indicadores T_Indicadores { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1492,6 +1537,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? GRP_PERCENTUAL_PERDA_MEDIA { get; set; }
         public int? GRP_FILTRA_SEQ_TRANS { get; set; }
         public string? GRP_IMG_CAIXA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1506,6 +1552,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public string GRE_ID { get; set; }
         public string? GRE_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1522,6 +1569,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string GRS_ID { get; set; }
         public string? GRS_DESCRICAO { get; set; }
         public string? GRS_INTEGRACAO_ERP { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1540,6 +1588,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string CLI_ID { get; set; }
         public Cliente Cliente { get; set; }
         public int HRE_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1555,6 +1604,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int IMP_ID { get; set; }
         public string? IMP_IP { get; set; }
         public string? IMP_NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1583,6 +1633,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? DIM_ID { get; set; }
         public string? DOM_EMPRESA { get; set; }
         public string? DOM_FILIAL { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1600,6 +1651,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public T_Departamentos T_Departamentos { get; set; }
         public int IND_ID { get; set; }
         public T_Indicadores T_Indicadores { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1619,6 +1671,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string DIM_DESCRICAO { get; set; }
         public string? DIM_SQL { get; set; }
         public string? DIM_CONEXAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1637,6 +1690,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public T_Indicadores T_Indicadores { get; set; }
         public int DIM_ID { get; set; }
         public string FAT_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1655,6 +1709,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public T_Indicadores T_Indicadores { get; set; }
         public int DIM_ID { get; set; }
         public string PER_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1673,6 +1728,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int MET_ID { get; set; }
         public T_Metas T_Metas { get; set; }
         public string INF_DATA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1687,6 +1743,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int IPV_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1702,6 +1759,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int ITI_ID { get; set; }
         public string? ITI_DESC { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1723,6 +1781,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? ITE_VALOR_DA_CONDICIONAL { get; set; }
         public string? ITE_VALOR_CALCULADO_DA_CONDICIONAL { get; set; }
         public string? ITE_TIPO_AVALIACAO_FINAL { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1749,6 +1808,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? MAQ_ID { get; set; }
         public string? PRO_ID { get; set; }
         public int? ICA_LIMPESA_MAQUINA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1765,6 +1825,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? CDV_ID { get; set; }
         public int? TIP_ID { get; set; }
         public int? IDV_QTD { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1789,6 +1850,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? ORD_HASH_KEY { get; set; }
         public string? NOT_ID { get; set; }
         public DateTime? NOT_EMISSAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1803,6 +1865,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int IES_CUSTOM_FONT_SIZE { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1835,6 +1898,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public GrupoProdutoAbstrato GrupoProdutoAbstrato { get; set; }
         public Decimal? ITO_LARGURA { get; set; }
         public Decimal? ITO_COMPRIMENTO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1860,6 +1924,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? IPA_DIML { get; set; }
         public Decimal? IPA_DIMA { get; set; }
         public Decimal? IPA_QTD_POR_PALETE { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1882,6 +1947,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? ROT_PRO_ID { get; set; }
         public int? FPR_SEQ_REPETICAO { get; set; }
         public int? USE_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1900,6 +1966,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? LOG_CONTEUDO { get; set; }
         public int LOG_ID { get; set; }
         public DateTime? LOG_EMISSAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1927,6 +1994,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int USE_ID { get; set; }
         public Usuario Usuario { get; set; }
         public string? LOGS_ORIGEM { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1943,6 +2011,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? LOO_ID { get; set; }
         public string? LOO_DESCRICAO { get; set; }
         public string? LOO_CONTEUDO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1959,6 +2028,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int LT_ID { get; set; }
         public int? TES_ID { get; set; }
         public int? RL_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1977,6 +2047,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? LOT_LARGURA { get; set; }
         public Decimal? LOT_COMPRIMENTO { get; set; }
         public Decimal? LOT_DIAMETRO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -1998,6 +2069,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? MAP_CUSTO_PEDAGIO_POR_EIXO { get; set; }
         public int? ROD_ID { get; set; }
         public Decimal? MAP_ALTURA_ROD { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2013,6 +2085,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string GMA_ID { get; set; }
         public string MAQ_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2030,6 +2103,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int IMP_ID { get; set; }
         public Impressora Impressora { get; set; }
         public int MAI_FACAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2047,6 +2121,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string EQU_ID { get; set; }
         public int? CAL_ID { get; set; }
         public string CLI_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2081,6 +2156,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? DOM_EMPRESA { get; set; }
         public string? DOM_FILIAL { get; set; }
         public string? MED_VALOR_DISPER { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2094,6 +2170,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     public class MedicoesOnduladeira
     {
         public int? Id { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2112,6 +2189,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? MDT_VALOR_ESPERADO { get; set; }
         public Decimal? MDT_ENCONTRADO { get; set; }
         public string? UNI_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2129,6 +2207,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? ORC_ID { get; set; }
         public Decimal? MEM_VALOR { get; set; }
         public string? MEM_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2149,6 +2228,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? MEN_TYPE { get; set; }
         public Decimal? MEN_QTD_TRY_SEND { get; set; }
         public DateTime? MEN_DATE_TRY_SEND { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2163,6 +2243,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public string MES { get; set; }
         public int fator { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2191,6 +2272,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PER_ID { get; set; }
         public string? DOM_EMPRESA { get; set; }
         public string? DOM_FILIAL { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2257,6 +2339,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? FOR_ID { get; set; }
         public string? CLI_ID { get; set; }
         public Cliente Cliente { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2279,6 +2362,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? MUN_CODIGO_SIAFI { get; set; }
         public string? MUN_CODIGO_CNPJ { get; set; }
         public Decimal? MUN_DISTANCIA_KM { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2293,6 +2377,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int NEG_ID { get; set; }
         public string NEG_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2310,6 +2395,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? OBJ_DESCRICAO { get; set; }
         public string? OBJ_TIPO { get; set; }
         public string? OBJ_GRUPO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2331,6 +2417,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PRO_ID { get; set; }
         public int? ROT_SEQ_TRANFORMACAO { get; set; }
         public string? OBS_INTEGRACAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2352,6 +2439,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? SPR { get; set; }
         public string? OCO_SUB_TIPO { get; set; }
         public string? SUB_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2373,6 +2461,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string OND_ID_INTEGRACAO { get; set; }
         public int VIN_ID { get; set; }
         public Vinco Vinco { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2395,6 +2484,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int ROT_SEQ_TRANFORMACAO { get; set; }
         public string ORD_ID { get; set; }
         public int FPR_SEQ_REPETICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2409,6 +2499,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int OAD_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2430,6 +2521,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? CLI_ID { get; set; }
         public Cliente Cliente { get; set; }
         public int VER_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2454,6 +2546,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? OTK_DATA_PREVISTA { get; set; }
         public DateTime? OTK_DATA_REALIZADA { get; set; }
         public int? FPR_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2544,6 +2637,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? ORD_DATA_ESTATISTICA { get; set; }
         public string? OCO_ID_MOTIVO_ATRASO { get; set; }
         public int? OTK_VERSSAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2561,6 +2655,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string PAR_VALOR_S { get; set; }
         public Decimal PAR_VALOR_N { get; set; }
         public DateTime PAR_VALOR_D { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2578,6 +2673,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string PRO_ID { get; set; }
         public string CUS_ID { get; set; }
         public string PAR_VALOR { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2597,6 +2693,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PEN_PROTOCOLO_IN { get; set; }
         public string? PEN_ID_PROTOCOLO_IN { get; set; }
         public DateTime DATA_ENTRADA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2612,6 +2709,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int PER_ID { get; set; }
         public string PER_NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2629,6 +2727,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Perfil Perfil { get; set; }
         public string OBJ_ID { get; set; }
         public string? PEO_ACAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2646,6 +2745,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PER_QTD { get; set; }
         public string? UNI_ID { get; set; }
         public string? GRP_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2659,6 +2759,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     public class PlanoAmostralTeste
     {
         public Decimal? GRP_TIPO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2689,6 +2790,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PLA_REFERENCIA { get; set; }
         public int USE_ID { get; set; }
         public Usuario Usuario { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2710,6 +2812,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PLO_Z { get; set; }
         public string? PLO_GRAFICO { get; set; }
         public int? CON_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2728,6 +2831,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? POL_PROMOCAO { get; set; }
         public int? POL_DIAS_ANTECIPACAO { get; set; }
         public int? POL_METROS_LINEARES { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2746,6 +2850,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? PON_LATITUDE { get; set; }
         public Decimal? PON_LONGITUDE { get; set; }
         public Decimal? PON_DISTANCIA_KM { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2768,6 +2873,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? PRE_VALOR { get; set; }
         public int? USE_ID { get; set; }
         public int? PER_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2785,6 +2891,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string PTO_CHAVE { get; set; }
         public string MAQ_ID { get; set; }
         public string PTO_COMANDO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2803,6 +2910,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Calendario Calendario { get; set; }
         public string? REC_CONTROL_IP { get; set; }
         public string? GRE_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2820,6 +2928,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string REG_RESPOSTA { get; set; }
         public string REG_STATUS { get; set; }
         public DateTime REG_DATA_INICIO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2835,6 +2944,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int REP_ID { get; set; }
         public string? REP_NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2852,6 +2962,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? IPV_ID { get; set; }
         public int? ITI_ID { get; set; }
         public string? RIV_STATUS { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2872,6 +2983,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? RES_VELOCIDADE_HORA_RUSH { get; set; }
         public int? TVE_ID { get; set; }
         public int? MAP_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2885,6 +2997,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     public class ResultLote
     {
         public int? Id { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2901,6 +3014,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int RSM_ID { get; set; }
         public int? RL_ID { get; set; }
         public int? MDT_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2916,6 +3030,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int ROD_ID { get; set; }
         public string? ROD_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2933,6 +3048,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? ROT_DATA_HORA { get; set; }
         public Decimal? ROT_LAT { get; set; }
         public Decimal? ROT_LONG { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2955,6 +3071,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? ROT_ORDEM_ROTEIRO { get; set; }
         public string? ROT_TIPO { get; set; }
         public Decimal? ROT_DISTANCIA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2973,6 +3090,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? SEG_ID_SEGUIMENTO_PAI { get; set; }
         public string? GRS_ID { get; set; }
         public string? SEG_INTEGRACAO_ERP { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -2989,6 +3107,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string GRS_ID { get; set; }
         public string PRO_ID { get; set; }
         public string SEG_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3007,6 +3126,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? SEM_ORIGEM { get; set; }
         public DateTime? SEM_EMISSAO { get; set; }
         public string? SEM_ID_CONEXAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3022,6 +3142,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string SUB_ID { get; set; }
         public string SUB_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3037,6 +3158,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int ID_TABELA { get; set; }
         public string CODIGO { get; set; }
         public string NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3113,6 +3235,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? TAR_DATA_FINAL { get; set; }
         public string? TAR_APROVADO { get; set; }
         public int? TAR_TEMPO_PRODUZINDO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3128,6 +3251,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int TEM_ID { get; set; }
         public string GMA_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3143,6 +3267,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int TEM_ID { get; set; }
         public string MAQ_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3162,6 +3287,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? TEM_RESINA_DE { get; set; }
         public string? TEM_RESINA_PARA { get; set; }
         public int? TEM_TEMPO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3179,6 +3305,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string TMP_TIPO_CARGA { get; set; }
         public Decimal TMP_TEMPO_MEDIO_UNITARIO { get; set; }
         public string CLI_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3209,6 +3336,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? MAQ_ID { get; set; }
         public int? FPR_SEQ_REPETICAO { get; set; }
         public int? FPR_SEQ_TRANFORMACAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3224,6 +3352,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string ABN_ID { get; set; }
         public string? ABN_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3239,6 +3368,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string TCA_ID { get; set; }
         public string? TCA_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3254,6 +3384,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string TDI_ID { get; set; }
         public string? TDI_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3269,6 +3400,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string TDI_ID { get; set; }
         public string MAQ_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3285,6 +3417,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int TII_ID { get; set; }
         public int? TIV_ID { get; set; }
         public int? ITI_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3299,6 +3432,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int TIV_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3324,6 +3458,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string TIP_DESCRICAO { get; set; }
         public int TIP_TYPE { get; set; }
         public int SPR { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3339,6 +3474,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int Id { get; set; }
         public string Descricao { get; set; }
         public int? Spr { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3354,6 +3490,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? TT_ESPECIFICACAO { get; set; }
         public string? TT_ORIGEM_ESPECIFICACAO { get; set; }
         public string? TT_IMPRIME_NO_LAUDO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3398,6 +3535,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Decimal? TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D { get; set; }
         public Decimal? TIP_CAPACIDADE_LARGURA_PESCOCO_D { get; set; }
         public Decimal? TIP_CAPACIDADE_M3 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3413,6 +3551,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int VIN_ID { get; set; }
         public string VIN_DESCRICAO { get; set; }
         public string VIN_ID_DESLOCAMENTO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3427,6 +3566,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int Id2 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3441,6 +3581,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int Id2 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3455,6 +3596,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public int Id2 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3478,6 +3620,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? TRA_FONE { get; set; }
         public string? TRA_ID_INTEGRACAO { get; set; }
         public string? TRA_ID_INTEGRACAO_ERP { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3506,6 +3649,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? TURM_HORA_FIM_DIA6 { get; set; }
         public DateTime? TURM_HORA_INI_DIA7 { get; set; }
         public DateTime? TURM_HORA_FIM_DIA7 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3535,6 +3679,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? TURN_HORA_FIM_DIA6 { get; set; }
         public DateTime? TURN_HORA_INI_DIA7 { get; set; }
         public DateTime? TURN_HORA_FIM_DIA7 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3550,6 +3695,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int UNI_ID { get; set; }
         public string DEESCRICAO { get; set; }
         public string UN { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3565,6 +3711,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string UNI_ID { get; set; }
         public string UNI_DESCRICAO { get; set; }
         public string? UNI_ESCALA_TEMPO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3582,6 +3729,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Unidade Unidade { get; set; }
         public int USE_ID { get; set; }
         public Usuario Usuario { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3599,6 +3747,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public T_Grupo T_Grupo { get; set; }
         public int ID_USUARIO { get; set; }
         public Usuario Usuario { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3619,6 +3768,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Turma Turma { get; set; }
         public int USE_ATIVO { get; set; }
         public string? USE_CODERP { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3636,6 +3786,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Usuario Usuario { get; set; }
         public string OBJ_ID { get; set; }
         public string? USU_OBJETO_ACAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3653,6 +3804,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Usuario Usuario { get; set; }
         public int PER_ID { get; set; }
         public Perfil Perfil { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3670,6 +3822,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public Usuario Usuario { get; set; }
         public string CAR_ID { get; set; }
         public string RGO_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3687,6 +3840,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string VAR_DESCRICAO { get; set; }
         public int? CON_ID { get; set; }
         public int VAR_MODO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3702,6 +3856,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public int VAR_ID { get; set; }
         public int PLO_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3730,6 +3885,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? VEI_EMISSAO { get; set; }
         public DateTime? VEI_VENCIMENTO { get; set; }
         public string? VEI_STATUS { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3746,6 +3902,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int VER_ID { get; set; }
         public string? VER_STATUS { get; set; }
         public string? VER_OBS { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3763,6 +3920,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? VER_STATUS { get; set; }
         public DateTime? VER_DATA_VERSSAO_CUSTO { get; set; }
         public string? VER_OBS { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3780,6 +3938,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int CAB_STATUS { get; set; }
         public int USE_ID { get; set; }
         public Usuario Usuario { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3800,6 +3959,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int MOV_UNID { get; set; }
         public int? Tr_Unidade_UNI_ID { get; set; }
         public Unidade_Unidade Unidade_Unidade { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3817,6 +3977,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string PLA_DESCRICAO { get; set; }
         public int PLA_TIPO { get; set; }
         public string? PLA_NATUREZA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3831,6 +3992,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int UNI_ID { get; set; }
         public string UNI_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3849,6 +4011,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? VIS_FORMULA { get; set; }
         public int CAB_ID { get; set; }
         public Cabvisao Cabvisao { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3868,6 +4031,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? REL_POS_X { get; set; }
         public int? REL_POS_Y { get; set; }
         public int? REL_TAMANHO_FONTE { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3899,6 +4063,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? FPR_SEQ_REPETICAO { get; set; }
         public string? IPV_STATUS_LIBERACAO { get; set; }
         public Decimal? IPV_VALOR_MEDIDA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3915,6 +4080,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? TIV_ID { get; set; }
         public int? TEM_ID { get; set; }
         public TemplateDeTestes TemplateDeTestes { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3932,6 +4098,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public TipoTeste TipoTeste { get; set; }
         public int TEM_ID { get; set; }
         public TemplateDeTestes TemplateDeTestes { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -3946,6 +4113,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int TA_ID { get; set; }
         public string TA_DESC { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -4044,6 +4212,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? Observacao { get; set; }
         public DateTime CriadoEm { get; set; }
         public string CriadoPor { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -4067,6 +4236,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -4091,6 +4261,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -4116,6 +4287,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int RetryCount { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -4148,6 +4320,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -4177,6 +4350,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -4199,6 +4373,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public yTenant yTenant { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
 
@@ -4207,6 +4382,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yTenant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string CnpjCpf { get; set; }
         public string Nome { get; set; }
@@ -4219,6 +4395,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yUser
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
@@ -4233,6 +4410,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yConfigArcteture
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
@@ -4248,6 +4426,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yConfigNotification
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -4265,6 +4444,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yPerfil
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string Description { get; set; }
         public int? TenantID { get; set; }
@@ -4277,16 +4457,9 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public static MyApp.QueryBuilder.Query<yPerfil> Query() => new MyApp.QueryBuilder.Query<yPerfil>();
     }
 
-    public class yModule
-    {
-        public string? Id { get; set; }
-        public string? Description { get; set; }
-
-        public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
-    }
-
     public class yTenantModule
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
@@ -4303,6 +4476,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yUserModule
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
@@ -4319,6 +4493,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yGrant
     {
+        public string OperationalEntityId { get; set; }
         public string? Id { get; set; }
         public string? Description { get; set; }
         public int? TenantID { get; set; }
@@ -4333,6 +4508,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yPerfilGrant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
@@ -4356,6 +4532,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class yUserGrant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
@@ -4375,6 +4552,14 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public yUser yUser { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserGrant> Query() => new MyApp.QueryBuilder.Query<yUserGrant>();
+    }
+
+    public class yModule
+    {
+        public string? Id { get; set; }
+        public string? Description { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
     }
 
 }

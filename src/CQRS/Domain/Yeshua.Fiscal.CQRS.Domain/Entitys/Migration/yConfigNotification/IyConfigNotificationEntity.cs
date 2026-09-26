@@ -20,6 +20,7 @@
                 {
                     public interface IyConfigNotificationEntity
 {
+    string OperationalEntityId { get; }
     int? Id { get; set; }
     int? TenantID { get; set; }
     string? EmailSmtpClient { get; set; }

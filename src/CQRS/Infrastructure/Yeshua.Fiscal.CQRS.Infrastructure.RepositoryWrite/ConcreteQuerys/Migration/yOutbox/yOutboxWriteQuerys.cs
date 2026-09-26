@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" INSERT INTO [yOutbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [TransportType], [TransportData], [CreatedAt], [SentAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yOutbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [TransportType], [TransportData], [CreatedAt], [SentAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = yOutbox.MessageId,
@@ -51,6 +51,7 @@ namespace Query.Write
                 SagaId = yOutbox.SagaId,
                 SagaStepId = yOutbox.SagaStepId,
                 TenantID = _executionContext.TenantID,
+                OperationalEntityId = yOutbox.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
@@ -261,6 +262,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TenantID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yOutbox] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

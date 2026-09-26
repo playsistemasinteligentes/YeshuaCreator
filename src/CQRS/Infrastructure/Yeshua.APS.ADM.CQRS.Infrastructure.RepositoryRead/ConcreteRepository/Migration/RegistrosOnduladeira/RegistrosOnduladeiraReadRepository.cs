@@ -140,6 +140,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -212,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public RegistrosOnduladeiraDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<RegistrosOnduladeiraDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public RegistrosOnduladeiraDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -279,6 +295,14 @@ namespace Read.Repository
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByREG_DATA_INICIO(DateTime value )
         {
             var query = _query.FirstByREG_DATA_INICIOQuery(value );
+
+                var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<RegistrosOnduladeiraDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;

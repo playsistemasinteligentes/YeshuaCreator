@@ -96,7 +96,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            this.Parameters = new");
                 sb.AppendLine("            {");
                 foreach (var column in _entity.AddColumns.Where(x => !x.AutoIncremento))
-                    if (column.IsValueDefault)
+                    if (column.IsImmutable)
+                        sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
+                    else if (column.IsValueDefault)
                     {
                         if (column.ValueDefault.StartsWith("#"))
                             sb.AppendLine($"                {column.Name} = {(column.ValueDefault.Substring(1))},");
@@ -115,7 +117,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
 
 
-                parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID").Select(c => $"{SqlIdentifier(c.Name)} = @{c.Name}"));
+                parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey && !x.IsImmutable && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID").Select(c => $"{SqlIdentifier(c.Name)} = @{c.Name}"));
                 var parametersWhere = string.Join(" AND ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{SqlIdentifier(c.Name)} = @{c.Name}"));
                 sb.AppendLine($"            this.Query = $@\" UPDATE {tableName} SET {parametersString} WHERE {parametersWhere} \";");
 
@@ -123,7 +125,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            {");
 
                 // debito   incluir beckend fiel
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID"))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsImmutable && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID"))
                 {
                     if (column.Name == "UserId")
                         sb.AppendLine($"                {column.Name} = _executionContext.UserId,");

@@ -31,6 +31,7 @@ namespace IRepository.Read
         public bool ExistsByTEM_RESINA_DE(string value );
         public bool ExistsByTEM_RESINA_PARA(string value );
         public bool ExistsByTEM_TEMPO(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -41,6 +42,7 @@ namespace IRepository.Read
         public TempoSetupOnduladeiraDTO FirstByTEM_RESINA_DE(string value );
         public TempoSetupOnduladeiraDTO FirstByTEM_RESINA_PARA(string value );
         public TempoSetupOnduladeiraDTO FirstByTEM_TEMPO(int value );
+        public TempoSetupOnduladeiraDTO FirstByOperationalEntityId(string value );
         public TempoSetupOnduladeiraDTO FirstByTenantID(int value );
         public TempoSetupOnduladeiraDTO FirstByDeleted(bool value );
         public TempoSetupOnduladeiraDTO FirstByChanged(DateTime value );
@@ -51,6 +53,7 @@ namespace IRepository.Read
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_RESINA_DE(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_RESINA_PARA(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_TEMPO(int value );
+        public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByChanged(DateTime value );

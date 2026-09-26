@@ -6,8 +6,10 @@ Engine nao altera Compose, Dockerfiles, nginx ou scripts de deploy.
 O servidor atual hospeda N aplicativos por meio dos projetos Compose ativos:
 
 - `infra/Shared/DockerCompose`: SQL Server, Redis, RabbitMQ, Operational Intelligence API, nginx e rede.
-- `infra/Clinica/DockerCompose`: API, Front, Worker, Migration e IA da Clinica.
-- `Fiscal`: aplicativo fiscal unificado; a infraestrutura dedicada sera gerada em recorte proprio.
+- `infra/Central/DockerCompose`: Front compartilhado, API, Worker e Migration da Central.
+- `infra/Clinica/DockerCompose`: API, Worker e Migration da Clinica.
+- `infra/APS.ADM/DockerCompose`: API, Worker e Migration do APS.ADM.
+- `infra/Fiscal/DockerCompose`: API, Worker e Migration do Fiscal.
 
 Os aplicativos possuem nomes Compose diferentes e compartilham apenas a rede
 externa `yeshua-net`. Nenhum deploy de aplicativo executa `docker compose down`.
@@ -44,7 +46,10 @@ curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCrea
 Deploys isolados:
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- central
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- aps-adm
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- fiscal
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- shared
 ```
 
@@ -53,14 +58,18 @@ repositorio uma vez e recarrega o nginx graciosamente ao final.
 
 ## Rotas
 
-- `/`, `/yapi` e `/yworker`: Clinica.
-- `Fiscal`: rotas publicas serao definidas quando a infraestrutura do aplicativo fiscal unificado for ativada.
+- `/`: Front compartilhado da Central.
+- `/apps/central/yapi`: API da Central.
+- `/apps/clinica/yapi`: API da Clinica.
+- `/apps/aps-adm/yapi`: API do APS.ADM.
+- `/apps/fiscal/yapi`: API do Fiscal.
+- `/yapi` e `/yworker`: compatibilidade temporaria com a Clinica antiga.
 
 ## Persistencia
 
 - SQL Server: `/root/YeshuaDB/persistent/sql`.
 - Storage: `/root/YeshuaStorage`.
-- Bancos separados na mesma instancia: `CLINICA` e `FISCAL`.
+- Bancos separados na mesma instancia: `CENTRAL_`, `CLINICA`, `APS_ADM_03` e `FISCAL_`.
 
 ## Seguranca
 
@@ -80,8 +89,8 @@ atual da Clinica pode ser consultada por SSH:
 curl -s http://127.0.0.1:5728/api/operational-control/Clinica/Production
 ```
 
-API e Worker da Clinica consultam a central a cada 10 segundos. Alteracoes de
-politica passam a valer sem reiniciar os containers.
+Cada Worker consulta a API do proprio aplicativo para atualizar sua politica
+operacional. Alteracoes de politica passam a valer sem reiniciar os containers.
 
 `pendencia`: proteger a rota publica `/operational/` com autenticacao e
 autorizacao antes de disponibilizar o controle operacional a terceiros.

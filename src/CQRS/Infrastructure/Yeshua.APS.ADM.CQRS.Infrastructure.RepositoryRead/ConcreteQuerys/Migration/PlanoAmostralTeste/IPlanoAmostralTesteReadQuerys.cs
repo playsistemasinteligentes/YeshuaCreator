@@ -17,6 +17,7 @@ namespace IQuery.Read
         public QueryModel PlanoAmostralTesteTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel PlanoAmostralTesteUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByGRP_TIPOQuery(Decimal value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -27,6 +28,7 @@ namespace IQuery.Read
         public QueryModel ExistsByPAT_N_AMOSTRAGEMQuery(int value );
         public QueryModel ExistsByPAT_PERCENT_ESPECIFQuery(Decimal value );
         public QueryModel FirstByGRP_TIPOQuery(Decimal value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

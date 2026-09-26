@@ -24,6 +24,7 @@ namespace IQuery.Write
         QueryModel UpdatePRO_ID(int obs_id, string value);
         QueryModel UpdateROT_SEQ_TRANFORMACAO(int obs_id, int value);
         QueryModel UpdateOBS_INTEGRACAO(int obs_id, string value);
+        QueryModel UpdateOperationalEntityId(int obs_id, string value);
         QueryModel UpdateTenantID(int obs_id, int value);
         QueryModel UpdateDeleted(int obs_id, bool value);
         QueryModel UpdateChanged(int obs_id, DateTime value);

@@ -24,6 +24,7 @@
     public string NOME { get; set; }
     public int EXIBELISTA { get; set; }
     public string GRU_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  NOME = nome; 
  EXIBELISTA = exibelista; 
  GRU_DESCRICAO = gru_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

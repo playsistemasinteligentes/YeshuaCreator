@@ -1,21 +1,6 @@
 name: playsis-clinica
 
 services:
-  clinica-front:
-    build:
-      context: ../../..
-      dockerfile: infra/Clinica/DockerCompose/front/Dockerfile
-    environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:8080"
-      ASPNETCORE_ENVIRONMENT: "Production"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-    expose:
-      - "8080"
-    restart: unless-stopped
-    networks:
-      - yeshua-net
-
   clinica-api:
     build:
       context: ../../..
@@ -26,9 +11,7 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
-      OperationalControl__Endpoint: "http://operational-intelligence-api:5728"
-      OperationalControl__Enabled: "true"
-      OperationalControl__RefreshSeconds: "10"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Storage__Providers__Disk__Root: "/storage"
@@ -57,9 +40,9 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
-      OperationalControl__Endpoint: "http://operational-intelligence-api:5728"
       OperationalControl__Enabled: "true"
-      OperationalControl__RefreshSeconds: "10"
+      OperationalControl__ApplicationApiBaseUrl: "http://clinica-api:7214"
+      OperationalControl__RefreshSeconds: "5"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Storage__Providers__Disk__Root: "/storage"
@@ -90,6 +73,7 @@ services:
     environment:
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=CENTRAL_;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     restart: "no"
     networks:
       - yeshua-net

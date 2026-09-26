@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMDFeCondutor", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMDFeCondutorReceiver), commandName: "Command.Write.MDFeCondutorCrudCommand");
                  var mdfecondutor = new MDFeCondutorFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.Nome, c.Documento);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfecondutor.OperationalEntityId);
                  var domainResult = MDFeCondutorDomainBehavior.Apply(mdfecondutor, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

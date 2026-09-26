@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCondicaoPagamento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCondicaoPagamentoReceiver), commandName: "Command.Write.CondicaoPagamentoCrudCommand");
                  var condicaopagamento = new CondicaoPagamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_ID, c.CON_DESCRICAO, c.CON_PARCELAS, c.CON_VALOR_ACRECIMO, c.CON_INTEGRACAO_ERP);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", condicaopagamento.OperationalEntityId);
                  var domainResult = CondicaoPagamentoDomainBehavior.Apply(condicaopagamento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

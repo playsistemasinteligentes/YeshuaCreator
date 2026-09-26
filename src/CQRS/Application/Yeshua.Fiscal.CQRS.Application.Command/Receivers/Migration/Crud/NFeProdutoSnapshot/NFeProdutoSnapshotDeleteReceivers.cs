@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteNFeProdutoSnapshot", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteNFeProdutoSnapshotReceiver), commandName: "Command.Write.NFeProdutoSnapshotCrudCommand");
                  var nfeprodutosnapshot = new NFeProdutoSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DocumentoFiscalOriginarioId, c.CorrelationId, c.CargaId, c.PedidoId, c.ChaveAcesso, c.EmitenteDocumento, c.DestinatarioDocumento, c.UFOrigem, c.UFDestino, c.MunicipioOrigemCodigoIbge, c.MunicipioDestinoCodigoIbge, c.ValorDocumento, c.PesoBruto, c.Volume, c.XmlStorageKey, c.SnapshotJson, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", nfeprodutosnapshot.OperationalEntityId);
                  var domainResult = NFeProdutoSnapshotDomainBehavior.Apply(nfeprodutosnapshot, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -20,15 +20,16 @@
                 {
                     public static class yConfigNotificationTrackingFields
         {
-            public const ulong Id = 1UL << 0;
-            public const ulong TenantID = 1UL << 1;
-            public const ulong EmailSmtpClient = 1UL << 2;
-            public const ulong EmailPort = 1UL << 3;
-            public const ulong EmailUserName = 1UL << 4;
-            public const ulong EmailPassword = 1UL << 5;
-            public const ulong Deleted = 1UL << 6;
-            public const ulong Changed = 1UL << 7;
-            public const ulong UserId = 1UL << 8;
+            public const ulong OperationalEntityId = 1UL << 0;
+            public const ulong Id = 1UL << 1;
+            public const ulong TenantID = 1UL << 2;
+            public const ulong EmailSmtpClient = 1UL << 3;
+            public const ulong EmailPort = 1UL << 4;
+            public const ulong EmailUserName = 1UL << 5;
+            public const ulong EmailPassword = 1UL << 6;
+            public const ulong Deleted = 1UL << 7;
+            public const ulong Changed = 1UL << 8;
+            public const ulong UserId = 1UL << 9;
         }
 
         public partial class yConfigNotificationDecorator : IyConfigNotificationEntity
@@ -57,7 +58,8 @@
                             _trackingTraceId = context?.TraceId ?? string.Empty;
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
-                        }
+                        }    public string OperationalEntityId => _inner.OperationalEntityId;
+
                                     public int? Id
                                     {
                                         get => _inner.Id;

@@ -24,6 +24,7 @@
     public int? GrupoServicoId { get; set; }
     public string Nome { get; set; }
     public Decimal Valor { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  GrupoServicoId = gruposervicoid; 
  Nome = nome; 
  Valor = valor; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

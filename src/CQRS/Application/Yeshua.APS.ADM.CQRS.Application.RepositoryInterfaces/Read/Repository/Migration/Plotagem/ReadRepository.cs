@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByPLO_Z(string value );
         public bool ExistsByPLO_GRAFICO(string value );
         public bool ExistsByCON_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -46,6 +47,7 @@ namespace IRepository.Read
         public PlotagemDTO FirstByPLO_Z(string value );
         public PlotagemDTO FirstByPLO_GRAFICO(string value );
         public PlotagemDTO FirstByCON_ID(int value );
+        public PlotagemDTO FirstByOperationalEntityId(string value );
         public PlotagemDTO FirstByTenantID(int value );
         public PlotagemDTO FirstByDeleted(bool value );
         public PlotagemDTO FirstByChanged(DateTime value );
@@ -59,6 +61,7 @@ namespace IRepository.Read
         public IEnumerable<PlotagemDTO> GetAllByPLO_Z(string value );
         public IEnumerable<PlotagemDTO> GetAllByPLO_GRAFICO(string value );
         public IEnumerable<PlotagemDTO> GetAllByCON_ID(int value );
+        public IEnumerable<PlotagemDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PlotagemDTO> GetAllByTenantID(int value );
         public IEnumerable<PlotagemDTO> GetAllByDeleted(bool value );
         public IEnumerable<PlotagemDTO> GetAllByChanged(DateTime value );

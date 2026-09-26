@@ -136,22 +136,22 @@ public sealed class ApiSeedCrudSuiteTests
         var step34 = new yPerfil.yPerfilCrudApiSeedTests();
         await step34.ExecuteAsync();
 
-        var step35 = new yModule.yModuleCrudApiSeedTests();
+        var step35 = new yGrant.yGrantCrudApiSeedTests();
         await step35.ExecuteAsync();
 
-        var step36 = new yTenantModule.yTenantModuleCrudApiSeedTests();
+        var step36 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
         await step36.ExecuteAsync();
 
-        var step37 = new yUserModule.yUserModuleCrudApiSeedTests();
+        var step37 = new yUserGrant.yUserGrantCrudApiSeedTests();
         await step37.ExecuteAsync();
 
-        var step38 = new yGrant.yGrantCrudApiSeedTests();
+        var step38 = new yModule.yModuleCrudApiSeedTests();
         await step38.ExecuteAsync();
 
-        var step39 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        var step39 = new yTenantModule.yTenantModuleCrudApiSeedTests();
         await step39.ExecuteAsync();
 
-        var step40 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        var step40 = new yUserModule.yUserModuleCrudApiSeedTests();
         await step40.ExecuteAsync();
 
     }

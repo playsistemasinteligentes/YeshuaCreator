@@ -16,12 +16,14 @@ namespace IQuery.Read
         public QueryModel yPerfilQuery(Command.Read.yPerfilReadCommand Command );
         public QueryModel yPerfilTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yPerfilUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByDescriptionQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByDescriptionQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );

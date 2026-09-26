@@ -20,6 +20,7 @@
                 {
                     public interface IyTenantModuleEntity
 {
+    string OperationalEntityId { get; }
     int? Id { get; set; }
     string? ModuleId { get; set; }
     int? TenantID { get; set; }

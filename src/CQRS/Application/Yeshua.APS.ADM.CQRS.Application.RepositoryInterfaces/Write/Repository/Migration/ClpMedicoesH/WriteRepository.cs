@@ -39,6 +39,7 @@ namespace IRepository.Write
         void UpdateCOMPACTA(int id, int value);
         void UpdateBOL_ID(int id, string value);
         void UpdateCOR_SEQUENCIA(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

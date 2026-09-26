@@ -33,6 +33,7 @@
     public DateTime? LockedAt { get; set; }
     public string? LockedBy { get; set; }
     public int? TenantID { get; set; }
+    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
@@ -50,6 +51,7 @@
  NextExecutionAt = nextexecutionat.HasValue && nextexecutionat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : nextexecutionat; 
  LockedAt = lockedat.HasValue && lockedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : lockedat; 
  LockedBy = lockedby; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

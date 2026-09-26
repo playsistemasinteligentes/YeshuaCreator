@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateIndicadoresDepartamentosQuery(IIndicadoresDepartamentosEntity IndicadoresDepartamentos);
         QueryModel UpdateDEP_ID(int inddep_id, int value);
         QueryModel UpdateIND_ID(int inddep_id, int value);
+        QueryModel UpdateOperationalEntityId(int inddep_id, string value);
         QueryModel UpdateTenantID(int inddep_id, int value);
         QueryModel UpdateDeleted(int inddep_id, bool value);
         QueryModel UpdateChanged(int inddep_id, DateTime value);

@@ -25,6 +25,7 @@
     public int? ORC_ID { get; set; }
     public Decimal? MEM_VALOR { get; set; }
     public string? MEM_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  ORC_ID = orc_id; 
  MEM_VALOR = mem_valor; 
  MEM_DESCRICAO = mem_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

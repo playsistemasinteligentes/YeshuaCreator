@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirEstruturaImpressaoQuery(IEstruturaImpressaoEntity EstruturaImpressao)
         {
-            this.Query = $@" INSERT INTO [EstruturaImpressao] ([HTML_ESTRUTURA], [CLI_ID], [EST_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[EST_ID] VALUES(@HTML_ESTRUTURA, @CLI_ID, @EST_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [EstruturaImpressao] ([HTML_ESTRUTURA], [CLI_ID], [EST_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[EST_ID] VALUES(@HTML_ESTRUTURA, @CLI_ID, @EST_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 HTML_ESTRUTURA = EstruturaImpressao.HTML_ESTRUTURA,
                 CLI_ID = EstruturaImpressao.CLI_ID,
                 EST_DESCRICAO = EstruturaImpressao.EST_DESCRICAO,
+                OperationalEntityId = EstruturaImpressao.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 EST_DESCRICAO = value,
+                EST_ID = est_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int est_id, string value)
+        {
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [OperationalEntityId] = @OperationalEntityId WHERE [EST_ID] = @EST_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 EST_ID = est_id,
             };
             return new QueryModel(this.Query, this.Parameters);

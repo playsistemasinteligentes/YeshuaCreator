@@ -27,6 +27,7 @@
     public string? PEN_PROTOCOLO_IN { get; set; }
     public string? PEN_ID_PROTOCOLO_IN { get; set; }
     public DateTime DATA_ENTRADA { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  PEN_ID_PROTOCOLO_IN = pen_id_protocolo_in; 
  DATA_ENTRADA = (data_entrada < (new DateTime(1800, 1, 1))) ? DateTime.Now : data_entrada; 
  PEN_ID = pen_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

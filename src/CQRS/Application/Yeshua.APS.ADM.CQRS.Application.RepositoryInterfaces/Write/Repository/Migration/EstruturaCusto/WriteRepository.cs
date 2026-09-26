@@ -37,6 +37,7 @@ namespace IRepository.Write
         void UpdateEST_BASE_PRODUCAO(int est_id, Decimal value);
         void UpdateEST_NIVEL(int est_id, Decimal value);
         void UpdateFPR_SEQ_REPETICAO(int est_id, int value);
+        void UpdateOperationalEntityId(int est_id, string value);
         void UpdateTenantID(int est_id, int value);
         void UpdateDeleted(int est_id, bool value);
         void UpdateChanged(int est_id, DateTime value);

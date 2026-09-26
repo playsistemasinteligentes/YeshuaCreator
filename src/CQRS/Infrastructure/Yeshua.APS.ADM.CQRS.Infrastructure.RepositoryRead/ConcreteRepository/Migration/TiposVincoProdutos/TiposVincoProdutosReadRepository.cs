@@ -116,6 +116,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +172,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TiposVincoProdutosDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TiposVincoProdutosDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public TiposVincoProdutosDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -207,6 +223,14 @@ namespace Read.Repository
         public IEnumerable<TiposVincoProdutosDTO> GetAllById2(int value )
         {
             var query = _query.FirstById2Query(value );
+
+                var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<TiposVincoProdutosDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TiposVincoProdutosDTO>(query.Query,query.Parameters).ToList();
                 return result;

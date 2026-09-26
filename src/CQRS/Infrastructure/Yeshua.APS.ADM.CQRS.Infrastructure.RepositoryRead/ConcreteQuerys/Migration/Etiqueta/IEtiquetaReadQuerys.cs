@@ -41,6 +41,7 @@ namespace IQuery.Read
         public QueryModel ExistsByETI_IMPRIMIR_ATEQuery(int value );
         public QueryModel ExistsByBOL_IDQuery(string value );
         public QueryModel ExistsByCOR_SEQUENCIAQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -68,6 +69,7 @@ namespace IQuery.Read
         public QueryModel FirstByETI_IMPRIMIR_ATEQuery(int value );
         public QueryModel FirstByBOL_IDQuery(string value );
         public QueryModel FirstByCOR_SEQUENCIAQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

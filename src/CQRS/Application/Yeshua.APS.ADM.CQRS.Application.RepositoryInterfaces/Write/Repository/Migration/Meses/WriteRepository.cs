@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IMesesEntity meses);
         void Delete(IMesesEntity meses);
         void Updatefator(string mes, int value);
+        void UpdateOperationalEntityId(string mes, string value);
         void UpdateTenantID(string mes, int value);
         void UpdateDeleted(string mes, bool value);
         void UpdateChanged(string mes, DateTime value);

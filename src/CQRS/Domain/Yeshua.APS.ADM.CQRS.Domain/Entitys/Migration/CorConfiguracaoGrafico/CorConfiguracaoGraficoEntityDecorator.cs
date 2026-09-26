@@ -24,10 +24,11 @@
             public const ulong COR_PERCENTUAL_INI = 1UL << 1;
             public const ulong COR_PERCENTUAL_FIM = 1UL << 2;
             public const ulong COR_DESCRICAO = 1UL << 3;
-            public const ulong TenantID = 1UL << 4;
-            public const ulong Deleted = 1UL << 5;
-            public const ulong Changed = 1UL << 6;
-            public const ulong UserId = 1UL << 7;
+            public const ulong OperationalEntityId = 1UL << 4;
+            public const ulong TenantID = 1UL << 5;
+            public const ulong Deleted = 1UL << 6;
+            public const ulong Changed = 1UL << 7;
+            public const ulong UserId = 1UL << 8;
         }
 
         public partial class CorConfiguracaoGraficoDecorator : ICorConfiguracaoGraficoEntity
@@ -112,6 +113,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

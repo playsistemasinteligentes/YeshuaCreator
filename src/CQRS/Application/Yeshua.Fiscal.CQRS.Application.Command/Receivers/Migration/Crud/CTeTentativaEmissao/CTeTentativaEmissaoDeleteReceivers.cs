@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeTentativaEmissao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeTentativaEmissaoReceiver), commandName: "Command.Write.CTeTentativaEmissaoCrudCommand");
                  var ctetentativaemissao = new CTeTentativaEmissaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.ChaveAcesso, c.Numero, c.Serie, c.Tentativa, c.XmlAssinadoStorageKey, c.XmlProcStorageKey, c.XmlHash, c.CodigoRetorno, c.MensagemRetorno, c.ProtocoloAutorizacao, c.EnviadoEmUtc, c.AutorizadoEmUtc, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ctetentativaemissao.OperationalEntityId);
                  var domainResult = CTeTentativaEmissaoDomainBehavior.Apply(ctetentativaemissao, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

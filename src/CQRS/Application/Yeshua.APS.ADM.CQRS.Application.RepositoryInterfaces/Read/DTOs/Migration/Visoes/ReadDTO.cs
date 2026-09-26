@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public int vis_planid { get; set; }
     public string vis_formula { get; set; } = string.Empty;
     public int cab_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirMDFePercursoQuery(IMDFePercursoEntity MDFePercurso)
         {
-            this.Query = $@" INSERT INTO [MDFePercurso] ([MDFeSolicitacaoFiscalId], [UF], [Ordem], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @UF, @Ordem, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFePercurso] ([MDFeSolicitacaoFiscalId], [UF], [Ordem], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @UF, @Ordem, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MDFeSolicitacaoFiscalId = MDFePercurso.MDFeSolicitacaoFiscalId,
                 UF = MDFePercurso.UF,
                 Ordem = MDFePercurso.Ordem,
+                OperationalEntityId = MDFePercurso.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Ordem = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFePercurso] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

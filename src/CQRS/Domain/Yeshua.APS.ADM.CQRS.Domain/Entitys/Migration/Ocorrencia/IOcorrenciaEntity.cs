@@ -28,6 +28,7 @@
     int? SPR { get; set; }
     string? OCO_SUB_TIPO { get; set; }
     string? SUB_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

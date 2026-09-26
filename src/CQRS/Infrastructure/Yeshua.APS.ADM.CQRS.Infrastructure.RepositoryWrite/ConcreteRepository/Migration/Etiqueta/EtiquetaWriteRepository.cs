@@ -161,6 +161,11 @@ namespace Input.Repository.Etiqueta
             var query = _query.UpdateCOR_SEQUENCIA(eti_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int eti_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(eti_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int eti_id, int value)
         {
             var query = _query.UpdateTenantID(eti_id, value);

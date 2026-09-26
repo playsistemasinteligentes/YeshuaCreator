@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(ITemplateTipoTesteEntity templatetipoteste);
         void UpdateTT_ID(int ttt_id, int value);
         void UpdateTEM_ID(int ttt_id, int value);
+        void UpdateOperationalEntityId(int ttt_id, string value);
         void UpdateTenantID(int ttt_id, int value);
         void UpdateDeleted(int ttt_id, bool value);
         void UpdateChanged(int ttt_id, DateTime value);

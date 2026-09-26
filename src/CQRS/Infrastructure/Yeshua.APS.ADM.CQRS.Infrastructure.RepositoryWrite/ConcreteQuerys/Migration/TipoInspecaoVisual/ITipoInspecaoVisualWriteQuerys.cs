@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual);
         public QueryModel UpdateTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual);
         QueryModel UpdateTIV_ID(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

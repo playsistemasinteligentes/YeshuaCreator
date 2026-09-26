@@ -29,6 +29,7 @@ namespace Repositorio.Outputs
     public DateTime otk_data_prevista { get; set; }
     public DateTime otk_data_realizada { get; set; }
     public int fpr_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

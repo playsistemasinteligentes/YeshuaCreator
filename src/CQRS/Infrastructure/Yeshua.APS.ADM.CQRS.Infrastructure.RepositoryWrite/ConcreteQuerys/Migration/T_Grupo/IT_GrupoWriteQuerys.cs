@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateNOME(int gru_id, string value);
         QueryModel UpdateEXIBELISTA(int gru_id, int value);
         QueryModel UpdateGRU_DESCRICAO(int gru_id, string value);
+        QueryModel UpdateOperationalEntityId(int gru_id, string value);
         QueryModel UpdateTenantID(int gru_id, int value);
         QueryModel UpdateDeleted(int gru_id, bool value);
         QueryModel UpdateChanged(int gru_id, DateTime value);

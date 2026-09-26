@@ -24,6 +24,7 @@
     public string Nome { get; set; }
     public int? EspecialidadeId { get; set; }
     public string Telefone { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  Nome = nome; 
  EspecialidadeId = especialidadeid; 
  Telefone = telefone; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

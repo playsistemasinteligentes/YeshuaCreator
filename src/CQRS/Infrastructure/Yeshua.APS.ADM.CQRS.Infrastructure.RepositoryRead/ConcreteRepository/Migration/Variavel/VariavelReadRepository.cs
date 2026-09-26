@@ -140,6 +140,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -212,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public VariavelDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<VariavelDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public VariavelDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -279,6 +295,14 @@ namespace Read.Repository
         public IEnumerable<VariavelDTO> GetAllByVAR_MODO(int value )
         {
             var query = _query.FirstByVAR_MODOQuery(value );
+
+                var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<VariavelDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters).ToList();
                 return result;

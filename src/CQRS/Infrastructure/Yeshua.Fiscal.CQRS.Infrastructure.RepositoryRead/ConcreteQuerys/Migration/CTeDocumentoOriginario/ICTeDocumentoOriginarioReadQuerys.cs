@@ -30,6 +30,7 @@ namespace IQuery.Read
         public QueryModel ExistsByValorDocumentoQuery(Decimal value );
         public QueryModel ExistsByPesoBrutoQuery(Decimal value );
         public QueryModel ExistsBySnapshotJsonQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -46,6 +47,7 @@ namespace IQuery.Read
         public QueryModel FirstByValorDocumentoQuery(Decimal value );
         public QueryModel FirstByPesoBrutoQuery(Decimal value );
         public QueryModel FirstBySnapshotJsonQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

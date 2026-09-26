@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateNOME(int gru_id, string value);
         void UpdateEXIBELISTA(int gru_id, int value);
         void UpdateGRU_DESCRICAO(int gru_id, string value);
+        void UpdateOperationalEntityId(int gru_id, string value);
         void UpdateTenantID(int gru_id, int value);
         void UpdateDeleted(int gru_id, bool value);
         void UpdateChanged(int gru_id, DateTime value);

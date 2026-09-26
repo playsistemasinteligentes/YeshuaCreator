@@ -157,6 +157,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -229,6 +237,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public IndicadoresFatosDimencoesDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<IndicadoresFatosDimencoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IndicadoresFatosDimencoesDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -296,6 +312,14 @@ namespace Read.Repository
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByFAT_DESCRICAO(string value )
         {
             var query = _query.FirstByFAT_DESCRICAOQuery(value );
+
+                var result = _unitOfWork.Query<IndicadoresFatosDimencoesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<IndicadoresFatosDimencoesDTO>(query.Query,query.Parameters).ToList();
                 return result;

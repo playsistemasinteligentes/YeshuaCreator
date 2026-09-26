@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct CotasCrudCommand : ICommand
+    public struct CotasCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int COT_ID { get; set; }
@@ -20,10 +20,13 @@ namespace Command.Write
         public Decimal? COT_VALOR { get; set; }
         public Decimal? COT_OCUPADO { get; set; }
         public int REP_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Cotas";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

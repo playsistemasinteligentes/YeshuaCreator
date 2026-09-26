@@ -184,6 +184,33 @@ Polling
         }
     }
 
+    [Migration(000007)]
+    public class S000007 : MigrationBase
+    {
+        public record OpenApplicationSessionInput(
+            string TenantIdentity,
+            string TenantDocument,
+            string TenantName,
+            string UserIdentity,
+            string UserName,
+            string Email);
+
+        public record OpenApplicationSessionOutput(int TenantId, int UserId, string Email);
+
+        public override void Up()
+        {
+            AddUsecaseGroup("Y")
+                .AddUseCaseSubGrup("Contas")
+                .AddCommand(
+                    "OpenApplicationSession",
+                    new OpenApplicationSessionInput("", "", "", "", "", ""),
+                    new OpenApplicationSessionOutput(0, 0, ""))
+                .AddEntity("yTenant")
+                .AddEntity("yUser")
+                .AddScope("Abre a sessao local do aplicativo a partir de identidades globais autenticadas pela Central.");
+        }
+    }
+
 
 
 

@@ -35,6 +35,7 @@ namespace IQuery.Read
         public QueryModel ExistsByFPR_SEQ_REPETICAOQuery(int value );
         public QueryModel ExistsByIPV_STATUS_LIBERACAOQuery(string value );
         public QueryModel ExistsByIPV_VALOR_MEDIDAQuery(Decimal value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -56,6 +57,7 @@ namespace IQuery.Read
         public QueryModel FirstByFPR_SEQ_REPETICAOQuery(int value );
         public QueryModel FirstByIPV_STATUS_LIBERACAOQuery(string value );
         public QueryModel FirstByIPV_VALOR_MEDIDAQuery(Decimal value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

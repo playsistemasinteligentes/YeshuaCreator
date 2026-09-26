@@ -24,6 +24,7 @@
     public int LT_ID { get; set; }
     public int? TES_ID { get; set; }
     public int? RL_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  LT_ID = lt_id; 
  TES_ID = tes_id; 
  RL_ID = rl_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

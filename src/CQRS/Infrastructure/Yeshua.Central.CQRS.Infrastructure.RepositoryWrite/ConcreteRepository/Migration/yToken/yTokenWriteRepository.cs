@@ -96,6 +96,11 @@ namespace Input.Repository.yToken
             var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateDeleted(int id, bool value)
         {
             var query = _query.UpdateDeleted(id, value);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_Indicadores", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_IndicadoresReceiver), commandName: "Command.Write.T_IndicadoresCrudCommand");
                  var t_indicadores = new T_IndicadoresFactory(_logger, _domainTrackingPolicy).Create(context, c.IND_ID, c.IND_DESCRICAO, c.NEG_ID, c.DESC_CALCULO, c.IND_TIPOCOMPARADOR, c.IND_GRAFICO, c.IND_CONEXAO, c.IND_DTCRIACAO, c.RESPOSAVELIND, c.RESPOSAVELCARGA, c.PROCEXTRACAO, c.PER_ID, c.DIM_ID, c.DOM_EMPRESA, c.DOM_FILIAL);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_indicadores.OperationalEntityId);
                  var domainResult = T_IndicadoresDomainBehavior.Apply(t_indicadores, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

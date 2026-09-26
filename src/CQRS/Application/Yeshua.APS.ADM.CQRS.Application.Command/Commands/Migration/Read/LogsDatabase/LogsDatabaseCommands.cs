@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct LogsDatabaseReadCommand : ICommandRead
+    public struct LogsDatabaseReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? LOGS_ID { get; set; }
         public string? LOGS_TABLE { get; set; }
@@ -27,11 +27,14 @@ namespace Command.Read
         public DateTime? LOGS_DATE { get; set; }
         public int? USE_ID { get; set; }
         public string? LOGS_ORIGEM { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "LogsDatabase";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

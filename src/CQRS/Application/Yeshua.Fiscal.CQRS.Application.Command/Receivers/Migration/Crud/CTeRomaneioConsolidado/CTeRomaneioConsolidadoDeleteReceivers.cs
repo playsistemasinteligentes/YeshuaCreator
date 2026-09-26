@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeRomaneioConsolidado", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeRomaneioConsolidadoReceiver), commandName: "Command.Write.CTeRomaneioConsolidadoCrudCommand");
                  var cteromaneioconsolidado = new CTeRomaneioConsolidadoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.CorrelationId, c.RomaneioId, c.CargaId, c.ConsolidadoEmUtc, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.EmitenteDocumento, c.TomadorDocumento, c.RotaSnapshotJson, c.CargaSnapshotJson, c.PreferenciasFiscaisJson, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cteromaneioconsolidado.OperationalEntityId);
                  var domainResult = CTeRomaneioConsolidadoDomainBehavior.Apply(cteromaneioconsolidado, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

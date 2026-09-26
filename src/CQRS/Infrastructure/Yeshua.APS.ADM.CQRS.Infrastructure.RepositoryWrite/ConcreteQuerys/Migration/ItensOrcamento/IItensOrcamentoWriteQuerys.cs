@@ -35,6 +35,7 @@ namespace IQuery.Write
         QueryModel UpdateGRP_ID_COMPOSICAO(int id, string value);
         QueryModel UpdateITO_LARGURA(int id, Decimal value);
         QueryModel UpdateITO_COMPRIMENTO(int id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

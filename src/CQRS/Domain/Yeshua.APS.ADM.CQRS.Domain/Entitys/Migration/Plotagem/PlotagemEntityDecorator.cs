@@ -29,10 +29,11 @@
             public const ulong PLO_Z = 1UL << 6;
             public const ulong PLO_GRAFICO = 1UL << 7;
             public const ulong CON_ID = 1UL << 8;
-            public const ulong TenantID = 1UL << 9;
-            public const ulong Deleted = 1UL << 10;
-            public const ulong Changed = 1UL << 11;
-            public const ulong UserId = 1UL << 12;
+            public const ulong OperationalEntityId = 1UL << 9;
+            public const ulong TenantID = 1UL << 10;
+            public const ulong Deleted = 1UL << 11;
+            public const ulong Changed = 1UL << 12;
+            public const ulong UserId = 1UL << 13;
         }
 
         public partial class PlotagemDecorator : IPlotagemEntity
@@ -187,6 +188,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

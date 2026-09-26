@@ -11,14 +11,17 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct PerfilCrudCommand : ICommand
+    public struct PerfilCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int PER_ID { get; set; }
         public string PER_NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Perfil";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

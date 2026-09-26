@@ -24,6 +24,7 @@
     public int PER_ID { get; set; }
     public string OBJ_ID { get; set; }
     public string? PEO_ACAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  PER_ID = per_id; 
  OBJ_ID = obj_id; 
  PEO_ACAO = peo_acao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

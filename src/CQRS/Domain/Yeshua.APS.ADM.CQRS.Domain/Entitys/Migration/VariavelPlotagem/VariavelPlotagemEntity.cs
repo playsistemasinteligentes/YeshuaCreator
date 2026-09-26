@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public int VAR_ID { get; set; }
     public int PLO_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  VAR_ID = var_id; 
  PLO_ID = plo_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

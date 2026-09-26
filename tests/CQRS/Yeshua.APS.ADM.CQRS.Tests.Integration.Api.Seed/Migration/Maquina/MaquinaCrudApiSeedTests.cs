@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Maquina;
 
-[SeedTestOrder(138)]
+[SeedTestOrder(136)]
 public partial class MaquinaCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Maquina/PostMaquina";

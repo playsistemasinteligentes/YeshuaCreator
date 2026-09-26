@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByNOME(string value );
         public bool ExistsByEXIBELISTA(int value );
         public bool ExistsByGRU_DESCRICAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public T_GrupoDTO FirstByNOME(string value );
         public T_GrupoDTO FirstByEXIBELISTA(int value );
         public T_GrupoDTO FirstByGRU_DESCRICAO(string value );
+        public T_GrupoDTO FirstByOperationalEntityId(string value );
         public T_GrupoDTO FirstByTenantID(int value );
         public T_GrupoDTO FirstByDeleted(bool value );
         public T_GrupoDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<T_GrupoDTO> GetAllByNOME(string value );
         public IEnumerable<T_GrupoDTO> GetAllByEXIBELISTA(int value );
         public IEnumerable<T_GrupoDTO> GetAllByGRU_DESCRICAO(string value );
+        public IEnumerable<T_GrupoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_GrupoDTO> GetAllByTenantID(int value );
         public IEnumerable<T_GrupoDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_GrupoDTO> GetAllByChanged(DateTime value );

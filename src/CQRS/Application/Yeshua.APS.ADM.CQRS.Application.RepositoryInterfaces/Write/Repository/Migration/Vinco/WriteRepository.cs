@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IVincoEntity vinco);
         void UpdateVIN_DESCRICAO(int vin_id, string value);
         void UpdateVIN_ID_DESLOCAMENTO(int vin_id, string value);
+        void UpdateOperationalEntityId(int vin_id, string value);
         void UpdateTenantID(int vin_id, int value);
         void UpdateDeleted(int vin_id, bool value);
         void UpdateChanged(int vin_id, DateTime value);

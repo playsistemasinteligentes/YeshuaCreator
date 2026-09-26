@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMaquinaGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMaquinaGrupoMaquinaReceiver), commandName: "Command.Write.MaquinaGrupoMaquinaCrudCommand");
                  var maquinagrupomaquina = new MaquinaGrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GMA_ID, c.MAQ_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", maquinagrupomaquina.OperationalEntityId);
                  var domainResult = MaquinaGrupoMaquinaDomainBehavior.Apply(maquinagrupomaquina, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

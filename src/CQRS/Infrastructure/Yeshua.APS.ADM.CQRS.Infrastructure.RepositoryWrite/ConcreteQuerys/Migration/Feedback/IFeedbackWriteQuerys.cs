@@ -36,6 +36,7 @@ namespace IQuery.Write
         QueryModel UpdateFEE_QTD_TOTAL_PRODUCAO_AJUSTADA(int id, Decimal value);
         QueryModel UpdateBOL_ID(int id, string value);
         QueryModel UpdateCOR_SEQUENCIA(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

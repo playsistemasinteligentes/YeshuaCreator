@@ -36,6 +36,7 @@ namespace IRepository.Read
         public bool ExistsByOTK_DATA_PREVISTA(DateTime value );
         public bool ExistsByOTK_DATA_REALIZADA(DateTime value );
         public bool ExistsByFPR_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -51,6 +52,7 @@ namespace IRepository.Read
         public OrderTrackDTO FirstByOTK_DATA_PREVISTA(DateTime value );
         public OrderTrackDTO FirstByOTK_DATA_REALIZADA(DateTime value );
         public OrderTrackDTO FirstByFPR_ID(int value );
+        public OrderTrackDTO FirstByOperationalEntityId(string value );
         public OrderTrackDTO FirstByTenantID(int value );
         public OrderTrackDTO FirstByDeleted(bool value );
         public OrderTrackDTO FirstByChanged(DateTime value );
@@ -66,6 +68,7 @@ namespace IRepository.Read
         public IEnumerable<OrderTrackDTO> GetAllByOTK_DATA_PREVISTA(DateTime value );
         public IEnumerable<OrderTrackDTO> GetAllByOTK_DATA_REALIZADA(DateTime value );
         public IEnumerable<OrderTrackDTO> GetAllByFPR_ID(int value );
+        public IEnumerable<OrderTrackDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<OrderTrackDTO> GetAllByTenantID(int value );
         public IEnumerable<OrderTrackDTO> GetAllByDeleted(bool value );
         public IEnumerable<OrderTrackDTO> GetAllByChanged(DateTime value );

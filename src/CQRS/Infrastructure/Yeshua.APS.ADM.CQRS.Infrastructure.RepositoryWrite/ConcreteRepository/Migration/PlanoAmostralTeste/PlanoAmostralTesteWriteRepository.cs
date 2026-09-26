@@ -56,6 +56,11 @@ namespace Input.Repository.PlanoAmostralTeste
             var query = _query.UpdateGRP_TIPO(pat_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int pat_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(pat_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int pat_id, int value)
         {
             var query = _query.UpdateTenantID(pat_id, value);

@@ -20,6 +20,7 @@
                 {
                     public partial class yConfigNotificationEntity : IyConfigNotificationEntity
 {
+    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public int? TenantID { get; set; }
     public string? EmailSmtpClient { get; set; }
@@ -36,6 +37,7 @@
  EmailPort = emailport; 
  EmailUserName = emailusername; 
  EmailPassword = emailpassword; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

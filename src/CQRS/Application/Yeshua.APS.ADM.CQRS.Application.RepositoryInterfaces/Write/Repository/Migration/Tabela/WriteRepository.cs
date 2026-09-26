@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(ITabelaEntity tabela);
         void UpdateCODIGO(int id_tabela, string value);
         void UpdateNOME(int id_tabela, string value);
+        void UpdateOperationalEntityId(int id_tabela, string value);
         void UpdateTenantID(int id_tabela, int value);
         void UpdateDeleted(int id_tabela, bool value);
         void UpdateChanged(int id_tabela, DateTime value);

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMDFeTentativaEmissaoQuery(IMDFeTentativaEmissaoEntity MDFeTentativaEmissao)
         {
-            this.Query = $@" INSERT INTO [MDFeTentativaEmissao] ([MDFeSolicitacaoFiscalId], [ChaveAcesso], [Numero], [Serie], [Tentativa], [XmlAssinadoStorageKey], [XmlProcStorageKey], [XmlHash], [CodigoRetorno], [MensagemRetorno], [ProtocoloAutorizacao], [EnviadoEmUtc], [AutorizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @ChaveAcesso, @Numero, @Serie, @Tentativa, @XmlAssinadoStorageKey, @XmlProcStorageKey, @XmlHash, @CodigoRetorno, @MensagemRetorno, @ProtocoloAutorizacao, @EnviadoEmUtc, @AutorizadoEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFeTentativaEmissao] ([MDFeSolicitacaoFiscalId], [ChaveAcesso], [Numero], [Serie], [Tentativa], [XmlAssinadoStorageKey], [XmlProcStorageKey], [XmlHash], [CodigoRetorno], [MensagemRetorno], [ProtocoloAutorizacao], [EnviadoEmUtc], [AutorizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @ChaveAcesso, @Numero, @Serie, @Tentativa, @XmlAssinadoStorageKey, @XmlProcStorageKey, @XmlHash, @CodigoRetorno, @MensagemRetorno, @ProtocoloAutorizacao, @EnviadoEmUtc, @AutorizadoEmUtc, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MDFeSolicitacaoFiscalId = MDFeTentativaEmissao.MDFeSolicitacaoFiscalId,
@@ -47,6 +47,7 @@ namespace Query.Write
                 EnviadoEmUtc = MDFeTentativaEmissao.EnviadoEmUtc,
                 AutorizadoEmUtc = MDFeTentativaEmissao.AutorizadoEmUtc,
                 Status = MDFeTentativaEmissao.Status,
+                OperationalEntityId = MDFeTentativaEmissao.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -215,6 +216,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Status = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFeTentativaEmissao] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -31,6 +31,7 @@
     string? TRA_FONE { get; set; }
     string? TRA_ID_INTEGRACAO { get; set; }
     string? TRA_ID_INTEGRACAO_ERP { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

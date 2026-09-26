@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct CorridasOnduladeiraEstudoCrudCommand : ICommand
+    public struct CorridasOnduladeiraEstudoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string? BOL_ID { get; set; }
@@ -34,10 +34,13 @@ namespace Command.Write
         public string? PRO_ID_PALETE { get; set; }
         public string? COR_STATUS_PALETE { get; set; }
         public Decimal? COR_GRUPO_PRODUTIVO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "CorridasOnduladeiraEstudo";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

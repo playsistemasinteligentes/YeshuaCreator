@@ -131,6 +131,11 @@ namespace Input.Repository.InspecaoVisual
             var query = _query.UpdateIPV_VALOR_MEDIDA(ipv_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int ipv_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ipv_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int ipv_id, int value)
         {
             var query = _query.UpdateTenantID(ipv_id, value);

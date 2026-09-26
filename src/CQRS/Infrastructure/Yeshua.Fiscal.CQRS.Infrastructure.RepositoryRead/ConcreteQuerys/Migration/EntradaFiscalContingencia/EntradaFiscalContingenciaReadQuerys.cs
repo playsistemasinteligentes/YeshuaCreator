@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] from [EntradaFiscalContingencia] ";
+            this.Query = $@" select [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] from [EntradaFiscalContingencia] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (!string.IsNullOrEmpty(Command.CorrelationId)) dict["CorrelationId"] = $"%{Command.CorrelationId}%";
@@ -100,6 +100,8 @@ if (Command.Status.HasValue)
     dict["Status"] = Command.Status.Value;
     whereClauses.Add($"[Status] = @Status");
 }
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -768,6 +770,23 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [EntradaFiscalContingencia] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -858,7 +877,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -875,7 +894,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -892,7 +911,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -909,7 +928,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -926,7 +945,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -943,7 +962,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -960,7 +979,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -977,7 +996,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -994,7 +1013,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1011,7 +1030,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1028,7 +1047,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1045,7 +1064,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1062,7 +1081,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1079,7 +1098,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1096,7 +1115,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1113,7 +1132,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1130,7 +1149,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1147,7 +1166,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1164,7 +1183,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1181,7 +1200,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1198,7 +1217,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1215,7 +1234,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1232,7 +1251,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1249,7 +1268,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1266,7 +1285,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1283,7 +1302,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1300,7 +1319,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1317,7 +1336,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1334,7 +1353,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1351,7 +1370,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1368,7 +1387,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1385,7 +1404,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1402,7 +1421,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1414,12 +1433,29 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1436,7 +1472,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1453,7 +1489,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1470,7 +1506,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1487,7 +1523,7 @@ if (Command.CertificadoDigitalId.HasValue) whereClauses.Add($"[CertificadoDigita
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
+            this.Query = $"SELECT [Id], [CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId] FROM [EntradaFiscalContingencia] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

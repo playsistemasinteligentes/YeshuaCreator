@@ -356,6 +356,11 @@ namespace Input.Repository.FilaProducaoPrevista
             var query = _query.UpdateFPR_M2_UNITARIO(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int id, int value)
         {
             var query = _query.UpdateTenantID(id, value);

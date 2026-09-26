@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateTipoABNTQuery(ITipoABNTEntity TipoABNT);
         QueryModel UpdateABN_ID(int id, string value);
         QueryModel UpdateABN_DESCRICAO(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

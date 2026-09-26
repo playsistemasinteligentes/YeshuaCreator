@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public Decimal pon_latitude { get; set; }
     public Decimal pon_longitude { get; set; }
     public Decimal pon_distancia_km { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

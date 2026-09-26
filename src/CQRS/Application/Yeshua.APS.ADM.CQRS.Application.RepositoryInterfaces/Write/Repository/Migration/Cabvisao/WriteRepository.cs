@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateCAB_DESC(int cab_id, string value);
         void UpdateCAB_STATUS(int cab_id, int value);
         void UpdateUSE_ID(int cab_id, int value);
+        void UpdateOperationalEntityId(int cab_id, string value);
         void UpdateTenantID(int cab_id, int value);
         void UpdateDeleted(int cab_id, bool value);
         void UpdateChanged(int cab_id, DateTime value);

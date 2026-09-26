@@ -37,6 +37,7 @@
     public int? FPR_SEQ_REPETICAO { get; set; }
     public string? IPV_STATUS_LIBERACAO { get; set; }
     public Decimal? IPV_VALOR_MEDIDA { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -60,6 +61,7 @@
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  IPV_STATUS_LIBERACAO = ipv_status_liberacao; 
  IPV_VALOR_MEDIDA = ipv_valor_medida; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

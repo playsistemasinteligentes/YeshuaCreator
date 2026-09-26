@@ -51,6 +51,11 @@ namespace Input.Repository.yUser
             var query = _query.DeleteyUserQuery(yUser);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateNome(int id, string value)
         {
             var query = _query.UpdateNome(id, value);

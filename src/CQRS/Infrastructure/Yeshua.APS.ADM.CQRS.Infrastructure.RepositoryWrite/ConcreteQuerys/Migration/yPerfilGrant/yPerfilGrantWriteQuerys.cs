@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InseriryPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant)
         {
-            this.Query = $@" INSERT INTO [yPerfilGrant] ([PerfilId], [GrantId], [CanGrant], [CanCreate], [CanRead], [CanUpdate], [CanDelete], [ValidUntil], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yPerfilGrant] ([OperationalEntityId], [PerfilId], [GrantId], [CanGrant], [CanCreate], [CanRead], [CanUpdate], [CanDelete], [ValidUntil], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OperationalEntityId, @PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = yPerfilGrant.OperationalEntityId,
                 PerfilId = yPerfilGrant.PerfilId,
                 GrantId = yPerfilGrant.GrantId,
                 CanGrant = yPerfilGrant.CanGrant,
@@ -64,6 +65,16 @@ namespace Query.Write
                 Changed = yPerfilGrant.Changed,
                 UserId = _executionContext.UserId,
                 Id = yPerfilGrant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yPerfilGrant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

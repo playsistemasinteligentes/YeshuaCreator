@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByLOO_ID(string value );
         public bool ExistsByLOO_DESCRICAO(string value );
         public bool ExistsByLOO_CONTEUDO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public LoockDTO FirstByLOO_ID(string value );
         public LoockDTO FirstByLOO_DESCRICAO(string value );
         public LoockDTO FirstByLOO_CONTEUDO(string value );
+        public LoockDTO FirstByOperationalEntityId(string value );
         public LoockDTO FirstByTenantID(int value );
         public LoockDTO FirstByDeleted(bool value );
         public LoockDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<LoockDTO> GetAllByLOO_ID(string value );
         public IEnumerable<LoockDTO> GetAllByLOO_DESCRICAO(string value );
         public IEnumerable<LoockDTO> GetAllByLOO_CONTEUDO(string value );
+        public IEnumerable<LoockDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LoockDTO> GetAllByTenantID(int value );
         public IEnumerable<LoockDTO> GetAllByDeleted(bool value );
         public IEnumerable<LoockDTO> GetAllByChanged(DateTime value );

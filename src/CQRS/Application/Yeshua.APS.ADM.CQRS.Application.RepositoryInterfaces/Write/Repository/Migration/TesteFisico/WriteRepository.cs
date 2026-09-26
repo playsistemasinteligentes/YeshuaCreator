@@ -37,6 +37,7 @@ namespace IRepository.Write
         void UpdateMAQ_ID(int id, string value);
         void UpdateFPR_SEQ_REPETICAO(int id, int value);
         void UpdateFPR_SEQ_TRANFORMACAO(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

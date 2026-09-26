@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(ITipoDispositivoEntity tipodispositivo);
         void UpdateTDI_ID(int id, string value);
         void UpdateTDI_DESCRICAO(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

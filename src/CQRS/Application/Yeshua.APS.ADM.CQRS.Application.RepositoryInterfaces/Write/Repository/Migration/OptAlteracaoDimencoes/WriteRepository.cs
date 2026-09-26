@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IOptAlteracaoDimencoesEntity optalteracaodimencoes);
         void Delete(IOptAlteracaoDimencoesEntity optalteracaodimencoes);
         void UpdateOAD_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

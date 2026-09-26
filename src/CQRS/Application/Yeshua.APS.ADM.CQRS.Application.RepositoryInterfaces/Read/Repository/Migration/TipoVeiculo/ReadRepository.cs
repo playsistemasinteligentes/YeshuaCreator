@@ -43,6 +43,7 @@ namespace IRepository.Read
         public bool ExistsByTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D(Decimal value );
         public bool ExistsByTIP_CAPACIDADE_LARGURA_PESCOCO_D(Decimal value );
         public bool ExistsByTIP_CAPACIDADE_M3(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -66,6 +67,7 @@ namespace IRepository.Read
         public TipoVeiculoDTO FirstByTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D(Decimal value );
         public TipoVeiculoDTO FirstByTIP_CAPACIDADE_LARGURA_PESCOCO_D(Decimal value );
         public TipoVeiculoDTO FirstByTIP_CAPACIDADE_M3(Decimal value );
+        public TipoVeiculoDTO FirstByOperationalEntityId(string value );
         public TipoVeiculoDTO FirstByTenantID(int value );
         public TipoVeiculoDTO FirstByDeleted(bool value );
         public TipoVeiculoDTO FirstByChanged(DateTime value );
@@ -89,6 +91,7 @@ namespace IRepository.Read
         public IEnumerable<TipoVeiculoDTO> GetAllByTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D(Decimal value );
         public IEnumerable<TipoVeiculoDTO> GetAllByTIP_CAPACIDADE_LARGURA_PESCOCO_D(Decimal value );
         public IEnumerable<TipoVeiculoDTO> GetAllByTIP_CAPACIDADE_M3(Decimal value );
+        public IEnumerable<TipoVeiculoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoVeiculoDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoVeiculoDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoVeiculoDTO> GetAllByChanged(DateTime value );

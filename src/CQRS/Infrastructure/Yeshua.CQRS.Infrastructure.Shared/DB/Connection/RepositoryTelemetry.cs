@@ -1,5 +1,6 @@
 using Aplication.Interfaces.Services;
 using Dominio.Interfaces;
+using Dominio.Operational;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -46,6 +47,24 @@ namespace Shered.DB.Connection
             return QueryIds.GetOrAdd(sql, static value => CreateQueryId(value));
         }
 
+        public Activity? StartActivity(
+            string operation,
+            string queryId,
+            RepositoryTelemetrySelection selection)
+        {
+            if (!selection.EmitEvents)
+                return null;
+
+            var activity = OperationalActivity.Source.StartActivity(
+                $"Repository {operation}",
+                ActivityKind.Client);
+            activity?.SetTag("yeshua.component", "Repository");
+            activity?.SetTag("db.operation.name", operation);
+            activity?.SetTag("yeshua.query_id", queryId);
+            activity?.SetTag("yeshua.trace_id", _context.TraceId);
+            return activity;
+        }
+
         public void Observe(string repository, string metric, long value)
         {
             _logger.Metric(repository, metric, value);
@@ -57,7 +76,8 @@ namespace Shered.DB.Connection
             long startedAt,
             bool succeeded,
             RepositoryTelemetrySelection selection,
-            Exception? exception = null)
+            Exception? exception = null,
+            Activity? activity = null)
         {
             // OBS: F-EXP-04 - nunca recebe SQL nem parametros, somente o identificador opaco.
             var durationMs = (long)Stopwatch
@@ -72,6 +92,12 @@ namespace Shered.DB.Connection
                 selection.CaptureCounters,
                 selection.EmitEvents,
                 exception);
+
+            activity?.SetStatus(
+                succeeded ? ActivityStatusCode.Ok : ActivityStatusCode.Error,
+                exception?.Message);
+            if (exception is not null)
+                OperationalActivity.RecordException(activity, exception);
         }
 
         private static string CreateQueryId(string sql)

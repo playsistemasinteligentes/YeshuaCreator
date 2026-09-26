@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRecursos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRecursosReceiver), commandName: "Command.Write.RecursosCrudCommand");
                  var recursos = new RecursosFactory(_logger, _domainTrackingPolicy).Create(context, c.REC_ID, c.REC_DESCRICAO, c.CAL_ID, c.REC_CONTROL_IP, c.GRE_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", recursos.OperationalEntityId);
                  var domainResult = RecursosDomainBehavior.Apply(recursos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

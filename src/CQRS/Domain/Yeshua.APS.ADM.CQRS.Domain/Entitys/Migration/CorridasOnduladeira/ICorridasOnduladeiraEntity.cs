@@ -41,6 +41,7 @@
     string? PRO_ID_PALETE { get; set; }
     string? COR_STATUS_PALETE { get; set; }
     Decimal? COR_GRUPO_PRODUTIVO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

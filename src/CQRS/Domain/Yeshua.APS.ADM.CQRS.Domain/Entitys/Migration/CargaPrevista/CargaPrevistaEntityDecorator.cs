@@ -51,10 +51,11 @@
             public const ulong OCO_ID = 1UL << 28;
             public const ulong CAR_ID_JUNTADA = 1UL << 29;
             public const ulong CAR_OBSERVACAO_OTIMIZADOR = 1UL << 30;
-            public const ulong TenantID = 1UL << 31;
-            public const ulong Deleted = 1UL << 32;
-            public const ulong Changed = 1UL << 33;
-            public const ulong UserId = 1UL << 34;
+            public const ulong OperationalEntityId = 1UL << 31;
+            public const ulong TenantID = 1UL << 32;
+            public const ulong Deleted = 1UL << 33;
+            public const ulong Changed = 1UL << 34;
+            public const ulong UserId = 1UL << 35;
         }
 
         public partial class CargaPrevistaDecorator : ICargaPrevistaEntity
@@ -517,6 +518,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

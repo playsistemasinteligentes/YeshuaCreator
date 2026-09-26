@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateMDFeSolicitacaoFiscalId(int id, int value);
         QueryModel UpdateNome(int id, string value);
         QueryModel UpdateDocumento(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct MDFeVeiculoCrudCommand : ICommand
+    public struct MDFeVeiculoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int MDFeSolicitacaoFiscalId { get; set; }
@@ -20,10 +20,13 @@ namespace Command.Write
         public Decimal? Tara { get; set; }
         public Decimal? CapacidadeKg { get; set; }
         public Decimal? CapacidadeM3 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "MDFeVeiculo";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

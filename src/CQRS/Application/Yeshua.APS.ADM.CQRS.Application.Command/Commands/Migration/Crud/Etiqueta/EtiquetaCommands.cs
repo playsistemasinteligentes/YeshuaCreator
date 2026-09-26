@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct EtiquetaCrudCommand : ICommand
+    public struct EtiquetaCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int ETI_ID { get; set; }
         public DateTime? ETI_EMISSAO { get; set; }
@@ -36,10 +36,13 @@ namespace Command.Write
         public int? ETI_IMPRIMIR_ATE { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Etiqueta";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

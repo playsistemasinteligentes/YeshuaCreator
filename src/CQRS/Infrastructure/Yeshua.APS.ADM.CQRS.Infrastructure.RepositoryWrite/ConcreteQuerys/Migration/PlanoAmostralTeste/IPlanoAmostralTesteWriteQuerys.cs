@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirPlanoAmostralTesteQuery(IPlanoAmostralTesteEntity PlanoAmostralTeste);
         public QueryModel UpdatePlanoAmostralTesteQuery(IPlanoAmostralTesteEntity PlanoAmostralTeste);
         QueryModel UpdateGRP_TIPO(int pat_id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int pat_id, string value);
         QueryModel UpdateTenantID(int pat_id, int value);
         QueryModel UpdateDeleted(int pat_id, bool value);
         QueryModel UpdateChanged(int pat_id, DateTime value);

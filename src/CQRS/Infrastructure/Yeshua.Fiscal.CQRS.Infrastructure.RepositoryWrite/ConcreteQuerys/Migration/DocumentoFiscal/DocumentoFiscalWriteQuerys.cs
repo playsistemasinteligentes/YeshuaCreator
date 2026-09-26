@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirDocumentoFiscalQuery(IDocumentoFiscalEntity DocumentoFiscal)
         {
-            this.Query = $@" INSERT INTO [DocumentoFiscal] ([CorrelationId], [ProdutoFiscal], [ChaveAcesso], [Serie], [Numero], [Ambiente], [UFEmitente], [EmitenteDocumento], [DestinatarioDocumento], [XmlStorageKey], [XmlHash], [ProtocoloAutorizacao], [CodigoRetorno], [MensagemRetorno], [Status], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CorrelationId, @ProdutoFiscal, @ChaveAcesso, @Serie, @Numero, @Ambiente, @UFEmitente, @EmitenteDocumento, @DestinatarioDocumento, @XmlStorageKey, @XmlHash, @ProtocoloAutorizacao, @CodigoRetorno, @MensagemRetorno, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [DocumentoFiscal] ([CorrelationId], [ProdutoFiscal], [ChaveAcesso], [Serie], [Numero], [Ambiente], [UFEmitente], [EmitenteDocumento], [DestinatarioDocumento], [XmlStorageKey], [XmlHash], [ProtocoloAutorizacao], [CodigoRetorno], [MensagemRetorno], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CorrelationId, @ProdutoFiscal, @ChaveAcesso, @Serie, @Numero, @Ambiente, @UFEmitente, @EmitenteDocumento, @DestinatarioDocumento, @XmlStorageKey, @XmlHash, @ProtocoloAutorizacao, @CodigoRetorno, @MensagemRetorno, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CorrelationId = DocumentoFiscal.CorrelationId,
@@ -48,6 +48,7 @@ namespace Query.Write
                 CodigoRetorno = DocumentoFiscal.CodigoRetorno,
                 MensagemRetorno = DocumentoFiscal.MensagemRetorno,
                 Status = DocumentoFiscal.Status,
+                OperationalEntityId = DocumentoFiscal.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -227,6 +228,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Status = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [DocumentoFiscal] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePlanoConta", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePlanoContaReceiver), commandName: "Command.Write.PlanoContaCrudCommand");
                  var planoconta = new PlanoContaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Codigo, c.Nome, c.Tipo);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", planoconta.OperationalEntityId);
                  var domainResult = PlanoContaDomainBehavior.Apply(planoconta, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

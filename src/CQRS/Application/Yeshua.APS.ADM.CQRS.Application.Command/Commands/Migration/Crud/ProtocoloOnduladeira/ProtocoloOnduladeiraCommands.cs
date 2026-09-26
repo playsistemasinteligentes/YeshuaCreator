@@ -11,17 +11,20 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ProtocoloOnduladeiraCrudCommand : ICommand
+    public struct ProtocoloOnduladeiraCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string PTO_ID { get; set; }
         public string PTO_CHAVE { get; set; }
         public string MAQ_ID { get; set; }
         public string PTO_COMANDO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "ProtocoloOnduladeira";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

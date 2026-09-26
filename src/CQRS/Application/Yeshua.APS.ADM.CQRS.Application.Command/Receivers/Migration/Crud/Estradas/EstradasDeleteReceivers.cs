@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEstradas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEstradasReceiver), commandName: "Command.Write.EstradasCrudCommand");
                  var estradas = new EstradasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_ID, c.EST_DESCRICAO, c.EST_ID_LIGACAO_PONTO_A, c.EST_ID_LIGACAO_PONTO_B);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", estradas.OperationalEntityId);
                  var domainResult = EstradasDomainBehavior.Apply(estradas, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

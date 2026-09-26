@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public string tem_resina_de { get; set; } = string.Empty;
     public string tem_resina_para { get; set; } = string.Empty;
     public int tem_tempo { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

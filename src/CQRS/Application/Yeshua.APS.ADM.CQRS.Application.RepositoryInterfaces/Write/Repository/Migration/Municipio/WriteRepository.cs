@@ -31,6 +31,7 @@ namespace IRepository.Write
         void UpdateMUN_CODIGO_SIAFI(string mun_id, string value);
         void UpdateMUN_CODIGO_CNPJ(string mun_id, string value);
         void UpdateMUN_DISTANCIA_KM(string mun_id, Decimal value);
+        void UpdateOperationalEntityId(string mun_id, string value);
         void UpdateTenantID(string mun_id, int value);
         void UpdateDeleted(string mun_id, bool value);
         void UpdateChanged(string mun_id, DateTime value);

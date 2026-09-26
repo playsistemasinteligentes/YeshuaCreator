@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct MDFeEncerramentoCrudCommand : ICommand
+    public struct MDFeEncerramentoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int MDFeId { get; set; }
@@ -24,10 +24,13 @@ namespace Command.Write
         public string? Protocolo { get; set; }
         public string? CodigoRetorno { get; set; }
         public string? MensagemRetorno { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "MDFeEncerramento";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

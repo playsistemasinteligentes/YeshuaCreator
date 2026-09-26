@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTesteFisicoQuery(ITesteFisicoEntity TesteFisico)
         {
-            this.Query = $@" INSERT INTO [TesteFisico] ([TES_ID], [ITE_ID], [USR_ID], [TES_NOME_TECNICO], [TES_AMOSTRA], [TES_OP], [TES_VALOR_NUMERICO], [TES_VALOR_DATA], [TES_VALOR_TEXTO], [TES_EMISSAO], [ORD_ID], [PRO_ID], [MAQ_ID], [FPR_SEQ_REPETICAO], [FPR_SEQ_TRANFORMACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TES_ID, @ITE_ID, @USR_ID, @TES_NOME_TECNICO, @TES_AMOSTRA, @TES_OP, @TES_VALOR_NUMERICO, @TES_VALOR_DATA, @TES_VALOR_TEXTO, @TES_EMISSAO, @ORD_ID, @PRO_ID, @MAQ_ID, @FPR_SEQ_REPETICAO, @FPR_SEQ_TRANFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TesteFisico] ([TES_ID], [ITE_ID], [USR_ID], [TES_NOME_TECNICO], [TES_AMOSTRA], [TES_OP], [TES_VALOR_NUMERICO], [TES_VALOR_DATA], [TES_VALOR_TEXTO], [TES_EMISSAO], [ORD_ID], [PRO_ID], [MAQ_ID], [FPR_SEQ_REPETICAO], [FPR_SEQ_TRANFORMACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TES_ID, @ITE_ID, @USR_ID, @TES_NOME_TECNICO, @TES_AMOSTRA, @TES_OP, @TES_VALOR_NUMERICO, @TES_VALOR_DATA, @TES_VALOR_TEXTO, @TES_EMISSAO, @ORD_ID, @PRO_ID, @MAQ_ID, @FPR_SEQ_REPETICAO, @FPR_SEQ_TRANFORMACAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TES_ID = TesteFisico.TES_ID,
@@ -48,6 +48,7 @@ namespace Query.Write
                 MAQ_ID = TesteFisico.MAQ_ID,
                 FPR_SEQ_REPETICAO = TesteFisico.FPR_SEQ_REPETICAO,
                 FPR_SEQ_TRANFORMACAO = TesteFisico.FPR_SEQ_TRANFORMACAO,
+                OperationalEntityId = TesteFisico.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -227,6 +228,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 FPR_SEQ_TRANFORMACAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [TesteFisico] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCTeParticipanteSnapshot", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCTeParticipanteSnapshotReceiver), commandName: "Command.Write.CTeParticipanteSnapshotCrudCommand");
                  var cteparticipantesnapshot = new CTeParticipanteSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.Papel, c.Documento, c.Nome, c.InscricaoEstadual, c.UF, c.MunicipioCodigoIbge, c.EnderecoJson);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cteparticipantesnapshot.OperationalEntityId);
                  var domainResult = CTeParticipanteSnapshotDomainBehavior.Apply(cteparticipantesnapshot, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

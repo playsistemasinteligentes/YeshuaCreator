@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByMAP_CUSTO_PEDAGIO_POR_EIXO(Decimal value );
         public bool ExistsByROD_ID(int value );
         public bool ExistsByMAP_ALTURA_ROD(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -45,6 +46,7 @@ namespace IRepository.Read
         public MapaDTO FirstByMAP_CUSTO_PEDAGIO_POR_EIXO(Decimal value );
         public MapaDTO FirstByROD_ID(int value );
         public MapaDTO FirstByMAP_ALTURA_ROD(Decimal value );
+        public MapaDTO FirstByOperationalEntityId(string value );
         public MapaDTO FirstByTenantID(int value );
         public MapaDTO FirstByDeleted(bool value );
         public MapaDTO FirstByChanged(DateTime value );
@@ -57,6 +59,7 @@ namespace IRepository.Read
         public IEnumerable<MapaDTO> GetAllByMAP_CUSTO_PEDAGIO_POR_EIXO(Decimal value );
         public IEnumerable<MapaDTO> GetAllByROD_ID(int value );
         public IEnumerable<MapaDTO> GetAllByMAP_ALTURA_ROD(Decimal value );
+        public IEnumerable<MapaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MapaDTO> GetAllByTenantID(int value );
         public IEnumerable<MapaDTO> GetAllByDeleted(bool value );
         public IEnumerable<MapaDTO> GetAllByChanged(DateTime value );

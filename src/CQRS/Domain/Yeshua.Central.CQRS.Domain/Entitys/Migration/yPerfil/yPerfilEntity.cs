@@ -20,6 +20,7 @@
                 {
                     public partial class yPerfilEntity : IyPerfilEntity
 {
+    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public string Description { get; set; }
     public int? TenantID { get; set; }
@@ -30,6 +31,7 @@
  internal yPerfilEntity(int? id, string description ){
  Id = id; 
  Description = description; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

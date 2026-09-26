@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCompensacao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCompensacaoReceiver), commandName: "Command.Write.CompensacaoCrudCommand");
                  var compensacao = new CompensacaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.COM_ID, c.GRP_ID, c.OND_ID, c.COM_VINCO1_OND, c.COM_VINCO2_OND, c.COM_VINCO3_OND, c.COM_VINCO4_OND, c.COM_VINCO5_OND, c.COM_VINCO6_OND, c.COM_VINCO7_OND, c.COM_VINCO8_OND, c.COM_VINCO9_OND, c.COM_VINCO10_OND, c.COM_VINCO1_CONVERSAO, c.COM_VINCO2_CONVERSAO, c.COM_VINCO3_CONVERSAO, c.COM_VINCO4_CONVERSAO, c.COM_VINCO5_CONVERSAO, c.COM_VINCO6_CONVERSAO, c.COM_VINCO7_CONVERSAO, c.COM_VINCO8_CONVERSAO, c.COM_VINCO9_CONVERSAO, c.COM_VINCO10_CONVERSAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", compensacao.OperationalEntityId);
                  var domainResult = CompensacaoDomainBehavior.Apply(compensacao, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

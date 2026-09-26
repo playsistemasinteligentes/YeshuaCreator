@@ -11,18 +11,21 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct VariavelReadCommand : ICommandRead
+    public struct VariavelReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int? VAR_ID { get; set; }
         public string? VAR_DESCRICAO { get; set; }
         public int? CON_ID { get; set; }
         public int? VAR_MODO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Variavel";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

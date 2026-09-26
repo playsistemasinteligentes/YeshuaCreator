@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public string cab_desc { get; set; } = string.Empty;
     public int cab_status { get; set; }
     public int use_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

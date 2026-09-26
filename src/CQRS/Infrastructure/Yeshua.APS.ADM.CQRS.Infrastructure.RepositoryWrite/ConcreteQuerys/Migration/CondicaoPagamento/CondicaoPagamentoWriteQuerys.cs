@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCondicaoPagamentoQuery(ICondicaoPagamentoEntity CondicaoPagamento)
         {
-            this.Query = $@" INSERT INTO [CondicaoPagamento] ([CON_ID], [CON_DESCRICAO], [CON_PARCELAS], [CON_VALOR_ACRECIMO], [CON_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CON_ID, @CON_DESCRICAO, @CON_PARCELAS, @CON_VALOR_ACRECIMO, @CON_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CondicaoPagamento] ([CON_ID], [CON_DESCRICAO], [CON_PARCELAS], [CON_VALOR_ACRECIMO], [CON_INTEGRACAO_ERP], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CON_ID, @CON_DESCRICAO, @CON_PARCELAS, @CON_VALOR_ACRECIMO, @CON_INTEGRACAO_ERP, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CON_ID = CondicaoPagamento.CON_ID,
@@ -38,6 +38,7 @@ namespace Query.Write
                 CON_PARCELAS = CondicaoPagamento.CON_PARCELAS,
                 CON_VALOR_ACRECIMO = CondicaoPagamento.CON_VALOR_ACRECIMO,
                 CON_INTEGRACAO_ERP = CondicaoPagamento.CON_INTEGRACAO_ERP,
+                OperationalEntityId = CondicaoPagamento.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -107,6 +108,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CON_INTEGRACAO_ERP = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CondicaoPagamento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

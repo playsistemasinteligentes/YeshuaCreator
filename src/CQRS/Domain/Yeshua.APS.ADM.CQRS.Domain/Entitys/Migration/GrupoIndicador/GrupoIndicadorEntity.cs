@@ -23,6 +23,7 @@
     public int GRU_IND_ID { get; set; }
     public int GRU_ID { get; set; }
     public int IND_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  GRU_IND_ID = gru_ind_id; 
  GRU_ID = gru_id; 
  IND_ID = ind_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

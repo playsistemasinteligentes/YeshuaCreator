@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateFeedback", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateFeedbackReceiver), commandName: "Command.Write.FeedbackCrudCommand");
                  var feedback = new FeedbackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DataInicial, c.Datafinal, c.MaquinaId, c.OcorrenciaId, c.TurnoId, c.TurmaId, c.UsuarioId, c.OrderId, c.ProdutoId, c.Observacoes, c.Grupo, c.DiaTurma, c.SequenciaTransformacao, c.SequenciaRepeticao, c.QuantidadePulsos, c.QuantidadePecasPorPulso, c.FEE_QTD_TOTAL_PRODUCAO_AJUSTADA, c.BOL_ID, c.COR_SEQUENCIA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", feedback.OperationalEntityId);
                  var domainResult = FeedbackDomainBehavior.Apply(feedback, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

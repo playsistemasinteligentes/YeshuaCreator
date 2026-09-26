@@ -40,6 +40,7 @@ namespace IRepository.Read
         public bool ExistsByCodigoRetorno(string value );
         public bool ExistsByMensagemRetorno(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -60,6 +61,7 @@ namespace IRepository.Read
         public DocumentoFiscalDTO FirstByCodigoRetorno(string value );
         public DocumentoFiscalDTO FirstByMensagemRetorno(string value );
         public DocumentoFiscalDTO FirstByStatus(int value );
+        public DocumentoFiscalDTO FirstByOperationalEntityId(string value );
         public DocumentoFiscalDTO FirstByTenantID(int value );
         public DocumentoFiscalDTO FirstByDeleted(bool value );
         public DocumentoFiscalDTO FirstByChanged(DateTime value );
@@ -80,6 +82,7 @@ namespace IRepository.Read
         public IEnumerable<DocumentoFiscalDTO> GetAllByCodigoRetorno(string value );
         public IEnumerable<DocumentoFiscalDTO> GetAllByMensagemRetorno(string value );
         public IEnumerable<DocumentoFiscalDTO> GetAllByStatus(int value );
+        public IEnumerable<DocumentoFiscalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<DocumentoFiscalDTO> GetAllByTenantID(int value );
         public IEnumerable<DocumentoFiscalDTO> GetAllByDeleted(bool value );
         public IEnumerable<DocumentoFiscalDTO> GetAllByChanged(DateTime value );

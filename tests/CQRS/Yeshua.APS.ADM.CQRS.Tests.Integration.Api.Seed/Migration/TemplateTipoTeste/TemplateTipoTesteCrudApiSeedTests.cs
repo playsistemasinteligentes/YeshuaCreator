@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.TemplateTipoTeste;
 
-[SeedTestOrder(165)]
+[SeedTestOrder(163)]
 public partial class TemplateTipoTesteCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/TemplateTipoTeste/PostTemplateTipoTeste";

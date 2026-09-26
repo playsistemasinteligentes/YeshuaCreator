@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IT_DepartamentosEntity t_departamentos);
         void Delete(IT_DepartamentosEntity t_departamentos);
         void UpdateDEP_NOME(int dep_id, string value);
+        void UpdateOperationalEntityId(int dep_id, string value);
         void UpdateTenantID(int dep_id, int value);
         void UpdateDeleted(int dep_id, bool value);
         void UpdateChanged(int dep_id, DateTime value);

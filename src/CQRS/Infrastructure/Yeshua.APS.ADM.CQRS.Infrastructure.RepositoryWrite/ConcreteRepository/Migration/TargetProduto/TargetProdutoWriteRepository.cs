@@ -331,6 +331,11 @@ namespace Input.Repository.TargetProduto
             var query = _query.UpdateTAR_TEMPO_PRODUZINDO(tar_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int tar_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(tar_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int tar_id, int value)
         {
             var query = _query.UpdateTenantID(tar_id, value);

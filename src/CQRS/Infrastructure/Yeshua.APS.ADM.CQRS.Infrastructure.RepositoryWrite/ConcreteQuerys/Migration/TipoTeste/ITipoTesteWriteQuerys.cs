@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateTT_ESPECIFICACAO(int tt_id, Decimal value);
         QueryModel UpdateTT_ORIGEM_ESPECIFICACAO(int tt_id, string value);
         QueryModel UpdateTT_IMPRIME_NO_LAUDO(int tt_id, string value);
+        QueryModel UpdateOperationalEntityId(int tt_id, string value);
         QueryModel UpdateTenantID(int tt_id, int value);
         QueryModel UpdateDeleted(int tt_id, bool value);
         QueryModel UpdateChanged(int tt_id, DateTime value);

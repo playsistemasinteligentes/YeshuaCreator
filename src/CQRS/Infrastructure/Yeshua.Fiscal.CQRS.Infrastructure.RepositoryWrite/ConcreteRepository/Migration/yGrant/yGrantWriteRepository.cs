@@ -51,6 +51,11 @@ namespace Input.Repository.yGrant
             var query = _query.DeleteyGrantQuery(yGrant);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateDescription(string id, string value)
         {
             var query = _query.UpdateDescription(id, value);

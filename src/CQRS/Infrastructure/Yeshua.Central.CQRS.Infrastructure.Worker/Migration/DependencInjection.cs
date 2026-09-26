@@ -30,8 +30,9 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
 {
 
 
-                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(
-                        _ => new RuntimeIdentityProvider(builder.Environment.EnvironmentName));
+                    var runtimeIdentityProvider = new RuntimeIdentityProvider(builder.Environment.EnvironmentName);
+                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(runtimeIdentityProvider);
+                    builder.Services.AddYeshuaOperationalTelemetry(builder.Configuration, runtimeIdentityProvider.Current);
                     builder.Services.AddSingleton<OperationalLoggingPolicyState>(sp =>
                         new OperationalLoggingPolicyState(
                             sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Application,
@@ -235,15 +236,6 @@ builder.Services.AddTransient<Command.Receivers.Read.yPerfilReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yPerfilReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yPerfilReadFKUserIdReceiver>();
 
-builder.Services.AddTransient<IRepository.Write.IyModuleWriteRepository, Input.Repository.yModule.yModuleWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IyModuleReadRepository, Read.Repository.yModuleReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IyModuleQueryRead, Query.Read.yModuleQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IyModuleQueryWrite, Query.Write.yModuleQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertyModuleReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateyModuleReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteyModuleReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.yModuleReadReceiver>();
-
 builder.Services.AddTransient<IRepository.Write.IyTenantModuleWriteRepository, Input.Repository.yTenantModule.yTenantModuleWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyTenantModuleReadRepository, Read.Repository.yTenantModuleReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyTenantModuleQueryRead, Query.Read.yTenantModuleQueryRead>();
@@ -305,6 +297,15 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdRece
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IyModuleWriteRepository, Input.Repository.yModule.yModuleWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyModuleReadRepository, Read.Repository.yModuleReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyModuleQueryRead, Query.Read.yModuleQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyModuleQueryWrite, Query.Write.yModuleQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyModuleReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyModuleReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyModuleReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yModuleReadReceiver>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.AdicionarAplicativoAoTenantHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
@@ -322,6 +323,8 @@ builder.Services.AddTransient<Shered.Patterns.Strategy.SMSNotification>();
 builder.Services.AddTransient<Shered.Patterns.Strategy.WhatsappNotification>();
 builder.Services.AddTransient<Dominio.Interfaces.Strategy.IINotificationFactory,Shered.Patterns.Strategy.NotificationFactory>();
 builder.Services.AddTransient<Dominio.Interfaces.Strategy.IMessage,Shered.Patterns.Strategy.Message>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.OpenApplicationSessionHandler>();
 }
 public static Command.Interfaces.Patterns.Queue.QueueTopology GetQueueTopology()
 {

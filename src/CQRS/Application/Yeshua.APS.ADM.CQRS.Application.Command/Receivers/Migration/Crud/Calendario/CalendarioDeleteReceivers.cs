@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCalendario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCalendarioReceiver), commandName: "Command.Write.CalendarioCrudCommand");
                  var calendario = new CalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.CAL_ID, c.CAL_DESCRICAO, c.CAL_DIVIDE_DIA_EM);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", calendario.OperationalEntityId);
                  var domainResult = CalendarioDomainBehavior.Apply(calendario, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

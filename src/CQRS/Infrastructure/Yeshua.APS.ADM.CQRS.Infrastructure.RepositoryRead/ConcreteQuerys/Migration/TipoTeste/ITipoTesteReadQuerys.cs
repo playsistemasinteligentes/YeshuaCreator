@@ -20,6 +20,7 @@ namespace IQuery.Read
         public QueryModel ExistsByTT_ESPECIFICACAOQuery(Decimal value );
         public QueryModel ExistsByTT_ORIGEM_ESPECIFICACAOQuery(string value );
         public QueryModel ExistsByTT_IMPRIME_NO_LAUDOQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -39,6 +40,7 @@ namespace IQuery.Read
         public QueryModel FirstByTT_ESPECIFICACAOQuery(Decimal value );
         public QueryModel FirstByTT_ORIGEM_ESPECIFICACAOQuery(string value );
         public QueryModel FirstByTT_IMPRIME_NO_LAUDOQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

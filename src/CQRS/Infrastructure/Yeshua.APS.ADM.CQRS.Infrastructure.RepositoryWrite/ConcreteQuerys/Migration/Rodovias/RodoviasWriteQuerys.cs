@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirRodoviasQuery(IRodoviasEntity Rodovias)
         {
-            this.Query = $@" INSERT INTO [Rodovias] ([ROD_ID], [ROD_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ROD_ID, @ROD_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Rodovias] ([ROD_ID], [ROD_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ROD_ID, @ROD_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ROD_ID = Rodovias.ROD_ID,
                 ROD_DESCRICAO = Rodovias.ROD_DESCRICAO,
+                OperationalEntityId = Rodovias.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ROD_DESCRICAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Rodovias] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

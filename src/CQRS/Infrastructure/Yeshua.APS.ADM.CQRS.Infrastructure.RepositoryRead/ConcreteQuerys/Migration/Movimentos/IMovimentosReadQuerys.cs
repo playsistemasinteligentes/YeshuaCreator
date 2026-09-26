@@ -24,6 +24,7 @@ namespace IQuery.Read
         public QueryModel ExistsByMOV_PLAIDQuery(int value );
         public QueryModel ExistsByMOV_UNIDQuery(int value );
         public QueryModel ExistsByTr_Unidade_UNI_IDQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -34,6 +35,7 @@ namespace IQuery.Read
         public QueryModel FirstByMOV_PLAIDQuery(int value );
         public QueryModel FirstByMOV_UNIDQuery(int value );
         public QueryModel FirstByTr_Unidade_UNI_IDQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

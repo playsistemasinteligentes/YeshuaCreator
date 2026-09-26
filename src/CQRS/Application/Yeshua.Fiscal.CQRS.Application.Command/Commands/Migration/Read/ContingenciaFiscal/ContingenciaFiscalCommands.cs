@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct ContingenciaFiscalReadCommand : ICommandRead
+    public struct ContingenciaFiscalReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int? EmissaoFiscalTransporteId { get; set; }
@@ -33,11 +33,14 @@ namespace Command.Read
         public DateTime? AtualizadoEmUtc { get; set; }
         public DateTime? ConcluidoEmUtc { get; set; }
         public int? Status { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "ContingenciaFiscal";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -86,6 +86,11 @@ namespace Input.Repository.Observacoes
             var query = _query.UpdateOBS_INTEGRACAO(obs_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int obs_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(obs_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int obs_id, int value)
         {
             var query = _query.UpdateTenantID(obs_id, value);

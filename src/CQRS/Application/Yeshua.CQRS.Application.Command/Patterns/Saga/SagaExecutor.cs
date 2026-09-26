@@ -1,8 +1,10 @@
 ﻿using Command.Interfaces;
 using Dominio.Interfaces;
+using Dominio.Operational;
 using Dominio.Patterns.Saga;
 using RepositoryInterfaces.Patterns.Saga;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Command.Patterns
@@ -29,6 +31,15 @@ namespace Command.Patterns
                 throw new Exception($"Handler não encontrado: {step.Key}");
 
             var telemetry = _logger.Evaluate("Saga", saga.Type, step.Key);
+            using var activity = telemetry.Enabled
+                ? OperationalActivity.Source.StartActivity(
+                    $"{saga.Type}.{step.Key}",
+                    ActivityKind.Internal)
+                : null;
+            activity?.SetTag("yeshua.component", "Saga");
+            activity?.SetTag("yeshua.saga", saga.Type);
+            activity?.SetTag("yeshua.saga.step", step.Key);
+            activity?.SetTag("yeshua.root_operation_id", saga.CorrelationId.ToString("D"));
 
             try
             {
@@ -71,10 +82,24 @@ namespace Command.Patterns
 
                 if (telemetry.Enabled && saga.Status == SagaStatus.Completed)
                     Record(saga, step, "SagaCompleted");
+
+                activity?.SetTag("yeshua.saga.status", saga.Status.ToString());
+                activity?.SetTag("yeshua.saga.step.status", step.Status.ToString());
+                activity?.SetStatus(ActivityStatusCode.Ok);
+            }
+            catch (SagaStepExecutionException e)
+            {
+                activity?.SetStatus(ActivityStatusCode.Error, e.Message);
+                OperationalActivity.RecordException(activity, e);
+                HandleFailure(saga, step, e, e.Retryable);
+                if (telemetry.Enabled)
+                    Record(saga, step, saga.Status == SagaStatus.Failed ? "Failed" : "RetryScheduled");
             }
             catch (Exception e)
             {
-                HandleFailure(saga, step, e);
+                activity?.SetStatus(ActivityStatusCode.Error, e.Message);
+                OperationalActivity.RecordException(activity, e);
+                HandleFailure(saga, step, e, retryable: true);
                 if (telemetry.Enabled)
                 {
                     Record(
@@ -123,20 +148,21 @@ namespace Command.Patterns
             }
         }
 
-        private void HandleFailure(SagaBase saga, SagaStepBase step, Exception e)
+        private void HandleFailure(SagaBase saga, SagaStepBase step, Exception e, bool retryable)
         {
-            step.IncrementRetry();
+            if (retryable)
+            {
+                step.IncrementRetry();
+                if (step.CanRetry())
+                {
+                    var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
+                    step.SetPending(DateTime.UtcNow.Add(delay));
+                    return;
+                }
+            }
 
-            if (step.CanRetry())
-            {
-                var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
-                step.SetPending(DateTime.UtcNow.Add(delay));
-            }
-            else
-            {
-                step.SetFailed(e.Message);
-                saga.MarkFailed(e.Message);
-            }
+            step.SetFailed(e.Message);
+            saga.MarkFailed(e.Message);
         }
 
         private void Record(SagaBase saga, SagaStepBase step, string phase)

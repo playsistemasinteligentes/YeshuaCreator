@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct OrderCrudCommand : ICommand
+    public struct OrderCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public string ORD_ID { get; set; }
         public string? ORD_ID_RESERVA { get; set; }
@@ -87,10 +87,13 @@ namespace Command.Write
         public DateTime? ORD_DATA_ESTATISTICA { get; set; }
         public string? OCO_ID_MOTIVO_ATRASO { get; set; }
         public int? OTK_VERSSAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Order";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -38,6 +38,7 @@ namespace IRepository.Read
         public bool ExistsByMAQ_ID(string value );
         public bool ExistsByPRO_ID(string value );
         public bool ExistsByICA_LIMPESA_MAQUINA(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -53,6 +54,7 @@ namespace IRepository.Read
         public ItensCalendarioDTO FirstByMAQ_ID(string value );
         public ItensCalendarioDTO FirstByPRO_ID(string value );
         public ItensCalendarioDTO FirstByICA_LIMPESA_MAQUINA(int value );
+        public ItensCalendarioDTO FirstByOperationalEntityId(string value );
         public ItensCalendarioDTO FirstByTenantID(int value );
         public ItensCalendarioDTO FirstByDeleted(bool value );
         public ItensCalendarioDTO FirstByChanged(DateTime value );
@@ -68,6 +70,7 @@ namespace IRepository.Read
         public IEnumerable<ItensCalendarioDTO> GetAllByMAQ_ID(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByPRO_ID(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByICA_LIMPESA_MAQUINA(int value );
+        public IEnumerable<ItensCalendarioDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByTenantID(int value );
         public IEnumerable<ItensCalendarioDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItensCalendarioDTO> GetAllByChanged(DateTime value );

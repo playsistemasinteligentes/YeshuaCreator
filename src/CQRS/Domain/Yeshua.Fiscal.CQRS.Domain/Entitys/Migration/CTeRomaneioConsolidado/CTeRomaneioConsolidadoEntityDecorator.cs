@@ -36,10 +36,11 @@
             public const ulong CargaSnapshotJson = 1UL << 13;
             public const ulong PreferenciasFiscaisJson = 1UL << 14;
             public const ulong Status = 1UL << 15;
-            public const ulong TenantID = 1UL << 16;
-            public const ulong Deleted = 1UL << 17;
-            public const ulong Changed = 1UL << 18;
-            public const ulong UserId = 1UL << 19;
+            public const ulong OperationalEntityId = 1UL << 16;
+            public const ulong TenantID = 1UL << 17;
+            public const ulong Deleted = 1UL << 18;
+            public const ulong Changed = 1UL << 19;
+            public const ulong UserId = 1UL << 20;
         }
 
         public partial class CTeRomaneioConsolidadoDecorator : ICTeRomaneioConsolidadoEntity
@@ -292,6 +293,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateRepresentantesQuery(IRepresentantesEntity Representantes);
         QueryModel UpdateREP_ID(int id, int value);
         QueryModel UpdateREP_NOME(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

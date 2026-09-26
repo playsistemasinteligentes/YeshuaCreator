@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRoteiro", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRoteiroReceiver), commandName: "Command.Write.RoteiroCrudCommand");
                  var roteiro = new RoteiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.GrupoMaquinaId, c.PecasPorPulso, c.PrioridadeInformada, c.Acao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.ProximaSequenciaTransformacao, c.Status, c.HierarquiaSequenciaTransformacao, c.AvaliaCusto, c.Operacoes, c.ExcecaoOperacoes, c.PercentualInicioPassoAnterior, c.LinhaDireta, c.TemplateDeTestesId);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", roteiro.OperationalEntityId);
                  var domainResult = RoteiroDomainBehavior.Apply(roteiro, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

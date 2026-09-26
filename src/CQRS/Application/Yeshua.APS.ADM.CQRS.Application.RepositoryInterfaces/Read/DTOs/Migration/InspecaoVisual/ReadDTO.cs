@@ -35,6 +35,7 @@ namespace Repositorio.Outputs
     public int fpr_seq_repeticao { get; set; }
     public string ipv_status_liberacao { get; set; } = string.Empty;
     public Decimal ipv_valor_medida { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

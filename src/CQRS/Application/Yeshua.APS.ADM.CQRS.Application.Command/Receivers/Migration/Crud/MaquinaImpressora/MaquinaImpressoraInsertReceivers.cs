@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMaquinaImpressora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMaquinaImpressoraReceiver), commandName: "Command.Write.MaquinaImpressoraCrudCommand");
                  var maquinaimpressora = new MaquinaImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.MAQ_IMP_ID, c.MAQ_ID, c.IMP_ID, c.MAI_FACAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", maquinaimpressora.OperationalEntityId);
                  var domainResult = MaquinaImpressoraDomainBehavior.Apply(maquinaimpressora, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

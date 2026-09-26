@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMDFeQuery(IMDFeEntity MDFe)
         {
-            this.Query = $@" INSERT INTO [MDFe] ([ChaveAcesso], [Serie], [Numero], [UfCarregamento], [UfDescarregamento], [PlacaVeiculo], [EmitidoEm], [AutorizadoEm], [IniciadoEm], [EncerradoEm], [CanceladoEm], [Situacao], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ChaveAcesso, @Serie, @Numero, @UfCarregamento, @UfDescarregamento, @PlacaVeiculo, @EmitidoEm, @AutorizadoEm, @IniciadoEm, @EncerradoEm, @CanceladoEm, @Situacao, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFe] ([ChaveAcesso], [Serie], [Numero], [UfCarregamento], [UfDescarregamento], [PlacaVeiculo], [EmitidoEm], [AutorizadoEm], [IniciadoEm], [EncerradoEm], [CanceladoEm], [Situacao], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ChaveAcesso, @Serie, @Numero, @UfCarregamento, @UfDescarregamento, @PlacaVeiculo, @EmitidoEm, @AutorizadoEm, @IniciadoEm, @EncerradoEm, @CanceladoEm, @Situacao, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ChaveAcesso = MDFe.ChaveAcesso,
@@ -45,6 +45,7 @@ namespace Query.Write
                 EncerradoEm = MDFe.EncerradoEm,
                 CanceladoEm = MDFe.CanceladoEm,
                 Situacao = MDFe.Situacao,
+                OperationalEntityId = MDFe.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -191,6 +192,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Situacao = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFe] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

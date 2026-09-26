@@ -132,6 +132,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByDeleted(bool value )
         {
             var query = _query.ExistsByDeletedQuery(value );
@@ -188,6 +196,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TenantCatalogoDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TenantCatalogoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public TenantCatalogoDTO FirstByDeleted(bool value )
         {
             var query = _query.FirstByDeletedQuery(value );
@@ -239,6 +255,14 @@ namespace Read.Repository
         public IEnumerable<TenantCatalogoDTO> GetAllByValidUntil(DateTime value )
         {
             var query = _query.FirstByValidUntilQuery(value );
+
+                var result = _unitOfWork.Query<TenantCatalogoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<TenantCatalogoDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TenantCatalogoDTO>(query.Query,query.Parameters).ToList();
                 return result;

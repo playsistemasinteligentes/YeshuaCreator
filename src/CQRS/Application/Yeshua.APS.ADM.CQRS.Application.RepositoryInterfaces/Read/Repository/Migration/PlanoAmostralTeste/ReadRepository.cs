@@ -25,6 +25,7 @@ namespace IRepository.Read
         public IEnumerable<PlanoAmostralTesteTenantIDDTO> getPlanoAmostralTesteReadFKTenantID(object command );
         public IEnumerable<PlanoAmostralTesteUserIdDTO> getPlanoAmostralTesteReadFKUserId(object command );
         public bool ExistsByGRP_TIPO(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -35,6 +36,7 @@ namespace IRepository.Read
         public bool ExistsByPAT_N_AMOSTRAGEM(int value );
         public bool ExistsByPAT_PERCENT_ESPECIF(Decimal value );
         public PlanoAmostralTesteDTO FirstByGRP_TIPO(Decimal value );
+        public PlanoAmostralTesteDTO FirstByOperationalEntityId(string value );
         public PlanoAmostralTesteDTO FirstByTenantID(int value );
         public PlanoAmostralTesteDTO FirstByDeleted(bool value );
         public PlanoAmostralTesteDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public PlanoAmostralTesteDTO FirstByPAT_N_AMOSTRAGEM(int value );
         public PlanoAmostralTesteDTO FirstByPAT_PERCENT_ESPECIF(Decimal value );
         public IEnumerable<PlanoAmostralTesteDTO> GetAllByGRP_TIPO(Decimal value );
+        public IEnumerable<PlanoAmostralTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PlanoAmostralTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<PlanoAmostralTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<PlanoAmostralTesteDTO> GetAllByChanged(DateTime value );

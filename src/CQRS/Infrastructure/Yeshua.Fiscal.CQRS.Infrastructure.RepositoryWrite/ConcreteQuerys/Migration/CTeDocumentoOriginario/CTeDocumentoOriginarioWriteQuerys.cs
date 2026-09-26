@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCTeDocumentoOriginarioQuery(ICTeDocumentoOriginarioEntity CTeDocumentoOriginario)
         {
-            this.Query = $@" INSERT INTO [CTeDocumentoOriginario] ([CTeSolicitacaoFiscalId], [DocumentoFiscalOriginarioId], [TipoDocumento], [ChaveAcesso], [Numero], [Serie], [EmitenteDocumento], [DestinatarioDocumento], [ValorDocumento], [PesoBruto], [SnapshotJson], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CTeSolicitacaoFiscalId, @DocumentoFiscalOriginarioId, @TipoDocumento, @ChaveAcesso, @Numero, @Serie, @EmitenteDocumento, @DestinatarioDocumento, @ValorDocumento, @PesoBruto, @SnapshotJson, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CTeDocumentoOriginario] ([CTeSolicitacaoFiscalId], [DocumentoFiscalOriginarioId], [TipoDocumento], [ChaveAcesso], [Numero], [Serie], [EmitenteDocumento], [DestinatarioDocumento], [ValorDocumento], [PesoBruto], [SnapshotJson], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CTeSolicitacaoFiscalId, @DocumentoFiscalOriginarioId, @TipoDocumento, @ChaveAcesso, @Numero, @Serie, @EmitenteDocumento, @DestinatarioDocumento, @ValorDocumento, @PesoBruto, @SnapshotJson, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CTeSolicitacaoFiscalId = CTeDocumentoOriginario.CTeSolicitacaoFiscalId,
@@ -44,6 +44,7 @@ namespace Query.Write
                 ValorDocumento = CTeDocumentoOriginario.ValorDocumento,
                 PesoBruto = CTeDocumentoOriginario.PesoBruto,
                 SnapshotJson = CTeDocumentoOriginario.SnapshotJson,
+                OperationalEntityId = CTeDocumentoOriginario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -179,6 +180,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 SnapshotJson = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CTeDocumentoOriginario] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

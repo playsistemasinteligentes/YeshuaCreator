@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyToken", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyTokenReceiver), commandName: "Command.Write.yTokenCrudCommand");
                  var ytoken = new yTokenFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TokenHash, c.Description, c.ConnectorKey, c.ValidUntil, c.LastUsedAt);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ytoken.OperationalEntityId);
                  var domainResult = yTokenDomainBehavior.Apply(ytoken, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByMDFeSolicitacaoFiscalId(int value );
         public bool ExistsByUF(string value );
         public bool ExistsByOrdem(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -37,6 +38,7 @@ namespace IRepository.Read
         public MDFePercursoDTO FirstByMDFeSolicitacaoFiscalId(int value );
         public MDFePercursoDTO FirstByUF(string value );
         public MDFePercursoDTO FirstByOrdem(int value );
+        public MDFePercursoDTO FirstByOperationalEntityId(string value );
         public MDFePercursoDTO FirstByTenantID(int value );
         public MDFePercursoDTO FirstByDeleted(bool value );
         public MDFePercursoDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<MDFePercursoDTO> GetAllByMDFeSolicitacaoFiscalId(int value );
         public IEnumerable<MDFePercursoDTO> GetAllByUF(string value );
         public IEnumerable<MDFePercursoDTO> GetAllByOrdem(int value );
+        public IEnumerable<MDFePercursoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFePercursoDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFePercursoDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFePercursoDTO> GetAllByChanged(DateTime value );

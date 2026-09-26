@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByITE_VALOR_DA_CONDICIONAL(Decimal value );
         public bool ExistsByITE_VALOR_CALCULADO_DA_CONDICIONAL(string value );
         public bool ExistsByITE_TIPO_AVALIACAO_FINAL(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -46,6 +47,7 @@ namespace IRepository.Read
         public ItemTestavelDTO FirstByITE_VALOR_DA_CONDICIONAL(Decimal value );
         public ItemTestavelDTO FirstByITE_VALOR_CALCULADO_DA_CONDICIONAL(string value );
         public ItemTestavelDTO FirstByITE_TIPO_AVALIACAO_FINAL(string value );
+        public ItemTestavelDTO FirstByOperationalEntityId(string value );
         public ItemTestavelDTO FirstByTenantID(int value );
         public ItemTestavelDTO FirstByDeleted(bool value );
         public ItemTestavelDTO FirstByChanged(DateTime value );
@@ -59,6 +61,7 @@ namespace IRepository.Read
         public IEnumerable<ItemTestavelDTO> GetAllByITE_VALOR_DA_CONDICIONAL(Decimal value );
         public IEnumerable<ItemTestavelDTO> GetAllByITE_VALOR_CALCULADO_DA_CONDICIONAL(string value );
         public IEnumerable<ItemTestavelDTO> GetAllByITE_TIPO_AVALIACAO_FINAL(string value );
+        public IEnumerable<ItemTestavelDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItemTestavelDTO> GetAllByTenantID(int value );
         public IEnumerable<ItemTestavelDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItemTestavelDTO> GetAllByChanged(DateTime value );

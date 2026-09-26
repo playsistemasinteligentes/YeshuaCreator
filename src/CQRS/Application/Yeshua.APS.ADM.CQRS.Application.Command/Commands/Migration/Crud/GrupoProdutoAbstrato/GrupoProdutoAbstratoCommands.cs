@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct GrupoProdutoAbstratoCrudCommand : ICommand
+    public struct GrupoProdutoAbstratoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public string GRP_ID { get; set; }
         public string GRP_DESCRICAO { get; set; }
@@ -59,10 +59,13 @@ namespace Command.Write
         public Decimal? GRP_PERCENTUAL_PERDA_MEDIA { get; set; }
         public int? GRP_FILTRA_SEQ_TRANS { get; set; }
         public string? GRP_IMG_CAIXA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "GrupoProdutoAbstrato";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByTCA_ID(string value );
         public bool ExistsByTCA_DESCRICAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public TipoCarroceriaDTO FirstById(int value );
         public TipoCarroceriaDTO FirstByTCA_ID(string value );
         public TipoCarroceriaDTO FirstByTCA_DESCRICAO(string value );
+        public TipoCarroceriaDTO FirstByOperationalEntityId(string value );
         public TipoCarroceriaDTO FirstByTenantID(int value );
         public TipoCarroceriaDTO FirstByDeleted(bool value );
         public TipoCarroceriaDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<TipoCarroceriaDTO> GetAllById(int value );
         public IEnumerable<TipoCarroceriaDTO> GetAllByTCA_ID(string value );
         public IEnumerable<TipoCarroceriaDTO> GetAllByTCA_DESCRICAO(string value );
+        public IEnumerable<TipoCarroceriaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoCarroceriaDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoCarroceriaDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoCarroceriaDTO> GetAllByChanged(DateTime value );

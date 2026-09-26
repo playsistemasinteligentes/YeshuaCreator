@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdateTRA_FONE(int id, string value);
         QueryModel UpdateTRA_ID_INTEGRACAO(int id, string value);
         QueryModel UpdateTRA_ID_INTEGRACAO_ERP(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -83,6 +83,7 @@
     public Decimal? FPR_TOLERANCIA_MENOS { get; set; }
     public Decimal? FPR_TOLERANCIA_MAIS { get; set; }
     public DateTime? FPR_DATA_ENCERRAMENTO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -152,6 +153,7 @@
  FPR_TOLERANCIA_MENOS = fpr_tolerancia_menos; 
  FPR_TOLERANCIA_MAIS = fpr_tolerancia_mais; 
  FPR_DATA_ENCERRAMENTO = fpr_data_encerramento.HasValue && fpr_data_encerramento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : fpr_data_encerramento; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

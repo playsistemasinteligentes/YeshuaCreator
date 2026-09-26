@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMDFeDocumentoOriginarioQuery(IMDFeDocumentoOriginarioEntity MDFeDocumentoOriginario)
         {
-            this.Query = $@" INSERT INTO [MDFeDocumentoOriginario] ([MDFeSolicitacaoFiscalId], [DocumentoFiscalOriginarioId], [TipoDocumento], [ChaveAcesso], [SnapshotJson], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @DocumentoFiscalOriginarioId, @TipoDocumento, @ChaveAcesso, @SnapshotJson, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFeDocumentoOriginario] ([MDFeSolicitacaoFiscalId], [DocumentoFiscalOriginarioId], [TipoDocumento], [ChaveAcesso], [SnapshotJson], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @DocumentoFiscalOriginarioId, @TipoDocumento, @ChaveAcesso, @SnapshotJson, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MDFeSolicitacaoFiscalId = MDFeDocumentoOriginario.MDFeSolicitacaoFiscalId,
@@ -38,6 +38,7 @@ namespace Query.Write
                 TipoDocumento = MDFeDocumentoOriginario.TipoDocumento,
                 ChaveAcesso = MDFeDocumentoOriginario.ChaveAcesso,
                 SnapshotJson = MDFeDocumentoOriginario.SnapshotJson,
+                OperationalEntityId = MDFeDocumentoOriginario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -107,6 +108,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 SnapshotJson = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFeDocumentoOriginario] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

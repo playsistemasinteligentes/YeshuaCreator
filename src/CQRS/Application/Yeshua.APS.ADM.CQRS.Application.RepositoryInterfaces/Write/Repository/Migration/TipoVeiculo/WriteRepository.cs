@@ -40,6 +40,7 @@ namespace IRepository.Write
         void UpdateTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D(int id, Decimal value);
         void UpdateTIP_CAPACIDADE_LARGURA_PESCOCO_D(int id, Decimal value);
         void UpdateTIP_CAPACIDADE_M3(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

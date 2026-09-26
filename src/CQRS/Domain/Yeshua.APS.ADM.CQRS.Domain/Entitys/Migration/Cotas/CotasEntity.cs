@@ -27,6 +27,7 @@
     public Decimal? COT_VALOR { get; set; }
     public Decimal? COT_OCUPADO { get; set; }
     public int REP_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -40,6 +41,7 @@
  COT_VALOR = cot_valor; 
  COT_OCUPADO = cot_ocupado; 
  REP_ID = rep_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

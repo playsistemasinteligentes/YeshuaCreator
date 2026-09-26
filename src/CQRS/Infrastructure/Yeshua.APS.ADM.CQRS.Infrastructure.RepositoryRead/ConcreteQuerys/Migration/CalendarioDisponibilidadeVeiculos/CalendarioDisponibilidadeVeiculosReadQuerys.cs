@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] from [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $@" select [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [CalendarioDisponibilidadeVeiculos] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (Command.CDV_ID.HasValue) dict["CDV_ID"] = Command.CDV_ID.Value;
@@ -53,6 +53,8 @@ if (Command.CDV_SABADO.HasValue) dict["CDV_SABADO"] = Command.CDV_SABADO.Value;
 if (Command.CDV_SABADO.HasValue) whereClauses.Add($"[CDV_SABADO] = @CDV_SABADO");
 if (Command.CDV_DOMINGO.HasValue) dict["CDV_DOMINGO"] = Command.CDV_DOMINGO.Value;
 if (Command.CDV_DOMINGO.HasValue) whereClauses.Add($"[CDV_DOMINGO] = @CDV_DOMINGO");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -317,6 +319,23 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [CalendarioDisponibilidadeVeiculos] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -390,7 +409,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -407,7 +426,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -424,7 +443,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -441,7 +460,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -458,7 +477,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -475,7 +494,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -492,7 +511,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -509,7 +528,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -526,7 +545,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -543,7 +562,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -560,7 +579,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -572,12 +591,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -594,7 +630,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -611,7 +647,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -628,7 +664,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
+            this.Query = $"SELECT [Id], [CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [CalendarioDisponibilidadeVeiculos] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirDocumentoFiscalOriginarioQuery(IDocumentoFiscalOriginarioEntity DocumentoFiscalOriginario)
         {
-            this.Query = $@" INSERT INTO [DocumentoFiscalOriginario] ([DocumentoFiscalId], [CorrelationId], [SourceApplication], [SourceModule], [SourceMessageId], [TipoDocumento], [ChaveAcesso], [Numero], [Serie], [EmitenteDocumento], [DestinatarioDocumento], [ValorDocumento], [PesoBruto], [Volume], [SnapshotJson], [Status], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@DocumentoFiscalId, @CorrelationId, @SourceApplication, @SourceModule, @SourceMessageId, @TipoDocumento, @ChaveAcesso, @Numero, @Serie, @EmitenteDocumento, @DestinatarioDocumento, @ValorDocumento, @PesoBruto, @Volume, @SnapshotJson, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [DocumentoFiscalOriginario] ([DocumentoFiscalId], [CorrelationId], [SourceApplication], [SourceModule], [SourceMessageId], [TipoDocumento], [ChaveAcesso], [Numero], [Serie], [EmitenteDocumento], [DestinatarioDocumento], [ValorDocumento], [PesoBruto], [Volume], [SnapshotJson], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@DocumentoFiscalId, @CorrelationId, @SourceApplication, @SourceModule, @SourceMessageId, @TipoDocumento, @ChaveAcesso, @Numero, @Serie, @EmitenteDocumento, @DestinatarioDocumento, @ValorDocumento, @PesoBruto, @Volume, @SnapshotJson, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 DocumentoFiscalId = DocumentoFiscalOriginario.DocumentoFiscalId,
@@ -49,6 +49,7 @@ namespace Query.Write
                 Volume = DocumentoFiscalOriginario.Volume,
                 SnapshotJson = DocumentoFiscalOriginario.SnapshotJson,
                 Status = DocumentoFiscalOriginario.Status,
+                OperationalEntityId = DocumentoFiscalOriginario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -239,6 +240,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Status = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [DocumentoFiscalOriginario] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

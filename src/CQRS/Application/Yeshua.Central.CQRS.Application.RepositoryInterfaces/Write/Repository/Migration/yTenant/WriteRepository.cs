@@ -22,6 +22,7 @@ namespace IRepository.Write
         void Insert(IyTenantEntity ytenant);
         void Update(IyTenantEntity ytenant);
         void Delete(IyTenantEntity ytenant);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateCnpjCpf(int id, string value);
         void UpdateNome(int id, string value);
         void UpdateUserId(int id, int value);

@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdatePLA_VLRACUMULADO(int pla_id, string value);
         QueryModel UpdatePLA_REFERENCIA(int pla_id, string value);
         QueryModel UpdateUSE_ID(int pla_id, int value);
+        QueryModel UpdateOperationalEntityId(int pla_id, string value);
         QueryModel UpdateTenantID(int pla_id, int value);
         QueryModel UpdateDeleted(int pla_id, bool value);
         QueryModel UpdateChanged(int pla_id, DateTime value);

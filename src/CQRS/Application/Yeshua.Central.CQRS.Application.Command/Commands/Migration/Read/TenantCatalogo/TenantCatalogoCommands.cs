@@ -11,16 +11,19 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct TenantCatalogoReadCommand : ICommandRead
+    public struct TenantCatalogoReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string? Catalogo { get; set; }
         public int? TenantID { get; set; }
         public DateTime? ValidUntil { get; set; }
+        public string? OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "TenantCatalogo";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

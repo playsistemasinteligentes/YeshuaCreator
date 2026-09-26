@@ -11,8 +11,9 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct yConfigNotificationReadCommand : ICommandRead
+    public struct yConfigNotificationReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
+        public string? OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? TenantID { get; set; }
         public string? EmailSmtpClient { get; set; }
@@ -23,6 +24,8 @@ namespace Command.Read
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "yConfigNotification";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

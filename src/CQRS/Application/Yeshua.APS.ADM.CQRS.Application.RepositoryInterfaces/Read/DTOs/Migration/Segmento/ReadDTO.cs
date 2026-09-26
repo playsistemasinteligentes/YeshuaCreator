@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public string seg_id_seguimento_pai { get; set; } = string.Empty;
     public string grs_id { get; set; } = string.Empty;
     public string seg_integracao_erp { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

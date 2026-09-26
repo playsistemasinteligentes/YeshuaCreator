@@ -28,7 +28,16 @@ public static class EndpointsCuston
                 new(System.Security.Claims.ClaimTypes.Role, "Admin"),
                 new("tenantId", authenticatedUser.tenantId.ToString()),
                 new("userModules", string.Join(",", authenticatedUser.modulos)),
-                new("userCatalogs", string.Join(",", authenticatedUser.catalogos))
+                new("userCatalogs", string.Join(",", authenticatedUser.catalogos)),
+                new("tokenOrigin", "Central"),
+                new("application", "Central"),
+                new("centralTenantId", authenticatedUser.tenantId.ToString()),
+                new("centralUserId", authenticatedUser.UserId.ToString()),
+                new("tenantIdentity", authenticatedUser.tenantIdentity),
+                new("tenantDocument", authenticatedUser.tenantDocument),
+                new("tenantName", authenticatedUser.tenantName),
+                new("userIdentity", authenticatedUser.userIdentity),
+                new("userName", authenticatedUser.userName)
             };
             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {

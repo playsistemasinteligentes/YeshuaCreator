@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InseriryConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture)
         {
-            this.Query = $@" INSERT INTO [yConfigArcteture] ([Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yConfigArcteture] ([OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OperationalEntityId, @Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = yConfigArcteture.OperationalEntityId,
                 Id = yConfigArcteture.Id,
                 AuditTrackerActived = yConfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = yConfigArcteture.AuditCRUDActived,
@@ -53,6 +54,16 @@ namespace Query.Write
                 Changed = yConfigArcteture.Changed,
                 UserId = _executionContext.UserId,
                 Id = yConfigArcteture.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yConfigArcteture] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

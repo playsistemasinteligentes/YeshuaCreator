@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertIndicadoresFatosDimencoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertIndicadoresFatosDimencoesReceiver), commandName: "Command.Write.IndicadoresFatosDimencoesCrudCommand");
                  var indicadoresfatosdimencoes = new IndicadoresFatosDimencoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FAT_ID, c.IND_ID, c.DIM_ID, c.FAT_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", indicadoresfatosdimencoes.OperationalEntityId);
                  var domainResult = IndicadoresFatosDimencoesDomainBehavior.Apply(indicadoresfatosdimencoes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

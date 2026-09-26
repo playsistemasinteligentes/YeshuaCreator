@@ -17,6 +17,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryPerfilQuery(IyPerfilEntity yPerfil);
         public QueryModel UpdateyPerfilQuery(IyPerfilEntity yPerfil);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateDescription(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);

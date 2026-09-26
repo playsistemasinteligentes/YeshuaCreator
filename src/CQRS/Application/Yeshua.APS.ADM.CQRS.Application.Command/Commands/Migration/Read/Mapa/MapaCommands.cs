@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct MapaReadCommand : ICommandRead
+    public struct MapaReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int? MAP_ID { get; set; }
@@ -21,11 +21,14 @@ namespace Command.Read
         public Decimal? MAP_CUSTO_PEDAGIO_POR_EIXO { get; set; }
         public int? ROD_ID { get; set; }
         public Decimal? MAP_ALTURA_ROD { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Mapa";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

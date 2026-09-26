@@ -48,6 +48,7 @@ namespace IRepository.Read
         public bool ExistsByPercentualInicioPassoAnterior(Decimal value );
         public bool ExistsByLinhaDireta(string value );
         public bool ExistsByTemplateDeTestesId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -72,6 +73,7 @@ namespace IRepository.Read
         public RoteiroDTO FirstByPercentualInicioPassoAnterior(Decimal value );
         public RoteiroDTO FirstByLinhaDireta(string value );
         public RoteiroDTO FirstByTemplateDeTestesId(int value );
+        public RoteiroDTO FirstByOperationalEntityId(string value );
         public RoteiroDTO FirstByTenantID(int value );
         public RoteiroDTO FirstByDeleted(bool value );
         public RoteiroDTO FirstByChanged(DateTime value );
@@ -96,6 +98,7 @@ namespace IRepository.Read
         public IEnumerable<RoteiroDTO> GetAllByPercentualInicioPassoAnterior(Decimal value );
         public IEnumerable<RoteiroDTO> GetAllByLinhaDireta(string value );
         public IEnumerable<RoteiroDTO> GetAllByTemplateDeTestesId(int value );
+        public IEnumerable<RoteiroDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RoteiroDTO> GetAllByTenantID(int value );
         public IEnumerable<RoteiroDTO> GetAllByDeleted(bool value );
         public IEnumerable<RoteiroDTO> GetAllByChanged(DateTime value );

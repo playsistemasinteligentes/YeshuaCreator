@@ -3,7 +3,10 @@ set -euo pipefail
 
 APP_DIR="/root/YeshuaCreator"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
+CENTRAL_DIR="$APP_DIR/infra/Central/DockerCompose"
 CLINICA_DIR="$APP_DIR/infra/Clinica/DockerCompose"
+APS_ADM_DIR="$APP_DIR/infra/APS.ADM/DockerCompose"
+FISCAL_DIR="$APP_DIR/infra/Fiscal/DockerCompose"
 TARGET="${1:-all}"
 LAYOUT_MARKER="/root/YeshuaDB/persistent/.multi-app-layout-v1"
 
@@ -18,7 +21,13 @@ fi
 
 chmod +x \
   "$SHARED_DIR"/*.sh \
-  "$CLINICA_DIR"/*.sh
+  "$CENTRAL_DIR"/*.sh \
+  "$CLINICA_DIR"/*.sh \
+  "$APS_ADM_DIR"/*.sh \
+  "$FISCAL_DIR"/*.sh
+
+export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
+export YESHUA_BUILD_TIMESTAMP_UTC="${YESHUA_BUILD_TIMESTAMP_UTC:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}"
 
 legacy_runtime_present() {
   local name project
@@ -94,9 +103,15 @@ gateway_dependencies_ready() {
       return 1
     fi
   done <<'EOF'
-playsis-clinica clinica-front
+playsis-central central-front
+playsis-central central-api
+playsis-central central-worker
 playsis-clinica clinica-api
 playsis-clinica clinica-worker
+playsis-aps-adm aps-adm-api
+playsis-aps-adm aps-adm-worker
+playsis-fiscal fiscal-api
+playsis-fiscal fiscal-worker
 EOF
 }
 
@@ -115,18 +130,49 @@ deploy_gateway() {
 }
 
 deploy_clinica() {
-  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 bash "$CLINICA_DIR/deploy.sh"
+  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 YESHUA_SKIP_SHARED=1 bash "$CLINICA_DIR/deploy.sh"
+}
+
+deploy_central() {
+  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 YESHUA_SKIP_SHARED=1 bash "$CENTRAL_DIR/deploy.sh"
+}
+
+deploy_aps_adm() {
+  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 YESHUA_SKIP_SHARED=1 bash "$APS_ADM_DIR/deploy.sh"
+}
+
+deploy_fiscal() {
+  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 YESHUA_SKIP_SHARED=1 bash "$FISCAL_DIR/deploy.sh"
 }
 
 case "${TARGET,,}" in
   all)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    deploy_central
     deploy_clinica
+    deploy_aps_adm
+    deploy_fiscal
     deploy_gateway
     touch "$LAYOUT_MARKER"
     ;;
+  central)
+    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    deploy_central
+    deploy_gateway
+    ;;
   clinica)
+    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_clinica
+    deploy_gateway
+    ;;
+  aps|aps-adm|aps_adm)
+    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    deploy_aps_adm
+    deploy_gateway
+    ;;
+  fiscal)
+    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    deploy_fiscal
     deploy_gateway
     ;;
   shared)
@@ -134,7 +180,7 @@ case "${TARGET,,}" in
     deploy_gateway
     ;;
   *)
-    echo "Destino invalido: $TARGET. Use all, clinica ou shared." >&2
+    echo "Destino invalido: $TARGET. Use all, central, clinica, aps-adm, fiscal ou shared." >&2
     exit 1
     ;;
 esac

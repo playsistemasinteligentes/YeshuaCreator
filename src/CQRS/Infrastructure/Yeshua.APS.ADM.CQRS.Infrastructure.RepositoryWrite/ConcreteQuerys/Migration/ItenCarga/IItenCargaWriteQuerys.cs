@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdateORD_HASH_KEY(int id, string value);
         QueryModel UpdateNOT_ID(int id, string value);
         QueryModel UpdateNOT_EMISSAO(int id, DateTime value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -25,6 +25,7 @@
     public string PAR_VALOR_S { get; set; }
     public Decimal PAR_VALOR_N { get; set; }
     public DateTime PAR_VALOR_D { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  PAR_VALOR_S = par_valor_s; 
  PAR_VALOR_N = par_valor_n; 
  PAR_VALOR_D = (par_valor_d < (new DateTime(1800, 1, 1))) ? DateTime.Now : par_valor_d; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -25,6 +25,7 @@
     public string? EST_DESCRICAO { get; set; }
     public int? EST_ID_LIGACAO_PONTO_A { get; set; }
     public int? EST_ID_LIGACAO_PONTO_B { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  EST_DESCRICAO = est_descricao; 
  EST_ID_LIGACAO_PONTO_A = est_id_ligacao_ponto_a; 
  EST_ID_LIGACAO_PONTO_B = est_id_ligacao_ponto_b; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

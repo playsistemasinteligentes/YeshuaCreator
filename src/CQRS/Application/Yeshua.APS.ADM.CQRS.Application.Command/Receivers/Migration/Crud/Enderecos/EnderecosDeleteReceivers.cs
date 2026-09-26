@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEnderecos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEnderecosReceiver), commandName: "Command.Write.EnderecosCrudCommand");
                  var enderecos = new EnderecosFactory(_logger, _domainTrackingPolicy).Create(context, c.END_ID, c.END_GRUPO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", enderecos.OperationalEntityId);
                  var domainResult = EnderecosDomainBehavior.Apply(enderecos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

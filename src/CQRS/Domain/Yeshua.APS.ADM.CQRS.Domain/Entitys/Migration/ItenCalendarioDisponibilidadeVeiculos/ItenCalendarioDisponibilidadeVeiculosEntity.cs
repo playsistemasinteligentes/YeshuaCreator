@@ -24,6 +24,7 @@
     public int? CDV_ID { get; set; }
     public int? TIP_ID { get; set; }
     public int? IDV_QTD { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  CDV_ID = cdv_id; 
  TIP_ID = tip_id; 
  IDV_QTD = idv_qtd; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

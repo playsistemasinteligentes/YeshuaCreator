@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateVIS_PLANID(int vis_id, int value);
         QueryModel UpdateVIS_FORMULA(int vis_id, string value);
         QueryModel UpdateCAB_ID(int vis_id, int value);
+        QueryModel UpdateOperationalEntityId(int vis_id, string value);
         QueryModel UpdateTenantID(int vis_id, int value);
         QueryModel UpdateDeleted(int vis_id, bool value);
         QueryModel UpdateChanged(int vis_id, DateTime value);

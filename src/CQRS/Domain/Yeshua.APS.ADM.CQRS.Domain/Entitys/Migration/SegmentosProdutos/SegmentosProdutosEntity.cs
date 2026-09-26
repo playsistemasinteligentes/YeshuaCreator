@@ -24,6 +24,7 @@
     public string GRS_ID { get; set; }
     public string PRO_ID { get; set; }
     public string SEG_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  GRS_ID = grs_id; 
  PRO_ID = pro_id; 
  SEG_ID = seg_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

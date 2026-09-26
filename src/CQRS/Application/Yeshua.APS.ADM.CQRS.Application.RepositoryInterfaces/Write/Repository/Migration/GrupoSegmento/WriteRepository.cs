@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateGRS_ID(int id, string value);
         void UpdateGRS_DESCRICAO(int id, string value);
         void UpdateGRS_INTEGRACAO_ERP(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

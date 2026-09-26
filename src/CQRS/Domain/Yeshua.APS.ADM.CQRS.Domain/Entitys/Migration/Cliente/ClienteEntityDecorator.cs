@@ -47,10 +47,11 @@
             public const ulong CLI_INTEGRACAO_ERP = 1UL << 24;
             public const ulong CLI_LATITUDE_ENTREGA = 1UL << 25;
             public const ulong CLI_LONGITUDE_ENTREGA = 1UL << 26;
-            public const ulong TenantID = 1UL << 27;
-            public const ulong Deleted = 1UL << 28;
-            public const ulong Changed = 1UL << 29;
-            public const ulong UserId = 1UL << 30;
+            public const ulong OperationalEntityId = 1UL << 27;
+            public const ulong TenantID = 1UL << 28;
+            public const ulong Deleted = 1UL << 29;
+            public const ulong Changed = 1UL << 30;
+            public const ulong UserId = 1UL << 31;
         }
 
         public partial class ClienteDecorator : IClienteEntity
@@ -457,6 +458,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

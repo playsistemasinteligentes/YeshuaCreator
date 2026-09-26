@@ -36,6 +36,7 @@ namespace IQuery.Read
         public QueryModel ExistsByGRP_ID_COMPOSICAOQuery(string value );
         public QueryModel ExistsByITO_LARGURAQuery(Decimal value );
         public QueryModel ExistsByITO_COMPRIMENTOQuery(Decimal value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -59,6 +60,7 @@ namespace IQuery.Read
         public QueryModel FirstByGRP_ID_COMPOSICAOQuery(string value );
         public QueryModel FirstByITO_LARGURAQuery(Decimal value );
         public QueryModel FirstByITO_COMPRIMENTOQuery(Decimal value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

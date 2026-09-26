@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlotagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlotagemReceiver), commandName: "Command.Write.PlotagemCrudCommand");
                  var plotagem = new PlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PLO_ID, c.PLO_NOME, c.PLO_DIMENSAO, c.PLO_X, c.PLO_Y, c.PLO_Z, c.PLO_GRAFICO, c.CON_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", plotagem.OperationalEntityId);
                  var domainResult = PlotagemDomainBehavior.Apply(plotagem, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

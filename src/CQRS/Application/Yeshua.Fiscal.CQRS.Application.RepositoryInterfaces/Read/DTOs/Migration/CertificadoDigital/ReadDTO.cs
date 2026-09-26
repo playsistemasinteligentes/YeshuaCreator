@@ -26,6 +26,7 @@ namespace Repositorio.Outputs
     public DateTime validode { get; set; }
     public DateTime validoate { get; set; }
     public int ativo { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateItensPacked", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateItensPackedReceiver), commandName: "Command.Write.ItensPackedCrudCommand");
                  var itenspacked = new ItensPackedFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IPA_ID, c.CAR_ID, c.PRO_ID, c.ORD_ID, c.IPA_COORDC, c.IPA_COORDL, c.IPA_COORDA, c.IPA_DIMC, c.IPA_DIML, c.IPA_DIMA, c.IPA_QTD_POR_PALETE);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itenspacked.OperationalEntityId);
                  var domainResult = ItensPackedDomainBehavior.Apply(itenspacked, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

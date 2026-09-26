@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IConsultasGruposEntity consultasgrupos);
         void UpdateCON_ID(int id, int value);
         void UpdateGRU_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

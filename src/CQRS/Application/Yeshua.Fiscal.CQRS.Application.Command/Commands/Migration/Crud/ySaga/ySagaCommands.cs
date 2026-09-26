@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ySagaCrudCommand : ICommand
+    public struct ySagaCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
@@ -26,9 +26,12 @@ namespace Command.Write
         public DateTime? LockedAt { get; set; }
         public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "ySaga";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

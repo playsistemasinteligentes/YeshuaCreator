@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateSefazEndpoint", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateSefazEndpointReceiver), commandName: "Command.Write.SefazEndpointCrudCommand");
                  var sefazendpoint = new SefazEndpointFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProdutoFiscal, c.UF, c.Ambiente, c.Servico, c.Versao, c.Url, c.Ativo);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", sefazendpoint.OperationalEntityId);
                  var domainResult = SefazEndpointDomainBehavior.Apply(sefazendpoint, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

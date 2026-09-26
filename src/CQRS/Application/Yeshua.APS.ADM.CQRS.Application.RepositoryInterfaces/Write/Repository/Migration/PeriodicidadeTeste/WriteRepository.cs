@@ -26,6 +26,7 @@ namespace IRepository.Write
         void UpdatePER_QTD(int id, string value);
         void UpdateUNI_ID(int id, string value);
         void UpdateGRP_ID(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

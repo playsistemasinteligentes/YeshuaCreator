@@ -30,6 +30,7 @@ namespace IRepository.Write
         void UpdatePLO_Z(int id, string value);
         void UpdatePLO_GRAFICO(int id, string value);
         void UpdateCON_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

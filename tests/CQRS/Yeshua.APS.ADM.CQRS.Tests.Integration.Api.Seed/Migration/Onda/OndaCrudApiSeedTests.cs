@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Onda;
 
-[SeedTestOrder(155)]
+[SeedTestOrder(153)]
 public partial class OndaCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Onda/PostOnda";

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.IndicadoresPeriodosDimencoes;
 
-[SeedTestOrder(148)]
+[SeedTestOrder(146)]
 public partial class IndicadoresPeriodosDimencoesCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/IndicadoresPeriodosDimencoes/PostIndicadoresPeriodosDimencoes";

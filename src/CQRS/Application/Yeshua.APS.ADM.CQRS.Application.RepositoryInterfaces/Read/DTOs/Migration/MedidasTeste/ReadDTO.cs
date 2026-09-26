@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public Decimal mdt_valor_esperado { get; set; }
     public Decimal mdt_encontrado { get; set; }
     public string uni_id { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

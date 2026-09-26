@@ -36,6 +36,7 @@ namespace IRepository.Write
         void UpdatePER_ID(int met_id, string value);
         void UpdateDOM_EMPRESA(int met_id, string value);
         void UpdateDOM_FILIAL(int met_id, string value);
+        void UpdateOperationalEntityId(int met_id, string value);
         void UpdateTenantID(int met_id, int value);
         void UpdateDeleted(int met_id, bool value);
         void UpdateChanged(int met_id, DateTime value);

@@ -30,6 +30,7 @@ namespace IRepository.Write
         void UpdateUF(int id, string value);
         void UpdateMunicipioCodigoIbge(int id, string value);
         void UpdateEnderecoJson(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

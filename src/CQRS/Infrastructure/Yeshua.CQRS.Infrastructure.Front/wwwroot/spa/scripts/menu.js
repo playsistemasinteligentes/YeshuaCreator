@@ -18,11 +18,16 @@ export function buildMenu() {
 export async function loadDataMenu() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${environments.urlApi}/getMenu`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await fetchMenu(token);
 
         if (!response.ok) throw new Error('Token inválido ou expirado');
+
+        const applicationToken = response.headers.get('X-Yeshua-Application-Token');
+        if (applicationToken) {
+            localStorage.setItem('token', applicationToken);
+            const payload = JSON.parse(atob(applicationToken.split('.')[1]));
+            localStorage.setItem('tokenExp', payload.exp * 1000);
+        }
 
         await waitForApplicationExtension();
         const menuItems = extendMenuItems(await response.json());
@@ -99,8 +104,45 @@ export async function loadDataMenu() {
         });
 
     } catch (error) {
-        erroRequestResponse(error);
+        showModuleLoadError(error);
     }
+}
+
+export function showModuleLoadError(error) {
+    console.error('Falha ao abrir o aplicativo.', error);
+
+    let panel = document.getElementById('module-load-error');
+    if (!panel) {
+        panel = document.createElement('section');
+        panel.id = 'module-load-error';
+        const anchor = document.getElementById('crud-container');
+        anchor?.parentNode?.insertBefore(panel, anchor);
+    }
+
+    panel.className = 'mx-auto mt-6 max-w-3xl border border-red-200 bg-white p-5 shadow-sm';
+    panel.innerHTML = `
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h2 class="font-semibold text-gray-900">Não foi possível abrir este aplicativo</h2>
+                <p class="mt-1 text-sm text-gray-600">O restante da plataforma continua disponível.</p>
+            </div>
+            <i class="fa-solid fa-circle-exclamation text-red-600" aria-hidden="true"></i>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+            <button type="button" data-action="retry" class="bg-blue-600 px-4 py-2 text-white hover:bg-blue-700" title="Tentar novamente">
+                <i class="fa-solid fa-rotate-right mr-2"></i>Tentar novamente
+            </button>
+            <button type="button" data-action="central" class="border border-gray-300 bg-white px-4 py-2 text-gray-800 hover:bg-gray-50" title="Voltar à Central">
+                <i class="fa-solid fa-house mr-2"></i>Voltar à Central
+            </button>
+        </div>`;
+
+    panel.querySelector('[data-action="retry"]')?.addEventListener('click', () => location.reload());
+    panel.querySelector('[data-action="central"]')?.addEventListener('click', () => {
+        localStorage.setItem('yeshua.activeApplication', 'Central');
+        location.hash = '#dashboard';
+        location.reload();
+    });
 }
 
 async function openMenuItem(item) {
@@ -137,6 +179,13 @@ function closeCustomPage() {
         customPage.classList.add('hidden');
         customPage.innerHTML = '';
     }
+}
+
+function fetchMenu(token) {
+    return fetch(`${environments.urlApi}/getMenu`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
+    });
 }
 
 function extendMenuItems(menuItems) {

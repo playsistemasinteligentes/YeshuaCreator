@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRestricoesDeRodagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRestricoesDeRodagemReceiver), commandName: "Command.Write.RestricoesDeRodagemCrudCommand");
                  var restricoesderodagem = new RestricoesDeRodagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RES_ID, c.RES_TIPO, c.RES_HORA_INI, c.RES_HORA_FIM, c.RES_VELOCIDADE_HORA_RUSH, c.TVE_ID, c.MAP_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", restricoesderodagem.OperationalEntityId);
                  var domainResult = RestricoesDeRodagemDomainBehavior.Apply(restricoesderodagem, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

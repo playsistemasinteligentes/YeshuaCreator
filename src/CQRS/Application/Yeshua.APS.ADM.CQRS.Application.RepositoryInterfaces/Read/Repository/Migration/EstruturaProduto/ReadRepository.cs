@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByEST_BASE_PRODUCAO(Decimal value );
         public bool ExistsByEST_TIPO_REQUISICAO(string value );
         public bool ExistsByEST_CODIGO_DE_EXCECAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -46,6 +47,7 @@ namespace IRepository.Read
         public EstruturaProdutoDTO FirstByEST_BASE_PRODUCAO(Decimal value );
         public EstruturaProdutoDTO FirstByEST_TIPO_REQUISICAO(string value );
         public EstruturaProdutoDTO FirstByEST_CODIGO_DE_EXCECAO(string value );
+        public EstruturaProdutoDTO FirstByOperationalEntityId(string value );
         public EstruturaProdutoDTO FirstByTenantID(int value );
         public EstruturaProdutoDTO FirstByDeleted(bool value );
         public EstruturaProdutoDTO FirstByChanged(DateTime value );
@@ -59,6 +61,7 @@ namespace IRepository.Read
         public IEnumerable<EstruturaProdutoDTO> GetAllByEST_BASE_PRODUCAO(Decimal value );
         public IEnumerable<EstruturaProdutoDTO> GetAllByEST_TIPO_REQUISICAO(string value );
         public IEnumerable<EstruturaProdutoDTO> GetAllByEST_CODIGO_DE_EXCECAO(string value );
+        public IEnumerable<EstruturaProdutoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EstruturaProdutoDTO> GetAllByTenantID(int value );
         public IEnumerable<EstruturaProdutoDTO> GetAllByDeleted(bool value );
         public IEnumerable<EstruturaProdutoDTO> GetAllByChanged(DateTime value );

@@ -54,9 +54,9 @@ namespace Dominio.Schemas
             ).ToArray();
             var dropColumnsString = string.Join(" ", dropColumns);
 
-            var addColumns = entity.AddColumns.Select(c =>
-                $"  ALTER TABLE {SqlIdentifier(entity.EntityName)} ADD {SqlIdentifier(c.Name)}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")};"
-            ).ToArray();
+            var addColumns = entity.AddColumns
+                .Select(c => BuildAddColumnSql(entity, c))
+                .ToArray();
             var addColumnsString = string.Join(" ", addColumns);
 
             var alterColumns = entity.AlterColumns.Select(c =>
@@ -65,6 +65,25 @@ namespace Dominio.Schemas
             var alterColumnsString = string.Join(" ", alterColumns);
 
             return new MigrationQuery($@" {dropColumnsString} {alterColumnsString} {addColumnsString}", null);
+        }
+
+        private string BuildAddColumnSql(Entity entity, Column column)
+        {
+            if (column.IsImmutable && column.Name == "OperationalEntityId")
+            {
+                var tableName = EscapeSqlLiteral(SqlIdentifier(entity.EntityName));
+                return $@"
+IF COL_LENGTH(N'{EscapeSqlLiteral(entity.EntityName)}', N'OperationalEntityId') IS NULL
+BEGIN
+    EXEC(N'ALTER TABLE {tableName} ADD [OperationalEntityId] VARCHAR(32) NULL;');
+    EXEC(N'UPDATE {tableName}
+              SET [OperationalEntityId] = LOWER(REPLACE(CONVERT(VARCHAR(36), NEWID()), ''-'', ''''))
+            WHERE [OperationalEntityId] IS NULL;');
+    EXEC(N'ALTER TABLE {tableName} ALTER COLUMN [OperationalEntityId] VARCHAR(32) NOT NULL;');
+END;";
+            }
+
+            return $"  ALTER TABLE {SqlIdentifier(entity.EntityName)} ADD {SqlIdentifier(column.Name)}  {GetSqlDataType(column)} {(column.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(column.IsKey ? "PRIMARY KEY " : "")} {(!column.IsKey ? column.IsNotNull ? "NOT NULL" : "NULL" : "")};";
         }
 
         public MigrationQuery CreateTable(Entity entity)

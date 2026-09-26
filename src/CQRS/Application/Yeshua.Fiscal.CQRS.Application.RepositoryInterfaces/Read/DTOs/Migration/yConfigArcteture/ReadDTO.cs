@@ -18,6 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record yConfigArctetureDTO
     {
+    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public int audittrackeractived { get; set; }
     public int auditcrudactived { get; set; }

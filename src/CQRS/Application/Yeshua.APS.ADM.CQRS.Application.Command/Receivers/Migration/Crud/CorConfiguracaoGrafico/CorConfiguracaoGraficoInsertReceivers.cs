@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCorConfiguracaoGrafico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCorConfiguracaoGraficoReceiver), commandName: "Command.Write.CorConfiguracaoGraficoCrudCommand");
                  var corconfiguracaografico = new CorConfiguracaoGraficoFactory(_logger, _domainTrackingPolicy).Create(context, c.COR_ID, c.COR_PERCENTUAL_INI, c.COR_PERCENTUAL_FIM, c.COR_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", corconfiguracaografico.OperationalEntityId);
                  var domainResult = CorConfiguracaoGraficoDomainBehavior.Apply(corconfiguracaografico, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

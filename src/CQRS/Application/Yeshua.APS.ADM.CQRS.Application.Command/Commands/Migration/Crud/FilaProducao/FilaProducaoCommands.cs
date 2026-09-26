@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct FilaProducaoCrudCommand : ICommand
+    public struct FilaProducaoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string ORD_ID { get; set; }
@@ -76,10 +76,13 @@ namespace Command.Write
         public Decimal? FPR_TOLERANCIA_MENOS { get; set; }
         public Decimal? FPR_TOLERANCIA_MAIS { get; set; }
         public DateTime? FPR_DATA_ENCERRAMENTO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "FilaProducao";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

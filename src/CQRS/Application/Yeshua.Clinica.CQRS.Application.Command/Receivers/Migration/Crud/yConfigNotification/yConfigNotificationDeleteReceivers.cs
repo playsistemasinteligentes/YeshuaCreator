@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyConfigNotification", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyConfigNotificationReceiver), commandName: "Command.Write.yConfigNotificationCrudCommand");
                  var yconfignotification = new yConfigNotificationFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yconfignotification.OperationalEntityId);
                  var domainResult = yConfigNotificationDomainBehavior.Apply(yconfignotification, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

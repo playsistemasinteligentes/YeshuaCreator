@@ -29,6 +29,7 @@
     public DateTime? PublicadoEmUtc { get; set; }
     public string? UltimoErro { get; set; }
     public int Status { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -44,6 +45,7 @@
  PublicadoEmUtc = publicadoemutc.HasValue && publicadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : publicadoemutc; 
  UltimoErro = ultimoerro; 
  Status = status; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

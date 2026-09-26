@@ -1,5 +1,7 @@
 ﻿import { showAlert } from '../alerts.js';
 
+import { getAuthenticationApi } from '../application-context.js';
+
 export function buildForgot() {
     const form = document.getElementById('forgot-password-form');
     if (!form) return;
@@ -16,7 +18,7 @@ export function buildForgot() {
         }
 
         try {
-            const response = await fetch(`${environments.urlApi}/Y/ContasRecoveryAccountUseCase`, {
+            const response = await fetch(`${getAuthenticationApi()}/Y/ContasRecoveryAccountUseCase`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, typeNotification })

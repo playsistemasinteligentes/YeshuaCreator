@@ -132,6 +132,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -196,6 +204,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public LoockDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<LoockDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public LoockDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -255,6 +271,14 @@ namespace Read.Repository
         public IEnumerable<LoockDTO> GetAllByLOO_CONTEUDO(string value )
         {
             var query = _query.FirstByLOO_CONTEUDOQuery(value );
+
+                var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<LoockDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters).ToList();
                 return result;

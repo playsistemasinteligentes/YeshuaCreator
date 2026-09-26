@@ -27,6 +27,7 @@
     int? REL_POS_X { get; set; }
     int? REL_POS_Y { get; set; }
     int? REL_TAMANHO_FONTE { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

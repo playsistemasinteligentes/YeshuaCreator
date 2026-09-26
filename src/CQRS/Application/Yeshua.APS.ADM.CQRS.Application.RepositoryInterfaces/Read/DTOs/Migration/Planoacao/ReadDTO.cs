@@ -29,6 +29,7 @@ namespace Repositorio.Outputs
     public string pla_vlracumulado { get; set; } = string.Empty;
     public string pla_referencia { get; set; } = string.Empty;
     public int use_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -32,6 +32,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDIM_IDQuery(string value );
         public QueryModel ExistsByDOM_EMPRESAQuery(string value );
         public QueryModel ExistsByDOM_FILIALQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -51,6 +52,7 @@ namespace IQuery.Read
         public QueryModel FirstByDIM_IDQuery(string value );
         public QueryModel FirstByDOM_EMPRESAQuery(string value );
         public QueryModel FirstByDOM_FILIALQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

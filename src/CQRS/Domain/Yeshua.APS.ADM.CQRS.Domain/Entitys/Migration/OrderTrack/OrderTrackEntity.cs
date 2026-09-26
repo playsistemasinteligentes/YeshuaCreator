@@ -31,6 +31,7 @@
     public DateTime? OTK_DATA_PREVISTA { get; set; }
     public DateTime? OTK_DATA_REALIZADA { get; set; }
     public int? FPR_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -48,6 +49,7 @@
  OTK_DATA_PREVISTA = otk_data_prevista.HasValue && otk_data_prevista.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_prevista; 
  OTK_DATA_REALIZADA = otk_data_realizada.HasValue && otk_data_realizada.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_realizada; 
  FPR_ID = fpr_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

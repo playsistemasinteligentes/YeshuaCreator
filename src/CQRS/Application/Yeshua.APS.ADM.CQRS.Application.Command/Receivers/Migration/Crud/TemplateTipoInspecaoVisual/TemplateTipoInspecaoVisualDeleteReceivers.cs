@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateTipoInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateTipoInspecaoVisualReceiver), commandName: "Command.Write.TemplateTipoInspecaoVisualCrudCommand");
                  var templatetipoinspecaovisual = new TemplateTipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.TTI_ID, c.TIV_ID, c.TEM_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatetipoinspecaovisual.OperationalEntityId);
                  var domainResult = TemplateTipoInspecaoVisualDomainBehavior.Apply(templatetipoinspecaovisual, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

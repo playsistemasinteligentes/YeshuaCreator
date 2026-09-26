@@ -24,6 +24,7 @@
     public int VER_ID { get; set; }
     public string? VER_STATUS { get; set; }
     public string? VER_OBS { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  VER_ID = ver_id; 
  VER_STATUS = ver_status; 
  VER_OBS = ver_obs; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

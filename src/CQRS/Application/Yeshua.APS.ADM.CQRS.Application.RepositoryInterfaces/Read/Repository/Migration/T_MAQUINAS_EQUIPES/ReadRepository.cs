@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByEQU_ID(string value );
         public bool ExistsByCAL_ID(int value );
         public bool ExistsByCLI_ID(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public T_MAQUINAS_EQUIPESDTO FirstByEQU_ID(string value );
         public T_MAQUINAS_EQUIPESDTO FirstByCAL_ID(int value );
         public T_MAQUINAS_EQUIPESDTO FirstByCLI_ID(string value );
+        public T_MAQUINAS_EQUIPESDTO FirstByOperationalEntityId(string value );
         public T_MAQUINAS_EQUIPESDTO FirstByTenantID(int value );
         public T_MAQUINAS_EQUIPESDTO FirstByDeleted(bool value );
         public T_MAQUINAS_EQUIPESDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByEQU_ID(string value );
         public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByCAL_ID(int value );
         public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByCLI_ID(string value );
+        public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByTenantID(int value );
         public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_MAQUINAS_EQUIPESDTO> GetAllByChanged(DateTime value );

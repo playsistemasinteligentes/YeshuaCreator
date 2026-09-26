@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCalendarioDisponibilidadeVeiculosQuery(ICalendarioDisponibilidadeVeiculosEntity CalendarioDisponibilidadeVeiculos)
         {
-            this.Query = $@" INSERT INTO [CalendarioDisponibilidadeVeiculos] ([CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CDV_ID, @CDV_DATA_DE, @CDV_DATA_ATE, @CDV_SEGUNDA, @CDV_TERCA, @CDV_QUARTA, @CDV_QUINTA, @CDV_SEXTA, @CDV_SABADO, @CDV_DOMINGO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CalendarioDisponibilidadeVeiculos] ([CDV_ID], [CDV_DATA_DE], [CDV_DATA_ATE], [CDV_SEGUNDA], [CDV_TERCA], [CDV_QUARTA], [CDV_QUINTA], [CDV_SEXTA], [CDV_SABADO], [CDV_DOMINGO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CDV_ID, @CDV_DATA_DE, @CDV_DATA_ATE, @CDV_SEGUNDA, @CDV_TERCA, @CDV_QUARTA, @CDV_QUINTA, @CDV_SEXTA, @CDV_SABADO, @CDV_DOMINGO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CDV_ID = CalendarioDisponibilidadeVeiculos.CDV_ID,
@@ -43,6 +43,7 @@ namespace Query.Write
                 CDV_SEXTA = CalendarioDisponibilidadeVeiculos.CDV_SEXTA,
                 CDV_SABADO = CalendarioDisponibilidadeVeiculos.CDV_SABADO,
                 CDV_DOMINGO = CalendarioDisponibilidadeVeiculos.CDV_DOMINGO,
+                OperationalEntityId = CalendarioDisponibilidadeVeiculos.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -167,6 +168,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CDV_DOMINGO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CalendarioDisponibilidadeVeiculos] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

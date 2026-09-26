@@ -50,6 +50,7 @@ namespace IRepository.Read
         public bool ExistsByCOM_VINCO8_CONVERSAO(int value );
         public bool ExistsByCOM_VINCO9_CONVERSAO(int value );
         public bool ExistsByCOM_VINCO10_CONVERSAO(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -78,6 +79,7 @@ namespace IRepository.Read
         public CompensacaoDTO FirstByCOM_VINCO8_CONVERSAO(int value );
         public CompensacaoDTO FirstByCOM_VINCO9_CONVERSAO(int value );
         public CompensacaoDTO FirstByCOM_VINCO10_CONVERSAO(int value );
+        public CompensacaoDTO FirstByOperationalEntityId(string value );
         public CompensacaoDTO FirstByTenantID(int value );
         public CompensacaoDTO FirstByDeleted(bool value );
         public CompensacaoDTO FirstByChanged(DateTime value );
@@ -106,6 +108,7 @@ namespace IRepository.Read
         public IEnumerable<CompensacaoDTO> GetAllByCOM_VINCO8_CONVERSAO(int value );
         public IEnumerable<CompensacaoDTO> GetAllByCOM_VINCO9_CONVERSAO(int value );
         public IEnumerable<CompensacaoDTO> GetAllByCOM_VINCO10_CONVERSAO(int value );
+        public IEnumerable<CompensacaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CompensacaoDTO> GetAllByTenantID(int value );
         public IEnumerable<CompensacaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CompensacaoDTO> GetAllByChanged(DateTime value );

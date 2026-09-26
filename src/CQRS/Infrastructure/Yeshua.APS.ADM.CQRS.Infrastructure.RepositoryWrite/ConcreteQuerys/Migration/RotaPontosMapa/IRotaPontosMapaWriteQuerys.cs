@@ -25,6 +25,7 @@ namespace IQuery.Write
         QueryModel UpdateROT_ORDEM_ROTEIRO(int id, int value);
         QueryModel UpdateROT_TIPO(int id, string value);
         QueryModel UpdateROT_DISTANCIA(int id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -26,6 +26,7 @@ namespace Repositorio.Outputs
     public string pro_id { get; set; } = string.Empty;
     public int rot_seq_tranformacao { get; set; }
     public string obs_integracao { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

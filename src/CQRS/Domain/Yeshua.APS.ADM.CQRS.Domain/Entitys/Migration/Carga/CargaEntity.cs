@@ -61,6 +61,7 @@
     public DateTime? CAR_DATA_AGENCIAMENTO { get; set; }
     public string? TURN_ID { get; set; }
     public string? TURM_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -108,6 +109,7 @@
  CAR_DATA_AGENCIAMENTO = car_data_agenciamento.HasValue && car_data_agenciamento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : car_data_agenciamento; 
  TURN_ID = turn_id; 
  TURM_ID = turm_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -26,6 +26,7 @@
     int? POL_PROMOCAO { get; set; }
     int? POL_DIAS_ANTECIPACAO { get; set; }
     int? POL_METROS_LINEARES { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

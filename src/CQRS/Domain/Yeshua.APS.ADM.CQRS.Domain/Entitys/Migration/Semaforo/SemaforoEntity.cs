@@ -26,6 +26,7 @@
     public string? SEM_ORIGEM { get; set; }
     public DateTime? SEM_EMISSAO { get; set; }
     public string? SEM_ID_CONEXAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -38,6 +39,7 @@
  SEM_ORIGEM = sem_origem; 
  SEM_EMISSAO = sem_emissao.HasValue && sem_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : sem_emissao; 
  SEM_ID_CONEXAO = sem_id_conexao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -27,6 +27,7 @@ namespace IQuery.Read
         public QueryModel ExistsByCDV_SEXTAQuery(int value );
         public QueryModel ExistsByCDV_SABADOQuery(int value );
         public QueryModel ExistsByCDV_DOMINGOQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -42,6 +43,7 @@ namespace IQuery.Read
         public QueryModel FirstByCDV_SEXTAQuery(int value );
         public QueryModel FirstByCDV_SABADOQuery(int value );
         public QueryModel FirstByCDV_DOMINGOQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

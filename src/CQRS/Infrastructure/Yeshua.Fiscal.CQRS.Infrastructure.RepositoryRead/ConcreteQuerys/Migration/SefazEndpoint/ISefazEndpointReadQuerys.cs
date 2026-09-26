@@ -24,6 +24,7 @@ namespace IQuery.Read
         public QueryModel ExistsByVersaoQuery(string value );
         public QueryModel ExistsByUrlQuery(string value );
         public QueryModel ExistsByAtivoQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -36,6 +37,7 @@ namespace IQuery.Read
         public QueryModel FirstByVersaoQuery(string value );
         public QueryModel FirstByUrlQuery(string value );
         public QueryModel FirstByAtivoQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

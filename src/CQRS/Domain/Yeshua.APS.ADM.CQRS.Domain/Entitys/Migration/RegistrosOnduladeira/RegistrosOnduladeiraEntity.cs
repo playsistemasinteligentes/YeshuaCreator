@@ -25,6 +25,7 @@
     public string REG_RESPOSTA { get; set; }
     public string REG_STATUS { get; set; }
     public DateTime REG_DATA_INICIO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  REG_RESPOSTA = reg_resposta; 
  REG_STATUS = reg_status; 
  REG_DATA_INICIO = (reg_data_inicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : reg_data_inicio; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -22,6 +22,7 @@
 {
     public int NEG_ID { get; set; }
     public string NEG_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -30,6 +31,7 @@
  internal T_NegocioEntity(int neg_id, string neg_descricao ){
  NEG_ID = neg_id; 
  NEG_DESCRICAO = neg_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

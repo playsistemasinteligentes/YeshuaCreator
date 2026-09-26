@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByEQU_ID(string value );
         public bool ExistsByEQU_HIERARQUIA_SEQ_TRANSFORMACAO(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public EquipeDTO FirstById(int value );
         public EquipeDTO FirstByEQU_ID(string value );
         public EquipeDTO FirstByEQU_HIERARQUIA_SEQ_TRANSFORMACAO(Decimal value );
+        public EquipeDTO FirstByOperationalEntityId(string value );
         public EquipeDTO FirstByTenantID(int value );
         public EquipeDTO FirstByDeleted(bool value );
         public EquipeDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<EquipeDTO> GetAllById(int value );
         public IEnumerable<EquipeDTO> GetAllByEQU_ID(string value );
         public IEnumerable<EquipeDTO> GetAllByEQU_HIERARQUIA_SEQ_TRANSFORMACAO(Decimal value );
+        public IEnumerable<EquipeDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EquipeDTO> GetAllByTenantID(int value );
         public IEnumerable<EquipeDTO> GetAllByDeleted(bool value );
         public IEnumerable<EquipeDTO> GetAllByChanged(DateTime value );

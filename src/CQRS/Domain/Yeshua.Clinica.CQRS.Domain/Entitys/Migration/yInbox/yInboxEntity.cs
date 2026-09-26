@@ -36,6 +36,7 @@
     public int? SagaId { get; set; }
     public int? SagaStepId { get; set; }
     public int? TenantID { get; set; }
+    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
@@ -56,6 +57,7 @@
  NextAttemptAt = nextattemptat.HasValue && nextattemptat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : nextattemptat; 
  SagaId = sagaid; 
  SagaStepId = sagastepid; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

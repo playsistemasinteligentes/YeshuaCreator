@@ -45,6 +45,7 @@ namespace IRepository.Read
         public bool ExistsBySagaId(int value , bool TakeOffTenantID = false);
         public bool ExistsBySagaStepId(int value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
@@ -67,6 +68,7 @@ namespace IRepository.Read
         public yOutboxDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstBySagaStepId(int value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByUserId(int value , bool TakeOffTenantID = false);
@@ -89,6 +91,7 @@ namespace IRepository.Read
         public IEnumerable<yOutboxDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllBySagaStepId(int value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);

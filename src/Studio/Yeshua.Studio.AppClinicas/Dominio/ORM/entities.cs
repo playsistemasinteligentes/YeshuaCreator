@@ -18,6 +18,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string Nome { get; set; }
         public string Endereco { get; set; }
         public string Telefone { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -32,6 +33,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
     {
         public int? Id { get; set; }
         public string Descricao { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -49,6 +51,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? EspecialidadeId { get; set; }
         public Especialidade Especialidade { get; set; }
         public string Telefone { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -65,6 +68,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? ProfissionalId { get; set; }
         public Profissional Profissional { get; set; }
         public DateTime DataHora { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -79,6 +83,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
     {
         public int? Id { get; set; }
         public string Descricao { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -96,6 +101,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public GrupoServico GrupoServico { get; set; }
         public string Nome { get; set; }
         public Decimal Valor { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -119,6 +125,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string? NomeResponsavel { get; set; }
         public string? TelefoneResponsavel { get; set; }
         public string? Observacao { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -140,6 +147,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int TipoMovimentacao { get; set; }
         public DateTime DataMovimentacao { get; set; }
         public Decimal SaldoAtual { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -184,6 +192,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public MovimentacaoFinanceira MovimentacaoFinanceira { get; set; }
         public int? ProfissionalId { get; set; }
         public Profissional Profissional { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -200,6 +209,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string Codigo { get; set; }
         public string Nome { get; set; }
         public int Tipo { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -220,6 +230,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public DateTime DataMovimento { get; set; }
         public DateTime? DataVencimento { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -243,6 +254,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -267,6 +279,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -292,6 +305,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int RetryCount { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -324,6 +338,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -353,6 +368,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -375,6 +391,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public yTenant yTenant { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
 
@@ -383,6 +400,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yTenant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string CnpjCpf { get; set; }
         public string Nome { get; set; }
@@ -395,6 +413,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yUser
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
@@ -409,6 +428,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yConfigArcteture
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
@@ -424,6 +444,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yConfigNotification
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -441,6 +462,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yPerfil
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string Description { get; set; }
         public int? TenantID { get; set; }
@@ -453,16 +475,9 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public static MyApp.QueryBuilder.Query<yPerfil> Query() => new MyApp.QueryBuilder.Query<yPerfil>();
     }
 
-    public class yModule
-    {
-        public string? Id { get; set; }
-        public string? Description { get; set; }
-
-        public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
-    }
-
     public class yTenantModule
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
@@ -479,6 +494,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yUserModule
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
@@ -495,6 +511,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yGrant
     {
+        public string OperationalEntityId { get; set; }
         public string? Id { get; set; }
         public string? Description { get; set; }
         public int? TenantID { get; set; }
@@ -509,6 +526,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yPerfilGrant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
@@ -532,6 +550,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yUserGrant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
@@ -551,6 +570,14 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public yUser yUser { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserGrant> Query() => new MyApp.QueryBuilder.Query<yUserGrant>();
+    }
+
+    public class yModule
+    {
+        public string? Id { get; set; }
+        public string? Description { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
     }
 
 }

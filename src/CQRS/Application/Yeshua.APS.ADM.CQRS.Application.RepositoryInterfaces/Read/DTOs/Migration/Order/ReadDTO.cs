@@ -92,6 +92,7 @@ namespace Repositorio.Outputs
     public DateTime ord_data_estatistica { get; set; }
     public string oco_id_motivo_atraso { get; set; } = string.Empty;
     public int otk_verssao { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

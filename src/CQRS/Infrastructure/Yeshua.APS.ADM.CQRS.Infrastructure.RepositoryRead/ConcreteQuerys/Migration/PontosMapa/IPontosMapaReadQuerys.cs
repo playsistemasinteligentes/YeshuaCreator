@@ -23,6 +23,7 @@ namespace IQuery.Read
         public QueryModel ExistsByPON_LATITUDEQuery(Decimal value );
         public QueryModel ExistsByPON_LONGITUDEQuery(Decimal value );
         public QueryModel ExistsByPON_DISTANCIA_KMQuery(Decimal value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -34,6 +35,7 @@ namespace IQuery.Read
         public QueryModel FirstByPON_LATITUDEQuery(Decimal value );
         public QueryModel FirstByPON_LONGITUDEQuery(Decimal value );
         public QueryModel FirstByPON_DISTANCIA_KMQuery(Decimal value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

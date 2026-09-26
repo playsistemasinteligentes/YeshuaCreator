@@ -39,6 +39,7 @@ namespace IQuery.Write
         QueryModel UpdateETI_IMPRIMIR_ATE(int eti_id, int value);
         QueryModel UpdateBOL_ID(int eti_id, string value);
         QueryModel UpdateCOR_SEQUENCIA(int eti_id, int value);
+        QueryModel UpdateOperationalEntityId(int eti_id, string value);
         QueryModel UpdateTenantID(int eti_id, int value);
         QueryModel UpdateDeleted(int eti_id, bool value);
         QueryModel UpdateChanged(int eti_id, DateTime value);

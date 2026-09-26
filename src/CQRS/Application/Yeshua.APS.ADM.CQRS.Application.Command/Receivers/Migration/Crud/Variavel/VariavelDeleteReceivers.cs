@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVariavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVariavelReceiver), commandName: "Command.Write.VariavelCrudCommand");
                  var variavel = new VariavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VAR_ID, c.VAR_DESCRICAO, c.CON_ID, c.VAR_MODO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", variavel.OperationalEntityId);
                  var domainResult = VariavelDomainBehavior.Apply(variavel, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

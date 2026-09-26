@@ -19,6 +19,7 @@ namespace Repositorio.Outputs
     public partial record PlanoAmostralTesteDTO
     {
     public Decimal grp_tipo { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

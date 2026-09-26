@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTipoDispositivo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTipoDispositivoReceiver), commandName: "Command.Write.TipoDispositivoCrudCommand");
                  var tipodispositivo = new TipoDispositivoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TDI_ID, c.TDI_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipodispositivo.OperationalEntityId);
                  var domainResult = TipoDispositivoDomainBehavior.Apply(tipodispositivo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IIndicadoresDepartamentosEntity indicadoresdepartamentos);
         void UpdateDEP_ID(int inddep_id, int value);
         void UpdateIND_ID(int inddep_id, int value);
+        void UpdateOperationalEntityId(int inddep_id, string value);
         void UpdateTenantID(int inddep_id, int value);
         void UpdateDeleted(int inddep_id, bool value);
         void UpdateChanged(int inddep_id, DateTime value);

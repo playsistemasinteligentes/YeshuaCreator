@@ -24,6 +24,7 @@ namespace IQuery.Read
         public QueryModel ExistsByMEN_TYPEQuery(string value );
         public QueryModel ExistsByMEN_QTD_TRY_SENDQuery(Decimal value );
         public QueryModel ExistsByMEN_DATE_TRY_SENDQuery(DateTime value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -36,6 +37,7 @@ namespace IQuery.Read
         public QueryModel FirstByMEN_TYPEQuery(string value );
         public QueryModel FirstByMEN_QTD_TRY_SENDQuery(Decimal value );
         public QueryModel FirstByMEN_DATE_TRY_SENDQuery(DateTime value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

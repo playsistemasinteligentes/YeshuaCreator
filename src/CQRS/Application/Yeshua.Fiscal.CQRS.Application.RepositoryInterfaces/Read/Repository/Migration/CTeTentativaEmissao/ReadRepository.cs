@@ -40,6 +40,7 @@ namespace IRepository.Read
         public bool ExistsByEnviadoEmUtc(DateTime value );
         public bool ExistsByAutorizadoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -59,6 +60,7 @@ namespace IRepository.Read
         public CTeTentativaEmissaoDTO FirstByEnviadoEmUtc(DateTime value );
         public CTeTentativaEmissaoDTO FirstByAutorizadoEmUtc(DateTime value );
         public CTeTentativaEmissaoDTO FirstByStatus(int value );
+        public CTeTentativaEmissaoDTO FirstByOperationalEntityId(string value );
         public CTeTentativaEmissaoDTO FirstByTenantID(int value );
         public CTeTentativaEmissaoDTO FirstByDeleted(bool value );
         public CTeTentativaEmissaoDTO FirstByChanged(DateTime value );
@@ -78,6 +80,7 @@ namespace IRepository.Read
         public IEnumerable<CTeTentativaEmissaoDTO> GetAllByEnviadoEmUtc(DateTime value );
         public IEnumerable<CTeTentativaEmissaoDTO> GetAllByAutorizadoEmUtc(DateTime value );
         public IEnumerable<CTeTentativaEmissaoDTO> GetAllByStatus(int value );
+        public IEnumerable<CTeTentativaEmissaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeTentativaEmissaoDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeTentativaEmissaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeTentativaEmissaoDTO> GetAllByChanged(DateTime value );

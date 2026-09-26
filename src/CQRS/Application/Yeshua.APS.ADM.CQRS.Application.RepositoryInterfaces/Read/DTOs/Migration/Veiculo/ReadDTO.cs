@@ -34,6 +34,7 @@ namespace Repositorio.Outputs
     public DateTime vei_emissao { get; set; }
     public DateTime vei_vencimento { get; set; }
     public string vei_status { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

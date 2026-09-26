@@ -30,6 +30,7 @@
     int ROT_SEQ_TRANFORMACAO { get; set; }
     string ORD_ID { get; set; }
     int FPR_SEQ_REPETICAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

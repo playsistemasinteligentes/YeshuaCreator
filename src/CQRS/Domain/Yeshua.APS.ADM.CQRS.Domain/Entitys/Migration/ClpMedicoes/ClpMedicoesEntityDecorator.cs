@@ -39,10 +39,11 @@
             public const ulong COMPACTA = 1UL << 16;
             public const ulong BOL_ID = 1UL << 17;
             public const ulong COR_SEQUENCIA = 1UL << 18;
-            public const ulong TenantID = 1UL << 19;
-            public const ulong Deleted = 1UL << 20;
-            public const ulong Changed = 1UL << 21;
-            public const ulong UserId = 1UL << 22;
+            public const ulong OperationalEntityId = 1UL << 19;
+            public const ulong TenantID = 1UL << 20;
+            public const ulong Deleted = 1UL << 21;
+            public const ulong Changed = 1UL << 22;
+            public const ulong UserId = 1UL << 23;
         }
 
         public partial class ClpMedicoesDecorator : IClpMedicoesEntity
@@ -337,6 +338,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

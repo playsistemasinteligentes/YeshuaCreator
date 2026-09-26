@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeVeiculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeVeiculoReceiver), commandName: "Command.Write.MDFeVeiculoCrudCommand");
                  var mdfeveiculo = new MDFeVeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.Placa, c.Renavam, c.Tara, c.CapacidadeKg, c.CapacidadeM3);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfeveiculo.OperationalEntityId);
                  var domainResult = MDFeVeiculoDomainBehavior.Apply(mdfeveiculo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

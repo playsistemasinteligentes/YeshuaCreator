@@ -28,6 +28,7 @@
     Decimal? RES_VELOCIDADE_HORA_RUSH { get; set; }
     int? TVE_ID { get; set; }
     int? MAP_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

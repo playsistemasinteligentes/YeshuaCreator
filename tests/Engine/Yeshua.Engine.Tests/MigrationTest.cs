@@ -36,5 +36,23 @@ namespace TestMigration
 
             Dominio.Migration.MigrationBuilder.ValidateCompositeKeysAreNotImplemented(new[] { entity });
         }
+
+        [TestMethod]
+        public void ImmutableColumnMetadataSurvivesStandardFieldCopy()
+        {
+            var standardFields = new Dominio.Entity("yStandardFields");
+            standardFields
+                .AddColumn("OperationalEntityId", "Identificador operacional")
+                .Varchar(32)
+                .DefaultValue("#Guid.NewGuid().ToString(\"N\")")
+                .Immutable();
+            var target = new Dominio.Entity("Carga");
+
+            var copy = standardFields.AddColumns.Single().DeepCopy(target);
+
+            Assert.IsTrue(copy.IsImmutable);
+            Assert.AreEqual("OperationalEntityId", copy.Name);
+            Assert.AreEqual("#Guid.NewGuid().ToString(\"N\")", copy.ValueDefault);
+        }
     }
 }

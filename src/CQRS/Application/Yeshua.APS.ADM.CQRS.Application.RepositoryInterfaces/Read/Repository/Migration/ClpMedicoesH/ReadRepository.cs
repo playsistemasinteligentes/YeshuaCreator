@@ -42,6 +42,7 @@ namespace IRepository.Read
         public bool ExistsByCOMPACTA(int value );
         public bool ExistsByBOL_ID(string value );
         public bool ExistsByCOR_SEQUENCIA(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -64,6 +65,7 @@ namespace IRepository.Read
         public ClpMedicoesHDTO FirstByCOMPACTA(int value );
         public ClpMedicoesHDTO FirstByBOL_ID(string value );
         public ClpMedicoesHDTO FirstByCOR_SEQUENCIA(int value );
+        public ClpMedicoesHDTO FirstByOperationalEntityId(string value );
         public ClpMedicoesHDTO FirstByTenantID(int value );
         public ClpMedicoesHDTO FirstByDeleted(bool value );
         public ClpMedicoesHDTO FirstByChanged(DateTime value );
@@ -86,6 +88,7 @@ namespace IRepository.Read
         public IEnumerable<ClpMedicoesHDTO> GetAllByCOMPACTA(int value );
         public IEnumerable<ClpMedicoesHDTO> GetAllByBOL_ID(string value );
         public IEnumerable<ClpMedicoesHDTO> GetAllByCOR_SEQUENCIA(int value );
+        public IEnumerable<ClpMedicoesHDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ClpMedicoesHDTO> GetAllByTenantID(int value );
         public IEnumerable<ClpMedicoesHDTO> GetAllByDeleted(bool value );
         public IEnumerable<ClpMedicoesHDTO> GetAllByChanged(DateTime value );

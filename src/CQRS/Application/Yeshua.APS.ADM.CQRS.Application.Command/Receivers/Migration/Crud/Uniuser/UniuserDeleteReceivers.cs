@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUniuser", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUniuserReceiver), commandName: "Command.Write.UniuserCrudCommand");
                  var uniuser = new UniuserFactory(_logger, _domainTrackingPolicy).Create(context, c.USERGRU_ID, c.UNI_ID, c.USE_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", uniuser.OperationalEntityId);
                  var domainResult = UniuserDomainBehavior.Apply(uniuser, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

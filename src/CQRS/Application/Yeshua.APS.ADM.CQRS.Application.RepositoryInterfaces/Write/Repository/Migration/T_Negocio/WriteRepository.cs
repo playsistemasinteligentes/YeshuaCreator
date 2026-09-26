@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IT_NegocioEntity t_negocio);
         void Delete(IT_NegocioEntity t_negocio);
         void UpdateNEG_DESCRICAO(int neg_id, string value);
+        void UpdateOperationalEntityId(int neg_id, string value);
         void UpdateTenantID(int neg_id, int value);
         void UpdateDeleted(int neg_id, bool value);
         void UpdateChanged(int neg_id, DateTime value);

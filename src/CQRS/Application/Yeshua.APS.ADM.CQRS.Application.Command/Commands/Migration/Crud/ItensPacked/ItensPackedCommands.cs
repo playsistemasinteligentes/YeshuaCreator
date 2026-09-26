@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ItensPackedCrudCommand : ICommand
+    public struct ItensPackedCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int IPA_ID { get; set; }
@@ -25,10 +25,13 @@ namespace Command.Write
         public Decimal? IPA_DIML { get; set; }
         public Decimal? IPA_DIMA { get; set; }
         public Decimal? IPA_QTD_POR_PALETE { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "ItensPacked";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public string? CON_CASAS_DECIMAIS { get; set; }
     public string? CON_CONEXAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  CON_CASAS_DECIMAIS = con_casas_decimais; 
  CON_CONEXAO = con_conexao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -28,6 +28,7 @@
     public int? SPR { get; set; }
     public string? OCO_SUB_TIPO { get; set; }
     public string? SUB_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  SPR = spr; 
  OCO_SUB_TIPO = oco_sub_tipo; 
  SUB_ID = sub_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

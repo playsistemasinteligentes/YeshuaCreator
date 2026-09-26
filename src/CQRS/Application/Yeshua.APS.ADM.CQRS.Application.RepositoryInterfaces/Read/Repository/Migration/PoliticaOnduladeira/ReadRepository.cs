@@ -30,6 +30,7 @@ namespace IRepository.Read
         public bool ExistsByPOL_PROMOCAO(int value );
         public bool ExistsByPOL_DIAS_ANTECIPACAO(int value );
         public bool ExistsByPOL_METROS_LINEARES(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -40,6 +41,7 @@ namespace IRepository.Read
         public PoliticaOnduladeiraDTO FirstByPOL_PROMOCAO(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_DIAS_ANTECIPACAO(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_METROS_LINEARES(int value );
+        public PoliticaOnduladeiraDTO FirstByOperationalEntityId(string value );
         public PoliticaOnduladeiraDTO FirstByTenantID(int value );
         public PoliticaOnduladeiraDTO FirstByDeleted(bool value );
         public PoliticaOnduladeiraDTO FirstByChanged(DateTime value );
@@ -50,6 +52,7 @@ namespace IRepository.Read
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_PROMOCAO(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_DIAS_ANTECIPACAO(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_METROS_LINEARES(int value );
+        public IEnumerable<PoliticaOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByChanged(DateTime value );

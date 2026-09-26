@@ -21,6 +21,7 @@ namespace IQuery.Write
         QueryModel UpdateOBJ_DESCRICAO(int id, string value);
         QueryModel UpdateOBJ_TIPO(int id, string value);
         QueryModel UpdateOBJ_GRUPO(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateTemplateTipoInspecaoVisualQuery(ITemplateTipoInspecaoVisualEntity TemplateTipoInspecaoVisual);
         QueryModel UpdateTIV_ID(int tti_id, int value);
         QueryModel UpdateTEM_ID(int tti_id, int value);
+        QueryModel UpdateOperationalEntityId(int tti_id, string value);
         QueryModel UpdateTenantID(int tti_id, int value);
         QueryModel UpdateDeleted(int tti_id, bool value);
         QueryModel UpdateChanged(int tti_id, DateTime value);

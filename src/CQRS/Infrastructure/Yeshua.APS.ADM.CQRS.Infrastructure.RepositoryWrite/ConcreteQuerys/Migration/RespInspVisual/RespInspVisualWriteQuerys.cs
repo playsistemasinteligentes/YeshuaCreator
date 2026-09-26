@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InserirRespInspVisualQuery(IRespInspVisualEntity RespInspVisual)
         {
-            this.Query = $@" INSERT INTO [RespInspVisual] ([RIV_ID], [IPV_ID], [ITI_ID], [RIV_STATUS], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RIV_ID, @IPV_ID, @ITI_ID, @RIV_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RespInspVisual] ([RIV_ID], [IPV_ID], [ITI_ID], [RIV_STATUS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RIV_ID, @IPV_ID, @ITI_ID, @RIV_STATUS, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 RIV_ID = RespInspVisual.RIV_ID,
                 IPV_ID = RespInspVisual.IPV_ID,
                 ITI_ID = RespInspVisual.ITI_ID,
                 RIV_STATUS = RespInspVisual.RIV_STATUS,
+                OperationalEntityId = RespInspVisual.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -95,6 +96,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 RIV_STATUS = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [RespInspVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

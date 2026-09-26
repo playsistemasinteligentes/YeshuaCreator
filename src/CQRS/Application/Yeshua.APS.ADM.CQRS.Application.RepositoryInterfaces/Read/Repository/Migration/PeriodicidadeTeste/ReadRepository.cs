@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByPER_QTD(string value );
         public bool ExistsByUNI_ID(string value );
         public bool ExistsByGRP_ID(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public PeriodicidadeTesteDTO FirstByPER_QTD(string value );
         public PeriodicidadeTesteDTO FirstByUNI_ID(string value );
         public PeriodicidadeTesteDTO FirstByGRP_ID(string value );
+        public PeriodicidadeTesteDTO FirstByOperationalEntityId(string value );
         public PeriodicidadeTesteDTO FirstByTenantID(int value );
         public PeriodicidadeTesteDTO FirstByDeleted(bool value );
         public PeriodicidadeTesteDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<PeriodicidadeTesteDTO> GetAllByPER_QTD(string value );
         public IEnumerable<PeriodicidadeTesteDTO> GetAllByUNI_ID(string value );
         public IEnumerable<PeriodicidadeTesteDTO> GetAllByGRP_ID(string value );
+        public IEnumerable<PeriodicidadeTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PeriodicidadeTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<PeriodicidadeTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<PeriodicidadeTesteDTO> GetAllByChanged(DateTime value );

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteClpMedicoesH", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteClpMedicoesHReceiver), commandName: "Command.Write.ClpMedicoesHCrudCommand");
                  var clpmedicoesh = new ClpMedicoesHFactory(_logger, _domainTrackingPolicy).Create(context, c.ID, c.MAQUINA_ID, c.DATA_INI, c.DATA_FIM, c.CLP_EMISSAO, c.QTD, c.GRUPO, c.STATUS, c.URN_ID, c.URM_ID, c.ID_LOTE_CLP, c.OCO_ID, c.FASE, c.CLP_ORIGEM, c.CLP_LOTE, c.COMPACTA, c.BOL_ID, c.COR_SEQUENCIA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", clpmedicoesh.OperationalEntityId);
                  var domainResult = ClpMedicoesHDomainBehavior.Apply(clpmedicoesh, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

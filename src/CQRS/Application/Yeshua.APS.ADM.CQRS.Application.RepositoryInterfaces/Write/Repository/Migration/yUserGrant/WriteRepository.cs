@@ -22,6 +22,7 @@ namespace IRepository.Write
         void Insert(IyUserGrantEntity yusergrant);
         void Update(IyUserGrantEntity yusergrant);
         void Delete(IyUserGrantEntity yusergrant);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdatePerfilId(int id, int value);
         void UpdateGrantId(int id, string value);
         void UpdateCanGrant(int id, bool value);

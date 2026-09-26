@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct InspecaoVisualCrudCommand : ICommand
+    public struct InspecaoVisualCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int IPV_ID { get; set; }
         public string? IPV_VALOR { get; set; }
@@ -30,10 +30,13 @@ namespace Command.Write
         public int? FPR_SEQ_REPETICAO { get; set; }
         public string? IPV_STATUS_LIBERACAO { get; set; }
         public Decimal? IPV_VALOR_MEDIDA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "InspecaoVisual";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

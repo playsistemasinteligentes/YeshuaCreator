@@ -31,6 +31,7 @@ namespace IRepository.Read
         public bool ExistsByDIM_DESCRICAO(string value );
         public bool ExistsByDIM_SQL(string value );
         public bool ExistsByDIM_CONEXAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -41,6 +42,7 @@ namespace IRepository.Read
         public IndicadoresDimencoesDTO FirstByDIM_DESCRICAO(string value );
         public IndicadoresDimencoesDTO FirstByDIM_SQL(string value );
         public IndicadoresDimencoesDTO FirstByDIM_CONEXAO(string value );
+        public IndicadoresDimencoesDTO FirstByOperationalEntityId(string value );
         public IndicadoresDimencoesDTO FirstByTenantID(int value );
         public IndicadoresDimencoesDTO FirstByDeleted(bool value );
         public IndicadoresDimencoesDTO FirstByChanged(DateTime value );
@@ -51,6 +53,7 @@ namespace IRepository.Read
         public IEnumerable<IndicadoresDimencoesDTO> GetAllByDIM_DESCRICAO(string value );
         public IEnumerable<IndicadoresDimencoesDTO> GetAllByDIM_SQL(string value );
         public IEnumerable<IndicadoresDimencoesDTO> GetAllByDIM_CONEXAO(string value );
+        public IEnumerable<IndicadoresDimencoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<IndicadoresDimencoesDTO> GetAllByTenantID(int value );
         public IEnumerable<IndicadoresDimencoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<IndicadoresDimencoesDTO> GetAllByChanged(DateTime value );

@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdateOTK_DATA_PREVISTA(int id, DateTime value);
         QueryModel UpdateOTK_DATA_REALIZADA(int id, DateTime value);
         QueryModel UpdateFPR_ID(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

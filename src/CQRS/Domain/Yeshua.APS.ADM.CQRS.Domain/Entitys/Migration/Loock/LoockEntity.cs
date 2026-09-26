@@ -24,6 +24,7 @@
     public string? LOO_ID { get; set; }
     public string? LOO_DESCRICAO { get; set; }
     public string? LOO_CONTEUDO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  LOO_ID = loo_id; 
  LOO_DESCRICAO = loo_descricao; 
  LOO_CONTEUDO = loo_conteudo; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

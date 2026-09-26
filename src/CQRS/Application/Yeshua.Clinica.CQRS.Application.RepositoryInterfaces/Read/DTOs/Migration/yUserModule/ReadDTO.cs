@@ -18,6 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record yUserModuleDTO
     {
+    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public string moduleid { get; set; } = string.Empty;
     public int userid { get; set; }

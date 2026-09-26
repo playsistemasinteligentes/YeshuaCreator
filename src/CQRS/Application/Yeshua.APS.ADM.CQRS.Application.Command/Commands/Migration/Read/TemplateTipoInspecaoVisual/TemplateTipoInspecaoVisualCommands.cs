@@ -11,16 +11,19 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct TemplateTipoInspecaoVisualReadCommand : ICommandRead
+    public struct TemplateTipoInspecaoVisualReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? TTI_ID { get; set; }
         public int? TIV_ID { get; set; }
         public int? TEM_ID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "TemplateTipoInspecaoVisual";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

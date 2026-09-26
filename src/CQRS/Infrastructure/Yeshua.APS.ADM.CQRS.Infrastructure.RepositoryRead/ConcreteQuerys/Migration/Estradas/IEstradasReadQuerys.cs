@@ -21,6 +21,7 @@ namespace IQuery.Read
         public QueryModel ExistsByEST_DESCRICAOQuery(string value );
         public QueryModel ExistsByEST_ID_LIGACAO_PONTO_AQuery(int value );
         public QueryModel ExistsByEST_ID_LIGACAO_PONTO_BQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -30,6 +31,7 @@ namespace IQuery.Read
         public QueryModel FirstByEST_DESCRICAOQuery(string value );
         public QueryModel FirstByEST_ID_LIGACAO_PONTO_AQuery(int value );
         public QueryModel FirstByEST_ID_LIGACAO_PONTO_BQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

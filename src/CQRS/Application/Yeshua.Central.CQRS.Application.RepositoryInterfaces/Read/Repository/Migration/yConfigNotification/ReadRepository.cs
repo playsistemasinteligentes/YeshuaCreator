@@ -24,6 +24,7 @@ namespace IRepository.Read
         public DataPagination<yConfigNotificationDTO> getyConfigNotification(ICommandRead command );
         public IEnumerable<yConfigNotificationTenantIDDTO> getyConfigNotificationReadFKTenantID(object command );
         public IEnumerable<yConfigNotificationUserIdDTO> getyConfigNotificationReadFKUserId(object command );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsById(int value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByEmailSmtpClient(string value );
@@ -33,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public yConfigNotificationDTO FirstByOperationalEntityId(string value );
         public yConfigNotificationDTO FirstById(int value );
         public yConfigNotificationDTO FirstByTenantID(int value );
         public yConfigNotificationDTO FirstByEmailSmtpClient(string value );
@@ -42,6 +44,7 @@ namespace IRepository.Read
         public yConfigNotificationDTO FirstByDeleted(bool value );
         public yConfigNotificationDTO FirstByChanged(DateTime value );
         public yConfigNotificationDTO FirstByUserId(int value );
+        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yConfigNotificationDTO> GetAllById(int value );
         public IEnumerable<yConfigNotificationDTO> GetAllByTenantID(int value );
         public IEnumerable<yConfigNotificationDTO> GetAllByEmailSmtpClient(string value );

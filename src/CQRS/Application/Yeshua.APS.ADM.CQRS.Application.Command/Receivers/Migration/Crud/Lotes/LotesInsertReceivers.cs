@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLotes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLotesReceiver), commandName: "Command.Write.LotesCrudCommand");
                  var lotes = new LotesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MOV_LOTE, c.MOV_SUB_LOTE, c.LOT_LARGURA, c.LOT_COMPRIMENTO, c.LOT_DIAMETRO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", lotes.OperationalEntityId);
                  var domainResult = LotesDomainBehavior.Apply(lotes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

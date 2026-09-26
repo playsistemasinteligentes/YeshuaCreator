@@ -11,15 +11,18 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct T_FavoritosCrudCommand : ICommand
+    public struct T_FavoritosCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int IDFAVORITO { get; set; }
         public int USE_ID { get; set; }
         public int ID_INDICADOR { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "T_Favoritos";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

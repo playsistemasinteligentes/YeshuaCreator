@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoTesteReceiver), commandName: "Command.Write.TipoTesteCrudCommand");
                  var tipoteste = new TipoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.TT_ESPECIFICACAO, c.TT_ORIGEM_ESPECIFICACAO, c.TT_IMPRIME_NO_LAUDO, c.TT_ID, c.TT_NOME, c.TT_DESC, c.TT_TOL_MAIS, c.TT_TOL_MENOS, c.TT_NORMA, c.TT_INICIO_PROCESSO, c.TA_ID, c.UNI_ID, c.TT_N_AMOSTRAS_P_TESTE, c.TT_MAX_DEF_CRITICO, c.TT_MAX_DEF_GRAVE);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoteste.OperationalEntityId);
                  var domainResult = TipoTesteDomainBehavior.Apply(tipoteste, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

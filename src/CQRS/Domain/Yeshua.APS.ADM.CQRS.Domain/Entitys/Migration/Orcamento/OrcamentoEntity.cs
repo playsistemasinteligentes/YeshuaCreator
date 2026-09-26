@@ -28,6 +28,7 @@
     public DateTime? ORC_EMISSAO { get; set; }
     public string? CLI_ID { get; set; }
     public int VER_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  ORC_EMISSAO = orc_emissao.HasValue && orc_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : orc_emissao; 
  CLI_ID = cli_id; 
  VER_ID = ver_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

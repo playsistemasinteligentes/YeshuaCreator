@@ -43,6 +43,7 @@ namespace IRepository.Read
         public bool ExistsByXmlStorageKey(string value );
         public bool ExistsBySnapshotJson(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -65,6 +66,7 @@ namespace IRepository.Read
         public NFeProdutoSnapshotDTO FirstByXmlStorageKey(string value );
         public NFeProdutoSnapshotDTO FirstBySnapshotJson(string value );
         public NFeProdutoSnapshotDTO FirstByStatus(int value );
+        public NFeProdutoSnapshotDTO FirstByOperationalEntityId(string value );
         public NFeProdutoSnapshotDTO FirstByTenantID(int value );
         public NFeProdutoSnapshotDTO FirstByDeleted(bool value );
         public NFeProdutoSnapshotDTO FirstByChanged(DateTime value );
@@ -87,6 +89,7 @@ namespace IRepository.Read
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByXmlStorageKey(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllBySnapshotJson(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByStatus(int value );
+        public IEnumerable<NFeProdutoSnapshotDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByTenantID(int value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByDeleted(bool value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByChanged(DateTime value );

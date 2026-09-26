@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMunicipio", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMunicipioReceiver), commandName: "Command.Write.MunicipioCrudCommand");
                  var municipio = new MunicipioFactory(_logger, _domainTrackingPolicy).Create(context, c.MUN_ID, c.MUN_NOME, c.UF_COD, c.MUN_CODIGO_IBGE, c.MUN_LATITUDE, c.MUN_LONGITUDE, c.MUN_ID_INTEGRACAO_ERP, c.MUN_CODIGO_SIAFI, c.MUN_CODIGO_CNPJ, c.MUN_DISTANCIA_KM);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", municipio.OperationalEntityId);
                  var domainResult = MunicipioDomainBehavior.Apply(municipio, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public Decimal lot_largura { get; set; }
     public Decimal lot_comprimento { get; set; }
     public Decimal lot_diametro { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

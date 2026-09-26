@@ -28,6 +28,7 @@ namespace IQuery.Write
         QueryModel UpdateIPA_DIML(int id, Decimal value);
         QueryModel UpdateIPA_DIMA(int id, Decimal value);
         QueryModel UpdateIPA_QTD_POR_PALETE(int id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

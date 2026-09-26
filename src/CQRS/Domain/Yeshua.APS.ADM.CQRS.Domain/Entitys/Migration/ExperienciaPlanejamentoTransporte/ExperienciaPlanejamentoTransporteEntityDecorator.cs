@@ -33,10 +33,11 @@
             public const ulong Observacao = 1UL << 10;
             public const ulong CriadoEm = 1UL << 11;
             public const ulong CriadoPor = 1UL << 12;
-            public const ulong TenantID = 1UL << 13;
-            public const ulong Deleted = 1UL << 14;
-            public const ulong Changed = 1UL << 15;
-            public const ulong UserId = 1UL << 16;
+            public const ulong OperationalEntityId = 1UL << 13;
+            public const ulong TenantID = 1UL << 14;
+            public const ulong Deleted = 1UL << 15;
+            public const ulong Changed = 1UL << 16;
+            public const ulong UserId = 1UL << 17;
         }
 
         public partial class ExperienciaPlanejamentoTransporteDecorator : IExperienciaPlanejamentoTransporteEntity
@@ -247,6 +248,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

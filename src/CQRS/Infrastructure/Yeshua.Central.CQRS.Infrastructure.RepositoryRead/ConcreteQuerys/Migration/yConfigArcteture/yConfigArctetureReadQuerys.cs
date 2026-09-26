@@ -34,7 +34,9 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] from [yConfigArcteture] ";
+            this.Query = $@" select [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] from [yConfigArcteture] ";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (Command.AuditTrackerActived.HasValue) dict["AuditTrackerActived"] = Command.AuditTrackerActived.Value;
@@ -117,6 +119,23 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
+        }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [yConfigArcteture] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
         public QueryModel ExistsByIdQuery(int value )
         {
@@ -237,12 +256,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -259,7 +295,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -276,7 +312,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -293,7 +329,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -310,7 +346,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -327,7 +363,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -344,7 +380,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
+            this.Query = $"SELECT [OperationalEntityId], [Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId] FROM [yConfigArcteture] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

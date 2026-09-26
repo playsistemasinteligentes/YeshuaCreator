@@ -35,6 +35,7 @@
     public DateTime? EnviadoEmUtc { get; set; }
     public DateTime? AutorizadoEmUtc { get; set; }
     public int Status { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -56,6 +57,7 @@
  EnviadoEmUtc = enviadoemutc.HasValue && enviadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : enviadoemutc; 
  AutorizadoEmUtc = autorizadoemutc.HasValue && autorizadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : autorizadoemutc; 
  Status = status; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

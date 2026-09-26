@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirUnidadeQuery(IUnidadeEntity Unidade)
         {
-            this.Query = $@" INSERT INTO [Unidade] ([DEESCRICAO], [UN], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[UNI_ID] VALUES(@DEESCRICAO, @UN, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Unidade] ([DEESCRICAO], [UN], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[UNI_ID] VALUES(@DEESCRICAO, @UN, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 DEESCRICAO = Unidade.DEESCRICAO,
                 UN = Unidade.UN,
+                OperationalEntityId = Unidade.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UN = value,
+                UNI_ID = uni_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int uni_id, string value)
+        {
+            this.Query = $@" UPDATE [Unidade] SET [OperationalEntityId] = @OperationalEntityId WHERE [UNI_ID] = @UNI_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 UNI_ID = uni_id,
             };
             return new QueryModel(this.Query, this.Parameters);

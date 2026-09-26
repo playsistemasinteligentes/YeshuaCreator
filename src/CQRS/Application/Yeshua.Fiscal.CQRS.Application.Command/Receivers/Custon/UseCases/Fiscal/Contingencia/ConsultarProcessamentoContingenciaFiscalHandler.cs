@@ -301,6 +301,8 @@ protected partial Task<State<ConsultarProcessamentoContingenciaFiscalOutputComma
                 totalSteps = steps.Length,
                 steps = steps.Select(item => new
                 {
+                    sagaId = saga.id,
+                    sagaStepId = item.id,
                     ordem = item.indexorder,
                     stepKey = item.stepkey,
                     status = item.status,

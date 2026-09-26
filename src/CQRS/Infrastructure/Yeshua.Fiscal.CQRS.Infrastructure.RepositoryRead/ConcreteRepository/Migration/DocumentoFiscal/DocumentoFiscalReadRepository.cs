@@ -228,6 +228,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -388,6 +396,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public DocumentoFiscalDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<DocumentoFiscalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public DocumentoFiscalDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -543,6 +559,14 @@ namespace Read.Repository
         public IEnumerable<DocumentoFiscalDTO> GetAllByStatus(int value )
         {
             var query = _query.FirstByStatusQuery(value );
+
+                var result = _unitOfWork.Query<DocumentoFiscalDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<DocumentoFiscalDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<DocumentoFiscalDTO>(query.Query,query.Parameters).ToList();
                 return result;

@@ -32,6 +32,7 @@ namespace IRepository.Read
         public bool ExistsByDataMovimento(DateTime value );
         public bool ExistsByDataVencimento(DateTime value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -43,6 +44,7 @@ namespace IRepository.Read
         public MovimentoFinanceiroDTO FirstByDataMovimento(DateTime value );
         public MovimentoFinanceiroDTO FirstByDataVencimento(DateTime value );
         public MovimentoFinanceiroDTO FirstByStatus(int value );
+        public MovimentoFinanceiroDTO FirstByOperationalEntityId(string value );
         public MovimentoFinanceiroDTO FirstByTenantID(int value );
         public MovimentoFinanceiroDTO FirstByDeleted(bool value );
         public MovimentoFinanceiroDTO FirstByChanged(DateTime value );
@@ -54,6 +56,7 @@ namespace IRepository.Read
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByDataMovimento(DateTime value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByDataVencimento(DateTime value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByStatus(int value );
+        public IEnumerable<MovimentoFinanceiroDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByTenantID(int value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByDeleted(bool value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByChanged(DateTime value );

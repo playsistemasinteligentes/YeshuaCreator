@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirExperienciaPlanejamentoTransporteQuery(IExperienciaPlanejamentoTransporteEntity ExperienciaPlanejamentoTransporte)
         {
-            this.Query = $@" INSERT INTO [ExperienciaPlanejamentoTransporte] ([Tipo], [Referencia], [PedidoId], [ClienteId], [Municipio], [Regiao], [RotaId], [Peso], [Volume], [Observacao], [CriadoEm], [CriadoPor], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Tipo, @Referencia, @PedidoId, @ClienteId, @Municipio, @Regiao, @RotaId, @Peso, @Volume, @Observacao, @CriadoEm, @CriadoPor, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ExperienciaPlanejamentoTransporte] ([Tipo], [Referencia], [PedidoId], [ClienteId], [Municipio], [Regiao], [RotaId], [Peso], [Volume], [Observacao], [CriadoEm], [CriadoPor], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Tipo, @Referencia, @PedidoId, @ClienteId, @Municipio, @Regiao, @RotaId, @Peso, @Volume, @Observacao, @CriadoEm, @CriadoPor, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Tipo = ExperienciaPlanejamentoTransporte.Tipo,
@@ -45,6 +45,7 @@ namespace Query.Write
                 Observacao = ExperienciaPlanejamentoTransporte.Observacao,
                 CriadoEm = ExperienciaPlanejamentoTransporte.CriadoEm,
                 CriadoPor = ExperienciaPlanejamentoTransporte.CriadoPor,
+                OperationalEntityId = ExperienciaPlanejamentoTransporte.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -191,6 +192,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CriadoPor = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ExperienciaPlanejamentoTransporte] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

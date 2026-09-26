@@ -18,6 +18,7 @@ namespace IQuery.Read
         public QueryModel yPerfilGrantGrantIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yPerfilGrantTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yPerfilGrantUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByPerfilIdQuery(int value );
         public QueryModel ExistsByGrantIdQuery(string value );
@@ -31,6 +32,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByPerfilIdQuery(int value );
         public QueryModel FirstByGrantIdQuery(string value );

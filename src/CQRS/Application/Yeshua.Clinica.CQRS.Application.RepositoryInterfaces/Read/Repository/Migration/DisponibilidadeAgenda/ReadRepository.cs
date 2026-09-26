@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByProfissionalId(int value );
         public bool ExistsByDataHora(DateTime value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -35,6 +36,7 @@ namespace IRepository.Read
         public DisponibilidadeAgendaDTO FirstById(int value );
         public DisponibilidadeAgendaDTO FirstByProfissionalId(int value );
         public DisponibilidadeAgendaDTO FirstByDataHora(DateTime value );
+        public DisponibilidadeAgendaDTO FirstByOperationalEntityId(string value );
         public DisponibilidadeAgendaDTO FirstByTenantID(int value );
         public DisponibilidadeAgendaDTO FirstByDeleted(bool value );
         public DisponibilidadeAgendaDTO FirstByChanged(DateTime value );
@@ -42,6 +44,7 @@ namespace IRepository.Read
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllById(int value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByProfissionalId(int value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByDataHora(DateTime value );
+        public IEnumerable<DisponibilidadeAgendaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByTenantID(int value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByDeleted(bool value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByChanged(DateTime value );

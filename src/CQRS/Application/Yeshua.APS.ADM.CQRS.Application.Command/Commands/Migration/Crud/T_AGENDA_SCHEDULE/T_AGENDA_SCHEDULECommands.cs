@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct T_AGENDA_SCHEDULECrudCommand : ICommand
+    public struct T_AGENDA_SCHEDULECrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int AGE_ID { get; set; }
@@ -30,10 +30,13 @@ namespace Command.Write
         public string? AGE_PARAMETROS { get; set; }
         public string? AGE_EXCECAO { get; set; }
         public string? AGE_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "T_AGENDA_SCHEDULE";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertOnda", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertOndaReceiver), commandName: "Command.Write.OndaCrudCommand");
                  var onda = new OndaFactory(_logger, _domainTrackingPolicy).Create(context, c.OND_ID, c.OND_ESPESSURA, c.OND_PESO_COLA, c.OND_RENDIMENTO_ONDA_1, c.OND_RENDIMENTO_ONDA_2, c.OND_PROFUNDIDADE_VINCO, c.OND_ID_INTEGRACAO, c.VIN_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", onda.OperationalEntityId);
                  var domainResult = OndaDomainBehavior.Apply(onda, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

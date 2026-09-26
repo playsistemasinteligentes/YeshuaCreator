@@ -20,6 +20,7 @@
                 {
                     public partial class yUserGrantEntity : IyUserGrantEntity
 {
+    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public int? PerfilId { get; set; }
     public string? GrantId { get; set; }
@@ -44,6 +45,7 @@
  CanUpdate = canupdate; 
  CanDelete = candelete; 
  ValidUntil = validuntil.HasValue && validuntil.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validuntil; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateLOT_LARGURA(int id, Decimal value);
         void UpdateLOT_COMPRIMENTO(int id, Decimal value);
         void UpdateLOT_DIAMETRO(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

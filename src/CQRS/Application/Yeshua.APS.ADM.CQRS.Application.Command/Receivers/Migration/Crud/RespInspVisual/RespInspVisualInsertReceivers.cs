@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRespInspVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRespInspVisualReceiver), commandName: "Command.Write.RespInspVisualCrudCommand");
                  var respinspvisual = new RespInspVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RIV_ID, c.IPV_ID, c.ITI_ID, c.RIV_STATUS);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", respinspvisual.OperationalEntityId);
                  var domainResult = RespInspVisualDomainBehavior.Apply(respinspvisual, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

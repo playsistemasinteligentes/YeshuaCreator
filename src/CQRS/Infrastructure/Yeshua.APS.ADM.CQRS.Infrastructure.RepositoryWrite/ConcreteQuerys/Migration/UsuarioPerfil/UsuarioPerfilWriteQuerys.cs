@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirUsuarioPerfilQuery(IUsuarioPerfilEntity UsuarioPerfil)
         {
-            this.Query = $@" INSERT INTO [UsuarioPerfil] ([USE_ID], [PER_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@USE_ID, @PER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [UsuarioPerfil] ([USE_ID], [PER_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@USE_ID, @PER_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 USE_ID = UsuarioPerfil.USE_ID,
                 PER_ID = UsuarioPerfil.PER_ID,
+                OperationalEntityId = UsuarioPerfil.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 PER_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [UsuarioPerfil] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

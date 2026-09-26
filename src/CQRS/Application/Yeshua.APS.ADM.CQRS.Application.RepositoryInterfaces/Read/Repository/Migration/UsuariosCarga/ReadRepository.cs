@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByUSE_ID(int value );
         public bool ExistsByCAR_ID(string value );
         public bool ExistsByRGO_ID(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -37,6 +38,7 @@ namespace IRepository.Read
         public UsuariosCargaDTO FirstByUSE_ID(int value );
         public UsuariosCargaDTO FirstByCAR_ID(string value );
         public UsuariosCargaDTO FirstByRGO_ID(string value );
+        public UsuariosCargaDTO FirstByOperationalEntityId(string value );
         public UsuariosCargaDTO FirstByTenantID(int value );
         public UsuariosCargaDTO FirstByDeleted(bool value );
         public UsuariosCargaDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<UsuariosCargaDTO> GetAllByUSE_ID(int value );
         public IEnumerable<UsuariosCargaDTO> GetAllByCAR_ID(string value );
         public IEnumerable<UsuariosCargaDTO> GetAllByRGO_ID(string value );
+        public IEnumerable<UsuariosCargaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<UsuariosCargaDTO> GetAllByTenantID(int value );
         public IEnumerable<UsuariosCargaDTO> GetAllByDeleted(bool value );
         public IEnumerable<UsuariosCargaDTO> GetAllByChanged(DateTime value );

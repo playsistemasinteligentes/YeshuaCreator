@@ -27,6 +27,7 @@
     public string? TURM_ID { get; set; }
     public int USE_ATIVO { get; set; }
     public string? USE_CODERP { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -40,6 +41,7 @@
  TURM_ID = turm_id; 
  USE_ATIVO = use_ativo; 
  USE_CODERP = use_coderp; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

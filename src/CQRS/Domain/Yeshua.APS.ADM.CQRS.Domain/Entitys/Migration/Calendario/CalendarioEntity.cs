@@ -23,6 +23,7 @@
     public int CAL_ID { get; set; }
     public string CAL_DESCRICAO { get; set; }
     public int? CAL_DIVIDE_DIA_EM { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  CAL_ID = cal_id; 
  CAL_DESCRICAO = cal_descricao; 
  CAL_DIVIDE_DIA_EM = cal_divide_dia_em; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

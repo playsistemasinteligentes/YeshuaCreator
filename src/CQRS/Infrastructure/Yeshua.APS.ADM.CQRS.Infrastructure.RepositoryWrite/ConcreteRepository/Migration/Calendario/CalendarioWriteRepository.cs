@@ -61,6 +61,11 @@ namespace Input.Repository.Calendario
             var query = _query.UpdateCAL_DIVIDE_DIA_EM(cal_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int cal_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(cal_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int cal_id, int value)
         {
             var query = _query.UpdateTenantID(cal_id, value);

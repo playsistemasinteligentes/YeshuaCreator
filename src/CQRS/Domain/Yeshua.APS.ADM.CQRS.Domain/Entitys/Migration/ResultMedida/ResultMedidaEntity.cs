@@ -24,6 +24,7 @@
     public int RSM_ID { get; set; }
     public int? RL_ID { get; set; }
     public int? MDT_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  RSM_ID = rsm_id; 
  RL_ID = rl_id; 
  MDT_ID = mdt_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

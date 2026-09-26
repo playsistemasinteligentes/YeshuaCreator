@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] from [Municipio] ";
+            this.Query = $@" select [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Municipio] ";
 if (!string.IsNullOrEmpty(Command.MUN_ID)) dict["MUN_ID"] = $"%{Command.MUN_ID}%";
 if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN_ID");
 if (!string.IsNullOrEmpty(Command.MUN_NOME)) dict["MUN_NOME"] = $"%{Command.MUN_NOME}%";
@@ -49,6 +49,8 @@ if (!string.IsNullOrEmpty(Command.MUN_CODIGO_SIAFI)) dict["MUN_CODIGO_SIAFI"] = 
 if (!string.IsNullOrEmpty(Command.MUN_CODIGO_SIAFI)) whereClauses.Add($"[MUN_CODIGO_SIAFI] like @MUN_CODIGO_SIAFI");
 if (!string.IsNullOrEmpty(Command.MUN_CODIGO_CNPJ)) dict["MUN_CODIGO_CNPJ"] = $"%{Command.MUN_CODIGO_CNPJ}%";
 if (!string.IsNullOrEmpty(Command.MUN_CODIGO_CNPJ)) whereClauses.Add($"[MUN_CODIGO_CNPJ] like @MUN_CODIGO_CNPJ");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -296,6 +298,23 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Municipio] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -369,7 +388,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -386,7 +405,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -403,7 +422,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -420,7 +439,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -437,7 +456,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -454,7 +473,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -471,7 +490,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -488,7 +507,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -505,7 +524,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -522,7 +541,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -534,12 +553,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -556,7 +592,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -573,7 +609,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -590,7 +626,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
+            this.Query = $"SELECT [MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Municipio] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

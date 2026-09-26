@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByGRS_ID(string value );
         public bool ExistsByGRS_DESCRICAO(string value );
         public bool ExistsByGRS_INTEGRACAO_ERP(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public GrupoSegmentoDTO FirstByGRS_ID(string value );
         public GrupoSegmentoDTO FirstByGRS_DESCRICAO(string value );
         public GrupoSegmentoDTO FirstByGRS_INTEGRACAO_ERP(string value );
+        public GrupoSegmentoDTO FirstByOperationalEntityId(string value );
         public GrupoSegmentoDTO FirstByTenantID(int value );
         public GrupoSegmentoDTO FirstByDeleted(bool value );
         public GrupoSegmentoDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<GrupoSegmentoDTO> GetAllByGRS_ID(string value );
         public IEnumerable<GrupoSegmentoDTO> GetAllByGRS_DESCRICAO(string value );
         public IEnumerable<GrupoSegmentoDTO> GetAllByGRS_INTEGRACAO_ERP(string value );
+        public IEnumerable<GrupoSegmentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<GrupoSegmentoDTO> GetAllByTenantID(int value );
         public IEnumerable<GrupoSegmentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<GrupoSegmentoDTO> GetAllByChanged(DateTime value );

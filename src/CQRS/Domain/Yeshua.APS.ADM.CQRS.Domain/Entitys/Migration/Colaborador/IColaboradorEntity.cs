@@ -26,6 +26,7 @@
     string COL_EMAIL { get; set; }
     string COL_MATRICULA { get; set; }
     string TURM_id { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

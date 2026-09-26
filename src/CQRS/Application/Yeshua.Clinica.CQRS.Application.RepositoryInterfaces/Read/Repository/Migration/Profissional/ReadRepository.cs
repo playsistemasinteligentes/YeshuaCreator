@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByNome(string value );
         public bool ExistsByEspecialidadeId(int value );
         public bool ExistsByTelefone(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -37,6 +38,7 @@ namespace IRepository.Read
         public ProfissionalDTO FirstByNome(string value );
         public ProfissionalDTO FirstByEspecialidadeId(int value );
         public ProfissionalDTO FirstByTelefone(string value );
+        public ProfissionalDTO FirstByOperationalEntityId(string value );
         public ProfissionalDTO FirstByTenantID(int value );
         public ProfissionalDTO FirstByDeleted(bool value );
         public ProfissionalDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<ProfissionalDTO> GetAllByNome(string value );
         public IEnumerable<ProfissionalDTO> GetAllByEspecialidadeId(int value );
         public IEnumerable<ProfissionalDTO> GetAllByTelefone(string value );
+        public IEnumerable<ProfissionalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProfissionalDTO> GetAllByTenantID(int value );
         public IEnumerable<ProfissionalDTO> GetAllByDeleted(bool value );
         public IEnumerable<ProfissionalDTO> GetAllByChanged(DateTime value );

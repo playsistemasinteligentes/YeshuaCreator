@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteResultLote", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteResultLoteReceiver), commandName: "Command.Write.ResultLoteCrudCommand");
                  var resultlote = new ResultLoteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", resultlote.OperationalEntityId);
                  var domainResult = ResultLoteDomainBehavior.Apply(resultlote, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

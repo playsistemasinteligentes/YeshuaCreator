@@ -49,6 +49,7 @@ namespace IRepository.Read
         public bool ExistsByETI_IMPRIMIR_ATE(int value );
         public bool ExistsByBOL_ID(string value );
         public bool ExistsByCOR_SEQUENCIA(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -76,6 +77,7 @@ namespace IRepository.Read
         public EtiquetaDTO FirstByETI_IMPRIMIR_ATE(int value );
         public EtiquetaDTO FirstByBOL_ID(string value );
         public EtiquetaDTO FirstByCOR_SEQUENCIA(int value );
+        public EtiquetaDTO FirstByOperationalEntityId(string value );
         public EtiquetaDTO FirstByTenantID(int value );
         public EtiquetaDTO FirstByDeleted(bool value );
         public EtiquetaDTO FirstByChanged(DateTime value );
@@ -103,6 +105,7 @@ namespace IRepository.Read
         public IEnumerable<EtiquetaDTO> GetAllByETI_IMPRIMIR_ATE(int value );
         public IEnumerable<EtiquetaDTO> GetAllByBOL_ID(string value );
         public IEnumerable<EtiquetaDTO> GetAllByCOR_SEQUENCIA(int value );
+        public IEnumerable<EtiquetaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EtiquetaDTO> GetAllByTenantID(int value );
         public IEnumerable<EtiquetaDTO> GetAllByDeleted(bool value );
         public IEnumerable<EtiquetaDTO> GetAllByChanged(DateTime value );

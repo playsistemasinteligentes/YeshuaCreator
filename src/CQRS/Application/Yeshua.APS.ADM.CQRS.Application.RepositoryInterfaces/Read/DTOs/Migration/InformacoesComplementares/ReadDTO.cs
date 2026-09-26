@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public Decimal inf_valor { get; set; }
     public int met_id { get; set; }
     public string inf_data { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -11,15 +11,18 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ImpressoraCrudCommand : ICommand
+    public struct ImpressoraCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int IMP_ID { get; set; }
         public string? IMP_IP { get; set; }
         public string? IMP_NOME { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Impressora";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

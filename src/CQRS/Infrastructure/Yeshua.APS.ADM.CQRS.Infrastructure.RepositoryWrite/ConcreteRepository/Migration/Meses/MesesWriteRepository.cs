@@ -56,6 +56,11 @@ namespace Input.Repository.Meses
             var query = _query.Updatefator(mes, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string mes, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(mes, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string mes, int value)
         {
             var query = _query.UpdateTenantID(mes, value);

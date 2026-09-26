@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirT_NegocioQuery(IT_NegocioEntity T_Negocio);
         public QueryModel UpdateT_NegocioQuery(IT_NegocioEntity T_Negocio);
         QueryModel UpdateNEG_DESCRICAO(int neg_id, string value);
+        QueryModel UpdateOperationalEntityId(int neg_id, string value);
         QueryModel UpdateTenantID(int neg_id, int value);
         QueryModel UpdateDeleted(int neg_id, bool value);
         QueryModel UpdateChanged(int neg_id, DateTime value);

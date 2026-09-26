@@ -23,22 +23,23 @@
             public const ulong TT_ESPECIFICACAO = 1UL << 0;
             public const ulong TT_ORIGEM_ESPECIFICACAO = 1UL << 1;
             public const ulong TT_IMPRIME_NO_LAUDO = 1UL << 2;
-            public const ulong TenantID = 1UL << 3;
-            public const ulong Deleted = 1UL << 4;
-            public const ulong Changed = 1UL << 5;
-            public const ulong UserId = 1UL << 6;
-            public const ulong TT_ID = 1UL << 7;
-            public const ulong TT_NOME = 1UL << 8;
-            public const ulong TT_DESC = 1UL << 9;
-            public const ulong TT_TOL_MAIS = 1UL << 10;
-            public const ulong TT_TOL_MENOS = 1UL << 11;
-            public const ulong TT_NORMA = 1UL << 12;
-            public const ulong TT_INICIO_PROCESSO = 1UL << 13;
-            public const ulong TA_ID = 1UL << 14;
-            public const ulong UNI_ID = 1UL << 15;
-            public const ulong TT_N_AMOSTRAS_P_TESTE = 1UL << 16;
-            public const ulong TT_MAX_DEF_CRITICO = 1UL << 17;
-            public const ulong TT_MAX_DEF_GRAVE = 1UL << 18;
+            public const ulong OperationalEntityId = 1UL << 3;
+            public const ulong TenantID = 1UL << 4;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
+            public const ulong UserId = 1UL << 7;
+            public const ulong TT_ID = 1UL << 8;
+            public const ulong TT_NOME = 1UL << 9;
+            public const ulong TT_DESC = 1UL << 10;
+            public const ulong TT_TOL_MAIS = 1UL << 11;
+            public const ulong TT_TOL_MENOS = 1UL << 12;
+            public const ulong TT_NORMA = 1UL << 13;
+            public const ulong TT_INICIO_PROCESSO = 1UL << 14;
+            public const ulong TA_ID = 1UL << 15;
+            public const ulong UNI_ID = 1UL << 16;
+            public const ulong TT_N_AMOSTRAS_P_TESTE = 1UL << 17;
+            public const ulong TT_MAX_DEF_CRITICO = 1UL << 18;
+            public const ulong TT_MAX_DEF_GRAVE = 1UL << 19;
         }
 
         public partial class TipoTesteDecorator : ITipoTesteEntity
@@ -109,6 +110,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

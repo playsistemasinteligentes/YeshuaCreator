@@ -34,6 +34,7 @@ namespace IQuery.Read
         public QueryModel ExistsBySagaIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsBySagaStepIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
@@ -53,6 +54,7 @@ namespace IQuery.Read
         public QueryModel FirstBySagaIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstBySagaStepIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false);

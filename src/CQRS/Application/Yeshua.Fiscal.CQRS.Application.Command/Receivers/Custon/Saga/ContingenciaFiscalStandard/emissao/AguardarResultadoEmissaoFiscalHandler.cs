@@ -43,6 +43,10 @@ namespace Command.Receivers
 
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {
+            // pendencia: publicar aqui um fato de negocio versionado para automacoes externas do tenant.
+            // A entrega deve usar Outbox/HTTP e nao bloquear a saga. Uma regra externa que decida
+            // encerrar MDF-e deve chamar o Command publico de encerramento com autenticacao,
+            // autorizacao e idempotencia; codigo do cliente nunca deve rodar neste processo.
             var entrada = FiscalContingenciaState.LoadEntrada(_entradaReadRepository, saga, step);
             _entradaWriteRepository.UpdateSnapshotJson(entrada.id, JsonSerializer.Serialize(new
             {

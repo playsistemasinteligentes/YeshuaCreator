@@ -28,6 +28,7 @@
     public Decimal? MAP_CUSTO_PEDAGIO_POR_EIXO { get; set; }
     public int? ROD_ID { get; set; }
     public Decimal? MAP_ALTURA_ROD { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  MAP_CUSTO_PEDAGIO_POR_EIXO = map_custo_pedagio_por_eixo; 
  ROD_ID = rod_id; 
  MAP_ALTURA_ROD = map_altura_rod; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

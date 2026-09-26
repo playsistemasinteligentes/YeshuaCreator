@@ -34,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByMUN_CODIGO_SIAFI(string value );
         public bool ExistsByMUN_CODIGO_CNPJ(string value );
         public bool ExistsByMUN_DISTANCIA_KM(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -48,6 +49,7 @@ namespace IRepository.Read
         public MunicipioDTO FirstByMUN_CODIGO_SIAFI(string value );
         public MunicipioDTO FirstByMUN_CODIGO_CNPJ(string value );
         public MunicipioDTO FirstByMUN_DISTANCIA_KM(Decimal value );
+        public MunicipioDTO FirstByOperationalEntityId(string value );
         public MunicipioDTO FirstByTenantID(int value );
         public MunicipioDTO FirstByDeleted(bool value );
         public MunicipioDTO FirstByChanged(DateTime value );
@@ -62,6 +64,7 @@ namespace IRepository.Read
         public IEnumerable<MunicipioDTO> GetAllByMUN_CODIGO_SIAFI(string value );
         public IEnumerable<MunicipioDTO> GetAllByMUN_CODIGO_CNPJ(string value );
         public IEnumerable<MunicipioDTO> GetAllByMUN_DISTANCIA_KM(Decimal value );
+        public IEnumerable<MunicipioDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MunicipioDTO> GetAllByTenantID(int value );
         public IEnumerable<MunicipioDTO> GetAllByDeleted(bool value );
         public IEnumerable<MunicipioDTO> GetAllByChanged(DateTime value );

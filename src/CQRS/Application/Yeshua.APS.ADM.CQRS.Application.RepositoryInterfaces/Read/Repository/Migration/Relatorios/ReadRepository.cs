@@ -31,6 +31,7 @@ namespace IRepository.Read
         public bool ExistsByREL_POS_X(int value );
         public bool ExistsByREL_POS_Y(int value );
         public bool ExistsByREL_TAMANHO_FONTE(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -42,6 +43,7 @@ namespace IRepository.Read
         public RelatoriosDTO FirstByREL_POS_X(int value );
         public RelatoriosDTO FirstByREL_POS_Y(int value );
         public RelatoriosDTO FirstByREL_TAMANHO_FONTE(int value );
+        public RelatoriosDTO FirstByOperationalEntityId(string value );
         public RelatoriosDTO FirstByTenantID(int value );
         public RelatoriosDTO FirstByDeleted(bool value );
         public RelatoriosDTO FirstByChanged(DateTime value );
@@ -53,6 +55,7 @@ namespace IRepository.Read
         public IEnumerable<RelatoriosDTO> GetAllByREL_POS_X(int value );
         public IEnumerable<RelatoriosDTO> GetAllByREL_POS_Y(int value );
         public IEnumerable<RelatoriosDTO> GetAllByREL_TAMANHO_FONTE(int value );
+        public IEnumerable<RelatoriosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RelatoriosDTO> GetAllByTenantID(int value );
         public IEnumerable<RelatoriosDTO> GetAllByDeleted(bool value );
         public IEnumerable<RelatoriosDTO> GetAllByChanged(DateTime value );

@@ -32,6 +32,7 @@
     Decimal? IPA_DIML { get; set; }
     Decimal? IPA_DIMA { get; set; }
     Decimal? IPA_QTD_POR_PALETE { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

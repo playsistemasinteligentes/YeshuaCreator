@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSegmentoQuery(ISegmentoEntity Segmento)
         {
-            this.Query = $@" INSERT INTO [Segmento] ([SEG_ID], [SEG_DESCRICAO], [SEG_ID_SEGUIMENTO_PAI], [GRS_ID], [SEG_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SEG_ID, @SEG_DESCRICAO, @SEG_ID_SEGUIMENTO_PAI, @GRS_ID, @SEG_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Segmento] ([SEG_ID], [SEG_DESCRICAO], [SEG_ID_SEGUIMENTO_PAI], [GRS_ID], [SEG_INTEGRACAO_ERP], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SEG_ID, @SEG_DESCRICAO, @SEG_ID_SEGUIMENTO_PAI, @GRS_ID, @SEG_INTEGRACAO_ERP, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SEG_ID = Segmento.SEG_ID,
@@ -38,6 +38,7 @@ namespace Query.Write
                 SEG_ID_SEGUIMENTO_PAI = Segmento.SEG_ID_SEGUIMENTO_PAI,
                 GRS_ID = Segmento.GRS_ID,
                 SEG_INTEGRACAO_ERP = Segmento.SEG_INTEGRACAO_ERP,
+                OperationalEntityId = Segmento.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -107,6 +108,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 SEG_INTEGRACAO_ERP = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Segmento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

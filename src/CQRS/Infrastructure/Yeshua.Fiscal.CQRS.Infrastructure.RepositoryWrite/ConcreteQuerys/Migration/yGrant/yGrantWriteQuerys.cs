@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" INSERT INTO [yGrant] ([Id], [Description], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yGrant] ([OperationalEntityId], [Id], [Description], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OperationalEntityId, @Id, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = yGrant.OperationalEntityId,
                 Id = yGrant.Id,
                 Description = yGrant.Description,
                 TenantID = _executionContext.TenantID,
@@ -51,6 +52,16 @@ namespace Query.Write
                 Changed = yGrant.Changed,
                 UserId = _executionContext.UserId,
                 Id = yGrant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string id, string value)
+        {
+            this.Query = $@" UPDATE [yGrant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

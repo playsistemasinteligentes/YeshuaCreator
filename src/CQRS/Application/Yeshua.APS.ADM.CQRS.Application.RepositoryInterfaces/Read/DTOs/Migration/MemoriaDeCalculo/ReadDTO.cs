@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public int orc_id { get; set; }
     public Decimal mem_valor { get; set; }
     public string mem_descricao { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

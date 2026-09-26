@@ -76,6 +76,11 @@ namespace Input.Repository.PontosMapa
             var query = _query.UpdatePON_DISTANCIA_KM(pon_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string pon_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(pon_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string pon_id, int value)
         {
             var query = _query.UpdateTenantID(pon_id, value);

@@ -18,12 +18,14 @@ namespace IQuery.Read
         public QueryModel T_DepartamentosUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByDEP_IDQuery(int value );
         public QueryModel ExistsByDEP_NOMEQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel FirstByDEP_IDQuery(int value );
         public QueryModel FirstByDEP_NOMEQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

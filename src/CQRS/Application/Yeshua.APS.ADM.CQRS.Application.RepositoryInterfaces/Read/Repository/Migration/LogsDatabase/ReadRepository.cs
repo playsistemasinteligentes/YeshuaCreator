@@ -39,6 +39,7 @@ namespace IRepository.Read
         public bool ExistsByLOGS_DATE(DateTime value );
         public bool ExistsByUSE_ID(int value );
         public bool ExistsByLOGS_ORIGEM(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -57,6 +58,7 @@ namespace IRepository.Read
         public LogsDatabaseDTO FirstByLOGS_DATE(DateTime value );
         public LogsDatabaseDTO FirstByUSE_ID(int value );
         public LogsDatabaseDTO FirstByLOGS_ORIGEM(string value );
+        public LogsDatabaseDTO FirstByOperationalEntityId(string value );
         public LogsDatabaseDTO FirstByTenantID(int value );
         public LogsDatabaseDTO FirstByDeleted(bool value );
         public LogsDatabaseDTO FirstByChanged(DateTime value );
@@ -75,6 +77,7 @@ namespace IRepository.Read
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_DATE(DateTime value );
         public IEnumerable<LogsDatabaseDTO> GetAllByUSE_ID(int value );
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_ORIGEM(string value );
+        public IEnumerable<LogsDatabaseDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LogsDatabaseDTO> GetAllByTenantID(int value );
         public IEnumerable<LogsDatabaseDTO> GetAllByDeleted(bool value );
         public IEnumerable<LogsDatabaseDTO> GetAllByChanged(DateTime value );

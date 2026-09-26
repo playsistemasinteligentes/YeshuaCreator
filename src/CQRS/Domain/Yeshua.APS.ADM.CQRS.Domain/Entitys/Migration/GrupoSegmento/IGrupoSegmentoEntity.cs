@@ -24,6 +24,7 @@
     string GRS_ID { get; set; }
     string? GRS_DESCRICAO { get; set; }
     string? GRS_INTEGRACAO_ERP { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

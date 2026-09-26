@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public string grs_id { get; set; } = string.Empty;
     public string pro_id { get; set; } = string.Empty;
     public string seg_id { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

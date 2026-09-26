@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_FeedbackMovEstoque", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_FeedbackMovEstoqueReceiver), commandName: "Command.Write.T_FeedbackMovEstoqueCrudCommand");
                  var t_feedbackmovestoque = new T_FeedbackMovEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FeedbackId, c.MovimentoEstoqueId);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_feedbackmovestoque.OperationalEntityId);
                  var domainResult = T_FeedbackMovEstoqueDomainBehavior.Apply(t_feedbackmovestoque, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -61,6 +61,11 @@ namespace Input.Repository.Uniuser
             var query = _query.UpdateUSE_ID(usergru_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int usergru_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(usergru_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int usergru_id, int value)
         {
             var query = _query.UpdateTenantID(usergru_id, value);

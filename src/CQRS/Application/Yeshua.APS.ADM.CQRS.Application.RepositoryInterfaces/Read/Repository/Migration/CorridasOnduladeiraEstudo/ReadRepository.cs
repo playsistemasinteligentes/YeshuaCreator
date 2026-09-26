@@ -45,6 +45,7 @@ namespace IRepository.Read
         public bool ExistsByPRO_ID_PALETE(string value );
         public bool ExistsByCOR_STATUS_PALETE(string value );
         public bool ExistsByCOR_GRUPO_PRODUTIVO(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -70,6 +71,7 @@ namespace IRepository.Read
         public CorridasOnduladeiraEstudoDTO FirstByPRO_ID_PALETE(string value );
         public CorridasOnduladeiraEstudoDTO FirstByCOR_STATUS_PALETE(string value );
         public CorridasOnduladeiraEstudoDTO FirstByCOR_GRUPO_PRODUTIVO(Decimal value );
+        public CorridasOnduladeiraEstudoDTO FirstByOperationalEntityId(string value );
         public CorridasOnduladeiraEstudoDTO FirstByTenantID(int value );
         public CorridasOnduladeiraEstudoDTO FirstByDeleted(bool value );
         public CorridasOnduladeiraEstudoDTO FirstByChanged(DateTime value );
@@ -95,6 +97,7 @@ namespace IRepository.Read
         public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByPRO_ID_PALETE(string value );
         public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByCOR_STATUS_PALETE(string value );
         public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByCOR_GRUPO_PRODUTIVO(Decimal value );
+        public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByTenantID(int value );
         public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CorridasOnduladeiraEstudoDTO> GetAllByChanged(DateTime value );

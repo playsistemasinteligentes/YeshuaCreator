@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByCodigo(string value );
         public bool ExistsByNome(string value );
         public bool ExistsByTipo(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public PlanoContaDTO FirstByCodigo(string value );
         public PlanoContaDTO FirstByNome(string value );
         public PlanoContaDTO FirstByTipo(int value );
+        public PlanoContaDTO FirstByOperationalEntityId(string value );
         public PlanoContaDTO FirstByTenantID(int value );
         public PlanoContaDTO FirstByDeleted(bool value );
         public PlanoContaDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<PlanoContaDTO> GetAllByCodigo(string value );
         public IEnumerable<PlanoContaDTO> GetAllByNome(string value );
         public IEnumerable<PlanoContaDTO> GetAllByTipo(int value );
+        public IEnumerable<PlanoContaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PlanoContaDTO> GetAllByTenantID(int value );
         public IEnumerable<PlanoContaDTO> GetAllByDeleted(bool value );
         public IEnumerable<PlanoContaDTO> GetAllByChanged(DateTime value );

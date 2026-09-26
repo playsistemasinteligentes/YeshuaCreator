@@ -38,6 +38,7 @@ namespace IRepository.Write
         void UpdateFPR_SEQ_REPETICAO(int ipv_id, int value);
         void UpdateIPV_STATUS_LIBERACAO(int ipv_id, string value);
         void UpdateIPV_VALOR_MEDIDA(int ipv_id, Decimal value);
+        void UpdateOperationalEntityId(int ipv_id, string value);
         void UpdateTenantID(int ipv_id, int value);
         void UpdateDeleted(int ipv_id, bool value);
         void UpdateChanged(int ipv_id, DateTime value);

@@ -82,10 +82,15 @@ padrao do ASP.NET.
 | `SUMMARIZER_MODEL` | ai-summarizer | Python summarizer | Manter |
 | `SUMMARIZER_DEVICE` | ai-summarizer | Python summarizer | Manter |
 
-O deploy publico atual usa `infra/Clinica/DockerCompose`, orquestrado por
-`infra/docker/deploy.sh`. O aplicativo `Fiscal` unificado possui connection
-string propria e tera infraestrutura dedicada em recorte posterior. Clinica e
-Fiscal compartilharao `sqlserver` e a persistencia fisica do SQL pelo ambiente.
+O deploy publico atual e orquestrado por `infra/docker/deploy.sh` e usa:
+
+- `infra/Central/DockerCompose` para Front compartilhado, API, Worker e Migration.
+- `infra/Clinica/DockerCompose` para API, Worker e Migration.
+- `infra/APS.ADM/DockerCompose` para API, Worker e Migration.
+- `infra/Fiscal/DockerCompose` para API, Worker e Migration.
+
+Os aplicativos compartilham `sqlserver`, `redis`, `rabbitmq`, `nginx` e a rede
+`yeshua-net`, mas cada aplicativo possui banco proprio.
 
 ## Testes integrados
 

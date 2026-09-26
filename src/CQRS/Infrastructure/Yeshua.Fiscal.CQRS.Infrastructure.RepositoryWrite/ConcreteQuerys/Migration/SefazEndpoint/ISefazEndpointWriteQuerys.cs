@@ -24,6 +24,7 @@ namespace IQuery.Write
         QueryModel UpdateVersao(int id, string value);
         QueryModel UpdateUrl(int id, string value);
         QueryModel UpdateAtivo(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

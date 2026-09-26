@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirObservacoesQuery(IObservacoesEntity Observacoes)
         {
-            this.Query = $@" INSERT INTO [Observacoes] ([OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[OBS_ID] VALUES(@OBS_TIPO, @OBS_DESCRICAO, @CLI_ID, @MAQ_ID, @PRO_ID, @ROT_SEQ_TRANFORMACAO, @OBS_INTEGRACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Observacoes] ([OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[OBS_ID] VALUES(@OBS_TIPO, @OBS_DESCRICAO, @CLI_ID, @MAQ_ID, @PRO_ID, @ROT_SEQ_TRANFORMACAO, @OBS_INTEGRACAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OBS_TIPO = Observacoes.OBS_TIPO,
@@ -40,6 +40,7 @@ namespace Query.Write
                 PRO_ID = Observacoes.PRO_ID,
                 ROT_SEQ_TRANFORMACAO = Observacoes.ROT_SEQ_TRANFORMACAO,
                 OBS_INTEGRACAO = Observacoes.OBS_INTEGRACAO,
+                OperationalEntityId = Observacoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -131,6 +132,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 OBS_INTEGRACAO = value,
+                OBS_ID = obs_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int obs_id, string value)
+        {
+            this.Query = $@" UPDATE [Observacoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [OBS_ID] = @OBS_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 OBS_ID = obs_id,
             };
             return new QueryModel(this.Query, this.Parameters);

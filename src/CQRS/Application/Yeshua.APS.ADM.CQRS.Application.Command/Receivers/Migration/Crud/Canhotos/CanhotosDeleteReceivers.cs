@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCanhotos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCanhotosReceiver), commandName: "Command.Write.CanhotosCrudCommand");
                  var canhotos = new CanhotosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.NOT_ID, c.CAN_DATA_ENTREGA, c.CAN_IMG, c.CAN_LAT_ENTREGA, c.CAN_LONG_ENTREGA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", canhotos.OperationalEntityId);
                  var domainResult = CanhotosDomainBehavior.Apply(canhotos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

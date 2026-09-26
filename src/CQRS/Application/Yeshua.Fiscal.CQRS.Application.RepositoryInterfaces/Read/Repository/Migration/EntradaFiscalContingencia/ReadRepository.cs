@@ -58,6 +58,7 @@ namespace IRepository.Read
         public bool ExistsByCriadoEmUtc(DateTime value );
         public bool ExistsByAtualizadoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -96,6 +97,7 @@ namespace IRepository.Read
         public EntradaFiscalContingenciaDTO FirstByCriadoEmUtc(DateTime value );
         public EntradaFiscalContingenciaDTO FirstByAtualizadoEmUtc(DateTime value );
         public EntradaFiscalContingenciaDTO FirstByStatus(int value );
+        public EntradaFiscalContingenciaDTO FirstByOperationalEntityId(string value );
         public EntradaFiscalContingenciaDTO FirstByTenantID(int value );
         public EntradaFiscalContingenciaDTO FirstByDeleted(bool value );
         public EntradaFiscalContingenciaDTO FirstByChanged(DateTime value );
@@ -134,6 +136,7 @@ namespace IRepository.Read
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByCriadoEmUtc(DateTime value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByAtualizadoEmUtc(DateTime value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByStatus(int value );
+        public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByTenantID(int value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByDeleted(bool value );
         public IEnumerable<EntradaFiscalContingenciaDTO> GetAllByChanged(DateTime value );

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPoliticaOnduladeiraQuery(IPoliticaOnduladeiraEntity PoliticaOnduladeira)
         {
-            this.Query = $@" INSERT INTO [PoliticaOnduladeira] ([POL_ID], [POL_NIVEL], [POL_PROMOCAO], [POL_DIAS_ANTECIPACAO], [POL_METROS_LINEARES], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@POL_ID, @POL_NIVEL, @POL_PROMOCAO, @POL_DIAS_ANTECIPACAO, @POL_METROS_LINEARES, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PoliticaOnduladeira] ([POL_ID], [POL_NIVEL], [POL_PROMOCAO], [POL_DIAS_ANTECIPACAO], [POL_METROS_LINEARES], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@POL_ID, @POL_NIVEL, @POL_PROMOCAO, @POL_DIAS_ANTECIPACAO, @POL_METROS_LINEARES, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 POL_ID = PoliticaOnduladeira.POL_ID,
@@ -38,6 +38,7 @@ namespace Query.Write
                 POL_PROMOCAO = PoliticaOnduladeira.POL_PROMOCAO,
                 POL_DIAS_ANTECIPACAO = PoliticaOnduladeira.POL_DIAS_ANTECIPACAO,
                 POL_METROS_LINEARES = PoliticaOnduladeira.POL_METROS_LINEARES,
+                OperationalEntityId = PoliticaOnduladeira.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -107,6 +108,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 POL_METROS_LINEARES = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

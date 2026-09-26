@@ -66,6 +66,11 @@ namespace Input.Repository.EstruturaImpressao
             var query = _query.UpdateEST_DESCRICAO(est_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int est_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(est_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int est_id, int value)
         {
             var query = _query.UpdateTenantID(est_id, value);

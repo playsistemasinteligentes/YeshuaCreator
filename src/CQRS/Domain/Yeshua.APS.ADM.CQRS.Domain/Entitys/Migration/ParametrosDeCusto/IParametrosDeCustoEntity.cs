@@ -25,6 +25,7 @@
     string PRO_ID { get; set; }
     string CUS_ID { get; set; }
     string PAR_VALOR { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

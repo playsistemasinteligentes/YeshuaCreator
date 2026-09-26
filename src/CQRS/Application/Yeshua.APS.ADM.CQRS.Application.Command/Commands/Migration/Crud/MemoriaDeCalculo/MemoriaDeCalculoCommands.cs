@@ -11,17 +11,20 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct MemoriaDeCalculoCrudCommand : ICommand
+    public struct MemoriaDeCalculoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int MEM_ID { get; set; }
         public int? ORC_ID { get; set; }
         public Decimal? MEM_VALOR { get; set; }
         public string? MEM_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "MemoriaDeCalculo";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

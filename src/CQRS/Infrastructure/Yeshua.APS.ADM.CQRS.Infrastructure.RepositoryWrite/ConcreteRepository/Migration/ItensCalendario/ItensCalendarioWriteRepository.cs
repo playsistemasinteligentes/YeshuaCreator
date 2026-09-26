@@ -101,6 +101,11 @@ namespace Input.Repository.ItensCalendario
             var query = _query.UpdateICA_LIMPESA_MAQUINA(ica_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int ica_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ica_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int ica_id, int value)
         {
             var query = _query.UpdateTenantID(ica_id, value);

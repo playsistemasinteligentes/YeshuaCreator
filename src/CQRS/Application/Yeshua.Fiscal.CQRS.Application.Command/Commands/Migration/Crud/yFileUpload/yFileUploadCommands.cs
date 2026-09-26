@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct yFileUploadCrudCommand : ICommand
+    public struct yFileUploadCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string Type { get; set; }
@@ -23,9 +23,12 @@ namespace Command.Write
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "yFileUpload";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

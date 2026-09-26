@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePoliticaOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePoliticaOnduladeiraReceiver), commandName: "Command.Write.PoliticaOnduladeiraCrudCommand");
                  var politicaonduladeira = new PoliticaOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.POL_ID, c.POL_NIVEL, c.POL_PROMOCAO, c.POL_DIAS_ANTECIPACAO, c.POL_METROS_LINEARES);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", politicaonduladeira.OperationalEntityId);
                  var domainResult = PoliticaOnduladeiraDomainBehavior.Apply(politicaonduladeira, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

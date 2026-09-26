@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.LogsDatabase;
 
-[SeedTestOrder(150)]
+[SeedTestOrder(148)]
 public partial class LogsDatabaseCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/LogsDatabase/PostLogsDatabase";

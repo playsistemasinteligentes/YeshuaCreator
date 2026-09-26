@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public string TDI_ID { get; set; }
     public string? TDI_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  TDI_ID = tdi_id; 
  TDI_DESCRICAO = tdi_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

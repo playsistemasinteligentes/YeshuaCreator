@@ -71,6 +71,11 @@ namespace Input.Repository.InformacoesComplementares
             var query = _query.UpdateINF_DATA(inf_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int inf_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(inf_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int inf_id, int value)
         {
             var query = _query.UpdateTenantID(inf_id, value);

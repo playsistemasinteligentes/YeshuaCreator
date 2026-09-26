@@ -24,6 +24,7 @@
     public int USE_ID { get; set; }
     public string OBJ_ID { get; set; }
     public string? USU_OBJETO_ACAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  USE_ID = use_id; 
  OBJ_ID = obj_id; 
  USU_OBJETO_ACAO = usu_objeto_acao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

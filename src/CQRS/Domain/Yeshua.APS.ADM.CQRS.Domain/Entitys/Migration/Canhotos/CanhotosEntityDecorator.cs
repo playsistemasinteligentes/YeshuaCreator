@@ -28,10 +28,11 @@
             public const ulong CAN_IMG = 1UL << 5;
             public const ulong CAN_LAT_ENTREGA = 1UL << 6;
             public const ulong CAN_LONG_ENTREGA = 1UL << 7;
-            public const ulong TenantID = 1UL << 8;
-            public const ulong Deleted = 1UL << 9;
-            public const ulong Changed = 1UL << 10;
-            public const ulong UserId = 1UL << 11;
+            public const ulong OperationalEntityId = 1UL << 8;
+            public const ulong TenantID = 1UL << 9;
+            public const ulong Deleted = 1UL << 10;
+            public const ulong Changed = 1UL << 11;
+            public const ulong UserId = 1UL << 12;
         }
 
         public partial class CanhotosDecorator : ICanhotosEntity
@@ -172,6 +173,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsByUNI_ID(string value );
         public bool ExistsByUNI_DESCRICAO(string value );
         public bool ExistsByUNI_ESCALA_TEMPO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public UnidadeMedidaDTO FirstByUNI_ID(string value );
         public UnidadeMedidaDTO FirstByUNI_DESCRICAO(string value );
         public UnidadeMedidaDTO FirstByUNI_ESCALA_TEMPO(string value );
+        public UnidadeMedidaDTO FirstByOperationalEntityId(string value );
         public UnidadeMedidaDTO FirstByTenantID(int value );
         public UnidadeMedidaDTO FirstByDeleted(bool value );
         public UnidadeMedidaDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<UnidadeMedidaDTO> GetAllByUNI_ID(string value );
         public IEnumerable<UnidadeMedidaDTO> GetAllByUNI_DESCRICAO(string value );
         public IEnumerable<UnidadeMedidaDTO> GetAllByUNI_ESCALA_TEMPO(string value );
+        public IEnumerable<UnidadeMedidaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<UnidadeMedidaDTO> GetAllByTenantID(int value );
         public IEnumerable<UnidadeMedidaDTO> GetAllByDeleted(bool value );
         public IEnumerable<UnidadeMedidaDTO> GetAllByChanged(DateTime value );

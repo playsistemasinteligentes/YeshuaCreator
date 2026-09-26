@@ -24,6 +24,7 @@
     int? GrupoServicoId { get; set; }
     string Nome { get; set; }
     Decimal Valor { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

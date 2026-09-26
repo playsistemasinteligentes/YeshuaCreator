@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsById(string value );
         public bool ExistsByDescricao(string value );
         public bool ExistsByStatus(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -100,6 +101,7 @@ namespace IRepository.Read
         public MaquinaDTO FirstById(string value );
         public MaquinaDTO FirstByDescricao(string value );
         public MaquinaDTO FirstByStatus(string value );
+        public MaquinaDTO FirstByOperationalEntityId(string value );
         public MaquinaDTO FirstByTenantID(int value );
         public MaquinaDTO FirstByDeleted(bool value );
         public MaquinaDTO FirstByChanged(DateTime value );
@@ -172,6 +174,7 @@ namespace IRepository.Read
         public IEnumerable<MaquinaDTO> GetAllById(string value );
         public IEnumerable<MaquinaDTO> GetAllByDescricao(string value );
         public IEnumerable<MaquinaDTO> GetAllByStatus(string value );
+        public IEnumerable<MaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MaquinaDTO> GetAllByTenantID(int value );
         public IEnumerable<MaquinaDTO> GetAllByDeleted(bool value );
         public IEnumerable<MaquinaDTO> GetAllByChanged(DateTime value );

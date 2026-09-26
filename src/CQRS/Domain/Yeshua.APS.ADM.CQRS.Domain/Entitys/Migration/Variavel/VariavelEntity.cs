@@ -25,6 +25,7 @@
     public string VAR_DESCRICAO { get; set; }
     public int? CON_ID { get; set; }
     public int VAR_MODO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  VAR_DESCRICAO = var_descricao; 
  CON_ID = con_id; 
  VAR_MODO = var_modo; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTabela", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTabelaReceiver), commandName: "Command.Write.TabelaCrudCommand");
                  var tabela = new TabelaFactory(_logger, _domainTrackingPolicy).Create(context, c.ID_TABELA, c.CODIGO, c.NOME);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tabela.OperationalEntityId);
                  var domainResult = TabelaDomainBehavior.Apply(tabela, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

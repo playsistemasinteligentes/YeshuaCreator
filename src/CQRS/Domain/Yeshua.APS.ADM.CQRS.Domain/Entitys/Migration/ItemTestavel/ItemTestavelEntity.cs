@@ -29,6 +29,7 @@
     public Decimal? ITE_VALOR_DA_CONDICIONAL { get; set; }
     public string? ITE_VALOR_CALCULADO_DA_CONDICIONAL { get; set; }
     public string? ITE_TIPO_AVALIACAO_FINAL { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -44,6 +45,7 @@
  ITE_VALOR_DA_CONDICIONAL = ite_valor_da_condicional; 
  ITE_VALOR_CALCULADO_DA_CONDICIONAL = ite_valor_calculado_da_condicional; 
  ITE_TIPO_AVALIACAO_FINAL = ite_tipo_avaliacao_final; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

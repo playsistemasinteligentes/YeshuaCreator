@@ -74,6 +74,7 @@ namespace Command.Receivers
 
             var autorizados = 0;
             var falhas = new List<string>();
+            var possuiFalhaTecnica = false;
             var certificado = FiscalCertificateResolver.TryResolve(
                 cargaId,
                 _entradaFiscalContingenciaReadRepository,
@@ -169,6 +170,7 @@ namespace Command.Receivers
                 }
                 catch (Exception ex)
                 {
+                    possuiFalhaTecnica = true;
                     RegistrarFalhaTecnica(solicitacao, tentativa, ex);
 
                     _logger.CommandFailed(
@@ -207,8 +209,9 @@ namespace Command.Receivers
 
             if (falhas.Count > 0)
             {
-                throw new InvalidOperationException(
-                    $"Carga {cargaId}: {autorizados} de {solicitacoes.Count} CT-e autorizados. Falhas: {string.Join(" | ", falhas)}");
+                throw new SagaStepExecutionException(
+                    $"Carga {cargaId}: {autorizados} de {solicitacoes.Count} CT-e autorizados. Falhas: {string.Join(" | ", falhas)}",
+                    retryable: possuiFalhaTecnica);
             }
 
             _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(

@@ -64,6 +64,7 @@ namespace Repositorio.Outputs
     public Decimal grp_percentual_perda_media { get; set; }
     public int grp_filtra_seq_trans { get; set; }
     public string grp_img_caixa { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

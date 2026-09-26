@@ -22,6 +22,7 @@
 {
     public int TA_ID { get; set; }
     public string TA_DESC { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -30,6 +31,7 @@
  internal TipoAvaliacaoEntity(int ta_id, string ta_desc ){
  TA_ID = ta_id; 
  TA_DESC = ta_desc; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

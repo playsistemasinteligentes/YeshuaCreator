@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateTemplateTipoTesteQuery(ITemplateTipoTesteEntity TemplateTipoTeste);
         QueryModel UpdateTT_ID(int ttt_id, int value);
         QueryModel UpdateTEM_ID(int ttt_id, int value);
+        QueryModel UpdateOperationalEntityId(int ttt_id, string value);
         QueryModel UpdateTenantID(int ttt_id, int value);
         QueryModel UpdateDeleted(int ttt_id, bool value);
         QueryModel UpdateChanged(int ttt_id, DateTime value);

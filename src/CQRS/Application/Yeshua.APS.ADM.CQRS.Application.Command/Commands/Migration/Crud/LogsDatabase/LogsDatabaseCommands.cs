@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct LogsDatabaseCrudCommand : ICommand
+    public struct LogsDatabaseCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int LOGS_ID { get; set; }
         public string LOGS_TABLE { get; set; }
@@ -27,10 +27,13 @@ namespace Command.Write
         public DateTime LOGS_DATE { get; set; }
         public int USE_ID { get; set; }
         public string? LOGS_ORIGEM { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "LogsDatabase";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

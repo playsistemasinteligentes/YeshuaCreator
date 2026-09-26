@@ -16,12 +16,14 @@ namespace IQuery.Read
         public QueryModel yGrantQuery(Command.Read.yGrantReadCommand Command );
         public QueryModel yGrantTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yGrantUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByIdQuery(string value );
         public QueryModel ExistsByDescriptionQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(string value );
         public QueryModel FirstByDescriptionQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );

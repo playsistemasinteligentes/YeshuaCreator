@@ -29,6 +29,7 @@ namespace IRepository.Write
         void UpdateORC_EMISSAO(int id, DateTime value);
         void UpdateCLI_ID(int id, string value);
         void UpdateVER_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

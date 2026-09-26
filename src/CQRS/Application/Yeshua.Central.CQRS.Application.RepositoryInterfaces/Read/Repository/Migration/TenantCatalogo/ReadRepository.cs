@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByCatalogo(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByValidUntil(DateTime value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
@@ -35,6 +36,7 @@ namespace IRepository.Read
         public TenantCatalogoDTO FirstByCatalogo(string value );
         public TenantCatalogoDTO FirstByTenantID(int value );
         public TenantCatalogoDTO FirstByValidUntil(DateTime value );
+        public TenantCatalogoDTO FirstByOperationalEntityId(string value );
         public TenantCatalogoDTO FirstByDeleted(bool value );
         public TenantCatalogoDTO FirstByChanged(DateTime value );
         public TenantCatalogoDTO FirstByUserId(int value );
@@ -42,6 +44,7 @@ namespace IRepository.Read
         public IEnumerable<TenantCatalogoDTO> GetAllByCatalogo(string value );
         public IEnumerable<TenantCatalogoDTO> GetAllByTenantID(int value );
         public IEnumerable<TenantCatalogoDTO> GetAllByValidUntil(DateTime value );
+        public IEnumerable<TenantCatalogoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TenantCatalogoDTO> GetAllByDeleted(bool value );
         public IEnumerable<TenantCatalogoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TenantCatalogoDTO> GetAllByUserId(int value );

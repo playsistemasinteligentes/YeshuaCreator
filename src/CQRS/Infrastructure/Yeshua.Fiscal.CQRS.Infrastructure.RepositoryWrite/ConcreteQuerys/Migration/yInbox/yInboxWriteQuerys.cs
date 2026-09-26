@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" INSERT INTO [yInbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [CreatedAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yInbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [CreatedAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
@@ -48,6 +48,7 @@ namespace Query.Write
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
                 TenantID = _executionContext.TenantID,
+                OperationalEntityId = yInbox.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
@@ -225,6 +226,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TenantID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yInbox] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

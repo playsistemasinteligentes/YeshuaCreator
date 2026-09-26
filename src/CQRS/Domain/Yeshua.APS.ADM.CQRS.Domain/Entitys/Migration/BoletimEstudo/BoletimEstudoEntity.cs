@@ -43,6 +43,7 @@
     public Decimal? BOL_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
     public Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
     public int? BOL_REFILE_OBRIGATORIO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -72,6 +73,7 @@
  BOL_GRAMATURA_RESINA_PROGRAMADOS = bol_gramatura_resina_programados; 
  BOL_CUSTO_RESINA_PROGRAMADOS = bol_custo_resina_programados; 
  BOL_REFILE_OBRIGATORIO = bol_refile_obrigatorio; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -11,17 +11,20 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct VariavelCrudCommand : ICommand
+    public struct VariavelCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int VAR_ID { get; set; }
         public string VAR_DESCRICAO { get; set; }
         public int? CON_ID { get; set; }
         public int VAR_MODO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Variavel";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

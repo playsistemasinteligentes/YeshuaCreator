@@ -21,6 +21,7 @@ namespace IQuery.Write
         QueryModel UpdateORC_ID(int id, int value);
         QueryModel UpdateMEM_VALOR(int id, Decimal value);
         QueryModel UpdateMEM_DESCRICAO(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

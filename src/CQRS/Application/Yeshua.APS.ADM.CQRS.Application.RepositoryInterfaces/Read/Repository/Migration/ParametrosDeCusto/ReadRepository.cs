@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByPRO_ID(string value );
         public bool ExistsByCUS_ID(string value );
         public bool ExistsByPAR_VALOR(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public ParametrosDeCustoDTO FirstByPRO_ID(string value );
         public ParametrosDeCustoDTO FirstByCUS_ID(string value );
         public ParametrosDeCustoDTO FirstByPAR_VALOR(string value );
+        public ParametrosDeCustoDTO FirstByOperationalEntityId(string value );
         public ParametrosDeCustoDTO FirstByTenantID(int value );
         public ParametrosDeCustoDTO FirstByDeleted(bool value );
         public ParametrosDeCustoDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<ParametrosDeCustoDTO> GetAllByPRO_ID(string value );
         public IEnumerable<ParametrosDeCustoDTO> GetAllByCUS_ID(string value );
         public IEnumerable<ParametrosDeCustoDTO> GetAllByPAR_VALOR(string value );
+        public IEnumerable<ParametrosDeCustoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ParametrosDeCustoDTO> GetAllByTenantID(int value );
         public IEnumerable<ParametrosDeCustoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ParametrosDeCustoDTO> GetAllByChanged(DateTime value );

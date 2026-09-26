@@ -32,6 +32,7 @@ namespace IRepository.Write
         void UpdateMAQ_ID(int ica_id, string value);
         void UpdatePRO_ID(int ica_id, string value);
         void UpdateICA_LIMPESA_MAQUINA(int ica_id, int value);
+        void UpdateOperationalEntityId(int ica_id, string value);
         void UpdateTenantID(int ica_id, int value);
         void UpdateDeleted(int ica_id, bool value);
         void UpdateChanged(int ica_id, DateTime value);

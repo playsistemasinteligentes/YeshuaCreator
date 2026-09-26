@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Movimentos;
 
-[SeedTestOrder(164)]
+[SeedTestOrder(162)]
 public partial class MovimentosCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Movimentos/PostMovimentos";

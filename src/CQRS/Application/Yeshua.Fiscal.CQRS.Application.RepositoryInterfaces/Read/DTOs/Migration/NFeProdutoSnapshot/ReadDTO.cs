@@ -36,6 +36,7 @@ namespace Repositorio.Outputs
     public string xmlstoragekey { get; set; } = string.Empty;
     public string snapshotjson { get; set; } = string.Empty;
     public int status { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ClienteCrudCommand : ICommand
+    public struct ClienteCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public string CLI_ID { get; set; }
         public string CLI_NOME { get; set; }
@@ -40,10 +40,13 @@ namespace Command.Write
         public string? CLI_INTEGRACAO_ERP { get; set; }
         public Decimal? CLI_LATITUDE_ENTREGA { get; set; }
         public Decimal? CLI_LONGITUDE_ENTREGA { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Cliente";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

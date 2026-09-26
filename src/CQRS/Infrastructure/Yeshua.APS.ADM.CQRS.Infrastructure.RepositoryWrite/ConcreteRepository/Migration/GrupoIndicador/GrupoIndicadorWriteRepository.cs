@@ -61,6 +61,11 @@ namespace Input.Repository.GrupoIndicador
             var query = _query.UpdateIND_ID(gru_ind_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int gru_ind_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(gru_ind_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int gru_ind_id, int value)
         {
             var query = _query.UpdateTenantID(gru_ind_id, value);

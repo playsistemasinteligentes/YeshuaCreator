@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_Favoritos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_FavoritosReceiver), commandName: "Command.Write.T_FavoritosCrudCommand");
                  var t_favoritos = new T_FavoritosFactory(_logger, _domainTrackingPolicy).Create(context, c.IDFAVORITO, c.USE_ID, c.ID_INDICADOR);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_favoritos.OperationalEntityId);
                  var domainResult = T_FavoritosDomainBehavior.Apply(t_favoritos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

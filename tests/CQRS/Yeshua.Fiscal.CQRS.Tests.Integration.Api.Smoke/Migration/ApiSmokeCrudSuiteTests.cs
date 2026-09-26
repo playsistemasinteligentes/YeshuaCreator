@@ -176,27 +176,27 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step34.DeleteAsync);
             await step34.ExecuteAsync();
 
-            var step35 = new yModule.yModuleCrudApiSmokeTests();
+            var step35 = new yGrant.yGrantCrudApiSmokeTests();
             deleteSteps.Push(step35.DeleteAsync);
             await step35.ExecuteAsync();
 
-            var step36 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
+            var step36 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
             deleteSteps.Push(step36.DeleteAsync);
             await step36.ExecuteAsync();
 
-            var step37 = new yUserModule.yUserModuleCrudApiSmokeTests();
+            var step37 = new yUserGrant.yUserGrantCrudApiSmokeTests();
             deleteSteps.Push(step37.DeleteAsync);
             await step37.ExecuteAsync();
 
-            var step38 = new yGrant.yGrantCrudApiSmokeTests();
+            var step38 = new yModule.yModuleCrudApiSmokeTests();
             deleteSteps.Push(step38.DeleteAsync);
             await step38.ExecuteAsync();
 
-            var step39 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
+            var step39 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
             deleteSteps.Push(step39.DeleteAsync);
             await step39.ExecuteAsync();
 
-            var step40 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            var step40 = new yUserModule.yUserModuleCrudApiSmokeTests();
             deleteSteps.Push(step40.DeleteAsync);
             await step40.ExecuteAsync();
 

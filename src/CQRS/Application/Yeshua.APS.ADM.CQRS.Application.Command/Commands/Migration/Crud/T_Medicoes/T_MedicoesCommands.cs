@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct T_MedicoesCrudCommand : ICommand
+    public struct T_MedicoesCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int MED_ID { get; set; }
@@ -35,10 +35,13 @@ namespace Command.Write
         public string? DOM_EMPRESA { get; set; }
         public string? DOM_FILIAL { get; set; }
         public string? MED_VALOR_DISPER { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "T_Medicoes";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

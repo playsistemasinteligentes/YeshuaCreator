@@ -64,6 +64,7 @@ namespace IQuery.Write
         QueryModel UpdateMOV_GRUPO_CONTABIL(int id, string value);
         QueryModel UpdateFOR_ID(int id, string value);
         QueryModel UpdateCLI_ID(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

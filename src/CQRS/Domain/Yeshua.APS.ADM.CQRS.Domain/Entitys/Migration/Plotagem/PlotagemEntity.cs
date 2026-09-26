@@ -29,6 +29,7 @@
     public string? PLO_Z { get; set; }
     public string? PLO_GRAFICO { get; set; }
     public int? CON_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -44,6 +45,7 @@
  PLO_Z = plo_z; 
  PLO_GRAFICO = plo_grafico; 
  CON_ID = con_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

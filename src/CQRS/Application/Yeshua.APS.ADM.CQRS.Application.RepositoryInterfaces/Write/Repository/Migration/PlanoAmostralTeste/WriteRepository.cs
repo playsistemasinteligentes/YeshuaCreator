@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IPlanoAmostralTesteEntity planoamostralteste);
         void Delete(IPlanoAmostralTesteEntity planoamostralteste);
         void UpdateGRP_TIPO(int pat_id, Decimal value);
+        void UpdateOperationalEntityId(int pat_id, string value);
         void UpdateTenantID(int pat_id, int value);
         void UpdateDeleted(int pat_id, bool value);
         void UpdateChanged(int pat_id, DateTime value);

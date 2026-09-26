@@ -19,20 +19,20 @@ fi
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 export YESHUA_BUILD_TIMESTAMP_UTC="${YESHUA_BUILD_TIMESTAMP_UTC:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}"
 
-bash "$SHARED_DIR/deploy.sh"
+if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
+  bash "$SHARED_DIR/deploy.sh"
+fi
 
 cd "$COMPOSE_DIR"
 docker compose build
 docker compose run --rm clinica-migration
-docker compose up -d --remove-orphans --scale clinica-front=2 \
+docker compose up -d --remove-orphans \
   clinica-api \
-  clinica-front \
   clinica-worker
 
 # pendencia: subir os ambientes de IA somente quando o fluxo de execucao deles estiver fechado.
-# docker compose up -d --remove-orphans --scale clinica-front=2 \
+# docker compose up -d --remove-orphans \
 #   clinica-api \
-#   clinica-front \
 #   clinica-worker \
 #   clinica-ai-worker \
 #   clinica-ai-summarizer

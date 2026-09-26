@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTurnoQuery(ITurnoEntity Turno)
         {
-            this.Query = $@" INSERT INTO [Turno] ([Id], [Descricao], [TURN_PRIORIDADE], [TURN_HORA_INI_DIA1], [TURN_HORA_FIM_DIA1], [TURN_HORA_INI_DIA2], [TURN_HORA_FIM_DIA2], [TURN_HORA_INI_DIA3], [TURN_HORA_FIM_DIA3], [TURN_HORA_INI_DIA4], [TURN_HORA_FIM_DIA4], [TURN_HORA_INI_DIA5], [TURN_HORA_FIM_DIA5], [TURN_HORA_INI_DIA6], [TURN_HORA_FIM_DIA6], [TURN_HORA_INI_DIA7], [TURN_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Descricao, @TURN_PRIORIDADE, @TURN_HORA_INI_DIA1, @TURN_HORA_FIM_DIA1, @TURN_HORA_INI_DIA2, @TURN_HORA_FIM_DIA2, @TURN_HORA_INI_DIA3, @TURN_HORA_FIM_DIA3, @TURN_HORA_INI_DIA4, @TURN_HORA_FIM_DIA4, @TURN_HORA_INI_DIA5, @TURN_HORA_FIM_DIA5, @TURN_HORA_INI_DIA6, @TURN_HORA_FIM_DIA6, @TURN_HORA_INI_DIA7, @TURN_HORA_FIM_DIA7, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Turno] ([Id], [Descricao], [TURN_PRIORIDADE], [TURN_HORA_INI_DIA1], [TURN_HORA_FIM_DIA1], [TURN_HORA_INI_DIA2], [TURN_HORA_FIM_DIA2], [TURN_HORA_INI_DIA3], [TURN_HORA_FIM_DIA3], [TURN_HORA_INI_DIA4], [TURN_HORA_FIM_DIA4], [TURN_HORA_INI_DIA5], [TURN_HORA_FIM_DIA5], [TURN_HORA_INI_DIA6], [TURN_HORA_FIM_DIA6], [TURN_HORA_INI_DIA7], [TURN_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Descricao, @TURN_PRIORIDADE, @TURN_HORA_INI_DIA1, @TURN_HORA_FIM_DIA1, @TURN_HORA_INI_DIA2, @TURN_HORA_FIM_DIA2, @TURN_HORA_INI_DIA3, @TURN_HORA_FIM_DIA3, @TURN_HORA_INI_DIA4, @TURN_HORA_FIM_DIA4, @TURN_HORA_INI_DIA5, @TURN_HORA_FIM_DIA5, @TURN_HORA_INI_DIA6, @TURN_HORA_FIM_DIA6, @TURN_HORA_INI_DIA7, @TURN_HORA_FIM_DIA7, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = Turno.Id,
@@ -50,6 +50,7 @@ namespace Query.Write
                 TURN_HORA_FIM_DIA6 = Turno.TURN_HORA_FIM_DIA6,
                 TURN_HORA_INI_DIA7 = Turno.TURN_HORA_INI_DIA7,
                 TURN_HORA_FIM_DIA7 = Turno.TURN_HORA_FIM_DIA7,
+                OperationalEntityId = Turno.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -240,6 +241,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA7 = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string id, string value)
+        {
+            this.Query = $@" UPDATE [Turno] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -73,10 +73,18 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
             // Define a struct que são desde comandos de insert update delete como filtros para pesquisas ou conjuntos de dados para determinar a execução de metodos
+            var operationalEntityIdColumn = _entity.AddColumns.FirstOrDefault(column =>
+                column.Name == "OperationalEntityId");
+            var hasOperationalEntityId = operationalEntityIdColumn != null &&
+                _commandType != CommandType.ReadFK &&
+                !operationalEntityIdColumn.IsBackEndField;
+            var operationalContract = hasOperationalEntityId
+                ? ", IOperationalTelemetryCommand"
+                : string.Empty;
             if (_commandType == CommandType.Read)
-                sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommandRead");
+                sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommandRead{operationalContract}");
             else
-                sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommand");
+                sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommand{operationalContract}");
 
             sb.AppendLine("    {");
 
@@ -115,6 +123,12 @@ namespace Dominio.Schemas.CQRS
             // paginação 
             if (_commandType == CommandType.Read)
                 sb.AppendLine(" public Pagination Paginacao { get; set; }");
+
+            if (hasOperationalEntityId)
+            {
+                sb.AppendLine($" public string OperationalEntity => \"{_entity.EntityName}\";");
+                sb.AppendLine(" public string? OperationalRecordId => OperationalEntityId;");
+            }
 
             // Fecha a classe
             sb.AppendLine("    }");

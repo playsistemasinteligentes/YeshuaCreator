@@ -37,6 +37,7 @@
     public DateTime? TURN_HORA_FIM_DIA6 { get; set; }
     public DateTime? TURN_HORA_INI_DIA7 { get; set; }
     public DateTime? TURN_HORA_FIM_DIA7 { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -60,6 +61,7 @@
  TURN_HORA_FIM_DIA6 = turn_hora_fim_dia6.HasValue && turn_hora_fim_dia6.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia6; 
  TURN_HORA_INI_DIA7 = turn_hora_ini_dia7.HasValue && turn_hora_ini_dia7.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia7; 
  TURN_HORA_FIM_DIA7 = turn_hora_fim_dia7.HasValue && turn_hora_fim_dia7.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia7; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

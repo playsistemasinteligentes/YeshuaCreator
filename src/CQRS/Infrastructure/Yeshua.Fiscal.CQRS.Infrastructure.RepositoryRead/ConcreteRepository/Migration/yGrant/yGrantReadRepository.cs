@@ -100,6 +100,14 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsById(string value )
         {
             var query = _query.ExistsByIdQuery(value );
@@ -148,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public yGrantDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yGrantDTO FirstById(string value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -193,6 +209,14 @@ namespace Read.Repository
             var query = _query.FirstByUserIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public IEnumerable<yGrantDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

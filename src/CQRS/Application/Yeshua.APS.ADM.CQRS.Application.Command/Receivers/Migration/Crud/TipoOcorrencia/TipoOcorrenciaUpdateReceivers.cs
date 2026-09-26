@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoOcorrencia", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoOcorrenciaReceiver), commandName: "Command.Write.TipoOcorrenciaCrudCommand");
                  var tipoocorrencia = new TipoOcorrenciaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Spr);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoocorrencia.OperationalEntityId);
                  var domainResult = TipoOcorrenciaDomainBehavior.Apply(tipoocorrencia, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -122,6 +122,8 @@ namespace Dominio.Schemas.CQRS
                     : $"context, {factoryArguments}";
                 sb.AppendLine($"                 var context = DomainOperationContext.Create({domainOperation}, DomainEntryPoint.Crud, \"{action}{_entity.EntityName}\", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof({receiverName}), commandName: \"{commandName}\");");
                 sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger, _domainTrackingPolicy).Create({factoryCallArguments});");
+                if (_entity.AddColumns.Any(column => column.Name == "OperationalEntityId"))
+                    sb.AppendLine($"                 System.Diagnostics.Activity.Current?.SetTag(\"yeshua.operational_entity_id\", {_entity.EntityName.ToLower()}.OperationalEntityId);");
                 sb.AppendLine($"                 var domainResult = {_entity.EntityName}DomainBehavior.Apply({_entity.EntityName.ToLower()}, context);");
                 sb.AppendLine("                 if (!domainResult.IsValid)");
                 sb.AppendLine("                     return Task.FromResult(ValidationError(domainResult.Errors));");

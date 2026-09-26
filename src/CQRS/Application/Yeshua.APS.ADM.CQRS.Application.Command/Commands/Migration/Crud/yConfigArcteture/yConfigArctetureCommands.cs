@@ -11,8 +11,9 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct yConfigArctetureCrudCommand : ICommand
+    public struct yConfigArctetureCrudCommand : ICommand, IOperationalTelemetryCommand
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
@@ -20,6 +21,8 @@ namespace Command.Write
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "yConfigArcteture";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

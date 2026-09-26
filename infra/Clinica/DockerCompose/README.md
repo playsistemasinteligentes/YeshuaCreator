@@ -9,9 +9,9 @@ Engine. O template de origem fica em:
 
 `src/Engine/Yeshua.Engine/Dominio/CodeGeneration/Templates/Infrastructure/CSharpCQRS/DockerCompose`
 
-O SQL Server, Redis, RabbitMQ e nginx pertencem ao Shared do servidor. Este
-Compose contem somente os containers da Clinica e usa a rede externa
-`yeshua-net`.
+O SQL Server, Redis, RabbitMQ, nginx e o Front compartilhado pertencem ao
+servidor/Central. Este Compose contem somente API, Worker e Migration da
+Clinica e usa a rede externa `yeshua-net`.
 
 Deploy isolado:
 
@@ -19,4 +19,4 @@ Deploy isolado:
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica
 ```
 
-O deploy nao executa `down` e nao altera containers do MDF-e.
+O deploy nao executa `down` e nao altera containers dos demais aplicativos.

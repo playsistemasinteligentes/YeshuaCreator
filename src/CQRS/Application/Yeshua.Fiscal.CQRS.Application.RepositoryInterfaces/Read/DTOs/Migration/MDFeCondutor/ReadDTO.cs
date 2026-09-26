@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public int mdfesolicitacaofiscalid { get; set; }
     public string nome { get; set; } = string.Empty;
     public string documento { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

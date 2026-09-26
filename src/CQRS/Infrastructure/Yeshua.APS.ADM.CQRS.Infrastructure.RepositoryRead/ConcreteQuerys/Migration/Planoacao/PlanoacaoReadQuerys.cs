@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] from [Planoacao] ";
+            this.Query = $@" select [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Planoacao] ";
 if (Command.PLA_ID.HasValue) dict["PLA_ID"] = Command.PLA_ID.Value;
 if (Command.PLA_ID.HasValue) whereClauses.Add($"[PLA_ID] = @PLA_ID");
 if (!string.IsNullOrEmpty(Command.PLA_DESCRICAO)) dict["PLA_DESCRICAO"] = $"%{Command.PLA_DESCRICAO}%";
@@ -55,6 +55,8 @@ if (!string.IsNullOrEmpty(Command.PLA_REFERENCIA)) dict["PLA_REFERENCIA"] = $"%{
 if (!string.IsNullOrEmpty(Command.PLA_REFERENCIA)) whereClauses.Add($"[PLA_REFERENCIA] like @PLA_REFERENCIA");
 if (Command.USE_ID.HasValue) dict["USE_ID"] = Command.USE_ID.Value;
 if (Command.USE_ID.HasValue) whereClauses.Add($"[USE_ID] = @USE_ID");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -375,6 +377,23 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Planoacao] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -448,7 +467,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -465,7 +484,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -482,7 +501,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -499,7 +518,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -516,7 +535,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -533,7 +552,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -550,7 +569,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -567,7 +586,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -584,7 +603,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -601,7 +620,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -618,7 +637,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -630,12 +649,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -652,7 +688,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -669,7 +705,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -686,7 +722,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
+            this.Query = $"SELECT [PLA_ID], [PLA_DESCRICAO], [MET_ID], [PLA_STATUS], [PLA_DATA], [PLA_METAPERIODO], [PLA_VLRPERIODO], [PLA_METACULADO], [PLA_VLRACUMULADO], [PLA_REFERENCIA], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Planoacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

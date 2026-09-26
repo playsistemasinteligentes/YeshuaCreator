@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateCON_PARCELAS(int id, int value);
         QueryModel UpdateCON_VALOR_ACRECIMO(int id, Decimal value);
         QueryModel UpdateCON_INTEGRACAO_ERP(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

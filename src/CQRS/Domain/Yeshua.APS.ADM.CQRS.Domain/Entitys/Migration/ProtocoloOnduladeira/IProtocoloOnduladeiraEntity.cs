@@ -25,6 +25,7 @@
     string PTO_CHAVE { get; set; }
     string MAQ_ID { get; set; }
     string PTO_COMANDO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

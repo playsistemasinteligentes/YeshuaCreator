@@ -35,6 +35,7 @@ namespace IRepository.Read
         public bool ExistsByPayloadHash(string value );
         public bool ExistsByPayloadStorageKey(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -50,6 +51,7 @@ namespace IRepository.Read
         public CTeEntradaOficialDTO FirstByPayloadHash(string value );
         public CTeEntradaOficialDTO FirstByPayloadStorageKey(string value );
         public CTeEntradaOficialDTO FirstByStatus(int value );
+        public CTeEntradaOficialDTO FirstByOperationalEntityId(string value );
         public CTeEntradaOficialDTO FirstByTenantID(int value );
         public CTeEntradaOficialDTO FirstByDeleted(bool value );
         public CTeEntradaOficialDTO FirstByChanged(DateTime value );
@@ -65,6 +67,7 @@ namespace IRepository.Read
         public IEnumerable<CTeEntradaOficialDTO> GetAllByPayloadHash(string value );
         public IEnumerable<CTeEntradaOficialDTO> GetAllByPayloadStorageKey(string value );
         public IEnumerable<CTeEntradaOficialDTO> GetAllByStatus(int value );
+        public IEnumerable<CTeEntradaOficialDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeEntradaOficialDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeEntradaOficialDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeEntradaOficialDTO> GetAllByChanged(DateTime value );

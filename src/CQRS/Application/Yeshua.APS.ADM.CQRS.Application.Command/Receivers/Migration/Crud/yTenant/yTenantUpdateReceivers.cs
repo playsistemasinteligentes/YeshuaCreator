@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyTenant", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyTenantReceiver), commandName: "Command.Write.yTenantCrudCommand");
                  var ytenant = new yTenantFactory(_logger, _domainTrackingPolicy).Create(context, c.CnpjCpf, c.Nome, c.UserId);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ytenant.OperationalEntityId);
                  var domainResult = yTenantDomainBehavior.Apply(ytenant, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

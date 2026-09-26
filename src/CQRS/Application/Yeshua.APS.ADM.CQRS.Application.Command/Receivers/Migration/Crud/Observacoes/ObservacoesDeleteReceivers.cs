@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteObservacoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteObservacoesReceiver), commandName: "Command.Write.ObservacoesCrudCommand");
                  var observacoes = new ObservacoesFactory(_logger, _domainTrackingPolicy).Create(context, c.OBS_ID, c.OBS_TIPO, c.OBS_DESCRICAO, c.CLI_ID, c.MAQ_ID, c.PRO_ID, c.ROT_SEQ_TRANFORMACAO, c.OBS_INTEGRACAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", observacoes.OperationalEntityId);
                  var domainResult = ObservacoesDomainBehavior.Apply(observacoes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

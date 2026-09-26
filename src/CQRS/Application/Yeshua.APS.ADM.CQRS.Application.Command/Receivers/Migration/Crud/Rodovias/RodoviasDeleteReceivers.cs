@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRodovias", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRodoviasReceiver), commandName: "Command.Write.RodoviasCrudCommand");
                  var rodovias = new RodoviasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ROD_ID, c.ROD_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", rodovias.OperationalEntityId);
                  var domainResult = RodoviasDomainBehavior.Apply(rodovias, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

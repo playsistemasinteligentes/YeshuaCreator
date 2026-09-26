@@ -61,10 +61,11 @@
             public const ulong CAR_DATA_AGENCIAMENTO = 1UL << 38;
             public const ulong TURN_ID = 1UL << 39;
             public const ulong TURM_ID = 1UL << 40;
-            public const ulong TenantID = 1UL << 41;
-            public const ulong Deleted = 1UL << 42;
-            public const ulong Changed = 1UL << 43;
-            public const ulong UserId = 1UL << 44;
+            public const ulong OperationalEntityId = 1UL << 41;
+            public const ulong TenantID = 1UL << 42;
+            public const ulong Deleted = 1UL << 43;
+            public const ulong Changed = 1UL << 44;
+            public const ulong UserId = 1UL << 45;
         }
 
         public partial class CargaDecorator : ICargaEntity
@@ -667,6 +668,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

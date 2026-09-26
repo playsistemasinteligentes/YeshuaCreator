@@ -28,6 +28,7 @@
     Decimal? MAP_CUSTO_PEDAGIO_POR_EIXO { get; set; }
     int? ROD_ID { get; set; }
     Decimal? MAP_ALTURA_ROD { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

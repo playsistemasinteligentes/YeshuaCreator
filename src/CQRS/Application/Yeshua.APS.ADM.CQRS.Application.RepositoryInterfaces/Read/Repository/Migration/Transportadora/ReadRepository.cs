@@ -35,6 +35,7 @@ namespace IRepository.Read
         public bool ExistsByTRA_FONE(string value );
         public bool ExistsByTRA_ID_INTEGRACAO(string value );
         public bool ExistsByTRA_ID_INTEGRACAO_ERP(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -50,6 +51,7 @@ namespace IRepository.Read
         public TransportadoraDTO FirstByTRA_FONE(string value );
         public TransportadoraDTO FirstByTRA_ID_INTEGRACAO(string value );
         public TransportadoraDTO FirstByTRA_ID_INTEGRACAO_ERP(string value );
+        public TransportadoraDTO FirstByOperationalEntityId(string value );
         public TransportadoraDTO FirstByTenantID(int value );
         public TransportadoraDTO FirstByDeleted(bool value );
         public TransportadoraDTO FirstByChanged(DateTime value );
@@ -65,6 +67,7 @@ namespace IRepository.Read
         public IEnumerable<TransportadoraDTO> GetAllByTRA_FONE(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_ID_INTEGRACAO(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_ID_INTEGRACAO_ERP(string value );
+        public IEnumerable<TransportadoraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTenantID(int value );
         public IEnumerable<TransportadoraDTO> GetAllByDeleted(bool value );
         public IEnumerable<TransportadoraDTO> GetAllByChanged(DateTime value );

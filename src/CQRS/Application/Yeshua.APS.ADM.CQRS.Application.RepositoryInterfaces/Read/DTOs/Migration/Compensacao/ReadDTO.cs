@@ -42,6 +42,7 @@ namespace Repositorio.Outputs
     public int com_vinco8_conversao { get; set; }
     public int com_vinco9_conversao { get; set; }
     public int com_vinco10_conversao { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

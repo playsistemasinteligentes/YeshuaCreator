@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateSEG_ID_SEGUIMENTO_PAI(int id, string value);
         QueryModel UpdateGRS_ID(int id, string value);
         QueryModel UpdateSEG_INTEGRACAO_ERP(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

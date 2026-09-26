@@ -23,67 +23,67 @@
             public const ulong Id = 1UL << 0;
             public const ulong Descricao = 1UL << 1;
             public const ulong Status = 1UL << 2;
-            public const ulong TenantID = 1UL << 3;
-            public const ulong Deleted = 1UL << 4;
-            public const ulong Changed = 1UL << 5;
-            public const ulong UserId = 1UL << 6;
-            public const ulong CAL_ID = 1UL << 7;
-            public const ulong MAQ_CONTROL_IP = 1UL << 8;
-            public const ulong GMA_ID = 1UL << 9;
-            public const ulong MAQ_ULTIMA_ATUALIZACAO = 1UL << 10;
-            public const ulong MAQ_SIRENE_SEMAFORO = 1UL << 11;
-            public const ulong MAQ_COR_SEMAFORO = 1UL << 12;
-            public const ulong MAQ_ID_MAQ_PAI = 1UL << 13;
-            public const ulong MAQ_TIPO_CONTADOR = 1UL << 14;
-            public const ulong MAQ_TIPO_PLANEJAMENTO = 1UL << 15;
-            public const ulong MAQ_AVALIA_CUSTO = 1UL << 16;
-            public const ulong FPR_ID_OP_PRODUZINDO = 1UL << 17;
-            public const ulong MAQ_CONGELA_FILA = 1UL << 18;
-            public const ulong MAQ_TEMPO_MIN_PARADA = 1UL << 19;
-            public const ulong MAQ_QTD_CORES = 1UL << 20;
-            public const ulong MAQ_ID_INTEGRACAO = 1UL << 21;
-            public const ulong MAQ_ID_INTEGRACAO_ERP = 1UL << 22;
-            public const ulong MAQ_HIERARQUIA_SEQ_TRANSFORMACAO = 1UL << 23;
-            public const ulong EQU_ID = 1UL << 24;
-            public const ulong MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR = 1UL << 25;
-            public const ulong MAQ_ACOMPANHA_LOTE_PILOTO = 1UL << 26;
-            public const ulong MAQ_ID_SENSOR = 1UL << 27;
-            public const ulong MAQ_DEBOUNCING_LOW = 1UL << 28;
-            public const ulong MAQ_DEBOUNCING_HIGHT = 1UL << 29;
-            public const ulong MAQ_TIPO_SINAL = 1UL << 30;
-            public const ulong TEM_ID = 1UL << 31;
-            public const ulong MAQ_COMPRIMENTO_CHAPA_DE = 1UL << 32;
-            public const ulong MAQ_COMPRIMENTO_CHAPA_ATE = 1UL << 33;
-            public const ulong MAQ_LARGURA_CHAPA_DE = 1UL << 34;
-            public const ulong MAQ_LARGURA_CHAPA_ATE = 1UL << 35;
-            public const ulong MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR = 1UL << 36;
-            public const ulong MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR = 1UL << 37;
-            public const ulong MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR = 1UL << 38;
-            public const ulong MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR = 1UL << 39;
-            public const ulong MAQ_COMPRIMENTO_ENTRE_VINCO_DE = 1UL << 40;
-            public const ulong MAQ_COMPRIMENTO_ENTRE_VINCO_ATE = 1UL << 41;
-            public const ulong MAQ_LARGURA_ENTRE_VINCO_DE = 1UL << 42;
-            public const ulong MAQ_LARGURA_ENTRE_VINCO_ATE = 1UL << 43;
-            public const ulong MAQ_ALTURA_ENTRE_VINCO_DE = 1UL << 44;
-            public const ulong MAQ_ALTURA_ENTRE_VINCO_ATE = 1UL << 45;
-            public const ulong MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE = 1UL << 46;
-            public const ulong MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE = 1UL << 47;
-            public const ulong MAQ_ABA_DE = 1UL << 48;
-            public const ulong MAQ_ABA_ATE = 1UL << 49;
-            public const ulong MAQ_LAP_DE = 1UL << 50;
-            public const ulong MAQ_LAP_ATE = 1UL << 51;
-            public const ulong MAQ_ONDAS = 1UL << 52;
-            public const ulong MAQ_PROLONGA_LAP = 1UL << 53;
-            public const ulong MAQ_LARGURA_IMPRESSAO = 1UL << 54;
-            public const ulong MAQ_COMPRIMENTO_IMPRESSAO = 1UL << 55;
-            public const ulong MAQ_ROLO_DISPOSITIVO_DE = 1UL << 56;
-            public const ulong MAQ_ROLO_DISPOSITIVO_ATE = 1UL << 57;
-            public const ulong MAQ_FAMILIAS = 1UL << 58;
-            public const ulong MAQ_REFILE_MINIMO = 1UL << 59;
-            public const ulong MAQ_LARGURA_UTIL = 1UL << 60;
-            public const ulong MAQ_TOTAL_ACO = 1UL << 61;
-            public const ulong MAQ_FECHAMENTO = 1UL << 62;
-            public const ulong MAQ_OPERACAO_VINCAR = 1UL << 63;
+            public const ulong OperationalEntityId = 1UL << 3;
+            public const ulong TenantID = 1UL << 4;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
+            public const ulong UserId = 1UL << 7;
+            public const ulong CAL_ID = 1UL << 8;
+            public const ulong MAQ_CONTROL_IP = 1UL << 9;
+            public const ulong GMA_ID = 1UL << 10;
+            public const ulong MAQ_ULTIMA_ATUALIZACAO = 1UL << 11;
+            public const ulong MAQ_SIRENE_SEMAFORO = 1UL << 12;
+            public const ulong MAQ_COR_SEMAFORO = 1UL << 13;
+            public const ulong MAQ_ID_MAQ_PAI = 1UL << 14;
+            public const ulong MAQ_TIPO_CONTADOR = 1UL << 15;
+            public const ulong MAQ_TIPO_PLANEJAMENTO = 1UL << 16;
+            public const ulong MAQ_AVALIA_CUSTO = 1UL << 17;
+            public const ulong FPR_ID_OP_PRODUZINDO = 1UL << 18;
+            public const ulong MAQ_CONGELA_FILA = 1UL << 19;
+            public const ulong MAQ_TEMPO_MIN_PARADA = 1UL << 20;
+            public const ulong MAQ_QTD_CORES = 1UL << 21;
+            public const ulong MAQ_ID_INTEGRACAO = 1UL << 22;
+            public const ulong MAQ_ID_INTEGRACAO_ERP = 1UL << 23;
+            public const ulong MAQ_HIERARQUIA_SEQ_TRANSFORMACAO = 1UL << 24;
+            public const ulong EQU_ID = 1UL << 25;
+            public const ulong MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR = 1UL << 26;
+            public const ulong MAQ_ACOMPANHA_LOTE_PILOTO = 1UL << 27;
+            public const ulong MAQ_ID_SENSOR = 1UL << 28;
+            public const ulong MAQ_DEBOUNCING_LOW = 1UL << 29;
+            public const ulong MAQ_DEBOUNCING_HIGHT = 1UL << 30;
+            public const ulong MAQ_TIPO_SINAL = 1UL << 31;
+            public const ulong TEM_ID = 1UL << 32;
+            public const ulong MAQ_COMPRIMENTO_CHAPA_DE = 1UL << 33;
+            public const ulong MAQ_COMPRIMENTO_CHAPA_ATE = 1UL << 34;
+            public const ulong MAQ_LARGURA_CHAPA_DE = 1UL << 35;
+            public const ulong MAQ_LARGURA_CHAPA_ATE = 1UL << 36;
+            public const ulong MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR = 1UL << 37;
+            public const ulong MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR = 1UL << 38;
+            public const ulong MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR = 1UL << 39;
+            public const ulong MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR = 1UL << 40;
+            public const ulong MAQ_COMPRIMENTO_ENTRE_VINCO_DE = 1UL << 41;
+            public const ulong MAQ_COMPRIMENTO_ENTRE_VINCO_ATE = 1UL << 42;
+            public const ulong MAQ_LARGURA_ENTRE_VINCO_DE = 1UL << 43;
+            public const ulong MAQ_LARGURA_ENTRE_VINCO_ATE = 1UL << 44;
+            public const ulong MAQ_ALTURA_ENTRE_VINCO_DE = 1UL << 45;
+            public const ulong MAQ_ALTURA_ENTRE_VINCO_ATE = 1UL << 46;
+            public const ulong MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE = 1UL << 47;
+            public const ulong MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE = 1UL << 48;
+            public const ulong MAQ_ABA_DE = 1UL << 49;
+            public const ulong MAQ_ABA_ATE = 1UL << 50;
+            public const ulong MAQ_LAP_DE = 1UL << 51;
+            public const ulong MAQ_LAP_ATE = 1UL << 52;
+            public const ulong MAQ_ONDAS = 1UL << 53;
+            public const ulong MAQ_PROLONGA_LAP = 1UL << 54;
+            public const ulong MAQ_LARGURA_IMPRESSAO = 1UL << 55;
+            public const ulong MAQ_COMPRIMENTO_IMPRESSAO = 1UL << 56;
+            public const ulong MAQ_ROLO_DISPOSITIVO_DE = 1UL << 57;
+            public const ulong MAQ_ROLO_DISPOSITIVO_ATE = 1UL << 58;
+            public const ulong MAQ_FAMILIAS = 1UL << 59;
+            public const ulong MAQ_REFILE_MINIMO = 1UL << 60;
+            public const ulong MAQ_LARGURA_UTIL = 1UL << 61;
+            public const ulong MAQ_TOTAL_ACO = 1UL << 62;
+            public const ulong MAQ_FECHAMENTO = 1UL << 63;
         }
 
         public partial class MaquinaDecorator : IMaquinaEntity
@@ -154,6 +154,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1003,8 +1004,7 @@
                                             if (_inner.MAQ_OPERACAO_VINCAR != value)
                                             {
                                                 _inner.MAQ_OPERACAO_VINCAR = value;
-                                                if ((_trackingMask & MaquinaTrackingFields.MAQ_OPERACAO_VINCAR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_OPERACAO_VINCAR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+
                                             }
                                         }
                                     }

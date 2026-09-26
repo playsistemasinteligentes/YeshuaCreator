@@ -37,6 +37,7 @@ namespace IRepository.Read
         public bool ExistsByPLA_VLRACUMULADO(string value );
         public bool ExistsByPLA_REFERENCIA(string value );
         public bool ExistsByUSE_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -52,6 +53,7 @@ namespace IRepository.Read
         public PlanoacaoDTO FirstByPLA_VLRACUMULADO(string value );
         public PlanoacaoDTO FirstByPLA_REFERENCIA(string value );
         public PlanoacaoDTO FirstByUSE_ID(int value );
+        public PlanoacaoDTO FirstByOperationalEntityId(string value );
         public PlanoacaoDTO FirstByTenantID(int value );
         public PlanoacaoDTO FirstByDeleted(bool value );
         public PlanoacaoDTO FirstByChanged(DateTime value );
@@ -67,6 +69,7 @@ namespace IRepository.Read
         public IEnumerable<PlanoacaoDTO> GetAllByPLA_VLRACUMULADO(string value );
         public IEnumerable<PlanoacaoDTO> GetAllByPLA_REFERENCIA(string value );
         public IEnumerable<PlanoacaoDTO> GetAllByUSE_ID(int value );
+        public IEnumerable<PlanoacaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PlanoacaoDTO> GetAllByTenantID(int value );
         public IEnumerable<PlanoacaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<PlanoacaoDTO> GetAllByChanged(DateTime value );

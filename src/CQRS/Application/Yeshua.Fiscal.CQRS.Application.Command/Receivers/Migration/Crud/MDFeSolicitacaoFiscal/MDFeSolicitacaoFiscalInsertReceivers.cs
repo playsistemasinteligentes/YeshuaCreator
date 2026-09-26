@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeSolicitacaoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeSolicitacaoFiscalReceiver), commandName: "Command.Write.MDFeSolicitacaoFiscalCrudCommand");
                  var mdfesolicitacaofiscal = new MDFeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.CargaId, c.Ambiente, c.UFCarregamento, c.UFDescarregamento, c.PlacaVeiculo, c.CondutorDocumento, c.DocumentosOriginariosJson, c.TransporteSnapshotJson, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfesolicitacaofiscal.OperationalEntityId);
                  var domainResult = MDFeSolicitacaoFiscalDomainBehavior.Apply(mdfesolicitacaofiscal, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

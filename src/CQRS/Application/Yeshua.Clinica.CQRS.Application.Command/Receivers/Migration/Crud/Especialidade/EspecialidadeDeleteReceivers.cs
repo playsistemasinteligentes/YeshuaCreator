@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEspecialidade", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEspecialidadeReceiver), commandName: "Command.Write.EspecialidadeCrudCommand");
                  var especialidade = new EspecialidadeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", especialidade.OperationalEntityId);
                  var domainResult = EspecialidadeDomainBehavior.Apply(especialidade, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByREG_RESPOSTA(string value );
         public bool ExistsByREG_STATUS(string value );
         public bool ExistsByREG_DATA_INICIO(DateTime value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public RegistrosOnduladeiraDTO FirstByREG_RESPOSTA(string value );
         public RegistrosOnduladeiraDTO FirstByREG_STATUS(string value );
         public RegistrosOnduladeiraDTO FirstByREG_DATA_INICIO(DateTime value );
+        public RegistrosOnduladeiraDTO FirstByOperationalEntityId(string value );
         public RegistrosOnduladeiraDTO FirstByTenantID(int value );
         public RegistrosOnduladeiraDTO FirstByDeleted(bool value );
         public RegistrosOnduladeiraDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByREG_RESPOSTA(string value );
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByREG_STATUS(string value );
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByREG_DATA_INICIO(DateTime value );
+        public IEnumerable<RegistrosOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<RegistrosOnduladeiraDTO> GetAllByChanged(DateTime value );

@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public string GMA_ID { get; set; }
     public string MAQ_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  GMA_ID = gma_id; 
  MAQ_ID = maq_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -41,28 +41,29 @@
             public const ulong PRO_ID_PALETE = 1UL << 18;
             public const ulong COR_STATUS_PALETE = 1UL << 19;
             public const ulong COR_GRUPO_PRODUTIVO = 1UL << 20;
-            public const ulong TenantID = 1UL << 21;
-            public const ulong Deleted = 1UL << 22;
-            public const ulong Changed = 1UL << 23;
-            public const ulong UserId = 1UL << 24;
-            public const ulong COR_ID = 1UL << 25;
-            public const ulong COR_STATUS = 1UL << 26;
-            public const ulong COR_STATUS_INTERFACE = 1UL << 27;
-            public const ulong MAQ_ID = 1UL << 28;
-            public const ulong COR_ID_INTERFACE = 1UL << 29;
-            public const ulong COR_SEQUENCIA = 1UL << 30;
-            public const ulong COR_SEQUENCIA_ORIGEM = 1UL << 31;
-            public const ulong ORD_ID = 1UL << 32;
-            public const ulong FPR_SEQ_REPETICAO = 1UL << 33;
-            public const ulong ROT_SEQ_TRANFORMACAO = 1UL << 34;
-            public const ulong COR_FACAO = 1UL << 35;
-            public const ulong COR_FORMATO_BOBINA = 1UL << 36;
-            public const ulong COR_INICIO_PREVISTO = 1UL << 37;
-            public const ulong COR_FIM_PREVISTO = 1UL << 38;
-            public const ulong PRO_ID = 1UL << 39;
-            public const ulong COR_QTD_PLANEJADO = 1UL << 40;
-            public const ulong PRO_QTD_PACAS = 1UL << 41;
-            public const ulong COR_PECAS_LARGURA = 1UL << 42;
+            public const ulong OperationalEntityId = 1UL << 21;
+            public const ulong TenantID = 1UL << 22;
+            public const ulong Deleted = 1UL << 23;
+            public const ulong Changed = 1UL << 24;
+            public const ulong UserId = 1UL << 25;
+            public const ulong COR_ID = 1UL << 26;
+            public const ulong COR_STATUS = 1UL << 27;
+            public const ulong COR_STATUS_INTERFACE = 1UL << 28;
+            public const ulong MAQ_ID = 1UL << 29;
+            public const ulong COR_ID_INTERFACE = 1UL << 30;
+            public const ulong COR_SEQUENCIA = 1UL << 31;
+            public const ulong COR_SEQUENCIA_ORIGEM = 1UL << 32;
+            public const ulong ORD_ID = 1UL << 33;
+            public const ulong FPR_SEQ_REPETICAO = 1UL << 34;
+            public const ulong ROT_SEQ_TRANFORMACAO = 1UL << 35;
+            public const ulong COR_FACAO = 1UL << 36;
+            public const ulong COR_FORMATO_BOBINA = 1UL << 37;
+            public const ulong COR_INICIO_PREVISTO = 1UL << 38;
+            public const ulong COR_FIM_PREVISTO = 1UL << 39;
+            public const ulong PRO_ID = 1UL << 40;
+            public const ulong COR_QTD_PLANEJADO = 1UL << 41;
+            public const ulong PRO_QTD_PACAS = 1UL << 42;
+            public const ulong COR_PECAS_LARGURA = 1UL << 43;
         }
 
         public partial class CorridasOnduladeiraDecorator : ICorridasOnduladeiraEntity
@@ -385,6 +386,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

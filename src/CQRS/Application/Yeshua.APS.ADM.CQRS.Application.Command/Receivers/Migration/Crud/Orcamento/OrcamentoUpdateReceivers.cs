@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOrcamento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOrcamentoReceiver), commandName: "Command.Write.OrcamentoCrudCommand");
                  var orcamento = new OrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ORC_ID, c.REP_ID, c.CON_ID, c.ORC_TIPO_FRETE, c.ORC_EMISSAO, c.CLI_ID, c.VER_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", orcamento.OperationalEntityId);
                  var domainResult = OrcamentoDomainBehavior.Apply(orcamento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

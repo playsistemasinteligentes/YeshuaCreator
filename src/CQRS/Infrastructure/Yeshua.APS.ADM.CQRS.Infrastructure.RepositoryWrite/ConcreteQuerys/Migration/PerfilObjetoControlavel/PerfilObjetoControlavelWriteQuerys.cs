@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirPerfilObjetoControlavelQuery(IPerfilObjetoControlavelEntity PerfilObjetoControlavel)
         {
-            this.Query = $@" INSERT INTO [PerfilObjetoControlavel] ([PER_ID], [OBJ_ID], [PEO_ACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PER_ID, @OBJ_ID, @PEO_ACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PerfilObjetoControlavel] ([PER_ID], [OBJ_ID], [PEO_ACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PER_ID, @OBJ_ID, @PEO_ACAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PER_ID = PerfilObjetoControlavel.PER_ID,
                 OBJ_ID = PerfilObjetoControlavel.OBJ_ID,
                 PEO_ACAO = PerfilObjetoControlavel.PEO_ACAO,
+                OperationalEntityId = PerfilObjetoControlavel.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 PEO_ACAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [PerfilObjetoControlavel] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

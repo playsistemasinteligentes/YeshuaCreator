@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByCAB_DESC(string value );
         public bool ExistsByCAB_STATUS(int value );
         public bool ExistsByUSE_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -37,6 +38,7 @@ namespace IRepository.Read
         public CabvisaoDTO FirstByCAB_DESC(string value );
         public CabvisaoDTO FirstByCAB_STATUS(int value );
         public CabvisaoDTO FirstByUSE_ID(int value );
+        public CabvisaoDTO FirstByOperationalEntityId(string value );
         public CabvisaoDTO FirstByTenantID(int value );
         public CabvisaoDTO FirstByDeleted(bool value );
         public CabvisaoDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<CabvisaoDTO> GetAllByCAB_DESC(string value );
         public IEnumerable<CabvisaoDTO> GetAllByCAB_STATUS(int value );
         public IEnumerable<CabvisaoDTO> GetAllByUSE_ID(int value );
+        public IEnumerable<CabvisaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CabvisaoDTO> GetAllByTenantID(int value );
         public IEnumerable<CabvisaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CabvisaoDTO> GetAllByChanged(DateTime value );

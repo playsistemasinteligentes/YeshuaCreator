@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVersaoCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVersaoCustoReceiver), commandName: "Command.Write.VersaoCustoCrudCommand");
                  var versaocusto = new VersaoCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VER_ID, c.VER_STATUS, c.VER_OBS);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", versaocusto.OperationalEntityId);
                  var domainResult = VersaoCustoDomainBehavior.Apply(versaocusto, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Central.CQRS.Tests.Integration.Api.Smoke.Migration.yGrant;
 
-[SmokeTestOrder(15)]
+[SmokeTestOrder(12)]
 public partial class yGrantCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yGrant/PostyGrant";

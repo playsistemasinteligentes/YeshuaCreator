@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirT_FavoritosQuery(IT_FavoritosEntity T_Favoritos)
         {
-            this.Query = $@" INSERT INTO [T_Favoritos] ([USE_ID], [ID_INDICADOR], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IDFAVORITO] VALUES(@USE_ID, @ID_INDICADOR, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Favoritos] ([USE_ID], [ID_INDICADOR], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IDFAVORITO] VALUES(@USE_ID, @ID_INDICADOR, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 USE_ID = T_Favoritos.USE_ID,
                 ID_INDICADOR = T_Favoritos.ID_INDICADOR,
+                OperationalEntityId = T_Favoritos.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ID_INDICADOR = value,
+                IDFAVORITO = idfavorito,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int idfavorito, string value)
+        {
+            this.Query = $@" UPDATE [T_Favoritos] SET [OperationalEntityId] = @OperationalEntityId WHERE [IDFAVORITO] = @IDFAVORITO ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 IDFAVORITO = idfavorito,
             };
             return new QueryModel(this.Query, this.Parameters);

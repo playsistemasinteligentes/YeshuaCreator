@@ -43,6 +43,7 @@
     Decimal? BOL_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
     Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
     int? BOL_REFILE_OBRIGATORIO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

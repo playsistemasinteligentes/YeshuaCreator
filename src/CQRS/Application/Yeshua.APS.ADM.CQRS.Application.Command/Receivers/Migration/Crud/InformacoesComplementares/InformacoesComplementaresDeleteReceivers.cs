@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteInformacoesComplementares", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteInformacoesComplementaresReceiver), commandName: "Command.Write.InformacoesComplementaresCrudCommand");
                  var informacoescomplementares = new InformacoesComplementaresFactory(_logger, _domainTrackingPolicy).Create(context, c.INF_ID, c.INF_DESCRICAO, c.INF_VALOR, c.MET_ID, c.INF_DATA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", informacoescomplementares.OperationalEntityId);
                  var domainResult = InformacoesComplementaresDomainBehavior.Apply(informacoescomplementares, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

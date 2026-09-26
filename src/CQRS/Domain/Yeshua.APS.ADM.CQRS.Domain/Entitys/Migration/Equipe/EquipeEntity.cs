@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public string EQU_ID { get; set; }
     public Decimal? EQU_HIERARQUIA_SEQ_TRANSFORMACAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  EQU_ID = equ_id; 
  EQU_HIERARQUIA_SEQ_TRANSFORMACAO = equ_hierarquia_seq_transformacao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

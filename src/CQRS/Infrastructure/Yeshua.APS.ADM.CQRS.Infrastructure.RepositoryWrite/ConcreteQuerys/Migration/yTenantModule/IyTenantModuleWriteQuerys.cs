@@ -17,6 +17,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryTenantModuleQuery(IyTenantModuleEntity yTenantModule);
         public QueryModel UpdateyTenantModuleQuery(IyTenantModuleEntity yTenantModule);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateModuleId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateValidUntil(int id, DateTime value);

@@ -26,6 +26,7 @@ namespace IRepository.Read
         public IEnumerable<yPerfilGrantGrantIdDTO> getyPerfilGrantReadFKGrantId(object command );
         public IEnumerable<yPerfilGrantTenantIDDTO> getyPerfilGrantReadFKTenantID(object command );
         public IEnumerable<yPerfilGrantUserIdDTO> getyPerfilGrantReadFKUserId(object command );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsById(int value );
         public bool ExistsByPerfilId(int value );
         public bool ExistsByGrantId(string value );
@@ -39,6 +40,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public yPerfilGrantDTO FirstByOperationalEntityId(string value );
         public yPerfilGrantDTO FirstById(int value );
         public yPerfilGrantDTO FirstByPerfilId(int value );
         public yPerfilGrantDTO FirstByGrantId(string value );
@@ -52,6 +54,7 @@ namespace IRepository.Read
         public yPerfilGrantDTO FirstByDeleted(bool value );
         public yPerfilGrantDTO FirstByChanged(DateTime value );
         public yPerfilGrantDTO FirstByUserId(int value );
+        public IEnumerable<yPerfilGrantDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yPerfilGrantDTO> GetAllById(int value );
         public IEnumerable<yPerfilGrantDTO> GetAllByPerfilId(int value );
         public IEnumerable<yPerfilGrantDTO> GetAllByGrantId(string value );

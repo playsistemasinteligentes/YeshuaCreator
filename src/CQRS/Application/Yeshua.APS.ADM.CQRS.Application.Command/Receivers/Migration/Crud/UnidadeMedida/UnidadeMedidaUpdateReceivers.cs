@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateUnidadeMedida", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateUnidadeMedidaReceiver), commandName: "Command.Write.UnidadeMedidaCrudCommand");
                  var unidademedida = new UnidadeMedidaFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.UNI_DESCRICAO, c.UNI_ESCALA_TEMPO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", unidademedida.OperationalEntityId);
                  var domainResult = UnidadeMedidaDomainBehavior.Apply(unidademedida, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

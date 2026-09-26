@@ -30,10 +30,11 @@ namespace Query.Write
         }
         public QueryModel InserirPlanoAmostralTesteQuery(IPlanoAmostralTesteEntity PlanoAmostralTeste)
         {
-            this.Query = $@" INSERT INTO [PlanoAmostralTeste] ([GRP_TIPO], [TenantID], [Deleted], [Changed], [UserId], [PAT_QTD_CAIXAS_DE], [PAT_QTD_CAIXAS_ATE], [PAT_N_AMOSTRAGEM], [PAT_PERCENT_ESPECIF]) OUTPUT INSERTED.[PAT_ID] VALUES(@GRP_TIPO, @TenantID, @Deleted, @Changed, @UserId, @PAT_QTD_CAIXAS_DE, @PAT_QTD_CAIXAS_ATE, @PAT_N_AMOSTRAGEM, @PAT_PERCENT_ESPECIF) ";
+            this.Query = $@" INSERT INTO [PlanoAmostralTeste] ([GRP_TIPO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PAT_QTD_CAIXAS_DE], [PAT_QTD_CAIXAS_ATE], [PAT_N_AMOSTRAGEM], [PAT_PERCENT_ESPECIF]) OUTPUT INSERTED.[PAT_ID] VALUES(@GRP_TIPO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @PAT_QTD_CAIXAS_DE, @PAT_QTD_CAIXAS_ATE, @PAT_N_AMOSTRAGEM, @PAT_PERCENT_ESPECIF) ";
             this.Parameters = new
             {
                 GRP_TIPO = PlanoAmostralTeste.GRP_TIPO,
+                OperationalEntityId = PlanoAmostralTeste.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -67,6 +68,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 GRP_TIPO = value,
+                PAT_ID = pat_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int pat_id, string value)
+        {
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [PAT_ID] = @PAT_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 PAT_ID = pat_id,
             };
             return new QueryModel(this.Query, this.Parameters);

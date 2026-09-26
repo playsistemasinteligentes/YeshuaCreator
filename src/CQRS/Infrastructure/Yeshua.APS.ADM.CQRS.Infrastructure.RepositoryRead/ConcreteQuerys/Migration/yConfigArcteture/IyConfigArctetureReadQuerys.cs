@@ -16,6 +16,7 @@ namespace IQuery.Read
         public QueryModel yConfigArctetureQuery(Command.Read.yConfigArctetureReadCommand Command );
         public QueryModel yConfigArctetureTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yConfigArctetureUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByAuditTrackerActivedQuery(int value );
         public QueryModel ExistsByAuditCRUDActivedQuery(int value );
@@ -23,6 +24,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByAuditTrackerActivedQuery(int value );
         public QueryModel FirstByAuditCRUDActivedQuery(int value );

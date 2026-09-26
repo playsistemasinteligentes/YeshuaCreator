@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateSEM_ORIGEM(int id, string value);
         QueryModel UpdateSEM_EMISSAO(int id, DateTime value);
         QueryModel UpdateSEM_ID_CONEXAO(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

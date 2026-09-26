@@ -38,6 +38,7 @@ namespace IQuery.Write
         QueryModel UpdatePRO_ID_PALETE(int cor_id, string value);
         QueryModel UpdateCOR_STATUS_PALETE(int cor_id, string value);
         QueryModel UpdateCOR_GRUPO_PRODUTIVO(int cor_id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int cor_id, string value);
         QueryModel UpdateTenantID(int cor_id, int value);
         QueryModel UpdateDeleted(int cor_id, bool value);
         QueryModel UpdateChanged(int cor_id, DateTime value);

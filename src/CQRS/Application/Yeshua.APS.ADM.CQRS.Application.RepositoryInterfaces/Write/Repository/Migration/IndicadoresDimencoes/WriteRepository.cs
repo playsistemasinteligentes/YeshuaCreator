@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateDIM_DESCRICAO(int id, string value);
         void UpdateDIM_SQL(int id, string value);
         void UpdateDIM_CONEXAO(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

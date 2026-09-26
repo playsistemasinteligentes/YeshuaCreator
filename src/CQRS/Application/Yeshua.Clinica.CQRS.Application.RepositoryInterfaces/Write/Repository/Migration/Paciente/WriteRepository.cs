@@ -32,6 +32,7 @@ namespace IRepository.Write
         void UpdateNomeResponsavel(int id, string value);
         void UpdateTelefoneResponsavel(int id, string value);
         void UpdateObservacao(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -66,6 +66,11 @@ namespace Input.Repository.TipoTeste
             var query = _query.UpdateTT_IMPRIME_NO_LAUDO(tt_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int tt_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(tt_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int tt_id, int value)
         {
             var query = _query.UpdateTenantID(tt_id, value);

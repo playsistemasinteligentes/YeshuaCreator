@@ -24,6 +24,7 @@
     public string Catalogo { get; set; }
     public int? TenantID { get; set; }
     public DateTime ValidUntil { get; set; }
+    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  Catalogo = catalogo; 
  ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

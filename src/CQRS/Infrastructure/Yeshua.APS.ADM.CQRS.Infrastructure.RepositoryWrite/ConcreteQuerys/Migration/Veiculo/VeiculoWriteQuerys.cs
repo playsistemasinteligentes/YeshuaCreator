@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirVeiculoQuery(IVeiculoEntity Veiculo)
         {
-            this.Query = $@" INSERT INTO [Veiculo] ([VEI_PLACA], [VEI_UF], [TIP_ID], [VEI_CAPACIDADE_M3], [VEI_CAPACIDADE_LARGURA], [VEI_CAPACIDADE_COMPRIMENTO], [VEI_CAPACIDADE_ALTURA], [VEI_MODELO], [VEI_NOME_MOTORISTA], [VEI_DADOS_CONTATO], [VEI_CPF_MOTORISTA], [TCA_ID], [VEI_EMISSAO], [VEI_VENCIMENTO], [VEI_STATUS], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VEI_PLACA, @VEI_UF, @TIP_ID, @VEI_CAPACIDADE_M3, @VEI_CAPACIDADE_LARGURA, @VEI_CAPACIDADE_COMPRIMENTO, @VEI_CAPACIDADE_ALTURA, @VEI_MODELO, @VEI_NOME_MOTORISTA, @VEI_DADOS_CONTATO, @VEI_CPF_MOTORISTA, @TCA_ID, @VEI_EMISSAO, @VEI_VENCIMENTO, @VEI_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Veiculo] ([VEI_PLACA], [VEI_UF], [TIP_ID], [VEI_CAPACIDADE_M3], [VEI_CAPACIDADE_LARGURA], [VEI_CAPACIDADE_COMPRIMENTO], [VEI_CAPACIDADE_ALTURA], [VEI_MODELO], [VEI_NOME_MOTORISTA], [VEI_DADOS_CONTATO], [VEI_CPF_MOTORISTA], [TCA_ID], [VEI_EMISSAO], [VEI_VENCIMENTO], [VEI_STATUS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VEI_PLACA, @VEI_UF, @TIP_ID, @VEI_CAPACIDADE_M3, @VEI_CAPACIDADE_LARGURA, @VEI_CAPACIDADE_COMPRIMENTO, @VEI_CAPACIDADE_ALTURA, @VEI_MODELO, @VEI_NOME_MOTORISTA, @VEI_DADOS_CONTATO, @VEI_CPF_MOTORISTA, @TCA_ID, @VEI_EMISSAO, @VEI_VENCIMENTO, @VEI_STATUS, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VEI_PLACA = Veiculo.VEI_PLACA,
@@ -48,6 +48,7 @@ namespace Query.Write
                 VEI_EMISSAO = Veiculo.VEI_EMISSAO,
                 VEI_VENCIMENTO = Veiculo.VEI_VENCIMENTO,
                 VEI_STATUS = Veiculo.VEI_STATUS,
+                OperationalEntityId = Veiculo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -227,6 +228,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 VEI_STATUS = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Veiculo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

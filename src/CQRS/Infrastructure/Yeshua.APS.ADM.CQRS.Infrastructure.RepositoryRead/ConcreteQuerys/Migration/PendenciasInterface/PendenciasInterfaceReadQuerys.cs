@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] from [PendenciasInterface] ";
+            this.Query = $@" select [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] from [PendenciasInterface] ";
 if (!string.IsNullOrEmpty(Command.PEN_STATUS_OUT)) dict["PEN_STATUS_OUT"] = $"%{Command.PEN_STATUS_OUT}%";
 if (!string.IsNullOrEmpty(Command.PEN_STATUS_OUT)) whereClauses.Add($"[PEN_STATUS_OUT] like @PEN_STATUS_OUT");
 if (!string.IsNullOrEmpty(Command.PEN_PROTOCOLO_OUT)) dict["PEN_PROTOCOLO_OUT"] = $"%{Command.PEN_PROTOCOLO_OUT}%";
@@ -47,6 +47,8 @@ if (!string.IsNullOrEmpty(Command.PEN_PROTOCOLO_IN)) dict["PEN_PROTOCOLO_IN"] = 
 if (!string.IsNullOrEmpty(Command.PEN_PROTOCOLO_IN)) whereClauses.Add($"[PEN_PROTOCOLO_IN] like @PEN_PROTOCOLO_IN");
 if (!string.IsNullOrEmpty(Command.PEN_ID_PROTOCOLO_IN)) dict["PEN_ID_PROTOCOLO_IN"] = $"%{Command.PEN_ID_PROTOCOLO_IN}%";
 if (!string.IsNullOrEmpty(Command.PEN_ID_PROTOCOLO_IN)) whereClauses.Add($"[PEN_ID_PROTOCOLO_IN] like @PEN_ID_PROTOCOLO_IN");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -245,6 +247,23 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [PendenciasInterface] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -335,7 +354,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -352,7 +371,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -369,7 +388,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -386,7 +405,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -403,7 +422,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -420,7 +439,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -437,7 +456,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -449,12 +468,29 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -471,7 +507,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -488,7 +524,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -505,7 +541,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -522,7 +558,7 @@ if (Command.PEN_ID.HasValue) whereClauses.Add($"[PEN_ID] = @PEN_ID");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
+            this.Query = $"SELECT [PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [PEN_ID] FROM [PendenciasInterface] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

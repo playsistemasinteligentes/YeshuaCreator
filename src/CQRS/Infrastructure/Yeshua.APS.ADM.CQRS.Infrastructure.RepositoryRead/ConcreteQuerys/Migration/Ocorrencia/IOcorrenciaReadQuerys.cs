@@ -25,6 +25,7 @@ namespace IQuery.Read
         public QueryModel ExistsBySPRQuery(int value );
         public QueryModel ExistsByOCO_SUB_TIPOQuery(string value );
         public QueryModel ExistsBySUB_IDQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -37,6 +38,7 @@ namespace IQuery.Read
         public QueryModel FirstBySPRQuery(int value );
         public QueryModel FirstByOCO_SUB_TIPOQuery(string value );
         public QueryModel FirstBySUB_IDQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

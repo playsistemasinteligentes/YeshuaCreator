@@ -26,6 +26,7 @@
     int? CON_PARCELAS { get; set; }
     Decimal? CON_VALOR_ACRECIMO { get; set; }
     string? CON_INTEGRACAO_ERP { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

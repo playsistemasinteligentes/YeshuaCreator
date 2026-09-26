@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateEmissaoFiscalTransporteDocumento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateEmissaoFiscalTransporteDocumentoReceiver), commandName: "Command.Write.EmissaoFiscalTransporteDocumentoCrudCommand");
                  var emissaofiscaltransportedocumento = new EmissaoFiscalTransporteDocumentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmissaoFiscalTransporteId, c.DocumentoFiscalId, c.DocumentoFiscalOriginarioId, c.NFeProdutoSnapshotId, c.ProdutoFiscal, c.Papel, c.TipoEvento, c.ChaveAcesso, c.XmlStorageKey, c.PdfStorageKey, c.Protocolo, c.CodigoRetorno, c.MensagemRetorno, c.CriadoEmUtc, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", emissaofiscaltransportedocumento.OperationalEntityId);
                  var domainResult = EmissaoFiscalTransporteDocumentoDomainBehavior.Apply(emissaofiscaltransportedocumento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

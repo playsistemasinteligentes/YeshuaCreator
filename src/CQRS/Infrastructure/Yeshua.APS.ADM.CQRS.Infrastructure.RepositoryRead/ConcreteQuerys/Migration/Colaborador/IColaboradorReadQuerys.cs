@@ -23,6 +23,7 @@ namespace IQuery.Read
         public QueryModel ExistsByCOL_EMAILQuery(string value );
         public QueryModel ExistsByCOL_MATRICULAQuery(string value );
         public QueryModel ExistsByTURM_idQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -33,6 +34,7 @@ namespace IQuery.Read
         public QueryModel FirstByCOL_EMAILQuery(string value );
         public QueryModel FirstByCOL_MATRICULAQuery(string value );
         public QueryModel FirstByTURM_idQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

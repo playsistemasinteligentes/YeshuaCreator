@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateInspecaoVisualReceiver), commandName: "Command.Write.InspecaoVisualCrudCommand");
                  var inspecaovisual = new InspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.IPV_ID, c.IPV_VALOR, c.IPV_ID_OPERADOR, c.IPV_ID_LIBERACAO, c.IPV_OBS, c.IPV_DATA_COLETA, c.IPV_DATA_AVAL, c.TIV_ID, c.TURN_ID, c.TURM_ID, c.ORD_ID, c.ROT_PRO_ID, c.ROT_MAQ_ID, c.ROT_SEQ_TRANSFORMACAO, c.FPR_SEQ_REPETICAO, c.IPV_STATUS_LIBERACAO, c.IPV_VALOR_MEDIDA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", inspecaovisual.OperationalEntityId);
                  var domainResult = InspecaoVisualDomainBehavior.Apply(inspecaovisual, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

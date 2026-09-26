@@ -24,6 +24,7 @@
     public string GRS_ID { get; set; }
     public string? GRS_DESCRICAO { get; set; }
     public string? GRS_INTEGRACAO_ERP { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  GRS_ID = grs_id; 
  GRS_DESCRICAO = grs_descricao; 
  GRS_INTEGRACAO_ERP = grs_integracao_erp; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

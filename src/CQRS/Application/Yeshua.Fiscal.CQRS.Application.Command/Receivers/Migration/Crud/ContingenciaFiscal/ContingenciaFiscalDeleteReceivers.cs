@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteContingenciaFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteContingenciaFiscalReceiver), commandName: "Command.Write.ContingenciaFiscalCrudCommand");
                  var contingenciafiscal = new ContingenciaFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmissaoFiscalTransporteId, c.EntradaFiscalContingenciaId, c.CorrelationId, c.CargaId, c.TipoSolicitante, c.Ambiente, c.EmitenteDocumento, c.TomadorDocumento, c.TransportadorDocumento, c.QuantidadeDocumentos, c.QuantidadeCTe, c.QuantidadeMDFe, c.ValorCarga, c.PesoBruto, c.UltimaMensagem, c.CriadoEmUtc, c.AtualizadoEmUtc, c.ConcluidoEmUtc, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", contingenciafiscal.OperationalEntityId);
                  var domainResult = ContingenciaFiscalDomainBehavior.Apply(contingenciafiscal, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

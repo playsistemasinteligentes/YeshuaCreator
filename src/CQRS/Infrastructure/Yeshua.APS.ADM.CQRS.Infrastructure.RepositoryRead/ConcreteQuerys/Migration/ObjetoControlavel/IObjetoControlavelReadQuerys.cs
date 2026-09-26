@@ -21,6 +21,7 @@ namespace IQuery.Read
         public QueryModel ExistsByOBJ_DESCRICAOQuery(string value );
         public QueryModel ExistsByOBJ_TIPOQuery(string value );
         public QueryModel ExistsByOBJ_GRUPOQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -30,6 +31,7 @@ namespace IQuery.Read
         public QueryModel FirstByOBJ_DESCRICAOQuery(string value );
         public QueryModel FirstByOBJ_TIPOQuery(string value );
         public QueryModel FirstByOBJ_GRUPOQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePerfilObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePerfilObjetoControlavelReceiver), commandName: "Command.Write.PerfilObjetoControlavelCrudCommand");
                  var perfilobjetocontrolavel = new PerfilObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.OBJ_ID, c.PEO_ACAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", perfilobjetocontrolavel.OperationalEntityId);
                  var domainResult = PerfilObjetoControlavelDomainBehavior.Apply(perfilobjetocontrolavel, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -46,6 +46,10 @@ protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<Lo
 
     _executionContext.SetTenantId(user.tenantid);
 
+    var tenant = _repReadTenant.FirstById(user.tenantid, true);
+    if (tenant == null)
+        throw new ReceiverException<LoginOutputCommand>(Error("Tenant do usuario nao encontrado.", default));
+
     var now = DateTime.UtcNow;
     var catalogs = new[] { "Central" }
         .Concat(_repReadTenantCatalogo.GetAllByTenantID(user.tenantid)
@@ -61,7 +65,12 @@ protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<Lo
         catalogos = catalogs,
         tenantId = user.tenantid,
         email = user.email,
-        UserId = user.id
+        UserId = user.id,
+        tenantIdentity = tenant.operationalentityid,
+        tenantDocument = tenant.cnpjcpf,
+        tenantName = tenant.nome,
+        userIdentity = user.operationalentityid,
+        userName = user.nome
     });
     return Task.FromResult(state);
 }

@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public int cal_id { get; set; }
     public string rec_control_ip { get; set; } = string.Empty;
     public string gre_id { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

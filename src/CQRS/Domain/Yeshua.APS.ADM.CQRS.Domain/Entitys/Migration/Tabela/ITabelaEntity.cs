@@ -23,6 +23,7 @@
     int ID_TABELA { get; set; }
     string CODIGO { get; set; }
     string NOME { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

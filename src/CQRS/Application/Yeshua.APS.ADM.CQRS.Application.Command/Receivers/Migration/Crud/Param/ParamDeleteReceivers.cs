@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteParam", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteParamReceiver), commandName: "Command.Write.ParamCrudCommand");
                  var param = new ParamFactory(_logger, _domainTrackingPolicy).Create(context, c.PAR_ID, c.PAR_DESCRICAO, c.PAR_VALOR_S, c.PAR_VALOR_N, c.PAR_VALOR_D);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", param.OperationalEntityId);
                  var domainResult = ParamDomainBehavior.Apply(param, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

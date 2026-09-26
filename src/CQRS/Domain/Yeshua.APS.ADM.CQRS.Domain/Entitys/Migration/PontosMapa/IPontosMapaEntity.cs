@@ -26,6 +26,7 @@
     Decimal? PON_LATITUDE { get; set; }
     Decimal? PON_LONGITUDE { get; set; }
     Decimal? PON_DISTANCIA_KM { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

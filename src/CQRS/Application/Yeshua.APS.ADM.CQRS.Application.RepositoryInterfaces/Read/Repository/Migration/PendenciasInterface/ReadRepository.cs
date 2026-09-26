@@ -31,6 +31,7 @@ namespace IRepository.Read
         public bool ExistsByPEN_PROTOCOLO_IN(string value );
         public bool ExistsByPEN_ID_PROTOCOLO_IN(string value );
         public bool ExistsByDATA_ENTRADA(DateTime value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -43,6 +44,7 @@ namespace IRepository.Read
         public PendenciasInterfaceDTO FirstByPEN_PROTOCOLO_IN(string value );
         public PendenciasInterfaceDTO FirstByPEN_ID_PROTOCOLO_IN(string value );
         public PendenciasInterfaceDTO FirstByDATA_ENTRADA(DateTime value );
+        public PendenciasInterfaceDTO FirstByOperationalEntityId(string value );
         public PendenciasInterfaceDTO FirstByTenantID(int value );
         public PendenciasInterfaceDTO FirstByDeleted(bool value );
         public PendenciasInterfaceDTO FirstByChanged(DateTime value );
@@ -55,6 +57,7 @@ namespace IRepository.Read
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_PROTOCOLO_IN(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_ID_PROTOCOLO_IN(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByDATA_ENTRADA(DateTime value );
+        public IEnumerable<PendenciasInterfaceDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByTenantID(int value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByDeleted(bool value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByChanged(DateTime value );

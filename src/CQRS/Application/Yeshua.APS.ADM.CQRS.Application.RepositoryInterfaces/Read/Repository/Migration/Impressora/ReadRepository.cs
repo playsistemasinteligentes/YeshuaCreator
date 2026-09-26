@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsByIMP_ID(int value );
         public bool ExistsByIMP_IP(string value );
         public bool ExistsByIMP_NOME(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public ImpressoraDTO FirstByIMP_ID(int value );
         public ImpressoraDTO FirstByIMP_IP(string value );
         public ImpressoraDTO FirstByIMP_NOME(string value );
+        public ImpressoraDTO FirstByOperationalEntityId(string value );
         public ImpressoraDTO FirstByTenantID(int value );
         public ImpressoraDTO FirstByDeleted(bool value );
         public ImpressoraDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<ImpressoraDTO> GetAllByIMP_ID(int value );
         public IEnumerable<ImpressoraDTO> GetAllByIMP_IP(string value );
         public IEnumerable<ImpressoraDTO> GetAllByIMP_NOME(string value );
+        public IEnumerable<ImpressoraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ImpressoraDTO> GetAllByTenantID(int value );
         public IEnumerable<ImpressoraDTO> GetAllByDeleted(bool value );
         public IEnumerable<ImpressoraDTO> GetAllByChanged(DateTime value );

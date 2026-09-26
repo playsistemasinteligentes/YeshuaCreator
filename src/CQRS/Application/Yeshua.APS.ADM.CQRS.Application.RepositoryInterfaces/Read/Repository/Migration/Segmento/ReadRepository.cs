@@ -30,6 +30,7 @@ namespace IRepository.Read
         public bool ExistsBySEG_ID_SEGUIMENTO_PAI(string value );
         public bool ExistsByGRS_ID(string value );
         public bool ExistsBySEG_INTEGRACAO_ERP(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -40,6 +41,7 @@ namespace IRepository.Read
         public SegmentoDTO FirstBySEG_ID_SEGUIMENTO_PAI(string value );
         public SegmentoDTO FirstByGRS_ID(string value );
         public SegmentoDTO FirstBySEG_INTEGRACAO_ERP(string value );
+        public SegmentoDTO FirstByOperationalEntityId(string value );
         public SegmentoDTO FirstByTenantID(int value );
         public SegmentoDTO FirstByDeleted(bool value );
         public SegmentoDTO FirstByChanged(DateTime value );
@@ -50,6 +52,7 @@ namespace IRepository.Read
         public IEnumerable<SegmentoDTO> GetAllBySEG_ID_SEGUIMENTO_PAI(string value );
         public IEnumerable<SegmentoDTO> GetAllByGRS_ID(string value );
         public IEnumerable<SegmentoDTO> GetAllBySEG_INTEGRACAO_ERP(string value );
+        public IEnumerable<SegmentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<SegmentoDTO> GetAllByTenantID(int value );
         public IEnumerable<SegmentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<SegmentoDTO> GetAllByChanged(DateTime value );

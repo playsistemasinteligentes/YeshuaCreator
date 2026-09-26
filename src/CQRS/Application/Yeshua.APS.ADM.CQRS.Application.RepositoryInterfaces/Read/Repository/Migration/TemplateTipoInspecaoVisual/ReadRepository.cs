@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByTTI_ID(int value );
         public bool ExistsByTIV_ID(int value );
         public bool ExistsByTEM_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -35,6 +36,7 @@ namespace IRepository.Read
         public TemplateTipoInspecaoVisualDTO FirstByTTI_ID(int value );
         public TemplateTipoInspecaoVisualDTO FirstByTIV_ID(int value );
         public TemplateTipoInspecaoVisualDTO FirstByTEM_ID(int value );
+        public TemplateTipoInspecaoVisualDTO FirstByOperationalEntityId(string value );
         public TemplateTipoInspecaoVisualDTO FirstByTenantID(int value );
         public TemplateTipoInspecaoVisualDTO FirstByDeleted(bool value );
         public TemplateTipoInspecaoVisualDTO FirstByChanged(DateTime value );
@@ -42,6 +44,7 @@ namespace IRepository.Read
         public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByTTI_ID(int value );
         public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByTIV_ID(int value );
         public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByTEM_ID(int value );
+        public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByTenantID(int value );
         public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByDeleted(bool value );
         public IEnumerable<TemplateTipoInspecaoVisualDTO> GetAllByChanged(DateTime value );

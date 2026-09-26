@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertFechamentoTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertFechamentoTesteReceiver), commandName: "Command.Write.FechamentoTesteCrudCommand");
                  var fechamentoteste = new FechamentoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FEC_ID, c.FEC_QTD, c.GRP_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", fechamentoteste.OperationalEntityId);
                  var domainResult = FechamentoTesteDomainBehavior.Apply(fechamentoteste, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

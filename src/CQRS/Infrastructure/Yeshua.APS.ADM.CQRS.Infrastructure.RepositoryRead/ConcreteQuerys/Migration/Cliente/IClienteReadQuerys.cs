@@ -44,6 +44,7 @@ namespace IQuery.Read
         public QueryModel ExistsByCLI_INTEGRACAO_ERPQuery(string value );
         public QueryModel ExistsByCLI_LATITUDE_ENTREGAQuery(Decimal value );
         public QueryModel ExistsByCLI_LONGITUDE_ENTREGAQuery(Decimal value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -75,6 +76,7 @@ namespace IQuery.Read
         public QueryModel FirstByCLI_INTEGRACAO_ERPQuery(string value );
         public QueryModel FirstByCLI_LATITUDE_ENTREGAQuery(Decimal value );
         public QueryModel FirstByCLI_LONGITUDE_ENTREGAQuery(Decimal value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

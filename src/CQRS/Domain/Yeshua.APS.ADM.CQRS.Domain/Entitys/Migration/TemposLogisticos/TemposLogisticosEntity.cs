@@ -25,6 +25,7 @@
     public string TMP_TIPO_CARGA { get; set; }
     public Decimal TMP_TEMPO_MEDIO_UNITARIO { get; set; }
     public string CLI_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  TMP_TIPO_CARGA = tmp_tipo_carga; 
  TMP_TEMPO_MEDIO_UNITARIO = tmp_tempo_medio_unitario; 
  CLI_ID = cli_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

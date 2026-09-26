@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_AGENDA_SCHEDULEQuery(IT_AGENDA_SCHEDULEEntity T_AGENDA_SCHEDULE)
         {
-            this.Query = $@" INSERT INTO [T_AGENDA_SCHEDULE] ([AGE_ID], [AGE_DATA_ESPECIFICA], [AGE_HORARIO_INICIO], [AGE_HORARIO_FIM], [AGE_SEGUNDA], [AGE_TERCA], [AGE_QUARTA], [AGE_QUINTA], [AGE_SEXTA], [AGE_SABADO], [AGE_DOMINGO], [AGE_INTERVALO], [AGE_ORDEM_EXECUCAO], [AGE_PARAMETROS], [AGE_EXCECAO], [AGE_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@AGE_ID, @AGE_DATA_ESPECIFICA, @AGE_HORARIO_INICIO, @AGE_HORARIO_FIM, @AGE_SEGUNDA, @AGE_TERCA, @AGE_QUARTA, @AGE_QUINTA, @AGE_SEXTA, @AGE_SABADO, @AGE_DOMINGO, @AGE_INTERVALO, @AGE_ORDEM_EXECUCAO, @AGE_PARAMETROS, @AGE_EXCECAO, @AGE_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_AGENDA_SCHEDULE] ([AGE_ID], [AGE_DATA_ESPECIFICA], [AGE_HORARIO_INICIO], [AGE_HORARIO_FIM], [AGE_SEGUNDA], [AGE_TERCA], [AGE_QUARTA], [AGE_QUINTA], [AGE_SEXTA], [AGE_SABADO], [AGE_DOMINGO], [AGE_INTERVALO], [AGE_ORDEM_EXECUCAO], [AGE_PARAMETROS], [AGE_EXCECAO], [AGE_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@AGE_ID, @AGE_DATA_ESPECIFICA, @AGE_HORARIO_INICIO, @AGE_HORARIO_FIM, @AGE_SEGUNDA, @AGE_TERCA, @AGE_QUARTA, @AGE_QUINTA, @AGE_SEXTA, @AGE_SABADO, @AGE_DOMINGO, @AGE_INTERVALO, @AGE_ORDEM_EXECUCAO, @AGE_PARAMETROS, @AGE_EXCECAO, @AGE_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 AGE_ID = T_AGENDA_SCHEDULE.AGE_ID,
@@ -49,6 +49,7 @@ namespace Query.Write
                 AGE_PARAMETROS = T_AGENDA_SCHEDULE.AGE_PARAMETROS,
                 AGE_EXCECAO = T_AGENDA_SCHEDULE.AGE_EXCECAO,
                 AGE_DESCRICAO = T_AGENDA_SCHEDULE.AGE_DESCRICAO,
+                OperationalEntityId = T_AGENDA_SCHEDULE.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -239,6 +240,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 AGE_DESCRICAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

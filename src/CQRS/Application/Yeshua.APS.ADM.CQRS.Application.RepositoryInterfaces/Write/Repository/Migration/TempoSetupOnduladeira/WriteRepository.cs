@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateTEM_RESINA_DE(int tem_id, string value);
         void UpdateTEM_RESINA_PARA(int tem_id, string value);
         void UpdateTEM_TEMPO(int tem_id, int value);
+        void UpdateOperationalEntityId(int tem_id, string value);
         void UpdateTenantID(int tem_id, int value);
         void UpdateDeleted(int tem_id, bool value);
         void UpdateChanged(int tem_id, DateTime value);

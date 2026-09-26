@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertGrupoSegmento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertGrupoSegmentoReceiver), commandName: "Command.Write.GrupoSegmentoCrudCommand");
                  var gruposegmento = new GrupoSegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.GRS_DESCRICAO, c.GRS_INTEGRACAO_ERP);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", gruposegmento.OperationalEntityId);
                  var domainResult = GrupoSegmentoDomainBehavior.Apply(gruposegmento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

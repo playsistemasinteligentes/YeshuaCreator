@@ -25,6 +25,7 @@
     string? EST_DESCRICAO { get; set; }
     int? EST_ID_LIGACAO_PONTO_A { get; set; }
     int? EST_ID_LIGACAO_PONTO_B { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

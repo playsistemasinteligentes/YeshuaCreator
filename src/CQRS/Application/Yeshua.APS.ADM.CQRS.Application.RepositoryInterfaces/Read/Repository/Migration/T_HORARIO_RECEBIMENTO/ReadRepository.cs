@@ -30,6 +30,7 @@ namespace IRepository.Read
         public bool ExistsByHRE_HORA_FINAL(DateTime value );
         public bool ExistsByCLI_ID(string value );
         public bool ExistsByHRE_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -39,6 +40,7 @@ namespace IRepository.Read
         public T_HORARIO_RECEBIMENTODTO FirstByHRE_HORA_FINAL(DateTime value );
         public T_HORARIO_RECEBIMENTODTO FirstByCLI_ID(string value );
         public T_HORARIO_RECEBIMENTODTO FirstByHRE_ID(int value );
+        public T_HORARIO_RECEBIMENTODTO FirstByOperationalEntityId(string value );
         public T_HORARIO_RECEBIMENTODTO FirstByTenantID(int value );
         public T_HORARIO_RECEBIMENTODTO FirstByDeleted(bool value );
         public T_HORARIO_RECEBIMENTODTO FirstByChanged(DateTime value );
@@ -48,6 +50,7 @@ namespace IRepository.Read
         public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByHRE_HORA_FINAL(DateTime value );
         public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByCLI_ID(string value );
         public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByHRE_ID(int value );
+        public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByTenantID(int value );
         public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByDeleted(bool value );
         public IEnumerable<T_HORARIO_RECEBIMENTODTO> GetAllByChanged(DateTime value );

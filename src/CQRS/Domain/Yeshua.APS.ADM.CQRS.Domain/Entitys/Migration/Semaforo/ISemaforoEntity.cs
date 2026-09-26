@@ -26,6 +26,7 @@
     string? SEM_ORIGEM { get; set; }
     DateTime? SEM_EMISSAO { get; set; }
     string? SEM_ID_CONEXAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

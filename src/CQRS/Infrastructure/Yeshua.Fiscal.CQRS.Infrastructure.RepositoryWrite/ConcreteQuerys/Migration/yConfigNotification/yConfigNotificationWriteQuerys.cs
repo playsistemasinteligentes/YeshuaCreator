@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InseriryConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification)
         {
-            this.Query = $@" INSERT INTO [yConfigNotification] ([Id], [TenantID], [EmailSmtpClient], [EmailPort], [EmailUserName], [EmailPassword], [Deleted], [Changed], [UserId]) VALUES(@Id, @TenantID, @EmailSmtpClient, @EmailPort, @EmailUserName, @EmailPassword, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yConfigNotification] ([OperationalEntityId], [Id], [TenantID], [EmailSmtpClient], [EmailPort], [EmailUserName], [EmailPassword], [Deleted], [Changed], [UserId]) VALUES(@OperationalEntityId, @Id, @TenantID, @EmailSmtpClient, @EmailPort, @EmailUserName, @EmailPassword, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = yConfigNotification.OperationalEntityId,
                 Id = yConfigNotification.Id,
                 TenantID = _executionContext.TenantID,
                 EmailSmtpClient = yConfigNotification.EmailSmtpClient,
@@ -57,6 +58,16 @@ namespace Query.Write
                 Changed = yConfigNotification.Changed,
                 UserId = _executionContext.UserId,
                 Id = yConfigNotification.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yConfigNotification] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

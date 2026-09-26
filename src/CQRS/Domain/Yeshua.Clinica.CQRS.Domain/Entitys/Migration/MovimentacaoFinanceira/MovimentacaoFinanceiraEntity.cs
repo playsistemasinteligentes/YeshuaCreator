@@ -27,6 +27,7 @@
     public int TipoMovimentacao { get; set; }
     public DateTime DataMovimentacao { get; set; }
     public Decimal SaldoAtual { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -40,6 +41,7 @@
  TipoMovimentacao = tipomovimentacao; 
  DataMovimentacao = (datamovimentacao < (new DateTime(1800, 1, 1))) ? DateTime.Now : datamovimentacao; 
  SaldoAtual = saldoatual; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

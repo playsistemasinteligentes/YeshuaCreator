@@ -26,6 +26,7 @@ namespace Repositorio.Outputs
     public DateTime orc_emissao { get; set; }
     public string cli_id { get; set; } = string.Empty;
     public int ver_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

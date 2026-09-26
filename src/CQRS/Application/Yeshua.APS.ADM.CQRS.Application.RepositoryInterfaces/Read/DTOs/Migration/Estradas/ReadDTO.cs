@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public string est_descricao { get; set; } = string.Empty;
     public int est_id_ligacao_ponto_a { get; set; }
     public int est_id_ligacao_ponto_b { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

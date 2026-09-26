@@ -22,6 +22,7 @@ namespace IQuery.Read
         public QueryModel ExistsByMDT_VALOR_ESPERADOQuery(Decimal value );
         public QueryModel ExistsByMDT_ENCONTRADOQuery(Decimal value );
         public QueryModel ExistsByUNI_IDQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -32,6 +33,7 @@ namespace IQuery.Read
         public QueryModel FirstByMDT_VALOR_ESPERADOQuery(Decimal value );
         public QueryModel FirstByMDT_ENCONTRADOQuery(Decimal value );
         public QueryModel FirstByUNI_IDQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

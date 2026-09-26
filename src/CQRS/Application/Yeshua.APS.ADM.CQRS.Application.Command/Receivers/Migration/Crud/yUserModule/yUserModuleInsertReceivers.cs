@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyUserModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyUserModuleReceiver), commandName: "Command.Write.yUserModuleCrudCommand");
                  var yusermodule = new yUserModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ModuleId, c.UserId, c.ValidUntil);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yusermodule.OperationalEntityId);
                  var domainResult = yUserModuleDomainBehavior.Apply(yusermodule, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

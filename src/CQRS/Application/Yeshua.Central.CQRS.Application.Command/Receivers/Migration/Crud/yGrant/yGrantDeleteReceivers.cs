@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyGrant", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyGrantReceiver), commandName: "Command.Write.yGrantCrudCommand");
                  var ygrant = new yGrantFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ygrant.OperationalEntityId);
                  var domainResult = yGrantDomainBehavior.Apply(ygrant, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

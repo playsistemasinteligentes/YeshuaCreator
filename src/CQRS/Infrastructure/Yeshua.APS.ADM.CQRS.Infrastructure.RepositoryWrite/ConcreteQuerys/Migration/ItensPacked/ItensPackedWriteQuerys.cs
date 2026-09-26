@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItensPackedQuery(IItensPackedEntity ItensPacked)
         {
-            this.Query = $@" INSERT INTO [ItensPacked] ([IPA_ID], [CAR_ID], [PRO_ID], [ORD_ID], [IPA_COORDC], [IPA_COORDL], [IPA_COORDA], [IPA_DIMC], [IPA_DIML], [IPA_DIMA], [IPA_QTD_POR_PALETE], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IPA_ID, @CAR_ID, @PRO_ID, @ORD_ID, @IPA_COORDC, @IPA_COORDL, @IPA_COORDA, @IPA_DIMC, @IPA_DIML, @IPA_DIMA, @IPA_QTD_POR_PALETE, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItensPacked] ([IPA_ID], [CAR_ID], [PRO_ID], [ORD_ID], [IPA_COORDC], [IPA_COORDL], [IPA_COORDA], [IPA_DIMC], [IPA_DIML], [IPA_DIMA], [IPA_QTD_POR_PALETE], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IPA_ID, @CAR_ID, @PRO_ID, @ORD_ID, @IPA_COORDC, @IPA_COORDL, @IPA_COORDA, @IPA_DIMC, @IPA_DIML, @IPA_DIMA, @IPA_QTD_POR_PALETE, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IPA_ID = ItensPacked.IPA_ID,
@@ -44,6 +44,7 @@ namespace Query.Write
                 IPA_DIML = ItensPacked.IPA_DIML,
                 IPA_DIMA = ItensPacked.IPA_DIMA,
                 IPA_QTD_POR_PALETE = ItensPacked.IPA_QTD_POR_PALETE,
+                OperationalEntityId = ItensPacked.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -179,6 +180,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 IPA_QTD_POR_PALETE = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ItensPacked] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

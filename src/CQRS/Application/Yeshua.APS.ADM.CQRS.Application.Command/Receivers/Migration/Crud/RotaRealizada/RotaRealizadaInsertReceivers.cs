@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRotaRealizada", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRotaRealizadaReceiver), commandName: "Command.Write.RotaRealizadaCrudCommand");
                  var rotarealizada = new RotaRealizadaFactory(_logger, _domainTrackingPolicy).Create(context, c.ROT_ID, c.CAR_ID, c.ROT_DATA_HORA, c.ROT_LAT, c.ROT_LONG);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", rotarealizada.OperationalEntityId);
                  var domainResult = RotaRealizadaDomainBehavior.Apply(rotarealizada, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

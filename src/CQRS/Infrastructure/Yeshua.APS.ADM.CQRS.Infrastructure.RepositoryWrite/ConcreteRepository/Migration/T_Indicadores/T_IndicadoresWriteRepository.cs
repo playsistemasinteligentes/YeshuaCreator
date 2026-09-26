@@ -121,6 +121,11 @@ namespace Input.Repository.T_Indicadores
             var query = _query.UpdateDOM_FILIAL(ind_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int ind_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ind_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int ind_id, int value)
         {
             var query = _query.UpdateTenantID(ind_id, value);

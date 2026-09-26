@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_HORARIO_RECEBIMENTO", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_HORARIO_RECEBIMENTOReceiver), commandName: "Command.Write.T_HORARIO_RECEBIMENTOCrudCommand");
                  var t_horario_recebimento = new T_HORARIO_RECEBIMENTOFactory(_logger, _domainTrackingPolicy).Create(context, c.HRE_DIA_DA_SEMANA, c.HRE_HORA_INICIAL, c.HRE_HORA_FINAL, c.CLI_ID, c.HRE_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_horario_recebimento.OperationalEntityId);
                  var domainResult = T_HORARIO_RECEBIMENTODomainBehavior.Apply(t_horario_recebimento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

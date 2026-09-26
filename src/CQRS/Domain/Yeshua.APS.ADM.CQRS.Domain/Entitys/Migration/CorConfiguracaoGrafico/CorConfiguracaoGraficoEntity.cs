@@ -24,6 +24,7 @@
     public Decimal COR_PERCENTUAL_INI { get; set; }
     public Decimal COR_PERCENTUAL_FIM { get; set; }
     public string COR_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  COR_PERCENTUAL_INI = cor_percentual_ini; 
  COR_PERCENTUAL_FIM = cor_percentual_fim; 
  COR_DESCRICAO = cor_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

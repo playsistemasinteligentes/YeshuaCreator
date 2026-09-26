@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTemplatesMaquinas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTemplatesMaquinasReceiver), commandName: "Command.Write.TemplatesMaquinasCrudCommand");
                  var templatesmaquinas = new TemplatesMaquinasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TEM_ID, c.MAQ_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatesmaquinas.OperationalEntityId);
                  var domainResult = TemplatesMaquinasDomainBehavior.Apply(templatesmaquinas, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

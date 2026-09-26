@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTempoSetupOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTempoSetupOnduladeiraReceiver), commandName: "Command.Write.TempoSetupOnduladeiraCrudCommand");
                  var temposetuponduladeira = new TempoSetupOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.TEM_ID, c.OND_ID_DE, c.OND_ID_PARA, c.TEM_RESINA_DE, c.TEM_RESINA_PARA, c.TEM_TEMPO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", temposetuponduladeira.OperationalEntityId);
                  var domainResult = TempoSetupOnduladeiraDomainBehavior.Apply(temposetuponduladeira, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

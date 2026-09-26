@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteConsultasGrupos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteConsultasGruposReceiver), commandName: "Command.Write.ConsultasGruposCrudCommand");
                  var consultasgrupos = new ConsultasGruposFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_ID, c.GRU_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", consultasgrupos.OperationalEntityId);
                  var domainResult = ConsultasGruposDomainBehavior.Apply(consultasgrupos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

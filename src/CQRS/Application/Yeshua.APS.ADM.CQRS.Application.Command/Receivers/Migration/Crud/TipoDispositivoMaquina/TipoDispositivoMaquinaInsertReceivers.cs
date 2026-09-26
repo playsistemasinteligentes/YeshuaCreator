@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTipoDispositivoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTipoDispositivoMaquinaReceiver), commandName: "Command.Write.TipoDispositivoMaquinaCrudCommand");
                  var tipodispositivomaquina = new TipoDispositivoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TDI_ID, c.MAQ_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipodispositivomaquina.OperationalEntityId);
                  var domainResult = TipoDispositivoMaquinaDomainBehavior.Apply(tipodispositivomaquina, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

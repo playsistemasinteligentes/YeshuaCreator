@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRelatorios", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRelatoriosReceiver), commandName: "Command.Write.RelatoriosCrudCommand");
                  var relatorios = new RelatoriosFactory(_logger, _domainTrackingPolicy).Create(context, c.REL_ID, c.REL_NOME_RELATORIO, c.REL_NOME_CAMPO, c.REL_TIPO_CAMPO, c.REL_POS_X, c.REL_POS_Y, c.REL_TAMANHO_FONTE);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", relatorios.OperationalEntityId);
                  var domainResult = RelatoriosDomainBehavior.Apply(relatorios, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

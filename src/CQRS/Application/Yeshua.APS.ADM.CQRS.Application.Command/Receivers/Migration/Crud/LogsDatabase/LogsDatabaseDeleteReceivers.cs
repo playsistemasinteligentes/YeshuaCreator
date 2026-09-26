@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteLogsDatabase", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteLogsDatabaseReceiver), commandName: "Command.Write.LogsDatabaseCrudCommand");
                  var logsdatabase = new LogsDatabaseFactory(_logger, _domainTrackingPolicy).Create(context, c.LOGS_ID, c.LOGS_TABLE, c.LOGS_KEY, c.LOGS_KEY1, c.LOGS_KEY2, c.LOGS_KEY3, c.LOGS_KEY4, c.LOGS_COLUMN, c.LOGS_BEFORE, c.LOGS_AFTER, c.LOGS_ACTION, c.LOGS_DATE, c.USE_ID, c.LOGS_ORIGEM);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", logsdatabase.OperationalEntityId);
                  var domainResult = LogsDatabaseDomainBehavior.Apply(logsdatabase, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

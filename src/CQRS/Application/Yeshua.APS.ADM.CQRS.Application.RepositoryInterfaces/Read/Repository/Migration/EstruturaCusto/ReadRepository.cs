@@ -41,6 +41,7 @@ namespace IRepository.Read
         public bool ExistsByEST_BASE_PRODUCAO(Decimal value );
         public bool ExistsByEST_NIVEL(Decimal value );
         public bool ExistsByFPR_SEQ_REPETICAO(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -61,6 +62,7 @@ namespace IRepository.Read
         public EstruturaCustoDTO FirstByEST_BASE_PRODUCAO(Decimal value );
         public EstruturaCustoDTO FirstByEST_NIVEL(Decimal value );
         public EstruturaCustoDTO FirstByFPR_SEQ_REPETICAO(int value );
+        public EstruturaCustoDTO FirstByOperationalEntityId(string value );
         public EstruturaCustoDTO FirstByTenantID(int value );
         public EstruturaCustoDTO FirstByDeleted(bool value );
         public EstruturaCustoDTO FirstByChanged(DateTime value );
@@ -81,6 +83,7 @@ namespace IRepository.Read
         public IEnumerable<EstruturaCustoDTO> GetAllByEST_BASE_PRODUCAO(Decimal value );
         public IEnumerable<EstruturaCustoDTO> GetAllByEST_NIVEL(Decimal value );
         public IEnumerable<EstruturaCustoDTO> GetAllByFPR_SEQ_REPETICAO(int value );
+        public IEnumerable<EstruturaCustoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EstruturaCustoDTO> GetAllByTenantID(int value );
         public IEnumerable<EstruturaCustoDTO> GetAllByDeleted(bool value );
         public IEnumerable<EstruturaCustoDTO> GetAllByChanged(DateTime value );

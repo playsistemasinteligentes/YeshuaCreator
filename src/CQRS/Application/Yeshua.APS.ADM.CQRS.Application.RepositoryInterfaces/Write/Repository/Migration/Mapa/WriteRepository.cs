@@ -29,6 +29,7 @@ namespace IRepository.Write
         void UpdateMAP_CUSTO_PEDAGIO_POR_EIXO(int id, Decimal value);
         void UpdateROD_ID(int id, int value);
         void UpdateMAP_ALTURA_ROD(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirClienteQuery(IClienteEntity Cliente)
         {
-            this.Query = $@" INSERT INTO [Cliente] ([CLI_ID], [CLI_NOME], [CLI_FONE], [CLI_OBS], [CLI_ENDERECO_ENTREGA], [CLI_CPF_CNPJ], [CLI_BAIRRO_ENTREGA], [CLI_CEP_ENTREGA], [CLI_EMAIL], [CLI_INTEGRACAO], [MUN_ID_ENTREGA], [CLI_TRANSLADO], [CLI_REGIAO_ENTREGA], [CLI_EXIGENTE_NA_IMPRESSAO], [CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO], [CLI_TEMPO_DESCARREGAMENTO_UNITARIO], [CLI_PERCENTUAL_JANELA_EMBARQUE], [REP_ID], [CLI_RAZAO_SOCIAL], [CLI_EMAIL_MONITORAMENTO_TRANSPORTE], [CLI_CONTATO], [CLI_SETOR], [SEG_ID], [CLI_TIPO], [CLI_INTEGRACAO_ERP], [CLI_LATITUDE_ENTREGA], [CLI_LONGITUDE_ENTREGA], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@CLI_ID, @CLI_NOME, @CLI_FONE, @CLI_OBS, @CLI_ENDERECO_ENTREGA, @CLI_CPF_CNPJ, @CLI_BAIRRO_ENTREGA, @CLI_CEP_ENTREGA, @CLI_EMAIL, @CLI_INTEGRACAO, @MUN_ID_ENTREGA, @CLI_TRANSLADO, @CLI_REGIAO_ENTREGA, @CLI_EXIGENTE_NA_IMPRESSAO, @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, @CLI_TEMPO_DESCARREGAMENTO_UNITARIO, @CLI_PERCENTUAL_JANELA_EMBARQUE, @REP_ID, @CLI_RAZAO_SOCIAL, @CLI_EMAIL_MONITORAMENTO_TRANSPORTE, @CLI_CONTATO, @CLI_SETOR, @SEG_ID, @CLI_TIPO, @CLI_INTEGRACAO_ERP, @CLI_LATITUDE_ENTREGA, @CLI_LONGITUDE_ENTREGA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Cliente] ([CLI_ID], [CLI_NOME], [CLI_FONE], [CLI_OBS], [CLI_ENDERECO_ENTREGA], [CLI_CPF_CNPJ], [CLI_BAIRRO_ENTREGA], [CLI_CEP_ENTREGA], [CLI_EMAIL], [CLI_INTEGRACAO], [MUN_ID_ENTREGA], [CLI_TRANSLADO], [CLI_REGIAO_ENTREGA], [CLI_EXIGENTE_NA_IMPRESSAO], [CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO], [CLI_TEMPO_DESCARREGAMENTO_UNITARIO], [CLI_PERCENTUAL_JANELA_EMBARQUE], [REP_ID], [CLI_RAZAO_SOCIAL], [CLI_EMAIL_MONITORAMENTO_TRANSPORTE], [CLI_CONTATO], [CLI_SETOR], [SEG_ID], [CLI_TIPO], [CLI_INTEGRACAO_ERP], [CLI_LATITUDE_ENTREGA], [CLI_LONGITUDE_ENTREGA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@CLI_ID, @CLI_NOME, @CLI_FONE, @CLI_OBS, @CLI_ENDERECO_ENTREGA, @CLI_CPF_CNPJ, @CLI_BAIRRO_ENTREGA, @CLI_CEP_ENTREGA, @CLI_EMAIL, @CLI_INTEGRACAO, @MUN_ID_ENTREGA, @CLI_TRANSLADO, @CLI_REGIAO_ENTREGA, @CLI_EXIGENTE_NA_IMPRESSAO, @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, @CLI_TEMPO_DESCARREGAMENTO_UNITARIO, @CLI_PERCENTUAL_JANELA_EMBARQUE, @REP_ID, @CLI_RAZAO_SOCIAL, @CLI_EMAIL_MONITORAMENTO_TRANSPORTE, @CLI_CONTATO, @CLI_SETOR, @SEG_ID, @CLI_TIPO, @CLI_INTEGRACAO_ERP, @CLI_LATITUDE_ENTREGA, @CLI_LONGITUDE_ENTREGA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CLI_ID = Cliente.CLI_ID,
@@ -60,6 +60,7 @@ namespace Query.Write
                 CLI_INTEGRACAO_ERP = Cliente.CLI_INTEGRACAO_ERP,
                 CLI_LATITUDE_ENTREGA = Cliente.CLI_LATITUDE_ENTREGA,
                 CLI_LONGITUDE_ENTREGA = Cliente.CLI_LONGITUDE_ENTREGA,
+                OperationalEntityId = Cliente.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -360,6 +361,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CLI_LONGITUDE_ENTREGA = value,
+                CLI_ID = cli_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string cli_id, string value)
+        {
+            this.Query = $@" UPDATE [Cliente] SET [OperationalEntityId] = @OperationalEntityId WHERE [CLI_ID] = @CLI_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 CLI_ID = cli_id,
             };
             return new QueryModel(this.Query, this.Parameters);

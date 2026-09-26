@@ -22,19 +22,20 @@
         {
             public const ulong Id = 1UL << 0;
             public const ulong TIV_ID = 1UL << 1;
-            public const ulong TenantID = 1UL << 2;
-            public const ulong Deleted = 1UL << 3;
-            public const ulong Changed = 1UL << 4;
-            public const ulong UserId = 1UL << 5;
-            public const ulong TIV_NOME = 1UL << 6;
-            public const ulong TIV_DESCRICAO = 1UL << 7;
-            public const ulong TIV_FECHAMENTO = 1UL << 8;
-            public const ulong TIV_AMOSTRA_ALEATORIA = 1UL << 9;
-            public const ulong TIV_N_AMOSTRAS = 1UL << 10;
-            public const ulong TIV_MEDIDA = 1UL << 11;
-            public const ulong TIV_ESPECIFICACAO = 1UL << 12;
-            public const ulong TIV_TOL_MAIS = 1UL << 13;
-            public const ulong TIV_TOL_MENOS = 1UL << 14;
+            public const ulong OperationalEntityId = 1UL << 2;
+            public const ulong TenantID = 1UL << 3;
+            public const ulong Deleted = 1UL << 4;
+            public const ulong Changed = 1UL << 5;
+            public const ulong UserId = 1UL << 6;
+            public const ulong TIV_NOME = 1UL << 7;
+            public const ulong TIV_DESCRICAO = 1UL << 8;
+            public const ulong TIV_FECHAMENTO = 1UL << 9;
+            public const ulong TIV_AMOSTRA_ALEATORIA = 1UL << 10;
+            public const ulong TIV_N_AMOSTRAS = 1UL << 11;
+            public const ulong TIV_MEDIDA = 1UL << 12;
+            public const ulong TIV_ESPECIFICACAO = 1UL << 13;
+            public const ulong TIV_TOL_MAIS = 1UL << 14;
+            public const ulong TIV_TOL_MENOS = 1UL << 15;
         }
 
         public partial class TipoInspecaoVisualDecorator : ITipoInspecaoVisualEntity
@@ -91,6 +92,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

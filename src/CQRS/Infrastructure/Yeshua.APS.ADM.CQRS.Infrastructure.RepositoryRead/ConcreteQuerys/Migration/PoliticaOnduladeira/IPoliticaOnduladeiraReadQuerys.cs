@@ -22,6 +22,7 @@ namespace IQuery.Read
         public QueryModel ExistsByPOL_PROMOCAOQuery(int value );
         public QueryModel ExistsByPOL_DIAS_ANTECIPACAOQuery(int value );
         public QueryModel ExistsByPOL_METROS_LINEARESQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -32,6 +33,7 @@ namespace IQuery.Read
         public QueryModel FirstByPOL_PROMOCAOQuery(int value );
         public QueryModel FirstByPOL_DIAS_ANTECIPACAOQuery(int value );
         public QueryModel FirstByPOL_METROS_LINEARESQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

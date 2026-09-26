@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCertificadoDigital", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCertificadoDigitalReceiver), commandName: "Command.Write.CertificadoDigitalCrudCommand");
                  var certificadodigital = new CertificadoDigitalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Apelido, c.DocumentoTitular, c.StorageKey, c.Thumbprint, c.ValidoDe, c.ValidoAte, c.Ativo, c.SenhaStorageKey);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", certificadodigital.OperationalEntityId);
                  var domainResult = CertificadoDigitalDomainBehavior.Apply(certificadodigital, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

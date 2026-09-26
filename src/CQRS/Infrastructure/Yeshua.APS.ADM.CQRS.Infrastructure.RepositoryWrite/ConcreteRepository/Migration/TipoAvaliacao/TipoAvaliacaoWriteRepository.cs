@@ -56,6 +56,11 @@ namespace Input.Repository.TipoAvaliacao
             var query = _query.UpdateTA_DESC(ta_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int ta_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ta_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int ta_id, int value)
         {
             var query = _query.UpdateTenantID(ta_id, value);

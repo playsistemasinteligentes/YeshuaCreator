@@ -86,6 +86,11 @@ namespace Input.Repository.PendenciasInterface
             var query = _query.UpdateDATA_ENTRADA(pen_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int pen_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(pen_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int pen_id, int value)
         {
             var query = _query.UpdateTenantID(pen_id, value);

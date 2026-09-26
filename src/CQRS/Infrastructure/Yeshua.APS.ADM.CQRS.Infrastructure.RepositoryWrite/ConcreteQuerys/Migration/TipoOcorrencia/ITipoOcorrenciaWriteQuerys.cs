@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateTipoOcorrenciaQuery(ITipoOcorrenciaEntity TipoOcorrencia);
         QueryModel UpdateDescricao(int id, string value);
         QueryModel UpdateSpr(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

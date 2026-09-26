@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCotas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCotasReceiver), commandName: "Command.Write.CotasCrudCommand");
                  var cotas = new CotasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.COT_ID, c.COT_DATA_DE, c.COT_DATA_ATE, c.COT_VALOR, c.COT_OCUPADO, c.REP_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cotas.OperationalEntityId);
                  var domainResult = CotasDomainBehavior.Apply(cotas, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

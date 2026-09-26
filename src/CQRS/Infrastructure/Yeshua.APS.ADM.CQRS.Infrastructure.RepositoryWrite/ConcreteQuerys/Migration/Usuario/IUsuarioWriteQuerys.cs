@@ -23,6 +23,7 @@ namespace IQuery.Write
         QueryModel UpdateTURM_ID(int use_id, string value);
         QueryModel UpdateUSE_ATIVO(int use_id, int value);
         QueryModel UpdateUSE_CODERP(int use_id, string value);
+        QueryModel UpdateOperationalEntityId(int use_id, string value);
         QueryModel UpdateTenantID(int use_id, int value);
         QueryModel UpdateDeleted(int use_id, bool value);
         QueryModel UpdateChanged(int use_id, DateTime value);

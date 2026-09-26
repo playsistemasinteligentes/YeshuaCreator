@@ -56,6 +56,7 @@ namespace IRepository.Read
         public bool ExistsByServicoId(int value );
         public bool ExistsByMovimentacaoFinanceiraId(int value );
         public bool ExistsByProfissionalId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -88,6 +89,7 @@ namespace IRepository.Read
         public SesoesDTO FirstByServicoId(int value );
         public SesoesDTO FirstByMovimentacaoFinanceiraId(int value );
         public SesoesDTO FirstByProfissionalId(int value );
+        public SesoesDTO FirstByOperationalEntityId(string value );
         public SesoesDTO FirstByTenantID(int value );
         public SesoesDTO FirstByDeleted(bool value );
         public SesoesDTO FirstByChanged(DateTime value );
@@ -120,6 +122,7 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByServicoId(int value );
         public IEnumerable<SesoesDTO> GetAllByMovimentacaoFinanceiraId(int value );
         public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value );
+        public IEnumerable<SesoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<SesoesDTO> GetAllByTenantID(int value );
         public IEnumerable<SesoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<SesoesDTO> GetAllByChanged(DateTime value );

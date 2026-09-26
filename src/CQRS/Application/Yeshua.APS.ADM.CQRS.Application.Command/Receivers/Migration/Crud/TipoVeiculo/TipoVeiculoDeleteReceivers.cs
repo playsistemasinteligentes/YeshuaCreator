@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTipoVeiculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTipoVeiculoReceiver), commandName: "Command.Write.TipoVeiculoCrudCommand");
                  var tipoveiculo = new TipoVeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TIP_ID, c.TIP_DESCRICAO, c.TIP_QTD_DISPONIVEL, c.TIP_VALOR_KM, c.TIP_VALOR_DIARIA, c.TIP_VALOR_AJUDANTE, c.TIP_QTD_EIXOS, c.TIP_VELOCIDADE_MEDIA, c.TIP_CAPACIDADE_ALTURA, c.TIP_CAPACIDADE_COMPRIMENTO, c.TIP_CAPACIDADE_LARGURA, c.TIP_CAPACIDADE_ALTURA_PESCOCO_E, c.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E, c.TIP_CAPACIDADE_LARGURA_PESCOCO_E, c.TIP_CAPACIDADE_ALTURA_PESCOCO_D, c.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D, c.TIP_CAPACIDADE_LARGURA_PESCOCO_D, c.TIP_CAPACIDADE_M3);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoveiculo.OperationalEntityId);
                  var domainResult = TipoVeiculoDomainBehavior.Apply(tipoveiculo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

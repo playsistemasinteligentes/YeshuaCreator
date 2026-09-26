@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Observacoes;
 
-[SeedTestOrder(153)]
+[SeedTestOrder(151)]
 public partial class ObservacoesCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Observacoes/PostObservacoes";

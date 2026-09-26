@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct ySagaReadCommand : ICommandRead
+    public struct ySagaReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string? CorrelationId { get; set; }
@@ -26,10 +26,13 @@ namespace Command.Read
         public DateTime? LockedAt { get; set; }
         public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "ySaga";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

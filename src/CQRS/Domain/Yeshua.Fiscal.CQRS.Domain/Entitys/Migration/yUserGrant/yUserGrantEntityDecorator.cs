@@ -20,19 +20,20 @@
                 {
                     public static class yUserGrantTrackingFields
         {
-            public const ulong Id = 1UL << 0;
-            public const ulong PerfilId = 1UL << 1;
-            public const ulong GrantId = 1UL << 2;
-            public const ulong CanGrant = 1UL << 3;
-            public const ulong CanCreate = 1UL << 4;
-            public const ulong CanRead = 1UL << 5;
-            public const ulong CanUpdate = 1UL << 6;
-            public const ulong CanDelete = 1UL << 7;
-            public const ulong ValidUntil = 1UL << 8;
-            public const ulong TenantID = 1UL << 9;
-            public const ulong Deleted = 1UL << 10;
-            public const ulong Changed = 1UL << 11;
-            public const ulong UserId = 1UL << 12;
+            public const ulong OperationalEntityId = 1UL << 0;
+            public const ulong Id = 1UL << 1;
+            public const ulong PerfilId = 1UL << 2;
+            public const ulong GrantId = 1UL << 3;
+            public const ulong CanGrant = 1UL << 4;
+            public const ulong CanCreate = 1UL << 5;
+            public const ulong CanRead = 1UL << 6;
+            public const ulong CanUpdate = 1UL << 7;
+            public const ulong CanDelete = 1UL << 8;
+            public const ulong ValidUntil = 1UL << 9;
+            public const ulong TenantID = 1UL << 10;
+            public const ulong Deleted = 1UL << 11;
+            public const ulong Changed = 1UL << 12;
+            public const ulong UserId = 1UL << 13;
         }
 
         public partial class yUserGrantDecorator : IyUserGrantEntity
@@ -61,7 +62,8 @@
                             _trackingTraceId = context?.TraceId ?? string.Empty;
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
-                        }
+                        }    public string OperationalEntityId => _inner.OperationalEntityId;
+
                                     public int? Id
                                     {
                                         get => _inner.Id;

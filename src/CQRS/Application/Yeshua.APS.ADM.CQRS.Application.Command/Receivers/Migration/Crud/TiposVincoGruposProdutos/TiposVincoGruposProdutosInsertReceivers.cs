@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTiposVincoGruposProdutos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTiposVincoGruposProdutosReceiver), commandName: "Command.Write.TiposVincoGruposProdutosCrudCommand");
                  var tiposvincogruposprodutos = new TiposVincoGruposProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tiposvincogruposprodutos.OperationalEntityId);
                  var domainResult = TiposVincoGruposProdutosDomainBehavior.Apply(tiposvincogruposprodutos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

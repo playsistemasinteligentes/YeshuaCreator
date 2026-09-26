@@ -42,6 +42,7 @@ namespace IRepository.Read
         public bool ExistsBySagaId(int value , bool TakeOffTenantID = false);
         public bool ExistsBySagaStepId(int value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
@@ -61,6 +62,7 @@ namespace IRepository.Read
         public yInboxDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
         public yInboxDTO FirstBySagaStepId(int value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
+        public yInboxDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByUserId(int value , bool TakeOffTenantID = false);
@@ -80,6 +82,7 @@ namespace IRepository.Read
         public IEnumerable<yInboxDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllBySagaStepId(int value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yInboxDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);

@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateHTML_ESTRUTURA(int est_id, string value);
         void UpdateCLI_ID(int est_id, string value);
         void UpdateEST_DESCRICAO(int est_id, string value);
+        void UpdateOperationalEntityId(int est_id, string value);
         void UpdateTenantID(int est_id, int value);
         void UpdateDeleted(int est_id, bool value);
         void UpdateChanged(int est_id, DateTime value);

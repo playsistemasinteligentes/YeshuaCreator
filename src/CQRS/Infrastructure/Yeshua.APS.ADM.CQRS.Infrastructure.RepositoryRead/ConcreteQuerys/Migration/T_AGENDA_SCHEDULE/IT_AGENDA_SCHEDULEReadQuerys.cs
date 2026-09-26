@@ -33,6 +33,7 @@ namespace IQuery.Read
         public QueryModel ExistsByAGE_PARAMETROSQuery(string value );
         public QueryModel ExistsByAGE_EXCECAOQuery(string value );
         public QueryModel ExistsByAGE_DESCRICAOQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -54,6 +55,7 @@ namespace IQuery.Read
         public QueryModel FirstByAGE_PARAMETROSQuery(string value );
         public QueryModel FirstByAGE_EXCECAOQuery(string value );
         public QueryModel FirstByAGE_DESCRICAOQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

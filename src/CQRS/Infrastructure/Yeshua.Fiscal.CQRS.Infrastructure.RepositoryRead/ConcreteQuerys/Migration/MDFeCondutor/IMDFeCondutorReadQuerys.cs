@@ -21,6 +21,7 @@ namespace IQuery.Read
         public QueryModel ExistsByMDFeSolicitacaoFiscalIdQuery(int value );
         public QueryModel ExistsByNomeQuery(string value );
         public QueryModel ExistsByDocumentoQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -29,6 +30,7 @@ namespace IQuery.Read
         public QueryModel FirstByMDFeSolicitacaoFiscalIdQuery(int value );
         public QueryModel FirstByNomeQuery(string value );
         public QueryModel FirstByDocumentoQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

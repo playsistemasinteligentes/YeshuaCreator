@@ -34,10 +34,11 @@
             public const ulong LOGS_DATE = 1UL << 11;
             public const ulong USE_ID = 1UL << 12;
             public const ulong LOGS_ORIGEM = 1UL << 13;
-            public const ulong TenantID = 1UL << 14;
-            public const ulong Deleted = 1UL << 15;
-            public const ulong Changed = 1UL << 16;
-            public const ulong UserId = 1UL << 17;
+            public const ulong OperationalEntityId = 1UL << 14;
+            public const ulong TenantID = 1UL << 15;
+            public const ulong Deleted = 1UL << 16;
+            public const ulong Changed = 1UL << 17;
+            public const ulong UserId = 1UL << 18;
         }
 
         public partial class LogsDatabaseDecorator : ILogsDatabaseEntity
@@ -262,6 +263,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

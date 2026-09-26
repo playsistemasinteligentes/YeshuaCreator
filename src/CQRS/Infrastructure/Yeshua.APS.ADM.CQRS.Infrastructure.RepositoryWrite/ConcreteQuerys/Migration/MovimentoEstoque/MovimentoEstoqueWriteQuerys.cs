@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentoEstoqueQuery(IMovimentoEstoqueEntity MovimentoEstoque)
         {
-            this.Query = $@" INSERT INTO [MovimentoEstoque] ([ProdutoId], [OrderId], [Tipo], [TurnoId], [TurmaId], [Quantidade], [MOV_PESO_UNITARIO], [DataHoraCriacao], [DataHoraEmissao], [DiaTurma], [Lote], [SubLote], [MaquinaId], [USE_ID], [Observacao], [OcorrenciaId], [Armazem], [Endereco], [Estorno], [SequenciaTransformacao], [SequenciaRepeticao], [ObsOpParcial], [OcoIdOpParcial], [MOV_ID_INTEGRACAO], [MOV_ID_INTEGRACAO_ERP], [CAR_ID], [MOV_ID_DESTINO], [PRO_ID_DESTINO], [MOV_LOTE_DESTINO], [MOV_SUB_LOTE_DESTINO], [MOV_ID_ORIGEM], [PRO_ID_ORIGEM], [MOV_LOTE_ORIGEM], [MOV_SUB_LOTE_ORIGEM], [MOV_TYPE], [MOV_DOC], [MOV_APROVEITAMENTO], [MOV_RETIDO], [MOV_VINCOS_ONDULADEIRA], [BOL_ID], [ORD_ID_ORIGEM], [COR_SEQUENCIA], [VER_ID], [MOV_TIPO_CUSTO], [MOV_GRUPO_CONTABIL], [FOR_ID], [CLI_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ProdutoId, @OrderId, @Tipo, @TurnoId, @TurmaId, @Quantidade, @MOV_PESO_UNITARIO, @DataHoraCriacao, @DataHoraEmissao, @DiaTurma, @Lote, @SubLote, @MaquinaId, @USE_ID, @Observacao, @OcorrenciaId, @Armazem, @Endereco, @Estorno, @SequenciaTransformacao, @SequenciaRepeticao, @ObsOpParcial, @OcoIdOpParcial, @MOV_ID_INTEGRACAO, @MOV_ID_INTEGRACAO_ERP, @CAR_ID, @MOV_ID_DESTINO, @PRO_ID_DESTINO, @MOV_LOTE_DESTINO, @MOV_SUB_LOTE_DESTINO, @MOV_ID_ORIGEM, @PRO_ID_ORIGEM, @MOV_LOTE_ORIGEM, @MOV_SUB_LOTE_ORIGEM, @MOV_TYPE, @MOV_DOC, @MOV_APROVEITAMENTO, @MOV_RETIDO, @MOV_VINCOS_ONDULADEIRA, @BOL_ID, @ORD_ID_ORIGEM, @COR_SEQUENCIA, @VER_ID, @MOV_TIPO_CUSTO, @MOV_GRUPO_CONTABIL, @FOR_ID, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MovimentoEstoque] ([ProdutoId], [OrderId], [Tipo], [TurnoId], [TurmaId], [Quantidade], [MOV_PESO_UNITARIO], [DataHoraCriacao], [DataHoraEmissao], [DiaTurma], [Lote], [SubLote], [MaquinaId], [USE_ID], [Observacao], [OcorrenciaId], [Armazem], [Endereco], [Estorno], [SequenciaTransformacao], [SequenciaRepeticao], [ObsOpParcial], [OcoIdOpParcial], [MOV_ID_INTEGRACAO], [MOV_ID_INTEGRACAO_ERP], [CAR_ID], [MOV_ID_DESTINO], [PRO_ID_DESTINO], [MOV_LOTE_DESTINO], [MOV_SUB_LOTE_DESTINO], [MOV_ID_ORIGEM], [PRO_ID_ORIGEM], [MOV_LOTE_ORIGEM], [MOV_SUB_LOTE_ORIGEM], [MOV_TYPE], [MOV_DOC], [MOV_APROVEITAMENTO], [MOV_RETIDO], [MOV_VINCOS_ONDULADEIRA], [BOL_ID], [ORD_ID_ORIGEM], [COR_SEQUENCIA], [VER_ID], [MOV_TIPO_CUSTO], [MOV_GRUPO_CONTABIL], [FOR_ID], [CLI_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ProdutoId, @OrderId, @Tipo, @TurnoId, @TurmaId, @Quantidade, @MOV_PESO_UNITARIO, @DataHoraCriacao, @DataHoraEmissao, @DiaTurma, @Lote, @SubLote, @MaquinaId, @USE_ID, @Observacao, @OcorrenciaId, @Armazem, @Endereco, @Estorno, @SequenciaTransformacao, @SequenciaRepeticao, @ObsOpParcial, @OcoIdOpParcial, @MOV_ID_INTEGRACAO, @MOV_ID_INTEGRACAO_ERP, @CAR_ID, @MOV_ID_DESTINO, @PRO_ID_DESTINO, @MOV_LOTE_DESTINO, @MOV_SUB_LOTE_DESTINO, @MOV_ID_ORIGEM, @PRO_ID_ORIGEM, @MOV_LOTE_ORIGEM, @MOV_SUB_LOTE_ORIGEM, @MOV_TYPE, @MOV_DOC, @MOV_APROVEITAMENTO, @MOV_RETIDO, @MOV_VINCOS_ONDULADEIRA, @BOL_ID, @ORD_ID_ORIGEM, @COR_SEQUENCIA, @VER_ID, @MOV_TIPO_CUSTO, @MOV_GRUPO_CONTABIL, @FOR_ID, @CLI_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ProdutoId = MovimentoEstoque.ProdutoId,
@@ -80,6 +80,7 @@ namespace Query.Write
                 MOV_GRUPO_CONTABIL = MovimentoEstoque.MOV_GRUPO_CONTABIL,
                 FOR_ID = MovimentoEstoque.FOR_ID,
                 CLI_ID = MovimentoEstoque.CLI_ID,
+                OperationalEntityId = MovimentoEstoque.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -611,6 +612,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CLI_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

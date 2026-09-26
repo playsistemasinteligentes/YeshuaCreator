@@ -30,6 +30,7 @@ namespace IRepository.Read
         public bool ExistsById(string value );
         public bool ExistsByDescricao(string value );
         public bool ExistsByStatus(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -169,6 +170,7 @@ namespace IRepository.Read
         public ProdutoDTO FirstById(string value );
         public ProdutoDTO FirstByDescricao(string value );
         public ProdutoDTO FirstByStatus(string value );
+        public ProdutoDTO FirstByOperationalEntityId(string value );
         public ProdutoDTO FirstByTenantID(int value );
         public ProdutoDTO FirstByDeleted(bool value );
         public ProdutoDTO FirstByChanged(DateTime value );
@@ -308,6 +310,7 @@ namespace IRepository.Read
         public IEnumerable<ProdutoDTO> GetAllById(string value );
         public IEnumerable<ProdutoDTO> GetAllByDescricao(string value );
         public IEnumerable<ProdutoDTO> GetAllByStatus(string value );
+        public IEnumerable<ProdutoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProdutoDTO> GetAllByTenantID(int value );
         public IEnumerable<ProdutoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ProdutoDTO> GetAllByChanged(DateTime value );

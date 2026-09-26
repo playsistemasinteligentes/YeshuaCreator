@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirT_DepartamentosQuery(IT_DepartamentosEntity T_Departamentos);
         public QueryModel UpdateT_DepartamentosQuery(IT_DepartamentosEntity T_Departamentos);
         QueryModel UpdateDEP_NOME(int dep_id, string value);
+        QueryModel UpdateOperationalEntityId(int dep_id, string value);
         QueryModel UpdateTenantID(int dep_id, int value);
         QueryModel UpdateDeleted(int dep_id, bool value);
         QueryModel UpdateChanged(int dep_id, DateTime value);

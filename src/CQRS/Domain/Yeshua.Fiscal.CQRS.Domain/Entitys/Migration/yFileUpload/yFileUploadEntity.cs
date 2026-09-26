@@ -30,6 +30,7 @@
     public DateTime CreatedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
     public int? TenantID { get; set; }
+    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
@@ -44,6 +45,7 @@
  EntityId = entityid; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
  CompletedAt = completedat.HasValue && completedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : completedat; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

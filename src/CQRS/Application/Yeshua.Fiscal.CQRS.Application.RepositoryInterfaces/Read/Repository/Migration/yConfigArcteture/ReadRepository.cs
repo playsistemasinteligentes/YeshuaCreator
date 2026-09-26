@@ -24,6 +24,7 @@ namespace IRepository.Read
         public DataPagination<yConfigArctetureDTO> getyConfigArcteture(ICommandRead command );
         public IEnumerable<yConfigArctetureTenantIDDTO> getyConfigArctetureReadFKTenantID(object command );
         public IEnumerable<yConfigArctetureUserIdDTO> getyConfigArctetureReadFKUserId(object command );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsById(int value );
         public bool ExistsByAuditTrackerActived(int value );
         public bool ExistsByAuditCRUDActived(int value );
@@ -31,6 +32,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public yConfigArctetureDTO FirstByOperationalEntityId(string value );
         public yConfigArctetureDTO FirstById(int value );
         public yConfigArctetureDTO FirstByAuditTrackerActived(int value );
         public yConfigArctetureDTO FirstByAuditCRUDActived(int value );
@@ -38,6 +40,7 @@ namespace IRepository.Read
         public yConfigArctetureDTO FirstByDeleted(bool value );
         public yConfigArctetureDTO FirstByChanged(DateTime value );
         public yConfigArctetureDTO FirstByUserId(int value );
+        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yConfigArctetureDTO> GetAllById(int value );
         public IEnumerable<yConfigArctetureDTO> GetAllByAuditTrackerActived(int value );
         public IEnumerable<yConfigArctetureDTO> GetAllByAuditCRUDActived(int value );

@@ -22,6 +22,7 @@ namespace IRepository.Write
         void Insert(IyUserModuleEntity yusermodule);
         void Update(IyUserModuleEntity yusermodule);
         void Delete(IyUserModuleEntity yusermodule);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateModuleId(int id, string value);
         void UpdateUserId(int id, int value);
         void UpdateValidUntil(int id, DateTime value);

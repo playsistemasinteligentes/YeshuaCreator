@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCTeSolicitacaoFiscalQuery(ICTeSolicitacaoFiscalEntity CTeSolicitacaoFiscal)
         {
-            this.Query = $@" INSERT INTO [CTeSolicitacaoFiscal] ([EntradaOficialId], [RomaneioConsolidadoId], [CorrelationId], [Ambiente], [UFEmitente], [EmitenteDocumento], [ProdutoFiscal], [TipoCTe], [TipoServico], [Modal], [Globalizado], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [ValorServico], [ValorCarga], [PreferenciasManifestoJson], [Status], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@EntradaOficialId, @RomaneioConsolidadoId, @CorrelationId, @Ambiente, @UFEmitente, @EmitenteDocumento, @ProdutoFiscal, @TipoCTe, @TipoServico, @Modal, @Globalizado, @UFInicio, @UFFim, @MunicipioInicioCodigoIbge, @MunicipioFimCodigoIbge, @ValorServico, @ValorCarga, @PreferenciasManifestoJson, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CTeSolicitacaoFiscal] ([EntradaOficialId], [RomaneioConsolidadoId], [CorrelationId], [Ambiente], [UFEmitente], [EmitenteDocumento], [ProdutoFiscal], [TipoCTe], [TipoServico], [Modal], [Globalizado], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [ValorServico], [ValorCarga], [PreferenciasManifestoJson], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@EntradaOficialId, @RomaneioConsolidadoId, @CorrelationId, @Ambiente, @UFEmitente, @EmitenteDocumento, @ProdutoFiscal, @TipoCTe, @TipoServico, @Modal, @Globalizado, @UFInicio, @UFFim, @MunicipioInicioCodigoIbge, @MunicipioFimCodigoIbge, @ValorServico, @ValorCarga, @PreferenciasManifestoJson, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 EntradaOficialId = CTeSolicitacaoFiscal.EntradaOficialId,
@@ -52,6 +52,7 @@ namespace Query.Write
                 ValorCarga = CTeSolicitacaoFiscal.ValorCarga,
                 PreferenciasManifestoJson = CTeSolicitacaoFiscal.PreferenciasManifestoJson,
                 Status = CTeSolicitacaoFiscal.Status,
+                OperationalEntityId = CTeSolicitacaoFiscal.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -275,6 +276,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Status = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CTeSolicitacaoFiscal] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

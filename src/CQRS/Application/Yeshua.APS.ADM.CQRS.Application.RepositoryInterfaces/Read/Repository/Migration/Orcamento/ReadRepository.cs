@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByORC_EMISSAO(DateTime value );
         public bool ExistsByCLI_ID(string value );
         public bool ExistsByVER_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -45,6 +46,7 @@ namespace IRepository.Read
         public OrcamentoDTO FirstByORC_EMISSAO(DateTime value );
         public OrcamentoDTO FirstByCLI_ID(string value );
         public OrcamentoDTO FirstByVER_ID(int value );
+        public OrcamentoDTO FirstByOperationalEntityId(string value );
         public OrcamentoDTO FirstByTenantID(int value );
         public OrcamentoDTO FirstByDeleted(bool value );
         public OrcamentoDTO FirstByChanged(DateTime value );
@@ -57,6 +59,7 @@ namespace IRepository.Read
         public IEnumerable<OrcamentoDTO> GetAllByORC_EMISSAO(DateTime value );
         public IEnumerable<OrcamentoDTO> GetAllByCLI_ID(string value );
         public IEnumerable<OrcamentoDTO> GetAllByVER_ID(int value );
+        public IEnumerable<OrcamentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<OrcamentoDTO> GetAllByTenantID(int value );
         public IEnumerable<OrcamentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<OrcamentoDTO> GetAllByChanged(DateTime value );

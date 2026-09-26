@@ -28,6 +28,7 @@
     public string? PRO_ID { get; set; }
     public int? ROT_SEQ_TRANFORMACAO { get; set; }
     public string? OBS_INTEGRACAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  PRO_ID = pro_id; 
  ROT_SEQ_TRANFORMACAO = rot_seq_tranformacao; 
  OBS_INTEGRACAO = obs_integracao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

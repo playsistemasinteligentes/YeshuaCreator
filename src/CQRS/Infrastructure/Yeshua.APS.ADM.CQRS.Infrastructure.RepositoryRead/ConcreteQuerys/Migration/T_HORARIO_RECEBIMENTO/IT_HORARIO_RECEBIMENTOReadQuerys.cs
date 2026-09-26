@@ -22,6 +22,7 @@ namespace IQuery.Read
         public QueryModel ExistsByHRE_HORA_FINALQuery(DateTime value );
         public QueryModel ExistsByCLI_IDQuery(string value );
         public QueryModel ExistsByHRE_IDQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -31,6 +32,7 @@ namespace IQuery.Read
         public QueryModel FirstByHRE_HORA_FINALQuery(DateTime value );
         public QueryModel FirstByCLI_IDQuery(string value );
         public QueryModel FirstByHRE_IDQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

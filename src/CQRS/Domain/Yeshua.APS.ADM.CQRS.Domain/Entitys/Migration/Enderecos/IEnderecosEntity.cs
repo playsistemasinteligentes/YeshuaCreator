@@ -22,6 +22,7 @@
 {
     string END_ID { get; set; }
     string END_GRUPO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

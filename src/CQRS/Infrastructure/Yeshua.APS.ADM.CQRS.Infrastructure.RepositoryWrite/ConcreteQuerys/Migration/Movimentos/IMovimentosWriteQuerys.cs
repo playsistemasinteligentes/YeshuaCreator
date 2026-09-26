@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateMOV_PLAID(int mov_id, int value);
         QueryModel UpdateMOV_UNID(int mov_id, int value);
         QueryModel UpdateTr_Unidade_UNI_ID(int mov_id, int value);
+        QueryModel UpdateOperationalEntityId(int mov_id, string value);
         QueryModel UpdateTenantID(int mov_id, int value);
         QueryModel UpdateDeleted(int mov_id, bool value);
         QueryModel UpdateChanged(int mov_id, DateTime value);

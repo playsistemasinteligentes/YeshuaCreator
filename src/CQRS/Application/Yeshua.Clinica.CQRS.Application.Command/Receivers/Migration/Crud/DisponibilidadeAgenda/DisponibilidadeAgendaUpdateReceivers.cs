@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateDisponibilidadeAgenda", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateDisponibilidadeAgendaReceiver), commandName: "Command.Write.DisponibilidadeAgendaCrudCommand");
                  var disponibilidadeagenda = new DisponibilidadeAgendaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProfissionalId, c.DataHora);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", disponibilidadeagenda.OperationalEntityId);
                  var domainResult = DisponibilidadeAgendaDomainBehavior.Apply(disponibilidadeagenda, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

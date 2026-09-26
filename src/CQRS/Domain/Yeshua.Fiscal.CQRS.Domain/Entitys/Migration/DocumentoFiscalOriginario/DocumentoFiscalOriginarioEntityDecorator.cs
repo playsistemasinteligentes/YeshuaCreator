@@ -37,10 +37,11 @@
             public const ulong Volume = 1UL << 14;
             public const ulong SnapshotJson = 1UL << 15;
             public const ulong Status = 1UL << 16;
-            public const ulong TenantID = 1UL << 17;
-            public const ulong Deleted = 1UL << 18;
-            public const ulong Changed = 1UL << 19;
-            public const ulong UserId = 1UL << 20;
+            public const ulong OperationalEntityId = 1UL << 17;
+            public const ulong TenantID = 1UL << 18;
+            public const ulong Deleted = 1UL << 19;
+            public const ulong Changed = 1UL << 20;
+            public const ulong UserId = 1UL << 21;
         }
 
         public partial class DocumentoFiscalOriginarioDecorator : IDocumentoFiscalOriginarioEntity
@@ -307,6 +308,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

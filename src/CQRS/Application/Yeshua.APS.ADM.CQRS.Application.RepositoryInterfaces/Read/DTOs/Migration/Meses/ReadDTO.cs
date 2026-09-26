@@ -20,6 +20,7 @@ namespace Repositorio.Outputs
     {
     public string mes { get; set; } = string.Empty;
     public int fator { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

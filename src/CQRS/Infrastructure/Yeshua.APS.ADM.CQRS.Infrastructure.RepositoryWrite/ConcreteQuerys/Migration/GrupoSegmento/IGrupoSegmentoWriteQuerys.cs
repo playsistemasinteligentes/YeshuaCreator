@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateGRS_ID(int id, string value);
         QueryModel UpdateGRS_DESCRICAO(int id, string value);
         QueryModel UpdateGRS_INTEGRACAO_ERP(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

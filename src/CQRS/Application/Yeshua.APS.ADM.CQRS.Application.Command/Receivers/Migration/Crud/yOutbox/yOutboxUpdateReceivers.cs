@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyOutbox", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyOutboxReceiver), commandName: "Command.Write.yOutboxCrudCommand");
                  var youtbox = new yOutboxFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.TransportType, c.TransportData, c.CreatedAt, c.SentAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", youtbox.OperationalEntityId);
                  var domainResult = yOutboxDomainBehavior.Apply(youtbox, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateTEM_RESINA_DE(int tem_id, string value);
         QueryModel UpdateTEM_RESINA_PARA(int tem_id, string value);
         QueryModel UpdateTEM_TEMPO(int tem_id, int value);
+        QueryModel UpdateOperationalEntityId(int tem_id, string value);
         QueryModel UpdateTenantID(int tem_id, int value);
         QueryModel UpdateDeleted(int tem_id, bool value);
         QueryModel UpdateChanged(int tem_id, DateTime value);

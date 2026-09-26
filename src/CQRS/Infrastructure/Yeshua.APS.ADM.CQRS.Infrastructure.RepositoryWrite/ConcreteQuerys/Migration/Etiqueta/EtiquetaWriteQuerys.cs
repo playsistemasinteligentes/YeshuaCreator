@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEtiquetaQuery(IEtiquetaEntity Etiqueta)
         {
-            this.Query = $@" INSERT INTO [Etiqueta] ([ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ETI_ID] VALUES(@ETI_EMISSAO, @ETI_CODIGO_BARRAS, @ETI_SEQUENCIA, @ETI_NUMERO_COPIAS, @ETI_STATUS, @ETI_DATA_FABRICACAO, @ETI_COD_BARRAS_ORIGINAL, @ETI_OP_ORIGINAL, @MAQ_ID, @IMP_ID, @USE_ID, @ORD_ID, @ROT_PRO_ID, @ROT_SEQ_TRANFORMACAO, @FPR_SEQ_REPETICAO, @ETI_QUANTIDADE_PALETE, @ETI_LOTE, @ETI_SUB_LOTE, @ETI_IMPRIMIR_DE, @ETI_IMPRIMIR_ATE, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Etiqueta] ([ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ETI_ID] VALUES(@ETI_EMISSAO, @ETI_CODIGO_BARRAS, @ETI_SEQUENCIA, @ETI_NUMERO_COPIAS, @ETI_STATUS, @ETI_DATA_FABRICACAO, @ETI_COD_BARRAS_ORIGINAL, @ETI_OP_ORIGINAL, @MAQ_ID, @IMP_ID, @USE_ID, @ORD_ID, @ROT_PRO_ID, @ROT_SEQ_TRANFORMACAO, @FPR_SEQ_REPETICAO, @ETI_QUANTIDADE_PALETE, @ETI_LOTE, @ETI_SUB_LOTE, @ETI_IMPRIMIR_DE, @ETI_IMPRIMIR_ATE, @BOL_ID, @COR_SEQUENCIA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ETI_EMISSAO = Etiqueta.ETI_EMISSAO,
@@ -55,6 +55,7 @@ namespace Query.Write
                 ETI_IMPRIMIR_ATE = Etiqueta.ETI_IMPRIMIR_ATE,
                 BOL_ID = Etiqueta.BOL_ID,
                 COR_SEQUENCIA = Etiqueta.COR_SEQUENCIA,
+                OperationalEntityId = Etiqueta.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -311,6 +312,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 COR_SEQUENCIA = value,
+                ETI_ID = eti_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int eti_id, string value)
+        {
+            this.Query = $@" UPDATE [Etiqueta] SET [OperationalEntityId] = @OperationalEntityId WHERE [ETI_ID] = @ETI_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 ETI_ID = eti_id,
             };
             return new QueryModel(this.Query, this.Parameters);

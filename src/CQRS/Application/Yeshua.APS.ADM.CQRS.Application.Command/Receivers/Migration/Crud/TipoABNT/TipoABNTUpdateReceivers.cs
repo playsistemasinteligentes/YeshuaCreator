@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoABNT", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoABNTReceiver), commandName: "Command.Write.TipoABNTCrudCommand");
                  var tipoabnt = new TipoABNTFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ABN_ID, c.ABN_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoabnt.OperationalEntityId);
                  var domainResult = TipoABNTDomainBehavior.Apply(tipoabnt, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

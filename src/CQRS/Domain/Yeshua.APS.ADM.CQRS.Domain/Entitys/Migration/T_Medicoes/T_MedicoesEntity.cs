@@ -42,6 +42,7 @@
     public string? DOM_EMPRESA { get; set; }
     public string? DOM_FILIAL { get; set; }
     public string? MED_VALOR_DISPER { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -70,6 +71,7 @@
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
  MED_VALOR_DISPER = med_valor_disper; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

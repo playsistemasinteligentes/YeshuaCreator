@@ -34,13 +34,15 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] from [PontosMapa] ";
+            this.Query = $@" select [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] from [PontosMapa] ";
 if (!string.IsNullOrEmpty(Command.PON_ID)) dict["PON_ID"] = $"%{Command.PON_ID}%";
 if (!string.IsNullOrEmpty(Command.PON_ID)) whereClauses.Add($"[PON_ID] like @PON_ID");
 if (!string.IsNullOrEmpty(Command.PON_DESCRICAO)) dict["PON_DESCRICAO"] = $"%{Command.PON_DESCRICAO}%";
 if (!string.IsNullOrEmpty(Command.PON_DESCRICAO)) whereClauses.Add($"[PON_DESCRICAO] like @PON_DESCRICAO");
 if (!string.IsNullOrEmpty(Command.PON_TIPO)) dict["PON_TIPO"] = $"%{Command.PON_TIPO}%";
 if (!string.IsNullOrEmpty(Command.PON_TIPO)) whereClauses.Add($"[PON_TIPO] like @PON_TIPO");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -250,6 +252,23 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [PontosMapa] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -340,7 +359,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -357,7 +376,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -374,7 +393,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -391,7 +410,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -408,7 +427,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -425,7 +444,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -437,12 +456,29 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -459,7 +495,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -476,7 +512,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -493,7 +529,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -510,7 +546,7 @@ if (!string.IsNullOrEmpty(Command.MUN_ID)) whereClauses.Add($"[MUN_ID] like @MUN
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
+            this.Query = $"SELECT [PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [MUN_ID] FROM [PontosMapa] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

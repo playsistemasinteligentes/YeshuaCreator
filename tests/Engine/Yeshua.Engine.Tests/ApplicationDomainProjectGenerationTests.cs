@@ -10,6 +10,32 @@ namespace TestMigration;
 public class ApplicationDomainProjectGenerationTests
 {
     [TestMethod]
+    public void DependencInjectionRegistersYeshuaOperationalTelemetry()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "Yeshua.Engine.Tests", Guid.NewGuid().ToString("N"));
+
+        try
+        {
+            var migration = new ApplicationWithoutSagaMigration();
+            migration.Up();
+            var path = Path.Combine(directory, "DependencInjection.cs");
+            new SourceCodeInfraestructureDependencInjectionInjectionMigration(
+                    migration,
+                    InfraEstrutctureType.API)
+                .WriteCode(null, path, Path.Combine(directory, "DependencInjection.Custon.cs"));
+
+            var content = File.ReadAllText(path);
+            StringAssert.Contains(content, "AddYeshuaOperationalTelemetry");
+            StringAssert.Contains(content, "runtimeIdentityProvider.Current");
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, true);
+        }
+    }
+
+    [TestMethod]
     public void DependencInjectionGeneratesSagaRegistryOnlyWhenDslContainsSaga()
     {
         var directory = Path.Combine(Path.GetTempPath(), "Yeshua.Engine.Tests", Guid.NewGuid().ToString("N"));

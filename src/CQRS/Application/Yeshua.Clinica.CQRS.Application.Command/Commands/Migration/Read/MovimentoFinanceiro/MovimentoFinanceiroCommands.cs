@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct MovimentoFinanceiroReadCommand : ICommandRead
+    public struct MovimentoFinanceiroReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string? IdOrigem { get; set; }
@@ -20,11 +20,14 @@ namespace Command.Read
         public DateTime? DataMovimento { get; set; }
         public DateTime? DataVencimento { get; set; }
         public int? Status { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "MovimentoFinanceiro";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

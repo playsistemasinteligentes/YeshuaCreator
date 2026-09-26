@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InserirProtocoloOnduladeiraQuery(IProtocoloOnduladeiraEntity ProtocoloOnduladeira)
         {
-            this.Query = $@" INSERT INTO [ProtocoloOnduladeira] ([PTO_ID], [PTO_CHAVE], [MAQ_ID], [PTO_COMANDO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PTO_ID, @PTO_CHAVE, @MAQ_ID, @PTO_COMANDO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ProtocoloOnduladeira] ([PTO_ID], [PTO_CHAVE], [MAQ_ID], [PTO_COMANDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PTO_ID, @PTO_CHAVE, @MAQ_ID, @PTO_COMANDO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PTO_ID = ProtocoloOnduladeira.PTO_ID,
                 PTO_CHAVE = ProtocoloOnduladeira.PTO_CHAVE,
                 MAQ_ID = ProtocoloOnduladeira.MAQ_ID,
                 PTO_COMANDO = ProtocoloOnduladeira.PTO_COMANDO,
+                OperationalEntityId = ProtocoloOnduladeira.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -95,6 +96,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 PTO_COMANDO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -25,6 +25,7 @@ namespace IQuery.Read
         public QueryModel ExistsByITE_VALOR_DA_CONDICIONALQuery(Decimal value );
         public QueryModel ExistsByITE_VALOR_CALCULADO_DA_CONDICIONALQuery(string value );
         public QueryModel ExistsByITE_TIPO_AVALIACAO_FINALQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -38,6 +39,7 @@ namespace IQuery.Read
         public QueryModel FirstByITE_VALOR_DA_CONDICIONALQuery(Decimal value );
         public QueryModel FirstByITE_VALOR_CALCULADO_DA_CONDICIONALQuery(string value );
         public QueryModel FirstByITE_TIPO_AVALIACAO_FINALQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

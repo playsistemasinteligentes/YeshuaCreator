@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirCalendarioQuery(ICalendarioEntity Calendario)
         {
-            this.Query = $@" INSERT INTO [Calendario] ([CAL_ID], [CAL_DESCRICAO], [CAL_DIVIDE_DIA_EM], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@CAL_ID, @CAL_DESCRICAO, @CAL_DIVIDE_DIA_EM, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Calendario] ([CAL_ID], [CAL_DESCRICAO], [CAL_DIVIDE_DIA_EM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@CAL_ID, @CAL_DESCRICAO, @CAL_DIVIDE_DIA_EM, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAL_ID = Calendario.CAL_ID,
                 CAL_DESCRICAO = Calendario.CAL_DESCRICAO,
                 CAL_DIVIDE_DIA_EM = Calendario.CAL_DIVIDE_DIA_EM,
+                OperationalEntityId = Calendario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -72,6 +73,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CAL_DIVIDE_DIA_EM = value,
+                CAL_ID = cal_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int cal_id, string value)
+        {
+            this.Query = $@" UPDATE [Calendario] SET [OperationalEntityId] = @OperationalEntityId WHERE [CAL_ID] = @CAL_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 CAL_ID = cal_id,
             };
             return new QueryModel(this.Query, this.Parameters);

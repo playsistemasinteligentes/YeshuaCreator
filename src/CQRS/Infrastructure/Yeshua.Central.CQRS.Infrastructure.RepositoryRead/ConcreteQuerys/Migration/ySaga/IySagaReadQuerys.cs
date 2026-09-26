@@ -29,6 +29,7 @@ namespace IQuery.Read
         public QueryModel ExistsByLockedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByLockedByQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
@@ -45,6 +46,7 @@ namespace IQuery.Read
         public QueryModel FirstByLockedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByLockedByQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false);

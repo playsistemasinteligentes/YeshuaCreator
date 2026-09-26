@@ -39,6 +39,7 @@
     string? GRP_ID_COMPOSICAO { get; set; }
     Decimal? ITO_LARGURA { get; set; }
     Decimal? ITO_COMPRIMENTO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

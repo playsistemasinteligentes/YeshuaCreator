@@ -23,6 +23,7 @@ namespace IQuery.Read
         public QueryModel ExistsByTEM_RESINA_DEQuery(string value );
         public QueryModel ExistsByTEM_RESINA_PARAQuery(string value );
         public QueryModel ExistsByTEM_TEMPOQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -33,6 +34,7 @@ namespace IQuery.Read
         public QueryModel FirstByTEM_RESINA_DEQuery(string value );
         public QueryModel FirstByTEM_RESINA_PARAQuery(string value );
         public QueryModel FirstByTEM_TEMPOQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

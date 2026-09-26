@@ -11,8 +11,9 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct yUserReadCommand : ICommandRead
+    public struct yUserReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
+        public string? OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? Nome { get; set; }
         public string? Email { get; set; }
@@ -21,6 +22,8 @@ namespace Command.Read
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "yUser";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

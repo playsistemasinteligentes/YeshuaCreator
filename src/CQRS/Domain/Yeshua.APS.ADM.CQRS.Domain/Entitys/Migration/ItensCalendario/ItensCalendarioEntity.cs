@@ -31,6 +31,7 @@
     public string? MAQ_ID { get; set; }
     public string? PRO_ID { get; set; }
     public int? ICA_LIMPESA_MAQUINA { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -48,6 +49,7 @@
  MAQ_ID = maq_id; 
  PRO_ID = pro_id; 
  ICA_LIMPESA_MAQUINA = ica_limpesa_maquina; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCargaPrevistaQuery(ICargaPrevistaEntity CargaPrevista)
         {
-            this.Query = $@" INSERT INTO [CargaPrevista] ([CAR_ID], [ORD_ID], [ITC_QTD_PLANEJADA], [CAR_PREVISAO_MATERIA_PRIMA], [CAR_DATA_INICIO_PREVISTO], [CAR_DATA_INICIO_REALIZADO], [CAR_DATA_FIM_PREVISTO], [CAR_DATA_FIM_REALIZADO], [CAR_INICIO_JANELA_EMBARQUE], [CAR_FIM_JANELA_EMBARQUE], [CAR_EMBARQUE_ALVO], [CAR_STATUS], [CAR_PESO_TEORICO], [CAR_VOLUME_TEORICO], [CAR_PESO_REAL], [CAR_VOLUME_REAL], [CAR_PESO_EMBALAGEM], [CAR_PESO_ENTRADA], [CAR_PESO_SAIDA], [CAR_ID_DOCA], [VEI_PLACA], [TIP_ID], [TRA_ID], [CAR_GRUPO_PRODUTIVO], [ROT_ID], [CAR_OBSERVACAO_DE_TRANSPORTE], [CAR_JUSTIFICATIVA_DE_CARREGAMENTO], [OCO_ID], [CAR_ID_JUNTADA], [CAR_OBSERVACAO_OTIMIZADOR], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @ITC_QTD_PLANEJADA, @CAR_PREVISAO_MATERIA_PRIMA, @CAR_DATA_INICIO_PREVISTO, @CAR_DATA_INICIO_REALIZADO, @CAR_DATA_FIM_PREVISTO, @CAR_DATA_FIM_REALIZADO, @CAR_INICIO_JANELA_EMBARQUE, @CAR_FIM_JANELA_EMBARQUE, @CAR_EMBARQUE_ALVO, @CAR_STATUS, @CAR_PESO_TEORICO, @CAR_VOLUME_TEORICO, @CAR_PESO_REAL, @CAR_VOLUME_REAL, @CAR_PESO_EMBALAGEM, @CAR_PESO_ENTRADA, @CAR_PESO_SAIDA, @CAR_ID_DOCA, @VEI_PLACA, @TIP_ID, @TRA_ID, @CAR_GRUPO_PRODUTIVO, @ROT_ID, @CAR_OBSERVACAO_DE_TRANSPORTE, @CAR_JUSTIFICATIVA_DE_CARREGAMENTO, @OCO_ID, @CAR_ID_JUNTADA, @CAR_OBSERVACAO_OTIMIZADOR, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CargaPrevista] ([CAR_ID], [ORD_ID], [ITC_QTD_PLANEJADA], [CAR_PREVISAO_MATERIA_PRIMA], [CAR_DATA_INICIO_PREVISTO], [CAR_DATA_INICIO_REALIZADO], [CAR_DATA_FIM_PREVISTO], [CAR_DATA_FIM_REALIZADO], [CAR_INICIO_JANELA_EMBARQUE], [CAR_FIM_JANELA_EMBARQUE], [CAR_EMBARQUE_ALVO], [CAR_STATUS], [CAR_PESO_TEORICO], [CAR_VOLUME_TEORICO], [CAR_PESO_REAL], [CAR_VOLUME_REAL], [CAR_PESO_EMBALAGEM], [CAR_PESO_ENTRADA], [CAR_PESO_SAIDA], [CAR_ID_DOCA], [VEI_PLACA], [TIP_ID], [TRA_ID], [CAR_GRUPO_PRODUTIVO], [ROT_ID], [CAR_OBSERVACAO_DE_TRANSPORTE], [CAR_JUSTIFICATIVA_DE_CARREGAMENTO], [OCO_ID], [CAR_ID_JUNTADA], [CAR_OBSERVACAO_OTIMIZADOR], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @ITC_QTD_PLANEJADA, @CAR_PREVISAO_MATERIA_PRIMA, @CAR_DATA_INICIO_PREVISTO, @CAR_DATA_INICIO_REALIZADO, @CAR_DATA_FIM_PREVISTO, @CAR_DATA_FIM_REALIZADO, @CAR_INICIO_JANELA_EMBARQUE, @CAR_FIM_JANELA_EMBARQUE, @CAR_EMBARQUE_ALVO, @CAR_STATUS, @CAR_PESO_TEORICO, @CAR_VOLUME_TEORICO, @CAR_PESO_REAL, @CAR_VOLUME_REAL, @CAR_PESO_EMBALAGEM, @CAR_PESO_ENTRADA, @CAR_PESO_SAIDA, @CAR_ID_DOCA, @VEI_PLACA, @TIP_ID, @TRA_ID, @CAR_GRUPO_PRODUTIVO, @ROT_ID, @CAR_OBSERVACAO_DE_TRANSPORTE, @CAR_JUSTIFICATIVA_DE_CARREGAMENTO, @OCO_ID, @CAR_ID_JUNTADA, @CAR_OBSERVACAO_OTIMIZADOR, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = CargaPrevista.CAR_ID,
@@ -63,6 +63,7 @@ namespace Query.Write
                 OCO_ID = CargaPrevista.OCO_ID,
                 CAR_ID_JUNTADA = CargaPrevista.CAR_ID_JUNTADA,
                 CAR_OBSERVACAO_OTIMIZADOR = CargaPrevista.CAR_OBSERVACAO_OTIMIZADOR,
+                OperationalEntityId = CargaPrevista.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -407,6 +408,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CAR_OBSERVACAO_OTIMIZADOR = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CargaPrevista] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

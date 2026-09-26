@@ -51,6 +51,7 @@
     public string? OCO_ID { get; set; }
     public string? CAR_ID_JUNTADA { get; set; }
     public string? CAR_OBSERVACAO_OTIMIZADOR { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -88,6 +89,7 @@
  OCO_ID = oco_id; 
  CAR_ID_JUNTADA = car_id_juntada; 
  CAR_OBSERVACAO_OTIMIZADOR = car_observacao_otimizador; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

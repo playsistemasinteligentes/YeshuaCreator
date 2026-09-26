@@ -24,6 +24,7 @@ namespace IQuery.Write
         QueryModel UpdateMAP_CUSTO_PEDAGIO_POR_EIXO(int id, Decimal value);
         QueryModel UpdateROD_ID(int id, int value);
         QueryModel UpdateMAP_ALTURA_ROD(int id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMemoriaDeCalculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMemoriaDeCalculoReceiver), commandName: "Command.Write.MemoriaDeCalculoCrudCommand");
                  var memoriadecalculo = new MemoriaDeCalculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MEM_ID, c.ORC_ID, c.MEM_VALOR, c.MEM_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", memoriadecalculo.OperationalEntityId);
                  var domainResult = MemoriaDeCalculoDomainBehavior.Apply(memoriadecalculo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

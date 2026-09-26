@@ -34,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByUF(string value );
         public bool ExistsByMunicipioCodigoIbge(string value );
         public bool ExistsByEnderecoJson(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -47,6 +48,7 @@ namespace IRepository.Read
         public CTeParticipanteSnapshotDTO FirstByUF(string value );
         public CTeParticipanteSnapshotDTO FirstByMunicipioCodigoIbge(string value );
         public CTeParticipanteSnapshotDTO FirstByEnderecoJson(string value );
+        public CTeParticipanteSnapshotDTO FirstByOperationalEntityId(string value );
         public CTeParticipanteSnapshotDTO FirstByTenantID(int value );
         public CTeParticipanteSnapshotDTO FirstByDeleted(bool value );
         public CTeParticipanteSnapshotDTO FirstByChanged(DateTime value );
@@ -60,6 +62,7 @@ namespace IRepository.Read
         public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByUF(string value );
         public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByMunicipioCodigoIbge(string value );
         public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByEnderecoJson(string value );
+        public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeParticipanteSnapshotDTO> GetAllByChanged(DateTime value );

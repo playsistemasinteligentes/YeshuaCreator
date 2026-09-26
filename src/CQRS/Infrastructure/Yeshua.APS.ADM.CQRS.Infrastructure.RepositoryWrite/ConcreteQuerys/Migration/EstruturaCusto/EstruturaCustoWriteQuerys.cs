@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEstruturaCustoQuery(IEstruturaCustoEntity EstruturaCusto)
         {
-            this.Query = $@" INSERT INTO [EstruturaCusto] ([ITO_ID], [ORD_ID], [PRO_ID], [PRO_ID_PRODUTO], [PRO_ID_COMPONENTE], [PRO_TIPO_CUSTO], [PRO_GRUPO_CONTABIL], [EST_ORDEM], [EST_GRUPO], [EST_QUANT], [EST_VALOR_TOTAL], [EST_DATA_BASE], [EST_BASE_PRODUCAO], [EST_NIVEL], [FPR_SEQ_REPETICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[EST_ID] VALUES(@ITO_ID, @ORD_ID, @PRO_ID, @PRO_ID_PRODUTO, @PRO_ID_COMPONENTE, @PRO_TIPO_CUSTO, @PRO_GRUPO_CONTABIL, @EST_ORDEM, @EST_GRUPO, @EST_QUANT, @EST_VALOR_TOTAL, @EST_DATA_BASE, @EST_BASE_PRODUCAO, @EST_NIVEL, @FPR_SEQ_REPETICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [EstruturaCusto] ([ITO_ID], [ORD_ID], [PRO_ID], [PRO_ID_PRODUTO], [PRO_ID_COMPONENTE], [PRO_TIPO_CUSTO], [PRO_GRUPO_CONTABIL], [EST_ORDEM], [EST_GRUPO], [EST_QUANT], [EST_VALOR_TOTAL], [EST_DATA_BASE], [EST_BASE_PRODUCAO], [EST_NIVEL], [FPR_SEQ_REPETICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[EST_ID] VALUES(@ITO_ID, @ORD_ID, @PRO_ID, @PRO_ID_PRODUTO, @PRO_ID_COMPONENTE, @PRO_TIPO_CUSTO, @PRO_GRUPO_CONTABIL, @EST_ORDEM, @EST_GRUPO, @EST_QUANT, @EST_VALOR_TOTAL, @EST_DATA_BASE, @EST_BASE_PRODUCAO, @EST_NIVEL, @FPR_SEQ_REPETICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ITO_ID = EstruturaCusto.ITO_ID,
@@ -48,6 +48,7 @@ namespace Query.Write
                 EST_BASE_PRODUCAO = EstruturaCusto.EST_BASE_PRODUCAO,
                 EST_NIVEL = EstruturaCusto.EST_NIVEL,
                 FPR_SEQ_REPETICAO = EstruturaCusto.FPR_SEQ_REPETICAO,
+                OperationalEntityId = EstruturaCusto.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -227,6 +228,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 FPR_SEQ_REPETICAO = value,
+                EST_ID = est_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int est_id, string value)
+        {
+            this.Query = $@" UPDATE [EstruturaCusto] SET [OperationalEntityId] = @OperationalEntityId WHERE [EST_ID] = @EST_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 EST_ID = est_id,
             };
             return new QueryModel(this.Query, this.Parameters);

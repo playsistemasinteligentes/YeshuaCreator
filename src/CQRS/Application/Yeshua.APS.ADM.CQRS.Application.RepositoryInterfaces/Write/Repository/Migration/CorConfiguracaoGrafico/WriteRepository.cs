@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateCOR_PERCENTUAL_INI(string cor_id, Decimal value);
         void UpdateCOR_PERCENTUAL_FIM(string cor_id, Decimal value);
         void UpdateCOR_DESCRICAO(string cor_id, string value);
+        void UpdateOperationalEntityId(string cor_id, string value);
         void UpdateTenantID(string cor_id, int value);
         void UpdateDeleted(string cor_id, bool value);
         void UpdateChanged(string cor_id, DateTime value);

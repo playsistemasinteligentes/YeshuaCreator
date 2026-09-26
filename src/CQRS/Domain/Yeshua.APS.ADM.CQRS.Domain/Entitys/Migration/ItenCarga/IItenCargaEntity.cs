@@ -31,6 +31,7 @@
     string? ORD_HASH_KEY { get; set; }
     string? NOT_ID { get; set; }
     DateTime? NOT_EMISSAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

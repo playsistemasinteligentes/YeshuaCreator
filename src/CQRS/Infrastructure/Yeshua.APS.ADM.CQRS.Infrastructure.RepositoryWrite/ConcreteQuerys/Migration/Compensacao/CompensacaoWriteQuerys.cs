@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCompensacaoQuery(ICompensacaoEntity Compensacao)
         {
-            this.Query = $@" INSERT INTO [Compensacao] ([COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@COM_ID, @GRP_ID, @OND_ID, @COM_VINCO1_OND, @COM_VINCO2_OND, @COM_VINCO3_OND, @COM_VINCO4_OND, @COM_VINCO5_OND, @COM_VINCO6_OND, @COM_VINCO7_OND, @COM_VINCO8_OND, @COM_VINCO9_OND, @COM_VINCO10_OND, @COM_VINCO1_CONVERSAO, @COM_VINCO2_CONVERSAO, @COM_VINCO3_CONVERSAO, @COM_VINCO4_CONVERSAO, @COM_VINCO5_CONVERSAO, @COM_VINCO6_CONVERSAO, @COM_VINCO7_CONVERSAO, @COM_VINCO8_CONVERSAO, @COM_VINCO9_CONVERSAO, @COM_VINCO10_CONVERSAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Compensacao] ([COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@COM_ID, @GRP_ID, @OND_ID, @COM_VINCO1_OND, @COM_VINCO2_OND, @COM_VINCO3_OND, @COM_VINCO4_OND, @COM_VINCO5_OND, @COM_VINCO6_OND, @COM_VINCO7_OND, @COM_VINCO8_OND, @COM_VINCO9_OND, @COM_VINCO10_OND, @COM_VINCO1_CONVERSAO, @COM_VINCO2_CONVERSAO, @COM_VINCO3_CONVERSAO, @COM_VINCO4_CONVERSAO, @COM_VINCO5_CONVERSAO, @COM_VINCO6_CONVERSAO, @COM_VINCO7_CONVERSAO, @COM_VINCO8_CONVERSAO, @COM_VINCO9_CONVERSAO, @COM_VINCO10_CONVERSAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 COM_ID = Compensacao.COM_ID,
@@ -56,6 +56,7 @@ namespace Query.Write
                 COM_VINCO8_CONVERSAO = Compensacao.COM_VINCO8_CONVERSAO,
                 COM_VINCO9_CONVERSAO = Compensacao.COM_VINCO9_CONVERSAO,
                 COM_VINCO10_CONVERSAO = Compensacao.COM_VINCO10_CONVERSAO,
+                OperationalEntityId = Compensacao.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -323,6 +324,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 COM_VINCO10_CONVERSAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Compensacao] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

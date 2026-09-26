@@ -37,6 +37,7 @@ namespace IRepository.Read
         public bool ExistsByObservacao(string value );
         public bool ExistsByCriadoEm(DateTime value );
         public bool ExistsByCriadoPor(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -54,6 +55,7 @@ namespace IRepository.Read
         public ExperienciaPlanejamentoTransporteDTO FirstByObservacao(string value );
         public ExperienciaPlanejamentoTransporteDTO FirstByCriadoEm(DateTime value );
         public ExperienciaPlanejamentoTransporteDTO FirstByCriadoPor(string value );
+        public ExperienciaPlanejamentoTransporteDTO FirstByOperationalEntityId(string value );
         public ExperienciaPlanejamentoTransporteDTO FirstByTenantID(int value );
         public ExperienciaPlanejamentoTransporteDTO FirstByDeleted(bool value );
         public ExperienciaPlanejamentoTransporteDTO FirstByChanged(DateTime value );
@@ -71,6 +73,7 @@ namespace IRepository.Read
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByObservacao(string value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByCriadoEm(DateTime value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByCriadoPor(string value );
+        public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByTenantID(int value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByDeleted(bool value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByChanged(DateTime value );

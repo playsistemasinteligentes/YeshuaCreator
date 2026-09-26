@@ -28,6 +28,7 @@ namespace IRepository.Write
         void UpdateTipoMovimentacao(int id, int value);
         void UpdateDataMovimentacao(int id, DateTime value);
         void UpdateSaldoAtual(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

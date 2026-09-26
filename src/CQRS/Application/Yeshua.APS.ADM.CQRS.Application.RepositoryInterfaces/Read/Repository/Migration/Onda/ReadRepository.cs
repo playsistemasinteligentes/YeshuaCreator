@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByOND_PROFUNDIDADE_VINCO(int value );
         public bool ExistsByOND_ID_INTEGRACAO(string value );
         public bool ExistsByVIN_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -45,6 +46,7 @@ namespace IRepository.Read
         public OndaDTO FirstByOND_PROFUNDIDADE_VINCO(int value );
         public OndaDTO FirstByOND_ID_INTEGRACAO(string value );
         public OndaDTO FirstByVIN_ID(int value );
+        public OndaDTO FirstByOperationalEntityId(string value );
         public OndaDTO FirstByTenantID(int value );
         public OndaDTO FirstByDeleted(bool value );
         public OndaDTO FirstByChanged(DateTime value );
@@ -57,6 +59,7 @@ namespace IRepository.Read
         public IEnumerable<OndaDTO> GetAllByOND_PROFUNDIDADE_VINCO(int value );
         public IEnumerable<OndaDTO> GetAllByOND_ID_INTEGRACAO(string value );
         public IEnumerable<OndaDTO> GetAllByVIN_ID(int value );
+        public IEnumerable<OndaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<OndaDTO> GetAllByTenantID(int value );
         public IEnumerable<OndaDTO> GetAllByDeleted(bool value );
         public IEnumerable<OndaDTO> GetAllByChanged(DateTime value );

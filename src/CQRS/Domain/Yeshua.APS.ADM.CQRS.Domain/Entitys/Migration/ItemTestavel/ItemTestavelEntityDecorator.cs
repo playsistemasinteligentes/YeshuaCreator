@@ -29,10 +29,11 @@
             public const ulong ITE_VALOR_DA_CONDICIONAL = 1UL << 6;
             public const ulong ITE_VALOR_CALCULADO_DA_CONDICIONAL = 1UL << 7;
             public const ulong ITE_TIPO_AVALIACAO_FINAL = 1UL << 8;
-            public const ulong TenantID = 1UL << 9;
-            public const ulong Deleted = 1UL << 10;
-            public const ulong Changed = 1UL << 11;
-            public const ulong UserId = 1UL << 12;
+            public const ulong OperationalEntityId = 1UL << 9;
+            public const ulong TenantID = 1UL << 10;
+            public const ulong Deleted = 1UL << 11;
+            public const ulong Changed = 1UL << 12;
+            public const ulong UserId = 1UL << 13;
         }
 
         public partial class ItemTestavelDecorator : IItemTestavelEntity
@@ -187,6 +188,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

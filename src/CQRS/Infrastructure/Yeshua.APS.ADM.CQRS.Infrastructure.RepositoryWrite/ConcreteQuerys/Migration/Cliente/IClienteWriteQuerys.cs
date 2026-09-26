@@ -43,6 +43,7 @@ namespace IQuery.Write
         QueryModel UpdateCLI_INTEGRACAO_ERP(string cli_id, string value);
         QueryModel UpdateCLI_LATITUDE_ENTREGA(string cli_id, Decimal value);
         QueryModel UpdateCLI_LONGITUDE_ENTREGA(string cli_id, Decimal value);
+        QueryModel UpdateOperationalEntityId(string cli_id, string value);
         QueryModel UpdateTenantID(string cli_id, int value);
         QueryModel UpdateDeleted(string cli_id, bool value);
         QueryModel UpdateChanged(string cli_id, DateTime value);

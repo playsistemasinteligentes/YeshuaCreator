@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct yFileUploadReadCommand : ICommandRead
+    public struct yFileUploadReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string? Type { get; set; }
@@ -23,10 +23,13 @@ namespace Command.Read
         public DateTime? CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "yFileUpload";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

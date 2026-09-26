@@ -22,6 +22,7 @@
 {
     public int? Id { get; set; }
     public int TIV_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -48,6 +49,7 @@
  TIV_ESPECIFICACAO = tiv_especificacao; 
  TIV_TOL_MAIS = tiv_tol_mais; 
  TIV_TOL_MENOS = tiv_tol_menos; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

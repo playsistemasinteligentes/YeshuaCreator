@@ -26,6 +26,7 @@ namespace IRepository.Read
         public IEnumerable<TemplateDeTestesUserIdDTO> getTemplateDeTestesReadFKUserId(object command );
         public bool ExistsById(int value );
         public bool ExistsByDescricao(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -33,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByObservacao(string value );
         public TemplateDeTestesDTO FirstById(int value );
         public TemplateDeTestesDTO FirstByDescricao(string value );
+        public TemplateDeTestesDTO FirstByOperationalEntityId(string value );
         public TemplateDeTestesDTO FirstByTenantID(int value );
         public TemplateDeTestesDTO FirstByDeleted(bool value );
         public TemplateDeTestesDTO FirstByChanged(DateTime value );
@@ -40,6 +42,7 @@ namespace IRepository.Read
         public TemplateDeTestesDTO FirstByObservacao(string value );
         public IEnumerable<TemplateDeTestesDTO> GetAllById(int value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByDescricao(string value );
+        public IEnumerable<TemplateDeTestesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByTenantID(int value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByDeleted(bool value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByChanged(DateTime value );

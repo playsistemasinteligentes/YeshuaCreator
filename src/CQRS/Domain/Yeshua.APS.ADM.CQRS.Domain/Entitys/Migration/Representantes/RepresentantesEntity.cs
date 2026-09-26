@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public int REP_ID { get; set; }
     public string? REP_NOME { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  REP_ID = rep_id; 
  REP_NOME = rep_nome; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

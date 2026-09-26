@@ -28,6 +28,7 @@
     public string? MEN_TYPE { get; set; }
     public Decimal? MEN_QTD_TRY_SEND { get; set; }
     public DateTime? MEN_DATE_TRY_SEND { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  MEN_TYPE = men_type; 
  MEN_QTD_TRY_SEND = men_qtd_try_send; 
  MEN_DATE_TRY_SEND = men_date_try_send.HasValue && men_date_try_send.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : men_date_try_send; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

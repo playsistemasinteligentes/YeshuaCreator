@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePendenciasInterface", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePendenciasInterfaceReceiver), commandName: "Command.Write.PendenciasInterfaceCrudCommand");
                  var pendenciasinterface = new PendenciasInterfaceFactory(_logger, _domainTrackingPolicy).Create(context, c.PEN_STATUS_OUT, c.PEN_PROTOCOLO_OUT, c.PEN_ID_PROTOCOLO_OUT, c.PEN_STATUS_IN, c.PEN_PROTOCOLO_IN, c.PEN_ID_PROTOCOLO_IN, c.DATA_ENTRADA, c.PEN_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", pendenciasinterface.OperationalEntityId);
                  var domainResult = PendenciasInterfaceDomainBehavior.Apply(pendenciasinterface, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

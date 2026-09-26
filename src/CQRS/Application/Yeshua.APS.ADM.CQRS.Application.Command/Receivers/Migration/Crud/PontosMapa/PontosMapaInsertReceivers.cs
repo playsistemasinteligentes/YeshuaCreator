@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPontosMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPontosMapaReceiver), commandName: "Command.Write.PontosMapaCrudCommand");
                  var pontosmapa = new PontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.PON_ID, c.PON_DESCRICAO, c.PON_TIPO, c.PON_LATITUDE, c.PON_LONGITUDE, c.PON_DISTANCIA_KM, c.MUN_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", pontosmapa.OperationalEntityId);
                  var domainResult = PontosMapaDomainBehavior.Apply(pontosmapa, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

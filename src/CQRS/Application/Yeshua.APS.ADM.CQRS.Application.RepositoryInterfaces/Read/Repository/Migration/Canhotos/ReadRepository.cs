@@ -32,6 +32,7 @@ namespace IRepository.Read
         public bool ExistsByCAN_IMG(string value );
         public bool ExistsByCAN_LAT_ENTREGA(Decimal value );
         public bool ExistsByCAN_LONG_ENTREGA(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -44,6 +45,7 @@ namespace IRepository.Read
         public CanhotosDTO FirstByCAN_IMG(string value );
         public CanhotosDTO FirstByCAN_LAT_ENTREGA(Decimal value );
         public CanhotosDTO FirstByCAN_LONG_ENTREGA(Decimal value );
+        public CanhotosDTO FirstByOperationalEntityId(string value );
         public CanhotosDTO FirstByTenantID(int value );
         public CanhotosDTO FirstByDeleted(bool value );
         public CanhotosDTO FirstByChanged(DateTime value );
@@ -56,6 +58,7 @@ namespace IRepository.Read
         public IEnumerable<CanhotosDTO> GetAllByCAN_IMG(string value );
         public IEnumerable<CanhotosDTO> GetAllByCAN_LAT_ENTREGA(Decimal value );
         public IEnumerable<CanhotosDTO> GetAllByCAN_LONG_ENTREGA(Decimal value );
+        public IEnumerable<CanhotosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CanhotosDTO> GetAllByTenantID(int value );
         public IEnumerable<CanhotosDTO> GetAllByDeleted(bool value );
         public IEnumerable<CanhotosDTO> GetAllByChanged(DateTime value );

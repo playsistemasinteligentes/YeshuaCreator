@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertResultMedida", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertResultMedidaReceiver), commandName: "Command.Write.ResultMedidaCrudCommand");
                  var resultmedida = new ResultMedidaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RSM_ID, c.RL_ID, c.MDT_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", resultmedida.OperationalEntityId);
                  var domainResult = ResultMedidaDomainBehavior.Apply(resultmedida, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

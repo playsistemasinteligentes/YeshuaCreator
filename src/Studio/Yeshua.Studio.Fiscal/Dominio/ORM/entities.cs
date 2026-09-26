@@ -30,6 +30,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? CodigoRetorno { get; set; }
         public string? MensagemRetorno { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -60,6 +61,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public Decimal? Volume { get; set; }
         public string? SnapshotJson { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -91,6 +93,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? XmlStorageKey { get; set; }
         public string? SnapshotJson { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -114,6 +117,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string PayloadHash { get; set; }
         public string? PayloadStorageKey { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -143,6 +147,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? CargaSnapshotJson { get; set; }
         public string? PreferenciasFiscaisJson { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -177,6 +182,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public Decimal? ValorCarga { get; set; }
         public string? PreferenciasManifestoJson { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -203,6 +209,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public Decimal? ValorDocumento { get; set; }
         public Decimal? PesoBruto { get; set; }
         public string? SnapshotJson { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -225,6 +232,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? UF { get; set; }
         public string? MunicipioCodigoIbge { get; set; }
         public string? EnderecoJson { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -253,6 +261,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? EnviadoEmUtc { get; set; }
         public DateTime? AutorizadoEmUtc { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -275,6 +284,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? PublicadoEmUtc { get; set; }
         public string? UltimoErro { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -300,6 +310,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? EncerradoEm { get; set; }
         public DateTime? CanceladoEm { get; set; }
         public int Situacao { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -323,6 +334,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? DocumentosOriginariosJson { get; set; }
         public string? TransporteSnapshotJson { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -343,6 +355,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string TipoDocumento { get; set; }
         public string? ChaveAcesso { get; set; }
         public string? SnapshotJson { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -360,6 +373,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
         public string UF { get; set; }
         public int Ordem { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -380,6 +394,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public Decimal? Tara { get; set; }
         public Decimal? CapacidadeKg { get; set; }
         public Decimal? CapacidadeM3 { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -397,6 +412,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
         public string Nome { get; set; }
         public string Documento { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -425,6 +441,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? EnviadoEmUtc { get; set; }
         public DateTime? AutorizadoEmUtc { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -449,6 +466,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? Protocolo { get; set; }
         public string? CodigoRetorno { get; set; }
         public string? MensagemRetorno { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -469,6 +487,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string Versao { get; set; }
         public string Url { get; set; }
         public int Ativo { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -489,6 +508,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? ValidoDe { get; set; }
         public DateTime? ValidoAte { get; set; }
         public int Ativo { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -535,6 +555,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime CriadoEmUtc { get; set; }
         public DateTime? AtualizadoEmUtc { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -573,6 +594,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? AtualizadoEmUtc { get; set; }
         public DateTime? ConcluidoEmUtc { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -607,6 +629,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? AtualizadoEmUtc { get; set; }
         public DateTime? ConcluidoEmUtc { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -639,6 +662,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? MensagemRetorno { get; set; }
         public DateTime CriadoEmUtc { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -662,6 +686,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -686,6 +711,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -711,6 +737,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public int RetryCount { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -743,6 +770,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -772,6 +800,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -794,6 +823,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public yTenant yTenant { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
 
@@ -802,6 +832,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yTenant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string CnpjCpf { get; set; }
         public string Nome { get; set; }
@@ -814,6 +845,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yUser
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
@@ -828,6 +860,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yConfigArcteture
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
@@ -843,6 +876,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yConfigNotification
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -860,6 +894,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yPerfil
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string Description { get; set; }
         public int? TenantID { get; set; }
@@ -872,16 +907,9 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public static MyApp.QueryBuilder.Query<yPerfil> Query() => new MyApp.QueryBuilder.Query<yPerfil>();
     }
 
-    public class yModule
-    {
-        public string? Id { get; set; }
-        public string? Description { get; set; }
-
-        public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
-    }
-
     public class yTenantModule
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
@@ -898,6 +926,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yUserModule
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
@@ -914,6 +943,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yGrant
     {
+        public string OperationalEntityId { get; set; }
         public string? Id { get; set; }
         public string? Description { get; set; }
         public int? TenantID { get; set; }
@@ -928,6 +958,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yPerfilGrant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
@@ -951,6 +982,7 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
 
     public class yUserGrant
     {
+        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
@@ -970,6 +1002,14 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public yUser yUser { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserGrant> Query() => new MyApp.QueryBuilder.Query<yUserGrant>();
+    }
+
+    public class yModule
+    {
+        public string? Id { get; set; }
+        public string? Description { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
     }
 
 }

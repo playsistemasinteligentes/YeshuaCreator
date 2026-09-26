@@ -23,10 +23,11 @@
             public const ulong CAL_ID = 1UL << 0;
             public const ulong CAL_DESCRICAO = 1UL << 1;
             public const ulong CAL_DIVIDE_DIA_EM = 1UL << 2;
-            public const ulong TenantID = 1UL << 3;
-            public const ulong Deleted = 1UL << 4;
-            public const ulong Changed = 1UL << 5;
-            public const ulong UserId = 1UL << 6;
+            public const ulong OperationalEntityId = 1UL << 3;
+            public const ulong TenantID = 1UL << 4;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
+            public const ulong UserId = 1UL << 7;
         }
 
         public partial class CalendarioDecorator : ICalendarioEntity
@@ -97,6 +98,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

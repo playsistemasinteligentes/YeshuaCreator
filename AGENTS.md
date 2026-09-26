@@ -107,6 +107,16 @@ Miolos que IA/dev devem preencher:
   `/yapi/{Modulo}/Inbox/YeshuaModuleEvent`. Essa borda deve gravar o minimo
   necessario em `yInbox` e responder rapido; processamento pesado, SEFAZ,
   normalizacao e continuacao de saga pertencem a worker/receiver posterior.
+- Automacoes particulares de um tenant nao devem ser incorporadas aos binarios
+  do aplicativo. A saga publica fatos de negocio versionados por Outbox para
+  uma automacao externa; a automacao reage chamando Commands publicos normais,
+  autenticados, autorizados e idempotentes. O callback nao controla a saga de
+  forma sincrona nem ignora validacoes do dominio.
+- A primeira forma de extensao externa sera HTTP, com assinatura da mensagem,
+  retry e identificador idempotente. Um futuro executor gerenciado de codigo do
+  cliente deve preservar o mesmo contrato e rodar fora dos processos do
+  aplicativo, em ambiente isolado por tenant, sem carregar binarios de cliente
+  na API ou no Worker do Yeshua.
 - Comandos gerados por `StepWait().HttpApi(...)` devem passar por
   `ISagaStepInvoker.Invoke(...)`; esse e o ponto unico para evoluir execucao
   direta do step e continuidade entre steps sem depender obrigatoriamente do
@@ -172,6 +182,14 @@ Miolos que IA/dev devem preencher:
 - `pendencia`: representar ramificacoes de saga para sucesso, falha tecnica,
   rejeicao fiscal e retorno manual sem transformar alternativas em uma lista
   linear de steps obrigatorios.
+- Falha tecnica transitoria de step pode agendar retry automatico; rejeicao de
+  negocio ou fiscal deve falhar imediatamente, sem consumir tentativas iguais.
+  A classificacao e informada ao executor por `SagaStepExecutionException`,
+  mantendo a decisao de retry concentrada no executor compartilhado.
+- Retry manual somente reabre step em estado `Failed`, zera seu contador e
+  agenda a mesma saga para o Worker. A borda nunca executa o handler nem chama
+  integracao externa diretamente; assim, retry automatico e manual percorrem o
+  mesmo caminho operacional.
 - `pendencia`: padronizar na Engine os repositórios internos de saga
   (`Save`, `ClaimRunnableSagas`, `ReleaseLock`, `SetPendingApply`) para todos
   os aplicativos, evitando copiar miolo custom entre apps.
@@ -285,6 +303,27 @@ Miolos que IA/dev devem preencher:
 - Telemetria no caminho quente deve usar chamadas diretas e nunca lancar excecao
   para o fluxo de negocio; essa garantia pertence a implementacao da telemetria,
   nao a wrappers repetidos nos chamadores.
+- A decisao de ligar ou desligar observabilidade deve acontecer antes de criar
+  `Activity`, `Stopwatch`, tags, payloads ou serializacoes. Com a politica
+  desligada, nenhuma dessas estruturas pode ser criada para a operacao.
+- O Yeshua usa `System.Diagnostics.ActivitySource` como API de instrumentacao e
+  o SDK oficial do OpenTelemetry para processar/exportar spans. Nao usar
+  reflection nem instrumentacao automatica no caminho quente enquanto ela nao
+  respeitar a politica operacional do Yeshua.
+- Enquanto nao houver centralizacao OTLP, spans habilitados sao escritos em
+  JSONL no stdout para coleta sob demanda pelos logs do Docker. A configuracao
+  opcional `OpenTelemetry:Otlp:Endpoint` adiciona exportacao OTLP sem alterar os
+  pontos de instrumentacao existentes.
+- Cada registro retirado por worker inicia uma raiz tecnica independente; o
+  lote de polling nao e pai dos traces dos registros processados em paralelo.
+- `OperationalEntityId` e a identidade imutavel de vida da entidade, criada
+  antes do primeiro insert e persistida como campo standard. Ela permite reunir
+  historico de negocio entre varias bordas e traces, mas nao substitui
+  `TraceId`/`SpanId`, que identificam execucoes tecnicas.
+- `RootOperationId` identifica o fluxo de negocio quando houver uma correlacao
+  mais ampla, como saga ou carga. `OperationalEntityId`, `RootOperationId` e
+  `TraceId` devem permanecer conceitos separados e aparecer como atributos dos
+  spans quando estiverem disponiveis.
 - Valores derivados de tipos, nomes, identificadores e queries devem ser
   gerados ou calculados uma unica vez, nunca repetidamente por chamada.
 - Detalhamento de logs deve ser decidido antes de construir payloads ou
@@ -384,6 +423,28 @@ Regra resumida:
 - A Central conhece apenas catalogos de aplicativos e suas rotas logicas. Ela
   nao declara, replica nem reconstrui os modulos ou menus internos dos outros
   Studios.
+- O Front mantem somente um token ativo em `localStorage.token`. Nao guarda em
+  paralelo token da Central e tokens de cada aplicativo.
+- Todo token da plataforma preserva a identidade global do tenant e do usuario,
+  os IDs originais da Central e a lista completa de catalogos autorizados. O
+  token tambem informa `tokenOrigin` e `application`, deixando explicito quem o
+  emitiu e para qual aplicativo ele esta escopado.
+- A entrada em um aplicativo acontece pelo `GET /getMenu`, que ja representa a
+  abertura do modulo. Quando o token atual pertence a outro escopo, essa borda
+  valida o catalogo, cria ou localiza `yTenant` e `yUser` locais e devolve em
+  `X-Yeshua-Application-Token` um novo token escopado ao aplicativo. O Front
+  substitui o token atual e segue usando o fluxo existente.
+- APIs de negocio aceitam somente o token escopado ao proprio aplicativo. Um
+  token de outro aplicativo pode ser usado apenas na politica de entrada do
+  modulo, nunca diretamente nos endpoints internos.
+- IDs numericos de tenant e usuario continuam locais a cada banco. A correlacao
+  entre Central e aplicativos usa `OperationalEntityId`, evitando replicacao
+  sincrona, igualdade artificial de identities e consulta de existencia em cada
+  requisicao.
+- A renovacao futura pertence a Central: ela podera reemitir o token a partir
+  das identidades globais preservadas em qualquer token Yeshua. Ate essa borda
+  ser implementada, expiracao exige novo login e nao justifica armazenar dois
+  tokens no navegador.
 - Definicoes centrais de autorizacao continuam tendo a DSL de cada Studio como
   fonte. Na execucao normal do Studio, `CentralAuthorizationSchema` projeta no
   banco Central somente modulos e scopes declarados pelas migrations daquele

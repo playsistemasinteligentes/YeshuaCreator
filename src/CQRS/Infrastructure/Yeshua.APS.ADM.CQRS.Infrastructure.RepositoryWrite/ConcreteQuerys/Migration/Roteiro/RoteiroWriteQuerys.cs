@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRoteiroQuery(IRoteiroEntity Roteiro)
         {
-            this.Query = $@" INSERT INTO [Roteiro] ([MaquinaId], [ProdutoId], [SequenciaTransformacao], [GrupoMaquinaId], [PecasPorPulso], [PrioridadeInformada], [Acao], [Performance], [TempoSetup], [TempoSetupAjuste], [ProximaSequenciaTransformacao], [Status], [HierarquiaSequenciaTransformacao], [AvaliaCusto], [Operacoes], [ExcecaoOperacoes], [PercentualInicioPassoAnterior], [LinhaDireta], [TemplateDeTestesId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MaquinaId, @ProdutoId, @SequenciaTransformacao, @GrupoMaquinaId, @PecasPorPulso, @PrioridadeInformada, @Acao, @Performance, @TempoSetup, @TempoSetupAjuste, @ProximaSequenciaTransformacao, @Status, @HierarquiaSequenciaTransformacao, @AvaliaCusto, @Operacoes, @ExcecaoOperacoes, @PercentualInicioPassoAnterior, @LinhaDireta, @TemplateDeTestesId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Roteiro] ([MaquinaId], [ProdutoId], [SequenciaTransformacao], [GrupoMaquinaId], [PecasPorPulso], [PrioridadeInformada], [Acao], [Performance], [TempoSetup], [TempoSetupAjuste], [ProximaSequenciaTransformacao], [Status], [HierarquiaSequenciaTransformacao], [AvaliaCusto], [Operacoes], [ExcecaoOperacoes], [PercentualInicioPassoAnterior], [LinhaDireta], [TemplateDeTestesId], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MaquinaId, @ProdutoId, @SequenciaTransformacao, @GrupoMaquinaId, @PecasPorPulso, @PrioridadeInformada, @Acao, @Performance, @TempoSetup, @TempoSetupAjuste, @ProximaSequenciaTransformacao, @Status, @HierarquiaSequenciaTransformacao, @AvaliaCusto, @Operacoes, @ExcecaoOperacoes, @PercentualInicioPassoAnterior, @LinhaDireta, @TemplateDeTestesId, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MaquinaId = Roteiro.MaquinaId,
@@ -52,6 +52,7 @@ namespace Query.Write
                 PercentualInicioPassoAnterior = Roteiro.PercentualInicioPassoAnterior,
                 LinhaDireta = Roteiro.LinhaDireta,
                 TemplateDeTestesId = Roteiro.TemplateDeTestesId,
+                OperationalEntityId = Roteiro.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -275,6 +276,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TemplateDeTestesId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Roteiro] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

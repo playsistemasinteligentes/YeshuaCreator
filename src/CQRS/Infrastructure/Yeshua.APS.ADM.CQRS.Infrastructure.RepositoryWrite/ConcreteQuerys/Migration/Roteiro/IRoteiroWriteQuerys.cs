@@ -36,6 +36,7 @@ namespace IQuery.Write
         QueryModel UpdatePercentualInicioPassoAnterior(int id, Decimal value);
         QueryModel UpdateLinhaDireta(int id, string value);
         QueryModel UpdateTemplateDeTestesId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

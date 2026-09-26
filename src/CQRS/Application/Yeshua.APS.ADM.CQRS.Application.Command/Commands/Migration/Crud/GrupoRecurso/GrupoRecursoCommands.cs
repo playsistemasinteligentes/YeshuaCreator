@@ -11,14 +11,17 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct GrupoRecursoCrudCommand : ICommand
+    public struct GrupoRecursoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public string GRE_ID { get; set; }
         public string? GRE_DESCRICAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "GrupoRecurso";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

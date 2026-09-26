@@ -29,6 +29,7 @@
     string? PLO_Z { get; set; }
     string? PLO_GRAFICO { get; set; }
     int? CON_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

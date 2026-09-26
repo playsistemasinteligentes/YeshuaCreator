@@ -23,6 +23,7 @@ namespace IQuery.Write
         QueryModel UpdateCOT_VALOR(int id, Decimal value);
         QueryModel UpdateCOT_OCUPADO(int id, Decimal value);
         QueryModel UpdateREP_ID(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

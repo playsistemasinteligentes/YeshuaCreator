@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTurma", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTurmaReceiver), commandName: "Command.Write.TurmaCrudCommand");
                  var turma = new TurmaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.TURM_HORA_INI_DIA1, c.TURM_HORA_FIM_DIA1, c.TURM_HORA_INI_DIA2, c.TURM_HORA_FIM_DIA2, c.TURM_HORA_INI_DIA3, c.TURM_HORA_FIM_DIA3, c.TURM_HORA_INI_DIA4, c.TURM_HORA_FIM_DIA4, c.TURM_HORA_INI_DIA5, c.TURM_HORA_FIM_DIA5, c.TURM_HORA_INI_DIA6, c.TURM_HORA_FIM_DIA6, c.TURM_HORA_INI_DIA7, c.TURM_HORA_FIM_DIA7);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", turma.OperationalEntityId);
                  var domainResult = TurmaDomainBehavior.Apply(turma, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

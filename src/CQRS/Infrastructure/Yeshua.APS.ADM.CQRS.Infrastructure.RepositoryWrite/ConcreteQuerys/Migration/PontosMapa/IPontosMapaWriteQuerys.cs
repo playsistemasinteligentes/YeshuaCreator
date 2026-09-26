@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdatePON_LATITUDE(string pon_id, Decimal value);
         QueryModel UpdatePON_LONGITUDE(string pon_id, Decimal value);
         QueryModel UpdatePON_DISTANCIA_KM(string pon_id, Decimal value);
+        QueryModel UpdateOperationalEntityId(string pon_id, string value);
         QueryModel UpdateTenantID(string pon_id, int value);
         QueryModel UpdateDeleted(string pon_id, bool value);
         QueryModel UpdateChanged(string pon_id, DateTime value);

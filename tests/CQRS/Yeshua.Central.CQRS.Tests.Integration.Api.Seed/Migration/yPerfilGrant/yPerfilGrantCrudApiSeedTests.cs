@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Central.CQRS.Tests.Integration.Api.Seed.Migration.yPerfilGrant;
 
-[SeedTestOrder(16)]
+[SeedTestOrder(13)]
 public partial class yPerfilGrantCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yPerfilGrant/PostyPerfilGrant";

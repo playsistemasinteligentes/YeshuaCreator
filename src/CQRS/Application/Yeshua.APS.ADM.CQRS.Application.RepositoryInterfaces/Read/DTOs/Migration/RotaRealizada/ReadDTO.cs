@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public DateTime rot_data_hora { get; set; }
     public Decimal rot_lat { get; set; }
     public Decimal rot_long { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

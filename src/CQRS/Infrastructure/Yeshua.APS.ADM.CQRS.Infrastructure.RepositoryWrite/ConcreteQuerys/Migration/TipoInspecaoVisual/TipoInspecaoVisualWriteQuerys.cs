@@ -30,10 +30,11 @@ namespace Query.Write
         }
         public QueryModel InserirTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual)
         {
-            this.Query = $@" INSERT INTO [TipoInspecaoVisual] ([TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS]) OUTPUT INSERTED.[Id] VALUES(@TIV_ID, @TenantID, @Deleted, @Changed, @UserId, @TIV_NOME, @TIV_DESCRICAO, @TIV_FECHAMENTO, @TIV_AMOSTRA_ALEATORIA, @TIV_N_AMOSTRAS, @TIV_MEDIDA, @TIV_ESPECIFICACAO, @TIV_TOL_MAIS, @TIV_TOL_MENOS) ";
+            this.Query = $@" INSERT INTO [TipoInspecaoVisual] ([TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS]) OUTPUT INSERTED.[Id] VALUES(@TIV_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @TIV_NOME, @TIV_DESCRICAO, @TIV_FECHAMENTO, @TIV_AMOSTRA_ALEATORIA, @TIV_N_AMOSTRAS, @TIV_MEDIDA, @TIV_ESPECIFICACAO, @TIV_TOL_MAIS, @TIV_TOL_MENOS) ";
             this.Parameters = new
             {
                 TIV_ID = TipoInspecaoVisual.TIV_ID,
+                OperationalEntityId = TipoInspecaoVisual.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -77,6 +78,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TIV_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

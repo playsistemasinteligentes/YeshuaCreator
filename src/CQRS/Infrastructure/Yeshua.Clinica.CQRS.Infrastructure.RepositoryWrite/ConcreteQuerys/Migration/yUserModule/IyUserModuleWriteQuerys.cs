@@ -17,6 +17,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryUserModuleQuery(IyUserModuleEntity yUserModule);
         public QueryModel UpdateyUserModuleQuery(IyUserModuleEntity yUserModule);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateModuleId(int id, string value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateValidUntil(int id, DateTime value);

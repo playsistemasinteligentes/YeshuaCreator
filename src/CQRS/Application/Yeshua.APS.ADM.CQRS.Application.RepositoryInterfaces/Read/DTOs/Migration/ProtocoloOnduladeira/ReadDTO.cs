@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public string pto_chave { get; set; } = string.Empty;
     public string maq_id { get; set; } = string.Empty;
     public string pto_comando { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

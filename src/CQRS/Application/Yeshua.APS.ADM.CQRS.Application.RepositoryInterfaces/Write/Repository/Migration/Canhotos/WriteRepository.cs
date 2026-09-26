@@ -29,6 +29,7 @@ namespace IRepository.Write
         void UpdateCAN_IMG(int id, string value);
         void UpdateCAN_LAT_ENTREGA(int id, Decimal value);
         void UpdateCAN_LONG_ENTREGA(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdateMAQ_ID(int ica_id, string value);
         QueryModel UpdatePRO_ID(int ica_id, string value);
         QueryModel UpdateICA_LIMPESA_MAQUINA(int ica_id, int value);
+        QueryModel UpdateOperationalEntityId(int ica_id, string value);
         QueryModel UpdateTenantID(int ica_id, int value);
         QueryModel UpdateDeleted(int ica_id, bool value);
         QueryModel UpdateChanged(int ica_id, DateTime value);

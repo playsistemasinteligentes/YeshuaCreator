@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdateCDV_SEXTA(int id, int value);
         QueryModel UpdateCDV_SABADO(int id, int value);
         QueryModel UpdateCDV_DOMINGO(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -28,6 +28,7 @@
     string? PRE_VALOR { get; set; }
     int? USE_ID { get; set; }
     int? PER_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

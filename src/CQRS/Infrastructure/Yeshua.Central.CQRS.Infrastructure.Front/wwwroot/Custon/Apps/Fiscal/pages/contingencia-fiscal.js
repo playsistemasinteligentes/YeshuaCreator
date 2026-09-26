@@ -3,12 +3,13 @@ import { showAlert } from '/spa/scripts/alerts.js?v=20260919-parametros01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260924-fiscal-utils-layout01';
+const assetVersion = '20260926-integration-doc05';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
     consultarProcessamento: '/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase',
     baixarPacote: '/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase',
+    retrySagaStep: '/Saga/OperacaoRetrySagaStepUseCase',
     registrarCertificado: '/Fiscal/SEFAZRegistrarCertificadoDigitalContingenciaUseCase',
     testeSync: '/Fiscal/TesteIniciarSagaTesteSyncUseCase',
     testeSyncAcordarPasso3: '/Fiscal/TesteAcordarSagaTesteSyncPasso3UseCase',
@@ -176,6 +177,7 @@ function injectCss() {
 }
 
 function bindEvents() {
+    bindIntegrationCopyButtons();
     document.getElementById('fiscal-contingencia-new')?.addEventListener('click', resetForm);
     document.getElementById('fiscal-clear-xmls')?.addEventListener('click', clearXmls);
     document.getElementById('fiscal-nfe-files')?.addEventListener('change', event => {
@@ -193,6 +195,15 @@ function bindEvents() {
     document.getElementById('fiscal-vincular-certificado')?.addEventListener('click', vincularCertificado);
     document.getElementById('fiscal-consultar-processamento')?.addEventListener('click', consultarProcessamentoFiscal);
     document.getElementById('fiscal-baixar-documentos')?.addEventListener('click', baixarDocumentosFiscais);
+    document.getElementById('fiscal-contingencia-steps')?.addEventListener('click', event => {
+        const button = event.target.closest('[data-retry-saga-step]');
+        if (!button) return;
+
+        retrySagaStep(
+            Number(button.dataset.sagaId || 0),
+            Number(button.dataset.sagaStepId || 0),
+            button);
+    });
     document.getElementById('fiscal-utilitario-consultar-cte')?.addEventListener('click', () => executarUtilitarioDocumento('consultarCte'));
     document.getElementById('fiscal-utilitario-xml-cte')?.addEventListener('click', () => executarUtilitarioDocumento('xmlCte'));
     document.getElementById('fiscal-utilitario-dacte')?.addEventListener('click', () => executarUtilitarioDocumento('dacte'));
@@ -205,6 +216,46 @@ function bindEvents() {
     document.getElementById('fiscal-utilitario-condutor-mdfe')?.addEventListener('click', () => executarEventoFiscal('incluirCondutorMdfe'));
     document.getElementById('fiscal-utilitario-encerrar-mdfe')?.addEventListener('click', () => executarEventoFiscal('encerrarMdfe'));
     bindPreparationPreviewEvents();
+}
+
+function bindIntegrationCopyButtons() {
+    document.querySelectorAll('.fiscal-integration-contracts pre').forEach(pre => {
+        if (pre.querySelector('.fiscal-copy-code')) return;
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'fiscal-copy-code';
+        button.title = 'Copiar comando';
+        button.setAttribute('aria-label', 'Copiar comando');
+        button.textContent = '⧉';
+        button.addEventListener('click', async () => {
+            const code = pre.querySelector('code')?.innerText || '';
+            await copyText(code);
+            button.textContent = '✓';
+            button.classList.add('is-copied');
+            window.setTimeout(() => {
+                button.textContent = '⧉';
+                button.classList.remove('is-copied');
+            }, 1400);
+        });
+        pre.prepend(button);
+    });
+}
+
+async function copyText(value) {
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
 }
 
 async function executarUtilitarioDocumento(operation) {
@@ -1982,6 +2033,12 @@ function renderSagaStep(step) {
     const nome = readField(step, 'stepKey', 'StepKey') || '-';
     const status = readField(step, 'statusDescricao', 'StatusDescricao') || 'Desconhecido';
     const erro = readField(step, 'erro', 'Erro') || '';
+    const statusCode = Number(readField(step, 'status', 'Status') || 0);
+    const sagaId = Number(readField(step, 'sagaId', 'SagaId') || 0);
+    const sagaStepId = Number(readField(step, 'sagaStepId', 'SagaStepId') || 0);
+    const retryButton = statusCode === 6 && sagaId > 0 && sagaStepId > 0
+        ? `<button type="button" class="fiscal-saga-retry" data-retry-saga-step data-saga-id="${sagaId}" data-saga-step-id="${sagaStepId}" aria-label="Tentar novamente" title="Tentar novamente">&#8635;</button>`
+        : '';
 
     return `
         <div class="fiscal-saga-step">
@@ -1989,9 +2046,30 @@ function renderSagaStep(step) {
                 <strong>${escapeHtml(nome)}</strong>
                 ${erro ? `<small>${escapeHtml(erro)}</small>` : ''}
             </div>
-            <span>${escapeHtml(status)}</span>
+            <div class="fiscal-saga-step-status">
+                <span>${escapeHtml(status)}</span>
+                ${retryButton}
+            </div>
         </div>
     `;
+}
+
+async function retrySagaStep(sagaId, sagaStepId, button) {
+    if (sagaId <= 0 || sagaStepId <= 0) {
+        feedback('Saga ou step invalido para nova tentativa.');
+        return;
+    }
+
+    button.disabled = true;
+    try {
+        await postUseCase(endpoints.retrySagaStep, { sagaId, sagaStepId });
+        feedback('Step liberado para nova tentativa.');
+        await consultarProcessamentoFiscal();
+    } catch (error) {
+        feedback(error.message || 'Nao foi possivel repetir o step.');
+    } finally {
+        button.disabled = false;
+    }
 }
 
 function buildApiUrl(endpoint) {

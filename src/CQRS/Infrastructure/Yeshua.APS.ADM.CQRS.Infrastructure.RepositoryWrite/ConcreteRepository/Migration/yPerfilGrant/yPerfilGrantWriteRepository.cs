@@ -51,6 +51,11 @@ namespace Input.Repository.yPerfilGrant
             var query = _query.DeleteyPerfilGrantQuery(yPerfilGrant);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdatePerfilId(int id, int value)
         {
             var query = _query.UpdatePerfilId(id, value);

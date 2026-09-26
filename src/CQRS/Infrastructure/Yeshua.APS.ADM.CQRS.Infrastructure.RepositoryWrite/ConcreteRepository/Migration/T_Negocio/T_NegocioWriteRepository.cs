@@ -56,6 +56,11 @@ namespace Input.Repository.T_Negocio
             var query = _query.UpdateNEG_DESCRICAO(neg_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int neg_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(neg_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int neg_id, int value)
         {
             var query = _query.UpdateTenantID(neg_id, value);

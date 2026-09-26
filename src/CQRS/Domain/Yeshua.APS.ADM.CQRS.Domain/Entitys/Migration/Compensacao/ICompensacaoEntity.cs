@@ -44,6 +44,7 @@
     int? COM_VINCO8_CONVERSAO { get; set; }
     int? COM_VINCO9_CONVERSAO { get; set; }
     int? COM_VINCO10_CONVERSAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

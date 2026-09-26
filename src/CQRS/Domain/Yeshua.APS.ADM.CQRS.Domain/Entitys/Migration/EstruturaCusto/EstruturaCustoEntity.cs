@@ -36,6 +36,7 @@
     public Decimal EST_BASE_PRODUCAO { get; set; }
     public Decimal? EST_NIVEL { get; set; }
     public int? FPR_SEQ_REPETICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -58,6 +59,7 @@
  EST_BASE_PRODUCAO = est_base_producao; 
  EST_NIVEL = est_nivel; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

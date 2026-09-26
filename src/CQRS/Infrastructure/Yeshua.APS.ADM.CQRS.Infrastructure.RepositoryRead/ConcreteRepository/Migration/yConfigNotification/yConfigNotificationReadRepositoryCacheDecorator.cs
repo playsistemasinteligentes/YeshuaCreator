@@ -84,6 +84,11 @@ namespace Read.Repository
             if (result != null) _cacheFKUserId.Set(key, result,"yConfigNotification");
             return result ?? System.Array.Empty<yConfigNotificationUserIdDTO>();
         }
+        public bool ExistsByOperationalEntityId(string value )
+        {
+                return _inner.ExistsByOperationalEntityId(value );
+        }
+
         public bool ExistsById(int value )
         {
                 return _inner.ExistsById(value );
@@ -129,6 +134,11 @@ namespace Read.Repository
                 return _inner.ExistsByUserId(value );
         }
 
+        public yConfigNotificationDTO FirstByOperationalEntityId(string value )
+        {
+                return _inner.FirstByOperationalEntityId(value );
+        }
+
         public yConfigNotificationDTO FirstById(int value )
         {
                 return _inner.FirstById(value );
@@ -172,6 +182,11 @@ namespace Read.Repository
         public yConfigNotificationDTO FirstByUserId(int value )
         {
                 return _inner.FirstByUserId(value );
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value )
+        {
+                return _inner.GetAllByOperationalEntityId(value );
         }
 
         public IEnumerable<yConfigNotificationDTO> GetAllById(int value )

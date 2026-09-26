@@ -564,139 +564,139 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step131.DeleteAsync);
             await step131.ExecuteAsync();
 
-            var step132 = new yModule.yModuleCrudApiSmokeTests();
+            var step132 = new yGrant.yGrantCrudApiSmokeTests();
             deleteSteps.Push(step132.DeleteAsync);
             await step132.ExecuteAsync();
 
-            var step133 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
+            var step133 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
             deleteSteps.Push(step133.DeleteAsync);
             await step133.ExecuteAsync();
 
-            var step134 = new yUserModule.yUserModuleCrudApiSmokeTests();
+            var step134 = new yUserGrant.yUserGrantCrudApiSmokeTests();
             deleteSteps.Push(step134.DeleteAsync);
             await step134.ExecuteAsync();
 
-            var step135 = new yGrant.yGrantCrudApiSmokeTests();
+            var step135 = new yModule.yModuleCrudApiSmokeTests();
             deleteSteps.Push(step135.DeleteAsync);
             await step135.ExecuteAsync();
 
-            var step136 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
+            var step136 = new Maquina.MaquinaCrudApiSmokeTests();
             deleteSteps.Push(step136.DeleteAsync);
             await step136.ExecuteAsync();
 
-            var step137 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            var step137 = new Auditoria.AuditoriaCrudApiSmokeTests();
             deleteSteps.Push(step137.DeleteAsync);
             await step137.ExecuteAsync();
 
-            var step138 = new Maquina.MaquinaCrudApiSmokeTests();
+            var step138 = new Cliente.ClienteCrudApiSmokeTests();
             deleteSteps.Push(step138.DeleteAsync);
             await step138.ExecuteAsync();
 
-            var step139 = new Auditoria.AuditoriaCrudApiSmokeTests();
+            var step139 = new Colaborador.ColaboradorCrudApiSmokeTests();
             deleteSteps.Push(step139.DeleteAsync);
             await step139.ExecuteAsync();
 
-            var step140 = new Cliente.ClienteCrudApiSmokeTests();
+            var step140 = new EstruturaImpressao.EstruturaImpressaoCrudApiSmokeTests();
             deleteSteps.Push(step140.DeleteAsync);
             await step140.ExecuteAsync();
 
-            var step141 = new Colaborador.ColaboradorCrudApiSmokeTests();
+            var step141 = new T_HORARIO_RECEBIMENTO.T_HORARIO_RECEBIMENTOCrudApiSmokeTests();
             deleteSteps.Push(step141.DeleteAsync);
             await step141.ExecuteAsync();
 
-            var step142 = new EstruturaImpressao.EstruturaImpressaoCrudApiSmokeTests();
+            var step142 = new T_Indicadores.T_IndicadoresCrudApiSmokeTests();
             deleteSteps.Push(step142.DeleteAsync);
             await step142.ExecuteAsync();
 
-            var step143 = new T_HORARIO_RECEBIMENTO.T_HORARIO_RECEBIMENTOCrudApiSmokeTests();
+            var step143 = new IndicadoresDepartamentos.IndicadoresDepartamentosCrudApiSmokeTests();
             deleteSteps.Push(step143.DeleteAsync);
             await step143.ExecuteAsync();
 
-            var step144 = new T_Indicadores.T_IndicadoresCrudApiSmokeTests();
+            var step144 = new IndicadoresDimencoes.IndicadoresDimencoesCrudApiSmokeTests();
             deleteSteps.Push(step144.DeleteAsync);
             await step144.ExecuteAsync();
 
-            var step145 = new IndicadoresDepartamentos.IndicadoresDepartamentosCrudApiSmokeTests();
+            var step145 = new IndicadoresFatosDimencoes.IndicadoresFatosDimencoesCrudApiSmokeTests();
             deleteSteps.Push(step145.DeleteAsync);
             await step145.ExecuteAsync();
 
-            var step146 = new IndicadoresDimencoes.IndicadoresDimencoesCrudApiSmokeTests();
+            var step146 = new IndicadoresPeriodosDimencoes.IndicadoresPeriodosDimencoesCrudApiSmokeTests();
             deleteSteps.Push(step146.DeleteAsync);
             await step146.ExecuteAsync();
 
-            var step147 = new IndicadoresFatosDimencoes.IndicadoresFatosDimencoesCrudApiSmokeTests();
+            var step147 = new ItensCalendario.ItensCalendarioCrudApiSmokeTests();
             deleteSteps.Push(step147.DeleteAsync);
             await step147.ExecuteAsync();
 
-            var step148 = new IndicadoresPeriodosDimencoes.IndicadoresPeriodosDimencoesCrudApiSmokeTests();
+            var step148 = new LogsDatabase.LogsDatabaseCrudApiSmokeTests();
             deleteSteps.Push(step148.DeleteAsync);
             await step148.ExecuteAsync();
 
-            var step149 = new ItensCalendario.ItensCalendarioCrudApiSmokeTests();
+            var step149 = new Mapa.MapaCrudApiSmokeTests();
             deleteSteps.Push(step149.DeleteAsync);
             await step149.ExecuteAsync();
 
-            var step150 = new LogsDatabase.LogsDatabaseCrudApiSmokeTests();
+            var step150 = new T_Metas.T_MetasCrudApiSmokeTests();
             deleteSteps.Push(step150.DeleteAsync);
             await step150.ExecuteAsync();
 
-            var step151 = new Mapa.MapaCrudApiSmokeTests();
+            var step151 = new Observacoes.ObservacoesCrudApiSmokeTests();
             deleteSteps.Push(step151.DeleteAsync);
             await step151.ExecuteAsync();
 
-            var step152 = new T_Metas.T_MetasCrudApiSmokeTests();
+            var step152 = new Ocorrencia.OcorrenciaCrudApiSmokeTests();
             deleteSteps.Push(step152.DeleteAsync);
             await step152.ExecuteAsync();
 
-            var step153 = new Observacoes.ObservacoesCrudApiSmokeTests();
+            var step153 = new Onda.OndaCrudApiSmokeTests();
             deleteSteps.Push(step153.DeleteAsync);
             await step153.ExecuteAsync();
 
-            var step154 = new Ocorrencia.OcorrenciaCrudApiSmokeTests();
+            var step154 = new Orcamento.OrcamentoCrudApiSmokeTests();
             deleteSteps.Push(step154.DeleteAsync);
             await step154.ExecuteAsync();
 
-            var step155 = new Onda.OndaCrudApiSmokeTests();
+            var step155 = new Order.OrderCrudApiSmokeTests();
             deleteSteps.Push(step155.DeleteAsync);
             await step155.ExecuteAsync();
 
-            var step156 = new Orcamento.OrcamentoCrudApiSmokeTests();
+            var step156 = new Planoacao.PlanoacaoCrudApiSmokeTests();
             deleteSteps.Push(step156.DeleteAsync);
             await step156.ExecuteAsync();
 
-            var step157 = new Order.OrderCrudApiSmokeTests();
+            var step157 = new TempoSetupOnduladeira.TempoSetupOnduladeiraCrudApiSmokeTests();
             deleteSteps.Push(step157.DeleteAsync);
             await step157.ExecuteAsync();
 
-            var step158 = new Planoacao.PlanoacaoCrudApiSmokeTests();
+            var step158 = new TesteFisico.TesteFisicoCrudApiSmokeTests();
             deleteSteps.Push(step158.DeleteAsync);
             await step158.ExecuteAsync();
 
-            var step159 = new TempoSetupOnduladeira.TempoSetupOnduladeiraCrudApiSmokeTests();
+            var step159 = new TipoTeste.TipoTesteCrudApiSmokeTests();
             deleteSteps.Push(step159.DeleteAsync);
             await step159.ExecuteAsync();
 
-            var step160 = new TesteFisico.TesteFisicoCrudApiSmokeTests();
+            var step160 = new Uniuser.UniuserCrudApiSmokeTests();
             deleteSteps.Push(step160.DeleteAsync);
             await step160.ExecuteAsync();
 
-            var step161 = new TipoTeste.TipoTesteCrudApiSmokeTests();
+            var step161 = new T_USER_GRUPO.T_USER_GRUPOCrudApiSmokeTests();
             deleteSteps.Push(step161.DeleteAsync);
             await step161.ExecuteAsync();
 
-            var step162 = new Uniuser.UniuserCrudApiSmokeTests();
+            var step162 = new Movimentos.MovimentosCrudApiSmokeTests();
             deleteSteps.Push(step162.DeleteAsync);
             await step162.ExecuteAsync();
 
-            var step163 = new T_USER_GRUPO.T_USER_GRUPOCrudApiSmokeTests();
+            var step163 = new TemplateTipoTeste.TemplateTipoTesteCrudApiSmokeTests();
             deleteSteps.Push(step163.DeleteAsync);
             await step163.ExecuteAsync();
 
-            var step164 = new Movimentos.MovimentosCrudApiSmokeTests();
+            var step164 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
             deleteSteps.Push(step164.DeleteAsync);
             await step164.ExecuteAsync();
 
-            var step165 = new TemplateTipoTeste.TemplateTipoTesteCrudApiSmokeTests();
+            var step165 = new yUserModule.yUserModuleCrudApiSmokeTests();
             deleteSteps.Push(step165.DeleteAsync);
             await step165.ExecuteAsync();
 

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRepresentantes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRepresentantesReceiver), commandName: "Command.Write.RepresentantesCrudCommand");
                  var representantes = new RepresentantesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REP_ID, c.REP_NOME);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", representantes.OperationalEntityId);
                  var domainResult = RepresentantesDomainBehavior.Apply(representantes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

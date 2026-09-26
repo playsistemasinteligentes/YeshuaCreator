@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItemTestavelQuery(IItemTestavelEntity ItemTestavel)
         {
-            this.Query = $@" INSERT INTO [ItemTestavel] ([ITE_ID], [ITE_DESCRICAO], [ITE_OBS], [ITE_NUMERO_DE_TESTES], [ITE_CONDICIONAL_DE_AVALIACAO], [ITE_VALOR_DA_CONDICIONAL], [ITE_VALOR_CALCULADO_DA_CONDICIONAL], [ITE_TIPO_AVALIACAO_FINAL], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ITE_ID, @ITE_DESCRICAO, @ITE_OBS, @ITE_NUMERO_DE_TESTES, @ITE_CONDICIONAL_DE_AVALIACAO, @ITE_VALOR_DA_CONDICIONAL, @ITE_VALOR_CALCULADO_DA_CONDICIONAL, @ITE_TIPO_AVALIACAO_FINAL, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItemTestavel] ([ITE_ID], [ITE_DESCRICAO], [ITE_OBS], [ITE_NUMERO_DE_TESTES], [ITE_CONDICIONAL_DE_AVALIACAO], [ITE_VALOR_DA_CONDICIONAL], [ITE_VALOR_CALCULADO_DA_CONDICIONAL], [ITE_TIPO_AVALIACAO_FINAL], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ITE_ID, @ITE_DESCRICAO, @ITE_OBS, @ITE_NUMERO_DE_TESTES, @ITE_CONDICIONAL_DE_AVALIACAO, @ITE_VALOR_DA_CONDICIONAL, @ITE_VALOR_CALCULADO_DA_CONDICIONAL, @ITE_TIPO_AVALIACAO_FINAL, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ITE_ID = ItemTestavel.ITE_ID,
@@ -41,6 +41,7 @@ namespace Query.Write
                 ITE_VALOR_DA_CONDICIONAL = ItemTestavel.ITE_VALOR_DA_CONDICIONAL,
                 ITE_VALOR_CALCULADO_DA_CONDICIONAL = ItemTestavel.ITE_VALOR_CALCULADO_DA_CONDICIONAL,
                 ITE_TIPO_AVALIACAO_FINAL = ItemTestavel.ITE_TIPO_AVALIACAO_FINAL,
+                OperationalEntityId = ItemTestavel.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -143,6 +144,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ITE_TIPO_AVALIACAO_FINAL = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ItemTestavel] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

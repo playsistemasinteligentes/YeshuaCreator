@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IUsuarioPerfilEntity usuarioperfil);
         void UpdateUSE_ID(int id, int value);
         void UpdatePER_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTiposVincoOndas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTiposVincoOndasReceiver), commandName: "Command.Write.TiposVincoOndasCrudCommand");
                  var tiposvincoondas = new TiposVincoOndasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tiposvincoondas.OperationalEntityId);
                  var domainResult = TiposVincoOndasDomainBehavior.Apply(tiposvincoondas, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -427,106 +427,106 @@ public sealed class ApiSeedCrudSuiteTests
         var step131 = new yPerfil.yPerfilCrudApiSeedTests();
         await step131.ExecuteAsync();
 
-        var step132 = new yModule.yModuleCrudApiSeedTests();
+        var step132 = new yGrant.yGrantCrudApiSeedTests();
         await step132.ExecuteAsync();
 
-        var step133 = new yTenantModule.yTenantModuleCrudApiSeedTests();
+        var step133 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
         await step133.ExecuteAsync();
 
-        var step134 = new yUserModule.yUserModuleCrudApiSeedTests();
+        var step134 = new yUserGrant.yUserGrantCrudApiSeedTests();
         await step134.ExecuteAsync();
 
-        var step135 = new yGrant.yGrantCrudApiSeedTests();
+        var step135 = new yModule.yModuleCrudApiSeedTests();
         await step135.ExecuteAsync();
 
-        var step136 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        var step136 = new Maquina.MaquinaCrudApiSeedTests();
         await step136.ExecuteAsync();
 
-        var step137 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        var step137 = new Auditoria.AuditoriaCrudApiSeedTests();
         await step137.ExecuteAsync();
 
-        var step138 = new Maquina.MaquinaCrudApiSeedTests();
+        var step138 = new Cliente.ClienteCrudApiSeedTests();
         await step138.ExecuteAsync();
 
-        var step139 = new Auditoria.AuditoriaCrudApiSeedTests();
+        var step139 = new Colaborador.ColaboradorCrudApiSeedTests();
         await step139.ExecuteAsync();
 
-        var step140 = new Cliente.ClienteCrudApiSeedTests();
+        var step140 = new EstruturaImpressao.EstruturaImpressaoCrudApiSeedTests();
         await step140.ExecuteAsync();
 
-        var step141 = new Colaborador.ColaboradorCrudApiSeedTests();
+        var step141 = new T_HORARIO_RECEBIMENTO.T_HORARIO_RECEBIMENTOCrudApiSeedTests();
         await step141.ExecuteAsync();
 
-        var step142 = new EstruturaImpressao.EstruturaImpressaoCrudApiSeedTests();
+        var step142 = new T_Indicadores.T_IndicadoresCrudApiSeedTests();
         await step142.ExecuteAsync();
 
-        var step143 = new T_HORARIO_RECEBIMENTO.T_HORARIO_RECEBIMENTOCrudApiSeedTests();
+        var step143 = new IndicadoresDepartamentos.IndicadoresDepartamentosCrudApiSeedTests();
         await step143.ExecuteAsync();
 
-        var step144 = new T_Indicadores.T_IndicadoresCrudApiSeedTests();
+        var step144 = new IndicadoresDimencoes.IndicadoresDimencoesCrudApiSeedTests();
         await step144.ExecuteAsync();
 
-        var step145 = new IndicadoresDepartamentos.IndicadoresDepartamentosCrudApiSeedTests();
+        var step145 = new IndicadoresFatosDimencoes.IndicadoresFatosDimencoesCrudApiSeedTests();
         await step145.ExecuteAsync();
 
-        var step146 = new IndicadoresDimencoes.IndicadoresDimencoesCrudApiSeedTests();
+        var step146 = new IndicadoresPeriodosDimencoes.IndicadoresPeriodosDimencoesCrudApiSeedTests();
         await step146.ExecuteAsync();
 
-        var step147 = new IndicadoresFatosDimencoes.IndicadoresFatosDimencoesCrudApiSeedTests();
+        var step147 = new ItensCalendario.ItensCalendarioCrudApiSeedTests();
         await step147.ExecuteAsync();
 
-        var step148 = new IndicadoresPeriodosDimencoes.IndicadoresPeriodosDimencoesCrudApiSeedTests();
+        var step148 = new LogsDatabase.LogsDatabaseCrudApiSeedTests();
         await step148.ExecuteAsync();
 
-        var step149 = new ItensCalendario.ItensCalendarioCrudApiSeedTests();
+        var step149 = new Mapa.MapaCrudApiSeedTests();
         await step149.ExecuteAsync();
 
-        var step150 = new LogsDatabase.LogsDatabaseCrudApiSeedTests();
+        var step150 = new T_Metas.T_MetasCrudApiSeedTests();
         await step150.ExecuteAsync();
 
-        var step151 = new Mapa.MapaCrudApiSeedTests();
+        var step151 = new Observacoes.ObservacoesCrudApiSeedTests();
         await step151.ExecuteAsync();
 
-        var step152 = new T_Metas.T_MetasCrudApiSeedTests();
+        var step152 = new Ocorrencia.OcorrenciaCrudApiSeedTests();
         await step152.ExecuteAsync();
 
-        var step153 = new Observacoes.ObservacoesCrudApiSeedTests();
+        var step153 = new Onda.OndaCrudApiSeedTests();
         await step153.ExecuteAsync();
 
-        var step154 = new Ocorrencia.OcorrenciaCrudApiSeedTests();
+        var step154 = new Orcamento.OrcamentoCrudApiSeedTests();
         await step154.ExecuteAsync();
 
-        var step155 = new Onda.OndaCrudApiSeedTests();
+        var step155 = new Order.OrderCrudApiSeedTests();
         await step155.ExecuteAsync();
 
-        var step156 = new Orcamento.OrcamentoCrudApiSeedTests();
+        var step156 = new Planoacao.PlanoacaoCrudApiSeedTests();
         await step156.ExecuteAsync();
 
-        var step157 = new Order.OrderCrudApiSeedTests();
+        var step157 = new TempoSetupOnduladeira.TempoSetupOnduladeiraCrudApiSeedTests();
         await step157.ExecuteAsync();
 
-        var step158 = new Planoacao.PlanoacaoCrudApiSeedTests();
+        var step158 = new TesteFisico.TesteFisicoCrudApiSeedTests();
         await step158.ExecuteAsync();
 
-        var step159 = new TempoSetupOnduladeira.TempoSetupOnduladeiraCrudApiSeedTests();
+        var step159 = new TipoTeste.TipoTesteCrudApiSeedTests();
         await step159.ExecuteAsync();
 
-        var step160 = new TesteFisico.TesteFisicoCrudApiSeedTests();
+        var step160 = new Uniuser.UniuserCrudApiSeedTests();
         await step160.ExecuteAsync();
 
-        var step161 = new TipoTeste.TipoTesteCrudApiSeedTests();
+        var step161 = new T_USER_GRUPO.T_USER_GRUPOCrudApiSeedTests();
         await step161.ExecuteAsync();
 
-        var step162 = new Uniuser.UniuserCrudApiSeedTests();
+        var step162 = new Movimentos.MovimentosCrudApiSeedTests();
         await step162.ExecuteAsync();
 
-        var step163 = new T_USER_GRUPO.T_USER_GRUPOCrudApiSeedTests();
+        var step163 = new TemplateTipoTeste.TemplateTipoTesteCrudApiSeedTests();
         await step163.ExecuteAsync();
 
-        var step164 = new Movimentos.MovimentosCrudApiSeedTests();
+        var step164 = new yTenantModule.yTenantModuleCrudApiSeedTests();
         await step164.ExecuteAsync();
 
-        var step165 = new TemplateTipoTeste.TemplateTipoTesteCrudApiSeedTests();
+        var step165 = new yUserModule.yUserModuleCrudApiSeedTests();
         await step165.ExecuteAsync();
 
         var step166 = new Carga.CargaCrudApiSeedTests();

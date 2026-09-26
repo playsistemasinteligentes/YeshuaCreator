@@ -39,6 +39,7 @@
     public string? GRP_ID_COMPOSICAO { get; set; }
     public Decimal? ITO_LARGURA { get; set; }
     public Decimal? ITO_COMPRIMENTO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -64,6 +65,7 @@
  GRP_ID_COMPOSICAO = grp_id_composicao; 
  ITO_LARGURA = ito_largura; 
  ITO_COMPRIMENTO = ito_comprimento; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -1,7 +1,9 @@
 ﻿using Aplication.Interfaces.Services;
 using Dominio.Interfaces;
+using Dominio.Operational;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Worker;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -45,7 +47,15 @@ namespace Command.Patterns.Command
                 return await ActionAsync(command, cancellationToken);
 
             var traceId = _context.TraceId;
-            var startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
+            var startedAt = Stopwatch.GetTimestamp();
+            using var activity = OperationalActivity.Source.StartActivity(
+                CommandName,
+                ActivityKind.Internal);
+            activity?.SetTag("yeshua.component", "Command");
+            activity?.SetTag("yeshua.operation", CommandName);
+            activity?.SetTag("yeshua.trace_id", traceId);
+            activity?.SetTag("yeshua.entity", entity);
+            activity?.SetTag("yeshua.operational_entity_id", recordId);
 
             _logger.CommandStarted(CommandName);
 
@@ -71,6 +81,13 @@ namespace Command.Patterns.Command
                     result.StatusCode,
                     workerCycle);
 
+                activity?.SetTag("http.response.status_code", result.StatusCode);
+                activity?.SetStatus(
+                    result.StatusCode is >= 200 and < 400
+                        ? ActivityStatusCode.Ok
+                        : ActivityStatusCode.Error,
+                    result.Message?.ToString());
+
                 return result;
             }
             catch (Exception ex)
@@ -80,6 +97,8 @@ namespace Command.Patterns.Command
                     traceId,
                     ex,
                     ElapsedMilliseconds(startedAt));
+                activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+                OperationalActivity.RecordException(activity, ex);
                 throw;
             }
         }

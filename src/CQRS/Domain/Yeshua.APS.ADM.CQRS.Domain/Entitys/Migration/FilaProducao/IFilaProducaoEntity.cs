@@ -83,6 +83,7 @@
     Decimal? FPR_TOLERANCIA_MENOS { get; set; }
     Decimal? FPR_TOLERANCIA_MAIS { get; set; }
     DateTime? FPR_DATA_ENCERRAMENTO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            this.Query = $@" INSERT INTO [MovimentacaoFinanceira] ([PacienteId], [ServicoId], [Valor], [TipoMovimentacao], [DataMovimentacao], [SaldoAtual], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MovimentacaoFinanceira] ([PacienteId], [ServicoId], [Valor], [TipoMovimentacao], [DataMovimentacao], [SaldoAtual], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PacienteId = MovimentacaoFinanceira.PacienteId,
@@ -39,6 +39,7 @@ namespace Query.Write
                 TipoMovimentacao = MovimentacaoFinanceira.TipoMovimentacao,
                 DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
                 SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
+                OperationalEntityId = MovimentacaoFinanceira.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -119,6 +120,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 SaldoAtual = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MovimentacaoFinanceira] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

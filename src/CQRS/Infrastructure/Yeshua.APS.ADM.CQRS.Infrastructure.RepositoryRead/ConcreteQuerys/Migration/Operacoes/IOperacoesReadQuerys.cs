@@ -26,6 +26,7 @@ namespace IQuery.Read
         public QueryModel ExistsByROT_SEQ_TRANFORMACAOQuery(int value );
         public QueryModel ExistsByORD_IDQuery(string value );
         public QueryModel ExistsByFPR_SEQ_REPETICAOQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -40,6 +41,7 @@ namespace IQuery.Read
         public QueryModel FirstByROT_SEQ_TRANFORMACAOQuery(int value );
         public QueryModel FirstByORD_IDQuery(string value );
         public QueryModel FirstByFPR_SEQ_REPETICAOQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

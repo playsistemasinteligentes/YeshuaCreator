@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByIPV_ID(int value );
         public bool ExistsByITI_ID(int value );
         public bool ExistsByRIV_STATUS(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public RespInspVisualDTO FirstByIPV_ID(int value );
         public RespInspVisualDTO FirstByITI_ID(int value );
         public RespInspVisualDTO FirstByRIV_STATUS(string value );
+        public RespInspVisualDTO FirstByOperationalEntityId(string value );
         public RespInspVisualDTO FirstByTenantID(int value );
         public RespInspVisualDTO FirstByDeleted(bool value );
         public RespInspVisualDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<RespInspVisualDTO> GetAllByIPV_ID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByITI_ID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByRIV_STATUS(string value );
+        public IEnumerable<RespInspVisualDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RespInspVisualDTO> GetAllByTenantID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByDeleted(bool value );
         public IEnumerable<RespInspVisualDTO> GetAllByChanged(DateTime value );

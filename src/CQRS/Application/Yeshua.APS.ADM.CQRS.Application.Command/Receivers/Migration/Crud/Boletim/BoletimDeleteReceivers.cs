@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteBoletim", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteBoletimReceiver), commandName: "Command.Write.BoletimCrudCommand");
                  var boletim = new BoletimFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.BOL_ID, c.BOL_ID_ORIGEM, c.BOL_SOLVER, c.BOL_INTEGRACAO, c.BOL_SEQUENCIA, c.GRP_PAP_GRAMATURA_PROGRAMADO, c.GRP_ID_PROGRAMADO, c.GRP_PAPEL1_PROGRAMADO, c.GRP_PAPEL2_PROGRAMADO, c.GRP_PAPEL3_PROGRAMADO, c.GRP_PAPEL4_PROGRAMADO, c.GRP_PAPEL5_PROGRAMADO, c.BOL_STATUS_INTERFACE, c.BOL_TIPO, c.BOL_FORMATO, c.BOL_GRAMATURA_PAPEIS_PROGRAMADOS, c.BOL_GRAMATURA_PAPEIS_REALIZADO, c.BOL_CUSTO_PAPEIS_PROGRAMADOS, c.BOL_CUSTO_PAPEIS_REALIZADO, c.BOL_GRAMATURA_RESINA_PROGRAMADOS, c.BOL_CUSTO_RESINA_PROGRAMADOS, c.BOL_REFILE_OBRIGATORIO, c.BOL_OBS);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", boletim.OperationalEntityId);
                  var domainResult = BoletimDomainBehavior.Apply(boletim, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

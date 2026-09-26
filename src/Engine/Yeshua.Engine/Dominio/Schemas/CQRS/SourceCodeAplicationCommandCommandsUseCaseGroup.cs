@@ -284,10 +284,13 @@ namespace Dominio.Schemas.CQRS
 
             var entityName = _method.Entitys[0].EntityName;
             var recordIdProperty = type.GetProperties().FirstOrDefault(property =>
-                property.PropertyType == typeof(string)
-                && (property.Name == "CorrelationId"
-                    || property.Name == $"{entityName}Id"
-                    || property.Name == "RecordId"));
+                    property.PropertyType == typeof(string)
+                    && property.Name == "OperationalEntityId")
+                ?? type.GetProperties().FirstOrDefault(property =>
+                    property.PropertyType == typeof(string)
+                    && (property.Name == "CorrelationId"
+                        || property.Name == $"{entityName}Id"
+                        || property.Name == "RecordId"));
 
             sb.AppendLine();
             sb.AppendLine($"    public string OperationalEntity => \"{entityName}\";");

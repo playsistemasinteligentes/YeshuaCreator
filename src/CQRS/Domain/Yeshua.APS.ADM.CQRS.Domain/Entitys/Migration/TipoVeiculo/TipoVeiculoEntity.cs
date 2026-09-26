@@ -39,6 +39,7 @@
     public Decimal? TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D { get; set; }
     public Decimal? TIP_CAPACIDADE_LARGURA_PESCOCO_D { get; set; }
     public Decimal? TIP_CAPACIDADE_M3 { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -64,6 +65,7 @@
  TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D = tip_capacidade_comprimento_pescoco_d; 
  TIP_CAPACIDADE_LARGURA_PESCOCO_D = tip_capacidade_largura_pescoco_d; 
  TIP_CAPACIDADE_M3 = tip_capacidade_m3; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -41,6 +41,7 @@ namespace IRepository.Read
         public bool ExistsByCargaSnapshotJson(string value );
         public bool ExistsByPreferenciasFiscaisJson(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -61,6 +62,7 @@ namespace IRepository.Read
         public CTeRomaneioConsolidadoDTO FirstByCargaSnapshotJson(string value );
         public CTeRomaneioConsolidadoDTO FirstByPreferenciasFiscaisJson(string value );
         public CTeRomaneioConsolidadoDTO FirstByStatus(int value );
+        public CTeRomaneioConsolidadoDTO FirstByOperationalEntityId(string value );
         public CTeRomaneioConsolidadoDTO FirstByTenantID(int value );
         public CTeRomaneioConsolidadoDTO FirstByDeleted(bool value );
         public CTeRomaneioConsolidadoDTO FirstByChanged(DateTime value );
@@ -81,6 +83,7 @@ namespace IRepository.Read
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByCargaSnapshotJson(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByPreferenciasFiscaisJson(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByStatus(int value );
+        public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByChanged(DateTime value );

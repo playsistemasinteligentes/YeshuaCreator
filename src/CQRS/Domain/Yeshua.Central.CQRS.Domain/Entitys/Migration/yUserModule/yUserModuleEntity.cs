@@ -20,6 +20,7 @@
                 {
                     public partial class yUserModuleEntity : IyUserModuleEntity
 {
+    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public string? ModuleId { get; set; }
     public int? UserId { get; set; }
@@ -33,6 +34,7 @@
  ModuleId = moduleid; 
  UserId = userid; 
  ValidUntil = validuntil.HasValue && validuntil.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validuntil; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

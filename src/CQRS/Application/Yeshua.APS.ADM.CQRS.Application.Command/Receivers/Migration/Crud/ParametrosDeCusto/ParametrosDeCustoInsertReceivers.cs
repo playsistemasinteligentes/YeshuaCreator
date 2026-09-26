@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertParametrosDeCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertParametrosDeCustoReceiver), commandName: "Command.Write.ParametrosDeCustoCrudCommand");
                  var parametrosdecusto = new ParametrosDeCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PAR_ID, c.PRO_ID, c.CUS_ID, c.PAR_VALOR);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", parametrosdecusto.OperationalEntityId);
                  var domainResult = ParametrosDeCustoDomainBehavior.Apply(parametrosdecusto, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

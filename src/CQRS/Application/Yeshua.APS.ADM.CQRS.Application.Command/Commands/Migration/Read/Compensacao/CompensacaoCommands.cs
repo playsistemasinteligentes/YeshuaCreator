@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct CompensacaoReadCommand : ICommandRead
+    public struct CompensacaoReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int? COM_ID { get; set; }
@@ -37,11 +37,14 @@ namespace Command.Read
         public int? COM_VINCO8_CONVERSAO { get; set; }
         public int? COM_VINCO9_CONVERSAO { get; set; }
         public int? COM_VINCO10_CONVERSAO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Compensacao";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

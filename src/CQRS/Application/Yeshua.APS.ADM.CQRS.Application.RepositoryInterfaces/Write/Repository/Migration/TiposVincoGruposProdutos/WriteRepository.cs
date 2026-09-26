@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(ITiposVincoGruposProdutosEntity tiposvincogruposprodutos);
         void Delete(ITiposVincoGruposProdutosEntity tiposvincogruposprodutos);
         void UpdateId2(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

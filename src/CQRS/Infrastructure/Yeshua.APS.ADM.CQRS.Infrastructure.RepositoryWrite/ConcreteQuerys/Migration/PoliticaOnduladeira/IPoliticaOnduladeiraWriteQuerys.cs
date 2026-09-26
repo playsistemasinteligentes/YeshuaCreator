@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdatePOL_PROMOCAO(int id, int value);
         QueryModel UpdatePOL_DIAS_ANTECIPACAO(int id, int value);
         QueryModel UpdatePOL_METROS_LINEARES(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct PlanoacaoReadCommand : ICommandRead
+    public struct PlanoacaoReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? PLA_ID { get; set; }
         public string? PLA_DESCRICAO { get; set; }
@@ -24,11 +24,14 @@ namespace Command.Read
         public string? PLA_VLRACUMULADO { get; set; }
         public string? PLA_REFERENCIA { get; set; }
         public int? USE_ID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Planoacao";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

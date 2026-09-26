@@ -25,6 +25,7 @@ namespace IRepository.Read
         public IEnumerable<yTenantModuleModuleIdDTO> getyTenantModuleReadFKModuleId(object command );
         public IEnumerable<yTenantModuleTenantIDDTO> getyTenantModuleReadFKTenantID(object command );
         public IEnumerable<yTenantModuleUserIdDTO> getyTenantModuleReadFKUserId(object command );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsById(int value );
         public bool ExistsByModuleId(string value );
         public bool ExistsByTenantID(int value );
@@ -32,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public yTenantModuleDTO FirstByOperationalEntityId(string value );
         public yTenantModuleDTO FirstById(int value );
         public yTenantModuleDTO FirstByModuleId(string value );
         public yTenantModuleDTO FirstByTenantID(int value );
@@ -39,6 +41,7 @@ namespace IRepository.Read
         public yTenantModuleDTO FirstByDeleted(bool value );
         public yTenantModuleDTO FirstByChanged(DateTime value );
         public yTenantModuleDTO FirstByUserId(int value );
+        public IEnumerable<yTenantModuleDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yTenantModuleDTO> GetAllById(int value );
         public IEnumerable<yTenantModuleDTO> GetAllByModuleId(string value );
         public IEnumerable<yTenantModuleDTO> GetAllByTenantID(int value );

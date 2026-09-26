@@ -37,6 +37,7 @@
     public Decimal? Volume { get; set; }
     public string? SnapshotJson { get; set; }
     public int Status { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -60,6 +61,7 @@
  Volume = volume; 
  SnapshotJson = snapshotjson; 
  Status = status; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

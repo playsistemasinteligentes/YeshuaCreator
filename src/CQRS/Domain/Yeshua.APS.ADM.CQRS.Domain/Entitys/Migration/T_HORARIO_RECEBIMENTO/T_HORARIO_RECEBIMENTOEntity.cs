@@ -25,6 +25,7 @@
     public DateTime HRE_HORA_FINAL { get; set; }
     public string CLI_ID { get; set; }
     public int HRE_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  HRE_HORA_FINAL = (hre_hora_final < (new DateTime(1800, 1, 1))) ? DateTime.Now : hre_hora_final; 
  CLI_ID = cli_id; 
  HRE_ID = hre_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

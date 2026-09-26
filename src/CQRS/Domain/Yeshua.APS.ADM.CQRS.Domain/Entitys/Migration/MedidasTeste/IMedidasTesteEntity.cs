@@ -26,6 +26,7 @@
     Decimal? MDT_VALOR_ESPERADO { get; set; }
     Decimal? MDT_ENCONTRADO { get; set; }
     string? UNI_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -19,6 +19,7 @@ namespace Repositorio.Outputs
     public partial record MedicoesOnduladeiraDTO
     {
     public int id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

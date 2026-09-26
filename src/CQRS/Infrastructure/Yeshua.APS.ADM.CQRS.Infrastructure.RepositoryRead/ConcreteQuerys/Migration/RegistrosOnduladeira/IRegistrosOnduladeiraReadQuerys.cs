@@ -21,6 +21,7 @@ namespace IQuery.Read
         public QueryModel ExistsByREG_RESPOSTAQuery(string value );
         public QueryModel ExistsByREG_STATUSQuery(string value );
         public QueryModel ExistsByREG_DATA_INICIOQuery(DateTime value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -30,6 +31,7 @@ namespace IQuery.Read
         public QueryModel FirstByREG_RESPOSTAQuery(string value );
         public QueryModel FirstByREG_STATUSQuery(string value );
         public QueryModel FirstByREG_DATA_INICIOQuery(DateTime value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

@@ -48,6 +48,7 @@ namespace IRepository.Write
         void UpdateCLI_INTEGRACAO_ERP(string cli_id, string value);
         void UpdateCLI_LATITUDE_ENTREGA(string cli_id, Decimal value);
         void UpdateCLI_LONGITUDE_ENTREGA(string cli_id, Decimal value);
+        void UpdateOperationalEntityId(string cli_id, string value);
         void UpdateTenantID(string cli_id, int value);
         void UpdateDeleted(string cli_id, bool value);
         void UpdateChanged(string cli_id, DateTime value);

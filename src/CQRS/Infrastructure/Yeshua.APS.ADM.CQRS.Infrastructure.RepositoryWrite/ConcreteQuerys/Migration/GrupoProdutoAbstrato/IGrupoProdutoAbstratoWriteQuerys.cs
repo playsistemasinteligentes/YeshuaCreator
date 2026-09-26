@@ -62,6 +62,7 @@ namespace IQuery.Write
         QueryModel UpdateGRP_PERCENTUAL_PERDA_MEDIA(string grp_id, Decimal value);
         QueryModel UpdateGRP_FILTRA_SEQ_TRANS(string grp_id, int value);
         QueryModel UpdateGRP_IMG_CAIXA(string grp_id, string value);
+        QueryModel UpdateOperationalEntityId(string grp_id, string value);
         QueryModel UpdateTenantID(string grp_id, int value);
         QueryModel UpdateDeleted(string grp_id, bool value);
         QueryModel UpdateChanged(string grp_id, DateTime value);

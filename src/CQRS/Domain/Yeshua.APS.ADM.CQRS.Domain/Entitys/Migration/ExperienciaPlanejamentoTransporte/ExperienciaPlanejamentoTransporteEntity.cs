@@ -33,6 +33,7 @@
     public string? Observacao { get; set; }
     public DateTime CriadoEm { get; set; }
     public string CriadoPor { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -52,6 +53,7 @@
  Observacao = observacao; 
  CriadoEm = (criadoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : criadoem; 
  CriadoPor = criadopor; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

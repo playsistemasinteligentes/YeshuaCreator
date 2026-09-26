@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteImpressora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteImpressoraReceiver), commandName: "Command.Write.ImpressoraCrudCommand");
                  var impressora = new ImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.IMP_ID, c.IMP_IP, c.IMP_NOME);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", impressora.OperationalEntityId);
                  var domainResult = ImpressoraDomainBehavior.Apply(impressora, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

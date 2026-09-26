@@ -21,6 +21,7 @@ namespace IQuery.Read
         public QueryModel ExistsByPRO_IDQuery(string value );
         public QueryModel ExistsByCUS_IDQuery(string value );
         public QueryModel ExistsByPAR_VALORQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -30,6 +31,7 @@ namespace IQuery.Read
         public QueryModel FirstByPRO_IDQuery(string value );
         public QueryModel FirstByCUS_IDQuery(string value );
         public QueryModel FirstByPAR_VALORQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

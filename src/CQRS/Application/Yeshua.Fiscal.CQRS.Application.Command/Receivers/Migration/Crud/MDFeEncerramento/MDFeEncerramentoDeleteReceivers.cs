@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMDFeEncerramento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMDFeEncerramentoReceiver), commandName: "Command.Write.MDFeEncerramentoCrudCommand");
                  var mdfeencerramento = new MDFeEncerramentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeId, c.ChaveAcesso, c.UfCarregamento, c.UfDescarregamento, c.PlacaVeiculo, c.SolicitadoEm, c.AutorizadoEm, c.Protocolo, c.CodigoRetorno, c.MensagemRetorno);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfeencerramento.OperationalEntityId);
                  var domainResult = MDFeEncerramentoDomainBehavior.Apply(mdfeencerramento, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

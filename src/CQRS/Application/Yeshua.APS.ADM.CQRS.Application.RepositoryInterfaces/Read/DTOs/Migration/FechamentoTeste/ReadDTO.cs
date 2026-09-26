@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public int fec_id { get; set; }
     public int fec_qtd { get; set; }
     public string grp_id { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

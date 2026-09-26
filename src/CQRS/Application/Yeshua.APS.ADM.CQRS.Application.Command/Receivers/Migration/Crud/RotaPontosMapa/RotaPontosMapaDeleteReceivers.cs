@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRotaPontosMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRotaPontosMapaReceiver), commandName: "Command.Write.RotaPontosMapaCrudCommand");
                  var rotapontosmapa = new RotaPontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ROT_ID, c.PON_ID_DESTINO, c.PON_ID_ORIGEM, c.ROT_CUSTO_TOTAL, c.PON_ID_ROTEIRO, c.ROT_ORDEM_ROTEIRO, c.ROT_TIPO, c.ROT_DISTANCIA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", rotapontosmapa.OperationalEntityId);
                  var domainResult = RotaPontosMapaDomainBehavior.Apply(rotapontosmapa, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

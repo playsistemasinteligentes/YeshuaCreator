@@ -18,12 +18,14 @@ namespace IQuery.Read
         public QueryModel TiposVincoGruposProdutosUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsById2Query(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstById2Query(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

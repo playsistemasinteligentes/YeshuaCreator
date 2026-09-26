@@ -37,6 +37,7 @@ namespace IRepository.Read
         public bool ExistsByIPA_DIML(Decimal value );
         public bool ExistsByIPA_DIMA(Decimal value );
         public bool ExistsByIPA_QTD_POR_PALETE(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -53,6 +54,7 @@ namespace IRepository.Read
         public ItensPackedDTO FirstByIPA_DIML(Decimal value );
         public ItensPackedDTO FirstByIPA_DIMA(Decimal value );
         public ItensPackedDTO FirstByIPA_QTD_POR_PALETE(Decimal value );
+        public ItensPackedDTO FirstByOperationalEntityId(string value );
         public ItensPackedDTO FirstByTenantID(int value );
         public ItensPackedDTO FirstByDeleted(bool value );
         public ItensPackedDTO FirstByChanged(DateTime value );
@@ -69,6 +71,7 @@ namespace IRepository.Read
         public IEnumerable<ItensPackedDTO> GetAllByIPA_DIML(Decimal value );
         public IEnumerable<ItensPackedDTO> GetAllByIPA_DIMA(Decimal value );
         public IEnumerable<ItensPackedDTO> GetAllByIPA_QTD_POR_PALETE(Decimal value );
+        public IEnumerable<ItensPackedDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItensPackedDTO> GetAllByTenantID(int value );
         public IEnumerable<ItensPackedDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItensPackedDTO> GetAllByChanged(DateTime value );

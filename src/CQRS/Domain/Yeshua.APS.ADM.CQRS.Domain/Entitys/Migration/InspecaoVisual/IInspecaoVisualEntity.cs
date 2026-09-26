@@ -37,6 +37,7 @@
     int? FPR_SEQ_REPETICAO { get; set; }
     string? IPV_STATUS_LIBERACAO { get; set; }
     Decimal? IPV_VALOR_MEDIDA { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

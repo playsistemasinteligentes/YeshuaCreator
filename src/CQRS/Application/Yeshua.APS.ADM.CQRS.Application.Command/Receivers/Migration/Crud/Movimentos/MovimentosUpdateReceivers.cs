@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMovimentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMovimentosReceiver), commandName: "Command.Write.MovimentosCrudCommand");
                  var movimentos = new MovimentosFactory(_logger, _domainTrackingPolicy).Create(context, c.MOV_ID, c.MOV_DATA, c.MOV_VALOR, c.MOV_PLAID, c.MOV_UNID, c.Tr_Unidade_UNI_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", movimentos.OperationalEntityId);
                  var domainResult = MovimentosDomainBehavior.Apply(movimentos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

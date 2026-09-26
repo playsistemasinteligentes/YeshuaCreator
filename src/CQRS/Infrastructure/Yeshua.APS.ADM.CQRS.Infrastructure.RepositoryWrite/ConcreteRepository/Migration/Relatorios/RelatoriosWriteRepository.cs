@@ -81,6 +81,11 @@ namespace Input.Repository.Relatorios
             var query = _query.UpdateREL_TAMANHO_FONTE(rel_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int rel_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(rel_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int rel_id, int value)
         {
             var query = _query.UpdateTenantID(rel_id, value);

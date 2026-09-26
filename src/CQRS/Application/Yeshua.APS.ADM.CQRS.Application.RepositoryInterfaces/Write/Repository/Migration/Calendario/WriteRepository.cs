@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(ICalendarioEntity calendario);
         void UpdateCAL_DESCRICAO(int cal_id, string value);
         void UpdateCAL_DIVIDE_DIA_EM(int cal_id, int value);
+        void UpdateOperationalEntityId(int cal_id, string value);
         void UpdateTenantID(int cal_id, int value);
         void UpdateDeleted(int cal_id, bool value);
         void UpdateChanged(int cal_id, DateTime value);

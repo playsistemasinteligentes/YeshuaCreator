@@ -61,6 +61,11 @@ namespace Input.Repository.Vinco
             var query = _query.UpdateVIN_ID_DESLOCAMENTO(vin_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int vin_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(vin_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int vin_id, int value)
         {
             var query = _query.UpdateTenantID(vin_id, value);

@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InserirIndicadoresPeriodosDimencoesQuery(IIndicadoresPeriodosDimencoesEntity IndicadoresPeriodosDimencoes)
         {
-            this.Query = $@" INSERT INTO [IndicadoresPeriodosDimencoes] ([PER_ID], [IND_ID], [DIM_ID], [PER_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PER_ID, @IND_ID, @DIM_ID, @PER_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [IndicadoresPeriodosDimencoes] ([PER_ID], [IND_ID], [DIM_ID], [PER_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PER_ID, @IND_ID, @DIM_ID, @PER_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PER_ID = IndicadoresPeriodosDimencoes.PER_ID,
                 IND_ID = IndicadoresPeriodosDimencoes.IND_ID,
                 DIM_ID = IndicadoresPeriodosDimencoes.DIM_ID,
                 PER_DESCRICAO = IndicadoresPeriodosDimencoes.PER_DESCRICAO,
+                OperationalEntityId = IndicadoresPeriodosDimencoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -95,6 +96,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 PER_DESCRICAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

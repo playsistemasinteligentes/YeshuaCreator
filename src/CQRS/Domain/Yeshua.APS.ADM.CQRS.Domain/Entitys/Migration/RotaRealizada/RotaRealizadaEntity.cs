@@ -25,6 +25,7 @@
     public DateTime? ROT_DATA_HORA { get; set; }
     public Decimal? ROT_LAT { get; set; }
     public Decimal? ROT_LONG { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  ROT_DATA_HORA = rot_data_hora.HasValue && rot_data_hora.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : rot_data_hora; 
  ROT_LAT = rot_lat; 
  ROT_LONG = rot_long; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

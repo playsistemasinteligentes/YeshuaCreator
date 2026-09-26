@@ -61,6 +61,11 @@ namespace Input.Repository.IndicadoresDepartamentos
             var query = _query.UpdateIND_ID(inddep_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int inddep_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(inddep_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int inddep_id, int value)
         {
             var query = _query.UpdateTenantID(inddep_id, value);

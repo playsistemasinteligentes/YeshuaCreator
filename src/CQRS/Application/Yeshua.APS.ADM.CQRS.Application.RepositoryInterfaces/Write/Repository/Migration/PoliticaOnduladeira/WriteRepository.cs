@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdatePOL_PROMOCAO(int id, int value);
         void UpdatePOL_DIAS_ANTECIPACAO(int id, int value);
         void UpdatePOL_METROS_LINEARES(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

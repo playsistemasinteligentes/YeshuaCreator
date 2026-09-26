@@ -613,4 +613,154 @@
             emitente da NF-e.
         </p>
     </section>
+
+    <section class="fiscal-integration-reference" aria-labelledby="fiscal-integration-title">
+        <div class="fiscal-modalities-heading">
+            <div>
+                <p class="fiscal-contingencia-kicker">Integracao via sistema</p>
+                <h2 id="fiscal-integration-title">Fluxo da contingencia fiscal pela API</h2>
+            </div>
+            <span class="fiscal-integration-badge">REST / JSON</span>
+        </div>
+
+        <p class="fiscal-modalities-intro">
+            Todas as chamadas usam <code>POST</code>, a base publica <code>https://playsis.com.br/apps/fiscal/yapi</code> e o token Bearer do aplicativo Fiscal.
+            Guarde <code>correlationId</code>, <code>cargaId</code> e <code>entradaFiscalContingenciaId</code> retornados na abertura:
+            eles identificam o mesmo processo nas chamadas seguintes.
+        </p>
+
+        <div class="fiscal-integration-contracts">
+            <details open>
+                <summary>Antes do passo 1: obter o token do aplicativo Fiscal</summary>
+                <p>O login acontece na Central. O token retornado por ela ainda nao deve ser usado nas operacoes fiscais: primeiro ele abre o aplicativo Fiscal, que devolve um token escopado ao aplicativo.</p>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/central/yapi/login" \
+  --header "Content-Type: application/json" \
+  --data-raw '{"login":"SEU_LOGIN","password":"SUA_SENHA"}'</code></pre>
+                <p>Guarde o campo <code>token</code> da resposta como <code>TOKEN_CENTRAL</code>.</p>
+                <pre><code>curl --include --request GET "https://playsis.com.br/apps/fiscal/yapi/getMenu" \
+  --header "Authorization: Bearer TOKEN_CENTRAL"</code></pre>
+                <p>Guarde o valor do cabecalho <code>X-Yeshua-Application-Token</code> como <code>TOKEN_FISCAL</code>. Todos os sete passos abaixo usam <code>Authorization: Bearer TOKEN_FISCAL</code>. Nao continue usando o token da Central nas operacoes do Fiscal.</p>
+                <p><strong>Postman:</strong> na requisicao de login, use <code>pm.environment.set("centralToken", pm.response.json().token);</code>. Na requisicao <code>getMenu</code>, use <code>pm.environment.set("fiscalToken", pm.response.headers.get("X-Yeshua-Application-Token"));</code>. Nas demais requisicoes, configure Bearer Token como <code>{{fiscalToken}}</code>.</p>
+            </details>
+        </div>
+
+        <ol class="fiscal-integration-flow">
+            <li><span>1</span><div><strong>Abrir e enviar as primeiras NF-e</strong><code>POST /yapi/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase</code></div></li>
+            <li><span>2</span><div><strong>Adicionar outros documentos</strong><code>POST /yapi/Fiscal/ContingenciaInformarNotasFiscaisContingenciaUseCase</code></div></li>
+            <li><span>3</span><div><strong>Vincular o certificado A1</strong><code>POST /yapi/Fiscal/SEFAZRegistrarCertificadoDigitalContingenciaUseCase</code></div></li>
+            <li><span>4</span><div><strong>Calcular e validar o preview</strong><code>POST /yapi/Fiscal/ContingenciaInformarDadosTransporteContingenciaUseCase</code></div></li>
+            <li><span>5</span><div><strong>Confirmar e liberar a emissao</strong><code>POST /yapi/Fiscal/ContingenciaConfirmarPlanoEmissaoFiscalContingenciaUseCase</code></div></li>
+            <li><span>6</span><div><strong>Consultar ate concluir</strong><code>POST /yapi/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase</code></div></li>
+            <li><span>7</span><div><strong>Baixar o pacote final</strong><code>POST /yapi/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase</code></div></li>
+        </ol>
+
+        <div class="fiscal-integration-contracts">
+            <p>Cada bloco abaixo e um cURL completo. No Postman, use <strong>Import</strong> e <strong>Raw text</strong> para importar a chamada desejada.</p>
+            <details open>
+                <summary>1. Abrir e enviar as primeiras NF-e</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{
+    "correlationId":"UUID_DO_FLUXO",
+    "tenantId":1,
+    "tipoSolicitante":1,
+    "ambiente":2,
+    "cargaId":"CARGA-EXTERNA-001",
+    "sourceApplication":"MeuSistema",
+    "sourceModule":"Expedicao",
+    "sourceMessageId":"UUID_DA_MENSAGEM",
+    "documentosOriginariosJson":"[{\"chaveAcesso\":\"CHAVE_NFE_44_DIGITOS\",\"xml\":\"XML_INTEGRAL_DA_NFE\"}]",
+    "dadosComplementaresJson":"{\"modalidadeTrabalho\":\"transporte_normal_nfe\"}",
+    "payloadHash":"",
+    "payloadStorageKey":"integracao/CARGA-EXTERNA-001/documentos.json"
+  }'</code></pre>
+                <p>Guarde <code>correlationId</code>, <code>cargaId</code> e <code>entradaFiscalContingenciaId</code> retornados. Eles serao usados ate o fim.</p>
+            </details>
+            <details>
+                <summary>2. Adicionar outros documentos</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/ContingenciaInformarNotasFiscaisContingenciaUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{
+    "correlationId":"UUID_DO_FLUXO",
+    "tenantId":1,
+    "cargaId":"CARGA-EXTERNA-001",
+    "entradaFiscalContingenciaId":123,
+    "userAction":"InformarNotasFiscaisContingencia",
+    "documentosOriginariosJson":"[{\"chaveAcesso\":\"OUTRA_CHAVE_NFE_44_DIGITOS\",\"xml\":\"XML_INTEGRAL_DA_NFE\"}]",
+    "dadosComplementaresJson":"{}",
+    "payloadHash":"",
+    "payloadStorageKey":"integracao/CARGA-EXTERNA-001/novo-lote.json"
+  }'</code></pre>
+                <p>Repita esse comando para enviar lotes adicionais ao mesmo protocolo. Nao abra outra contingencia para a mesma carga.</p>
+            </details>
+            <details>
+                <summary>3. Vincular o certificado A1</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/SEFAZRegistrarCertificadoDigitalContingenciaUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{
+    "entradaFiscalContingenciaId":123,
+    "documentoTitular":"CNPJ_DO_EMITENTE",
+    "apelido":"Certificado principal",
+    "arquivoPfxBase64":"CONTEUDO_PFX_EM_BASE64",
+    "senha":"SENHA_DO_CERTIFICADO"
+  }'</code></pre>
+                <p>O certificado precisa pertencer ao emitente fiscal. Se ele ja estiver armazenado e valido para o tenant e emitente, o preview pode localiza-lo sem novo envio.</p>
+            </details>
+            <details>
+                <summary>4. Calcular e validar o preview</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/ContingenciaInformarDadosTransporteContingenciaUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{
+    "correlationId":"UUID_DO_FLUXO",
+    "tenantId":1,
+    "cargaId":"CARGA-EXTERNA-001",
+    "entradaFiscalContingenciaId":123,
+    "userAction":"InformarDadosTransporteContingencia",
+    "documentosOriginariosJson":"[]",
+    "dadosComplementaresJson":"{\"emitenteFiscalDocumento\":\"CNPJ_EMITENTE\",\"tomadorDocumento\":\"CNPJ_TOMADOR\",\"transportadorDocumento\":\"CNPJ_TRANSPORTADOR\",\"ufInicio\":\"PE\",\"ufFim\":\"PE\",\"municipioInicioCodigoIbge\":\"2611606\",\"municipioFimCodigoIbge\":\"2611606\",\"rntrc\":\"RNTRC\",\"placaVeiculo\":\"ABC1D23\",\"ufVeiculo\":\"PE\",\"condutorDocumento\":\"CPF_CONDUTOR\",\"condutorNome\":\"NOME CONDUTOR\",\"valorFrete\":100.00,\"tipoAgrupamentoCTe\":\"um_cte_por_nfe\",\"estrategiaRateioFrete\":\"proporcional_valor_documento\",\"origemRotaFiscal\":\"manual_contingencia\"}",
+    "payloadHash":"",
+    "payloadStorageKey":"integracao/CARGA-EXTERNA-001/preview.json"
+  }'</code></pre>
+                <p>Repita o preview sempre que alterar participantes, certificado, rota, veiculo, frete ou agrupamento. So avance quando o retorno estiver sem pendencias.</p>
+            </details>
+            <details>
+                <summary>5. Confirmar e liberar a emissao</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/ContingenciaConfirmarPlanoEmissaoFiscalContingenciaUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{
+    "correlationId":"UUID_DO_FLUXO",
+    "tenantId":1,
+    "cargaId":"CARGA-EXTERNA-001",
+    "entradaFiscalContingenciaId":123,
+    "userAction":"ConfirmarPlanoEmissaoFiscalContingencia",
+    "documentosOriginariosJson":"[]",
+    "dadosComplementaresJson":"{\"confirmado\":true}",
+    "payloadHash":"",
+    "payloadStorageKey":"integracao/CARGA-EXTERNA-001/confirmacao.json"
+  }'</code></pre>
+                <p>A confirmacao libera o processamento assincrono. Ela nao significa que CT-e e MDF-e ja foram autorizados.</p>
+            </details>
+            <details>
+                <summary>6. Consultar ate concluir</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{"entradaFiscalContingenciaId":123}'</code></pre>
+                <p>Consulte enquanto <code>concluida</code> for falso. O retorno informa as duas sagas, a etapa atual, documentos emitidos e se o pacote esta disponivel.</p>
+            </details>
+            <details>
+                <summary>7. Baixar o pacote final</summary>
+                <pre><code>curl --request POST "https://playsis.com.br/apps/fiscal/yapi/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase" \
+  --header "Authorization: Bearer SEU_TOKEN_FISCAL" \
+  --header "Content-Type: application/json" \
+  --data-raw '{"entradaFiscalContingenciaId":123}'</code></pre>
+                <p>Execute somente quando a consulta retornar <code>downloadDisponivel: true</code>. A resposta contem nome, tipo, quantidade de arquivos e o ZIP em Base64.</p>
+            </details>
+        </div>
+    </section>
 </section>

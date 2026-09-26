@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOcorrenciaQuery(IOcorrenciaEntity Ocorrencia)
         {
-            this.Query = $@" INSERT INTO [Ocorrencia] ([OCO_ID], [OCO_DESCRICAO], [TIP_ID], [GMA_ID], [MAQ_ID], [SPR], [OCO_SUB_TIPO], [SUB_ID], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OCO_ID, @OCO_DESCRICAO, @TIP_ID, @GMA_ID, @MAQ_ID, @SPR, @OCO_SUB_TIPO, @SUB_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Ocorrencia] ([OCO_ID], [OCO_DESCRICAO], [TIP_ID], [GMA_ID], [MAQ_ID], [SPR], [OCO_SUB_TIPO], [SUB_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OCO_ID, @OCO_DESCRICAO, @TIP_ID, @GMA_ID, @MAQ_ID, @SPR, @OCO_SUB_TIPO, @SUB_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OCO_ID = Ocorrencia.OCO_ID,
@@ -41,6 +41,7 @@ namespace Query.Write
                 SPR = Ocorrencia.SPR,
                 OCO_SUB_TIPO = Ocorrencia.OCO_SUB_TIPO,
                 SUB_ID = Ocorrencia.SUB_ID,
+                OperationalEntityId = Ocorrencia.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -132,6 +133,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 SUB_ID = value,
+                OCO_ID = oco_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string oco_id, string value)
+        {
+            this.Query = $@" UPDATE [Ocorrencia] SET [OperationalEntityId] = @OperationalEntityId WHERE [OCO_ID] = @OCO_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 OCO_ID = oco_id,
             };
             return new QueryModel(this.Query, this.Parameters);

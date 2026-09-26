@@ -116,6 +116,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +172,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public ItensEstruturaImpressaoDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ItensEstruturaImpressaoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public ItensEstruturaImpressaoDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -207,6 +223,14 @@ namespace Read.Repository
         public IEnumerable<ItensEstruturaImpressaoDTO> GetAllByIES_CUSTOM_FONT_SIZE(int value )
         {
             var query = _query.FirstByIES_CUSTOM_FONT_SIZEQuery(value );
+
+                var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ItensEstruturaImpressaoDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<ItensEstruturaImpressaoDTO>(query.Query,query.Parameters).ToList();
                 return result;

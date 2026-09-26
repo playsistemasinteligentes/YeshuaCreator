@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertSemaforo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertSemaforoReceiver), commandName: "Command.Write.SemaforoCrudCommand");
                  var semaforo = new SemaforoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEM_ID, c.SEM_STATUS, c.SEM_ORIGEM, c.SEM_EMISSAO, c.SEM_ID_CONEXAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", semaforo.OperationalEntityId);
                  var domainResult = SemaforoDomainBehavior.Apply(semaforo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

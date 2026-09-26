@@ -30,6 +30,7 @@ namespace IRepository.Write
         void UpdateITE_VALOR_DA_CONDICIONAL(int id, Decimal value);
         void UpdateITE_VALOR_CALCULADO_DA_CONDICIONAL(int id, string value);
         void UpdateITE_TIPO_AVALIACAO_FINAL(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

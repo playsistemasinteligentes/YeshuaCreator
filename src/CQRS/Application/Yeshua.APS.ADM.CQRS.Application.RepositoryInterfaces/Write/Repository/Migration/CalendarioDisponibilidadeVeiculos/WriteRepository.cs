@@ -32,6 +32,7 @@ namespace IRepository.Write
         void UpdateCDV_SEXTA(int id, int value);
         void UpdateCDV_SABADO(int id, int value);
         void UpdateCDV_DOMINGO(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

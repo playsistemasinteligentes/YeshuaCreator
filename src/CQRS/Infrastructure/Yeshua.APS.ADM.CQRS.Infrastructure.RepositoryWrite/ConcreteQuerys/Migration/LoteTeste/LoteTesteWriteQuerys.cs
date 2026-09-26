@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirLoteTesteQuery(ILoteTesteEntity LoteTeste)
         {
-            this.Query = $@" INSERT INTO [LoteTeste] ([LT_ID], [TES_ID], [RL_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@LT_ID, @TES_ID, @RL_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [LoteTeste] ([LT_ID], [TES_ID], [RL_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@LT_ID, @TES_ID, @RL_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 LT_ID = LoteTeste.LT_ID,
                 TES_ID = LoteTeste.TES_ID,
                 RL_ID = LoteTeste.RL_ID,
+                OperationalEntityId = LoteTeste.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 RL_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [LoteTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

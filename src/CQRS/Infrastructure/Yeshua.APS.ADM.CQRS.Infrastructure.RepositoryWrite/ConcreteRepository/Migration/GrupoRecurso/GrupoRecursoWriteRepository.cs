@@ -56,6 +56,11 @@ namespace Input.Repository.GrupoRecurso
             var query = _query.UpdateGRE_DESCRICAO(gre_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string gre_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(gre_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string gre_id, int value)
         {
             var query = _query.UpdateTenantID(gre_id, value);

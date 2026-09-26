@@ -20,6 +20,7 @@ namespace IQuery.Read
         public QueryModel ExistsByVER_IDQuery(int value );
         public QueryModel ExistsByVER_STATUSQuery(string value );
         public QueryModel ExistsByVER_OBSQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -28,6 +29,7 @@ namespace IQuery.Read
         public QueryModel FirstByVER_IDQuery(int value );
         public QueryModel FirstByVER_STATUSQuery(string value );
         public QueryModel FirstByVER_OBSQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

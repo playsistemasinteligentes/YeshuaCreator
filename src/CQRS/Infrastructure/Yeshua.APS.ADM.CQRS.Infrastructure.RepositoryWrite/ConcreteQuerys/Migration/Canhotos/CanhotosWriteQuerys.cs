@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCanhotosQuery(ICanhotosEntity Canhotos)
         {
-            this.Query = $@" INSERT INTO [Canhotos] ([CAR_ID], [ORD_ID], [NOT_ID], [CAN_DATA_ENTREGA], [CAN_IMG], [CAN_LAT_ENTREGA], [CAN_LONG_ENTREGA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @NOT_ID, @CAN_DATA_ENTREGA, @CAN_IMG, @CAN_LAT_ENTREGA, @CAN_LONG_ENTREGA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Canhotos] ([CAR_ID], [ORD_ID], [NOT_ID], [CAN_DATA_ENTREGA], [CAN_IMG], [CAN_LAT_ENTREGA], [CAN_LONG_ENTREGA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @NOT_ID, @CAN_DATA_ENTREGA, @CAN_IMG, @CAN_LAT_ENTREGA, @CAN_LONG_ENTREGA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = Canhotos.CAR_ID,
@@ -40,6 +40,7 @@ namespace Query.Write
                 CAN_IMG = Canhotos.CAN_IMG,
                 CAN_LAT_ENTREGA = Canhotos.CAN_LAT_ENTREGA,
                 CAN_LONG_ENTREGA = Canhotos.CAN_LONG_ENTREGA,
+                OperationalEntityId = Canhotos.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -131,6 +132,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CAN_LONG_ENTREGA = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Canhotos] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

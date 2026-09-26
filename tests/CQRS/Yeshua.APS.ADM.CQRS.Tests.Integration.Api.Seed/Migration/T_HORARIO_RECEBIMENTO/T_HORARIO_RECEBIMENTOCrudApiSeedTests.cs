@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.T_HORARIO_RECEBIMENTO;
 
-[SeedTestOrder(143)]
+[SeedTestOrder(141)]
 public partial class T_HORARIO_RECEBIMENTOCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_HORARIO_RECEBIMENTO/PostT_HORARIO_RECEBIMENTO";

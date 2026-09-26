@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.TempoSetupOnduladeira;
 
-[SeedTestOrder(159)]
+[SeedTestOrder(157)]
 public partial class TempoSetupOnduladeiraCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/TempoSetupOnduladeira/PostTempoSetupOnduladeira";

@@ -37,6 +37,7 @@ namespace IRepository.Read
         public bool ExistsByEncerradoEm(DateTime value );
         public bool ExistsByCanceladoEm(DateTime value );
         public bool ExistsBySituacao(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -54,6 +55,7 @@ namespace IRepository.Read
         public MDFeDTO FirstByEncerradoEm(DateTime value );
         public MDFeDTO FirstByCanceladoEm(DateTime value );
         public MDFeDTO FirstBySituacao(int value );
+        public MDFeDTO FirstByOperationalEntityId(string value );
         public MDFeDTO FirstByTenantID(int value );
         public MDFeDTO FirstByDeleted(bool value );
         public MDFeDTO FirstByChanged(DateTime value );
@@ -71,6 +73,7 @@ namespace IRepository.Read
         public IEnumerable<MDFeDTO> GetAllByEncerradoEm(DateTime value );
         public IEnumerable<MDFeDTO> GetAllByCanceladoEm(DateTime value );
         public IEnumerable<MDFeDTO> GetAllBySituacao(int value );
+        public IEnumerable<MDFeDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeDTO> GetAllByChanged(DateTime value );

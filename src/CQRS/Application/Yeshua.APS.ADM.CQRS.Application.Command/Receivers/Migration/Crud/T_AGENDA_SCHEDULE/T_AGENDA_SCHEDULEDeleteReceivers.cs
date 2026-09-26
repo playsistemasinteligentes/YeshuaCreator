@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_AGENDA_SCHEDULE", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_AGENDA_SCHEDULEReceiver), commandName: "Command.Write.T_AGENDA_SCHEDULECrudCommand");
                  var t_agenda_schedule = new T_AGENDA_SCHEDULEFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AGE_ID, c.AGE_DATA_ESPECIFICA, c.AGE_HORARIO_INICIO, c.AGE_HORARIO_FIM, c.AGE_SEGUNDA, c.AGE_TERCA, c.AGE_QUARTA, c.AGE_QUINTA, c.AGE_SEXTA, c.AGE_SABADO, c.AGE_DOMINGO, c.AGE_INTERVALO, c.AGE_ORDEM_EXECUCAO, c.AGE_PARAMETROS, c.AGE_EXCECAO, c.AGE_DESCRICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_agenda_schedule.OperationalEntityId);
                  var domainResult = T_AGENDA_SCHEDULEDomainBehavior.Apply(t_agenda_schedule, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

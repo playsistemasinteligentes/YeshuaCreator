@@ -181,6 +181,11 @@ namespace Input.Repository.Cliente
             var query = _query.UpdateCLI_LONGITUDE_ENTREGA(cli_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string cli_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(cli_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string cli_id, int value)
         {
             var query = _query.UpdateTenantID(cli_id, value);

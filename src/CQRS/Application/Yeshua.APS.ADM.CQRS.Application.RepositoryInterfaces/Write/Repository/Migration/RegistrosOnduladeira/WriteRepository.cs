@@ -26,6 +26,7 @@ namespace IRepository.Write
         void UpdateREG_RESPOSTA(int id, string value);
         void UpdateREG_STATUS(int id, string value);
         void UpdateREG_DATA_INICIO(int id, DateTime value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

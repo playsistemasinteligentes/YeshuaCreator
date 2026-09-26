@@ -21,6 +21,7 @@ namespace IQuery.Write
         QueryModel UpdateINF_VALOR(int inf_id, Decimal value);
         QueryModel UpdateMET_ID(int inf_id, int value);
         QueryModel UpdateINF_DATA(int inf_id, string value);
+        QueryModel UpdateOperationalEntityId(int inf_id, string value);
         QueryModel UpdateTenantID(int inf_id, int value);
         QueryModel UpdateDeleted(int inf_id, bool value);
         QueryModel UpdateChanged(int inf_id, DateTime value);

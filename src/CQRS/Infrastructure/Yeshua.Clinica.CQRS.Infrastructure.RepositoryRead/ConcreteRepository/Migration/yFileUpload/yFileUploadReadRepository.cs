@@ -180,6 +180,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByDeletedQuery(value , TakeOffTenantID);
@@ -284,6 +292,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public yFileUploadDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yFileUploadDTO FirstByDeleted(bool value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
@@ -383,6 +399,14 @@ namespace Read.Repository
         public IEnumerable<yFileUploadDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<yFileUploadDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters).ToList();
                 return result;

@@ -23,6 +23,7 @@
     public string? Id { get; set; }
     public string? Descricao { get; set; }
     public string? Status { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  Descricao = descricao; 
  Status = status; 
  GMA_TIPO_PLANEJAMENTO = gma_tipo_planejamento; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

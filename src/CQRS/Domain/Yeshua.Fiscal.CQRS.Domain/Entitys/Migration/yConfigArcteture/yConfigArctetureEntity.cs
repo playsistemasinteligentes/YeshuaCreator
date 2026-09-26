@@ -20,6 +20,7 @@
                 {
                     public partial class yConfigArctetureEntity : IyConfigArctetureEntity
 {
+    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public int? AuditTrackerActived { get; set; }
     public int? AuditCRUDActived { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  AuditTrackerActived = audittrackeractived; 
  AuditCRUDActived = auditcrudactived; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

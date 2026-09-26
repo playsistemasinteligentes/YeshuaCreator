@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.T_USER_GRUPO;
 
-[SmokeTestOrder(163)]
+[SmokeTestOrder(161)]
 public partial class T_USER_GRUPOCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_USER_GRUPO/PostT_USER_GRUPO";

@@ -20,6 +20,7 @@
                 {
                     public interface IyPerfilEntity
 {
+    string OperationalEntityId { get; }
     int? Id { get; set; }
     string Description { get; set; }
     int? TenantID { get; set; }

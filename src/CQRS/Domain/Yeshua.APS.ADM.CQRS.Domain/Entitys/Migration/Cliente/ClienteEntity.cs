@@ -47,6 +47,7 @@
     public string? CLI_INTEGRACAO_ERP { get; set; }
     public Decimal? CLI_LATITUDE_ENTREGA { get; set; }
     public Decimal? CLI_LONGITUDE_ENTREGA { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -80,6 +81,7 @@
  CLI_INTEGRACAO_ERP = cli_integracao_erp; 
  CLI_LATITUDE_ENTREGA = cli_latitude_entrega; 
  CLI_LONGITUDE_ENTREGA = cli_longitude_entrega; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

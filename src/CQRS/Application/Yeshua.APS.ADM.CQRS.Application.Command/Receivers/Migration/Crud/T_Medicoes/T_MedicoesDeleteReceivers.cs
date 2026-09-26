@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_Medicoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_MedicoesReceiver), commandName: "Command.Write.T_MedicoesCrudCommand");
                  var t_medicoes = new T_MedicoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MED_ID, c.IND_ID, c.MET_ID, c.UNI_ID, c.MED_DATA, c.MED_VALOR, c.MED_AC_ANO, c.MED_DATAMEDICAO, c.MED_PONDERACAO, c.DIM_ID, c.DIM_DESCRICAO, c.DIM_SUBDIMENSAO_ID, c.DIM_SUB_DESCRICAO, c.PER_ID, c.PER_DESCRICAO, c.FAT_ID, c.FAT_DESCRICAO, c.MED_SQL, c.DOM_EMPRESA, c.DOM_FILIAL, c.MED_VALOR_DISPER);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_medicoes.OperationalEntityId);
                  var domainResult = T_MedicoesDomainBehavior.Apply(t_medicoes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -26,6 +26,7 @@
     public string ROTINA { get; set; }
     public string? HISTORICO { get; set; }
     public string? CHAVE { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -38,6 +39,7 @@
  ROTINA = rotina; 
  HISTORICO = historico; 
  CHAVE = chave; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirGrupoRecursoQuery(IGrupoRecursoEntity GrupoRecurso);
         public QueryModel UpdateGrupoRecursoQuery(IGrupoRecursoEntity GrupoRecurso);
         QueryModel UpdateGRE_DESCRICAO(string gre_id, string value);
+        QueryModel UpdateOperationalEntityId(string gre_id, string value);
         QueryModel UpdateTenantID(string gre_id, int value);
         QueryModel UpdateDeleted(string gre_id, bool value);
         QueryModel UpdateChanged(string gre_id, DateTime value);

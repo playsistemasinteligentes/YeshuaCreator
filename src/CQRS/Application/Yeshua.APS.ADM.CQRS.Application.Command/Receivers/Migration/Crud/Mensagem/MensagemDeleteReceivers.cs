@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMensagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMensagemReceiver), commandName: "Command.Write.MensagemCrudCommand");
                  var mensagem = new MensagemFactory(_logger, _domainTrackingPolicy).Create(context, c.MEN_ID, c.MEN_SEND, c.MEN_EMISSION, c.MEN_STATUS, c.MEN_RECEIVE, c.MEN_TYPE, c.MEN_QTD_TRY_SEND, c.MEN_DATE_TRY_SEND);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mensagem.OperationalEntityId);
                  var domainResult = MensagemDomainBehavior.Apply(mensagem, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

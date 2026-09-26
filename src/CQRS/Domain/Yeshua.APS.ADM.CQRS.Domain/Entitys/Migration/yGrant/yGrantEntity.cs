@@ -20,6 +20,7 @@
                 {
                     public partial class yGrantEntity : IyGrantEntity
 {
+    public string OperationalEntityId { get; set; }
     public string? Id { get; set; }
     public string? Description { get; set; }
     public int? TenantID { get; set; }
@@ -30,6 +31,7 @@
  internal yGrantEntity(string? id, string? description ){
  Id = id; 
  Description = description; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

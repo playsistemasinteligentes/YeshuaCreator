@@ -34,6 +34,7 @@ namespace Repositorio.Outputs
     public Decimal est_base_producao { get; set; }
     public Decimal est_nivel { get; set; }
     public int fpr_seq_repeticao { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

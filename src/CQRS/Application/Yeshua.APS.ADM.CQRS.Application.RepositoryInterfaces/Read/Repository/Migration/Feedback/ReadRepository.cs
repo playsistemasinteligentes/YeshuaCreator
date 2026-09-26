@@ -48,6 +48,7 @@ namespace IRepository.Read
         public bool ExistsByFEE_QTD_TOTAL_PRODUCAO_AJUSTADA(Decimal value );
         public bool ExistsByBOL_ID(string value );
         public bool ExistsByCOR_SEQUENCIA(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -72,6 +73,7 @@ namespace IRepository.Read
         public FeedbackDTO FirstByFEE_QTD_TOTAL_PRODUCAO_AJUSTADA(Decimal value );
         public FeedbackDTO FirstByBOL_ID(string value );
         public FeedbackDTO FirstByCOR_SEQUENCIA(int value );
+        public FeedbackDTO FirstByOperationalEntityId(string value );
         public FeedbackDTO FirstByTenantID(int value );
         public FeedbackDTO FirstByDeleted(bool value );
         public FeedbackDTO FirstByChanged(DateTime value );
@@ -96,6 +98,7 @@ namespace IRepository.Read
         public IEnumerable<FeedbackDTO> GetAllByFEE_QTD_TOTAL_PRODUCAO_AJUSTADA(Decimal value );
         public IEnumerable<FeedbackDTO> GetAllByBOL_ID(string value );
         public IEnumerable<FeedbackDTO> GetAllByCOR_SEQUENCIA(int value );
+        public IEnumerable<FeedbackDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<FeedbackDTO> GetAllByTenantID(int value );
         public IEnumerable<FeedbackDTO> GetAllByDeleted(bool value );
         public IEnumerable<FeedbackDTO> GetAllByChanged(DateTime value );

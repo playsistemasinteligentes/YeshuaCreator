@@ -40,6 +40,7 @@
     public Decimal? PercentualInicioPassoAnterior { get; set; }
     public string? LinhaDireta { get; set; }
     public int? TemplateDeTestesId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -66,6 +67,7 @@
  PercentualInicioPassoAnterior = percentualiniciopassoanterior; 
  LinhaDireta = linhadireta; 
  TemplateDeTestesId = templatedetestesid; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

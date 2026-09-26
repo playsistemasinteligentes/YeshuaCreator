@@ -29,6 +29,7 @@ namespace Repositorio.Outputs
     public string protocolo { get; set; } = string.Empty;
     public string codigoretorno { get; set; } = string.Empty;
     public string mensagemretorno { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

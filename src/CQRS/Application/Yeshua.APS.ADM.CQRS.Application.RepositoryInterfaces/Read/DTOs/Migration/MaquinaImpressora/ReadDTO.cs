@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public string maq_id { get; set; } = string.Empty;
     public int imp_id { get; set; }
     public int mai_facao { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

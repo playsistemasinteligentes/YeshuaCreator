@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
-            this.Query = $@" INSERT INTO [MovimentoFinanceiro] ([IdOrigem], [ContaDebitoId], [Valor], [DataMovimento], [DataVencimento], [Status], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IdOrigem, @ContaDebitoId, @Valor, @DataMovimento, @DataVencimento, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MovimentoFinanceiro] ([IdOrigem], [ContaDebitoId], [Valor], [DataMovimento], [DataVencimento], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IdOrigem, @ContaDebitoId, @Valor, @DataMovimento, @DataVencimento, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IdOrigem = MovimentoFinanceiro.IdOrigem,
@@ -39,6 +39,7 @@ namespace Query.Write
                 DataMovimento = MovimentoFinanceiro.DataMovimento,
                 DataVencimento = MovimentoFinanceiro.DataVencimento,
                 Status = MovimentoFinanceiro.Status,
+                OperationalEntityId = MovimentoFinanceiro.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -119,6 +120,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Status = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

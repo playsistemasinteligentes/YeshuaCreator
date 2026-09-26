@@ -49,6 +49,7 @@ namespace IRepository.Read
         public bool ExistsByBOL_CUSTO_RESINA_PROGRAMADOS(Decimal value );
         public bool ExistsByBOL_REFILE_OBRIGATORIO(int value );
         public bool ExistsByBOL_OBS(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -77,6 +78,7 @@ namespace IRepository.Read
         public BoletimDTO FirstByBOL_CUSTO_RESINA_PROGRAMADOS(Decimal value );
         public BoletimDTO FirstByBOL_REFILE_OBRIGATORIO(int value );
         public BoletimDTO FirstByBOL_OBS(string value );
+        public BoletimDTO FirstByOperationalEntityId(string value );
         public BoletimDTO FirstByTenantID(int value );
         public BoletimDTO FirstByDeleted(bool value );
         public BoletimDTO FirstByChanged(DateTime value );
@@ -105,6 +107,7 @@ namespace IRepository.Read
         public IEnumerable<BoletimDTO> GetAllByBOL_CUSTO_RESINA_PROGRAMADOS(Decimal value );
         public IEnumerable<BoletimDTO> GetAllByBOL_REFILE_OBRIGATORIO(int value );
         public IEnumerable<BoletimDTO> GetAllByBOL_OBS(string value );
+        public IEnumerable<BoletimDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<BoletimDTO> GetAllByTenantID(int value );
         public IEnumerable<BoletimDTO> GetAllByDeleted(bool value );
         public IEnumerable<BoletimDTO> GetAllByChanged(DateTime value );

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateProtocoloOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateProtocoloOnduladeiraReceiver), commandName: "Command.Write.ProtocoloOnduladeiraCrudCommand");
                  var protocoloonduladeira = new ProtocoloOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PTO_ID, c.PTO_CHAVE, c.MAQ_ID, c.PTO_COMANDO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", protocoloonduladeira.OperationalEntityId);
                  var domainResult = ProtocoloOnduladeiraDomainBehavior.Apply(protocoloonduladeira, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -29,6 +29,7 @@
     string? UF { get; set; }
     string? MunicipioCodigoIbge { get; set; }
     string? EnderecoJson { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

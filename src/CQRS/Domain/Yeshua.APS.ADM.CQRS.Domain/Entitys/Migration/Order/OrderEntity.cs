@@ -94,6 +94,7 @@
     public DateTime? ORD_DATA_ESTATISTICA { get; set; }
     public string? OCO_ID_MOTIVO_ATRASO { get; set; }
     public int? OTK_VERSSAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -174,6 +175,7 @@
  ORD_DATA_ESTATISTICA = ord_data_estatistica.HasValue && ord_data_estatistica.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ord_data_estatistica; 
  OCO_ID_MOTIVO_ATRASO = oco_id_motivo_atraso; 
  OTK_VERSSAO = otk_verssao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

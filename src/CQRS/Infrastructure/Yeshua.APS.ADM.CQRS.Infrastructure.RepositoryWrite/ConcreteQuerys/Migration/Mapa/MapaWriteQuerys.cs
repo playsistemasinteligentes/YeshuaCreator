@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMapaQuery(IMapaEntity Mapa)
         {
-            this.Query = $@" INSERT INTO [Mapa] ([MAP_ID], [PON_ID], [PON_ID_VIZINHO], [MAP_DISTANCIA], [MAP_CUSTO_PEDAGIO_POR_EIXO], [ROD_ID], [MAP_ALTURA_ROD], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MAP_ID, @PON_ID, @PON_ID_VIZINHO, @MAP_DISTANCIA, @MAP_CUSTO_PEDAGIO_POR_EIXO, @ROD_ID, @MAP_ALTURA_ROD, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Mapa] ([MAP_ID], [PON_ID], [PON_ID_VIZINHO], [MAP_DISTANCIA], [MAP_CUSTO_PEDAGIO_POR_EIXO], [ROD_ID], [MAP_ALTURA_ROD], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MAP_ID, @PON_ID, @PON_ID_VIZINHO, @MAP_DISTANCIA, @MAP_CUSTO_PEDAGIO_POR_EIXO, @ROD_ID, @MAP_ALTURA_ROD, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MAP_ID = Mapa.MAP_ID,
@@ -40,6 +40,7 @@ namespace Query.Write
                 MAP_CUSTO_PEDAGIO_POR_EIXO = Mapa.MAP_CUSTO_PEDAGIO_POR_EIXO,
                 ROD_ID = Mapa.ROD_ID,
                 MAP_ALTURA_ROD = Mapa.MAP_ALTURA_ROD,
+                OperationalEntityId = Mapa.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -131,6 +132,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MAP_ALTURA_ROD = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Mapa] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

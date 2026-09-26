@@ -29,6 +29,7 @@ namespace IRepository.Write
         void UpdateMEN_TYPE(string men_id, string value);
         void UpdateMEN_QTD_TRY_SEND(string men_id, Decimal value);
         void UpdateMEN_DATE_TRY_SEND(string men_id, DateTime value);
+        void UpdateOperationalEntityId(string men_id, string value);
         void UpdateTenantID(string men_id, int value);
         void UpdateDeleted(string men_id, bool value);
         void UpdateChanged(string men_id, DateTime value);

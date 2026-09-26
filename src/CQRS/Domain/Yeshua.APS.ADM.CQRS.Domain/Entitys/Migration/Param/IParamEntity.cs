@@ -25,6 +25,7 @@
     string PAR_VALOR_S { get; set; }
     Decimal PAR_VALOR_N { get; set; }
     DateTime PAR_VALOR_D { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

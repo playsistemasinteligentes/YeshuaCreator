@@ -28,6 +28,7 @@ namespace IQuery.Read
         public QueryModel ExistsByOTK_DATA_PREVISTAQuery(DateTime value );
         public QueryModel ExistsByOTK_DATA_REALIZADAQuery(DateTime value );
         public QueryModel ExistsByFPR_IDQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -43,6 +44,7 @@ namespace IQuery.Read
         public QueryModel FirstByOTK_DATA_PREVISTAQuery(DateTime value );
         public QueryModel FirstByOTK_DATA_REALIZADAQuery(DateTime value );
         public QueryModel FirstByFPR_IDQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

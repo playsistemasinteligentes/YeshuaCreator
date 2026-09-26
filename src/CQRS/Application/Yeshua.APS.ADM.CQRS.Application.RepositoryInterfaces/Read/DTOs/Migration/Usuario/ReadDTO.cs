@@ -25,6 +25,7 @@ namespace Repositorio.Outputs
     public string turm_id { get; set; } = string.Empty;
     public int use_ativo { get; set; }
     public string use_coderp { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

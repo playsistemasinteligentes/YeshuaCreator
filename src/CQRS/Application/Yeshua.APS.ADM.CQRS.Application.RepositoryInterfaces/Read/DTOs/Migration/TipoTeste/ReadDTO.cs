@@ -21,6 +21,7 @@ namespace Repositorio.Outputs
     public Decimal tt_especificacao { get; set; }
     public string tt_origem_especificacao { get; set; } = string.Empty;
     public string tt_imprime_no_laudo { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

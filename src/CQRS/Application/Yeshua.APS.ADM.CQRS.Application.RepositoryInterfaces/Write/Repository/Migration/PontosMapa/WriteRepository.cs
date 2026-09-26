@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdatePON_LATITUDE(string pon_id, Decimal value);
         void UpdatePON_LONGITUDE(string pon_id, Decimal value);
         void UpdatePON_DISTANCIA_KM(string pon_id, Decimal value);
+        void UpdateOperationalEntityId(string pon_id, string value);
         void UpdateTenantID(string pon_id, int value);
         void UpdateDeleted(string pon_id, bool value);
         void UpdateChanged(string pon_id, DateTime value);

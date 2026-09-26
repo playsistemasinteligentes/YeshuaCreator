@@ -33,6 +33,7 @@
     public string? Payload { get; set; }
     public int RetryCount { get; set; }
     public int? TenantID { get; set; }
+    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
@@ -50,6 +51,7 @@
  ErrorMessage = errormessage; 
  Payload = payload; 
  RetryCount = retrycount; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

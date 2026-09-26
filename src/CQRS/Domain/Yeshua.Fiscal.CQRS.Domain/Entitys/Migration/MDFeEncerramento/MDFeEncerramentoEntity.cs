@@ -31,6 +31,7 @@
     public string? Protocolo { get; set; }
     public string? CodigoRetorno { get; set; }
     public string? MensagemRetorno { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -48,6 +49,7 @@
  Protocolo = protocolo; 
  CodigoRetorno = codigoretorno; 
  MensagemRetorno = mensagemretorno; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

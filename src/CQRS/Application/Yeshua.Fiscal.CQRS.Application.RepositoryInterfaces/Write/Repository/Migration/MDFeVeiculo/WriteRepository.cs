@@ -28,6 +28,7 @@ namespace IRepository.Write
         void UpdateTara(int id, Decimal value);
         void UpdateCapacidadeKg(int id, Decimal value);
         void UpdateCapacidadeM3(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateImpressoraQuery(IImpressoraEntity Impressora);
         QueryModel UpdateIMP_IP(int imp_id, string value);
         QueryModel UpdateIMP_NOME(int imp_id, string value);
+        QueryModel UpdateOperationalEntityId(int imp_id, string value);
         QueryModel UpdateTenantID(int imp_id, int value);
         QueryModel UpdateDeleted(int imp_id, bool value);
         QueryModel UpdateChanged(int imp_id, DateTime value);

@@ -29,6 +29,7 @@ namespace Repositorio.Outputs
     public int cdv_sexta { get; set; }
     public int cdv_sabado { get; set; }
     public int cdv_domingo { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

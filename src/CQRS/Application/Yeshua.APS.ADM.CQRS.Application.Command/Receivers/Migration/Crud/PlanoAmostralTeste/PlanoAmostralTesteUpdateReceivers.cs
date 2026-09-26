@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePlanoAmostralTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePlanoAmostralTesteReceiver), commandName: "Command.Write.PlanoAmostralTesteCrudCommand");
                  var planoamostralteste = new PlanoAmostralTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.GRP_TIPO, c.PAT_ID, c.PAT_QTD_CAIXAS_DE, c.PAT_QTD_CAIXAS_ATE, c.PAT_N_AMOSTRAGEM, c.PAT_PERCENT_ESPECIF);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", planoamostralteste.OperationalEntityId);
                  var domainResult = PlanoAmostralTesteDomainBehavior.Apply(planoamostralteste, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_MedicoesQuery(IT_MedicoesEntity T_Medicoes)
         {
-            this.Query = $@" INSERT INTO [T_Medicoes] ([MED_ID], [IND_ID], [MET_ID], [UNI_ID], [MED_DATA], [MED_VALOR], [MED_AC_ANO], [MED_DATAMEDICAO], [MED_PONDERACAO], [DIM_ID], [DIM_DESCRICAO], [DIM_SUBDIMENSAO_ID], [DIM_SUB_DESCRICAO], [PER_ID], [PER_DESCRICAO], [FAT_ID], [FAT_DESCRICAO], [MED_SQL], [DOM_EMPRESA], [DOM_FILIAL], [MED_VALOR_DISPER], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MED_ID, @IND_ID, @MET_ID, @UNI_ID, @MED_DATA, @MED_VALOR, @MED_AC_ANO, @MED_DATAMEDICAO, @MED_PONDERACAO, @DIM_ID, @DIM_DESCRICAO, @DIM_SUBDIMENSAO_ID, @DIM_SUB_DESCRICAO, @PER_ID, @PER_DESCRICAO, @FAT_ID, @FAT_DESCRICAO, @MED_SQL, @DOM_EMPRESA, @DOM_FILIAL, @MED_VALOR_DISPER, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Medicoes] ([MED_ID], [IND_ID], [MET_ID], [UNI_ID], [MED_DATA], [MED_VALOR], [MED_AC_ANO], [MED_DATAMEDICAO], [MED_PONDERACAO], [DIM_ID], [DIM_DESCRICAO], [DIM_SUBDIMENSAO_ID], [DIM_SUB_DESCRICAO], [PER_ID], [PER_DESCRICAO], [FAT_ID], [FAT_DESCRICAO], [MED_SQL], [DOM_EMPRESA], [DOM_FILIAL], [MED_VALOR_DISPER], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MED_ID, @IND_ID, @MET_ID, @UNI_ID, @MED_DATA, @MED_VALOR, @MED_AC_ANO, @MED_DATAMEDICAO, @MED_PONDERACAO, @DIM_ID, @DIM_DESCRICAO, @DIM_SUBDIMENSAO_ID, @DIM_SUB_DESCRICAO, @PER_ID, @PER_DESCRICAO, @FAT_ID, @FAT_DESCRICAO, @MED_SQL, @DOM_EMPRESA, @DOM_FILIAL, @MED_VALOR_DISPER, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MED_ID = T_Medicoes.MED_ID,
@@ -54,6 +54,7 @@ namespace Query.Write
                 DOM_EMPRESA = T_Medicoes.DOM_EMPRESA,
                 DOM_FILIAL = T_Medicoes.DOM_FILIAL,
                 MED_VALOR_DISPER = T_Medicoes.MED_VALOR_DISPER,
+                OperationalEntityId = T_Medicoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -299,6 +300,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MED_VALOR_DISPER = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [T_Medicoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

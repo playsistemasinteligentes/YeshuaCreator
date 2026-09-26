@@ -33,6 +33,7 @@ namespace Repositorio.Outputs
     public DateTime enviadoemutc { get; set; }
     public DateTime autorizadoemutc { get; set; }
     public int status { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertOrderTrack", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertOrderTrackReceiver), commandName: "Command.Write.OrderTrackCrudCommand");
                  var ordertrack = new OrderTrackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OTK_ID, c.OTK_SEQUENCIA, c.OTK_VERSSAO, c.ORD_ID, c.OTK_EVENTO, c.OTK_DATA_NECESSIDADE_DE, c.OTK_DATA_NECESSIDADE_ATE, c.OTK_DATA_PREVISTA, c.OTK_DATA_REALIZADA, c.FPR_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ordertrack.OperationalEntityId);
                  var domainResult = OrderTrackDomainBehavior.Apply(ordertrack, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

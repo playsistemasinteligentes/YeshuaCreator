@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();
@@ -50,7 +54,46 @@ builder.Services
             ValidateLifetime = true
         };
     });
-builder.Services.AddAuthorization();
+
+const string applicationName = "Central";
+builder.Services.AddAuthorization(options =>
+{
+    static string? Claim(AuthorizationHandlerContext context, string type) =>
+        context.User.FindFirst(type)?.Value;
+
+    static bool IsLegacy(AuthorizationHandlerContext context) =>
+        string.IsNullOrWhiteSpace(Claim(context, "tokenOrigin"));
+
+    static bool IsApplicationToken(AuthorizationHandlerContext context, string expectedApplication) =>
+        string.Equals(Claim(context, "tokenOrigin"), "Application", StringComparison.OrdinalIgnoreCase)
+        && string.Equals(Claim(context, "application"), expectedApplication, StringComparison.OrdinalIgnoreCase);
+
+    static bool IsCentralToken(AuthorizationHandlerContext context) =>
+        string.Equals(Claim(context, "tokenOrigin"), "Central", StringComparison.OrdinalIgnoreCase);
+
+    static bool IsPlatformToken(AuthorizationHandlerContext context) =>
+        IsCentralToken(context)
+        || string.Equals(Claim(context, "tokenOrigin"), "Application", StringComparison.OrdinalIgnoreCase);
+
+    static bool HasCatalog(AuthorizationHandlerContext context, string expectedApplication) =>
+        (Claim(context, "userCatalogs") ?? string.Empty)
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Contains(expectedApplication, StringComparer.OrdinalIgnoreCase);
+
+    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireAssertion(context =>
+            IsLegacy(context)
+            || (string.Equals(applicationName, "Central", StringComparison.OrdinalIgnoreCase)
+                ? IsCentralToken(context)
+                : IsApplicationToken(context, applicationName)))
+        .Build();
+
+    options.AddPolicy("ApplicationEntry", policy =>
+        policy.RequireAuthenticatedUser().RequireAssertion(context =>
+            IsLegacy(context)
+            || (IsPlatformToken(context) && HasCatalog(context, applicationName))));
+});
 
 var app = builder.Build();
 

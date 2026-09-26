@@ -150,13 +150,110 @@ namespace Dominio.Schemas.CQRS
             string prefixo = getPrefixo();
             // menus 
             sb.AppendLine(@"
-                    app.MapGet(""{PREFIXO}/getMenu"", (HttpContext context) =>
+                    app.MapGet(""{PREFIXO}/getMenu"", async (
+                        HttpContext context,
+                        [FromServices] JwtSettings jwtSettings,
+                        [FromServices] Command.Receivers.UseCase.OpenApplicationSessionHandler sessionHandler) =>
                     {
+                        const string applicationName = ""{APPLICATION}"";
+                        var tokenOrigin = context.User.FindFirst(""tokenOrigin"")?.Value;
+                        var tokenApplication = context.User.FindFirst(""application"")?.Value;
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == ""userModules"")?.Value;
                         var catalogsClaim = context.User.Claims.FirstOrDefault(c => c.Type == ""userCatalogs"")?.Value;
                         var hasCatalogAccess = (catalogsClaim ?? string.Empty)
                             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                            .Contains(""{APPLICATION}"", StringComparer.OrdinalIgnoreCase);
+                            .Contains(applicationName, StringComparer.OrdinalIgnoreCase);
+
+                        var isCentralApplication = string.Equals(
+                            applicationName,
+                            ""Central"",
+                            StringComparison.OrdinalIgnoreCase);
+                        var isCurrentApplicationToken = string.Equals(
+                                tokenApplication,
+                                applicationName,
+                                StringComparison.OrdinalIgnoreCase)
+                            && (string.Equals(tokenOrigin, ""Application"", StringComparison.OrdinalIgnoreCase)
+                                || (isCentralApplication
+                                    && string.Equals(tokenOrigin, ""Central"", StringComparison.OrdinalIgnoreCase)));
+
+                        if (!isCurrentApplicationToken
+                            && !string.IsNullOrWhiteSpace(tokenOrigin))
+                        {
+                            if (!hasCatalogAccess)
+                                return Results.Unauthorized();
+
+                            var tenantIdentity = context.User.FindFirst(""tenantIdentity"")?.Value;
+                            var userIdentity = context.User.FindFirst(""userIdentity"")?.Value;
+                            var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
+                            if (string.IsNullOrWhiteSpace(tenantIdentity)
+                                || string.IsNullOrWhiteSpace(userIdentity)
+                                || string.IsNullOrWhiteSpace(email))
+                                return Results.Unauthorized();
+
+                            var centralTenantIdClaim = context.User.FindFirst(""centralTenantId"")?.Value;
+                            var centralUserIdClaim = context.User.FindFirst(""centralUserId"")?.Value;
+                            var localTenantId = 0;
+                            var localUserId = 0;
+
+                            if (isCentralApplication)
+                            {
+                                if (!int.TryParse(centralTenantIdClaim, out localTenantId)
+                                    || !int.TryParse(centralUserIdClaim, out localUserId))
+                                    return Results.Unauthorized();
+                            }
+                            else
+                            {
+                                var session = await sessionHandler.ExecuteAsync(
+                                    new Command.UseCase.OpenApplicationSessionInputCommand
+                                    {
+                                        TenantIdentity = tenantIdentity,
+                                        TenantDocument = context.User.FindFirst(""tenantDocument"")?.Value ?? string.Empty,
+                                        TenantName = context.User.FindFirst(""tenantName"")?.Value ?? string.Empty,
+                                        UserIdentity = userIdentity,
+                                        UserName = context.User.FindFirst(""userName"")?.Value ?? email,
+                                        Email = email
+                                    },
+                                    context.RequestAborted);
+
+                                if (session.StatusCode is < 200 or >= 300 || session.Data is null)
+                                    return Results.BadRequest(session);
+
+                                localTenantId = session.Data.TenantId;
+                                localUserId = session.Data.UserId;
+                            }
+
+                            var claims = new List<Claim>
+                            {
+                                new(ClaimTypes.NameIdentifier, localUserId.ToString()),
+                                new(ClaimTypes.Email, email),
+                                new(ClaimTypes.Role, context.User.FindFirst(ClaimTypes.Role)?.Value ?? ""Admin""),
+                                new(""tenantId"", localTenantId.ToString()),
+                                new(""userModules"", string.Empty),
+                                new(""userCatalogs"", catalogsClaim ?? string.Empty),
+                                new(""tokenOrigin"", isCentralApplication ? ""Central"" : ""Application""),
+                                new(""application"", applicationName),
+                                new(""tenantIdentity"", tenantIdentity),
+                                new(""tenantDocument"", context.User.FindFirst(""tenantDocument"")?.Value ?? string.Empty),
+                                new(""tenantName"", context.User.FindFirst(""tenantName"")?.Value ?? string.Empty),
+                                new(""userIdentity"", userIdentity),
+                                new(""userName"", context.User.FindFirst(""userName"")?.Value ?? email),
+                                new(""centralTenantId"", centralTenantIdClaim ?? localTenantId.ToString()),
+                                new(""centralUserId"", centralUserIdClaim ?? localUserId.ToString())
+                            };
+                            var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+                            {
+                                Subject = new ClaimsIdentity(claims),
+                                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
+                                SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                                    new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                                        System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                                    Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+                            };
+                            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                            context.Response.Headers[""X-Yeshua-Application-Token""] =
+                                tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+                            context.Response.Headers.CacheControl = ""no-store"";
+                        }
 
                         if (modulesClaim == null && !hasCatalogAccess)
                             return Results.Unauthorized();
@@ -194,7 +291,7 @@ namespace Dominio.Schemas.CQRS
                         }).ToList();
 
                         return Results.Ok(result);
-                    }).RequireAuthorization();
+                    }).RequireAuthorization(""ApplicationEntry"");
             ")
                 .Replace("{PREFIXO}", prefixo)
                 .Replace("{APPLICATION}", EscapeLiteral(_applicationName));

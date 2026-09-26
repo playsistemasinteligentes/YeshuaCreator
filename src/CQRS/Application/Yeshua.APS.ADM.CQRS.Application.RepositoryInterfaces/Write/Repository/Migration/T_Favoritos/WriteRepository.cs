@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IT_FavoritosEntity t_favoritos);
         void UpdateUSE_ID(int idfavorito, int value);
         void UpdateID_INDICADOR(int idfavorito, int value);
+        void UpdateOperationalEntityId(int idfavorito, string value);
         void UpdateTenantID(int idfavorito, int value);
         void UpdateDeleted(int idfavorito, bool value);
         void UpdateChanged(int idfavorito, DateTime value);

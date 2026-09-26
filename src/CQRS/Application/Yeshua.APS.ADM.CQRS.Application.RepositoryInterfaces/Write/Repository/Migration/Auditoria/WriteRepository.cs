@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateROTINA(int id, string value);
         void UpdateHISTORICO(int id, string value);
         void UpdateCHAVE(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

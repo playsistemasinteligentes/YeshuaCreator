@@ -27,6 +27,7 @@ namespace Repositorio.Outputs
     public int rot_ordem_roteiro { get; set; }
     public string rot_tipo { get; set; } = string.Empty;
     public Decimal rot_distancia { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

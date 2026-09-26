@@ -41,16 +41,17 @@ namespace Shered.DB.Connection
                 return _inner.Execute(sql, param);
 
             var queryId = _telemetry.GetQueryId(sql);
+            using var activity = _telemetry.StartActivity("Execute", queryId, telemetry);
             var startedAt = Stopwatch.GetTimestamp();
             try
             {
                 var result = _inner.Execute(sql, param);
-                _telemetry.Complete("Execute", queryId, startedAt, true, telemetry);
+                _telemetry.Complete("Execute", queryId, startedAt, true, telemetry, activity: activity);
                 return result;
             }
             catch (Exception exception)
             {
-                _telemetry.Complete("Execute", queryId, startedAt, false, telemetry, exception);
+                _telemetry.Complete("Execute", queryId, startedAt, false, telemetry, exception, activity);
                 throw;
             }
         }
@@ -62,16 +63,17 @@ namespace Shered.DB.Connection
                 return _inner.ExecuteScalar<T>(sql, param);
 
             var queryId = _telemetry.GetQueryId(sql);
+            using var activity = _telemetry.StartActivity("ExecuteScalar", queryId, telemetry);
             var startedAt = Stopwatch.GetTimestamp();
             try
             {
                 var result = _inner.ExecuteScalar<T>(sql, param);
-                _telemetry.Complete("ExecuteScalar", queryId, startedAt, true, telemetry);
+                _telemetry.Complete("ExecuteScalar", queryId, startedAt, true, telemetry, activity: activity);
                 return result;
             }
             catch (Exception exception)
             {
-                _telemetry.Complete("ExecuteScalar", queryId, startedAt, false, telemetry, exception);
+                _telemetry.Complete("ExecuteScalar", queryId, startedAt, false, telemetry, exception, activity);
                 throw;
             }
         }
@@ -83,16 +85,17 @@ namespace Shered.DB.Connection
                 return _inner.Query<T>(sql, param);
 
             var queryId = _telemetry.GetQueryId(sql);
+            using var activity = _telemetry.StartActivity("Query", queryId, telemetry);
             var startedAt = Stopwatch.GetTimestamp();
             try
             {
                 var result = _inner.Query<T>(sql, param);
-                _telemetry.Complete("Query", queryId, startedAt, true, telemetry);
+                _telemetry.Complete("Query", queryId, startedAt, true, telemetry, activity: activity);
                 return result;
             }
             catch (Exception exception)
             {
-                _telemetry.Complete("Query", queryId, startedAt, false, telemetry, exception);
+                _telemetry.Complete("Query", queryId, startedAt, false, telemetry, exception, activity);
                 throw;
             }
         }
@@ -104,16 +107,17 @@ namespace Shered.DB.Connection
                 return _inner.QuerySingle<T>(sql, param);
 
             var queryId = _telemetry.GetQueryId(sql);
+            using var activity = _telemetry.StartActivity("QuerySingle", queryId, telemetry);
             var startedAt = Stopwatch.GetTimestamp();
             try
             {
                 var result = _inner.QuerySingle<T>(sql, param);
-                _telemetry.Complete("QuerySingle", queryId, startedAt, true, telemetry);
+                _telemetry.Complete("QuerySingle", queryId, startedAt, true, telemetry, activity: activity);
                 return result;
             }
             catch (Exception exception)
             {
-                _telemetry.Complete("QuerySingle", queryId, startedAt, false, telemetry, exception);
+                _telemetry.Complete("QuerySingle", queryId, startedAt, false, telemetry, exception, activity);
                 throw;
             }
         }
@@ -125,16 +129,17 @@ namespace Shered.DB.Connection
                 return _inner.QueryFirstOrDefault<T>(sql, param);
 
             var queryId = _telemetry.GetQueryId(sql);
+            using var activity = _telemetry.StartActivity("QueryFirstOrDefault", queryId, telemetry);
             var startedAt = Stopwatch.GetTimestamp();
             try
             {
                 var result = _inner.QueryFirstOrDefault<T>(sql, param);
-                _telemetry.Complete("QueryFirstOrDefault", queryId, startedAt, true, telemetry);
+                _telemetry.Complete("QueryFirstOrDefault", queryId, startedAt, true, telemetry, activity: activity);
                 return result;
             }
             catch (Exception exception)
             {
-                _telemetry.Complete("QueryFirstOrDefault", queryId, startedAt, false, telemetry, exception);
+                _telemetry.Complete("QueryFirstOrDefault", queryId, startedAt, false, telemetry, exception, activity);
                 throw;
             }
         }

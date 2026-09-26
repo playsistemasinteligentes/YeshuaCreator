@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTurno", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTurnoReceiver), commandName: "Command.Write.TurnoCrudCommand");
                  var turno = new TurnoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.TURN_PRIORIDADE, c.TURN_HORA_INI_DIA1, c.TURN_HORA_FIM_DIA1, c.TURN_HORA_INI_DIA2, c.TURN_HORA_FIM_DIA2, c.TURN_HORA_INI_DIA3, c.TURN_HORA_FIM_DIA3, c.TURN_HORA_INI_DIA4, c.TURN_HORA_FIM_DIA4, c.TURN_HORA_INI_DIA5, c.TURN_HORA_FIM_DIA5, c.TURN_HORA_INI_DIA6, c.TURN_HORA_FIM_DIA6, c.TURN_HORA_INI_DIA7, c.TURN_HORA_FIM_DIA7);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", turno.OperationalEntityId);
                  var domainResult = TurnoDomainBehavior.Apply(turno, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

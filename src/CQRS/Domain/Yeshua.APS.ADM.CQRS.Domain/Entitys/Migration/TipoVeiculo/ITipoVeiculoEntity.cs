@@ -39,6 +39,7 @@
     Decimal? TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D { get; set; }
     Decimal? TIP_CAPACIDADE_LARGURA_PESCOCO_D { get; set; }
     Decimal? TIP_CAPACIDADE_M3 { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

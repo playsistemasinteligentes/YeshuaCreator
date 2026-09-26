@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct TempoSetupOnduladeiraReadCommand : ICommandRead
+    public struct TempoSetupOnduladeiraReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? TEM_ID { get; set; }
         public string? OND_ID_DE { get; set; }
@@ -19,11 +19,14 @@ namespace Command.Read
         public string? TEM_RESINA_DE { get; set; }
         public string? TEM_RESINA_PARA { get; set; }
         public int? TEM_TEMPO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "TempoSetupOnduladeira";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByFEC_ID(int value );
         public bool ExistsByFEC_QTD(int value );
         public bool ExistsByGRP_ID(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public FechamentoTesteDTO FirstByFEC_ID(int value );
         public FechamentoTesteDTO FirstByFEC_QTD(int value );
         public FechamentoTesteDTO FirstByGRP_ID(string value );
+        public FechamentoTesteDTO FirstByOperationalEntityId(string value );
         public FechamentoTesteDTO FirstByTenantID(int value );
         public FechamentoTesteDTO FirstByDeleted(bool value );
         public FechamentoTesteDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<FechamentoTesteDTO> GetAllByFEC_ID(int value );
         public IEnumerable<FechamentoTesteDTO> GetAllByFEC_QTD(int value );
         public IEnumerable<FechamentoTesteDTO> GetAllByGRP_ID(string value );
+        public IEnumerable<FechamentoTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<FechamentoTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<FechamentoTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<FechamentoTesteDTO> GetAllByChanged(DateTime value );

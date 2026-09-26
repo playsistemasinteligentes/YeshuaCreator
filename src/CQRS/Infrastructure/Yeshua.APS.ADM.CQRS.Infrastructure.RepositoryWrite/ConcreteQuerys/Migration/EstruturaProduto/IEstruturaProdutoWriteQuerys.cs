@@ -25,6 +25,7 @@ namespace IQuery.Write
         QueryModel UpdateEST_BASE_PRODUCAO(int id, Decimal value);
         QueryModel UpdateEST_TIPO_REQUISICAO(int id, string value);
         QueryModel UpdateEST_CODIGO_DE_EXCECAO(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -30,6 +30,7 @@ namespace IRepository.Read
         public bool ExistsByLOT_LARGURA(Decimal value );
         public bool ExistsByLOT_COMPRIMENTO(Decimal value );
         public bool ExistsByLOT_DIAMETRO(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -40,6 +41,7 @@ namespace IRepository.Read
         public LotesDTO FirstByLOT_LARGURA(Decimal value );
         public LotesDTO FirstByLOT_COMPRIMENTO(Decimal value );
         public LotesDTO FirstByLOT_DIAMETRO(Decimal value );
+        public LotesDTO FirstByOperationalEntityId(string value );
         public LotesDTO FirstByTenantID(int value );
         public LotesDTO FirstByDeleted(bool value );
         public LotesDTO FirstByChanged(DateTime value );
@@ -50,6 +52,7 @@ namespace IRepository.Read
         public IEnumerable<LotesDTO> GetAllByLOT_LARGURA(Decimal value );
         public IEnumerable<LotesDTO> GetAllByLOT_COMPRIMENTO(Decimal value );
         public IEnumerable<LotesDTO> GetAllByLOT_DIAMETRO(Decimal value );
+        public IEnumerable<LotesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LotesDTO> GetAllByTenantID(int value );
         public IEnumerable<LotesDTO> GetAllByDeleted(bool value );
         public IEnumerable<LotesDTO> GetAllByChanged(DateTime value );

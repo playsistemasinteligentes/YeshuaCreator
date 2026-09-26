@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct CTeEntradaOficialCrudCommand : ICommand
+    public struct CTeEntradaOficialCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
@@ -24,10 +24,13 @@ namespace Command.Write
         public string PayloadHash { get; set; }
         public string? PayloadStorageKey { get; set; }
         public int Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "CTeEntradaOficial";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

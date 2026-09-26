@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirFechamentoTesteQuery(IFechamentoTesteEntity FechamentoTeste)
         {
-            this.Query = $@" INSERT INTO [FechamentoTeste] ([FEC_ID], [FEC_QTD], [GRP_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FEC_ID, @FEC_QTD, @GRP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [FechamentoTeste] ([FEC_ID], [FEC_QTD], [GRP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FEC_ID, @FEC_QTD, @GRP_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 FEC_ID = FechamentoTeste.FEC_ID,
                 FEC_QTD = FechamentoTeste.FEC_QTD,
                 GRP_ID = FechamentoTeste.GRP_ID,
+                OperationalEntityId = FechamentoTeste.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 GRP_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [FechamentoTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUsuarioObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUsuarioObjetoControlavelReceiver), commandName: "Command.Write.UsuarioObjetoControlavelCrudCommand");
                  var usuarioobjetocontrolavel = new UsuarioObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.USE_ID, c.OBJ_ID, c.USU_OBJETO_ACAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", usuarioobjetocontrolavel.OperationalEntityId);
                  var domainResult = UsuarioObjetoControlavelDomainBehavior.Apply(usuarioobjetocontrolavel, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

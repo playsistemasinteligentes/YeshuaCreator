@@ -26,6 +26,7 @@ namespace IRepository.Write
         void UpdatePLA_DESCRICAO(int pla_id, string value);
         void UpdatePLA_TIPO(int pla_id, int value);
         void UpdatePLA_NATUREZA(int pla_id, string value);
+        void UpdateOperationalEntityId(int pla_id, string value);
         void UpdateTenantID(int pla_id, int value);
         void UpdateDeleted(int pla_id, bool value);
         void UpdateChanged(int pla_id, DateTime value);

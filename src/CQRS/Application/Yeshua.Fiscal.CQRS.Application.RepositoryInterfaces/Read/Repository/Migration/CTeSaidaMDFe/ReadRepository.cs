@@ -34,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByPublicadoEmUtc(DateTime value );
         public bool ExistsByUltimoErro(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -47,6 +48,7 @@ namespace IRepository.Read
         public CTeSaidaMDFeDTO FirstByPublicadoEmUtc(DateTime value );
         public CTeSaidaMDFeDTO FirstByUltimoErro(string value );
         public CTeSaidaMDFeDTO FirstByStatus(int value );
+        public CTeSaidaMDFeDTO FirstByOperationalEntityId(string value );
         public CTeSaidaMDFeDTO FirstByTenantID(int value );
         public CTeSaidaMDFeDTO FirstByDeleted(bool value );
         public CTeSaidaMDFeDTO FirstByChanged(DateTime value );
@@ -60,6 +62,7 @@ namespace IRepository.Read
         public IEnumerable<CTeSaidaMDFeDTO> GetAllByPublicadoEmUtc(DateTime value );
         public IEnumerable<CTeSaidaMDFeDTO> GetAllByUltimoErro(string value );
         public IEnumerable<CTeSaidaMDFeDTO> GetAllByStatus(int value );
+        public IEnumerable<CTeSaidaMDFeDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeSaidaMDFeDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeSaidaMDFeDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeSaidaMDFeDTO> GetAllByChanged(DateTime value );

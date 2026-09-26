@@ -17,6 +17,7 @@ namespace IQuery.Read
         public QueryModel yTenantModuleModuleIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yTenantModuleTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yTenantModuleUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByModuleIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
@@ -24,6 +25,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByModuleIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );

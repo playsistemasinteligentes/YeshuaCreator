@@ -34,6 +34,7 @@
     public DateTime LOGS_DATE { get; set; }
     public int USE_ID { get; set; }
     public string? LOGS_ORIGEM { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -54,6 +55,7 @@
  LOGS_DATE = (logs_date < (new DateTime(1800, 1, 1))) ? DateTime.Now : logs_date; 
  USE_ID = use_id; 
  LOGS_ORIGEM = logs_origem; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

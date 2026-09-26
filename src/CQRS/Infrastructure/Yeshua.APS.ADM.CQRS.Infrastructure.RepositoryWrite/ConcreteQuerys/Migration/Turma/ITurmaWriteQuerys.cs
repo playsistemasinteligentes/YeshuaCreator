@@ -32,6 +32,7 @@ namespace IQuery.Write
         QueryModel UpdateTURM_HORA_FIM_DIA6(string id, DateTime value);
         QueryModel UpdateTURM_HORA_INI_DIA7(string id, DateTime value);
         QueryModel UpdateTURM_HORA_FIM_DIA7(string id, DateTime value);
+        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdateTenantID(string id, int value);
         QueryModel UpdateDeleted(string id, bool value);
         QueryModel UpdateChanged(string id, DateTime value);

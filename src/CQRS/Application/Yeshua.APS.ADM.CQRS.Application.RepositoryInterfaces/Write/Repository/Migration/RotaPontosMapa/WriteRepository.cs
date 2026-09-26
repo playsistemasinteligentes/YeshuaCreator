@@ -30,6 +30,7 @@ namespace IRepository.Write
         void UpdateROT_ORDEM_ROTEIRO(int id, int value);
         void UpdateROT_TIPO(int id, string value);
         void UpdateROT_DISTANCIA(int id, Decimal value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

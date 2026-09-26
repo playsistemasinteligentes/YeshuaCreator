@@ -94,6 +94,7 @@
     DateTime? ORD_DATA_ESTATISTICA { get; set; }
     string? OCO_ID_MOTIVO_ATRASO { get; set; }
     int? OTK_VERSSAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

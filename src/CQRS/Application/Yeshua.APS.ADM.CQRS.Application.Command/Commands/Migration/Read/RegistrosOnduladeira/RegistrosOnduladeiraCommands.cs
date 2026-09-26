@@ -11,18 +11,21 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct RegistrosOnduladeiraReadCommand : ICommandRead
+    public struct RegistrosOnduladeiraReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int? REG_ID { get; set; }
         public string? REG_RESPOSTA { get; set; }
         public string? REG_STATUS { get; set; }
         public DateTime? REG_DATA_INICIO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "RegistrosOnduladeira";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertEstruturaCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertEstruturaCustoReceiver), commandName: "Command.Write.EstruturaCustoCrudCommand");
                  var estruturacusto = new EstruturaCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.ITO_ID, c.ORD_ID, c.PRO_ID, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.PRO_TIPO_CUSTO, c.PRO_GRUPO_CONTABIL, c.EST_ORDEM, c.EST_GRUPO, c.EST_QUANT, c.EST_VALOR_TOTAL, c.EST_DATA_BASE, c.EST_BASE_PRODUCAO, c.EST_NIVEL, c.FPR_SEQ_REPETICAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", estruturacusto.OperationalEntityId);
                  var domainResult = EstruturaCustoDomainBehavior.Apply(estruturacusto, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

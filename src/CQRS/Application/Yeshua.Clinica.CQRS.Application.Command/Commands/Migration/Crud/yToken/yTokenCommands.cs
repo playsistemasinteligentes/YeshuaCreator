@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct yTokenCrudCommand : ICommand
+    public struct yTokenCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string TokenHash { get; set; }
@@ -23,8 +23,11 @@ namespace Command.Write
         public DateTime? LastUsedAt { get; set; }
         public int? TenantID { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
+ public string OperationalEntity => "yToken";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

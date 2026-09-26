@@ -28,6 +28,7 @@
     string? CAN_IMG { get; set; }
     Decimal? CAN_LAT_ENTREGA { get; set; }
     Decimal? CAN_LONG_ENTREGA { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

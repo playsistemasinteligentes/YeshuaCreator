@@ -416,6 +416,11 @@ namespace Input.Repository.Order
             var query = _query.UpdateOTK_VERSSAO(ord_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string ord_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ord_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string ord_id, int value)
         {
             var query = _query.UpdateTenantID(ord_id, value);

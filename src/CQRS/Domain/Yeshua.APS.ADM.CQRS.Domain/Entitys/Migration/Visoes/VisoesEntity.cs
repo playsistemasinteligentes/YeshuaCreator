@@ -24,6 +24,7 @@
     public int VIS_PLANID { get; set; }
     public string? VIS_FORMULA { get; set; }
     public int CAB_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  VIS_PLANID = vis_planid; 
  VIS_FORMULA = vis_formula; 
  CAB_ID = cab_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -52,6 +52,7 @@ namespace IRepository.Write
         void UpdateOCO_ID(int id, string value);
         void UpdateCAR_ID_JUNTADA(int id, string value);
         void UpdateCAR_OBSERVACAO_OTIMIZADOR(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

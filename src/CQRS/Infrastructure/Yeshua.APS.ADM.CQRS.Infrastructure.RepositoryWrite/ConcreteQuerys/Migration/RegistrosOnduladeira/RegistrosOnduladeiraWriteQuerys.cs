@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InserirRegistrosOnduladeiraQuery(IRegistrosOnduladeiraEntity RegistrosOnduladeira)
         {
-            this.Query = $@" INSERT INTO [RegistrosOnduladeira] ([REG_ID], [REG_RESPOSTA], [REG_STATUS], [REG_DATA_INICIO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@REG_ID, @REG_RESPOSTA, @REG_STATUS, @REG_DATA_INICIO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RegistrosOnduladeira] ([REG_ID], [REG_RESPOSTA], [REG_STATUS], [REG_DATA_INICIO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@REG_ID, @REG_RESPOSTA, @REG_STATUS, @REG_DATA_INICIO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 REG_ID = RegistrosOnduladeira.REG_ID,
                 REG_RESPOSTA = RegistrosOnduladeira.REG_RESPOSTA,
                 REG_STATUS = RegistrosOnduladeira.REG_STATUS,
                 REG_DATA_INICIO = RegistrosOnduladeira.REG_DATA_INICIO,
+                OperationalEntityId = RegistrosOnduladeira.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -95,6 +96,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 REG_DATA_INICIO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

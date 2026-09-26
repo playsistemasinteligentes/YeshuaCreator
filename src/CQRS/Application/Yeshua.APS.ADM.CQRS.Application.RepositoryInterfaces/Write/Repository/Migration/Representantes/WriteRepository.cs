@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IRepresentantesEntity representantes);
         void UpdateREP_ID(int id, int value);
         void UpdateREP_NOME(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

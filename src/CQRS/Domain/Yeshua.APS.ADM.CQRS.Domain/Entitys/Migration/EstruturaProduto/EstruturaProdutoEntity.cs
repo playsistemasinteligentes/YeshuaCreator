@@ -29,6 +29,7 @@
     public Decimal EST_BASE_PRODUCAO { get; set; }
     public string EST_TIPO_REQUISICAO { get; set; }
     public string EST_CODIGO_DE_EXCECAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -44,6 +45,7 @@
  EST_BASE_PRODUCAO = est_base_producao; 
  EST_TIPO_REQUISICAO = est_tipo_requisicao; 
  EST_CODIGO_DE_EXCECAO = est_codigo_de_excecao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -71,9 +71,12 @@ alias ycd='cd /root/YeshuaCreator/infra'
 alias yps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
 alias ylogs='docker logs --tail=100 -f --timestamps yeshua-nginx'
 alias ydeploy='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash'
+alias ydeploycentral='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- central'
 alias ydeployclinica='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica'
+alias ydeployaps='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- aps-adm'
+alias ydeployfiscal='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- fiscal'
 EOF
 
 echo "=========================================="
-echo "Setup concluido. Clinica esta disponivel por HTTP."
+echo "Setup concluido. Plataforma Yeshua esta disponivel por HTTP."
 echo "Execute setup-cert.sh para habilitar HTTPS."

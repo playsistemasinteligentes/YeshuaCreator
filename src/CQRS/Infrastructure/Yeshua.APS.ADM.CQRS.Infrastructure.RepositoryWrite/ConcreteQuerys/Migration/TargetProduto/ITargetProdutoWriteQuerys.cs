@@ -73,6 +73,7 @@ namespace IQuery.Write
         QueryModel UpdateTAR_DATA_FINAL(int tar_id, DateTime value);
         QueryModel UpdateTAR_APROVADO(int tar_id, string value);
         QueryModel UpdateTAR_TEMPO_PRODUZINDO(int tar_id, int value);
+        QueryModel UpdateOperationalEntityId(int tar_id, string value);
         QueryModel UpdateTenantID(int tar_id, int value);
         QueryModel UpdateDeleted(int tar_id, bool value);
         QueryModel UpdateChanged(int tar_id, DateTime value);

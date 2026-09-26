@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRestricoesDeRodagemQuery(IRestricoesDeRodagemEntity RestricoesDeRodagem)
         {
-            this.Query = $@" INSERT INTO [RestricoesDeRodagem] ([RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RES_ID, @RES_TIPO, @RES_HORA_INI, @RES_HORA_FIM, @RES_VELOCIDADE_HORA_RUSH, @TVE_ID, @MAP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RestricoesDeRodagem] ([RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RES_ID, @RES_TIPO, @RES_HORA_INI, @RES_HORA_FIM, @RES_VELOCIDADE_HORA_RUSH, @TVE_ID, @MAP_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 RES_ID = RestricoesDeRodagem.RES_ID,
@@ -40,6 +40,7 @@ namespace Query.Write
                 RES_VELOCIDADE_HORA_RUSH = RestricoesDeRodagem.RES_VELOCIDADE_HORA_RUSH,
                 TVE_ID = RestricoesDeRodagem.TVE_ID,
                 MAP_ID = RestricoesDeRodagem.MAP_ID,
+                OperationalEntityId = RestricoesDeRodagem.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -131,6 +132,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MAP_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

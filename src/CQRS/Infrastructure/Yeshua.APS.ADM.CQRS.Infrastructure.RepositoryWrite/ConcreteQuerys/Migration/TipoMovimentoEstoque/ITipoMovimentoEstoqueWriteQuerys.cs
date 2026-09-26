@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateTIP_DESCRICAO(string tip_id, string value);
         QueryModel UpdateTIP_TYPE(string tip_id, int value);
         QueryModel UpdateSPR(string tip_id, int value);
+        QueryModel UpdateOperationalEntityId(string tip_id, string value);
         QueryModel UpdateTenantID(string tip_id, int value);
         QueryModel UpdateDeleted(string tip_id, bool value);
         QueryModel UpdateChanged(string tip_id, DateTime value);

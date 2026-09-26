@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateVisoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateVisoesReceiver), commandName: "Command.Write.VisoesCrudCommand");
                  var visoes = new VisoesFactory(_logger, _domainTrackingPolicy).Create(context, c.VIS_ID, c.VIS_PLANID, c.VIS_FORMULA, c.CAB_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", visoes.OperationalEntityId);
                  var domainResult = VisoesDomainBehavior.Apply(visoes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

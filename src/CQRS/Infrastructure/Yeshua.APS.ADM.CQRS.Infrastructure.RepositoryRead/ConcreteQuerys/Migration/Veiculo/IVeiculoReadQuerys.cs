@@ -32,6 +32,7 @@ namespace IQuery.Read
         public QueryModel ExistsByVEI_EMISSAOQuery(DateTime value );
         public QueryModel ExistsByVEI_VENCIMENTOQuery(DateTime value );
         public QueryModel ExistsByVEI_STATUSQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -52,6 +53,7 @@ namespace IQuery.Read
         public QueryModel FirstByVEI_EMISSAOQuery(DateTime value );
         public QueryModel FirstByVEI_VENCIMENTOQuery(DateTime value );
         public QueryModel FirstByVEI_STATUSQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

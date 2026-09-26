@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCargaPrevista", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCargaPrevistaReceiver), commandName: "Command.Write.CargaPrevistaCrudCommand");
                  var cargaprevista = new CargaPrevistaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.ITC_QTD_PLANEJADA, c.CAR_PREVISAO_MATERIA_PRIMA, c.CAR_DATA_INICIO_PREVISTO, c.CAR_DATA_INICIO_REALIZADO, c.CAR_DATA_FIM_PREVISTO, c.CAR_DATA_FIM_REALIZADO, c.CAR_INICIO_JANELA_EMBARQUE, c.CAR_FIM_JANELA_EMBARQUE, c.CAR_EMBARQUE_ALVO, c.CAR_STATUS, c.CAR_PESO_TEORICO, c.CAR_VOLUME_TEORICO, c.CAR_PESO_REAL, c.CAR_VOLUME_REAL, c.CAR_PESO_EMBALAGEM, c.CAR_PESO_ENTRADA, c.CAR_PESO_SAIDA, c.CAR_ID_DOCA, c.VEI_PLACA, c.TIP_ID, c.TRA_ID, c.CAR_GRUPO_PRODUTIVO, c.ROT_ID, c.CAR_OBSERVACAO_DE_TRANSPORTE, c.CAR_JUSTIFICATIVA_DE_CARREGAMENTO, c.OCO_ID, c.CAR_ID_JUNTADA, c.CAR_OBSERVACAO_OTIMIZADOR);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cargaprevista.OperationalEntityId);
                  var domainResult = CargaPrevistaDomainBehavior.Apply(cargaprevista, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

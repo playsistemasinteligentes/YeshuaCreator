@@ -132,6 +132,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -196,6 +204,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TipoMovimentoEstoqueDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TipoMovimentoEstoqueDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public TipoMovimentoEstoqueDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -255,6 +271,14 @@ namespace Read.Repository
         public IEnumerable<TipoMovimentoEstoqueDTO> GetAllBySPR(int value )
         {
             var query = _query.FirstBySPRQuery(value );
+
+                var result = _unitOfWork.Query<TipoMovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<TipoMovimentoEstoqueDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TipoMovimentoEstoqueDTO>(query.Query,query.Parameters).ToList();
                 return result;

@@ -22,18 +22,21 @@ namespace IRepository.Read
     public partial interface IyTenantReadRepository
     {
         public DataPagination<yTenantDTO> getyTenant(ICommandRead command , bool TakeOffId = false);
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffId = false);
         public bool ExistsById(int value , bool TakeOffId = false);
         public bool ExistsByCnpjCpf(string value , bool TakeOffId = false);
         public bool ExistsByNome(string value , bool TakeOffId = false);
         public bool ExistsByUserId(int value , bool TakeOffId = false);
         public bool ExistsByDeleted(bool value , bool TakeOffId = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffId = false);
+        public yTenantDTO FirstByOperationalEntityId(string value , bool TakeOffId = false);
         public yTenantDTO FirstById(int value , bool TakeOffId = false);
         public yTenantDTO FirstByCnpjCpf(string value , bool TakeOffId = false);
         public yTenantDTO FirstByNome(string value , bool TakeOffId = false);
         public yTenantDTO FirstByUserId(int value , bool TakeOffId = false);
         public yTenantDTO FirstByDeleted(bool value , bool TakeOffId = false);
         public yTenantDTO FirstByChanged(DateTime value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByOperationalEntityId(string value , bool TakeOffId = false);
         public IEnumerable<yTenantDTO> GetAllById(int value , bool TakeOffId = false);
         public IEnumerable<yTenantDTO> GetAllByCnpjCpf(string value , bool TakeOffId = false);
         public IEnumerable<yTenantDTO> GetAllByNome(string value , bool TakeOffId = false);

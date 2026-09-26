@@ -32,6 +32,7 @@
     public Decimal? IPA_DIML { get; set; }
     public Decimal? IPA_DIMA { get; set; }
     public Decimal? IPA_QTD_POR_PALETE { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -50,6 +51,7 @@
  IPA_DIML = ipa_diml; 
  IPA_DIMA = ipa_dima; 
  IPA_QTD_POR_PALETE = ipa_qtd_por_palete; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

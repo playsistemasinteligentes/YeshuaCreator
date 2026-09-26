@@ -47,6 +47,7 @@ namespace IQuery.Read
         public QueryModel ExistsByOCO_IDQuery(string value );
         public QueryModel ExistsByCAR_ID_JUNTADAQuery(string value );
         public QueryModel ExistsByCAR_OBSERVACAO_OTIMIZADORQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -82,6 +83,7 @@ namespace IQuery.Read
         public QueryModel FirstByOCO_IDQuery(string value );
         public QueryModel FirstByCAR_ID_JUNTADAQuery(string value );
         public QueryModel FirstByCAR_OBSERVACAO_OTIMIZADORQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

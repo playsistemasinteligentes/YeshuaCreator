@@ -27,6 +27,7 @@ namespace IQuery.Write
         QueryModel UpdateDocumentosOriginariosJson(int id, string value);
         QueryModel UpdateTransporteSnapshotJson(int id, string value);
         QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

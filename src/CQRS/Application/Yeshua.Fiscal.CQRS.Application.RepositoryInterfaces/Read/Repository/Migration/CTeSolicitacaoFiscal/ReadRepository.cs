@@ -46,6 +46,7 @@ namespace IRepository.Read
         public bool ExistsByValorCarga(Decimal value );
         public bool ExistsByPreferenciasManifestoJson(string value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -70,6 +71,7 @@ namespace IRepository.Read
         public CTeSolicitacaoFiscalDTO FirstByValorCarga(Decimal value );
         public CTeSolicitacaoFiscalDTO FirstByPreferenciasManifestoJson(string value );
         public CTeSolicitacaoFiscalDTO FirstByStatus(int value );
+        public CTeSolicitacaoFiscalDTO FirstByOperationalEntityId(string value );
         public CTeSolicitacaoFiscalDTO FirstByTenantID(int value );
         public CTeSolicitacaoFiscalDTO FirstByDeleted(bool value );
         public CTeSolicitacaoFiscalDTO FirstByChanged(DateTime value );
@@ -94,6 +96,7 @@ namespace IRepository.Read
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByValorCarga(Decimal value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByPreferenciasManifestoJson(string value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByStatus(int value );
+        public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByChanged(DateTime value );

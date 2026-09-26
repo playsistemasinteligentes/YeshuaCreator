@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlanocontas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlanocontasReceiver), commandName: "Command.Write.PlanocontasCrudCommand");
                  var planocontas = new PlanocontasFactory(_logger, _domainTrackingPolicy).Create(context, c.PLA_ID, c.PLA_CODIGO, c.PLA_DESCRICAO, c.PLA_TIPO, c.PLA_NATUREZA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", planocontas.OperationalEntityId);
                  var domainResult = PlanocontasDomainBehavior.Apply(planocontas, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

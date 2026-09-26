@@ -1,4 +1,5 @@
 using Dominio.Migration;
+using MyApp.Domain.Entities;
 
 namespace Migration.Dominio.Migration
 {
@@ -23,6 +24,17 @@ namespace Migration.Dominio.Migration
                 .VarcharMax()
                 .NotNull()
                 .Group("Mensagem");
+
+            AddUsecaseGroup("Saga")
+                .AddUseCaseSubGrup("Operacao")
+                .AddCommand(
+                    "RetrySagaStep",
+                    new RetrySagaStepInput(0, 0),
+                    new RetrySagaStepOutput(0, 0, string.Empty, string.Empty))
+                .AddEntity<ySagaStep>();
         }
+
+        public sealed record RetrySagaStepInput(int SagaId, int SagaStepId);
+        public sealed record RetrySagaStepOutput(int SagaId, int SagaStepId, string StepKey, string Status);
     }
 }

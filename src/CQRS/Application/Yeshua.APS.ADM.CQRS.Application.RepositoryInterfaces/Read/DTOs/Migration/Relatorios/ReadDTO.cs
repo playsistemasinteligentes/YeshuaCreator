@@ -25,6 +25,7 @@ namespace Repositorio.Outputs
     public int rel_pos_x { get; set; }
     public int rel_pos_y { get; set; }
     public int rel_tamanho_fonte { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

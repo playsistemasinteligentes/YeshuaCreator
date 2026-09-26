@@ -25,6 +25,7 @@
     string TMP_TIPO_CARGA { get; set; }
     Decimal TMP_TEMPO_MEDIO_UNITARIO { get; set; }
     string CLI_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

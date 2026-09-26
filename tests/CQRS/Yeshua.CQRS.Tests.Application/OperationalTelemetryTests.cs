@@ -8,6 +8,7 @@ using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Saga;
 using RepositoryInterfaces.Patterns.Worker;
 using Shered.DB.Connection;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -125,6 +126,57 @@ public sealed class OperationalTelemetryTests
 
         Assert.Same(expected, actual);
         Assert.Empty(logger.Snapshot().Commands);
+    }
+
+    [Fact]
+    public async Task Receiver_off_does_not_create_activity()
+    {
+        var started = 0;
+        using var listener = CreateOperationalListener(_ => Interlocked.Increment(ref started));
+        var receiver = new TestReceiver(
+            new Shered.Logger.Logger(new DisabledPolicy()),
+            new TestExecutionContext(),
+            command => new State<WorkerResult>(200, "ok", command.Result));
+
+        await receiver.ExecuteAsync(new TestCommand(new WorkerResult(1, 1, 1, 0)));
+
+        Assert.Equal(0, Volatile.Read(ref started));
+    }
+
+    [Fact]
+    public async Task Receiver_on_creates_open_telemetry_activity_with_operational_tags()
+    {
+        Activity? captured = null;
+        using var listener = CreateOperationalListener(activity => captured = activity);
+        var receiver = new TrackedTestReceiver(
+            new Shered.Logger.Logger(),
+            new TestExecutionContext(),
+            command => new State<WorkerResult>(200, "ok", command.Result));
+
+        await receiver.ExecuteAsync(new TrackedTestCommand(
+            "Carga",
+            "operational-10",
+            new WorkerResult(1, 1, 1, 0)));
+
+        Assert.NotNull(captured);
+        Assert.Equal("Command", captured.GetTagItem("yeshua.component"));
+        Assert.Equal("Carga", captured.GetTagItem("yeshua.entity"));
+        Assert.Equal("operational-10", captured.GetTagItem("yeshua.operational_entity_id"));
+        Assert.NotEqual(default, captured.TraceId);
+        Assert.NotEqual(default, captured.SpanId);
+    }
+
+    [Fact]
+    public void Worker_record_root_is_independent_from_current_batch_activity()
+    {
+        using var listener = CreateOperationalListener(_ => { });
+        using var batch = Dominio.Operational.OperationalActivity.Source.StartActivity("Worker.Batch");
+        using var record = Dominio.Operational.OperationalActivity.StartRoot("Worker.Record");
+
+        Assert.NotNull(batch);
+        Assert.NotNull(record);
+        Assert.NotEqual(batch.TraceId, record.TraceId);
+        Assert.Equal(default, record.ParentSpanId);
     }
 
     [Fact]
@@ -487,6 +539,19 @@ public sealed class OperationalTelemetryTests
             TestCommand command,
             CancellationToken cancellationToken = default) =>
             Task.FromResult(_action(command));
+    }
+
+    private static ActivityListener CreateOperationalListener(Action<Activity> started)
+    {
+        var listener = new ActivityListener
+        {
+            ShouldListenTo = source => source.Name == Dominio.Operational.OperationalActivity.SourceName,
+            Sample = static (ref ActivityCreationOptions<ActivityContext> _) =>
+                ActivitySamplingResult.AllDataAndRecorded,
+            ActivityStarted = started
+        };
+        ActivitySource.AddActivityListener(listener);
+        return listener;
     }
 
     private sealed class TrackedTestReceiver : ReciverBase<TrackedTestCommand, WorkerResult>

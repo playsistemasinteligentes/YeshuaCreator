@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTemposLogisticos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTemposLogisticosReceiver), commandName: "Command.Write.TemposLogisticosCrudCommand");
                  var temposlogisticos = new TemposLogisticosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TMP_TIPO_TEMPO, c.TMP_TIPO_CARGA, c.TMP_TEMPO_MEDIO_UNITARIO, c.CLI_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", temposlogisticos.OperationalEntityId);
                  var domainResult = TemposLogisticosDomainBehavior.Apply(temposlogisticos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

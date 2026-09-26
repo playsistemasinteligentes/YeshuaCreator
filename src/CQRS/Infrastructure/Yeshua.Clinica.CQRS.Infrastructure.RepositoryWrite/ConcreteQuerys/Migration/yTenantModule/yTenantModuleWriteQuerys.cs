@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InseriryTenantModuleQuery(IyTenantModuleEntity yTenantModule)
         {
-            this.Query = $@" INSERT INTO [yTenantModule] ([ModuleId], [TenantID], [ValidUntil], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ModuleId, @TenantID, @ValidUntil, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yTenantModule] ([OperationalEntityId], [ModuleId], [TenantID], [ValidUntil], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OperationalEntityId, @ModuleId, @TenantID, @ValidUntil, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = yTenantModule.OperationalEntityId,
                 ModuleId = yTenantModule.ModuleId,
                 TenantID = _executionContext.TenantID,
                 ValidUntil = yTenantModule.ValidUntil,
@@ -52,6 +53,16 @@ namespace Query.Write
                 Changed = yTenantModule.Changed,
                 UserId = _executionContext.UserId,
                 Id = yTenantModule.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenantModule] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

@@ -31,6 +31,7 @@
     public string? TRA_FONE { get; set; }
     public string? TRA_ID_INTEGRACAO { get; set; }
     public string? TRA_ID_INTEGRACAO_ERP { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -48,6 +49,7 @@
  TRA_FONE = tra_fone; 
  TRA_ID_INTEGRACAO = tra_id_integracao; 
  TRA_ID_INTEGRACAO_ERP = tra_id_integracao_erp; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

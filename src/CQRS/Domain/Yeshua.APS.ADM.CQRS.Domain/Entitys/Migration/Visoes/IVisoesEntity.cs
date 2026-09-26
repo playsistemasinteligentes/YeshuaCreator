@@ -24,6 +24,7 @@
     int VIS_PLANID { get; set; }
     string? VIS_FORMULA { get; set; }
     int CAB_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

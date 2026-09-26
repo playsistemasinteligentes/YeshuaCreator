@@ -49,6 +49,7 @@ namespace IRepository.Write
         void UpdateServicoId(int id, int value);
         void UpdateMovimentacaoFinanceiraId(int id, int value);
         void UpdateProfissionalId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

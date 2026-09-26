@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTurmaQuery(ITurmaEntity Turma)
         {
-            this.Query = $@" INSERT INTO [Turma] ([Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Descricao, @TURM_HORA_INI_DIA1, @TURM_HORA_FIM_DIA1, @TURM_HORA_INI_DIA2, @TURM_HORA_FIM_DIA2, @TURM_HORA_INI_DIA3, @TURM_HORA_FIM_DIA3, @TURM_HORA_INI_DIA4, @TURM_HORA_FIM_DIA4, @TURM_HORA_INI_DIA5, @TURM_HORA_FIM_DIA5, @TURM_HORA_INI_DIA6, @TURM_HORA_FIM_DIA6, @TURM_HORA_INI_DIA7, @TURM_HORA_FIM_DIA7, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Turma] ([Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Descricao, @TURM_HORA_INI_DIA1, @TURM_HORA_FIM_DIA1, @TURM_HORA_INI_DIA2, @TURM_HORA_FIM_DIA2, @TURM_HORA_INI_DIA3, @TURM_HORA_FIM_DIA3, @TURM_HORA_INI_DIA4, @TURM_HORA_FIM_DIA4, @TURM_HORA_INI_DIA5, @TURM_HORA_FIM_DIA5, @TURM_HORA_INI_DIA6, @TURM_HORA_FIM_DIA6, @TURM_HORA_INI_DIA7, @TURM_HORA_FIM_DIA7, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = Turma.Id,
@@ -49,6 +49,7 @@ namespace Query.Write
                 TURM_HORA_FIM_DIA6 = Turma.TURM_HORA_FIM_DIA6,
                 TURM_HORA_INI_DIA7 = Turma.TURM_HORA_INI_DIA7,
                 TURM_HORA_FIM_DIA7 = Turma.TURM_HORA_FIM_DIA7,
+                OperationalEntityId = Turma.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -228,6 +229,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TURM_HORA_FIM_DIA7 = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string id, string value)
+        {
+            this.Query = $@" UPDATE [Turma] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -34,11 +34,13 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] from [TipoInspecaoVisual] ";
+            this.Query = $@" select [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] from [TipoInspecaoVisual] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (Command.TIV_ID.HasValue) dict["TIV_ID"] = Command.TIV_ID.Value;
 if (Command.TIV_ID.HasValue) whereClauses.Add($"[TIV_ID] = @TIV_ID");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -157,6 +159,23 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TIV_ID"] = value; //04
                       whereClauses.Add($" [TIV_ID] = @TIV_ID ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [TipoInspecaoVisual] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -388,7 +407,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -405,7 +424,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -417,12 +436,29 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -439,7 +475,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -456,7 +492,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -473,7 +509,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -490,7 +526,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -507,7 +543,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -524,7 +560,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -541,7 +577,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -558,7 +594,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -575,7 +611,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -592,7 +628,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -609,7 +645,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -626,7 +662,7 @@ if (!string.IsNullOrEmpty(Command.TIV_MEDIDA)) whereClauses.Add($"[TIV_MEDIDA] l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
+            this.Query = $"SELECT [Id], [TIV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS] FROM [TipoInspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

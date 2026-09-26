@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirUniuserQuery(IUniuserEntity Uniuser)
         {
-            this.Query = $@" INSERT INTO [Uniuser] ([UNI_ID], [USE_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[USERGRU_ID] VALUES(@UNI_ID, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Uniuser] ([UNI_ID], [USE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[USERGRU_ID] VALUES(@UNI_ID, @USE_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 UNI_ID = Uniuser.UNI_ID,
                 USE_ID = Uniuser.USE_ID,
+                OperationalEntityId = Uniuser.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 USE_ID = value,
+                USERGRU_ID = usergru_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int usergru_id, string value)
+        {
+            this.Query = $@" UPDATE [Uniuser] SET [OperationalEntityId] = @OperationalEntityId WHERE [USERGRU_ID] = @USERGRU_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 USERGRU_ID = usergru_id,
             };
             return new QueryModel(this.Query, this.Parameters);

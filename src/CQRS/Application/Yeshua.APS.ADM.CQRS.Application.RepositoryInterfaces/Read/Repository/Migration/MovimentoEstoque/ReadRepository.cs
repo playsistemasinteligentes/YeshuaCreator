@@ -78,6 +78,7 @@ namespace IRepository.Read
         public bool ExistsByMOV_GRUPO_CONTABIL(string value );
         public bool ExistsByFOR_ID(string value );
         public bool ExistsByCLI_ID(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -130,6 +131,7 @@ namespace IRepository.Read
         public MovimentoEstoqueDTO FirstByMOV_GRUPO_CONTABIL(string value );
         public MovimentoEstoqueDTO FirstByFOR_ID(string value );
         public MovimentoEstoqueDTO FirstByCLI_ID(string value );
+        public MovimentoEstoqueDTO FirstByOperationalEntityId(string value );
         public MovimentoEstoqueDTO FirstByTenantID(int value );
         public MovimentoEstoqueDTO FirstByDeleted(bool value );
         public MovimentoEstoqueDTO FirstByChanged(DateTime value );
@@ -182,6 +184,7 @@ namespace IRepository.Read
         public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_GRUPO_CONTABIL(string value );
         public IEnumerable<MovimentoEstoqueDTO> GetAllByFOR_ID(string value );
         public IEnumerable<MovimentoEstoqueDTO> GetAllByCLI_ID(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MovimentoEstoqueDTO> GetAllByTenantID(int value );
         public IEnumerable<MovimentoEstoqueDTO> GetAllByDeleted(bool value );
         public IEnumerable<MovimentoEstoqueDTO> GetAllByChanged(DateTime value );

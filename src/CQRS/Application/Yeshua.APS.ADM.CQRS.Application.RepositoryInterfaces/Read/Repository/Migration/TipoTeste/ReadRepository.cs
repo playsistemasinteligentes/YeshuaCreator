@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByTT_ESPECIFICACAO(Decimal value );
         public bool ExistsByTT_ORIGEM_ESPECIFICACAO(string value );
         public bool ExistsByTT_IMPRIME_NO_LAUDO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -47,6 +48,7 @@ namespace IRepository.Read
         public TipoTesteDTO FirstByTT_ESPECIFICACAO(Decimal value );
         public TipoTesteDTO FirstByTT_ORIGEM_ESPECIFICACAO(string value );
         public TipoTesteDTO FirstByTT_IMPRIME_NO_LAUDO(string value );
+        public TipoTesteDTO FirstByOperationalEntityId(string value );
         public TipoTesteDTO FirstByTenantID(int value );
         public TipoTesteDTO FirstByDeleted(bool value );
         public TipoTesteDTO FirstByChanged(DateTime value );
@@ -66,6 +68,7 @@ namespace IRepository.Read
         public IEnumerable<TipoTesteDTO> GetAllByTT_ESPECIFICACAO(Decimal value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_ORIGEM_ESPECIFICACAO(string value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_IMPRIME_NO_LAUDO(string value );
+        public IEnumerable<TipoTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoTesteDTO> GetAllByChanged(DateTime value );

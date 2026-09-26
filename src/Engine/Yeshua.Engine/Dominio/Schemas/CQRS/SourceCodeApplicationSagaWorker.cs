@@ -28,6 +28,7 @@ namespace Dominio.Schemas.CQRS
 using Command.Interfaces;
 using Command.Patterns.Command;
 using Command.Receivers.Migration.Saga;
+using Dominio.Operational;
 using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
@@ -36,6 +37,7 @@ using RepositoryInterfaces.Patterns.UnitOfWork;
 using RepositoryInterfaces.Patterns.Worker;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -166,6 +168,7 @@ namespace Command.Patterns
         private readonly IySagaWriteRepository _sagaWriteRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        private readonly Dominio.Interfaces.ILogger _logger;
 
         public SagaWorkerCommandHandler(
             Dominio.Interfaces.ILogger logger,
@@ -183,6 +186,7 @@ namespace Command.Patterns
             _sagaWriteRepository = sagaWriteRepository;
             _unitOfWork = unitOfWork;
             _executionContext = context;
+            _logger = logger;
         }
 
         protected override Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
@@ -202,6 +206,18 @@ namespace Command.Patterns
                 foreach (var sagaDto in sagas)
                 {
                     string sagaId = string.Empty;
+                    var recordTelemetry = _logger.Evaluate(
+                        "SagaWorkerRecord",
+                        "Execute",
+                        "ySaga",
+                        sagaDto.correlationid);
+                    using var recordActivity = recordTelemetry.Enabled
+                        ? OperationalActivity.StartRoot("SagaWorker.Record")
+                        : null;
+                    recordActivity?.SetTag("yeshua.component", "SagaWorkerRecord");
+                    recordActivity?.SetTag("yeshua.entity", "ySaga");
+                    recordActivity?.SetTag("yeshua.operational_entity_id", sagaDto.correlationid);
+                    recordActivity?.SetTag("yeshua.root_operation_id", sagaDto.correlationid);
 
                     try
                     {
@@ -236,6 +252,7 @@ namespace Command.Patterns
                             _sagaWriteRepository.Save(saga);
                             _unitOfWork.Commit();
                             processed++;
+                            recordActivity?.SetStatus(ActivityStatusCode.Ok);
                         }
                         catch
                         {
@@ -246,6 +263,8 @@ namespace Command.Patterns
                     catch (Exception ex)
                     {
                         failed++;
+                        recordActivity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+                        OperationalActivity.RecordException(recordActivity, ex);
                         Console.WriteLine($"Erro na saga {sagaId}: {ex.Message}");
                     }
                     finally

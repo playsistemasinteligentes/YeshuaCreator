@@ -83,7 +83,7 @@
             public const ulong FPR_TOLERANCIA_MENOS = 1UL << 60;
             public const ulong FPR_TOLERANCIA_MAIS = 1UL << 61;
             public const ulong FPR_DATA_ENCERRAMENTO = 1UL << 62;
-            public const ulong TenantID = 1UL << 63;
+            public const ulong OperationalEntityId = 1UL << 63;
         }
 
         public partial class FilaProducaoDecorator : IFilaProducaoEntity
@@ -994,6 +994,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1003,8 +1004,7 @@
                                             if (_inner.TenantID != value)
                                             {
                                                 _inner.TenantID = value;
-                                                if ((_trackingMask & FilaProducaoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+
                                             }
                                         }
                                     }

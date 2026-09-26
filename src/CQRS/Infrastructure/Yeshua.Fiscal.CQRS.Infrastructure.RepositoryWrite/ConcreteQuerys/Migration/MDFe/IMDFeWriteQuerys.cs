@@ -29,6 +29,7 @@ namespace IQuery.Write
         QueryModel UpdateEncerradoEm(int id, DateTime value);
         QueryModel UpdateCanceladoEm(int id, DateTime value);
         QueryModel UpdateSituacao(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

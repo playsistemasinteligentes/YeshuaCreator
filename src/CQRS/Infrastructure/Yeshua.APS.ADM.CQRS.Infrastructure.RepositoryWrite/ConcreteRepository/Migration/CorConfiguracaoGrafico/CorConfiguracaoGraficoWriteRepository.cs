@@ -66,6 +66,11 @@ namespace Input.Repository.CorConfiguracaoGrafico
             var query = _query.UpdateCOR_DESCRICAO(cor_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(string cor_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(cor_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(string cor_id, int value)
         {
             var query = _query.UpdateTenantID(cor_id, value);

@@ -85,6 +85,8 @@ namespace Dominio.Migration
                 }
             }
 
+            ExpandStandardFieldUpgradeMigrations(migration, columns);
+
             foreach (var m in migration)
                 m.Entitys.RemoveAll(x => x.EntityName == "yStandardFields");
 
@@ -118,6 +120,38 @@ namespace Dominio.Migration
                 SanitizeMigrationEndEntityToCodeGenerete(migration);
                 SanitizeMigrationEndHubAgentsToCodeGenerete(migration);
                 SanitizeMigrationExternalConnectorsToCodeGenerete(migration);
+            }
+        }
+
+        private static void ExpandStandardFieldUpgradeMigrations(
+            IEnumerable<MigrationBase> migrations,
+            IReadOnlyCollection<Column> standardColumns)
+        {
+            var migrationList = migrations.ToList();
+            var createdEntities = migrationList
+                .SelectMany(item => item.Entitys)
+                .Where(entity => entity.create && !entity.IsFromView && entity.EntityName != "yStandardFields")
+                .GroupBy(entity => entity.EntityName, StringComparer.OrdinalIgnoreCase)
+                .Select(group => group.First())
+                .ToList();
+
+            foreach (var upgrade in migrationList.OfType<IStandardFieldUpgradeMigration>())
+            {
+                var migration = (MigrationBase)upgrade;
+                foreach (var sourceEntity in createdEntities)
+                {
+                    var fields = standardColumns
+                        .Where(column => upgrade.FieldNames.Contains(column.Name))
+                        .Where(column => sourceEntity.AddColumns.Any(item => item.Name == column.Name));
+
+                    foreach (var field in fields)
+                    {
+                        var target = migration.AddToListEntity(sourceEntity.EntityName, false);
+                        target.CachedTable = sourceEntity.CachedTable;
+                        if (target.AddColumns.All(column => column.Name != field.Name))
+                            target.AddColumns.Add(field.DeepCopy(target));
+                    }
+                }
             }
         }
         private void SanitizeMigrationEndEntityToCodeGenerete(MigrationBase migration)
@@ -206,7 +240,9 @@ namespace Dominio.Migration
                     int totalColuns = entity.AddColumns.Count;
                     for (var i = 0; i < totalColuns; i++)
                     {
-                        sanitizedEntity.AddColumns.Add(entity.AddColumns[i]);
+                        if (!sanitizedEntity.AddColumns.Any(column =>
+                                column.Name.Equals(entity.AddColumns[i].Name, StringComparison.OrdinalIgnoreCase)))
+                            sanitizedEntity.AddColumns.Add(entity.AddColumns[i]);
                         //var index = sanitizedEntity.AddColumns.FindIndex(c => c.Name == entity.AddColumns[i].Name);
 
                         //if (index >= 0)

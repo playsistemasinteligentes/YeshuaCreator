@@ -30,10 +30,11 @@ namespace Query.Write
         }
         public QueryModel InserirTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes)
         {
-            this.Query = $@" INSERT INTO [TemplateDeTestes] ([Descricao], [TenantID], [Deleted], [Changed], [UserId], [Observacao]) OUTPUT INSERTED.[Id] VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId, @Observacao) ";
+            this.Query = $@" INSERT INTO [TemplateDeTestes] ([Descricao], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [Observacao]) OUTPUT INSERTED.[Id] VALUES(@Descricao, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @Observacao) ";
             this.Parameters = new
             {
                 Descricao = TemplateDeTestes.Descricao,
+                OperationalEntityId = TemplateDeTestes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -61,6 +62,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Descricao = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

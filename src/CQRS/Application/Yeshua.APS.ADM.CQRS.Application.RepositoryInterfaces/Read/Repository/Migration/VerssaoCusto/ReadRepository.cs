@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByVER_STATUS(string value );
         public bool ExistsByVER_DATA_VERSSAO_CUSTO(DateTime value );
         public bool ExistsByVER_OBS(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public VerssaoCustoDTO FirstByVER_STATUS(string value );
         public VerssaoCustoDTO FirstByVER_DATA_VERSSAO_CUSTO(DateTime value );
         public VerssaoCustoDTO FirstByVER_OBS(string value );
+        public VerssaoCustoDTO FirstByOperationalEntityId(string value );
         public VerssaoCustoDTO FirstByTenantID(int value );
         public VerssaoCustoDTO FirstByDeleted(bool value );
         public VerssaoCustoDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<VerssaoCustoDTO> GetAllByVER_STATUS(string value );
         public IEnumerable<VerssaoCustoDTO> GetAllByVER_DATA_VERSSAO_CUSTO(DateTime value );
         public IEnumerable<VerssaoCustoDTO> GetAllByVER_OBS(string value );
+        public IEnumerable<VerssaoCustoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VerssaoCustoDTO> GetAllByTenantID(int value );
         public IEnumerable<VerssaoCustoDTO> GetAllByDeleted(bool value );
         public IEnumerable<VerssaoCustoDTO> GetAllByChanged(DateTime value );

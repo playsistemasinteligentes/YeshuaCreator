@@ -268,6 +268,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -612,6 +620,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public CorridasOnduladeiraDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<CorridasOnduladeiraDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public CorridasOnduladeiraDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -951,6 +967,14 @@ namespace Read.Repository
         public IEnumerable<CorridasOnduladeiraDTO> GetAllByCOR_GRUPO_PRODUTIVO(Decimal value )
         {
             var query = _query.FirstByCOR_GRUPO_PRODUTIVOQuery(value );
+
+                var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<CorridasOnduladeiraDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;

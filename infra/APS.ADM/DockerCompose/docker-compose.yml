@@ -1,0 +1,72 @@
+name: playsis-aps-adm
+
+services:
+  aps-adm-api:
+    build:
+      context: ../../..
+      dockerfile: infra/APS.ADM/DockerCompose/api/Dockerfile
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7214"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=APS_ADM_03;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=APS_ADM_03;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      RabbitMq__HostName: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__UserName: "yeshua"
+      RabbitMq__Password: "yeshua123"
+      RabbitMq__VirtualHost: "/"
+    expose:
+      - "7214"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  aps-adm-worker:
+    build:
+      context: ../../..
+      dockerfile: infra/APS.ADM/DockerCompose/worker/Dockerfile
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7215"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=APS_ADM_03;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=APS_ADM_03;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      RabbitMq__HostName: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__UserName: "yeshua"
+      RabbitMq__Password: "yeshua123"
+      RabbitMq__VirtualHost: "/"
+      YeshuaModules__Fiscal__BaseUrl: "http://fiscal-api:7214"
+      WorkerExecutionContext__TenantID: "1"
+      WorkerExecutionContext__UserId: "1"
+      OperationalControl__Enabled: "true"
+      OperationalControl__ApplicationApiBaseUrl: "http://aps-adm-api:7214"
+      OperationalControl__RefreshSeconds: "5"
+    expose:
+      - "7215"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  aps-adm-migration:
+    build:
+      context: ../../..
+      dockerfile: infra/APS.ADM/DockerCompose/migration/Dockerfile
+    environment:
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=APS_ADM_03;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=APS_ADM_03;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=CENTRAL_;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+    restart: "no"
+    networks:
+      - yeshua-net
+
+networks:
+  yeshua-net:
+    external: true
+    name: yeshua-net

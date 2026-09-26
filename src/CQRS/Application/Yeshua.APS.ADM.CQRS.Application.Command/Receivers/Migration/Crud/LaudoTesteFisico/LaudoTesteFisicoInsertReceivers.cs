@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLaudoTesteFisico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLaudoTesteFisicoReceiver), commandName: "Command.Write.LaudoTesteFisicoCrudCommand");
                  var laudotestefisico = new LaudoTesteFisicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LTF_ID, c.LTF_EMISSAO, c.LTF_VALOR, c.LTF_OBS, c.LTF_STATUS, c.ORD_ID, c.ROT_PRO_ID, c.FPR_SEQ_REPETICAO, c.USE_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", laudotestefisico.OperationalEntityId);
                  var domainResult = LaudoTesteFisicoDomainBehavior.Apply(laudotestefisico, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

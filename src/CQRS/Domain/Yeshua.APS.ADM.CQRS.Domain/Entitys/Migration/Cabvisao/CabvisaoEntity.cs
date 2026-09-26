@@ -24,6 +24,7 @@
     public string CAB_DESC { get; set; }
     public int CAB_STATUS { get; set; }
     public int USE_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  CAB_DESC = cab_desc; 
  CAB_STATUS = cab_status; 
  USE_ID = use_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

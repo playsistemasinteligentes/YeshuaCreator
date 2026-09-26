@@ -45,6 +45,7 @@ namespace Repositorio.Outputs
     public string cli_integracao_erp { get; set; } = string.Empty;
     public Decimal cli_latitude_entrega { get; set; }
     public Decimal cli_longitude_entrega { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteGrupoIndicador", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteGrupoIndicadorReceiver), commandName: "Command.Write.GrupoIndicadorCrudCommand");
                  var grupoindicador = new GrupoIndicadorFactory(_logger, _domainTrackingPolicy).Create(context, c.GRU_IND_ID, c.GRU_ID, c.IND_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", grupoindicador.OperationalEntityId);
                  var domainResult = GrupoIndicadorDomainBehavior.Apply(grupoindicador, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

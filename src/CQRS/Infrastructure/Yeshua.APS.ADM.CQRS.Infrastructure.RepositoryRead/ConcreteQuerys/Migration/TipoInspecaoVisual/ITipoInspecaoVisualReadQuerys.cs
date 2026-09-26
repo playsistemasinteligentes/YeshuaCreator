@@ -18,6 +18,7 @@ namespace IQuery.Read
         public QueryModel TipoInspecaoVisualUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByTIV_IDQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -33,6 +34,7 @@ namespace IQuery.Read
         public QueryModel ExistsByTIV_TOL_MENOSQuery(Decimal value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTIV_IDQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

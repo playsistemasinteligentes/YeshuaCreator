@@ -21,6 +21,7 @@ namespace IQuery.Write
         QueryModel UpdateVER_STATUS(int id, string value);
         QueryModel UpdateVER_DATA_VERSSAO_CUSTO(int id, DateTime value);
         QueryModel UpdateVER_OBS(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

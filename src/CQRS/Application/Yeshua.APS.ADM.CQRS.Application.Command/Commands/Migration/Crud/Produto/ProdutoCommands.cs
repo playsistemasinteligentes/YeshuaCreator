@@ -11,11 +11,12 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ProdutoCrudCommand : ICommand
+    public struct ProdutoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public string? Id { get; set; }
         public string? Descricao { get; set; }
         public string? Status { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
@@ -152,6 +153,8 @@ namespace Command.Write
         public int? PRO_QUEBRA_VINCO_MAIOR { get; set; }
         public int? PRO_QUEBRA_VINCO_MENOR { get; set; }
         public string? CLI_ID { get; set; }
+ public string OperationalEntity => "Produto";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

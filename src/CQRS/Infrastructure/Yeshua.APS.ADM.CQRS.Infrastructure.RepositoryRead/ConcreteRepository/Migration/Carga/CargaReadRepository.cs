@@ -445,6 +445,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -805,6 +813,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public CargaDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<CargaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public CargaDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -1160,6 +1176,14 @@ namespace Read.Repository
         public IEnumerable<CargaDTO> GetAllByTURM_ID(string value )
         {
             var query = _query.FirstByTURM_IDQuery(value );
+
+                var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<CargaDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<CargaDTO>(query.Query,query.Parameters).ToList();
                 return result;

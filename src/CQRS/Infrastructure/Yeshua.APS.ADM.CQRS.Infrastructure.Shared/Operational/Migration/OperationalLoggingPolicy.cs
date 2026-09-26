@@ -430,12 +430,12 @@ private OperationalLoggingDecision Evaluate(
                         "yConfigArcteture" => GetyConfigArctetureMask(policy, operation, recordId),
                         "yConfigNotification" => GetyConfigNotificationMask(policy, operation, recordId),
                         "yPerfil" => GetyPerfilMask(policy, operation, recordId),
-                        "yModule" => GetyModuleMask(policy, operation, recordId),
                         "yTenantModule" => GetyTenantModuleMask(policy, operation, recordId),
                         "yUserModule" => GetyUserModuleMask(policy, operation, recordId),
                         "yGrant" => GetyGrantMask(policy, operation, recordId),
                         "yPerfilGrant" => GetyPerfilGrantMask(policy, operation, recordId),
                         "yUserGrant" => GetyUserGrantMask(policy, operation, recordId),
+                        "yModule" => GetyModuleMask(policy, operation, recordId),
                         _ => 0UL
                     };
                 }
@@ -452,6 +452,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ProdutoTrackingFields.Descricao;
                     if (DomainFieldTracked(policy, "Produto", operation, recordId, "Status"))
                         mask |= ProdutoTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "Produto", operation, recordId, "OperationalEntityId"))
+                        mask |= ProdutoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Produto", operation, recordId, "TenantID"))
                         mask |= ProdutoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Produto", operation, recordId, "Deleted"))
@@ -572,8 +574,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ProdutoTrackingFields.PRO_PESO;
                     if (DomainFieldTracked(policy, "Produto", operation, recordId, "PRO_TOLERANCIA_DIMENSAO_CHAPA_DE"))
                         mask |= ProdutoTrackingFields.PRO_TOLERANCIA_DIMENSAO_CHAPA_DE;
-                    if (DomainFieldTracked(policy, "Produto", operation, recordId, "PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE"))
-                        mask |= ProdutoTrackingFields.PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE;
                     return mask;
                 }
 
@@ -589,6 +589,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MaquinaTrackingFields.Descricao;
                     if (DomainFieldTracked(policy, "Maquina", operation, recordId, "Status"))
                         mask |= MaquinaTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "Maquina", operation, recordId, "OperationalEntityId"))
+                        mask |= MaquinaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Maquina", operation, recordId, "TenantID"))
                         mask |= MaquinaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Maquina", operation, recordId, "Deleted"))
@@ -709,8 +711,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MaquinaTrackingFields.MAQ_TOTAL_ACO;
                     if (DomainFieldTracked(policy, "Maquina", operation, recordId, "MAQ_FECHAMENTO"))
                         mask |= MaquinaTrackingFields.MAQ_FECHAMENTO;
-                    if (DomainFieldTracked(policy, "Maquina", operation, recordId, "MAQ_OPERACAO_VINCAR"))
-                        mask |= MaquinaTrackingFields.MAQ_OPERACAO_VINCAR;
                     return mask;
                 }
 
@@ -726,6 +726,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= GrupoMaquinaTrackingFields.Descricao;
                     if (DomainFieldTracked(policy, "GrupoMaquina", operation, recordId, "Status"))
                         mask |= GrupoMaquinaTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "GrupoMaquina", operation, recordId, "OperationalEntityId"))
+                        mask |= GrupoMaquinaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "GrupoMaquina", operation, recordId, "TenantID"))
                         mask |= GrupoMaquinaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "GrupoMaquina", operation, recordId, "Deleted"))
@@ -749,6 +751,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TemplateDeTestesTrackingFields.Id;
                     if (DomainFieldTracked(policy, "TemplateDeTestes", operation, recordId, "Descricao"))
                         mask |= TemplateDeTestesTrackingFields.Descricao;
+                    if (DomainFieldTracked(policy, "TemplateDeTestes", operation, recordId, "OperationalEntityId"))
+                        mask |= TemplateDeTestesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TemplateDeTestes", operation, recordId, "TenantID"))
                         mask |= TemplateDeTestesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TemplateDeTestes", operation, recordId, "Deleted"))
@@ -808,6 +812,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RoteiroTrackingFields.LinhaDireta;
                     if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "TemplateDeTestesId"))
                         mask |= RoteiroTrackingFields.TemplateDeTestesId;
+                    if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "OperationalEntityId"))
+                        mask |= RoteiroTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "TenantID"))
                         mask |= RoteiroTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "Deleted"))
@@ -955,6 +961,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_AGENDA_SCHEDULETrackingFields.AGE_EXCECAO;
                     if (DomainFieldTracked(policy, "T_AGENDA_SCHEDULE", operation, recordId, "AGE_DESCRICAO"))
                         mask |= T_AGENDA_SCHEDULETrackingFields.AGE_DESCRICAO;
+                    if (DomainFieldTracked(policy, "T_AGENDA_SCHEDULE", operation, recordId, "OperationalEntityId"))
+                        mask |= T_AGENDA_SCHEDULETrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_AGENDA_SCHEDULE", operation, recordId, "TenantID"))
                         mask |= T_AGENDA_SCHEDULETrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_AGENDA_SCHEDULE", operation, recordId, "Deleted"))
@@ -984,6 +992,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AuditoriaTrackingFields.HISTORICO;
                     if (DomainFieldTracked(policy, "Auditoria", operation, recordId, "CHAVE"))
                         mask |= AuditoriaTrackingFields.CHAVE;
+                    if (DomainFieldTracked(policy, "Auditoria", operation, recordId, "OperationalEntityId"))
+                        mask |= AuditoriaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Auditoria", operation, recordId, "TenantID"))
                         mask |= AuditoriaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Auditoria", operation, recordId, "Deleted"))
@@ -1049,6 +1059,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= BoletimTrackingFields.BOL_REFILE_OBRIGATORIO;
                     if (DomainFieldTracked(policy, "Boletim", operation, recordId, "BOL_OBS"))
                         mask |= BoletimTrackingFields.BOL_OBS;
+                    if (DomainFieldTracked(policy, "Boletim", operation, recordId, "OperationalEntityId"))
+                        mask |= BoletimTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Boletim", operation, recordId, "TenantID"))
                         mask |= BoletimTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Boletim", operation, recordId, "Deleted"))
@@ -1112,6 +1124,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= BoletimEstudoTrackingFields.BOL_CUSTO_RESINA_PROGRAMADOS;
                     if (DomainFieldTracked(policy, "BoletimEstudo", operation, recordId, "BOL_REFILE_OBRIGATORIO"))
                         mask |= BoletimEstudoTrackingFields.BOL_REFILE_OBRIGATORIO;
+                    if (DomainFieldTracked(policy, "BoletimEstudo", operation, recordId, "OperationalEntityId"))
+                        mask |= BoletimEstudoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "BoletimEstudo", operation, recordId, "TenantID"))
                         mask |= BoletimEstudoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "BoletimEstudo", operation, recordId, "Deleted"))
@@ -1135,6 +1149,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CalendarioTrackingFields.CAL_DESCRICAO;
                     if (DomainFieldTracked(policy, "Calendario", operation, recordId, "CAL_DIVIDE_DIA_EM"))
                         mask |= CalendarioTrackingFields.CAL_DIVIDE_DIA_EM;
+                    if (DomainFieldTracked(policy, "Calendario", operation, recordId, "OperationalEntityId"))
+                        mask |= CalendarioTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Calendario", operation, recordId, "TenantID"))
                         mask |= CalendarioTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Calendario", operation, recordId, "Deleted"))
@@ -1174,6 +1190,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CalendarioDisponibilidadeVeiculosTrackingFields.CDV_SABADO;
                     if (DomainFieldTracked(policy, "CalendarioDisponibilidadeVeiculos", operation, recordId, "CDV_DOMINGO"))
                         mask |= CalendarioDisponibilidadeVeiculosTrackingFields.CDV_DOMINGO;
+                    if (DomainFieldTracked(policy, "CalendarioDisponibilidadeVeiculos", operation, recordId, "OperationalEntityId"))
+                        mask |= CalendarioDisponibilidadeVeiculosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "CalendarioDisponibilidadeVeiculos", operation, recordId, "TenantID"))
                         mask |= CalendarioDisponibilidadeVeiculosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "CalendarioDisponibilidadeVeiculos", operation, recordId, "Deleted"))
@@ -1207,6 +1225,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CanhotosTrackingFields.CAN_LAT_ENTREGA;
                     if (DomainFieldTracked(policy, "Canhotos", operation, recordId, "CAN_LONG_ENTREGA"))
                         mask |= CanhotosTrackingFields.CAN_LONG_ENTREGA;
+                    if (DomainFieldTracked(policy, "Canhotos", operation, recordId, "OperationalEntityId"))
+                        mask |= CanhotosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Canhotos", operation, recordId, "TenantID"))
                         mask |= CanhotosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Canhotos", operation, recordId, "Deleted"))
@@ -1306,6 +1326,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CargaTrackingFields.TURN_ID;
                     if (DomainFieldTracked(policy, "Carga", operation, recordId, "TURM_ID"))
                         mask |= CargaTrackingFields.TURM_ID;
+                    if (DomainFieldTracked(policy, "Carga", operation, recordId, "OperationalEntityId"))
+                        mask |= CargaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Carga", operation, recordId, "TenantID"))
                         mask |= CargaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Carga", operation, recordId, "Deleted"))
@@ -1385,6 +1407,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CargaPrevistaTrackingFields.CAR_ID_JUNTADA;
                     if (DomainFieldTracked(policy, "CargaPrevista", operation, recordId, "CAR_OBSERVACAO_OTIMIZADOR"))
                         mask |= CargaPrevistaTrackingFields.CAR_OBSERVACAO_OTIMIZADOR;
+                    if (DomainFieldTracked(policy, "CargaPrevista", operation, recordId, "OperationalEntityId"))
+                        mask |= CargaPrevistaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "CargaPrevista", operation, recordId, "TenantID"))
                         mask |= CargaPrevistaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "CargaPrevista", operation, recordId, "Deleted"))
@@ -1408,6 +1432,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CargosTrackingFields.RGO_ID;
                     if (DomainFieldTracked(policy, "Cargos", operation, recordId, "RGO_DESCRICAO"))
                         mask |= CargosTrackingFields.RGO_DESCRICAO;
+                    if (DomainFieldTracked(policy, "Cargos", operation, recordId, "OperationalEntityId"))
+                        mask |= CargosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Cargos", operation, recordId, "TenantID"))
                         mask |= CargosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Cargos", operation, recordId, "Deleted"))
@@ -1479,6 +1505,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ClienteTrackingFields.CLI_LATITUDE_ENTREGA;
                     if (DomainFieldTracked(policy, "Cliente", operation, recordId, "CLI_LONGITUDE_ENTREGA"))
                         mask |= ClienteTrackingFields.CLI_LONGITUDE_ENTREGA;
+                    if (DomainFieldTracked(policy, "Cliente", operation, recordId, "OperationalEntityId"))
+                        mask |= ClienteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Cliente", operation, recordId, "TenantID"))
                         mask |= ClienteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Cliente", operation, recordId, "Deleted"))
@@ -1534,6 +1562,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ClpMedicoesTrackingFields.BOL_ID;
                     if (DomainFieldTracked(policy, "ClpMedicoes", operation, recordId, "COR_SEQUENCIA"))
                         mask |= ClpMedicoesTrackingFields.COR_SEQUENCIA;
+                    if (DomainFieldTracked(policy, "ClpMedicoes", operation, recordId, "OperationalEntityId"))
+                        mask |= ClpMedicoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ClpMedicoes", operation, recordId, "TenantID"))
                         mask |= ClpMedicoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ClpMedicoes", operation, recordId, "Deleted"))
@@ -1587,6 +1617,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ClpMedicoesHTrackingFields.BOL_ID;
                     if (DomainFieldTracked(policy, "ClpMedicoesH", operation, recordId, "COR_SEQUENCIA"))
                         mask |= ClpMedicoesHTrackingFields.COR_SEQUENCIA;
+                    if (DomainFieldTracked(policy, "ClpMedicoesH", operation, recordId, "OperationalEntityId"))
+                        mask |= ClpMedicoesHTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ClpMedicoesH", operation, recordId, "TenantID"))
                         mask |= ClpMedicoesHTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ClpMedicoesH", operation, recordId, "Deleted"))
@@ -1616,6 +1648,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ColaboradorTrackingFields.COL_MATRICULA;
                     if (DomainFieldTracked(policy, "Colaborador", operation, recordId, "TURM_id"))
                         mask |= ColaboradorTrackingFields.TURM_id;
+                    if (DomainFieldTracked(policy, "Colaborador", operation, recordId, "OperationalEntityId"))
+                        mask |= ColaboradorTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Colaborador", operation, recordId, "TenantID"))
                         mask |= ColaboradorTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Colaborador", operation, recordId, "Deleted"))
@@ -1681,6 +1715,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CompensacaoTrackingFields.COM_VINCO9_CONVERSAO;
                     if (DomainFieldTracked(policy, "Compensacao", operation, recordId, "COM_VINCO10_CONVERSAO"))
                         mask |= CompensacaoTrackingFields.COM_VINCO10_CONVERSAO;
+                    if (DomainFieldTracked(policy, "Compensacao", operation, recordId, "OperationalEntityId"))
+                        mask |= CompensacaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Compensacao", operation, recordId, "TenantID"))
                         mask |= CompensacaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Compensacao", operation, recordId, "Deleted"))
@@ -1710,6 +1746,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CondicaoPagamentoTrackingFields.CON_VALOR_ACRECIMO;
                     if (DomainFieldTracked(policy, "CondicaoPagamento", operation, recordId, "CON_INTEGRACAO_ERP"))
                         mask |= CondicaoPagamentoTrackingFields.CON_INTEGRACAO_ERP;
+                    if (DomainFieldTracked(policy, "CondicaoPagamento", operation, recordId, "OperationalEntityId"))
+                        mask |= CondicaoPagamentoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "CondicaoPagamento", operation, recordId, "TenantID"))
                         mask |= CondicaoPagamentoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "CondicaoPagamento", operation, recordId, "Deleted"))
@@ -1729,6 +1767,8 @@ private OperationalLoggingDecision Evaluate(
                     ulong mask = 0UL;
                     if (DomainFieldTracked(policy, "Configuracoes", operation, recordId, "CON_ID"))
                         mask |= ConfiguracoesTrackingFields.CON_ID;
+                    if (DomainFieldTracked(policy, "Configuracoes", operation, recordId, "OperationalEntityId"))
+                        mask |= ConfiguracoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Configuracoes", operation, recordId, "TenantID"))
                         mask |= ConfiguracoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Configuracoes", operation, recordId, "Deleted"))
@@ -1752,6 +1792,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ConsultasTrackingFields.CON_CASAS_DECIMAIS;
                     if (DomainFieldTracked(policy, "Consultas", operation, recordId, "CON_CONEXAO"))
                         mask |= ConsultasTrackingFields.CON_CONEXAO;
+                    if (DomainFieldTracked(policy, "Consultas", operation, recordId, "OperationalEntityId"))
+                        mask |= ConsultasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Consultas", operation, recordId, "TenantID"))
                         mask |= ConsultasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Consultas", operation, recordId, "Deleted"))
@@ -1775,6 +1817,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ConsultasGruposTrackingFields.CON_ID;
                     if (DomainFieldTracked(policy, "ConsultasGrupos", operation, recordId, "GRU_ID"))
                         mask |= ConsultasGruposTrackingFields.GRU_ID;
+                    if (DomainFieldTracked(policy, "ConsultasGrupos", operation, recordId, "OperationalEntityId"))
+                        mask |= ConsultasGruposTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ConsultasGrupos", operation, recordId, "TenantID"))
                         mask |= ConsultasGruposTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ConsultasGrupos", operation, recordId, "Deleted"))
@@ -1798,6 +1842,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ConsultasIndicadoresTrackingFields.CON_ID;
                     if (DomainFieldTracked(policy, "ConsultasIndicadores", operation, recordId, "IND_ID"))
                         mask |= ConsultasIndicadoresTrackingFields.IND_ID;
+                    if (DomainFieldTracked(policy, "ConsultasIndicadores", operation, recordId, "OperationalEntityId"))
+                        mask |= ConsultasIndicadoresTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ConsultasIndicadores", operation, recordId, "TenantID"))
                         mask |= ConsultasIndicadoresTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ConsultasIndicadores", operation, recordId, "Deleted"))
@@ -1823,6 +1869,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CorConfiguracaoGraficoTrackingFields.COR_PERCENTUAL_FIM;
                     if (DomainFieldTracked(policy, "CorConfiguracaoGrafico", operation, recordId, "COR_DESCRICAO"))
                         mask |= CorConfiguracaoGraficoTrackingFields.COR_DESCRICAO;
+                    if (DomainFieldTracked(policy, "CorConfiguracaoGrafico", operation, recordId, "OperationalEntityId"))
+                        mask |= CorConfiguracaoGraficoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "CorConfiguracaoGrafico", operation, recordId, "TenantID"))
                         mask |= CorConfiguracaoGraficoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "CorConfiguracaoGrafico", operation, recordId, "Deleted"))
@@ -1882,6 +1930,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CorridasOnduladeiraTrackingFields.COR_STATUS_PALETE;
                     if (DomainFieldTracked(policy, "CorridasOnduladeira", operation, recordId, "COR_GRUPO_PRODUTIVO"))
                         mask |= CorridasOnduladeiraTrackingFields.COR_GRUPO_PRODUTIVO;
+                    if (DomainFieldTracked(policy, "CorridasOnduladeira", operation, recordId, "OperationalEntityId"))
+                        mask |= CorridasOnduladeiraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "CorridasOnduladeira", operation, recordId, "TenantID"))
                         mask |= CorridasOnduladeiraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "CorridasOnduladeira", operation, recordId, "Deleted"))
@@ -1977,6 +2027,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CorridasOnduladeiraEstudoTrackingFields.COR_STATUS_PALETE;
                     if (DomainFieldTracked(policy, "CorridasOnduladeiraEstudo", operation, recordId, "COR_GRUPO_PRODUTIVO"))
                         mask |= CorridasOnduladeiraEstudoTrackingFields.COR_GRUPO_PRODUTIVO;
+                    if (DomainFieldTracked(policy, "CorridasOnduladeiraEstudo", operation, recordId, "OperationalEntityId"))
+                        mask |= CorridasOnduladeiraEstudoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "CorridasOnduladeiraEstudo", operation, recordId, "TenantID"))
                         mask |= CorridasOnduladeiraEstudoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "CorridasOnduladeiraEstudo", operation, recordId, "Deleted"))
@@ -2008,6 +2060,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CotasTrackingFields.COT_OCUPADO;
                     if (DomainFieldTracked(policy, "Cotas", operation, recordId, "REP_ID"))
                         mask |= CotasTrackingFields.REP_ID;
+                    if (DomainFieldTracked(policy, "Cotas", operation, recordId, "OperationalEntityId"))
+                        mask |= CotasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Cotas", operation, recordId, "TenantID"))
                         mask |= CotasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Cotas", operation, recordId, "Deleted"))
@@ -2029,6 +2083,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_DepartamentosTrackingFields.DEP_ID;
                     if (DomainFieldTracked(policy, "T_Departamentos", operation, recordId, "DEP_NOME"))
                         mask |= T_DepartamentosTrackingFields.DEP_NOME;
+                    if (DomainFieldTracked(policy, "T_Departamentos", operation, recordId, "OperationalEntityId"))
+                        mask |= T_DepartamentosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Departamentos", operation, recordId, "TenantID"))
                         mask |= T_DepartamentosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Departamentos", operation, recordId, "Deleted"))
@@ -2050,6 +2106,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EnderecosTrackingFields.END_ID;
                     if (DomainFieldTracked(policy, "Enderecos", operation, recordId, "END_GRUPO"))
                         mask |= EnderecosTrackingFields.END_GRUPO;
+                    if (DomainFieldTracked(policy, "Enderecos", operation, recordId, "OperationalEntityId"))
+                        mask |= EnderecosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Enderecos", operation, recordId, "TenantID"))
                         mask |= EnderecosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Enderecos", operation, recordId, "Deleted"))
@@ -2073,6 +2131,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EquipeTrackingFields.EQU_ID;
                     if (DomainFieldTracked(policy, "Equipe", operation, recordId, "EQU_HIERARQUIA_SEQ_TRANSFORMACAO"))
                         mask |= EquipeTrackingFields.EQU_HIERARQUIA_SEQ_TRANSFORMACAO;
+                    if (DomainFieldTracked(policy, "Equipe", operation, recordId, "OperationalEntityId"))
+                        mask |= EquipeTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Equipe", operation, recordId, "TenantID"))
                         mask |= EquipeTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Equipe", operation, recordId, "Deleted"))
@@ -2100,6 +2160,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EstradasTrackingFields.EST_ID_LIGACAO_PONTO_A;
                     if (DomainFieldTracked(policy, "Estradas", operation, recordId, "EST_ID_LIGACAO_PONTO_B"))
                         mask |= EstradasTrackingFields.EST_ID_LIGACAO_PONTO_B;
+                    if (DomainFieldTracked(policy, "Estradas", operation, recordId, "OperationalEntityId"))
+                        mask |= EstradasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Estradas", operation, recordId, "TenantID"))
                         mask |= EstradasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Estradas", operation, recordId, "Deleted"))
@@ -2149,6 +2211,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EstruturaCustoTrackingFields.EST_NIVEL;
                     if (DomainFieldTracked(policy, "EstruturaCusto", operation, recordId, "FPR_SEQ_REPETICAO"))
                         mask |= EstruturaCustoTrackingFields.FPR_SEQ_REPETICAO;
+                    if (DomainFieldTracked(policy, "EstruturaCusto", operation, recordId, "OperationalEntityId"))
+                        mask |= EstruturaCustoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "EstruturaCusto", operation, recordId, "TenantID"))
                         mask |= EstruturaCustoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "EstruturaCusto", operation, recordId, "Deleted"))
@@ -2174,6 +2238,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EstruturaImpressaoTrackingFields.CLI_ID;
                     if (DomainFieldTracked(policy, "EstruturaImpressao", operation, recordId, "EST_DESCRICAO"))
                         mask |= EstruturaImpressaoTrackingFields.EST_DESCRICAO;
+                    if (DomainFieldTracked(policy, "EstruturaImpressao", operation, recordId, "OperationalEntityId"))
+                        mask |= EstruturaImpressaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "EstruturaImpressao", operation, recordId, "TenantID"))
                         mask |= EstruturaImpressaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "EstruturaImpressao", operation, recordId, "Deleted"))
@@ -2209,6 +2275,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EstruturaProdutoTrackingFields.EST_TIPO_REQUISICAO;
                     if (DomainFieldTracked(policy, "EstruturaProduto", operation, recordId, "EST_CODIGO_DE_EXCECAO"))
                         mask |= EstruturaProdutoTrackingFields.EST_CODIGO_DE_EXCECAO;
+                    if (DomainFieldTracked(policy, "EstruturaProduto", operation, recordId, "OperationalEntityId"))
+                        mask |= EstruturaProdutoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "EstruturaProduto", operation, recordId, "TenantID"))
                         mask |= EstruturaProdutoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "EstruturaProduto", operation, recordId, "Deleted"))
@@ -2272,6 +2340,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EtiquetaTrackingFields.BOL_ID;
                     if (DomainFieldTracked(policy, "Etiqueta", operation, recordId, "COR_SEQUENCIA"))
                         mask |= EtiquetaTrackingFields.COR_SEQUENCIA;
+                    if (DomainFieldTracked(policy, "Etiqueta", operation, recordId, "OperationalEntityId"))
+                        mask |= EtiquetaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Etiqueta", operation, recordId, "TenantID"))
                         mask |= EtiquetaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Etiqueta", operation, recordId, "Deleted"))
@@ -2295,6 +2365,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_FavoritosTrackingFields.USE_ID;
                     if (DomainFieldTracked(policy, "T_Favoritos", operation, recordId, "ID_INDICADOR"))
                         mask |= T_FavoritosTrackingFields.ID_INDICADOR;
+                    if (DomainFieldTracked(policy, "T_Favoritos", operation, recordId, "OperationalEntityId"))
+                        mask |= T_FavoritosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Favoritos", operation, recordId, "TenantID"))
                         mask |= T_FavoritosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Favoritos", operation, recordId, "Deleted"))
@@ -2320,6 +2392,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= FechamentoTesteTrackingFields.FEC_QTD;
                     if (DomainFieldTracked(policy, "FechamentoTeste", operation, recordId, "GRP_ID"))
                         mask |= FechamentoTesteTrackingFields.GRP_ID;
+                    if (DomainFieldTracked(policy, "FechamentoTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= FechamentoTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "FechamentoTeste", operation, recordId, "TenantID"))
                         mask |= FechamentoTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "FechamentoTeste", operation, recordId, "Deleted"))
@@ -2377,6 +2451,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= FeedbackTrackingFields.BOL_ID;
                     if (DomainFieldTracked(policy, "Feedback", operation, recordId, "COR_SEQUENCIA"))
                         mask |= FeedbackTrackingFields.COR_SEQUENCIA;
+                    if (DomainFieldTracked(policy, "Feedback", operation, recordId, "OperationalEntityId"))
+                        mask |= FeedbackTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Feedback", operation, recordId, "TenantID"))
                         mask |= FeedbackTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Feedback", operation, recordId, "Deleted"))
@@ -2400,6 +2476,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_FeedbackMovEstoqueTrackingFields.FeedbackId;
                     if (DomainFieldTracked(policy, "T_FeedbackMovEstoque", operation, recordId, "MovimentoEstoqueId"))
                         mask |= T_FeedbackMovEstoqueTrackingFields.MovimentoEstoqueId;
+                    if (DomainFieldTracked(policy, "T_FeedbackMovEstoque", operation, recordId, "OperationalEntityId"))
+                        mask |= T_FeedbackMovEstoqueTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_FeedbackMovEstoque", operation, recordId, "TenantID"))
                         mask |= T_FeedbackMovEstoqueTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_FeedbackMovEstoque", operation, recordId, "Deleted"))
@@ -2543,8 +2621,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= FilaProducaoTrackingFields.FPR_TOLERANCIA_MAIS;
                     if (DomainFieldTracked(policy, "FilaProducao", operation, recordId, "FPR_DATA_ENCERRAMENTO"))
                         mask |= FilaProducaoTrackingFields.FPR_DATA_ENCERRAMENTO;
-                    if (DomainFieldTracked(policy, "FilaProducao", operation, recordId, "TenantID"))
-                        mask |= FilaProducaoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "FilaProducao", operation, recordId, "OperationalEntityId"))
+                        mask |= FilaProducaoTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -2678,10 +2756,10 @@ private OperationalLoggingDecision Evaluate(
                         mask |= FilaProducaoPrevistaTrackingFields.FPR_PESO_UNITARIO;
                     if (DomainFieldTracked(policy, "FilaProducaoPrevista", operation, recordId, "FPR_M2_UNITARIO"))
                         mask |= FilaProducaoPrevistaTrackingFields.FPR_M2_UNITARIO;
+                    if (DomainFieldTracked(policy, "FilaProducaoPrevista", operation, recordId, "OperationalEntityId"))
+                        mask |= FilaProducaoPrevistaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "FilaProducaoPrevista", operation, recordId, "TenantID"))
                         mask |= FilaProducaoPrevistaTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "FilaProducaoPrevista", operation, recordId, "Deleted"))
-                        mask |= FilaProducaoPrevistaTrackingFields.Deleted;
                     return mask;
                 }
 
@@ -2699,6 +2777,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_GrupoTrackingFields.EXIBELISTA;
                     if (DomainFieldTracked(policy, "T_Grupo", operation, recordId, "GRU_DESCRICAO"))
                         mask |= T_GrupoTrackingFields.GRU_DESCRICAO;
+                    if (DomainFieldTracked(policy, "T_Grupo", operation, recordId, "OperationalEntityId"))
+                        mask |= T_GrupoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Grupo", operation, recordId, "TenantID"))
                         mask |= T_GrupoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Grupo", operation, recordId, "Deleted"))
@@ -2722,6 +2802,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= GrupoIndicadorTrackingFields.GRU_ID;
                     if (DomainFieldTracked(policy, "GrupoIndicador", operation, recordId, "IND_ID"))
                         mask |= GrupoIndicadorTrackingFields.IND_ID;
+                    if (DomainFieldTracked(policy, "GrupoIndicador", operation, recordId, "OperationalEntityId"))
+                        mask |= GrupoIndicadorTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "GrupoIndicador", operation, recordId, "TenantID"))
                         mask |= GrupoIndicadorTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "GrupoIndicador", operation, recordId, "Deleted"))
@@ -2831,6 +2913,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= GrupoProdutoAbstratoTrackingFields.GRP_FILTRA_SEQ_TRANS;
                     if (DomainFieldTracked(policy, "GrupoProdutoAbstrato", operation, recordId, "GRP_IMG_CAIXA"))
                         mask |= GrupoProdutoAbstratoTrackingFields.GRP_IMG_CAIXA;
+                    if (DomainFieldTracked(policy, "GrupoProdutoAbstrato", operation, recordId, "OperationalEntityId"))
+                        mask |= GrupoProdutoAbstratoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "GrupoProdutoAbstrato", operation, recordId, "TenantID"))
                         mask |= GrupoProdutoAbstratoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "GrupoProdutoAbstrato", operation, recordId, "Deleted"))
@@ -2852,6 +2936,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= GrupoRecursoTrackingFields.GRE_ID;
                     if (DomainFieldTracked(policy, "GrupoRecurso", operation, recordId, "GRE_DESCRICAO"))
                         mask |= GrupoRecursoTrackingFields.GRE_DESCRICAO;
+                    if (DomainFieldTracked(policy, "GrupoRecurso", operation, recordId, "OperationalEntityId"))
+                        mask |= GrupoRecursoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "GrupoRecurso", operation, recordId, "TenantID"))
                         mask |= GrupoRecursoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "GrupoRecurso", operation, recordId, "Deleted"))
@@ -2877,6 +2963,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= GrupoSegmentoTrackingFields.GRS_DESCRICAO;
                     if (DomainFieldTracked(policy, "GrupoSegmento", operation, recordId, "GRS_INTEGRACAO_ERP"))
                         mask |= GrupoSegmentoTrackingFields.GRS_INTEGRACAO_ERP;
+                    if (DomainFieldTracked(policy, "GrupoSegmento", operation, recordId, "OperationalEntityId"))
+                        mask |= GrupoSegmentoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "GrupoSegmento", operation, recordId, "TenantID"))
                         mask |= GrupoSegmentoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "GrupoSegmento", operation, recordId, "Deleted"))
@@ -2904,6 +2992,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_HORARIO_RECEBIMENTOTrackingFields.CLI_ID;
                     if (DomainFieldTracked(policy, "T_HORARIO_RECEBIMENTO", operation, recordId, "HRE_ID"))
                         mask |= T_HORARIO_RECEBIMENTOTrackingFields.HRE_ID;
+                    if (DomainFieldTracked(policy, "T_HORARIO_RECEBIMENTO", operation, recordId, "OperationalEntityId"))
+                        mask |= T_HORARIO_RECEBIMENTOTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_HORARIO_RECEBIMENTO", operation, recordId, "TenantID"))
                         mask |= T_HORARIO_RECEBIMENTOTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_HORARIO_RECEBIMENTO", operation, recordId, "Deleted"))
@@ -2927,6 +3017,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ImpressoraTrackingFields.IMP_IP;
                     if (DomainFieldTracked(policy, "Impressora", operation, recordId, "IMP_NOME"))
                         mask |= ImpressoraTrackingFields.IMP_NOME;
+                    if (DomainFieldTracked(policy, "Impressora", operation, recordId, "OperationalEntityId"))
+                        mask |= ImpressoraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Impressora", operation, recordId, "TenantID"))
                         mask |= ImpressoraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Impressora", operation, recordId, "Deleted"))
@@ -2974,6 +3066,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_IndicadoresTrackingFields.DOM_EMPRESA;
                     if (DomainFieldTracked(policy, "T_Indicadores", operation, recordId, "DOM_FILIAL"))
                         mask |= T_IndicadoresTrackingFields.DOM_FILIAL;
+                    if (DomainFieldTracked(policy, "T_Indicadores", operation, recordId, "OperationalEntityId"))
+                        mask |= T_IndicadoresTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Indicadores", operation, recordId, "TenantID"))
                         mask |= T_IndicadoresTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Indicadores", operation, recordId, "Deleted"))
@@ -2997,6 +3091,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= IndicadoresDepartamentosTrackingFields.DEP_ID;
                     if (DomainFieldTracked(policy, "IndicadoresDepartamentos", operation, recordId, "IND_ID"))
                         mask |= IndicadoresDepartamentosTrackingFields.IND_ID;
+                    if (DomainFieldTracked(policy, "IndicadoresDepartamentos", operation, recordId, "OperationalEntityId"))
+                        mask |= IndicadoresDepartamentosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "IndicadoresDepartamentos", operation, recordId, "TenantID"))
                         mask |= IndicadoresDepartamentosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "IndicadoresDepartamentos", operation, recordId, "Deleted"))
@@ -3026,6 +3122,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= IndicadoresDimencoesTrackingFields.DIM_SQL;
                     if (DomainFieldTracked(policy, "IndicadoresDimencoes", operation, recordId, "DIM_CONEXAO"))
                         mask |= IndicadoresDimencoesTrackingFields.DIM_CONEXAO;
+                    if (DomainFieldTracked(policy, "IndicadoresDimencoes", operation, recordId, "OperationalEntityId"))
+                        mask |= IndicadoresDimencoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "IndicadoresDimencoes", operation, recordId, "TenantID"))
                         mask |= IndicadoresDimencoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "IndicadoresDimencoes", operation, recordId, "Deleted"))
@@ -3053,6 +3151,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= IndicadoresFatosDimencoesTrackingFields.DIM_ID;
                     if (DomainFieldTracked(policy, "IndicadoresFatosDimencoes", operation, recordId, "FAT_DESCRICAO"))
                         mask |= IndicadoresFatosDimencoesTrackingFields.FAT_DESCRICAO;
+                    if (DomainFieldTracked(policy, "IndicadoresFatosDimencoes", operation, recordId, "OperationalEntityId"))
+                        mask |= IndicadoresFatosDimencoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "IndicadoresFatosDimencoes", operation, recordId, "TenantID"))
                         mask |= IndicadoresFatosDimencoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "IndicadoresFatosDimencoes", operation, recordId, "Deleted"))
@@ -3080,6 +3180,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= IndicadoresPeriodosDimencoesTrackingFields.DIM_ID;
                     if (DomainFieldTracked(policy, "IndicadoresPeriodosDimencoes", operation, recordId, "PER_DESCRICAO"))
                         mask |= IndicadoresPeriodosDimencoesTrackingFields.PER_DESCRICAO;
+                    if (DomainFieldTracked(policy, "IndicadoresPeriodosDimencoes", operation, recordId, "OperationalEntityId"))
+                        mask |= IndicadoresPeriodosDimencoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "IndicadoresPeriodosDimencoes", operation, recordId, "TenantID"))
                         mask |= IndicadoresPeriodosDimencoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "IndicadoresPeriodosDimencoes", operation, recordId, "Deleted"))
@@ -3107,6 +3209,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= InformacoesComplementaresTrackingFields.MET_ID;
                     if (DomainFieldTracked(policy, "InformacoesComplementares", operation, recordId, "INF_DATA"))
                         mask |= InformacoesComplementaresTrackingFields.INF_DATA;
+                    if (DomainFieldTracked(policy, "InformacoesComplementares", operation, recordId, "OperationalEntityId"))
+                        mask |= InformacoesComplementaresTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "InformacoesComplementares", operation, recordId, "TenantID"))
                         mask |= InformacoesComplementaresTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "InformacoesComplementares", operation, recordId, "Deleted"))
@@ -3128,6 +3232,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= InpecaoVisualTrackingFields.Id;
                     if (DomainFieldTracked(policy, "InpecaoVisual", operation, recordId, "IPV_ID"))
                         mask |= InpecaoVisualTrackingFields.IPV_ID;
+                    if (DomainFieldTracked(policy, "InpecaoVisual", operation, recordId, "OperationalEntityId"))
+                        mask |= InpecaoVisualTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "InpecaoVisual", operation, recordId, "TenantID"))
                         mask |= InpecaoVisualTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "InpecaoVisual", operation, recordId, "Deleted"))
@@ -3151,6 +3257,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItemInspecaoTrackingFields.ITI_ID;
                     if (DomainFieldTracked(policy, "ItemInspecao", operation, recordId, "ITI_DESC"))
                         mask |= ItemInspecaoTrackingFields.ITI_DESC;
+                    if (DomainFieldTracked(policy, "ItemInspecao", operation, recordId, "OperationalEntityId"))
+                        mask |= ItemInspecaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItemInspecao", operation, recordId, "TenantID"))
                         mask |= ItemInspecaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItemInspecao", operation, recordId, "Deleted"))
@@ -3186,6 +3294,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItemTestavelTrackingFields.ITE_VALOR_CALCULADO_DA_CONDICIONAL;
                     if (DomainFieldTracked(policy, "ItemTestavel", operation, recordId, "ITE_TIPO_AVALIACAO_FINAL"))
                         mask |= ItemTestavelTrackingFields.ITE_TIPO_AVALIACAO_FINAL;
+                    if (DomainFieldTracked(policy, "ItemTestavel", operation, recordId, "OperationalEntityId"))
+                        mask |= ItemTestavelTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItemTestavel", operation, recordId, "TenantID"))
                         mask |= ItemTestavelTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItemTestavel", operation, recordId, "Deleted"))
@@ -3225,6 +3335,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItensCalendarioTrackingFields.PRO_ID;
                     if (DomainFieldTracked(policy, "ItensCalendario", operation, recordId, "ICA_LIMPESA_MAQUINA"))
                         mask |= ItensCalendarioTrackingFields.ICA_LIMPESA_MAQUINA;
+                    if (DomainFieldTracked(policy, "ItensCalendario", operation, recordId, "OperationalEntityId"))
+                        mask |= ItensCalendarioTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItensCalendario", operation, recordId, "TenantID"))
                         mask |= ItensCalendarioTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItensCalendario", operation, recordId, "Deleted"))
@@ -3250,6 +3362,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItenCalendarioDisponibilidadeVeiculosTrackingFields.TIP_ID;
                     if (DomainFieldTracked(policy, "ItenCalendarioDisponibilidadeVeiculos", operation, recordId, "IDV_QTD"))
                         mask |= ItenCalendarioDisponibilidadeVeiculosTrackingFields.IDV_QTD;
+                    if (DomainFieldTracked(policy, "ItenCalendarioDisponibilidadeVeiculos", operation, recordId, "OperationalEntityId"))
+                        mask |= ItenCalendarioDisponibilidadeVeiculosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItenCalendarioDisponibilidadeVeiculos", operation, recordId, "TenantID"))
                         mask |= ItenCalendarioDisponibilidadeVeiculosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItenCalendarioDisponibilidadeVeiculos", operation, recordId, "Deleted"))
@@ -3289,6 +3403,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItenCargaTrackingFields.NOT_ID;
                     if (DomainFieldTracked(policy, "ItenCarga", operation, recordId, "NOT_EMISSAO"))
                         mask |= ItenCargaTrackingFields.NOT_EMISSAO;
+                    if (DomainFieldTracked(policy, "ItenCarga", operation, recordId, "OperationalEntityId"))
+                        mask |= ItenCargaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItenCarga", operation, recordId, "TenantID"))
                         mask |= ItenCargaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItenCarga", operation, recordId, "Deleted"))
@@ -3310,6 +3426,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItensEstruturaImpressaoTrackingFields.Id;
                     if (DomainFieldTracked(policy, "ItensEstruturaImpressao", operation, recordId, "IES_CUSTOM_FONT_SIZE"))
                         mask |= ItensEstruturaImpressaoTrackingFields.IES_CUSTOM_FONT_SIZE;
+                    if (DomainFieldTracked(policy, "ItensEstruturaImpressao", operation, recordId, "OperationalEntityId"))
+                        mask |= ItensEstruturaImpressaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItensEstruturaImpressao", operation, recordId, "TenantID"))
                         mask |= ItensEstruturaImpressaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItensEstruturaImpressao", operation, recordId, "Deleted"))
@@ -3365,6 +3483,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItensOrcamentoTrackingFields.ITO_LARGURA;
                     if (DomainFieldTracked(policy, "ItensOrcamento", operation, recordId, "ITO_COMPRIMENTO"))
                         mask |= ItensOrcamentoTrackingFields.ITO_COMPRIMENTO;
+                    if (DomainFieldTracked(policy, "ItensOrcamento", operation, recordId, "OperationalEntityId"))
+                        mask |= ItensOrcamentoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItensOrcamento", operation, recordId, "TenantID"))
                         mask |= ItensOrcamentoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItensOrcamento", operation, recordId, "Deleted"))
@@ -3406,6 +3526,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ItensPackedTrackingFields.IPA_DIMA;
                     if (DomainFieldTracked(policy, "ItensPacked", operation, recordId, "IPA_QTD_POR_PALETE"))
                         mask |= ItensPackedTrackingFields.IPA_QTD_POR_PALETE;
+                    if (DomainFieldTracked(policy, "ItensPacked", operation, recordId, "OperationalEntityId"))
+                        mask |= ItensPackedTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ItensPacked", operation, recordId, "TenantID"))
                         mask |= ItensPackedTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ItensPacked", operation, recordId, "Deleted"))
@@ -3443,6 +3565,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= LaudoTesteFisicoTrackingFields.FPR_SEQ_REPETICAO;
                     if (DomainFieldTracked(policy, "LaudoTesteFisico", operation, recordId, "USE_ID"))
                         mask |= LaudoTesteFisicoTrackingFields.USE_ID;
+                    if (DomainFieldTracked(policy, "LaudoTesteFisico", operation, recordId, "OperationalEntityId"))
+                        mask |= LaudoTesteFisicoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "LaudoTesteFisico", operation, recordId, "TenantID"))
                         mask |= LaudoTesteFisicoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "LaudoTesteFisico", operation, recordId, "Deleted"))
@@ -3472,6 +3596,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= LogsTrackingFields.LOG_ID;
                     if (DomainFieldTracked(policy, "Logs", operation, recordId, "LOG_EMISSAO"))
                         mask |= LogsTrackingFields.LOG_EMISSAO;
+                    if (DomainFieldTracked(policy, "Logs", operation, recordId, "OperationalEntityId"))
+                        mask |= LogsTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Logs", operation, recordId, "TenantID"))
                         mask |= LogsTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Logs", operation, recordId, "Deleted"))
@@ -3517,6 +3643,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= LogsDatabaseTrackingFields.USE_ID;
                     if (DomainFieldTracked(policy, "LogsDatabase", operation, recordId, "LOGS_ORIGEM"))
                         mask |= LogsDatabaseTrackingFields.LOGS_ORIGEM;
+                    if (DomainFieldTracked(policy, "LogsDatabase", operation, recordId, "OperationalEntityId"))
+                        mask |= LogsDatabaseTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "LogsDatabase", operation, recordId, "TenantID"))
                         mask |= LogsDatabaseTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "LogsDatabase", operation, recordId, "Deleted"))
@@ -3542,6 +3670,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= LoockTrackingFields.LOO_DESCRICAO;
                     if (DomainFieldTracked(policy, "Loock", operation, recordId, "LOO_CONTEUDO"))
                         mask |= LoockTrackingFields.LOO_CONTEUDO;
+                    if (DomainFieldTracked(policy, "Loock", operation, recordId, "OperationalEntityId"))
+                        mask |= LoockTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Loock", operation, recordId, "TenantID"))
                         mask |= LoockTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Loock", operation, recordId, "Deleted"))
@@ -3567,6 +3697,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= LoteTesteTrackingFields.TES_ID;
                     if (DomainFieldTracked(policy, "LoteTeste", operation, recordId, "RL_ID"))
                         mask |= LoteTesteTrackingFields.RL_ID;
+                    if (DomainFieldTracked(policy, "LoteTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= LoteTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "LoteTeste", operation, recordId, "TenantID"))
                         mask |= LoteTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "LoteTeste", operation, recordId, "Deleted"))
@@ -3596,6 +3728,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= LotesTrackingFields.LOT_COMPRIMENTO;
                     if (DomainFieldTracked(policy, "Lotes", operation, recordId, "LOT_DIAMETRO"))
                         mask |= LotesTrackingFields.LOT_DIAMETRO;
+                    if (DomainFieldTracked(policy, "Lotes", operation, recordId, "OperationalEntityId"))
+                        mask |= LotesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Lotes", operation, recordId, "TenantID"))
                         mask |= LotesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Lotes", operation, recordId, "Deleted"))
@@ -3629,6 +3763,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MapaTrackingFields.ROD_ID;
                     if (DomainFieldTracked(policy, "Mapa", operation, recordId, "MAP_ALTURA_ROD"))
                         mask |= MapaTrackingFields.MAP_ALTURA_ROD;
+                    if (DomainFieldTracked(policy, "Mapa", operation, recordId, "OperationalEntityId"))
+                        mask |= MapaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Mapa", operation, recordId, "TenantID"))
                         mask |= MapaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Mapa", operation, recordId, "Deleted"))
@@ -3652,6 +3788,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MaquinaGrupoMaquinaTrackingFields.GMA_ID;
                     if (DomainFieldTracked(policy, "MaquinaGrupoMaquina", operation, recordId, "MAQ_ID"))
                         mask |= MaquinaGrupoMaquinaTrackingFields.MAQ_ID;
+                    if (DomainFieldTracked(policy, "MaquinaGrupoMaquina", operation, recordId, "OperationalEntityId"))
+                        mask |= MaquinaGrupoMaquinaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "MaquinaGrupoMaquina", operation, recordId, "TenantID"))
                         mask |= MaquinaGrupoMaquinaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "MaquinaGrupoMaquina", operation, recordId, "Deleted"))
@@ -3677,6 +3815,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MaquinaImpressoraTrackingFields.IMP_ID;
                     if (DomainFieldTracked(policy, "MaquinaImpressora", operation, recordId, "MAI_FACAO"))
                         mask |= MaquinaImpressoraTrackingFields.MAI_FACAO;
+                    if (DomainFieldTracked(policy, "MaquinaImpressora", operation, recordId, "OperationalEntityId"))
+                        mask |= MaquinaImpressoraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "MaquinaImpressora", operation, recordId, "TenantID"))
                         mask |= MaquinaImpressoraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "MaquinaImpressora", operation, recordId, "Deleted"))
@@ -3704,6 +3844,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_MAQUINAS_EQUIPESTrackingFields.CAL_ID;
                     if (DomainFieldTracked(policy, "T_MAQUINAS_EQUIPES", operation, recordId, "CLI_ID"))
                         mask |= T_MAQUINAS_EQUIPESTrackingFields.CLI_ID;
+                    if (DomainFieldTracked(policy, "T_MAQUINAS_EQUIPES", operation, recordId, "OperationalEntityId"))
+                        mask |= T_MAQUINAS_EQUIPESTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_MAQUINAS_EQUIPES", operation, recordId, "TenantID"))
                         mask |= T_MAQUINAS_EQUIPESTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_MAQUINAS_EQUIPES", operation, recordId, "Deleted"))
@@ -3765,6 +3907,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_MedicoesTrackingFields.DOM_FILIAL;
                     if (DomainFieldTracked(policy, "T_Medicoes", operation, recordId, "MED_VALOR_DISPER"))
                         mask |= T_MedicoesTrackingFields.MED_VALOR_DISPER;
+                    if (DomainFieldTracked(policy, "T_Medicoes", operation, recordId, "OperationalEntityId"))
+                        mask |= T_MedicoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Medicoes", operation, recordId, "TenantID"))
                         mask |= T_MedicoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Medicoes", operation, recordId, "Deleted"))
@@ -3784,6 +3928,8 @@ private OperationalLoggingDecision Evaluate(
                     ulong mask = 0UL;
                     if (DomainFieldTracked(policy, "MedicoesOnduladeira", operation, recordId, "Id"))
                         mask |= MedicoesOnduladeiraTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "MedicoesOnduladeira", operation, recordId, "OperationalEntityId"))
+                        mask |= MedicoesOnduladeiraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "MedicoesOnduladeira", operation, recordId, "TenantID"))
                         mask |= MedicoesOnduladeiraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "MedicoesOnduladeira", operation, recordId, "Deleted"))
@@ -3813,6 +3959,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MedidasTesteTrackingFields.MDT_ENCONTRADO;
                     if (DomainFieldTracked(policy, "MedidasTeste", operation, recordId, "UNI_ID"))
                         mask |= MedidasTesteTrackingFields.UNI_ID;
+                    if (DomainFieldTracked(policy, "MedidasTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= MedidasTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "MedidasTeste", operation, recordId, "TenantID"))
                         mask |= MedidasTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "MedidasTeste", operation, recordId, "Deleted"))
@@ -3840,6 +3988,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MemoriaDeCalculoTrackingFields.MEM_VALOR;
                     if (DomainFieldTracked(policy, "MemoriaDeCalculo", operation, recordId, "MEM_DESCRICAO"))
                         mask |= MemoriaDeCalculoTrackingFields.MEM_DESCRICAO;
+                    if (DomainFieldTracked(policy, "MemoriaDeCalculo", operation, recordId, "OperationalEntityId"))
+                        mask |= MemoriaDeCalculoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "MemoriaDeCalculo", operation, recordId, "TenantID"))
                         mask |= MemoriaDeCalculoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "MemoriaDeCalculo", operation, recordId, "Deleted"))
@@ -3873,6 +4023,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MensagemTrackingFields.MEN_QTD_TRY_SEND;
                     if (DomainFieldTracked(policy, "Mensagem", operation, recordId, "MEN_DATE_TRY_SEND"))
                         mask |= MensagemTrackingFields.MEN_DATE_TRY_SEND;
+                    if (DomainFieldTracked(policy, "Mensagem", operation, recordId, "OperationalEntityId"))
+                        mask |= MensagemTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Mensagem", operation, recordId, "TenantID"))
                         mask |= MensagemTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Mensagem", operation, recordId, "Deleted"))
@@ -3894,6 +4046,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MesesTrackingFields.MES;
                     if (DomainFieldTracked(policy, "Meses", operation, recordId, "fator"))
                         mask |= MesesTrackingFields.fator;
+                    if (DomainFieldTracked(policy, "Meses", operation, recordId, "OperationalEntityId"))
+                        mask |= MesesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Meses", operation, recordId, "TenantID"))
                         mask |= MesesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Meses", operation, recordId, "Deleted"))
@@ -3941,6 +4095,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_MetasTrackingFields.DOM_EMPRESA;
                     if (DomainFieldTracked(policy, "T_Metas", operation, recordId, "DOM_FILIAL"))
                         mask |= T_MetasTrackingFields.DOM_FILIAL;
+                    if (DomainFieldTracked(policy, "T_Metas", operation, recordId, "OperationalEntityId"))
+                        mask |= T_MetasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Metas", operation, recordId, "TenantID"))
                         mask |= T_MetasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Metas", operation, recordId, "Deleted"))
@@ -4054,6 +4210,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MovimentoEstoqueTrackingFields.FOR_ID;
                     if (DomainFieldTracked(policy, "MovimentoEstoque", operation, recordId, "CLI_ID"))
                         mask |= MovimentoEstoqueTrackingFields.CLI_ID;
+                    if (DomainFieldTracked(policy, "MovimentoEstoque", operation, recordId, "OperationalEntityId"))
+                        mask |= MovimentoEstoqueTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "MovimentoEstoque", operation, recordId, "TenantID"))
                         mask |= MovimentoEstoqueTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "MovimentoEstoque", operation, recordId, "Deleted"))
@@ -4091,6 +4249,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MunicipioTrackingFields.MUN_CODIGO_CNPJ;
                     if (DomainFieldTracked(policy, "Municipio", operation, recordId, "MUN_DISTANCIA_KM"))
                         mask |= MunicipioTrackingFields.MUN_DISTANCIA_KM;
+                    if (DomainFieldTracked(policy, "Municipio", operation, recordId, "OperationalEntityId"))
+                        mask |= MunicipioTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Municipio", operation, recordId, "TenantID"))
                         mask |= MunicipioTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Municipio", operation, recordId, "Deleted"))
@@ -4112,6 +4272,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_NegocioTrackingFields.NEG_ID;
                     if (DomainFieldTracked(policy, "T_Negocio", operation, recordId, "NEG_DESCRICAO"))
                         mask |= T_NegocioTrackingFields.NEG_DESCRICAO;
+                    if (DomainFieldTracked(policy, "T_Negocio", operation, recordId, "OperationalEntityId"))
+                        mask |= T_NegocioTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_Negocio", operation, recordId, "TenantID"))
                         mask |= T_NegocioTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_Negocio", operation, recordId, "Deleted"))
@@ -4139,6 +4301,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ObjetoControlavelTrackingFields.OBJ_TIPO;
                     if (DomainFieldTracked(policy, "ObjetoControlavel", operation, recordId, "OBJ_GRUPO"))
                         mask |= ObjetoControlavelTrackingFields.OBJ_GRUPO;
+                    if (DomainFieldTracked(policy, "ObjetoControlavel", operation, recordId, "OperationalEntityId"))
+                        mask |= ObjetoControlavelTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ObjetoControlavel", operation, recordId, "TenantID"))
                         mask |= ObjetoControlavelTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ObjetoControlavel", operation, recordId, "Deleted"))
@@ -4172,6 +4336,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ObservacoesTrackingFields.ROT_SEQ_TRANFORMACAO;
                     if (DomainFieldTracked(policy, "Observacoes", operation, recordId, "OBS_INTEGRACAO"))
                         mask |= ObservacoesTrackingFields.OBS_INTEGRACAO;
+                    if (DomainFieldTracked(policy, "Observacoes", operation, recordId, "OperationalEntityId"))
+                        mask |= ObservacoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Observacoes", operation, recordId, "TenantID"))
                         mask |= ObservacoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Observacoes", operation, recordId, "Deleted"))
@@ -4205,6 +4371,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OcorrenciaTrackingFields.OCO_SUB_TIPO;
                     if (DomainFieldTracked(policy, "Ocorrencia", operation, recordId, "SUB_ID"))
                         mask |= OcorrenciaTrackingFields.SUB_ID;
+                    if (DomainFieldTracked(policy, "Ocorrencia", operation, recordId, "OperationalEntityId"))
+                        mask |= OcorrenciaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Ocorrencia", operation, recordId, "TenantID"))
                         mask |= OcorrenciaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Ocorrencia", operation, recordId, "Deleted"))
@@ -4238,6 +4406,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OndaTrackingFields.OND_ID_INTEGRACAO;
                     if (DomainFieldTracked(policy, "Onda", operation, recordId, "VIN_ID"))
                         mask |= OndaTrackingFields.VIN_ID;
+                    if (DomainFieldTracked(policy, "Onda", operation, recordId, "OperationalEntityId"))
+                        mask |= OndaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Onda", operation, recordId, "TenantID"))
                         mask |= OndaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Onda", operation, recordId, "Deleted"))
@@ -4275,6 +4445,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OperacoesTrackingFields.ORD_ID;
                     if (DomainFieldTracked(policy, "Operacoes", operation, recordId, "FPR_SEQ_REPETICAO"))
                         mask |= OperacoesTrackingFields.FPR_SEQ_REPETICAO;
+                    if (DomainFieldTracked(policy, "Operacoes", operation, recordId, "OperationalEntityId"))
+                        mask |= OperacoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Operacoes", operation, recordId, "TenantID"))
                         mask |= OperacoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Operacoes", operation, recordId, "Deleted"))
@@ -4296,6 +4468,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OptAlteracaoDimencoesTrackingFields.Id;
                     if (DomainFieldTracked(policy, "OptAlteracaoDimencoes", operation, recordId, "OAD_ID"))
                         mask |= OptAlteracaoDimencoesTrackingFields.OAD_ID;
+                    if (DomainFieldTracked(policy, "OptAlteracaoDimencoes", operation, recordId, "OperationalEntityId"))
+                        mask |= OptAlteracaoDimencoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "OptAlteracaoDimencoes", operation, recordId, "TenantID"))
                         mask |= OptAlteracaoDimencoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "OptAlteracaoDimencoes", operation, recordId, "Deleted"))
@@ -4329,6 +4503,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OrcamentoTrackingFields.CLI_ID;
                     if (DomainFieldTracked(policy, "Orcamento", operation, recordId, "VER_ID"))
                         mask |= OrcamentoTrackingFields.VER_ID;
+                    if (DomainFieldTracked(policy, "Orcamento", operation, recordId, "OperationalEntityId"))
+                        mask |= OrcamentoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Orcamento", operation, recordId, "TenantID"))
                         mask |= OrcamentoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Orcamento", operation, recordId, "Deleted"))
@@ -4368,6 +4544,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OrderTrackTrackingFields.OTK_DATA_REALIZADA;
                     if (DomainFieldTracked(policy, "OrderTrack", operation, recordId, "FPR_ID"))
                         mask |= OrderTrackTrackingFields.FPR_ID;
+                    if (DomainFieldTracked(policy, "OrderTrack", operation, recordId, "OperationalEntityId"))
+                        mask |= OrderTrackTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "OrderTrack", operation, recordId, "TenantID"))
                         mask |= OrderTrackTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "OrderTrack", operation, recordId, "Deleted"))
@@ -4532,6 +4710,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ParamTrackingFields.PAR_VALOR_N;
                     if (DomainFieldTracked(policy, "Param", operation, recordId, "PAR_VALOR_D"))
                         mask |= ParamTrackingFields.PAR_VALOR_D;
+                    if (DomainFieldTracked(policy, "Param", operation, recordId, "OperationalEntityId"))
+                        mask |= ParamTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Param", operation, recordId, "TenantID"))
                         mask |= ParamTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Param", operation, recordId, "Deleted"))
@@ -4559,6 +4739,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ParametrosDeCustoTrackingFields.CUS_ID;
                     if (DomainFieldTracked(policy, "ParametrosDeCusto", operation, recordId, "PAR_VALOR"))
                         mask |= ParametrosDeCustoTrackingFields.PAR_VALOR;
+                    if (DomainFieldTracked(policy, "ParametrosDeCusto", operation, recordId, "OperationalEntityId"))
+                        mask |= ParametrosDeCustoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ParametrosDeCusto", operation, recordId, "TenantID"))
                         mask |= ParametrosDeCustoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ParametrosDeCusto", operation, recordId, "Deleted"))
@@ -4590,6 +4772,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PendenciasInterfaceTrackingFields.PEN_ID_PROTOCOLO_IN;
                     if (DomainFieldTracked(policy, "PendenciasInterface", operation, recordId, "DATA_ENTRADA"))
                         mask |= PendenciasInterfaceTrackingFields.DATA_ENTRADA;
+                    if (DomainFieldTracked(policy, "PendenciasInterface", operation, recordId, "OperationalEntityId"))
+                        mask |= PendenciasInterfaceTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "PendenciasInterface", operation, recordId, "TenantID"))
                         mask |= PendenciasInterfaceTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "PendenciasInterface", operation, recordId, "Deleted"))
@@ -4613,6 +4797,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PerfilTrackingFields.PER_ID;
                     if (DomainFieldTracked(policy, "Perfil", operation, recordId, "PER_NOME"))
                         mask |= PerfilTrackingFields.PER_NOME;
+                    if (DomainFieldTracked(policy, "Perfil", operation, recordId, "OperationalEntityId"))
+                        mask |= PerfilTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Perfil", operation, recordId, "TenantID"))
                         mask |= PerfilTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Perfil", operation, recordId, "Deleted"))
@@ -4638,6 +4824,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PerfilObjetoControlavelTrackingFields.OBJ_ID;
                     if (DomainFieldTracked(policy, "PerfilObjetoControlavel", operation, recordId, "PEO_ACAO"))
                         mask |= PerfilObjetoControlavelTrackingFields.PEO_ACAO;
+                    if (DomainFieldTracked(policy, "PerfilObjetoControlavel", operation, recordId, "OperationalEntityId"))
+                        mask |= PerfilObjetoControlavelTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "PerfilObjetoControlavel", operation, recordId, "TenantID"))
                         mask |= PerfilObjetoControlavelTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "PerfilObjetoControlavel", operation, recordId, "Deleted"))
@@ -4665,6 +4853,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PeriodicidadeTesteTrackingFields.UNI_ID;
                     if (DomainFieldTracked(policy, "PeriodicidadeTeste", operation, recordId, "GRP_ID"))
                         mask |= PeriodicidadeTesteTrackingFields.GRP_ID;
+                    if (DomainFieldTracked(policy, "PeriodicidadeTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= PeriodicidadeTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "PeriodicidadeTeste", operation, recordId, "TenantID"))
                         mask |= PeriodicidadeTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "PeriodicidadeTeste", operation, recordId, "Deleted"))
@@ -4684,6 +4874,8 @@ private OperationalLoggingDecision Evaluate(
                     ulong mask = 0UL;
                     if (DomainFieldTracked(policy, "PlanoAmostralTeste", operation, recordId, "GRP_TIPO"))
                         mask |= PlanoAmostralTesteTrackingFields.GRP_TIPO;
+                    if (DomainFieldTracked(policy, "PlanoAmostralTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= PlanoAmostralTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "PlanoAmostralTeste", operation, recordId, "TenantID"))
                         mask |= PlanoAmostralTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "PlanoAmostralTeste", operation, recordId, "Deleted"))
@@ -4733,6 +4925,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PlanoacaoTrackingFields.PLA_REFERENCIA;
                     if (DomainFieldTracked(policy, "Planoacao", operation, recordId, "USE_ID"))
                         mask |= PlanoacaoTrackingFields.USE_ID;
+                    if (DomainFieldTracked(policy, "Planoacao", operation, recordId, "OperationalEntityId"))
+                        mask |= PlanoacaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Planoacao", operation, recordId, "TenantID"))
                         mask |= PlanoacaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Planoacao", operation, recordId, "Deleted"))
@@ -4768,6 +4962,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PlotagemTrackingFields.PLO_GRAFICO;
                     if (DomainFieldTracked(policy, "Plotagem", operation, recordId, "CON_ID"))
                         mask |= PlotagemTrackingFields.CON_ID;
+                    if (DomainFieldTracked(policy, "Plotagem", operation, recordId, "OperationalEntityId"))
+                        mask |= PlotagemTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Plotagem", operation, recordId, "TenantID"))
                         mask |= PlotagemTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Plotagem", operation, recordId, "Deleted"))
@@ -4797,6 +4993,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PoliticaOnduladeiraTrackingFields.POL_DIAS_ANTECIPACAO;
                     if (DomainFieldTracked(policy, "PoliticaOnduladeira", operation, recordId, "POL_METROS_LINEARES"))
                         mask |= PoliticaOnduladeiraTrackingFields.POL_METROS_LINEARES;
+                    if (DomainFieldTracked(policy, "PoliticaOnduladeira", operation, recordId, "OperationalEntityId"))
+                        mask |= PoliticaOnduladeiraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "PoliticaOnduladeira", operation, recordId, "TenantID"))
                         mask |= PoliticaOnduladeiraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "PoliticaOnduladeira", operation, recordId, "Deleted"))
@@ -4826,6 +5024,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PontosMapaTrackingFields.PON_LONGITUDE;
                     if (DomainFieldTracked(policy, "PontosMapa", operation, recordId, "PON_DISTANCIA_KM"))
                         mask |= PontosMapaTrackingFields.PON_DISTANCIA_KM;
+                    if (DomainFieldTracked(policy, "PontosMapa", operation, recordId, "OperationalEntityId"))
+                        mask |= PontosMapaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "PontosMapa", operation, recordId, "TenantID"))
                         mask |= PontosMapaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "PontosMapa", operation, recordId, "Deleted"))
@@ -4861,6 +5061,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_PREFERENCIASTrackingFields.USE_ID;
                     if (DomainFieldTracked(policy, "T_PREFERENCIAS", operation, recordId, "PER_ID"))
                         mask |= T_PREFERENCIASTrackingFields.PER_ID;
+                    if (DomainFieldTracked(policy, "T_PREFERENCIAS", operation, recordId, "OperationalEntityId"))
+                        mask |= T_PREFERENCIASTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_PREFERENCIAS", operation, recordId, "TenantID"))
                         mask |= T_PREFERENCIASTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_PREFERENCIAS", operation, recordId, "Deleted"))
@@ -4888,6 +5090,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ProtocoloOnduladeiraTrackingFields.MAQ_ID;
                     if (DomainFieldTracked(policy, "ProtocoloOnduladeira", operation, recordId, "PTO_COMANDO"))
                         mask |= ProtocoloOnduladeiraTrackingFields.PTO_COMANDO;
+                    if (DomainFieldTracked(policy, "ProtocoloOnduladeira", operation, recordId, "OperationalEntityId"))
+                        mask |= ProtocoloOnduladeiraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ProtocoloOnduladeira", operation, recordId, "TenantID"))
                         mask |= ProtocoloOnduladeiraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ProtocoloOnduladeira", operation, recordId, "Deleted"))
@@ -4915,6 +5119,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RecursosTrackingFields.REC_CONTROL_IP;
                     if (DomainFieldTracked(policy, "Recursos", operation, recordId, "GRE_ID"))
                         mask |= RecursosTrackingFields.GRE_ID;
+                    if (DomainFieldTracked(policy, "Recursos", operation, recordId, "OperationalEntityId"))
+                        mask |= RecursosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Recursos", operation, recordId, "TenantID"))
                         mask |= RecursosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Recursos", operation, recordId, "Deleted"))
@@ -4942,6 +5148,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RegistrosOnduladeiraTrackingFields.REG_STATUS;
                     if (DomainFieldTracked(policy, "RegistrosOnduladeira", operation, recordId, "REG_DATA_INICIO"))
                         mask |= RegistrosOnduladeiraTrackingFields.REG_DATA_INICIO;
+                    if (DomainFieldTracked(policy, "RegistrosOnduladeira", operation, recordId, "OperationalEntityId"))
+                        mask |= RegistrosOnduladeiraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "RegistrosOnduladeira", operation, recordId, "TenantID"))
                         mask |= RegistrosOnduladeiraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "RegistrosOnduladeira", operation, recordId, "Deleted"))
@@ -4965,6 +5173,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RepresentantesTrackingFields.REP_ID;
                     if (DomainFieldTracked(policy, "Representantes", operation, recordId, "REP_NOME"))
                         mask |= RepresentantesTrackingFields.REP_NOME;
+                    if (DomainFieldTracked(policy, "Representantes", operation, recordId, "OperationalEntityId"))
+                        mask |= RepresentantesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Representantes", operation, recordId, "TenantID"))
                         mask |= RepresentantesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Representantes", operation, recordId, "Deleted"))
@@ -4992,6 +5202,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RespInspVisualTrackingFields.ITI_ID;
                     if (DomainFieldTracked(policy, "RespInspVisual", operation, recordId, "RIV_STATUS"))
                         mask |= RespInspVisualTrackingFields.RIV_STATUS;
+                    if (DomainFieldTracked(policy, "RespInspVisual", operation, recordId, "OperationalEntityId"))
+                        mask |= RespInspVisualTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "RespInspVisual", operation, recordId, "TenantID"))
                         mask |= RespInspVisualTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "RespInspVisual", operation, recordId, "Deleted"))
@@ -5025,6 +5237,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RestricoesDeRodagemTrackingFields.TVE_ID;
                     if (DomainFieldTracked(policy, "RestricoesDeRodagem", operation, recordId, "MAP_ID"))
                         mask |= RestricoesDeRodagemTrackingFields.MAP_ID;
+                    if (DomainFieldTracked(policy, "RestricoesDeRodagem", operation, recordId, "OperationalEntityId"))
+                        mask |= RestricoesDeRodagemTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "RestricoesDeRodagem", operation, recordId, "TenantID"))
                         mask |= RestricoesDeRodagemTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "RestricoesDeRodagem", operation, recordId, "Deleted"))
@@ -5044,6 +5258,8 @@ private OperationalLoggingDecision Evaluate(
                     ulong mask = 0UL;
                     if (DomainFieldTracked(policy, "ResultLote", operation, recordId, "Id"))
                         mask |= ResultLoteTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "ResultLote", operation, recordId, "OperationalEntityId"))
+                        mask |= ResultLoteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ResultLote", operation, recordId, "TenantID"))
                         mask |= ResultLoteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ResultLote", operation, recordId, "Deleted"))
@@ -5069,6 +5285,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ResultMedidaTrackingFields.RL_ID;
                     if (DomainFieldTracked(policy, "ResultMedida", operation, recordId, "MDT_ID"))
                         mask |= ResultMedidaTrackingFields.MDT_ID;
+                    if (DomainFieldTracked(policy, "ResultMedida", operation, recordId, "OperationalEntityId"))
+                        mask |= ResultMedidaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ResultMedida", operation, recordId, "TenantID"))
                         mask |= ResultMedidaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ResultMedida", operation, recordId, "Deleted"))
@@ -5092,6 +5310,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RodoviasTrackingFields.ROD_ID;
                     if (DomainFieldTracked(policy, "Rodovias", operation, recordId, "ROD_DESCRICAO"))
                         mask |= RodoviasTrackingFields.ROD_DESCRICAO;
+                    if (DomainFieldTracked(policy, "Rodovias", operation, recordId, "OperationalEntityId"))
+                        mask |= RodoviasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Rodovias", operation, recordId, "TenantID"))
                         mask |= RodoviasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Rodovias", operation, recordId, "Deleted"))
@@ -5119,6 +5339,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RotaRealizadaTrackingFields.ROT_LAT;
                     if (DomainFieldTracked(policy, "RotaRealizada", operation, recordId, "ROT_LONG"))
                         mask |= RotaRealizadaTrackingFields.ROT_LONG;
+                    if (DomainFieldTracked(policy, "RotaRealizada", operation, recordId, "OperationalEntityId"))
+                        mask |= RotaRealizadaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "RotaRealizada", operation, recordId, "TenantID"))
                         mask |= RotaRealizadaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "RotaRealizada", operation, recordId, "Deleted"))
@@ -5154,6 +5376,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RotaPontosMapaTrackingFields.ROT_TIPO;
                     if (DomainFieldTracked(policy, "RotaPontosMapa", operation, recordId, "ROT_DISTANCIA"))
                         mask |= RotaPontosMapaTrackingFields.ROT_DISTANCIA;
+                    if (DomainFieldTracked(policy, "RotaPontosMapa", operation, recordId, "OperationalEntityId"))
+                        mask |= RotaPontosMapaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "RotaPontosMapa", operation, recordId, "TenantID"))
                         mask |= RotaPontosMapaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "RotaPontosMapa", operation, recordId, "Deleted"))
@@ -5183,6 +5407,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SegmentoTrackingFields.GRS_ID;
                     if (DomainFieldTracked(policy, "Segmento", operation, recordId, "SEG_INTEGRACAO_ERP"))
                         mask |= SegmentoTrackingFields.SEG_INTEGRACAO_ERP;
+                    if (DomainFieldTracked(policy, "Segmento", operation, recordId, "OperationalEntityId"))
+                        mask |= SegmentoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Segmento", operation, recordId, "TenantID"))
                         mask |= SegmentoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Segmento", operation, recordId, "Deleted"))
@@ -5208,6 +5434,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SegmentosProdutosTrackingFields.PRO_ID;
                     if (DomainFieldTracked(policy, "SegmentosProdutos", operation, recordId, "SEG_ID"))
                         mask |= SegmentosProdutosTrackingFields.SEG_ID;
+                    if (DomainFieldTracked(policy, "SegmentosProdutos", operation, recordId, "OperationalEntityId"))
+                        mask |= SegmentosProdutosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "SegmentosProdutos", operation, recordId, "TenantID"))
                         mask |= SegmentosProdutosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "SegmentosProdutos", operation, recordId, "Deleted"))
@@ -5237,6 +5465,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SemaforoTrackingFields.SEM_EMISSAO;
                     if (DomainFieldTracked(policy, "Semaforo", operation, recordId, "SEM_ID_CONEXAO"))
                         mask |= SemaforoTrackingFields.SEM_ID_CONEXAO;
+                    if (DomainFieldTracked(policy, "Semaforo", operation, recordId, "OperationalEntityId"))
+                        mask |= SemaforoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Semaforo", operation, recordId, "TenantID"))
                         mask |= SemaforoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Semaforo", operation, recordId, "Deleted"))
@@ -5260,6 +5490,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SubOcorrenciaTrackingFields.SUB_ID;
                     if (DomainFieldTracked(policy, "SubOcorrencia", operation, recordId, "SUB_DESCRICAO"))
                         mask |= SubOcorrenciaTrackingFields.SUB_DESCRICAO;
+                    if (DomainFieldTracked(policy, "SubOcorrencia", operation, recordId, "OperationalEntityId"))
+                        mask |= SubOcorrenciaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "SubOcorrencia", operation, recordId, "TenantID"))
                         mask |= SubOcorrenciaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "SubOcorrencia", operation, recordId, "Deleted"))
@@ -5283,6 +5515,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TabelaTrackingFields.CODIGO;
                     if (DomainFieldTracked(policy, "Tabela", operation, recordId, "NOME"))
                         mask |= TabelaTrackingFields.NOME;
+                    if (DomainFieldTracked(policy, "Tabela", operation, recordId, "OperationalEntityId"))
+                        mask |= TabelaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Tabela", operation, recordId, "TenantID"))
                         mask |= TabelaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Tabela", operation, recordId, "Deleted"))
@@ -5414,6 +5648,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TargetProdutoTrackingFields.TAR_APROVADO;
                     if (DomainFieldTracked(policy, "TargetProduto", operation, recordId, "TAR_TEMPO_PRODUZINDO"))
                         mask |= TargetProdutoTrackingFields.TAR_TEMPO_PRODUZINDO;
+                    if (DomainFieldTracked(policy, "TargetProduto", operation, recordId, "OperationalEntityId"))
+                        mask |= TargetProdutoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TargetProduto", operation, recordId, "TenantID"))
                         mask |= TargetProdutoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TargetProduto", operation, recordId, "Deleted"))
@@ -5437,6 +5673,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TemplatesGrupoMaquinaTrackingFields.TEM_ID;
                     if (DomainFieldTracked(policy, "TemplatesGrupoMaquina", operation, recordId, "GMA_ID"))
                         mask |= TemplatesGrupoMaquinaTrackingFields.GMA_ID;
+                    if (DomainFieldTracked(policy, "TemplatesGrupoMaquina", operation, recordId, "OperationalEntityId"))
+                        mask |= TemplatesGrupoMaquinaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TemplatesGrupoMaquina", operation, recordId, "TenantID"))
                         mask |= TemplatesGrupoMaquinaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TemplatesGrupoMaquina", operation, recordId, "Deleted"))
@@ -5460,6 +5698,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TemplatesMaquinasTrackingFields.TEM_ID;
                     if (DomainFieldTracked(policy, "TemplatesMaquinas", operation, recordId, "MAQ_ID"))
                         mask |= TemplatesMaquinasTrackingFields.MAQ_ID;
+                    if (DomainFieldTracked(policy, "TemplatesMaquinas", operation, recordId, "OperationalEntityId"))
+                        mask |= TemplatesMaquinasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TemplatesMaquinas", operation, recordId, "TenantID"))
                         mask |= TemplatesMaquinasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TemplatesMaquinas", operation, recordId, "Deleted"))
@@ -5489,6 +5729,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TempoSetupOnduladeiraTrackingFields.TEM_RESINA_PARA;
                     if (DomainFieldTracked(policy, "TempoSetupOnduladeira", operation, recordId, "TEM_TEMPO"))
                         mask |= TempoSetupOnduladeiraTrackingFields.TEM_TEMPO;
+                    if (DomainFieldTracked(policy, "TempoSetupOnduladeira", operation, recordId, "OperationalEntityId"))
+                        mask |= TempoSetupOnduladeiraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TempoSetupOnduladeira", operation, recordId, "TenantID"))
                         mask |= TempoSetupOnduladeiraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TempoSetupOnduladeira", operation, recordId, "Deleted"))
@@ -5516,6 +5758,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TemposLogisticosTrackingFields.TMP_TEMPO_MEDIO_UNITARIO;
                     if (DomainFieldTracked(policy, "TemposLogisticos", operation, recordId, "CLI_ID"))
                         mask |= TemposLogisticosTrackingFields.CLI_ID;
+                    if (DomainFieldTracked(policy, "TemposLogisticos", operation, recordId, "OperationalEntityId"))
+                        mask |= TemposLogisticosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TemposLogisticos", operation, recordId, "TenantID"))
                         mask |= TemposLogisticosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TemposLogisticos", operation, recordId, "Deleted"))
@@ -5565,6 +5809,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TesteFisicoTrackingFields.FPR_SEQ_REPETICAO;
                     if (DomainFieldTracked(policy, "TesteFisico", operation, recordId, "FPR_SEQ_TRANFORMACAO"))
                         mask |= TesteFisicoTrackingFields.FPR_SEQ_TRANFORMACAO;
+                    if (DomainFieldTracked(policy, "TesteFisico", operation, recordId, "OperationalEntityId"))
+                        mask |= TesteFisicoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TesteFisico", operation, recordId, "TenantID"))
                         mask |= TesteFisicoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TesteFisico", operation, recordId, "Deleted"))
@@ -5588,6 +5834,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoABNTTrackingFields.ABN_ID;
                     if (DomainFieldTracked(policy, "TipoABNT", operation, recordId, "ABN_DESCRICAO"))
                         mask |= TipoABNTTrackingFields.ABN_DESCRICAO;
+                    if (DomainFieldTracked(policy, "TipoABNT", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoABNTTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoABNT", operation, recordId, "TenantID"))
                         mask |= TipoABNTTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoABNT", operation, recordId, "Deleted"))
@@ -5611,6 +5859,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoCarroceriaTrackingFields.TCA_ID;
                     if (DomainFieldTracked(policy, "TipoCarroceria", operation, recordId, "TCA_DESCRICAO"))
                         mask |= TipoCarroceriaTrackingFields.TCA_DESCRICAO;
+                    if (DomainFieldTracked(policy, "TipoCarroceria", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoCarroceriaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoCarroceria", operation, recordId, "TenantID"))
                         mask |= TipoCarroceriaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoCarroceria", operation, recordId, "Deleted"))
@@ -5634,6 +5884,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoDispositivoTrackingFields.TDI_ID;
                     if (DomainFieldTracked(policy, "TipoDispositivo", operation, recordId, "TDI_DESCRICAO"))
                         mask |= TipoDispositivoTrackingFields.TDI_DESCRICAO;
+                    if (DomainFieldTracked(policy, "TipoDispositivo", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoDispositivoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoDispositivo", operation, recordId, "TenantID"))
                         mask |= TipoDispositivoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoDispositivo", operation, recordId, "Deleted"))
@@ -5657,6 +5909,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoDispositivoMaquinaTrackingFields.TDI_ID;
                     if (DomainFieldTracked(policy, "TipoDispositivoMaquina", operation, recordId, "MAQ_ID"))
                         mask |= TipoDispositivoMaquinaTrackingFields.MAQ_ID;
+                    if (DomainFieldTracked(policy, "TipoDispositivoMaquina", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoDispositivoMaquinaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoDispositivoMaquina", operation, recordId, "TenantID"))
                         mask |= TipoDispositivoMaquinaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoDispositivoMaquina", operation, recordId, "Deleted"))
@@ -5682,6 +5936,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoInspecaoItensTrackingFields.TIV_ID;
                     if (DomainFieldTracked(policy, "TipoInspecaoItens", operation, recordId, "ITI_ID"))
                         mask |= TipoInspecaoItensTrackingFields.ITI_ID;
+                    if (DomainFieldTracked(policy, "TipoInspecaoItens", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoInspecaoItensTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoInspecaoItens", operation, recordId, "TenantID"))
                         mask |= TipoInspecaoItensTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoInspecaoItens", operation, recordId, "Deleted"))
@@ -5703,6 +5959,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoInspecaoVisualTrackingFields.Id;
                     if (DomainFieldTracked(policy, "TipoInspecaoVisual", operation, recordId, "TIV_ID"))
                         mask |= TipoInspecaoVisualTrackingFields.TIV_ID;
+                    if (DomainFieldTracked(policy, "TipoInspecaoVisual", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoInspecaoVisualTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoInspecaoVisual", operation, recordId, "TenantID"))
                         mask |= TipoInspecaoVisualTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoInspecaoVisual", operation, recordId, "Deleted"))
@@ -5746,6 +6004,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoMovimentoEstoqueTrackingFields.TIP_TYPE;
                     if (DomainFieldTracked(policy, "TipoMovimentoEstoque", operation, recordId, "SPR"))
                         mask |= TipoMovimentoEstoqueTrackingFields.SPR;
+                    if (DomainFieldTracked(policy, "TipoMovimentoEstoque", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoMovimentoEstoqueTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoMovimentoEstoque", operation, recordId, "TenantID"))
                         mask |= TipoMovimentoEstoqueTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoMovimentoEstoque", operation, recordId, "Deleted"))
@@ -5769,6 +6029,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoOcorrenciaTrackingFields.Descricao;
                     if (DomainFieldTracked(policy, "TipoOcorrencia", operation, recordId, "Spr"))
                         mask |= TipoOcorrenciaTrackingFields.Spr;
+                    if (DomainFieldTracked(policy, "TipoOcorrencia", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoOcorrenciaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoOcorrencia", operation, recordId, "TenantID"))
                         mask |= TipoOcorrenciaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoOcorrencia", operation, recordId, "Deleted"))
@@ -5792,6 +6054,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoTesteTrackingFields.TT_ORIGEM_ESPECIFICACAO;
                     if (DomainFieldTracked(policy, "TipoTeste", operation, recordId, "TT_IMPRIME_NO_LAUDO"))
                         mask |= TipoTesteTrackingFields.TT_IMPRIME_NO_LAUDO;
+                    if (DomainFieldTracked(policy, "TipoTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoTeste", operation, recordId, "TenantID"))
                         mask |= TipoTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoTeste", operation, recordId, "Deleted"))
@@ -5871,6 +6135,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoVeiculoTrackingFields.TIP_CAPACIDADE_LARGURA_PESCOCO_D;
                     if (DomainFieldTracked(policy, "TipoVeiculo", operation, recordId, "TIP_CAPACIDADE_M3"))
                         mask |= TipoVeiculoTrackingFields.TIP_CAPACIDADE_M3;
+                    if (DomainFieldTracked(policy, "TipoVeiculo", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoVeiculoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoVeiculo", operation, recordId, "TenantID"))
                         mask |= TipoVeiculoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoVeiculo", operation, recordId, "Deleted"))
@@ -5894,6 +6160,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VincoTrackingFields.VIN_DESCRICAO;
                     if (DomainFieldTracked(policy, "Vinco", operation, recordId, "VIN_ID_DESLOCAMENTO"))
                         mask |= VincoTrackingFields.VIN_ID_DESLOCAMENTO;
+                    if (DomainFieldTracked(policy, "Vinco", operation, recordId, "OperationalEntityId"))
+                        mask |= VincoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Vinco", operation, recordId, "TenantID"))
                         mask |= VincoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Vinco", operation, recordId, "Deleted"))
@@ -5915,6 +6183,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TiposVincoGruposProdutosTrackingFields.Id;
                     if (DomainFieldTracked(policy, "TiposVincoGruposProdutos", operation, recordId, "Id2"))
                         mask |= TiposVincoGruposProdutosTrackingFields.Id2;
+                    if (DomainFieldTracked(policy, "TiposVincoGruposProdutos", operation, recordId, "OperationalEntityId"))
+                        mask |= TiposVincoGruposProdutosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TiposVincoGruposProdutos", operation, recordId, "TenantID"))
                         mask |= TiposVincoGruposProdutosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TiposVincoGruposProdutos", operation, recordId, "Deleted"))
@@ -5936,6 +6206,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TiposVincoOndasTrackingFields.Id;
                     if (DomainFieldTracked(policy, "TiposVincoOndas", operation, recordId, "Id2"))
                         mask |= TiposVincoOndasTrackingFields.Id2;
+                    if (DomainFieldTracked(policy, "TiposVincoOndas", operation, recordId, "OperationalEntityId"))
+                        mask |= TiposVincoOndasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TiposVincoOndas", operation, recordId, "TenantID"))
                         mask |= TiposVincoOndasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TiposVincoOndas", operation, recordId, "Deleted"))
@@ -5957,6 +6229,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TiposVincoProdutosTrackingFields.Id;
                     if (DomainFieldTracked(policy, "TiposVincoProdutos", operation, recordId, "Id2"))
                         mask |= TiposVincoProdutosTrackingFields.Id2;
+                    if (DomainFieldTracked(policy, "TiposVincoProdutos", operation, recordId, "OperationalEntityId"))
+                        mask |= TiposVincoProdutosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TiposVincoProdutos", operation, recordId, "TenantID"))
                         mask |= TiposVincoProdutosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TiposVincoProdutos", operation, recordId, "Deleted"))
@@ -5996,6 +6270,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TransportadoraTrackingFields.TRA_ID_INTEGRACAO;
                     if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_ID_INTEGRACAO_ERP"))
                         mask |= TransportadoraTrackingFields.TRA_ID_INTEGRACAO_ERP;
+                    if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "OperationalEntityId"))
+                        mask |= TransportadoraTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TenantID"))
                         mask |= TransportadoraTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "Deleted"))
@@ -6045,6 +6321,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TurmaTrackingFields.TURM_HORA_INI_DIA7;
                     if (DomainFieldTracked(policy, "Turma", operation, recordId, "TURM_HORA_FIM_DIA7"))
                         mask |= TurmaTrackingFields.TURM_HORA_FIM_DIA7;
+                    if (DomainFieldTracked(policy, "Turma", operation, recordId, "OperationalEntityId"))
+                        mask |= TurmaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Turma", operation, recordId, "TenantID"))
                         mask |= TurmaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Turma", operation, recordId, "Deleted"))
@@ -6096,6 +6374,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TurnoTrackingFields.TURN_HORA_INI_DIA7;
                     if (DomainFieldTracked(policy, "Turno", operation, recordId, "TURN_HORA_FIM_DIA7"))
                         mask |= TurnoTrackingFields.TURN_HORA_FIM_DIA7;
+                    if (DomainFieldTracked(policy, "Turno", operation, recordId, "OperationalEntityId"))
+                        mask |= TurnoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Turno", operation, recordId, "TenantID"))
                         mask |= TurnoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Turno", operation, recordId, "Deleted"))
@@ -6119,6 +6399,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UnidadeTrackingFields.DEESCRICAO;
                     if (DomainFieldTracked(policy, "Unidade", operation, recordId, "UN"))
                         mask |= UnidadeTrackingFields.UN;
+                    if (DomainFieldTracked(policy, "Unidade", operation, recordId, "OperationalEntityId"))
+                        mask |= UnidadeTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Unidade", operation, recordId, "TenantID"))
                         mask |= UnidadeTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Unidade", operation, recordId, "Deleted"))
@@ -6142,6 +6424,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UnidadeMedidaTrackingFields.UNI_DESCRICAO;
                     if (DomainFieldTracked(policy, "UnidadeMedida", operation, recordId, "UNI_ESCALA_TEMPO"))
                         mask |= UnidadeMedidaTrackingFields.UNI_ESCALA_TEMPO;
+                    if (DomainFieldTracked(policy, "UnidadeMedida", operation, recordId, "OperationalEntityId"))
+                        mask |= UnidadeMedidaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "UnidadeMedida", operation, recordId, "TenantID"))
                         mask |= UnidadeMedidaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "UnidadeMedida", operation, recordId, "Deleted"))
@@ -6165,6 +6449,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UniuserTrackingFields.UNI_ID;
                     if (DomainFieldTracked(policy, "Uniuser", operation, recordId, "USE_ID"))
                         mask |= UniuserTrackingFields.USE_ID;
+                    if (DomainFieldTracked(policy, "Uniuser", operation, recordId, "OperationalEntityId"))
+                        mask |= UniuserTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Uniuser", operation, recordId, "TenantID"))
                         mask |= UniuserTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Uniuser", operation, recordId, "Deleted"))
@@ -6188,6 +6474,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= T_USER_GRUPOTrackingFields.GRU_ID;
                     if (DomainFieldTracked(policy, "T_USER_GRUPO", operation, recordId, "ID_USUARIO"))
                         mask |= T_USER_GRUPOTrackingFields.ID_USUARIO;
+                    if (DomainFieldTracked(policy, "T_USER_GRUPO", operation, recordId, "OperationalEntityId"))
+                        mask |= T_USER_GRUPOTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "T_USER_GRUPO", operation, recordId, "TenantID"))
                         mask |= T_USER_GRUPOTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "T_USER_GRUPO", operation, recordId, "Deleted"))
@@ -6219,6 +6507,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UsuarioTrackingFields.USE_ATIVO;
                     if (DomainFieldTracked(policy, "Usuario", operation, recordId, "USE_CODERP"))
                         mask |= UsuarioTrackingFields.USE_CODERP;
+                    if (DomainFieldTracked(policy, "Usuario", operation, recordId, "OperationalEntityId"))
+                        mask |= UsuarioTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Usuario", operation, recordId, "TenantID"))
                         mask |= UsuarioTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Usuario", operation, recordId, "Deleted"))
@@ -6244,6 +6534,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UsuarioObjetoControlavelTrackingFields.OBJ_ID;
                     if (DomainFieldTracked(policy, "UsuarioObjetoControlavel", operation, recordId, "USU_OBJETO_ACAO"))
                         mask |= UsuarioObjetoControlavelTrackingFields.USU_OBJETO_ACAO;
+                    if (DomainFieldTracked(policy, "UsuarioObjetoControlavel", operation, recordId, "OperationalEntityId"))
+                        mask |= UsuarioObjetoControlavelTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "UsuarioObjetoControlavel", operation, recordId, "TenantID"))
                         mask |= UsuarioObjetoControlavelTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "UsuarioObjetoControlavel", operation, recordId, "Deleted"))
@@ -6267,6 +6559,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UsuarioPerfilTrackingFields.USE_ID;
                     if (DomainFieldTracked(policy, "UsuarioPerfil", operation, recordId, "PER_ID"))
                         mask |= UsuarioPerfilTrackingFields.PER_ID;
+                    if (DomainFieldTracked(policy, "UsuarioPerfil", operation, recordId, "OperationalEntityId"))
+                        mask |= UsuarioPerfilTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "UsuarioPerfil", operation, recordId, "TenantID"))
                         mask |= UsuarioPerfilTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "UsuarioPerfil", operation, recordId, "Deleted"))
@@ -6292,6 +6586,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= UsuariosCargaTrackingFields.CAR_ID;
                     if (DomainFieldTracked(policy, "UsuariosCarga", operation, recordId, "RGO_ID"))
                         mask |= UsuariosCargaTrackingFields.RGO_ID;
+                    if (DomainFieldTracked(policy, "UsuariosCarga", operation, recordId, "OperationalEntityId"))
+                        mask |= UsuariosCargaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "UsuariosCarga", operation, recordId, "TenantID"))
                         mask |= UsuariosCargaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "UsuariosCarga", operation, recordId, "Deleted"))
@@ -6319,6 +6615,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VariavelTrackingFields.CON_ID;
                     if (DomainFieldTracked(policy, "Variavel", operation, recordId, "VAR_MODO"))
                         mask |= VariavelTrackingFields.VAR_MODO;
+                    if (DomainFieldTracked(policy, "Variavel", operation, recordId, "OperationalEntityId"))
+                        mask |= VariavelTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Variavel", operation, recordId, "TenantID"))
                         mask |= VariavelTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Variavel", operation, recordId, "Deleted"))
@@ -6342,6 +6640,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VariavelPlotagemTrackingFields.VAR_ID;
                     if (DomainFieldTracked(policy, "VariavelPlotagem", operation, recordId, "PLO_ID"))
                         mask |= VariavelPlotagemTrackingFields.PLO_ID;
+                    if (DomainFieldTracked(policy, "VariavelPlotagem", operation, recordId, "OperationalEntityId"))
+                        mask |= VariavelPlotagemTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "VariavelPlotagem", operation, recordId, "TenantID"))
                         mask |= VariavelPlotagemTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "VariavelPlotagem", operation, recordId, "Deleted"))
@@ -6391,6 +6691,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VeiculoTrackingFields.VEI_VENCIMENTO;
                     if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "VEI_STATUS"))
                         mask |= VeiculoTrackingFields.VEI_STATUS;
+                    if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "OperationalEntityId"))
+                        mask |= VeiculoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "TenantID"))
                         mask |= VeiculoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "Deleted"))
@@ -6416,6 +6718,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VersaoCustoTrackingFields.VER_STATUS;
                     if (DomainFieldTracked(policy, "VersaoCusto", operation, recordId, "VER_OBS"))
                         mask |= VersaoCustoTrackingFields.VER_OBS;
+                    if (DomainFieldTracked(policy, "VersaoCusto", operation, recordId, "OperationalEntityId"))
+                        mask |= VersaoCustoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "VersaoCusto", operation, recordId, "TenantID"))
                         mask |= VersaoCustoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "VersaoCusto", operation, recordId, "Deleted"))
@@ -6443,6 +6747,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VerssaoCustoTrackingFields.VER_DATA_VERSSAO_CUSTO;
                     if (DomainFieldTracked(policy, "VerssaoCusto", operation, recordId, "VER_OBS"))
                         mask |= VerssaoCustoTrackingFields.VER_OBS;
+                    if (DomainFieldTracked(policy, "VerssaoCusto", operation, recordId, "OperationalEntityId"))
+                        mask |= VerssaoCustoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "VerssaoCusto", operation, recordId, "TenantID"))
                         mask |= VerssaoCustoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "VerssaoCusto", operation, recordId, "Deleted"))
@@ -6468,6 +6774,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CabvisaoTrackingFields.CAB_STATUS;
                     if (DomainFieldTracked(policy, "Cabvisao", operation, recordId, "USE_ID"))
                         mask |= CabvisaoTrackingFields.USE_ID;
+                    if (DomainFieldTracked(policy, "Cabvisao", operation, recordId, "OperationalEntityId"))
+                        mask |= CabvisaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Cabvisao", operation, recordId, "TenantID"))
                         mask |= CabvisaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Cabvisao", operation, recordId, "Deleted"))
@@ -6497,6 +6805,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MovimentosTrackingFields.MOV_UNID;
                     if (DomainFieldTracked(policy, "Movimentos", operation, recordId, "Tr_Unidade_UNI_ID"))
                         mask |= MovimentosTrackingFields.Tr_Unidade_UNI_ID;
+                    if (DomainFieldTracked(policy, "Movimentos", operation, recordId, "OperationalEntityId"))
+                        mask |= MovimentosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Movimentos", operation, recordId, "TenantID"))
                         mask |= MovimentosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Movimentos", operation, recordId, "Deleted"))
@@ -6524,6 +6834,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PlanocontasTrackingFields.PLA_TIPO;
                     if (DomainFieldTracked(policy, "Planocontas", operation, recordId, "PLA_NATUREZA"))
                         mask |= PlanocontasTrackingFields.PLA_NATUREZA;
+                    if (DomainFieldTracked(policy, "Planocontas", operation, recordId, "OperationalEntityId"))
+                        mask |= PlanocontasTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Planocontas", operation, recordId, "TenantID"))
                         mask |= PlanocontasTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Planocontas", operation, recordId, "Deleted"))
@@ -6545,6 +6857,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= Unidade_UnidadeTrackingFields.UNI_ID;
                     if (DomainFieldTracked(policy, "Unidade_Unidade", operation, recordId, "UNI_DESCRICAO"))
                         mask |= Unidade_UnidadeTrackingFields.UNI_DESCRICAO;
+                    if (DomainFieldTracked(policy, "Unidade_Unidade", operation, recordId, "OperationalEntityId"))
+                        mask |= Unidade_UnidadeTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Unidade_Unidade", operation, recordId, "TenantID"))
                         mask |= Unidade_UnidadeTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Unidade_Unidade", operation, recordId, "Deleted"))
@@ -6570,6 +6884,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VisoesTrackingFields.VIS_FORMULA;
                     if (DomainFieldTracked(policy, "Visoes", operation, recordId, "CAB_ID"))
                         mask |= VisoesTrackingFields.CAB_ID;
+                    if (DomainFieldTracked(policy, "Visoes", operation, recordId, "OperationalEntityId"))
+                        mask |= VisoesTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Visoes", operation, recordId, "TenantID"))
                         mask |= VisoesTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Visoes", operation, recordId, "Deleted"))
@@ -6601,6 +6917,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RelatoriosTrackingFields.REL_POS_Y;
                     if (DomainFieldTracked(policy, "Relatorios", operation, recordId, "REL_TAMANHO_FONTE"))
                         mask |= RelatoriosTrackingFields.REL_TAMANHO_FONTE;
+                    if (DomainFieldTracked(policy, "Relatorios", operation, recordId, "OperationalEntityId"))
+                        mask |= RelatoriosTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Relatorios", operation, recordId, "TenantID"))
                         mask |= RelatoriosTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "Relatorios", operation, recordId, "Deleted"))
@@ -6652,6 +6970,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= InspecaoVisualTrackingFields.IPV_STATUS_LIBERACAO;
                     if (DomainFieldTracked(policy, "InspecaoVisual", operation, recordId, "IPV_VALOR_MEDIDA"))
                         mask |= InspecaoVisualTrackingFields.IPV_VALOR_MEDIDA;
+                    if (DomainFieldTracked(policy, "InspecaoVisual", operation, recordId, "OperationalEntityId"))
+                        mask |= InspecaoVisualTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "InspecaoVisual", operation, recordId, "TenantID"))
                         mask |= InspecaoVisualTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "InspecaoVisual", operation, recordId, "Deleted"))
@@ -6675,6 +6995,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TemplateTipoInspecaoVisualTrackingFields.TIV_ID;
                     if (DomainFieldTracked(policy, "TemplateTipoInspecaoVisual", operation, recordId, "TEM_ID"))
                         mask |= TemplateTipoInspecaoVisualTrackingFields.TEM_ID;
+                    if (DomainFieldTracked(policy, "TemplateTipoInspecaoVisual", operation, recordId, "OperationalEntityId"))
+                        mask |= TemplateTipoInspecaoVisualTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TemplateTipoInspecaoVisual", operation, recordId, "TenantID"))
                         mask |= TemplateTipoInspecaoVisualTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TemplateTipoInspecaoVisual", operation, recordId, "Deleted"))
@@ -6698,6 +7020,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TemplateTipoTesteTrackingFields.TT_ID;
                     if (DomainFieldTracked(policy, "TemplateTipoTeste", operation, recordId, "TEM_ID"))
                         mask |= TemplateTipoTesteTrackingFields.TEM_ID;
+                    if (DomainFieldTracked(policy, "TemplateTipoTeste", operation, recordId, "OperationalEntityId"))
+                        mask |= TemplateTipoTesteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TemplateTipoTeste", operation, recordId, "TenantID"))
                         mask |= TemplateTipoTesteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TemplateTipoTeste", operation, recordId, "Deleted"))
@@ -6719,6 +7043,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoAvaliacaoTrackingFields.TA_ID;
                     if (DomainFieldTracked(policy, "TipoAvaliacao", operation, recordId, "TA_DESC"))
                         mask |= TipoAvaliacaoTrackingFields.TA_DESC;
+                    if (DomainFieldTracked(policy, "TipoAvaliacao", operation, recordId, "OperationalEntityId"))
+                        mask |= TipoAvaliacaoTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "TipoAvaliacao", operation, recordId, "TenantID"))
                         mask |= TipoAvaliacaoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "TipoAvaliacao", operation, recordId, "Deleted"))
@@ -6896,6 +7222,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ExperienciaPlanejamentoTransporteTrackingFields.CriadoEm;
                     if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "CriadoPor"))
                         mask |= ExperienciaPlanejamentoTransporteTrackingFields.CriadoPor;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "OperationalEntityId"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "TenantID"))
                         mask |= ExperienciaPlanejamentoTransporteTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Deleted"))
@@ -6933,6 +7261,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yFileUploadTrackingFields.CompletedAt;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "TenantID"))
                         mask |= yFileUploadTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "OperationalEntityId"))
+                        mask |= yFileUploadTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "Deleted"))
                         mask |= yFileUploadTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "Changed"))
@@ -6974,6 +7304,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaTrackingFields.LockedBy;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "TenantID"))
                         mask |= ySagaTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "OperationalEntityId"))
+                        mask |= ySagaTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "Deleted"))
                         mask |= ySagaTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "Changed"))
@@ -7015,6 +7347,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaStepTrackingFields.RetryCount;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "TenantID"))
                         mask |= ySagaStepTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "OperationalEntityId"))
+                        mask |= ySagaStepTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "Deleted"))
                         mask |= ySagaStepTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "Changed"))
@@ -7068,6 +7402,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yOutboxTrackingFields.SagaStepId;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "TenantID"))
                         mask |= yOutboxTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "OperationalEntityId"))
+                        mask |= yOutboxTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "Deleted"))
                         mask |= yOutboxTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "Changed"))
@@ -7115,6 +7451,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yInboxTrackingFields.SagaStepId;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "TenantID"))
                         mask |= yInboxTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "OperationalEntityId"))
+                        mask |= yInboxTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "Deleted"))
                         mask |= yInboxTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "Changed"))
@@ -7150,6 +7488,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yTokenTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yToken", operation, recordId, "UserId"))
                         mask |= yTokenTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "OperationalEntityId"))
+                        mask |= yTokenTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yToken", operation, recordId, "Deleted"))
                         mask |= yTokenTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yToken", operation, recordId, "Changed"))
@@ -7163,6 +7503,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yTenant", operation, recordId, "OperationalEntityId"))
+                        mask |= yTenantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "Id"))
                         mask |= yTenantTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "CnpjCpf"))
@@ -7184,6 +7526,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yUser", operation, recordId, "OperationalEntityId"))
+                        mask |= yUserTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Id"))
                         mask |= yUserTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Nome"))
@@ -7207,6 +7551,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "OperationalEntityId"))
+                        mask |= yConfigArctetureTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "Id"))
                         mask |= yConfigArctetureTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "AuditTrackerActived"))
@@ -7230,6 +7576,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "OperationalEntityId"))
+                        mask |= yConfigNotificationTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "Id"))
                         mask |= yConfigNotificationTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "TenantID"))
@@ -7257,6 +7605,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "OperationalEntityId"))
+                        mask |= yPerfilTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "Id"))
                         mask |= yPerfilTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "Description"))
@@ -7272,25 +7622,14 @@ private OperationalLoggingDecision Evaluate(
                     return mask;
                 }
 
-                private ulong GetyModuleMask(
-                    OperationalLoggingPolicy policy,
-                    string? operation,
-                    string? recordId)
-                {
-                    ulong mask = 0UL;
-                    if (DomainFieldTracked(policy, "yModule", operation, recordId, "Id"))
-                        mask |= yModuleTrackingFields.Id;
-                    if (DomainFieldTracked(policy, "yModule", operation, recordId, "Description"))
-                        mask |= yModuleTrackingFields.Description;
-                    return mask;
-                }
-
                 private ulong GetyTenantModuleMask(
                     OperationalLoggingPolicy policy,
                     string? operation,
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "OperationalEntityId"))
+                        mask |= yTenantModuleTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "Id"))
                         mask |= yTenantModuleTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "ModuleId"))
@@ -7314,6 +7653,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "OperationalEntityId"))
+                        mask |= yUserModuleTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "Id"))
                         mask |= yUserModuleTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "ModuleId"))
@@ -7337,6 +7678,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yGrant", operation, recordId, "OperationalEntityId"))
+                        mask |= yGrantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yGrant", operation, recordId, "Id"))
                         mask |= yGrantTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yGrant", operation, recordId, "Description"))
@@ -7358,6 +7701,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "OperationalEntityId"))
+                        mask |= yPerfilGrantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "Id"))
                         mask |= yPerfilGrantTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "PerfilId"))
@@ -7393,6 +7738,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "OperationalEntityId"))
+                        mask |= yUserGrantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "Id"))
                         mask |= yUserGrantTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "PerfilId"))
@@ -7419,6 +7766,19 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yUserGrantTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "UserId"))
                         mask |= yUserGrantTrackingFields.UserId;
+                    return mask;
+                }
+
+                private ulong GetyModuleMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yModule", operation, recordId, "Id"))
+                        mask |= yModuleTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "yModule", operation, recordId, "Description"))
+                        mask |= yModuleTrackingFields.Description;
                     return mask;
                 }
 

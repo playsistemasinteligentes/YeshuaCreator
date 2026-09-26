@@ -20,6 +20,7 @@
                 {
                     public interface IyConfigArctetureEntity
 {
+    string OperationalEntityId { get; }
     int? Id { get; set; }
     int? AuditTrackerActived { get; set; }
     int? AuditCRUDActived { get; set; }

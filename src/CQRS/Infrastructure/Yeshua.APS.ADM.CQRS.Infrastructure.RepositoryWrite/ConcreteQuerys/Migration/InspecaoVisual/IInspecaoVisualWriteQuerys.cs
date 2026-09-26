@@ -33,6 +33,7 @@ namespace IQuery.Write
         QueryModel UpdateFPR_SEQ_REPETICAO(int ipv_id, int value);
         QueryModel UpdateIPV_STATUS_LIBERACAO(int ipv_id, string value);
         QueryModel UpdateIPV_VALOR_MEDIDA(int ipv_id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int ipv_id, string value);
         QueryModel UpdateTenantID(int ipv_id, int value);
         QueryModel UpdateDeleted(int ipv_id, bool value);
         QueryModel UpdateChanged(int ipv_id, DateTime value);

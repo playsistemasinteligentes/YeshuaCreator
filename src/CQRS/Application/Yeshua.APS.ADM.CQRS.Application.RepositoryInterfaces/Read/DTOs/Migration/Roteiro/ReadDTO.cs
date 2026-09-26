@@ -38,6 +38,7 @@ namespace Repositorio.Outputs
     public Decimal percentualiniciopassoanterior { get; set; }
     public string linhadireta { get; set; } = string.Empty;
     public int templatedetestesid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -71,6 +71,11 @@ namespace Input.Repository.T_HORARIO_RECEBIMENTO
             var query = _query.UpdateCLI_ID(hre_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int hre_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(hre_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int hre_id, int value)
         {
             var query = _query.UpdateTenantID(hre_id, value);

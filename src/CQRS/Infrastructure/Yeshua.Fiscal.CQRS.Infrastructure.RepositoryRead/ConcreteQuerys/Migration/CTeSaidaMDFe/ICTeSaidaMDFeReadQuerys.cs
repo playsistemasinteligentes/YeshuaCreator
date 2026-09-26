@@ -26,6 +26,7 @@ namespace IQuery.Read
         public QueryModel ExistsByPublicadoEmUtcQuery(DateTime value );
         public QueryModel ExistsByUltimoErroQuery(string value );
         public QueryModel ExistsByStatusQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -39,6 +40,7 @@ namespace IQuery.Read
         public QueryModel FirstByPublicadoEmUtcQuery(DateTime value );
         public QueryModel FirstByUltimoErroQuery(string value );
         public QueryModel FirstByStatusQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

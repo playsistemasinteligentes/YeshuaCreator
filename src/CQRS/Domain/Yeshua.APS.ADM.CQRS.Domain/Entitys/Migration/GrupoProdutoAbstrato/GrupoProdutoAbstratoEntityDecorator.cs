@@ -66,10 +66,11 @@
             public const ulong GRP_PERCENTUAL_PERDA_MEDIA = 1UL << 43;
             public const ulong GRP_FILTRA_SEQ_TRANS = 1UL << 44;
             public const ulong GRP_IMG_CAIXA = 1UL << 45;
-            public const ulong TenantID = 1UL << 46;
-            public const ulong Deleted = 1UL << 47;
-            public const ulong Changed = 1UL << 48;
-            public const ulong UserId = 1UL << 49;
+            public const ulong OperationalEntityId = 1UL << 46;
+            public const ulong TenantID = 1UL << 47;
+            public const ulong Deleted = 1UL << 48;
+            public const ulong Changed = 1UL << 49;
+            public const ulong UserId = 1UL << 50;
         }
 
         public partial class GrupoProdutoAbstratoDecorator : IGrupoProdutoAbstratoEntity
@@ -742,6 +743,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

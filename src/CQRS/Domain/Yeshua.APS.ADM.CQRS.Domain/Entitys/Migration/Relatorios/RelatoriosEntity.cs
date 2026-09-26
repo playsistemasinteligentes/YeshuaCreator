@@ -27,6 +27,7 @@
     public int? REL_POS_X { get; set; }
     public int? REL_POS_Y { get; set; }
     public int? REL_TAMANHO_FONTE { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -40,6 +41,7 @@
  REL_POS_X = rel_pos_x; 
  REL_POS_Y = rel_pos_y; 
  REL_TAMANHO_FONTE = rel_tamanho_fonte; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

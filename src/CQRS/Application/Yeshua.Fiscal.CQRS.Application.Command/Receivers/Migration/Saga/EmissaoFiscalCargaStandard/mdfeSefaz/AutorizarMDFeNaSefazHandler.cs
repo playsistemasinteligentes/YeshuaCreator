@@ -33,6 +33,11 @@ namespace Command.Receivers
                 CustomExecute(saga, step);
 
                 // define próximo estado
+                if (step.Status != SagaStepStatus.InProgress)
+                {
+                    return;
+                }
+
                 if (RequiresExternalStimulus)
                 {
                     step.SetWaiting();

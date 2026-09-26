@@ -20,6 +20,7 @@
                 {
                     public partial class yTenantEntity : IyTenantEntity
 {
+    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public string CnpjCpf { get; set; }
     public string Nome { get; set; }
@@ -31,6 +32,7 @@
  CnpjCpf = cnpjcpf; 
  Nome = nome; 
  UserId = userid; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -70,6 +70,7 @@ namespace IQuery.Read
         public QueryModel ExistsByMOV_GRUPO_CONTABILQuery(string value );
         public QueryModel ExistsByFOR_IDQuery(string value );
         public QueryModel ExistsByCLI_IDQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -122,6 +123,7 @@ namespace IQuery.Read
         public QueryModel FirstByMOV_GRUPO_CONTABILQuery(string value );
         public QueryModel FirstByFOR_IDQuery(string value );
         public QueryModel FirstByCLI_IDQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLoteTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLoteTesteReceiver), commandName: "Command.Write.LoteTesteCrudCommand");
                  var loteteste = new LoteTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LT_ID, c.TES_ID, c.RL_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", loteteste.OperationalEntityId);
                  var domainResult = LoteTesteDomainBehavior.Apply(loteteste, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

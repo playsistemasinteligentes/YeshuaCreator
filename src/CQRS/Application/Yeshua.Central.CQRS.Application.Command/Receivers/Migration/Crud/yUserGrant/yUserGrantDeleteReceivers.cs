@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyUserGrant", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyUserGrantReceiver), commandName: "Command.Write.yUserGrantCrudCommand");
                  var yusergrant = new yUserGrantFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PerfilId, c.GrantId, c.CanGrant, c.CanCreate, c.CanRead, c.CanUpdate, c.CanDelete, c.ValidUntil);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yusergrant.OperationalEntityId);
                  var domainResult = yUserGrantDomainBehavior.Apply(yusergrant, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

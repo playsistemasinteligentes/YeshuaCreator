@@ -11,16 +11,19 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct UniuserReadCommand : ICommandRead
+    public struct UniuserReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? USERGRU_ID { get; set; }
         public int? UNI_ID { get; set; }
         public int? USE_ID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Uniuser";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

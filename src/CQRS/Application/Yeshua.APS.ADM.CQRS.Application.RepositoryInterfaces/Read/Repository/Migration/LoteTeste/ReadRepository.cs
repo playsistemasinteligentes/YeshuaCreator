@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByLT_ID(int value );
         public bool ExistsByTES_ID(int value );
         public bool ExistsByRL_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public LoteTesteDTO FirstByLT_ID(int value );
         public LoteTesteDTO FirstByTES_ID(int value );
         public LoteTesteDTO FirstByRL_ID(int value );
+        public LoteTesteDTO FirstByOperationalEntityId(string value );
         public LoteTesteDTO FirstByTenantID(int value );
         public LoteTesteDTO FirstByDeleted(bool value );
         public LoteTesteDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<LoteTesteDTO> GetAllByLT_ID(int value );
         public IEnumerable<LoteTesteDTO> GetAllByTES_ID(int value );
         public IEnumerable<LoteTesteDTO> GetAllByRL_ID(int value );
+        public IEnumerable<LoteTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LoteTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<LoteTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<LoteTesteDTO> GetAllByChanged(DateTime value );

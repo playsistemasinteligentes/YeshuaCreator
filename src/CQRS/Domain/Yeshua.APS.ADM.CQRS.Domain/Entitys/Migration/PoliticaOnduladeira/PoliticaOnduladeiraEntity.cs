@@ -26,6 +26,7 @@
     public int? POL_PROMOCAO { get; set; }
     public int? POL_DIAS_ANTECIPACAO { get; set; }
     public int? POL_METROS_LINEARES { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -38,6 +39,7 @@
  POL_PROMOCAO = pol_promocao; 
  POL_DIAS_ANTECIPACAO = pol_dias_antecipacao; 
  POL_METROS_LINEARES = pol_metros_lineares; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

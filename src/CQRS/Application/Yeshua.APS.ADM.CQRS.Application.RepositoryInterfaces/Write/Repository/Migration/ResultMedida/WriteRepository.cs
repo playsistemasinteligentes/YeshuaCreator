@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateRSM_ID(int id, int value);
         void UpdateRL_ID(int id, int value);
         void UpdateMDT_ID(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

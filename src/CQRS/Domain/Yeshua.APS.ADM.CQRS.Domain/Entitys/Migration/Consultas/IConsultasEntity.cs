@@ -23,6 +23,7 @@
     int? Id { get; set; }
     string? CON_CASAS_DECIMAIS { get; set; }
     string? CON_CONEXAO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

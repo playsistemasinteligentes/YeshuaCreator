@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateVincoQuery(IVincoEntity Vinco);
         QueryModel UpdateVIN_DESCRICAO(int vin_id, string value);
         QueryModel UpdateVIN_ID_DESLOCAMENTO(int vin_id, string value);
+        QueryModel UpdateOperationalEntityId(int vin_id, string value);
         QueryModel UpdateTenantID(int vin_id, int value);
         QueryModel UpdateDeleted(int vin_id, bool value);
         QueryModel UpdateChanged(int vin_id, DateTime value);

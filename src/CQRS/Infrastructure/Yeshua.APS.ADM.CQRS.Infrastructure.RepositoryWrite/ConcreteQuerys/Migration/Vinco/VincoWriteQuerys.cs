@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirVincoQuery(IVincoEntity Vinco)
         {
-            this.Query = $@" INSERT INTO [Vinco] ([VIN_ID], [VIN_DESCRICAO], [VIN_ID_DESLOCAMENTO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@VIN_ID, @VIN_DESCRICAO, @VIN_ID_DESLOCAMENTO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Vinco] ([VIN_ID], [VIN_DESCRICAO], [VIN_ID_DESLOCAMENTO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@VIN_ID, @VIN_DESCRICAO, @VIN_ID_DESLOCAMENTO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VIN_ID = Vinco.VIN_ID,
                 VIN_DESCRICAO = Vinco.VIN_DESCRICAO,
                 VIN_ID_DESLOCAMENTO = Vinco.VIN_ID_DESLOCAMENTO,
+                OperationalEntityId = Vinco.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -72,6 +73,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 VIN_ID_DESLOCAMENTO = value,
+                VIN_ID = vin_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int vin_id, string value)
+        {
+            this.Query = $@" UPDATE [Vinco] SET [OperationalEntityId] = @OperationalEntityId WHERE [VIN_ID] = @VIN_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 VIN_ID = vin_id,
             };
             return new QueryModel(this.Query, this.Parameters);

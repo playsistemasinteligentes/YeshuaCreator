@@ -32,6 +32,7 @@ namespace IRepository.Read
         public bool ExistsByTara(Decimal value );
         public bool ExistsByCapacidadeKg(Decimal value );
         public bool ExistsByCapacidadeM3(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -43,6 +44,7 @@ namespace IRepository.Read
         public MDFeVeiculoDTO FirstByTara(Decimal value );
         public MDFeVeiculoDTO FirstByCapacidadeKg(Decimal value );
         public MDFeVeiculoDTO FirstByCapacidadeM3(Decimal value );
+        public MDFeVeiculoDTO FirstByOperationalEntityId(string value );
         public MDFeVeiculoDTO FirstByTenantID(int value );
         public MDFeVeiculoDTO FirstByDeleted(bool value );
         public MDFeVeiculoDTO FirstByChanged(DateTime value );
@@ -54,6 +56,7 @@ namespace IRepository.Read
         public IEnumerable<MDFeVeiculoDTO> GetAllByTara(Decimal value );
         public IEnumerable<MDFeVeiculoDTO> GetAllByCapacidadeKg(Decimal value );
         public IEnumerable<MDFeVeiculoDTO> GetAllByCapacidadeM3(Decimal value );
+        public IEnumerable<MDFeVeiculoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeVeiculoDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeVeiculoDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeVeiculoDTO> GetAllByChanged(DateTime value );

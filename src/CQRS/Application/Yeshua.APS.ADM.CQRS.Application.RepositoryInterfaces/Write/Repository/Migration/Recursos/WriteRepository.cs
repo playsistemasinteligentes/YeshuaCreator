@@ -26,6 +26,7 @@ namespace IRepository.Write
         void UpdateCAL_ID(string rec_id, int value);
         void UpdateREC_CONTROL_IP(string rec_id, string value);
         void UpdateGRE_ID(string rec_id, string value);
+        void UpdateOperationalEntityId(string rec_id, string value);
         void UpdateTenantID(string rec_id, int value);
         void UpdateDeleted(string rec_id, bool value);
         void UpdateChanged(string rec_id, DateTime value);

@@ -18,6 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record yConfigNotificationDTO
     {
+    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public int tenantid { get; set; }
     public string emailsmtpclient { get; set; } = string.Empty;

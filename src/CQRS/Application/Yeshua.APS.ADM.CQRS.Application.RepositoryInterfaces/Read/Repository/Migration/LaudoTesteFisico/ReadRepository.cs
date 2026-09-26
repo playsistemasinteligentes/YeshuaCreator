@@ -34,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByROT_PRO_ID(string value );
         public bool ExistsByFPR_SEQ_REPETICAO(int value );
         public bool ExistsByUSE_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -48,6 +49,7 @@ namespace IRepository.Read
         public LaudoTesteFisicoDTO FirstByROT_PRO_ID(string value );
         public LaudoTesteFisicoDTO FirstByFPR_SEQ_REPETICAO(int value );
         public LaudoTesteFisicoDTO FirstByUSE_ID(int value );
+        public LaudoTesteFisicoDTO FirstByOperationalEntityId(string value );
         public LaudoTesteFisicoDTO FirstByTenantID(int value );
         public LaudoTesteFisicoDTO FirstByDeleted(bool value );
         public LaudoTesteFisicoDTO FirstByChanged(DateTime value );
@@ -62,6 +64,7 @@ namespace IRepository.Read
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByROT_PRO_ID(string value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByFPR_SEQ_REPETICAO(int value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByUSE_ID(int value );
+        public IEnumerable<LaudoTesteFisicoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByTenantID(int value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByDeleted(bool value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByChanged(DateTime value );

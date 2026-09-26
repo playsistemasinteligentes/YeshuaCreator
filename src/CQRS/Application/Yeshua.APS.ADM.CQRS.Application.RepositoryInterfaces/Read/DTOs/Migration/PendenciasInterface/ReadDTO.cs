@@ -25,6 +25,7 @@ namespace Repositorio.Outputs
     public string pen_protocolo_in { get; set; } = string.Empty;
     public string pen_id_protocolo_in { get; set; } = string.Empty;
     public DateTime data_entrada { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

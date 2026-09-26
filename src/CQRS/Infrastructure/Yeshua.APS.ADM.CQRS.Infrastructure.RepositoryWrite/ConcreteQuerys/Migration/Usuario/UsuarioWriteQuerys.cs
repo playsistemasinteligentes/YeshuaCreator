@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirUsuarioQuery(IUsuarioEntity Usuario)
         {
-            this.Query = $@" INSERT INTO [Usuario] ([USE_NOME], [USE_EMAIL], [USE_SENHA], [TURM_ID], [USE_ATIVO], [USE_CODERP], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[USE_ID] VALUES(@USE_NOME, @USE_EMAIL, @USE_SENHA, @TURM_ID, @USE_ATIVO, @USE_CODERP, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Usuario] ([USE_NOME], [USE_EMAIL], [USE_SENHA], [TURM_ID], [USE_ATIVO], [USE_CODERP], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[USE_ID] VALUES(@USE_NOME, @USE_EMAIL, @USE_SENHA, @TURM_ID, @USE_ATIVO, @USE_CODERP, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 USE_NOME = Usuario.USE_NOME,
@@ -39,6 +39,7 @@ namespace Query.Write
                 TURM_ID = Usuario.TURM_ID,
                 USE_ATIVO = Usuario.USE_ATIVO,
                 USE_CODERP = Usuario.USE_CODERP,
+                OperationalEntityId = Usuario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -119,6 +120,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 USE_CODERP = value,
+                USE_ID = use_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int use_id, string value)
+        {
+            this.Query = $@" UPDATE [Usuario] SET [OperationalEntityId] = @OperationalEntityId WHERE [USE_ID] = @USE_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 USE_ID = use_id,
             };
             return new QueryModel(this.Query, this.Parameters);

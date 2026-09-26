@@ -22,6 +22,7 @@ namespace Repositorio.Outputs
     public string html_estrutura { get; set; } = string.Empty;
     public string cli_id { get; set; } = string.Empty;
     public string est_descricao { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

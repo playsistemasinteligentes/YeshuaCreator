@@ -18,12 +18,14 @@ namespace IQuery.Read
         public QueryModel GrupoRecursoUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByGRE_IDQuery(string value );
         public QueryModel ExistsByGRE_DESCRICAOQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel FirstByGRE_IDQuery(string value );
         public QueryModel FirstByGRE_DESCRICAOQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

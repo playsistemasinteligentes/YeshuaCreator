@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOndaQuery(IOndaEntity Onda)
         {
-            this.Query = $@" INSERT INTO [Onda] ([OND_ID], [OND_ESPESSURA], [OND_PESO_COLA], [OND_RENDIMENTO_ONDA_1], [OND_RENDIMENTO_ONDA_2], [OND_PROFUNDIDADE_VINCO], [OND_ID_INTEGRACAO], [VIN_ID], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OND_ID, @OND_ESPESSURA, @OND_PESO_COLA, @OND_RENDIMENTO_ONDA_1, @OND_RENDIMENTO_ONDA_2, @OND_PROFUNDIDADE_VINCO, @OND_ID_INTEGRACAO, @VIN_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Onda] ([OND_ID], [OND_ESPESSURA], [OND_PESO_COLA], [OND_RENDIMENTO_ONDA_1], [OND_RENDIMENTO_ONDA_2], [OND_PROFUNDIDADE_VINCO], [OND_ID_INTEGRACAO], [VIN_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OND_ID, @OND_ESPESSURA, @OND_PESO_COLA, @OND_RENDIMENTO_ONDA_1, @OND_RENDIMENTO_ONDA_2, @OND_PROFUNDIDADE_VINCO, @OND_ID_INTEGRACAO, @VIN_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OND_ID = Onda.OND_ID,
@@ -41,6 +41,7 @@ namespace Query.Write
                 OND_PROFUNDIDADE_VINCO = Onda.OND_PROFUNDIDADE_VINCO,
                 OND_ID_INTEGRACAO = Onda.OND_ID_INTEGRACAO,
                 VIN_ID = Onda.VIN_ID,
+                OperationalEntityId = Onda.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -132,6 +133,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 VIN_ID = value,
+                OND_ID = ond_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string ond_id, string value)
+        {
+            this.Query = $@" UPDATE [Onda] SET [OperationalEntityId] = @OperationalEntityId WHERE [OND_ID] = @OND_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 OND_ID = ond_id,
             };
             return new QueryModel(this.Query, this.Parameters);

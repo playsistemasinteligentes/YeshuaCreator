@@ -35,6 +35,7 @@ namespace IQuery.Write
         QueryModel UpdateTIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D(int id, Decimal value);
         QueryModel UpdateTIP_CAPACIDADE_LARGURA_PESCOCO_D(int id, Decimal value);
         QueryModel UpdateTIP_CAPACIDADE_M3(int id, Decimal value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

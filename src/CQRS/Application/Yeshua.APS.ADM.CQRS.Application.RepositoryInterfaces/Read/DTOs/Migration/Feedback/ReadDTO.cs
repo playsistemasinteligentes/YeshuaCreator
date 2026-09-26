@@ -38,6 +38,7 @@ namespace Repositorio.Outputs
     public Decimal fee_qtd_total_producao_ajustada { get; set; }
     public string bol_id { get; set; } = string.Empty;
     public int cor_sequencia { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

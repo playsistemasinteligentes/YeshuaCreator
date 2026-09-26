@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeSolicitacaoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeSolicitacaoFiscalReceiver), commandName: "Command.Write.CTeSolicitacaoFiscalCrudCommand");
                  var ctesolicitacaofiscal = new CTeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.RomaneioConsolidadoId, c.CorrelationId, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.ProdutoFiscal, c.TipoCTe, c.TipoServico, c.Modal, c.Globalizado, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.ValorServico, c.ValorCarga, c.PreferenciasManifestoJson, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ctesolicitacaofiscal.OperationalEntityId);
                  var domainResult = CTeSolicitacaoFiscalDomainBehavior.Apply(ctesolicitacaofiscal, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

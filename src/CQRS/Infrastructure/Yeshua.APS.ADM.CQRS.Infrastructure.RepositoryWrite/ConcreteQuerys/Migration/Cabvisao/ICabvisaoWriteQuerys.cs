@@ -20,6 +20,7 @@ namespace IQuery.Write
         QueryModel UpdateCAB_DESC(int cab_id, string value);
         QueryModel UpdateCAB_STATUS(int cab_id, int value);
         QueryModel UpdateUSE_ID(int cab_id, int value);
+        QueryModel UpdateOperationalEntityId(int cab_id, string value);
         QueryModel UpdateTenantID(int cab_id, int value);
         QueryModel UpdateDeleted(int cab_id, bool value);
         QueryModel UpdateChanged(int cab_id, DateTime value);

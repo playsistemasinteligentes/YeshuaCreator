@@ -26,6 +26,7 @@
     int MOV_PLAID { get; set; }
     int MOV_UNID { get; set; }
     int? Tr_Unidade_UNI_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

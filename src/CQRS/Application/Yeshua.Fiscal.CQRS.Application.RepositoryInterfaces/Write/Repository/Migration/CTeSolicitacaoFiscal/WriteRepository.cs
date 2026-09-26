@@ -41,6 +41,7 @@ namespace IRepository.Write
         void UpdateValorCarga(int id, Decimal value);
         void UpdatePreferenciasManifestoJson(int id, string value);
         void UpdateStatus(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

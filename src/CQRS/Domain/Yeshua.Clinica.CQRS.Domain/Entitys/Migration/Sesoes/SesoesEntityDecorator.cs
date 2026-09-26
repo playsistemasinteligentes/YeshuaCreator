@@ -48,10 +48,11 @@
             public const ulong ServicoId = 1UL << 25;
             public const ulong MovimentacaoFinanceiraId = 1UL << 26;
             public const ulong ProfissionalId = 1UL << 27;
-            public const ulong TenantID = 1UL << 28;
-            public const ulong Deleted = 1UL << 29;
-            public const ulong Changed = 1UL << 30;
-            public const ulong UserId = 1UL << 31;
+            public const ulong OperationalEntityId = 1UL << 28;
+            public const ulong TenantID = 1UL << 29;
+            public const ulong Deleted = 1UL << 30;
+            public const ulong Changed = 1UL << 31;
+            public const ulong UserId = 1UL << 32;
         }
 
         public partial class SesoesDecorator : ISesoesEntity
@@ -472,6 +473,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

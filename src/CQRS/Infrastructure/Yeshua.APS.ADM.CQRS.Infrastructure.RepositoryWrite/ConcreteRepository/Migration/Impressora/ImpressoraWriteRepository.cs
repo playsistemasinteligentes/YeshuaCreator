@@ -61,6 +61,11 @@ namespace Input.Repository.Impressora
             var query = _query.UpdateIMP_NOME(imp_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int imp_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(imp_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int imp_id, int value)
         {
             var query = _query.UpdateTenantID(imp_id, value);

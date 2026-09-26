@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes);
         public QueryModel UpdateTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes);
         QueryModel UpdateDescricao(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

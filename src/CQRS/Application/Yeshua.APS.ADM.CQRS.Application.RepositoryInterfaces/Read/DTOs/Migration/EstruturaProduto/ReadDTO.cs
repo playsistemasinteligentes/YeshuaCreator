@@ -27,6 +27,7 @@ namespace Repositorio.Outputs
     public Decimal est_base_producao { get; set; }
     public string est_tipo_requisicao { get; set; } = string.Empty;
     public string est_codigo_de_excecao { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.T_USER_GRUPO;
 
-[SeedTestOrder(163)]
+[SeedTestOrder(161)]
 public partial class T_USER_GRUPOCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_USER_GRUPO/PostT_USER_GRUPO";

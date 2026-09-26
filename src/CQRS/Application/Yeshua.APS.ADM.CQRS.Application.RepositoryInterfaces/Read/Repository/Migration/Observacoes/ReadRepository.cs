@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByPRO_ID(string value );
         public bool ExistsByROT_SEQ_TRANFORMACAO(int value );
         public bool ExistsByOBS_INTEGRACAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -45,6 +46,7 @@ namespace IRepository.Read
         public ObservacoesDTO FirstByPRO_ID(string value );
         public ObservacoesDTO FirstByROT_SEQ_TRANFORMACAO(int value );
         public ObservacoesDTO FirstByOBS_INTEGRACAO(string value );
+        public ObservacoesDTO FirstByOperationalEntityId(string value );
         public ObservacoesDTO FirstByTenantID(int value );
         public ObservacoesDTO FirstByDeleted(bool value );
         public ObservacoesDTO FirstByChanged(DateTime value );
@@ -57,6 +59,7 @@ namespace IRepository.Read
         public IEnumerable<ObservacoesDTO> GetAllByPRO_ID(string value );
         public IEnumerable<ObservacoesDTO> GetAllByROT_SEQ_TRANFORMACAO(int value );
         public IEnumerable<ObservacoesDTO> GetAllByOBS_INTEGRACAO(string value );
+        public IEnumerable<ObservacoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ObservacoesDTO> GetAllByTenantID(int value );
         public IEnumerable<ObservacoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<ObservacoesDTO> GetAllByChanged(DateTime value );

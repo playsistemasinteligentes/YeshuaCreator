@@ -17,6 +17,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant);
         public QueryModel UpdateyPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdatePerfilId(int id, int value);
         QueryModel UpdateGrantId(int id, string value);
         QueryModel UpdateCanGrant(int id, bool value);

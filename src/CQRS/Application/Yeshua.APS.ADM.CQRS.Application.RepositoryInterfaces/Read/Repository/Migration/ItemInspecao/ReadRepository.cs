@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByITI_ID(int value );
         public bool ExistsByITI_DESC(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public ItemInspecaoDTO FirstById(int value );
         public ItemInspecaoDTO FirstByITI_ID(int value );
         public ItemInspecaoDTO FirstByITI_DESC(string value );
+        public ItemInspecaoDTO FirstByOperationalEntityId(string value );
         public ItemInspecaoDTO FirstByTenantID(int value );
         public ItemInspecaoDTO FirstByDeleted(bool value );
         public ItemInspecaoDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<ItemInspecaoDTO> GetAllById(int value );
         public IEnumerable<ItemInspecaoDTO> GetAllByITI_ID(int value );
         public IEnumerable<ItemInspecaoDTO> GetAllByITI_DESC(string value );
+        public IEnumerable<ItemInspecaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItemInspecaoDTO> GetAllByTenantID(int value );
         public IEnumerable<ItemInspecaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItemInspecaoDTO> GetAllByChanged(DateTime value );

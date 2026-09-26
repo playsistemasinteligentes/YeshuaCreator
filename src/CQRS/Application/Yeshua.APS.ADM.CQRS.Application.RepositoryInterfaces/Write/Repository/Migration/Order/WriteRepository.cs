@@ -95,6 +95,7 @@ namespace IRepository.Write
         void UpdateORD_DATA_ESTATISTICA(string ord_id, DateTime value);
         void UpdateOCO_ID_MOTIVO_ATRASO(string ord_id, string value);
         void UpdateOTK_VERSSAO(string ord_id, int value);
+        void UpdateOperationalEntityId(string ord_id, string value);
         void UpdateTenantID(string ord_id, int value);
         void UpdateDeleted(string ord_id, bool value);
         void UpdateChanged(string ord_id, DateTime value);

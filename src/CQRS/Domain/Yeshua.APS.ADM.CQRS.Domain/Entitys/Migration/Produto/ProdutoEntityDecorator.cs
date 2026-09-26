@@ -23,67 +23,67 @@
             public const ulong Id = 1UL << 0;
             public const ulong Descricao = 1UL << 1;
             public const ulong Status = 1UL << 2;
-            public const ulong TenantID = 1UL << 3;
-            public const ulong Deleted = 1UL << 4;
-            public const ulong Changed = 1UL << 5;
-            public const ulong UserId = 1UL << 6;
-            public const ulong PRO_ESTOQUE_ATUAL = 1UL << 7;
-            public const ulong UNI_ID = 1UL << 8;
-            public const ulong PRO_FARDOS_POR_CAMADA = 1UL << 9;
-            public const ulong PRO_CAMADAS_POR_PALETE = 1UL << 10;
-            public const ulong PRO_TIPO_IDENTIFICACAO = 1UL << 11;
-            public const ulong PRO_GRUPO_PALETIZACAO = 1UL << 12;
-            public const ulong PRO_PECAS_POR_FARDO = 1UL << 13;
-            public const ulong PRO_ID_INTEGRACAO = 1UL << 14;
-            public const ulong PRO_ID_INTEGRACAO_ERP = 1UL << 15;
-            public const ulong GRP_ID = 1UL << 16;
-            public const ulong TEM_ID = 1UL << 17;
-            public const ulong PRO_LARGURA_PECA = 1UL << 18;
-            public const ulong PRO_COMPRIMENTO_PECA = 1UL << 19;
-            public const ulong PRO_ALTURA_PECA = 1UL << 20;
-            public const ulong PRO_LARGURA_EMBALADA = 1UL << 21;
-            public const ulong PRO_COMPRIMENTO_EMBALADA = 1UL << 22;
-            public const ulong PRO_ALTURA_EMBALADA = 1UL << 23;
-            public const ulong PRO_FRENTE = 1UL << 24;
-            public const ulong PRO_ROTACIONA_COMPRIMENTO = 1UL << 25;
-            public const ulong PRO_ROTACIONA_LARGURA = 1UL << 26;
-            public const ulong PRO_ROTACIONA_ALTURA = 1UL << 27;
-            public const ulong PRO_ESCALA_COR = 1UL << 28;
-            public const ulong PRO_SUB_ESCALA_COR = 1UL << 29;
-            public const ulong PRO_CUSTO_SUBIDA_ESCALA_COR = 1UL << 30;
-            public const ulong PRO_CUSTO_DECIDA_ESCALA_COR = 1UL << 31;
-            public const ulong TMP_TIPO_CARGA = 1UL << 32;
-            public const ulong PRO_TEMPO_CARREGAMENTO_UNITARIO = 1UL << 33;
-            public const ulong PRO_TEMPO_DESCARREGAMENTO_UNITARIO = 1UL << 34;
-            public const ulong PRO_PERCENTUAL_JANELA_EMBARQUE = 1UL << 35;
-            public const ulong PRO_TEMPO_PRODUCAO_CONJUNTO = 1UL << 36;
-            public const ulong PRO_PECAS_DA_PECA = 1UL << 37;
-            public const ulong PRO_TYPE = 1UL << 38;
-            public const ulong PRO_COLOR_HEXA = 1UL << 39;
-            public const ulong PRO_VINCOS_LARGURA = 1UL << 40;
-            public const ulong PRO_VINCOS_COMPRIMENTO = 1UL << 41;
-            public const ulong PRO_LARGURA_INTERNA = 1UL << 42;
-            public const ulong PRO_COMPRIMENTO_INTERNA = 1UL << 43;
-            public const ulong PRO_ALTURA_INTERNA = 1UL << 44;
-            public const ulong PRO_COD_DESENHO = 1UL << 45;
-            public const ulong PRO_FECHAMENTO = 1UL << 46;
-            public const ulong PRO_TIPO_LAP = 1UL << 47;
-            public const ulong PRO_TAMANHO_LAP = 1UL << 48;
-            public const ulong PRO_LAP_PROLONGADO = 1UL << 49;
-            public const ulong PRO_TAMANHO_LAP_PROLONG = 1UL << 50;
-            public const ulong PRO_ARRANJO_LARGURA = 1UL << 51;
-            public const ulong PRO_ARRANJO_COMPRIMENTO = 1UL << 52;
-            public const ulong PRO_FITILHOS_FARDO_LARG = 1UL << 53;
-            public const ulong PRO_FITILHOS_FARDO_COMP = 1UL << 54;
-            public const ulong PRO_FITILHOS_PALETE_LARG = 1UL << 55;
-            public const ulong PRO_FITILHOS_PALETE_COMP = 1UL << 56;
-            public const ulong PRO_FILME_PALETE = 1UL << 57;
-            public const ulong PRO_QTD_ESPELHO = 1UL << 58;
-            public const ulong PRO_CUSTO = 1UL << 59;
-            public const ulong PRO_AREA_LIQUIDA = 1UL << 60;
-            public const ulong PRO_PESO = 1UL << 61;
-            public const ulong PRO_TOLERANCIA_DIMENSAO_CHAPA_DE = 1UL << 62;
-            public const ulong PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE = 1UL << 63;
+            public const ulong OperationalEntityId = 1UL << 3;
+            public const ulong TenantID = 1UL << 4;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
+            public const ulong UserId = 1UL << 7;
+            public const ulong PRO_ESTOQUE_ATUAL = 1UL << 8;
+            public const ulong UNI_ID = 1UL << 9;
+            public const ulong PRO_FARDOS_POR_CAMADA = 1UL << 10;
+            public const ulong PRO_CAMADAS_POR_PALETE = 1UL << 11;
+            public const ulong PRO_TIPO_IDENTIFICACAO = 1UL << 12;
+            public const ulong PRO_GRUPO_PALETIZACAO = 1UL << 13;
+            public const ulong PRO_PECAS_POR_FARDO = 1UL << 14;
+            public const ulong PRO_ID_INTEGRACAO = 1UL << 15;
+            public const ulong PRO_ID_INTEGRACAO_ERP = 1UL << 16;
+            public const ulong GRP_ID = 1UL << 17;
+            public const ulong TEM_ID = 1UL << 18;
+            public const ulong PRO_LARGURA_PECA = 1UL << 19;
+            public const ulong PRO_COMPRIMENTO_PECA = 1UL << 20;
+            public const ulong PRO_ALTURA_PECA = 1UL << 21;
+            public const ulong PRO_LARGURA_EMBALADA = 1UL << 22;
+            public const ulong PRO_COMPRIMENTO_EMBALADA = 1UL << 23;
+            public const ulong PRO_ALTURA_EMBALADA = 1UL << 24;
+            public const ulong PRO_FRENTE = 1UL << 25;
+            public const ulong PRO_ROTACIONA_COMPRIMENTO = 1UL << 26;
+            public const ulong PRO_ROTACIONA_LARGURA = 1UL << 27;
+            public const ulong PRO_ROTACIONA_ALTURA = 1UL << 28;
+            public const ulong PRO_ESCALA_COR = 1UL << 29;
+            public const ulong PRO_SUB_ESCALA_COR = 1UL << 30;
+            public const ulong PRO_CUSTO_SUBIDA_ESCALA_COR = 1UL << 31;
+            public const ulong PRO_CUSTO_DECIDA_ESCALA_COR = 1UL << 32;
+            public const ulong TMP_TIPO_CARGA = 1UL << 33;
+            public const ulong PRO_TEMPO_CARREGAMENTO_UNITARIO = 1UL << 34;
+            public const ulong PRO_TEMPO_DESCARREGAMENTO_UNITARIO = 1UL << 35;
+            public const ulong PRO_PERCENTUAL_JANELA_EMBARQUE = 1UL << 36;
+            public const ulong PRO_TEMPO_PRODUCAO_CONJUNTO = 1UL << 37;
+            public const ulong PRO_PECAS_DA_PECA = 1UL << 38;
+            public const ulong PRO_TYPE = 1UL << 39;
+            public const ulong PRO_COLOR_HEXA = 1UL << 40;
+            public const ulong PRO_VINCOS_LARGURA = 1UL << 41;
+            public const ulong PRO_VINCOS_COMPRIMENTO = 1UL << 42;
+            public const ulong PRO_LARGURA_INTERNA = 1UL << 43;
+            public const ulong PRO_COMPRIMENTO_INTERNA = 1UL << 44;
+            public const ulong PRO_ALTURA_INTERNA = 1UL << 45;
+            public const ulong PRO_COD_DESENHO = 1UL << 46;
+            public const ulong PRO_FECHAMENTO = 1UL << 47;
+            public const ulong PRO_TIPO_LAP = 1UL << 48;
+            public const ulong PRO_TAMANHO_LAP = 1UL << 49;
+            public const ulong PRO_LAP_PROLONGADO = 1UL << 50;
+            public const ulong PRO_TAMANHO_LAP_PROLONG = 1UL << 51;
+            public const ulong PRO_ARRANJO_LARGURA = 1UL << 52;
+            public const ulong PRO_ARRANJO_COMPRIMENTO = 1UL << 53;
+            public const ulong PRO_FITILHOS_FARDO_LARG = 1UL << 54;
+            public const ulong PRO_FITILHOS_FARDO_COMP = 1UL << 55;
+            public const ulong PRO_FITILHOS_PALETE_LARG = 1UL << 56;
+            public const ulong PRO_FITILHOS_PALETE_COMP = 1UL << 57;
+            public const ulong PRO_FILME_PALETE = 1UL << 58;
+            public const ulong PRO_QTD_ESPELHO = 1UL << 59;
+            public const ulong PRO_CUSTO = 1UL << 60;
+            public const ulong PRO_AREA_LIQUIDA = 1UL << 61;
+            public const ulong PRO_PESO = 1UL << 62;
+            public const ulong PRO_TOLERANCIA_DIMENSAO_CHAPA_DE = 1UL << 63;
         }
 
         public partial class ProdutoDecorator : IProdutoEntity
@@ -154,6 +154,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1003,8 +1004,7 @@
                                             if (_inner.PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE != value)
                                             {
                                                 _inner.PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE = value;
-                                                if ((_trackingMask & ProdutoTrackingFields.PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+
                                             }
                                         }
                                     }

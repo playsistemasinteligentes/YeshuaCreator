@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCotasQuery(ICotasEntity Cotas)
         {
-            this.Query = $@" INSERT INTO [Cotas] ([COT_ID], [COT_DATA_DE], [COT_DATA_ATE], [COT_VALOR], [COT_OCUPADO], [REP_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@COT_ID, @COT_DATA_DE, @COT_DATA_ATE, @COT_VALOR, @COT_OCUPADO, @REP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Cotas] ([COT_ID], [COT_DATA_DE], [COT_DATA_ATE], [COT_VALOR], [COT_OCUPADO], [REP_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@COT_ID, @COT_DATA_DE, @COT_DATA_ATE, @COT_VALOR, @COT_OCUPADO, @REP_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 COT_ID = Cotas.COT_ID,
@@ -39,6 +39,7 @@ namespace Query.Write
                 COT_VALOR = Cotas.COT_VALOR,
                 COT_OCUPADO = Cotas.COT_OCUPADO,
                 REP_ID = Cotas.REP_ID,
+                OperationalEntityId = Cotas.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -119,6 +120,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 REP_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Cotas] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

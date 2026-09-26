@@ -31,6 +31,7 @@ namespace IQuery.Write
         QueryModel UpdatePER_ID(int met_id, string value);
         QueryModel UpdateDOM_EMPRESA(int met_id, string value);
         QueryModel UpdateDOM_FILIAL(int met_id, string value);
+        QueryModel UpdateOperationalEntityId(int met_id, string value);
         QueryModel UpdateTenantID(int met_id, int value);
         QueryModel UpdateDeleted(int met_id, bool value);
         QueryModel UpdateChanged(int met_id, DateTime value);

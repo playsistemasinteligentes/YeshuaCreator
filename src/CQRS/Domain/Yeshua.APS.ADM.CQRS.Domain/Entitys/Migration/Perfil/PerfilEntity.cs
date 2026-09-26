@@ -22,6 +22,7 @@
 {
     public int PER_ID { get; set; }
     public string PER_NOME { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -30,6 +31,7 @@
  internal PerfilEntity(int per_id, string per_nome ){
  PER_ID = per_id; 
  PER_NOME = per_nome; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

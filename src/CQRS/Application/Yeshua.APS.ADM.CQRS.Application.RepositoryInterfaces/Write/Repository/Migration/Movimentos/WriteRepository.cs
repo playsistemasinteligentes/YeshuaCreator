@@ -27,6 +27,7 @@ namespace IRepository.Write
         void UpdateMOV_PLAID(int mov_id, int value);
         void UpdateMOV_UNID(int mov_id, int value);
         void UpdateTr_Unidade_UNI_ID(int mov_id, int value);
+        void UpdateOperationalEntityId(int mov_id, string value);
         void UpdateTenantID(int mov_id, int value);
         void UpdateDeleted(int mov_id, bool value);
         void UpdateChanged(int mov_id, DateTime value);

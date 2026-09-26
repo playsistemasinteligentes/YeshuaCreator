@@ -35,6 +35,7 @@ namespace Repositorio.Outputs
     public DateTime turn_hora_fim_dia6 { get; set; }
     public DateTime turn_hora_ini_dia7 { get; set; }
     public DateTime turn_hora_fim_dia7 { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

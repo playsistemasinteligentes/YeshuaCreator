@@ -30,6 +30,7 @@ namespace IRepository.Write
         void UpdateEST_BASE_PRODUCAO(int id, Decimal value);
         void UpdateEST_TIPO_REQUISICAO(int id, string value);
         void UpdateEST_CODIGO_DE_EXCECAO(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

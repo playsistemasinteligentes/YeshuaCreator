@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateDeTestes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateDeTestesReceiver), commandName: "Command.Write.TemplateDeTestesCrudCommand");
                  var templatedetestes = new TemplateDeTestesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Observacao);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatedetestes.OperationalEntityId);
                  var domainResult = TemplateDeTestesDomainBehavior.Apply(templatedetestes, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

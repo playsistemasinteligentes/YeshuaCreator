@@ -17,6 +17,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification);
         public QueryModel UpdateyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateEmailSmtpClient(int id, string value);
         QueryModel UpdateEmailPort(int id, int value);

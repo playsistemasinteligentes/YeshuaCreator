@@ -264,6 +264,11 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine();
 
                     sb.AppendLine("                // define próximo estado");
+                    sb.AppendLine("                if (step.Status != SagaStepStatus.InProgress)");
+                    sb.AppendLine("                {");
+                    sb.AppendLine("                    return;");
+                    sb.AppendLine("                }");
+                    sb.AppendLine();
                     sb.AppendLine("                if (RequiresExternalStimulus)");
                     sb.AppendLine("                {");
                     sb.AppendLine("                    step.SetWaiting();");
@@ -691,6 +696,15 @@ namespace Dominio.Schemas.CQRS
         }
         protected override StringBuilder GenerateCustonCode()
         {
+            if (_commandType == CommandType.UseCaseCommandHandler
+                && string.Equals(
+                    _useCase?.Name.SourceType(),
+                    "OpenApplicationSession",
+                    StringComparison.Ordinal))
+            {
+                return GenerateOpenApplicationSessionCustomCode();
+            }
+
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
 
@@ -792,6 +806,122 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
             }
+            return sb;
+        }
+
+        private StringBuilder GenerateOpenApplicationSessionCustomCode()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsUseCases};");
+            sb.AppendLine("using Dominio.Entitys;");
+            sb.AppendLine();
+            sb.AppendLine($"namespace {_nameSpace}");
+            sb.AppendLine("{");
+            sb.AppendLine($"    public partial class {_useCase.HandlerName}");
+            sb.AppendLine("    {");
+            sb.AppendLine("        private readonly IUnitOfWork _unitOfWork = default!;");
+            sb.AppendLine("        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;");
+            sb.AppendLine("        private readonly IyTenantReadRepository _repReadYTenant = default!;");
+            sb.AppendLine("        private readonly IyTenantWriteRepository _repWriteYTenant = default!;");
+            sb.AppendLine("        private readonly IyUserReadRepository _repReadYUser = default!;");
+            sb.AppendLine("        private readonly IyUserWriteRepository _repWriteYUser = default!;");
+            sb.AppendLine();
+            sb.AppendLine($"        public {_useCase.HandlerName}(");
+            sb.AppendLine("            IUnitOfWork unitOfWork,");
+            sb.AppendLine("            ILogger logger,");
+            sb.AppendLine("            IExecutionContext executionContext,");
+            sb.AppendLine("            IDomainTrackingPolicy domainTrackingPolicy,");
+            sb.AppendLine("            IyTenantReadRepository repReadYTenant,");
+            sb.AppendLine("            IyTenantWriteRepository repWriteYTenant,");
+            sb.AppendLine("            IyUserReadRepository repReadYUser,");
+            sb.AppendLine("            IyUserWriteRepository repWriteYUser)");
+            sb.AppendLine("            : base(logger, executionContext)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            _unitOfWork = unitOfWork;");
+            sb.AppendLine("            _logger = logger;");
+            sb.AppendLine("            _executionContext = executionContext;");
+            sb.AppendLine("            _domainTrackingPolicy = domainTrackingPolicy;");
+            sb.AppendLine("            _repReadYTenant = repReadYTenant;");
+            sb.AppendLine("            _repWriteYTenant = repWriteYTenant;");
+            sb.AppendLine("            _repReadYUser = repReadYUser;");
+            sb.AppendLine("            _repWriteYUser = repWriteYUser;");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine($"        protected partial Task<State<{_useCase.OutputCommandName}>> CustomActionHookAsync(");
+            sb.AppendLine($"            State<{_useCase.OutputCommandName}> state,");
+            sb.AppendLine($"            {_useCase.InputCommandName} comand,");
+            sb.AppendLine("            CancellationToken cancellationToken)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            if (string.IsNullOrWhiteSpace(comand.TenantIdentity)");
+            sb.AppendLine("                || string.IsNullOrWhiteSpace(comand.UserIdentity)");
+            sb.AppendLine("                || string.IsNullOrWhiteSpace(comand.Email))");
+            sb.AppendLine($"                throw new ReceiverException<{_useCase.OutputCommandName}>(");
+            sb.AppendLine("                    Error(\"Identidades da Central sao obrigatorias.\", default));");
+            sb.AppendLine();
+            sb.AppendLine("            try");
+            sb.AppendLine("            {");
+            sb.AppendLine("                _unitOfWork.BeginTran();");
+            sb.AppendLine();
+            sb.AppendLine("                var tenant = _repReadYTenant.FirstByOperationalEntityId(comand.TenantIdentity, true);");
+            sb.AppendLine("                var tenantId = tenant?.id ?? 0;");
+            sb.AppendLine("                if (tenantId == 0)");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    var tenantEntity = new yTenantFactory(_logger, _domainTrackingPolicy)");
+            sb.AppendLine("                        .Create(comand.TenantDocument, comand.TenantName, null);");
+            sb.AppendLine("                    _repWriteYTenant.Insert(tenantEntity);");
+            sb.AppendLine("                    if (!tenantEntity.Id.HasValue)");
+            sb.AppendLine($"                        throw new ReceiverException<{_useCase.OutputCommandName}>(");
+            sb.AppendLine("                            Error(\"Tenant local nao foi criado.\", default));");
+            sb.AppendLine();
+            sb.AppendLine("                    tenantId = tenantEntity.Id.Value;");
+            sb.AppendLine("                    _repWriteYTenant.UpdateOperationalEntityId(tenantId, comand.TenantIdentity);");
+            sb.AppendLine("                }");
+            sb.AppendLine();
+            sb.AppendLine("                _executionContext.SetTenantId(tenantId);");
+            sb.AppendLine("                var user = _repReadYUser.FirstByOperationalEntityId(comand.UserIdentity, true);");
+            sb.AppendLine("                var userId = user?.id ?? 0;");
+            sb.AppendLine("                if (userId == 0)");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    var userEntity = new yUserFactory(_logger, _domainTrackingPolicy)");
+            sb.AppendLine("                        .Create(null, comand.UserName, comand.Email, null);");
+            sb.AppendLine("                    _repWriteYUser.Insert(userEntity);");
+            sb.AppendLine("                    if (!userEntity.Id.HasValue)");
+            sb.AppendLine($"                        throw new ReceiverException<{_useCase.OutputCommandName}>(");
+            sb.AppendLine("                            Error(\"Usuario local nao foi criado.\", default));");
+            sb.AppendLine();
+            sb.AppendLine("                    userId = userEntity.Id.Value;");
+            sb.AppendLine("                    _repWriteYUser.UpdateOperationalEntityId(userId, comand.UserIdentity);");
+            sb.AppendLine("                }");
+            sb.AppendLine();
+            sb.AppendLine("                _executionContext.SetUserId(userId);");
+            sb.AppendLine("                if (tenant is null || tenant.userid != userId)");
+            sb.AppendLine("                    _repWriteYTenant.UpdateUserId(tenantId, userId);");
+            sb.AppendLine();
+            sb.AppendLine("                _unitOfWork.Commit();");
+            sb.AppendLine($"                state = Success(\"Sessao local aberta\", new {_useCase.OutputCommandName}");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    TenantId = tenantId,");
+            sb.AppendLine("                    UserId = userId,");
+            sb.AppendLine("                    Email = comand.Email");
+            sb.AppendLine("                });");
+            sb.AppendLine("                return Task.FromResult(state);");
+            sb.AppendLine("            }");
+            sb.AppendLine("            catch");
+            sb.AppendLine("            {");
+            sb.AppendLine("                _unitOfWork.Rollback();");
+            sb.AppendLine("                throw;");
+            sb.AppendLine("            }");
+            sb.AppendLine("        }");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+
             return sb;
         }
 

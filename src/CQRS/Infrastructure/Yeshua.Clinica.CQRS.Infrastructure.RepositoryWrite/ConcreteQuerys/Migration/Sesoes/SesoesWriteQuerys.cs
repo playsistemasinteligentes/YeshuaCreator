@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSesoesQuery(ISesoesEntity Sesoes)
         {
-            this.Query = $@" INSERT INTO [Sesoes] ([PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @DataInicio, @DataFim, @StatusAgendamento, @StatusProntuario, @Prontuario, @QueixaPrincipal, @RegistroDocumental, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @UsoMedicacao, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico, @ServicoId, @MovimentacaoFinanceiraId, @ProfissionalId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Sesoes] ([PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @DataInicio, @DataFim, @StatusAgendamento, @StatusProntuario, @Prontuario, @QueixaPrincipal, @RegistroDocumental, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @UsoMedicacao, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico, @ServicoId, @MovimentacaoFinanceiraId, @ProfissionalId, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PacienteId = Sesoes.PacienteId,
@@ -60,6 +60,7 @@ namespace Query.Write
                 ServicoId = Sesoes.ServicoId,
                 MovimentacaoFinanceiraId = Sesoes.MovimentacaoFinanceiraId,
                 ProfissionalId = Sesoes.ProfissionalId,
+                OperationalEntityId = Sesoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -371,6 +372,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ProfissionalId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

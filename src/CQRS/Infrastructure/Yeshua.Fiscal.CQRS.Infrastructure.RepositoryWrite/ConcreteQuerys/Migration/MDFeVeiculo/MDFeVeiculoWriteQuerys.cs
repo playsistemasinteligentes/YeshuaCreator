@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMDFeVeiculoQuery(IMDFeVeiculoEntity MDFeVeiculo)
         {
-            this.Query = $@" INSERT INTO [MDFeVeiculo] ([MDFeSolicitacaoFiscalId], [Placa], [Renavam], [Tara], [CapacidadeKg], [CapacidadeM3], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @Placa, @Renavam, @Tara, @CapacidadeKg, @CapacidadeM3, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFeVeiculo] ([MDFeSolicitacaoFiscalId], [Placa], [Renavam], [Tara], [CapacidadeKg], [CapacidadeM3], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @Placa, @Renavam, @Tara, @CapacidadeKg, @CapacidadeM3, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MDFeSolicitacaoFiscalId = MDFeVeiculo.MDFeSolicitacaoFiscalId,
@@ -39,6 +39,7 @@ namespace Query.Write
                 Tara = MDFeVeiculo.Tara,
                 CapacidadeKg = MDFeVeiculo.CapacidadeKg,
                 CapacidadeM3 = MDFeVeiculo.CapacidadeM3,
+                OperationalEntityId = MDFeVeiculo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -119,6 +120,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 CapacidadeM3 = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFeVeiculo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

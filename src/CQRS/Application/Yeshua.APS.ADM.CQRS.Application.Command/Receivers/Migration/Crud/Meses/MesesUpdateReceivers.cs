@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMeses", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMesesReceiver), commandName: "Command.Write.MesesCrudCommand");
                  var meses = new MesesFactory(_logger, _domainTrackingPolicy).Create(context, c.MES, c.fator);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", meses.OperationalEntityId);
                  var domainResult = MesesDomainBehavior.Apply(meses, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

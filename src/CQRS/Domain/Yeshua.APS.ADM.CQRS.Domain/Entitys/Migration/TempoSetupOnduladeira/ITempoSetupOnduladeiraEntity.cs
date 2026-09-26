@@ -26,6 +26,7 @@
     string? TEM_RESINA_DE { get; set; }
     string? TEM_RESINA_PARA { get; set; }
     int? TEM_TEMPO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

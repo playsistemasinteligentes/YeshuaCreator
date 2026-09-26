@@ -11,9 +11,10 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct PlanoAmostralTesteCrudCommand : ICommand
+    public struct PlanoAmostralTesteCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public Decimal? GRP_TIPO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
@@ -23,6 +24,8 @@ namespace Command.Write
         public int? PAT_QTD_CAIXAS_ATE { get; set; }
         public int? PAT_N_AMOSTRAGEM { get; set; }
         public Decimal? PAT_PERCENT_ESPECIF { get; set; }
+ public string OperationalEntity => "PlanoAmostralTeste";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

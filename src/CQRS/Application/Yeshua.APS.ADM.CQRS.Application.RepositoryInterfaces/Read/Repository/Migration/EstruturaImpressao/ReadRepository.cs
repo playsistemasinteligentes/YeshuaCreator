@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByHTML_ESTRUTURA(string value );
         public bool ExistsByCLI_ID(string value );
         public bool ExistsByEST_DESCRICAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -37,6 +38,7 @@ namespace IRepository.Read
         public EstruturaImpressaoDTO FirstByHTML_ESTRUTURA(string value );
         public EstruturaImpressaoDTO FirstByCLI_ID(string value );
         public EstruturaImpressaoDTO FirstByEST_DESCRICAO(string value );
+        public EstruturaImpressaoDTO FirstByOperationalEntityId(string value );
         public EstruturaImpressaoDTO FirstByTenantID(int value );
         public EstruturaImpressaoDTO FirstByDeleted(bool value );
         public EstruturaImpressaoDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<EstruturaImpressaoDTO> GetAllByHTML_ESTRUTURA(string value );
         public IEnumerable<EstruturaImpressaoDTO> GetAllByCLI_ID(string value );
         public IEnumerable<EstruturaImpressaoDTO> GetAllByEST_DESCRICAO(string value );
+        public IEnumerable<EstruturaImpressaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EstruturaImpressaoDTO> GetAllByTenantID(int value );
         public IEnumerable<EstruturaImpressaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<EstruturaImpressaoDTO> GetAllByChanged(DateTime value );

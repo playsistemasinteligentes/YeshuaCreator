@@ -21,6 +21,7 @@ namespace Repositorio.Outputs
     public int gru_ind_id { get; set; }
     public int gru_id { get; set; }
     public int ind_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

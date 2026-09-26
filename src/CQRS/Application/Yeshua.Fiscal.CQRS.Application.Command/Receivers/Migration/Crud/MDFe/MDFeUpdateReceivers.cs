@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMDFe", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMDFeReceiver), commandName: "Command.Write.MDFeCrudCommand");
                  var mdfe = new MDFeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ChaveAcesso, c.Serie, c.Numero, c.UfCarregamento, c.UfDescarregamento, c.PlacaVeiculo, c.EmitidoEm, c.AutorizadoEm, c.IniciadoEm, c.EncerradoEm, c.CanceladoEm, c.Situacao);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfe.OperationalEntityId);
                  var domainResult = MDFeDomainBehavior.Apply(mdfe, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

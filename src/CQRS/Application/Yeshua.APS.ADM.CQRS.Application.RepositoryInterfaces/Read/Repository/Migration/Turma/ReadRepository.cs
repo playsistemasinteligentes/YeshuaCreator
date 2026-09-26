@@ -40,6 +40,7 @@ namespace IRepository.Read
         public bool ExistsByTURM_HORA_FIM_DIA6(DateTime value );
         public bool ExistsByTURM_HORA_INI_DIA7(DateTime value );
         public bool ExistsByTURM_HORA_FIM_DIA7(DateTime value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -60,6 +61,7 @@ namespace IRepository.Read
         public TurmaDTO FirstByTURM_HORA_FIM_DIA6(DateTime value );
         public TurmaDTO FirstByTURM_HORA_INI_DIA7(DateTime value );
         public TurmaDTO FirstByTURM_HORA_FIM_DIA7(DateTime value );
+        public TurmaDTO FirstByOperationalEntityId(string value );
         public TurmaDTO FirstByTenantID(int value );
         public TurmaDTO FirstByDeleted(bool value );
         public TurmaDTO FirstByChanged(DateTime value );
@@ -80,6 +82,7 @@ namespace IRepository.Read
         public IEnumerable<TurmaDTO> GetAllByTURM_HORA_FIM_DIA6(DateTime value );
         public IEnumerable<TurmaDTO> GetAllByTURM_HORA_INI_DIA7(DateTime value );
         public IEnumerable<TurmaDTO> GetAllByTURM_HORA_FIM_DIA7(DateTime value );
+        public IEnumerable<TurmaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TurmaDTO> GetAllByTenantID(int value );
         public IEnumerable<TurmaDTO> GetAllByDeleted(bool value );
         public IEnumerable<TurmaDTO> GetAllByChanged(DateTime value );

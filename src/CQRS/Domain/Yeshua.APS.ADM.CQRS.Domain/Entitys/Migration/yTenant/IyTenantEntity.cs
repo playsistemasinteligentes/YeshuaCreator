@@ -20,6 +20,7 @@
                 {
                     public interface IyTenantEntity
 {
+    string OperationalEntityId { get; }
     int? Id { get; set; }
     string CnpjCpf { get; set; }
     string Nome { get; set; }

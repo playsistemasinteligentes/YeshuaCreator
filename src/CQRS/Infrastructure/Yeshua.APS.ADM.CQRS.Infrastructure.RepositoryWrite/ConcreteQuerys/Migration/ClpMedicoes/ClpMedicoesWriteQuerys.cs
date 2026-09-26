@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirClpMedicoesQuery(IClpMedicoesEntity ClpMedicoes)
         {
-            this.Query = $@" INSERT INTO [ClpMedicoes] ([Id2], [MaquinaId], [DataInicio], [DataFim], [Emissao], [Quantidade], [Grupo], [Status], [TurnoId], [TurmaId], [IdLoteClp], [OcorrenciaId], [Fase], [ClpOrigem], [CLP_LOTE], [COMPACTA], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Id2, @MaquinaId, @DataInicio, @DataFim, @Emissao, @Quantidade, @Grupo, @Status, @TurnoId, @TurmaId, @IdLoteClp, @OcorrenciaId, @Fase, @ClpOrigem, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ClpMedicoes] ([Id2], [MaquinaId], [DataInicio], [DataFim], [Emissao], [Quantidade], [Grupo], [Status], [TurnoId], [TurmaId], [IdLoteClp], [OcorrenciaId], [Fase], [ClpOrigem], [CLP_LOTE], [COMPACTA], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Id2, @MaquinaId, @DataInicio, @DataFim, @Emissao, @Quantidade, @Grupo, @Status, @TurnoId, @TurmaId, @IdLoteClp, @OcorrenciaId, @Fase, @ClpOrigem, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id2 = ClpMedicoes.Id2,
@@ -51,6 +51,7 @@ namespace Query.Write
                 COMPACTA = ClpMedicoes.COMPACTA,
                 BOL_ID = ClpMedicoes.BOL_ID,
                 COR_SEQUENCIA = ClpMedicoes.COR_SEQUENCIA,
+                OperationalEntityId = ClpMedicoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -263,6 +264,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 COR_SEQUENCIA = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ClpMedicoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

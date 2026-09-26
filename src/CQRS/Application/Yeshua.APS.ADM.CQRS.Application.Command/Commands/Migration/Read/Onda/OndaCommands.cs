@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct OndaReadCommand : ICommandRead
+    public struct OndaReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public string? OND_ID { get; set; }
         public Decimal? OND_ESPESSURA { get; set; }
@@ -21,11 +21,14 @@ namespace Command.Read
         public int? OND_PROFUNDIDADE_VINCO { get; set; }
         public string? OND_ID_INTEGRACAO { get; set; }
         public int? VIN_ID { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "Onda";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -144,12 +144,15 @@ namespace Dominio.Schemas.CQRS
             foreach (var column in entityColumns)
             {
                 if (_commandType == CommandType.IEntity)
-                    sb.AppendLine($"    {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
+                    sb.AppendLine($"    {column.getCsharpType(true)} {column.Name} {{ get;{(column.IsImmutable ? string.Empty : " set;")} }}");
 
                 if (_commandType == CommandType.Entity)
                     sb.AppendLine($"    public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
 
-                if (_commandType == CommandType.EntityDecorator)
+                if (_commandType == CommandType.EntityDecorator && column.IsImmutable)
+                    sb.AppendLine($"    public {column.getCsharpType(true)} {column.Name} => _inner.{column.Name};");
+
+                if (_commandType == CommandType.EntityDecorator && !column.IsImmutable)
                 {
                     var trackingIndex = entityColumns.IndexOf(column);
                     var trackingBlock = trackingIndex < 64

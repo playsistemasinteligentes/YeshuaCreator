@@ -28,6 +28,7 @@
     DateTime? ORC_EMISSAO { get; set; }
     string? CLI_ID { get; set; }
     int VER_ID { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

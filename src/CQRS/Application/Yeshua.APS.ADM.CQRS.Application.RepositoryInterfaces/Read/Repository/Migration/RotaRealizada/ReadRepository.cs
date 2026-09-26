@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByROT_DATA_HORA(DateTime value );
         public bool ExistsByROT_LAT(Decimal value );
         public bool ExistsByROT_LONG(Decimal value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public RotaRealizadaDTO FirstByROT_DATA_HORA(DateTime value );
         public RotaRealizadaDTO FirstByROT_LAT(Decimal value );
         public RotaRealizadaDTO FirstByROT_LONG(Decimal value );
+        public RotaRealizadaDTO FirstByOperationalEntityId(string value );
         public RotaRealizadaDTO FirstByTenantID(int value );
         public RotaRealizadaDTO FirstByDeleted(bool value );
         public RotaRealizadaDTO FirstByChanged(DateTime value );
@@ -47,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<RotaRealizadaDTO> GetAllByROT_DATA_HORA(DateTime value );
         public IEnumerable<RotaRealizadaDTO> GetAllByROT_LAT(Decimal value );
         public IEnumerable<RotaRealizadaDTO> GetAllByROT_LONG(Decimal value );
+        public IEnumerable<RotaRealizadaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RotaRealizadaDTO> GetAllByTenantID(int value );
         public IEnumerable<RotaRealizadaDTO> GetAllByDeleted(bool value );
         public IEnumerable<RotaRealizadaDTO> GetAllByChanged(DateTime value );

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateColaborador", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateColaboradorReceiver), commandName: "Command.Write.ColaboradorCrudCommand");
                  var colaborador = new ColaboradorFactory(_logger, _domainTrackingPolicy).Create(context, c.COL_CPF, c.COL_NOME, c.COL_NASCIMENTO, c.COL_EMAIL, c.COL_MATRICULA, c.TURM_id);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", colaborador.OperationalEntityId);
                  var domainResult = ColaboradorDomainBehavior.Apply(colaborador, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

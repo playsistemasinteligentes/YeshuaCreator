@@ -24,6 +24,7 @@ namespace IQuery.Write
         QueryModel UpdateMEN_TYPE(string men_id, string value);
         QueryModel UpdateMEN_QTD_TRY_SEND(string men_id, Decimal value);
         QueryModel UpdateMEN_DATE_TRY_SEND(string men_id, DateTime value);
+        QueryModel UpdateOperationalEntityId(string men_id, string value);
         QueryModel UpdateTenantID(string men_id, int value);
         QueryModel UpdateDeleted(string men_id, bool value);
         QueryModel UpdateChanged(string men_id, DateTime value);

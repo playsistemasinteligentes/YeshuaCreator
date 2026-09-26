@@ -38,6 +38,7 @@ namespace IRepository.Read
         public bool ExistsByPayload(string value , bool TakeOffTenantID = false);
         public bool ExistsByRetryCount(int value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
@@ -54,6 +55,7 @@ namespace IRepository.Read
         public ySagaStepDTO FirstByPayload(string value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByRetryCount(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByUserId(int value , bool TakeOffTenantID = false);
@@ -70,6 +72,7 @@ namespace IRepository.Read
         public IEnumerable<ySagaStepDTO> GetAllByPayload(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByRetryCount(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);

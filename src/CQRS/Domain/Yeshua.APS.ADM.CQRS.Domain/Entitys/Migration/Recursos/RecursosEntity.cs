@@ -25,6 +25,7 @@
     public int? CAL_ID { get; set; }
     public string? REC_CONTROL_IP { get; set; }
     public string? GRE_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  CAL_ID = cal_id; 
  REC_CONTROL_IP = rec_control_ip; 
  GRE_ID = gre_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

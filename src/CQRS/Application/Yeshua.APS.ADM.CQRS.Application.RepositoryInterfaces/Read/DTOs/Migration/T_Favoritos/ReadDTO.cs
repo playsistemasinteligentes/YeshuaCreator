@@ -21,6 +21,7 @@ namespace Repositorio.Outputs
     public int idfavorito { get; set; }
     public int use_id { get; set; }
     public int id_indicador { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

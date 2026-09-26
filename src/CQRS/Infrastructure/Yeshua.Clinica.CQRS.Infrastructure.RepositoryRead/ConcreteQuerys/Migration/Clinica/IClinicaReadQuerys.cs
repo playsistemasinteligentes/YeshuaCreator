@@ -20,6 +20,7 @@ namespace IQuery.Read
         public QueryModel ExistsByNomeQuery(string value );
         public QueryModel ExistsByEnderecoQuery(string value );
         public QueryModel ExistsByTelefoneQuery(string value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -28,6 +29,7 @@ namespace IQuery.Read
         public QueryModel FirstByNomeQuery(string value );
         public QueryModel FirstByEnderecoQuery(string value );
         public QueryModel FirstByTelefoneQuery(string value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

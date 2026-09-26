@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTempoSetupOnduladeiraQuery(ITempoSetupOnduladeiraEntity TempoSetupOnduladeira)
         {
-            this.Query = $@" INSERT INTO [TempoSetupOnduladeira] ([OND_ID_DE], [OND_ID_PARA], [TEM_RESINA_DE], [TEM_RESINA_PARA], [TEM_TEMPO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TEM_ID] VALUES(@OND_ID_DE, @OND_ID_PARA, @TEM_RESINA_DE, @TEM_RESINA_PARA, @TEM_TEMPO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TempoSetupOnduladeira] ([OND_ID_DE], [OND_ID_PARA], [TEM_RESINA_DE], [TEM_RESINA_PARA], [TEM_TEMPO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TEM_ID] VALUES(@OND_ID_DE, @OND_ID_PARA, @TEM_RESINA_DE, @TEM_RESINA_PARA, @TEM_TEMPO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OND_ID_DE = TempoSetupOnduladeira.OND_ID_DE,
@@ -38,6 +38,7 @@ namespace Query.Write
                 TEM_RESINA_DE = TempoSetupOnduladeira.TEM_RESINA_DE,
                 TEM_RESINA_PARA = TempoSetupOnduladeira.TEM_RESINA_PARA,
                 TEM_TEMPO = TempoSetupOnduladeira.TEM_TEMPO,
+                OperationalEntityId = TempoSetupOnduladeira.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -107,6 +108,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TEM_TEMPO = value,
+                TEM_ID = tem_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int tem_id, string value)
+        {
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [OperationalEntityId] = @OperationalEntityId WHERE [TEM_ID] = @TEM_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 TEM_ID = tem_id,
             };
             return new QueryModel(this.Query, this.Parameters);

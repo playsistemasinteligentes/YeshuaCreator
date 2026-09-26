@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct TargetProdutoReadCommand : ICommandRead
+    public struct TargetProdutoReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? TAR_ID { get; set; }
         public int? MOV_ID { get; set; }
@@ -70,11 +70,14 @@ namespace Command.Read
         public DateTime? TAR_DATA_FINAL { get; set; }
         public string? TAR_APROVADO { get; set; }
         public int? TAR_TEMPO_PRODUZINDO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "TargetProduto";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

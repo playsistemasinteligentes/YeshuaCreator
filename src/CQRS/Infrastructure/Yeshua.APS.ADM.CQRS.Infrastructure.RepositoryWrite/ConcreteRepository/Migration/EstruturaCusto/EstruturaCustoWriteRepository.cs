@@ -126,6 +126,11 @@ namespace Input.Repository.EstruturaCusto
             var query = _query.UpdateFPR_SEQ_REPETICAO(est_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int est_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(est_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int est_id, int value)
         {
             var query = _query.UpdateTenantID(est_id, value);

@@ -31,6 +31,7 @@
     public string? NomeResponsavel { get; set; }
     public string? TelefoneResponsavel { get; set; }
     public string? Observacao { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -48,6 +49,7 @@
  NomeResponsavel = nomeresponsavel; 
  TelefoneResponsavel = telefoneresponsavel; 
  Observacao = observacao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct ItemTestavelCrudCommand : ICommand
+    public struct ItemTestavelCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int ITE_ID { get; set; }
@@ -22,10 +22,13 @@ namespace Command.Write
         public Decimal? ITE_VALOR_DA_CONDICIONAL { get; set; }
         public string? ITE_VALOR_CALCULADO_DA_CONDICIONAL { get; set; }
         public string? ITE_TIPO_AVALIACAO_FINAL { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "ItemTestavel";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

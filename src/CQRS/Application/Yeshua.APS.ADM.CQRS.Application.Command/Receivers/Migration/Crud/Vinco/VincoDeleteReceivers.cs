@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVinco", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVincoReceiver), commandName: "Command.Write.VincoCrudCommand");
                  var vinco = new VincoFactory(_logger, _domainTrackingPolicy).Create(context, c.VIN_ID, c.VIN_DESCRICAO, c.VIN_ID_DESLOCAMENTO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", vinco.OperationalEntityId);
                  var domainResult = VincoDomainBehavior.Apply(vinco, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

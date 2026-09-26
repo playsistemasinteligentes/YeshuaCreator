@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoInspecaoVisualReceiver), commandName: "Command.Write.TipoInspecaoVisualCrudCommand");
                  var tipoinspecaovisual = new TipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TIV_ID, c.TIV_NOME, c.TIV_DESCRICAO, c.TIV_FECHAMENTO, c.TIV_AMOSTRA_ALEATORIA, c.TIV_N_AMOSTRAS, c.TIV_MEDIDA, c.TIV_ESPECIFICACAO, c.TIV_TOL_MAIS, c.TIV_TOL_MENOS);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoinspecaovisual.OperationalEntityId);
                  var domainResult = TipoInspecaoVisualDomainBehavior.Apply(tipoinspecaovisual, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

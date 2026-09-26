@@ -81,6 +81,7 @@ namespace Repositorio.Outputs
     public Decimal fpr_tolerancia_menos { get; set; }
     public Decimal fpr_tolerancia_mais { get; set; }
     public DateTime fpr_data_encerramento { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

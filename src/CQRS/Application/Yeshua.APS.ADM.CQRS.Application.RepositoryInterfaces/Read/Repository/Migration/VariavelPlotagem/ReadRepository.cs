@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByVAR_ID(int value );
         public bool ExistsByPLO_ID(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public VariavelPlotagemDTO FirstById(int value );
         public VariavelPlotagemDTO FirstByVAR_ID(int value );
         public VariavelPlotagemDTO FirstByPLO_ID(int value );
+        public VariavelPlotagemDTO FirstByOperationalEntityId(string value );
         public VariavelPlotagemDTO FirstByTenantID(int value );
         public VariavelPlotagemDTO FirstByDeleted(bool value );
         public VariavelPlotagemDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<VariavelPlotagemDTO> GetAllById(int value );
         public IEnumerable<VariavelPlotagemDTO> GetAllByVAR_ID(int value );
         public IEnumerable<VariavelPlotagemDTO> GetAllByPLO_ID(int value );
+        public IEnumerable<VariavelPlotagemDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VariavelPlotagemDTO> GetAllByTenantID(int value );
         public IEnumerable<VariavelPlotagemDTO> GetAllByDeleted(bool value );
         public IEnumerable<VariavelPlotagemDTO> GetAllByChanged(DateTime value );

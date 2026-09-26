@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItenCarga", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItenCargaReceiver), commandName: "Command.Write.ItenCargaCrudCommand");
                  var itencarga = new ItenCargaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.ITC_ENTREGA_PLANEJADA, c.ITC_ENTREGA_REALIZADA, c.ITC_ORDEM_ENTREGA, c.ITC_QTD_PLANEJADA, c.ITC_QTD_REALIZADA, c.ORD_HASH_KEY, c.NOT_ID, c.NOT_EMISSAO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itencarga.OperationalEntityId);
                  var domainResult = ItenCargaDomainBehavior.Apply(itencarga, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

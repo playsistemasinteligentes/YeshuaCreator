@@ -24,6 +24,7 @@
     public string Codigo { get; set; }
     public string Nome { get; set; }
     public int Tipo { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  Codigo = codigo; 
  Nome = nome; 
  Tipo = tipo; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

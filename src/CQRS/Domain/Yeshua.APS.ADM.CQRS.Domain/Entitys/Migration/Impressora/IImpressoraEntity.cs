@@ -23,6 +23,7 @@
     int IMP_ID { get; set; }
     string? IMP_IP { get; set; }
     string? IMP_NOME { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -11,10 +11,11 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct TipoInspecaoVisualCrudCommand : ICommand
+    public struct TipoInspecaoVisualCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public int TIV_ID { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
@@ -28,6 +29,8 @@ namespace Command.Write
         public Decimal? TIV_ESPECIFICACAO { get; set; }
         public Decimal? TIV_TOL_MAIS { get; set; }
         public Decimal? TIV_TOL_MENOS { get; set; }
+ public string OperationalEntity => "TipoInspecaoVisual";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

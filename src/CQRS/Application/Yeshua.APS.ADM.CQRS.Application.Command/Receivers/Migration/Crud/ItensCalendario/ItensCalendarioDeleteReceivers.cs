@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItensCalendario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItensCalendarioReceiver), commandName: "Command.Write.ItensCalendarioCrudCommand");
                  var itenscalendario = new ItensCalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.ICA_ID, c.ICA_DATA_DE, c.ICA_DATA_ATE, c.ICA_OBSERVACAO, c.ICA_TIPO, c.URM_ID, c.URN_ID, c.CAL_ID, c.MAQ_ID, c.PRO_ID, c.ICA_LIMPESA_MAQUINA);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itenscalendario.OperationalEntityId);
                  var domainResult = ItensCalendarioDomainBehavior.Apply(itenscalendario, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -32,6 +32,7 @@ namespace IRepository.Read
         public bool ExistsByMEN_TYPE(string value );
         public bool ExistsByMEN_QTD_TRY_SEND(Decimal value );
         public bool ExistsByMEN_DATE_TRY_SEND(DateTime value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -44,6 +45,7 @@ namespace IRepository.Read
         public MensagemDTO FirstByMEN_TYPE(string value );
         public MensagemDTO FirstByMEN_QTD_TRY_SEND(Decimal value );
         public MensagemDTO FirstByMEN_DATE_TRY_SEND(DateTime value );
+        public MensagemDTO FirstByOperationalEntityId(string value );
         public MensagemDTO FirstByTenantID(int value );
         public MensagemDTO FirstByDeleted(bool value );
         public MensagemDTO FirstByChanged(DateTime value );
@@ -56,6 +58,7 @@ namespace IRepository.Read
         public IEnumerable<MensagemDTO> GetAllByMEN_TYPE(string value );
         public IEnumerable<MensagemDTO> GetAllByMEN_QTD_TRY_SEND(Decimal value );
         public IEnumerable<MensagemDTO> GetAllByMEN_DATE_TRY_SEND(DateTime value );
+        public IEnumerable<MensagemDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MensagemDTO> GetAllByTenantID(int value );
         public IEnumerable<MensagemDTO> GetAllByDeleted(bool value );
         public IEnumerable<MensagemDTO> GetAllByChanged(DateTime value );

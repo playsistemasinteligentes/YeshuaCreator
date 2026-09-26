@@ -29,6 +29,7 @@ namespace IRepository.Write
         void UpdatePRO_ID(int obs_id, string value);
         void UpdateROT_SEQ_TRANFORMACAO(int obs_id, int value);
         void UpdateOBS_INTEGRACAO(int obs_id, string value);
+        void UpdateOperationalEntityId(int obs_id, string value);
         void UpdateTenantID(int obs_id, int value);
         void UpdateDeleted(int obs_id, bool value);
         void UpdateChanged(int obs_id, DateTime value);

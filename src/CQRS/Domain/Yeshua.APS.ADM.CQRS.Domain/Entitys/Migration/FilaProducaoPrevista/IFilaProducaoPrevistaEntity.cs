@@ -82,6 +82,7 @@
     string? OCO_ID { get; set; }
     string? FPR_PESO_UNITARIO { get; set; }
     string? FPR_M2_UNITARIO { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

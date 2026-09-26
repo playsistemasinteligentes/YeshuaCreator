@@ -25,10 +25,11 @@
             public const ulong INF_VALOR = 1UL << 2;
             public const ulong MET_ID = 1UL << 3;
             public const ulong INF_DATA = 1UL << 4;
-            public const ulong TenantID = 1UL << 5;
-            public const ulong Deleted = 1UL << 6;
-            public const ulong Changed = 1UL << 7;
-            public const ulong UserId = 1UL << 8;
+            public const ulong OperationalEntityId = 1UL << 5;
+            public const ulong TenantID = 1UL << 6;
+            public const ulong Deleted = 1UL << 7;
+            public const ulong Changed = 1UL << 8;
+            public const ulong UserId = 1UL << 9;
         }
 
         public partial class InformacoesComplementaresDecorator : IInformacoesComplementaresEntity
@@ -127,6 +128,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

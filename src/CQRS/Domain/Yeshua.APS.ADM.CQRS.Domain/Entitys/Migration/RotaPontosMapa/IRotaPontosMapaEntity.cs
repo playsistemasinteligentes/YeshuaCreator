@@ -29,6 +29,7 @@
     int? ROT_ORDEM_ROTEIRO { get; set; }
     string? ROT_TIPO { get; set; }
     Decimal? ROT_DISTANCIA { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

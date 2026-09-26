@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteIndicadoresDepartamentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteIndicadoresDepartamentosReceiver), commandName: "Command.Write.IndicadoresDepartamentosCrudCommand");
                  var indicadoresdepartamentos = new IndicadoresDepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.INDDEP_ID, c.DEP_ID, c.IND_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", indicadoresdepartamentos.OperationalEntityId);
                  var domainResult = IndicadoresDepartamentosDomainBehavior.Apply(indicadoresdepartamentos, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

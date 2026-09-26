@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertClinica", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertClinicaReceiver), commandName: "Command.Write.ClinicaCrudCommand");
                  var clinica = new ClinicaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Endereco, c.Telefone);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", clinica.OperationalEntityId);
                  var domainResult = ClinicaDomainBehavior.Apply(clinica, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

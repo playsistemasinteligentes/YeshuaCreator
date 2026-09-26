@@ -40,6 +40,7 @@
     Decimal? FEE_QTD_TOTAL_PRODUCAO_AJUSTADA { get; set; }
     string? BOL_ID { get; set; }
     int? COR_SEQUENCIA { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InserirIndicadoresFatosDimencoesQuery(IIndicadoresFatosDimencoesEntity IndicadoresFatosDimencoes)
         {
-            this.Query = $@" INSERT INTO [IndicadoresFatosDimencoes] ([FAT_ID], [IND_ID], [DIM_ID], [FAT_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FAT_ID, @IND_ID, @DIM_ID, @FAT_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [IndicadoresFatosDimencoes] ([FAT_ID], [IND_ID], [DIM_ID], [FAT_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FAT_ID, @IND_ID, @DIM_ID, @FAT_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 FAT_ID = IndicadoresFatosDimencoes.FAT_ID,
                 IND_ID = IndicadoresFatosDimencoes.IND_ID,
                 DIM_ID = IndicadoresFatosDimencoes.DIM_ID,
                 FAT_DESCRICAO = IndicadoresFatosDimencoes.FAT_DESCRICAO,
+                OperationalEntityId = IndicadoresFatosDimencoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -95,6 +96,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 FAT_DESCRICAO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [IndicadoresFatosDimencoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

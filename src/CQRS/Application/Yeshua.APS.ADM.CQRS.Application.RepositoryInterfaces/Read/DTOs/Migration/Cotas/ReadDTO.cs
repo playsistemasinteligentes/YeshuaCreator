@@ -25,6 +25,7 @@ namespace Repositorio.Outputs
     public Decimal cot_valor { get; set; }
     public Decimal cot_ocupado { get; set; }
     public int rep_id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCorridasOnduladeiraEstudo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCorridasOnduladeiraEstudoReceiver), commandName: "Command.Write.CorridasOnduladeiraEstudoCrudCommand");
                  var corridasonduladeiraestudo = new CorridasOnduladeiraEstudoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.BOL_ID, c.BOL_ID_ORIGEM, c.PRO_LARGURA_PECA, c.PRO_LARGURA_PECA_PROGRAMADO, c.PRO_COMPRIMENTO_PECA, c.PRO_COMPRIMENTO_PECA_PROGRAMADO, c.PRO_UTILIZOU_REFILE_OBRIGATORIO, c.PRO_VINCOS_RECALCULADOS, c.COR_SOLVER, c.COR_GRAMATURA_PAPEIS_PROGRAMADOS, c.COR_CUSTO_PAPEIS_PROGRAMADOS, c.COR_GRAMATURA_RESINA_PROGRAMADOS, c.COR_CUSTO_RESINA_PROGRAMADOS, c.COR_TOLERANCIA_MENOS, c.COR_TOLERANCIA_MAIS, c.COR_PILHAS_POR_PALETE, c.COR_M_LINEAR_REALIZADO, c.PRO_ID_PALETE, c.COR_STATUS_PALETE, c.COR_GRUPO_PRODUTIVO);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", corridasonduladeiraestudo.OperationalEntityId);
                  var domainResult = CorridasOnduladeiraEstudoDomainBehavior.Apply(corridasonduladeiraestudo, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

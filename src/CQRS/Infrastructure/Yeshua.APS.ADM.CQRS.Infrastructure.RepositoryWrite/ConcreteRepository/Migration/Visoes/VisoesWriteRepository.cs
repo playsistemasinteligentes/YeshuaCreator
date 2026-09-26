@@ -66,6 +66,11 @@ namespace Input.Repository.Visoes
             var query = _query.UpdateCAB_ID(vis_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int vis_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(vis_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int vis_id, int value)
         {
             var query = _query.UpdateTenantID(vis_id, value);

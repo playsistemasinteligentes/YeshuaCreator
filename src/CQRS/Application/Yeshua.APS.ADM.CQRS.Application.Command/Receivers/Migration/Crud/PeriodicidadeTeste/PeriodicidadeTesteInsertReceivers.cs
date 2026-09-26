@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPeriodicidadeTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPeriodicidadeTesteReceiver), commandName: "Command.Write.PeriodicidadeTesteCrudCommand");
                  var periodicidadeteste = new PeriodicidadeTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.PER_QTD, c.UNI_ID, c.GRP_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", periodicidadeteste.OperationalEntityId);
                  var domainResult = PeriodicidadeTesteDomainBehavior.Apply(periodicidadeteste, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

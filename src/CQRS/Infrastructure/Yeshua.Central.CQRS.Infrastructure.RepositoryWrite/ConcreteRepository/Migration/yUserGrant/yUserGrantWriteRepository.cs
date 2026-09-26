@@ -51,6 +51,11 @@ namespace Input.Repository.yUserGrant
             var query = _query.DeleteyUserGrantQuery(yUserGrant);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdatePerfilId(int id, int value)
         {
             var query = _query.UpdatePerfilId(id, value);

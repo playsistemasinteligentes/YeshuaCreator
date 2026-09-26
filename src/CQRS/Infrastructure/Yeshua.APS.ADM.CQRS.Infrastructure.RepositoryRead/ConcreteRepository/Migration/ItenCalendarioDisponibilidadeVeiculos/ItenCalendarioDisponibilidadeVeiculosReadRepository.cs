@@ -132,6 +132,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -196,6 +204,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public ItenCalendarioDisponibilidadeVeiculosDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -255,6 +271,14 @@ namespace Read.Repository
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByIDV_QTD(int value )
         {
             var query = _query.FirstByIDV_QTDQuery(value );
+
+                var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<ItenCalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;

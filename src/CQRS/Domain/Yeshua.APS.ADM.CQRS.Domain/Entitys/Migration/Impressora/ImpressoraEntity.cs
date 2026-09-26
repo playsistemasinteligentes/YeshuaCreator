@@ -23,6 +23,7 @@
     public int IMP_ID { get; set; }
     public string? IMP_IP { get; set; }
     public string? IMP_NOME { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  IMP_ID = imp_id; 
  IMP_IP = imp_ip; 
  IMP_NOME = imp_nome; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

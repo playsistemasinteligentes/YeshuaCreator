@@ -29,6 +29,7 @@
     public string? UF { get; set; }
     public string? MunicipioCodigoIbge { get; set; }
     public string? EnderecoJson { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -44,6 +45,7 @@
  UF = uf; 
  MunicipioCodigoIbge = municipiocodigoibge; 
  EnderecoJson = enderecojson; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

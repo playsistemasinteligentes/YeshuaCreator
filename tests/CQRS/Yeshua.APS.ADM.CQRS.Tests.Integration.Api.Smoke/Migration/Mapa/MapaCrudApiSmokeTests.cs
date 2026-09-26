@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Mapa;
 
-[SmokeTestOrder(151)]
+[SmokeTestOrder(149)]
 public partial class MapaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Mapa/PostMapa";

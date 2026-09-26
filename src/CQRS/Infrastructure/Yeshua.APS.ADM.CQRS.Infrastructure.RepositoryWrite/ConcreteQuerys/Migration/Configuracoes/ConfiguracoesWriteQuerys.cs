@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirConfiguracoesQuery(IConfiguracoesEntity Configuracoes)
         {
-            this.Query = $@" INSERT INTO [Configuracoes] ([TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[CON_ID] VALUES(@TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Configuracoes] ([OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[CON_ID] VALUES(@OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = Configuracoes.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -48,6 +49,16 @@ namespace Query.Write
                 Changed = Configuracoes.Changed,
                 UserId = _executionContext.UserId,
                 CON_ID = Configuracoes.CON_ID,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int con_id, string value)
+        {
+            this.Query = $@" UPDATE [Configuracoes] SET [OperationalEntityId] = @OperationalEntityId WHERE [CON_ID] = @CON_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                CON_ID = con_id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

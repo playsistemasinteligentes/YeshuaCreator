@@ -68,10 +68,11 @@
             public const ulong MOV_GRUPO_CONTABIL = 1UL << 45;
             public const ulong FOR_ID = 1UL << 46;
             public const ulong CLI_ID = 1UL << 47;
-            public const ulong TenantID = 1UL << 48;
-            public const ulong Deleted = 1UL << 49;
-            public const ulong Changed = 1UL << 50;
-            public const ulong UserId = 1UL << 51;
+            public const ulong OperationalEntityId = 1UL << 48;
+            public const ulong TenantID = 1UL << 49;
+            public const ulong Deleted = 1UL << 50;
+            public const ulong Changed = 1UL << 51;
+            public const ulong UserId = 1UL << 52;
         }
 
         public partial class MovimentoEstoqueDecorator : IMovimentoEstoqueEntity
@@ -772,6 +773,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

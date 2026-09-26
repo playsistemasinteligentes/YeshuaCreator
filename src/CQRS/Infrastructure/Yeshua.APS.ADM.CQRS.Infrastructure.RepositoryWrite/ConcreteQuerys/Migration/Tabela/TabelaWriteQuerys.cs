@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirTabelaQuery(ITabelaEntity Tabela)
         {
-            this.Query = $@" INSERT INTO [Tabela] ([CODIGO], [NOME], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ID_TABELA] VALUES(@CODIGO, @NOME, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Tabela] ([CODIGO], [NOME], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ID_TABELA] VALUES(@CODIGO, @NOME, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CODIGO = Tabela.CODIGO,
                 NOME = Tabela.NOME,
+                OperationalEntityId = Tabela.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 NOME = value,
+                ID_TABELA = id_tabela,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id_tabela, string value)
+        {
+            this.Query = $@" UPDATE [Tabela] SET [OperationalEntityId] = @OperationalEntityId WHERE [ID_TABELA] = @ID_TABELA ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 ID_TABELA = id_tabela,
             };
             return new QueryModel(this.Query, this.Parameters);

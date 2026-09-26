@@ -21,6 +21,7 @@ namespace IQuery.Write
         QueryModel UpdateIPV_ID(int id, int value);
         QueryModel UpdateITI_ID(int id, int value);
         QueryModel UpdateRIV_STATUS(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -25,6 +25,7 @@
     public string PRO_ID { get; set; }
     public string CUS_ID { get; set; }
     public string PAR_VALOR { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  PRO_ID = pro_id; 
  CUS_ID = cus_id; 
  PAR_VALOR = par_valor; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

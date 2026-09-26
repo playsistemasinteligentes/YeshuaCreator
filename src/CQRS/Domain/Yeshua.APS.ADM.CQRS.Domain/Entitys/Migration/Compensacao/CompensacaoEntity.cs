@@ -44,6 +44,7 @@
     public int? COM_VINCO8_CONVERSAO { get; set; }
     public int? COM_VINCO9_CONVERSAO { get; set; }
     public int? COM_VINCO10_CONVERSAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -74,6 +75,7 @@
  COM_VINCO8_CONVERSAO = com_vinco8_conversao; 
  COM_VINCO9_CONVERSAO = com_vinco9_conversao; 
  COM_VINCO10_CONVERSAO = com_vinco10_conversao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

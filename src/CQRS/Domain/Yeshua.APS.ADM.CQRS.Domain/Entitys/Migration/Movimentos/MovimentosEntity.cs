@@ -26,6 +26,7 @@
     public int MOV_PLAID { get; set; }
     public int MOV_UNID { get; set; }
     public int? Tr_Unidade_UNI_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -38,6 +39,7 @@
  MOV_PLAID = mov_plaid; 
  MOV_UNID = mov_unid; 
  Tr_Unidade_UNI_ID = tr_unidade_uni_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -35,6 +35,7 @@ namespace IRepository.Write
         void UpdateLOGS_DATE(int logs_id, DateTime value);
         void UpdateUSE_ID(int logs_id, int value);
         void UpdateLOGS_ORIGEM(int logs_id, string value);
+        void UpdateOperationalEntityId(int logs_id, string value);
         void UpdateTenantID(int logs_id, int value);
         void UpdateDeleted(int logs_id, bool value);
         void UpdateChanged(int logs_id, DateTime value);

@@ -44,6 +44,7 @@ namespace IRepository.Read
         public bool ExistsByMensagemRetorno(string value );
         public bool ExistsByCriadoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -64,6 +65,7 @@ namespace IRepository.Read
         public EmissaoFiscalTransporteDocumentoDTO FirstByMensagemRetorno(string value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByCriadoEmUtc(DateTime value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByStatus(int value );
+        public EmissaoFiscalTransporteDocumentoDTO FirstByOperationalEntityId(string value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByTenantID(int value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByDeleted(bool value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByChanged(DateTime value );
@@ -84,6 +86,7 @@ namespace IRepository.Read
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByMensagemRetorno(string value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByCriadoEmUtc(DateTime value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByStatus(int value );
+        public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByTenantID(int value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByChanged(DateTime value );

@@ -188,6 +188,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -308,6 +316,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public CalendarioDisponibilidadeVeiculosDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<CalendarioDisponibilidadeVeiculosDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public CalendarioDisponibilidadeVeiculosDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -423,6 +439,14 @@ namespace Read.Repository
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_DOMINGO(int value )
         {
             var query = _query.FirstByCDV_DOMINGOQuery(value );
+
+                var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters).ToList();
                 return result;

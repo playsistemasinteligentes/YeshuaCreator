@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct BoletimEstudoReadCommand : ICommandRead
+    public struct BoletimEstudoReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string? BOL_ID { get; set; }
@@ -36,11 +36,14 @@ namespace Command.Read
         public Decimal? BOL_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
         public Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
         public int? BOL_REFILE_OBRIGATORIO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "BoletimEstudo";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

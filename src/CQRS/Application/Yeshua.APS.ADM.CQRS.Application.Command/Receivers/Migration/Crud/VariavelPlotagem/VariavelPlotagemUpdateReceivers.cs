@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateVariavelPlotagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateVariavelPlotagemReceiver), commandName: "Command.Write.VariavelPlotagemCrudCommand");
                  var variavelplotagem = new VariavelPlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VAR_ID, c.PLO_ID);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", variavelplotagem.OperationalEntityId);
                  var domainResult = VariavelPlotagemDomainBehavior.Apply(variavelplotagem, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

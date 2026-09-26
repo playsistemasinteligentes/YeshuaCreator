@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirFeedbackQuery(IFeedbackEntity Feedback)
         {
-            this.Query = $@" INSERT INTO [Feedback] ([DataInicial], [Datafinal], [MaquinaId], [OcorrenciaId], [TurnoId], [TurmaId], [UsuarioId], [OrderId], [ProdutoId], [Observacoes], [Grupo], [DiaTurma], [SequenciaTransformacao], [SequenciaRepeticao], [QuantidadePulsos], [QuantidadePecasPorPulso], [FEE_QTD_TOTAL_PRODUCAO_AJUSTADA], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@DataInicial, @Datafinal, @MaquinaId, @OcorrenciaId, @TurnoId, @TurmaId, @UsuarioId, @OrderId, @ProdutoId, @Observacoes, @Grupo, @DiaTurma, @SequenciaTransformacao, @SequenciaRepeticao, @QuantidadePulsos, @QuantidadePecasPorPulso, @FEE_QTD_TOTAL_PRODUCAO_AJUSTADA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Feedback] ([DataInicial], [Datafinal], [MaquinaId], [OcorrenciaId], [TurnoId], [TurmaId], [UsuarioId], [OrderId], [ProdutoId], [Observacoes], [Grupo], [DiaTurma], [SequenciaTransformacao], [SequenciaRepeticao], [QuantidadePulsos], [QuantidadePecasPorPulso], [FEE_QTD_TOTAL_PRODUCAO_AJUSTADA], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@DataInicial, @Datafinal, @MaquinaId, @OcorrenciaId, @TurnoId, @TurmaId, @UsuarioId, @OrderId, @ProdutoId, @Observacoes, @Grupo, @DiaTurma, @SequenciaTransformacao, @SequenciaRepeticao, @QuantidadePulsos, @QuantidadePecasPorPulso, @FEE_QTD_TOTAL_PRODUCAO_AJUSTADA, @BOL_ID, @COR_SEQUENCIA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 DataInicial = Feedback.DataInicial,
@@ -52,6 +52,7 @@ namespace Query.Write
                 FEE_QTD_TOTAL_PRODUCAO_AJUSTADA = Feedback.FEE_QTD_TOTAL_PRODUCAO_AJUSTADA,
                 BOL_ID = Feedback.BOL_ID,
                 COR_SEQUENCIA = Feedback.COR_SEQUENCIA,
+                OperationalEntityId = Feedback.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -275,6 +276,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 COR_SEQUENCIA = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Feedback] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

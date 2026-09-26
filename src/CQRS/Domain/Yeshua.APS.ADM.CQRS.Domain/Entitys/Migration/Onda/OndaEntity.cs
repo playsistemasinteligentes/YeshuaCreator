@@ -28,6 +28,7 @@
     public int? OND_PROFUNDIDADE_VINCO { get; set; }
     public string OND_ID_INTEGRACAO { get; set; }
     public int VIN_ID { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -42,6 +43,7 @@
  OND_PROFUNDIDADE_VINCO = ond_profundidade_vinco; 
  OND_ID_INTEGRACAO = ond_id_integracao; 
  VIN_ID = vin_id; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

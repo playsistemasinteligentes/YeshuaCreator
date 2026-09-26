@@ -30,12 +30,13 @@ namespace Query.Write
         }
         public QueryModel InserirMaquinaImpressoraQuery(IMaquinaImpressoraEntity MaquinaImpressora)
         {
-            this.Query = $@" INSERT INTO [MaquinaImpressora] ([MAQ_ID], [IMP_ID], [MAI_FACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[MAQ_IMP_ID] VALUES(@MAQ_ID, @IMP_ID, @MAI_FACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MaquinaImpressora] ([MAQ_ID], [IMP_ID], [MAI_FACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[MAQ_IMP_ID] VALUES(@MAQ_ID, @IMP_ID, @MAI_FACAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MAQ_ID = MaquinaImpressora.MAQ_ID,
                 IMP_ID = MaquinaImpressora.IMP_ID,
                 MAI_FACAO = MaquinaImpressora.MAI_FACAO,
+                OperationalEntityId = MaquinaImpressora.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -83,6 +84,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MAI_FACAO = value,
+                MAQ_IMP_ID = maq_imp_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int maq_imp_id, string value)
+        {
+            this.Query = $@" UPDATE [MaquinaImpressora] SET [OperationalEntityId] = @OperationalEntityId WHERE [MAQ_IMP_ID] = @MAQ_IMP_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 MAQ_IMP_ID = maq_imp_id,
             };
             return new QueryModel(this.Query, this.Parameters);

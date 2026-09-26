@@ -25,6 +25,7 @@
     public string? OBJ_DESCRICAO { get; set; }
     public string? OBJ_TIPO { get; set; }
     public string? OBJ_GRUPO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  OBJ_DESCRICAO = obj_descricao; 
  OBJ_TIPO = obj_tipo; 
  OBJ_GRUPO = obj_grupo; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

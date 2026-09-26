@@ -11,11 +11,12 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct TipoTesteReadCommand : ICommandRead
+    public struct TipoTesteReadCommand : ICommandRead, IOperationalTelemetryCommand
     {
         public Decimal? TT_ESPECIFICACAO { get; set; }
         public string? TT_ORIGEM_ESPECIFICACAO { get; set; }
         public string? TT_IMPRIME_NO_LAUDO { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
@@ -33,6 +34,8 @@ namespace Command.Read
         public int? TT_MAX_DEF_CRITICO { get; set; }
         public int? TT_MAX_DEF_GRAVE { get; set; }
  public Pagination Paginacao { get; set; }
+ public string OperationalEntity => "TipoTeste";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

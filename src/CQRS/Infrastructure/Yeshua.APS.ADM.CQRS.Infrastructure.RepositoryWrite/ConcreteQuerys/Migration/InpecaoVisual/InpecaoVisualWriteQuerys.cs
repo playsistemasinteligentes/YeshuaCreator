@@ -30,10 +30,11 @@ namespace Query.Write
         }
         public QueryModel InserirInpecaoVisualQuery(IInpecaoVisualEntity InpecaoVisual)
         {
-            this.Query = $@" INSERT INTO [InpecaoVisual] ([IPV_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IPV_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [InpecaoVisual] ([IPV_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IPV_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IPV_ID = InpecaoVisual.IPV_ID,
+                OperationalEntityId = InpecaoVisual.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -59,6 +60,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 IPV_ID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [InpecaoVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

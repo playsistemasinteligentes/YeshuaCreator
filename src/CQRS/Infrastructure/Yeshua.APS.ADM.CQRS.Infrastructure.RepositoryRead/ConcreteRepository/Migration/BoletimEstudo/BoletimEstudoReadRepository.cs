@@ -284,6 +284,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -500,6 +508,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public BoletimEstudoDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<BoletimEstudoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public BoletimEstudoDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -711,6 +727,14 @@ namespace Read.Repository
         public IEnumerable<BoletimEstudoDTO> GetAllByBOL_REFILE_OBRIGATORIO(int value )
         {
             var query = _query.FirstByBOL_REFILE_OBRIGATORIOQuery(value );
+
+                var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<BoletimEstudoDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<BoletimEstudoDTO>(query.Query,query.Parameters).ToList();
                 return result;

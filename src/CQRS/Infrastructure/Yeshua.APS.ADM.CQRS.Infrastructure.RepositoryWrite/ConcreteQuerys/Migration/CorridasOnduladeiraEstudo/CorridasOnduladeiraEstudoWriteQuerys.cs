@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCorridasOnduladeiraEstudoQuery(ICorridasOnduladeiraEstudoEntity CorridasOnduladeiraEstudo)
         {
-            this.Query = $@" INSERT INTO [CorridasOnduladeiraEstudo] ([BOL_ID], [BOL_ID_ORIGEM], [PRO_LARGURA_PECA], [PRO_LARGURA_PECA_PROGRAMADO], [PRO_COMPRIMENTO_PECA], [PRO_COMPRIMENTO_PECA_PROGRAMADO], [PRO_UTILIZOU_REFILE_OBRIGATORIO], [PRO_VINCOS_RECALCULADOS], [COR_SOLVER], [COR_GRAMATURA_PAPEIS_PROGRAMADOS], [COR_CUSTO_PAPEIS_PROGRAMADOS], [COR_GRAMATURA_RESINA_PROGRAMADOS], [COR_CUSTO_RESINA_PROGRAMADOS], [COR_TOLERANCIA_MENOS], [COR_TOLERANCIA_MAIS], [COR_PILHAS_POR_PALETE], [COR_M_LINEAR_REALIZADO], [PRO_ID_PALETE], [COR_STATUS_PALETE], [COR_GRUPO_PRODUTIVO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@BOL_ID, @BOL_ID_ORIGEM, @PRO_LARGURA_PECA, @PRO_LARGURA_PECA_PROGRAMADO, @PRO_COMPRIMENTO_PECA, @PRO_COMPRIMENTO_PECA_PROGRAMADO, @PRO_UTILIZOU_REFILE_OBRIGATORIO, @PRO_VINCOS_RECALCULADOS, @COR_SOLVER, @COR_GRAMATURA_PAPEIS_PROGRAMADOS, @COR_CUSTO_PAPEIS_PROGRAMADOS, @COR_GRAMATURA_RESINA_PROGRAMADOS, @COR_CUSTO_RESINA_PROGRAMADOS, @COR_TOLERANCIA_MENOS, @COR_TOLERANCIA_MAIS, @COR_PILHAS_POR_PALETE, @COR_M_LINEAR_REALIZADO, @PRO_ID_PALETE, @COR_STATUS_PALETE, @COR_GRUPO_PRODUTIVO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CorridasOnduladeiraEstudo] ([BOL_ID], [BOL_ID_ORIGEM], [PRO_LARGURA_PECA], [PRO_LARGURA_PECA_PROGRAMADO], [PRO_COMPRIMENTO_PECA], [PRO_COMPRIMENTO_PECA_PROGRAMADO], [PRO_UTILIZOU_REFILE_OBRIGATORIO], [PRO_VINCOS_RECALCULADOS], [COR_SOLVER], [COR_GRAMATURA_PAPEIS_PROGRAMADOS], [COR_CUSTO_PAPEIS_PROGRAMADOS], [COR_GRAMATURA_RESINA_PROGRAMADOS], [COR_CUSTO_RESINA_PROGRAMADOS], [COR_TOLERANCIA_MENOS], [COR_TOLERANCIA_MAIS], [COR_PILHAS_POR_PALETE], [COR_M_LINEAR_REALIZADO], [PRO_ID_PALETE], [COR_STATUS_PALETE], [COR_GRUPO_PRODUTIVO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@BOL_ID, @BOL_ID_ORIGEM, @PRO_LARGURA_PECA, @PRO_LARGURA_PECA_PROGRAMADO, @PRO_COMPRIMENTO_PECA, @PRO_COMPRIMENTO_PECA_PROGRAMADO, @PRO_UTILIZOU_REFILE_OBRIGATORIO, @PRO_VINCOS_RECALCULADOS, @COR_SOLVER, @COR_GRAMATURA_PAPEIS_PROGRAMADOS, @COR_CUSTO_PAPEIS_PROGRAMADOS, @COR_GRAMATURA_RESINA_PROGRAMADOS, @COR_CUSTO_RESINA_PROGRAMADOS, @COR_TOLERANCIA_MENOS, @COR_TOLERANCIA_MAIS, @COR_PILHAS_POR_PALETE, @COR_M_LINEAR_REALIZADO, @PRO_ID_PALETE, @COR_STATUS_PALETE, @COR_GRUPO_PRODUTIVO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 BOL_ID = CorridasOnduladeiraEstudo.BOL_ID,
@@ -53,6 +53,7 @@ namespace Query.Write
                 PRO_ID_PALETE = CorridasOnduladeiraEstudo.PRO_ID_PALETE,
                 COR_STATUS_PALETE = CorridasOnduladeiraEstudo.COR_STATUS_PALETE,
                 COR_GRUPO_PRODUTIVO = CorridasOnduladeiraEstudo.COR_GRUPO_PRODUTIVO,
+                OperationalEntityId = CorridasOnduladeiraEstudo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -287,6 +288,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 COR_GRUPO_PRODUTIVO = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CorridasOnduladeiraEstudo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

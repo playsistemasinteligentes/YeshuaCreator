@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IUnidadeEntity unidade);
         void UpdateDEESCRICAO(int uni_id, string value);
         void UpdateUN(int uni_id, string value);
+        void UpdateOperationalEntityId(int uni_id, string value);
         void UpdateTenantID(int uni_id, int value);
         void UpdateDeleted(int uni_id, bool value);
         void UpdateChanged(int uni_id, DateTime value);

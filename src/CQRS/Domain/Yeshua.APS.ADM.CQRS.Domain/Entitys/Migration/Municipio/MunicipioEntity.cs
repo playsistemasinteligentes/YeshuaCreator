@@ -30,6 +30,7 @@
     public string? MUN_CODIGO_SIAFI { get; set; }
     public string? MUN_CODIGO_CNPJ { get; set; }
     public Decimal? MUN_DISTANCIA_KM { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -46,6 +47,7 @@
  MUN_CODIGO_SIAFI = mun_codigo_siafi; 
  MUN_CODIGO_CNPJ = mun_codigo_cnpj; 
  MUN_DISTANCIA_KM = mun_distancia_km; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

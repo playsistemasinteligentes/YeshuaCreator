@@ -11,7 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
-    public struct SemaforoCrudCommand : ICommand
+    public struct SemaforoCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int? Id { get; set; }
         public string SEM_ID { get; set; }
@@ -19,10 +19,13 @@ namespace Command.Write
         public string? SEM_ORIGEM { get; set; }
         public DateTime? SEM_EMISSAO { get; set; }
         public string? SEM_ID_CONEXAO { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+ public string OperationalEntity => "Semaforo";
+ public string? OperationalRecordId => OperationalEntityId;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

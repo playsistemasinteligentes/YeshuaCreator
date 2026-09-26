@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRecursosQuery(IRecursosEntity Recursos)
         {
-            this.Query = $@" INSERT INTO [Recursos] ([REC_ID], [REC_DESCRICAO], [CAL_ID], [REC_CONTROL_IP], [GRE_ID], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@REC_ID, @REC_DESCRICAO, @CAL_ID, @REC_CONTROL_IP, @GRE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Recursos] ([REC_ID], [REC_DESCRICAO], [CAL_ID], [REC_CONTROL_IP], [GRE_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@REC_ID, @REC_DESCRICAO, @CAL_ID, @REC_CONTROL_IP, @GRE_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 REC_ID = Recursos.REC_ID,
@@ -38,6 +38,7 @@ namespace Query.Write
                 CAL_ID = Recursos.CAL_ID,
                 REC_CONTROL_IP = Recursos.REC_CONTROL_IP,
                 GRE_ID = Recursos.GRE_ID,
+                OperationalEntityId = Recursos.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -96,6 +97,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 GRE_ID = value,
+                REC_ID = rec_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string rec_id, string value)
+        {
+            this.Query = $@" UPDATE [Recursos] SET [OperationalEntityId] = @OperationalEntityId WHERE [REC_ID] = @REC_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 REC_ID = rec_id,
             };
             return new QueryModel(this.Query, this.Parameters);

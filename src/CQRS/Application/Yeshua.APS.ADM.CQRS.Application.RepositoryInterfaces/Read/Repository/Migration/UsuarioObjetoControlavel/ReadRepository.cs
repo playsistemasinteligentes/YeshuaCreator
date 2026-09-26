@@ -29,6 +29,7 @@ namespace IRepository.Read
         public bool ExistsByUSE_ID(int value );
         public bool ExistsByOBJ_ID(string value );
         public bool ExistsByUSU_OBJETO_ACAO(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -37,6 +38,7 @@ namespace IRepository.Read
         public UsuarioObjetoControlavelDTO FirstByUSE_ID(int value );
         public UsuarioObjetoControlavelDTO FirstByOBJ_ID(string value );
         public UsuarioObjetoControlavelDTO FirstByUSU_OBJETO_ACAO(string value );
+        public UsuarioObjetoControlavelDTO FirstByOperationalEntityId(string value );
         public UsuarioObjetoControlavelDTO FirstByTenantID(int value );
         public UsuarioObjetoControlavelDTO FirstByDeleted(bool value );
         public UsuarioObjetoControlavelDTO FirstByChanged(DateTime value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByUSE_ID(int value );
         public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByOBJ_ID(string value );
         public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByUSU_OBJETO_ACAO(string value );
+        public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByTenantID(int value );
         public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByDeleted(bool value );
         public IEnumerable<UsuarioObjetoControlavelDTO> GetAllByChanged(DateTime value );

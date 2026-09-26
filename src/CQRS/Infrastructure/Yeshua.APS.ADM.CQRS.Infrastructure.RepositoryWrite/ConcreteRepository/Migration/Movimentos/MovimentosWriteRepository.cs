@@ -76,6 +76,11 @@ namespace Input.Repository.Movimentos
             var query = _query.UpdateTr_Unidade_UNI_ID(mov_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateOperationalEntityId(int mov_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(mov_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int mov_id, int value)
         {
             var query = _query.UpdateTenantID(mov_id, value);

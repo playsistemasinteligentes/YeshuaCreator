@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep)
         {
-            this.Query = $@" INSERT INTO [ySagaStep] ([SagaId], [StepKey], [IndexOrder], [CorrelationId], [Status], [ExecutionCount], [LastExecutionAt], [CompletedAt], [ErrorMessage], [Payload], [RetryCount], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SagaId, @StepKey, @IndexOrder, @CorrelationId, @Status, @ExecutionCount, @LastExecutionAt, @CompletedAt, @ErrorMessage, @Payload, @RetryCount, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ySagaStep] ([SagaId], [StepKey], [IndexOrder], [CorrelationId], [Status], [ExecutionCount], [LastExecutionAt], [CompletedAt], [ErrorMessage], [Payload], [RetryCount], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SagaId, @StepKey, @IndexOrder, @CorrelationId, @Status, @ExecutionCount, @LastExecutionAt, @CompletedAt, @ErrorMessage, @Payload, @RetryCount, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SagaId = ySagaStep.SagaId,
@@ -45,6 +45,7 @@ namespace Query.Write
                 Payload = ySagaStep.Payload,
                 RetryCount = ySagaStep.RetryCount,
                 TenantID = _executionContext.TenantID,
+                OperationalEntityId = ySagaStep.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
@@ -189,6 +190,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 TenantID = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySagaStep] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

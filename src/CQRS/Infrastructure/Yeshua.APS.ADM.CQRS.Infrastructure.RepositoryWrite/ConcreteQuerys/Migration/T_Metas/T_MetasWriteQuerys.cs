@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_MetasQuery(IT_MetasEntity T_Metas)
         {
-            this.Query = $@" INSERT INTO [T_Metas] ([MET_DTINICIO], [MET_DTFIM], [MET_ALVO], [MET_TIPOALVO], [IND_ID], [MET_RANGE01], [MET_RANGE02], [MET_RANGE03], [DIM_ID], [FAT_ID], [DIM_SUBDIMENSAO_ID], [PER_ID], [DOM_EMPRESA], [DOM_FILIAL], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[MET_ID] VALUES(@MET_DTINICIO, @MET_DTFIM, @MET_ALVO, @MET_TIPOALVO, @IND_ID, @MET_RANGE01, @MET_RANGE02, @MET_RANGE03, @DIM_ID, @FAT_ID, @DIM_SUBDIMENSAO_ID, @PER_ID, @DOM_EMPRESA, @DOM_FILIAL, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Metas] ([MET_DTINICIO], [MET_DTFIM], [MET_ALVO], [MET_TIPOALVO], [IND_ID], [MET_RANGE01], [MET_RANGE02], [MET_RANGE03], [DIM_ID], [FAT_ID], [DIM_SUBDIMENSAO_ID], [PER_ID], [DOM_EMPRESA], [DOM_FILIAL], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[MET_ID] VALUES(@MET_DTINICIO, @MET_DTFIM, @MET_ALVO, @MET_TIPOALVO, @IND_ID, @MET_RANGE01, @MET_RANGE02, @MET_RANGE03, @DIM_ID, @FAT_ID, @DIM_SUBDIMENSAO_ID, @PER_ID, @DOM_EMPRESA, @DOM_FILIAL, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MET_DTINICIO = T_Metas.MET_DTINICIO,
@@ -47,6 +47,7 @@ namespace Query.Write
                 PER_ID = T_Metas.PER_ID,
                 DOM_EMPRESA = T_Metas.DOM_EMPRESA,
                 DOM_FILIAL = T_Metas.DOM_FILIAL,
+                OperationalEntityId = T_Metas.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -215,6 +216,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 DOM_FILIAL = value,
+                MET_ID = met_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int met_id, string value)
+        {
+            this.Query = $@" UPDATE [T_Metas] SET [OperationalEntityId] = @OperationalEntityId WHERE [MET_ID] = @MET_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 MET_ID = met_id,
             };
             return new QueryModel(this.Query, this.Parameters);

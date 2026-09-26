@@ -84,6 +84,7 @@ namespace IRepository.Write
         void UpdateFPR_TOLERANCIA_MENOS(int id, Decimal value);
         void UpdateFPR_TOLERANCIA_MAIS(int id, Decimal value);
         void UpdateFPR_DATA_ENCERRAMENTO(int id, DateTime value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

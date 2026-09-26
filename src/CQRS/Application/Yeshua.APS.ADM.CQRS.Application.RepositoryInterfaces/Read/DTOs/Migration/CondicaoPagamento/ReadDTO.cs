@@ -24,6 +24,7 @@ namespace Repositorio.Outputs
     public int con_parcelas { get; set; }
     public Decimal con_valor_acrecimo { get; set; }
     public string con_integracao_erp { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

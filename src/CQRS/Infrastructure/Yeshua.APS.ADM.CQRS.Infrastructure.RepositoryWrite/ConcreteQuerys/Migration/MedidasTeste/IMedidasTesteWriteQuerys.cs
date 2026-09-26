@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateMDT_VALOR_ESPERADO(int id, Decimal value);
         QueryModel UpdateMDT_ENCONTRADO(int id, Decimal value);
         QueryModel UpdateUNI_ID(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

@@ -24,6 +24,7 @@
     public string? HTML_ESTRUTURA { get; set; }
     public string? CLI_ID { get; set; }
     public string? EST_DESCRICAO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -34,6 +35,7 @@
  HTML_ESTRUTURA = html_estrutura; 
  CLI_ID = cli_id; 
  EST_DESCRICAO = est_descricao; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

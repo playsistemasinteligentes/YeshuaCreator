@@ -28,6 +28,7 @@ namespace IQuery.Write
         QueryModel UpdateValorDocumento(int id, Decimal value);
         QueryModel UpdatePesoBruto(int id, Decimal value);
         QueryModel UpdateSnapshotJson(int id, string value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

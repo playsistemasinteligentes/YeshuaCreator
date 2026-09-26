@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItensEstruturaImpressao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItensEstruturaImpressaoReceiver), commandName: "Command.Write.ItensEstruturaImpressaoCrudCommand");
                  var itensestruturaimpressao = new ItensEstruturaImpressaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IES_CUSTOM_FONT_SIZE);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itensestruturaimpressao.OperationalEntityId);
                  var domainResult = ItensEstruturaImpressaoDomainBehavior.Apply(itensestruturaimpressao, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

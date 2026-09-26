@@ -49,6 +49,7 @@ namespace Repositorio.Outputs
     public string oco_id { get; set; } = string.Empty;
     public string car_id_juntada { get; set; } = string.Empty;
     public string car_observacao_otimizador { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InserirRotaRealizadaQuery(IRotaRealizadaEntity RotaRealizada)
         {
-            this.Query = $@" INSERT INTO [RotaRealizada] ([CAR_ID], [ROT_DATA_HORA], [ROT_LAT], [ROT_LONG], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ROT_ID] VALUES(@CAR_ID, @ROT_DATA_HORA, @ROT_LAT, @ROT_LONG, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RotaRealizada] ([CAR_ID], [ROT_DATA_HORA], [ROT_LAT], [ROT_LONG], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ROT_ID] VALUES(@CAR_ID, @ROT_DATA_HORA, @ROT_LAT, @ROT_LONG, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = RotaRealizada.CAR_ID,
                 ROT_DATA_HORA = RotaRealizada.ROT_DATA_HORA,
                 ROT_LAT = RotaRealizada.ROT_LAT,
                 ROT_LONG = RotaRealizada.ROT_LONG,
+                OperationalEntityId = RotaRealizada.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -95,6 +96,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ROT_LONG = value,
+                ROT_ID = rot_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int rot_id, string value)
+        {
+            this.Query = $@" UPDATE [RotaRealizada] SET [OperationalEntityId] = @OperationalEntityId WHERE [ROT_ID] = @ROT_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 ROT_ID = rot_id,
             };
             return new QueryModel(this.Query, this.Parameters);

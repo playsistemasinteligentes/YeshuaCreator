@@ -50,6 +50,7 @@ namespace Command.Receivers.Write
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePerfil", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePerfilReceiver), commandName: "Command.Write.PerfilCrudCommand");
                  var perfil = new PerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.PER_ID, c.PER_NOME);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", perfil.OperationalEntityId);
                  var domainResult = PerfilDomainBehavior.Apply(perfil, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

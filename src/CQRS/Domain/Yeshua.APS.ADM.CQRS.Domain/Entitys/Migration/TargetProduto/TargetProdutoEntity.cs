@@ -77,6 +77,7 @@
     public DateTime? TAR_DATA_FINAL { get; set; }
     public string? TAR_APROVADO { get; set; }
     public int? TAR_TEMPO_PRODUZINDO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -140,6 +141,7 @@
  TAR_DATA_FINAL = tar_data_final.HasValue && tar_data_final.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : tar_data_final; 
  TAR_APROVADO = tar_aprovado; 
  TAR_TEMPO_PRODUZINDO = tar_tempo_produzindo; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

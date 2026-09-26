@@ -35,6 +35,7 @@ namespace IRepository.Read
         public bool ExistsByNomeResponsavel(string value );
         public bool ExistsByTelefoneResponsavel(string value );
         public bool ExistsByObservacao(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -50,6 +51,7 @@ namespace IRepository.Read
         public PacienteDTO FirstByNomeResponsavel(string value );
         public PacienteDTO FirstByTelefoneResponsavel(string value );
         public PacienteDTO FirstByObservacao(string value );
+        public PacienteDTO FirstByOperationalEntityId(string value );
         public PacienteDTO FirstByTenantID(int value );
         public PacienteDTO FirstByDeleted(bool value );
         public PacienteDTO FirstByChanged(DateTime value );
@@ -65,6 +67,7 @@ namespace IRepository.Read
         public IEnumerable<PacienteDTO> GetAllByNomeResponsavel(string value );
         public IEnumerable<PacienteDTO> GetAllByTelefoneResponsavel(string value );
         public IEnumerable<PacienteDTO> GetAllByObservacao(string value );
+        public IEnumerable<PacienteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PacienteDTO> GetAllByTenantID(int value );
         public IEnumerable<PacienteDTO> GetAllByDeleted(bool value );
         public IEnumerable<PacienteDTO> GetAllByChanged(DateTime value );

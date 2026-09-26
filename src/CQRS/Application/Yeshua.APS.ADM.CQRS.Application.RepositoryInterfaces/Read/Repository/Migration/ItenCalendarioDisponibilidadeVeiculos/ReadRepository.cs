@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByCDV_ID(int value );
         public bool ExistsByTIP_ID(int value );
         public bool ExistsByIDV_QTD(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByCDV_ID(int value );
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByTIP_ID(int value );
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByIDV_QTD(int value );
+        public ItenCalendarioDisponibilidadeVeiculosDTO FirstByOperationalEntityId(string value );
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByTenantID(int value );
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByDeleted(bool value );
         public ItenCalendarioDisponibilidadeVeiculosDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_ID(int value );
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByTIP_ID(int value );
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByIDV_QTD(int value );
+        public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByTenantID(int value );
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItenCalendarioDisponibilidadeVeiculosDTO> GetAllByChanged(DateTime value );

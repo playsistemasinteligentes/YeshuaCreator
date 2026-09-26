@@ -24,6 +24,7 @@ namespace IRepository.Write
         void Delete(IConsultasEntity consultas);
         void UpdateCON_CASAS_DECIMAIS(int id, string value);
         void UpdateCON_CONEXAO(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

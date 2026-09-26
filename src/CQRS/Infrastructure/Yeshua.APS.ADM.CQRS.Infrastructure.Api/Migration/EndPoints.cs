@@ -58,6 +58,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ROTINA", title = "ROTINA" },
                     new { name = "HISTORICO", title = "HISTORICO" },
                     new { name = "CHAVE", title = "CHAVE" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -94,6 +95,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "BOL_CUSTO_RESINA_PROGRAMADOS", title = "BOL CUSTO RESINA PROGRAMADOS" },
                     new { name = "BOL_REFILE_OBRIGATORIO", title = "BOL REFILE OBRIGATORIO" },
                     new { name = "BOL_OBS", title = "BOL OBS" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -129,6 +131,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "BOL_GRAMATURA_RESINA_PROGRAMADOS", title = "BOL GRAMATURA RESINA PROGRAMADOS" },
                     new { name = "BOL_CUSTO_RESINA_PROGRAMADOS", title = "BOL CUSTO RESINA PROGRAMADOS" },
                     new { name = "BOL_REFILE_OBRIGATORIO", title = "BOL REFILE OBRIGATORIO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -145,6 +148,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CAB_DESC", title = "CAB DESC" },
                     new { name = "CAB_STATUS", title = "CAB STATUS" },
                     new { name = "USE_ID", title = "USE ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -160,6 +164,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CAL_ID", title = "CAL ID" },
                     new { name = "CAL_DESCRICAO", title = "CAL DESCRICAO" },
                     new { name = "CAL_DIVIDE_DIA_EM", title = "CAL DIVIDE DIA EM" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -183,6 +188,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CDV_SEXTA", title = "CDV SEXTA" },
                     new { name = "CDV_SABADO", title = "CDV SABADO" },
                     new { name = "CDV_DOMINGO", title = "CDV DOMINGO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -203,6 +209,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CAN_IMG", title = "CAN IMG" },
                     new { name = "CAN_LAT_ENTREGA", title = "CAN LAT ENTREGA" },
                     new { name = "CAN_LONG_ENTREGA", title = "CAN LONG ENTREGA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -256,6 +263,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CAR_DATA_AGENCIAMENTO", title = "CAR DATA AGENCIAMENTO" },
                     new { name = "TURN_ID", title = "TURN ID" },
                     new { name = "TURM_ID", title = "TURM ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -319,6 +327,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "OCO_ID", title = "OCO ID" },
                     new { name = "CAR_ID_JUNTADA", title = "CAR ID JUNTADA" },
                     new { name = "CAR_OBSERVACAO_OTIMIZADOR", title = "CAR OBSERVACAO OTIMIZADOR" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -334,6 +343,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "RGO_ID", title = "RGO ID" },
                     new { name = "RGO_DESCRICAO", title = "RGO DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -390,6 +400,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CLI_INTEGRACAO_ERP", title = "CLI INTEGRACAO ERP" },
                     new { name = "CLI_LATITUDE_ENTREGA", title = "CLI LATITUDE ENTREGA" },
                     new { name = "CLI_LONGITUDE_ENTREGA", title = "CLI LONGITUDE ENTREGA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -421,6 +432,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "COMPACTA", title = "COMPACTA" },
                     new { name = "BOL_ID", title = "BOL ID" },
                     new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -451,6 +463,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "COMPACTA", title = "COMPACTA" },
                     new { name = "BOL_ID", title = "BOL ID" },
                     new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -469,6 +482,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "COL_EMAIL", title = "COL EMAIL" },
                     new { name = "COL_MATRICULA", title = "COL MATRICULA" },
                     new { name = "TURM_id", title = "TURM id" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -505,6 +519,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "COM_VINCO8_CONVERSAO", title = "COM VINCO8 CONVERSAO" },
                     new { name = "COM_VINCO9_CONVERSAO", title = "COM VINCO9 CONVERSAO" },
                     new { name = "COM_VINCO10_CONVERSAO", title = "COM VINCO10 CONVERSAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -523,6 +538,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CON_PARCELAS", title = "CON PARCELAS" },
                     new { name = "CON_VALOR_ACRECIMO", title = "CON VALOR ACRECIMO" },
                     new { name = "CON_INTEGRACAO_ERP", title = "CON INTEGRACAO ERP" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -536,6 +552,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 fields = new[]
                 {
                     new { name = "CON_ID", title = "CON ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -575,6 +592,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "CON_CASAS_DECIMAIS", title = "CON CASAS DECIMAIS" },
                     new { name = "CON_CONEXAO", title = "CON CONEXAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -590,6 +608,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "CON_ID", title = "CON ID" },
                     new { name = "GRU_ID", title = "GRU ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -605,6 +624,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "CON_ID", title = "CON ID" },
                     new { name = "IND_ID", title = "IND ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -621,6 +641,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "COR_PERCENTUAL_INI", title = "COR PERCENTUAL INI" },
                     new { name = "COR_PERCENTUAL_FIM", title = "COR PERCENTUAL FIM" },
                     new { name = "COR_DESCRICAO", title = "COR DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -654,6 +675,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PRO_ID_PALETE", title = "PRO ID PALETE" },
                     new { name = "COR_STATUS_PALETE", title = "COR STATUS PALETE" },
                     new { name = "COR_GRUPO_PRODUTIVO", title = "COR GRUPO PRODUTIVO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -705,6 +727,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PRO_ID_PALETE", title = "PRO ID PALETE" },
                     new { name = "COR_STATUS_PALETE", title = "COR STATUS PALETE" },
                     new { name = "COR_GRUPO_PRODUTIVO", title = "COR GRUPO PRODUTIVO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -724,6 +747,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "COT_VALOR", title = "COT VALOR" },
                     new { name = "COT_OCUPADO", title = "COT OCUPADO" },
                     new { name = "REP_ID", title = "REP ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -738,6 +762,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "END_ID", title = "END ID" },
                     new { name = "END_GRUPO", title = "END GRUPO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -753,6 +778,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "EQU_ID", title = "EQU ID" },
                     new { name = "EQU_HIERARQUIA_SEQ_TRANSFORMACAO", title = "EQU HIERARQUIA SEQ TRANSFORMACAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -770,6 +796,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EST_DESCRICAO", title = "EST DESCRICAO" },
                     new { name = "EST_ID_LIGACAO_PONTO_A", title = "EST ID LIGACAO PONTO A" },
                     new { name = "EST_ID_LIGACAO_PONTO_B", title = "EST ID LIGACAO PONTO B" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -798,6 +825,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EST_BASE_PRODUCAO", title = "EST BASE PRODUCAO" },
                     new { name = "EST_NIVEL", title = "EST NIVEL" },
                     new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -814,6 +842,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "HTML_ESTRUTURA", title = "HTML ESTRUTURA" },
                     new { name = "CLI_ID", title = "CLI ID" },
                     new { name = "EST_DESCRICAO", title = "EST DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -835,6 +864,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EST_BASE_PRODUCAO", title = "EST BASE PRODUCAO" },
                     new { name = "EST_TIPO_REQUISICAO", title = "EST TIPO REQUISICAO" },
                     new { name = "EST_CODIGO_DE_EXCECAO", title = "EST CODIGO DE EXCECAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -870,6 +900,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ETI_IMPRIMIR_ATE", title = "ETI IMPRIMIR ATE" },
                     new { name = "BOL_ID", title = "BOL ID" },
                     new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -895,6 +926,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Observacao", title = "Observacao" },
                     new { name = "CriadoEm", title = "Criado Em" },
                     new { name = "CriadoPor", title = "Criado Por" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -911,6 +943,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "FEC_ID", title = "FEC ID" },
                     new { name = "FEC_QTD", title = "FEC QTD" },
                     new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -943,6 +976,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "FEE_QTD_TOTAL_PRODUCAO_AJUSTADA", title = "FEE QTD TOTAL PRODUCAO AJUSTADA" },
                     new { name = "BOL_ID", title = "BOL ID" },
                     new { name = "COR_SEQUENCIA", title = "COR SEQUENCIA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1018,7 +1052,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "FPR_TOLERANCIA_MENOS", title = "FPR TOLERANCIA MENOS" },
                     new { name = "FPR_TOLERANCIA_MAIS", title = "FPR TOLERANCIA MAIS" },
                     new { name = "FPR_DATA_ENCERRAMENTO", title = "FPR DATA ENCERRAMENTO" },
-                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                 }
             },
             new
@@ -1089,8 +1123,8 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "OCO_ID", title = "OCO ID" },
                     new { name = "FPR_PESO_UNITARIO", title = "FPR PESO UNITARIO" },
                     new { name = "FPR_M2_UNITARIO", title = "FPR M2 UNITARIO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
-                    new { name = "Deleted", title = "Deleted" },
                 }
             },
             new
@@ -1102,6 +1136,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "GRU_IND_ID", title = "GRU IND ID" },
                     new { name = "GRU_ID", title = "GRU ID" },
                     new { name = "IND_ID", title = "IND ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1117,6 +1152,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Codigo do Grupo de Maquina" },
                     new { name = "Descricao", title = "Descricao do Grupo de Maquina" },
                     new { name = "Status", title = "Status do Grupo de Maquina" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1176,6 +1212,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "GRP_PERCENTUAL_PERDA_MEDIA", title = "GRP PERCENTUAL PERDA MEDIA" },
                     new { name = "GRP_FILTRA_SEQ_TRANS", title = "GRP FILTRA SEQ TRANS" },
                     new { name = "GRP_IMG_CAIXA", title = "GRP IMG CAIXA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1190,6 +1227,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "GRE_ID", title = "GRE ID" },
                     new { name = "GRE_DESCRICAO", title = "GRE DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1206,6 +1244,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "GRS_ID", title = "GRS ID" },
                     new { name = "GRS_DESCRICAO", title = "GRS DESCRICAO" },
                     new { name = "GRS_INTEGRACAO_ERP", title = "GRS INTEGRACAO ERP" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1221,6 +1260,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "IMP_ID", title = "IMP ID" },
                     new { name = "IMP_IP", title = "IMP IP" },
                     new { name = "IMP_NOME", title = "IMP NOME" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1236,6 +1276,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "INDDEP_ID", title = "INDDEP ID" },
                     new { name = "DEP_ID", title = "DEP ID" },
                     new { name = "IND_ID", title = "IND ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1254,6 +1295,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "DIM_DESCRICAO", title = "DIM DESCRICAO" },
                     new { name = "DIM_SQL", title = "DIM SQL" },
                     new { name = "DIM_CONEXAO", title = "DIM CONEXAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1271,6 +1313,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "IND_ID", title = "IND ID" },
                     new { name = "DIM_ID", title = "DIM ID" },
                     new { name = "FAT_DESCRICAO", title = "FAT DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1288,6 +1331,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "IND_ID", title = "IND ID" },
                     new { name = "DIM_ID", title = "DIM ID" },
                     new { name = "PER_DESCRICAO", title = "PER DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1305,6 +1349,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "INF_VALOR", title = "INF VALOR" },
                     new { name = "MET_ID", title = "MET ID" },
                     new { name = "INF_DATA", title = "INF DATA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1319,6 +1364,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "IPV_ID", title = "IPV ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1348,6 +1394,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
                     new { name = "IPV_STATUS_LIBERACAO", title = "IPV STATUS LIBERACAO" },
                     new { name = "IPV_VALOR_MEDIDA", title = "IPV VALOR MEDIDA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1363,6 +1410,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "ITI_ID", title = "ITI ID" },
                     new { name = "ITI_DESC", title = "ITI DESC" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1384,6 +1432,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ITE_VALOR_DA_CONDICIONAL", title = "ITE VALOR DA CONDICIONAL" },
                     new { name = "ITE_VALOR_CALCULADO_DA_CONDICIONAL", title = "ITE VALOR CALCULADO DA CONDICIONAL" },
                     new { name = "ITE_TIPO_AVALIACAO_FINAL", title = "ITE TIPO AVALIACAO FINAL" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1400,6 +1449,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CDV_ID", title = "CDV ID" },
                     new { name = "TIP_ID", title = "TIP ID" },
                     new { name = "IDV_QTD", title = "IDV QTD" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1423,6 +1473,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ORD_HASH_KEY", title = "ORD HASH KEY" },
                     new { name = "NOT_ID", title = "NOT ID" },
                     new { name = "NOT_EMISSAO", title = "NOT EMISSAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1446,6 +1497,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MAQ_ID", title = "MAQ ID" },
                     new { name = "PRO_ID", title = "PRO ID" },
                     new { name = "ICA_LIMPESA_MAQUINA", title = "ICA LIMPESA MAQUINA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1460,6 +1512,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "IES_CUSTOM_FONT_SIZE", title = "IES CUSTOM FONT SIZE" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1491,6 +1544,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "GRP_ID_COMPOSICAO", title = "GRP ID COMPOSICAO" },
                     new { name = "ITO_LARGURA", title = "ITO LARGURA" },
                     new { name = "ITO_COMPRIMENTO", title = "ITO COMPRIMENTO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1515,6 +1569,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "IPA_DIML", title = "IPA DIML" },
                     new { name = "IPA_DIMA", title = "IPA DIMA" },
                     new { name = "IPA_QTD_POR_PALETE", title = "IPA QTD POR PALETE" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1537,6 +1592,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ROT_PRO_ID", title = "ROT PRO ID" },
                     new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
                     new { name = "USE_ID", title = "USE ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1555,6 +1611,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LOG_CONTEUDO", title = "LOG CONTEUDO" },
                     new { name = "LOG_ID", title = "LOG ID" },
                     new { name = "LOG_EMISSAO", title = "LOG EMISSAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1581,6 +1638,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LOGS_DATE", title = "LOGS DATE" },
                     new { name = "USE_ID", title = "USE ID" },
                     new { name = "LOGS_ORIGEM", title = "LOGS ORIGEM" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1597,6 +1655,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LOO_ID", title = "LOO ID" },
                     new { name = "LOO_DESCRICAO", title = "LOO DESCRICAO" },
                     new { name = "LOO_CONTEUDO", title = "LOO CONTEUDO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1615,6 +1674,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LOT_LARGURA", title = "LOT LARGURA" },
                     new { name = "LOT_COMPRIMENTO", title = "LOT COMPRIMENTO" },
                     new { name = "LOT_DIAMETRO", title = "LOT DIAMETRO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1631,6 +1691,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LT_ID", title = "LT ID" },
                     new { name = "TES_ID", title = "TES ID" },
                     new { name = "RL_ID", title = "RL ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1651,6 +1712,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MAP_CUSTO_PEDAGIO_POR_EIXO", title = "MAP CUSTO PEDAGIO POR EIXO" },
                     new { name = "ROD_ID", title = "ROD ID" },
                     new { name = "MAP_ALTURA_ROD", title = "MAP ALTURA ROD" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1666,6 +1728,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Codigo da Maquina" },
                     new { name = "Descricao", title = "Descricao da Maquina" },
                     new { name = "Status", title = "Status da Maquina" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1726,7 +1789,6 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MAQ_LARGURA_UTIL", title = "MAQ LARGURA UTIL" },
                     new { name = "MAQ_TOTAL_ACO", title = "MAQ TOTAL ACO" },
                     new { name = "MAQ_FECHAMENTO", title = "MAQ FECHAMENTO" },
-                    new { name = "MAQ_OPERACAO_VINCAR", title = "MAQ OPERACAO VINCAR" },
                 }
             },
             new
@@ -1738,6 +1800,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "GMA_ID", title = "GMA ID" },
                     new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1754,6 +1817,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MAQ_ID", title = "MAQ ID" },
                     new { name = "IMP_ID", title = "IMP ID" },
                     new { name = "MAI_FACAO", title = "MAI FACAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1767,6 +1831,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 fields = new[]
                 {
                     new { name = "Id", title = "Id" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1785,6 +1850,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MDT_VALOR_ESPERADO", title = "MDT VALOR ESPERADO" },
                     new { name = "MDT_ENCONTRADO", title = "MDT ENCONTRADO" },
                     new { name = "UNI_ID", title = "UNI ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1802,6 +1868,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ORC_ID", title = "ORC ID" },
                     new { name = "MEM_VALOR", title = "MEM VALOR" },
                     new { name = "MEM_DESCRICAO", title = "MEM DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1822,6 +1889,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MEN_TYPE", title = "MEN TYPE" },
                     new { name = "MEN_QTD_TRY_SEND", title = "MEN QTD TRY SEND" },
                     new { name = "MEN_DATE_TRY_SEND", title = "MEN DATE TRY SEND" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1836,6 +1904,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "MES", title = "MES" },
                     new { name = "fator", title = "fator" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1896,6 +1965,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MOV_GRUPO_CONTABIL", title = "MOV GRUPO CONTABIL" },
                     new { name = "FOR_ID", title = "FOR ID" },
                     new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1914,6 +1984,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MOV_PLAID", title = "MOV PLAID" },
                     new { name = "MOV_UNID", title = "MOV UNID" },
                     new { name = "Tr_Unidade_UNI_ID", title = "Tr Unidade UNI ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1936,6 +2007,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MUN_CODIGO_SIAFI", title = "MUN CODIGO SIAFI" },
                     new { name = "MUN_CODIGO_CNPJ", title = "MUN CODIGO CNPJ" },
                     new { name = "MUN_DISTANCIA_KM", title = "MUN DISTANCIA KM" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1953,6 +2025,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "OBJ_DESCRICAO", title = "OBJ DESCRICAO" },
                     new { name = "OBJ_TIPO", title = "OBJ TIPO" },
                     new { name = "OBJ_GRUPO", title = "OBJ GRUPO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1973,6 +2046,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PRO_ID", title = "PRO ID" },
                     new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
                     new { name = "OBS_INTEGRACAO", title = "OBS INTEGRACAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1993,6 +2067,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "SPR", title = "SPR" },
                     new { name = "OCO_SUB_TIPO", title = "OCO SUB TIPO" },
                     new { name = "SUB_ID", title = "SUB ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2013,6 +2088,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "OND_PROFUNDIDADE_VINCO", title = "OND PROFUNDIDADE VINCO" },
                     new { name = "OND_ID_INTEGRACAO", title = "OND ID INTEGRACAO" },
                     new { name = "VIN_ID", title = "VIN ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2053,6 +2129,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ROT_SEQ_TRANFORMACAO", title = "ROT SEQ TRANFORMACAO" },
                     new { name = "ORD_ID", title = "ORD ID" },
                     new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2067,6 +2144,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "OAD_ID", title = "OAD ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2087,6 +2165,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ORC_EMISSAO", title = "ORC EMISSAO" },
                     new { name = "CLI_ID", title = "CLI ID" },
                     new { name = "VER_ID", title = "VER ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2182,6 +2261,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "OTK_DATA_PREVISTA", title = "OTK DATA PREVISTA" },
                     new { name = "OTK_DATA_REALIZADA", title = "OTK DATA REALIZADA" },
                     new { name = "FPR_ID", title = "FPR ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2199,6 +2279,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PAR_VALOR_S", title = "PAR VALOR S" },
                     new { name = "PAR_VALOR_N", title = "PAR VALOR N" },
                     new { name = "PAR_VALOR_D", title = "PAR VALOR D" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2216,6 +2297,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PRO_ID", title = "PRO ID" },
                     new { name = "CUS_ID", title = "CUS ID" },
                     new { name = "PAR_VALOR", title = "PAR VALOR" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2261,6 +2343,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PEN_PROTOCOLO_IN", title = "PEN PROTOCOLO IN" },
                     new { name = "PEN_ID_PROTOCOLO_IN", title = "PEN ID PROTOCOLO IN" },
                     new { name = "DATA_ENTRADA", title = "DATA ENTRADA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2276,6 +2359,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "PER_ID", title = "PER ID" },
                     new { name = "PER_NOME", title = "PER NOME" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2292,6 +2376,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PER_ID", title = "PER ID" },
                     new { name = "OBJ_ID", title = "OBJ ID" },
                     new { name = "PEO_ACAO", title = "PEO ACAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2309,6 +2394,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PER_QTD", title = "PER QTD" },
                     new { name = "UNI_ID", title = "UNI ID" },
                     new { name = "GRP_ID", title = "GRP ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2332,6 +2418,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PLA_VLRACUMULADO", title = "PLA VLRACUMULADO" },
                     new { name = "PLA_REFERENCIA", title = "PLA REFERENCIA" },
                     new { name = "USE_ID", title = "USE ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2345,6 +2432,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 fields = new[]
                 {
                     new { name = "GRP_TIPO", title = "GRP TIPO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2367,6 +2455,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PLA_DESCRICAO", title = "PLA DESCRICAO" },
                     new { name = "PLA_TIPO", title = "PLA TIPO" },
                     new { name = "PLA_NATUREZA", title = "PLA NATUREZA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2388,6 +2477,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PLO_Z", title = "PLO Z" },
                     new { name = "PLO_GRAFICO", title = "PLO GRAFICO" },
                     new { name = "CON_ID", title = "CON ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2406,6 +2496,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "POL_PROMOCAO", title = "POL PROMOCAO" },
                     new { name = "POL_DIAS_ANTECIPACAO", title = "POL DIAS ANTECIPACAO" },
                     new { name = "POL_METROS_LINEARES", title = "POL METROS LINEARES" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2424,6 +2515,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PON_LATITUDE", title = "PON LATITUDE" },
                     new { name = "PON_LONGITUDE", title = "PON LONGITUDE" },
                     new { name = "PON_DISTANCIA_KM", title = "PON DISTANCIA KM" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2440,6 +2532,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Codigo do Produto" },
                     new { name = "Descricao", title = "Descricao do Produto" },
                     new { name = "Status", title = "Status do Produto" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2500,7 +2593,6 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PRO_AREA_LIQUIDA", title = "PRO AREA LIQUIDA" },
                     new { name = "PRO_PESO", title = "PRO PESO" },
                     new { name = "PRO_TOLERANCIA_DIMENSAO_CHAPA_DE", title = "PRO TOLERANCIA DIMENSAO CHAPA DE" },
-                    new { name = "PRO_TOLERANCIA_DIMENSAO_CHAPA_ATE", title = "PRO TOLERANCIA DIMENSAO CHAPA ATE" },
                 }
             },
             new
@@ -2514,6 +2606,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PTO_CHAVE", title = "PTO CHAVE" },
                     new { name = "MAQ_ID", title = "MAQ ID" },
                     new { name = "PTO_COMANDO", title = "PTO COMANDO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2531,6 +2624,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CAL_ID", title = "CAL ID" },
                     new { name = "REC_CONTROL_IP", title = "REC CONTROL IP" },
                     new { name = "GRE_ID", title = "GRE ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2548,6 +2642,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "REG_RESPOSTA", title = "REG RESPOSTA" },
                     new { name = "REG_STATUS", title = "REG STATUS" },
                     new { name = "REG_DATA_INICIO", title = "REG DATA INICIO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2567,6 +2662,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "REL_POS_X", title = "REL POS X" },
                     new { name = "REL_POS_Y", title = "REL POS Y" },
                     new { name = "REL_TAMANHO_FONTE", title = "REL TAMANHO FONTE" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2582,6 +2678,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "REP_ID", title = "REP ID" },
                     new { name = "REP_NOME", title = "REP NOME" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2599,6 +2696,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "IPV_ID", title = "IPV ID" },
                     new { name = "ITI_ID", title = "ITI ID" },
                     new { name = "RIV_STATUS", title = "RIV STATUS" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2619,6 +2717,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "RES_VELOCIDADE_HORA_RUSH", title = "RES VELOCIDADE HORA RUSH" },
                     new { name = "TVE_ID", title = "TVE ID" },
                     new { name = "MAP_ID", title = "MAP ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2632,6 +2731,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 fields = new[]
                 {
                     new { name = "Id", title = "Id" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2648,6 +2748,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "RSM_ID", title = "RSM ID" },
                     new { name = "RL_ID", title = "RL ID" },
                     new { name = "MDT_ID", title = "MDT ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2663,6 +2764,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "ROD_ID", title = "ROD ID" },
                     new { name = "ROD_DESCRICAO", title = "ROD DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2684,6 +2786,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ROT_ORDEM_ROTEIRO", title = "ROT ORDEM ROTEIRO" },
                     new { name = "ROT_TIPO", title = "ROT TIPO" },
                     new { name = "ROT_DISTANCIA", title = "ROT DISTANCIA" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2701,6 +2804,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ROT_DATA_HORA", title = "ROT DATA HORA" },
                     new { name = "ROT_LAT", title = "ROT LAT" },
                     new { name = "ROT_LONG", title = "ROT LONG" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2733,6 +2837,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PercentualInicioPassoAnterior", title = "Percentual Inicio Passo Anterior" },
                     new { name = "LinhaDireta", title = "Linha Direta" },
                     new { name = "TemplateDeTestesId", title = "Template de Testes" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2782,6 +2887,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "SEG_ID_SEGUIMENTO_PAI", title = "SEG ID SEGUIMENTO PAI" },
                     new { name = "GRS_ID", title = "GRS ID" },
                     new { name = "SEG_INTEGRACAO_ERP", title = "SEG INTEGRACAO ERP" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2798,6 +2904,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "GRS_ID", title = "GRS ID" },
                     new { name = "PRO_ID", title = "PRO ID" },
                     new { name = "SEG_ID", title = "SEG ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2816,6 +2923,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "SEM_ORIGEM", title = "SEM ORIGEM" },
                     new { name = "SEM_EMISSAO", title = "SEM EMISSAO" },
                     new { name = "SEM_ID_CONEXAO", title = "SEM ID CONEXAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2831,6 +2939,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "SUB_ID", title = "SUB ID" },
                     new { name = "SUB_DESCRICAO", title = "SUB DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2860,6 +2969,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "AGE_PARAMETROS", title = "AGE PARAMETROS" },
                     new { name = "AGE_EXCECAO", title = "AGE EXCECAO" },
                     new { name = "AGE_DESCRICAO", title = "AGE DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2874,6 +2984,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "DEP_ID", title = "DEP ID" },
                     new { name = "DEP_NOME", title = "DEP NOME" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2889,6 +3000,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "IDFAVORITO", title = "IDFAVORITO" },
                     new { name = "USE_ID", title = "USE ID" },
                     new { name = "ID_INDICADOR", title = "ID INDICADOR" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2904,6 +3016,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "FeedbackId", title = "FeedbackId" },
                     new { name = "MovimentoEstoqueId", title = "MovimentoEstoqueId" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2920,6 +3033,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "NOME", title = "NOME" },
                     new { name = "EXIBELISTA", title = "EXIBELISTA" },
                     new { name = "GRU_DESCRICAO", title = "GRU DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2937,6 +3051,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "HRE_HORA_FINAL", title = "HRE HORA FINAL" },
                     new { name = "CLI_ID", title = "CLI ID" },
                     new { name = "HRE_ID", title = "HRE ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2964,6 +3079,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "DIM_ID", title = "DIM ID" },
                     new { name = "DOM_EMPRESA", title = "DOM EMPRESA" },
                     new { name = "DOM_FILIAL", title = "DOM FILIAL" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -2981,6 +3097,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EQU_ID", title = "EQU ID" },
                     new { name = "CAL_ID", title = "CAL ID" },
                     new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3015,6 +3132,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "DOM_EMPRESA", title = "DOM EMPRESA" },
                     new { name = "DOM_FILIAL", title = "DOM FILIAL" },
                     new { name = "MED_VALOR_DISPER", title = "MED VALOR DISPER" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3042,6 +3160,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PER_ID", title = "PER ID" },
                     new { name = "DOM_EMPRESA", title = "DOM EMPRESA" },
                     new { name = "DOM_FILIAL", title = "DOM FILIAL" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3056,6 +3175,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "NEG_ID", title = "NEG ID" },
                     new { name = "NEG_DESCRICAO", title = "NEG DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3076,6 +3196,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PRE_VALOR", title = "PRE VALOR" },
                     new { name = "USE_ID", title = "USE ID" },
                     new { name = "PER_ID", title = "PER ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3091,6 +3212,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "GRU_ID", title = "GRU ID" },
                     new { name = "ID_USUARIO", title = "ID USUARIO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3106,6 +3228,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ID_TABELA", title = "ID TABELA" },
                     new { name = "CODIGO", title = "CODIGO" },
                     new { name = "NOME", title = "NOME" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3175,6 +3298,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TAR_DATA_FINAL", title = "TAR DATA FINAL" },
                     new { name = "TAR_APROVADO", title = "TAR APROVADO" },
                     new { name = "TAR_TEMPO_PRODUZINDO", title = "TAR TEMPO PRODUZINDO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3189,6 +3313,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Template de Testes" },
                     new { name = "Descricao", title = "Descricao do Template" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3205,6 +3330,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "TEM_ID", title = "TEM ID" },
                     new { name = "GMA_ID", title = "GMA ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3220,6 +3346,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "TEM_ID", title = "TEM ID" },
                     new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3235,6 +3362,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TTI_ID", title = "TTI ID" },
                     new { name = "TIV_ID", title = "TIV ID" },
                     new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3250,6 +3378,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TTT_ID", title = "TTT ID" },
                     new { name = "TT_ID", title = "TT ID" },
                     new { name = "TEM_ID", title = "TEM ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3268,6 +3397,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TEM_RESINA_DE", title = "TEM RESINA DE" },
                     new { name = "TEM_RESINA_PARA", title = "TEM RESINA PARA" },
                     new { name = "TEM_TEMPO", title = "TEM TEMPO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3285,6 +3415,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TMP_TIPO_CARGA", title = "TMP TIPO CARGA" },
                     new { name = "TMP_TEMPO_MEDIO_UNITARIO", title = "TMP TEMPO MEDIO UNITARIO" },
                     new { name = "CLI_ID", title = "CLI ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3313,6 +3444,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MAQ_ID", title = "MAQ ID" },
                     new { name = "FPR_SEQ_REPETICAO", title = "FPR SEQ REPETICAO" },
                     new { name = "FPR_SEQ_TRANFORMACAO", title = "FPR SEQ TRANFORMACAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3328,6 +3460,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "ABN_ID", title = "ABN ID" },
                     new { name = "ABN_DESCRICAO", title = "ABN DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3342,6 +3475,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "TA_ID", title = "TA ID" },
                     new { name = "TA_DESC", title = "TA DESC" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3357,6 +3491,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "TCA_ID", title = "TCA ID" },
                     new { name = "TCA_DESCRICAO", title = "TCA DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3372,6 +3507,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "TDI_ID", title = "TDI ID" },
                     new { name = "TDI_DESCRICAO", title = "TDI DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3387,6 +3523,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "TDI_ID", title = "TDI ID" },
                     new { name = "MAQ_ID", title = "MAQ ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3403,6 +3540,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TII_ID", title = "TII ID" },
                     new { name = "TIV_ID", title = "TIV ID" },
                     new { name = "ITI_ID", title = "ITI ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3417,6 +3555,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "TIV_ID", title = "TIV ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3442,6 +3581,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TIP_DESCRICAO", title = "TIP DESCRICAO" },
                     new { name = "TIP_TYPE", title = "TIP TYPE" },
                     new { name = "SPR", title = "SPR" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3457,6 +3597,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "Descricao", title = "Descricao" },
                     new { name = "Spr", title = "Spr" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3471,6 +3612,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "Id2", title = "Id2" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3485,6 +3627,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "Id2", title = "Id2" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3499,6 +3642,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "Id" },
                     new { name = "Id2", title = "Id2" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3514,6 +3658,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TT_ESPECIFICACAO", title = "TT ESPECIFICACAO" },
                     new { name = "TT_ORIGEM_ESPECIFICACAO", title = "TT ORIGEM ESPECIFICACAO" },
                     new { name = "TT_IMPRIME_NO_LAUDO", title = "TT IMPRIME NO LAUDO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3557,6 +3702,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D", title = "TIP CAPACIDADE COMPRIMENTO PESCOCO D" },
                     new { name = "TIP_CAPACIDADE_LARGURA_PESCOCO_D", title = "TIP CAPACIDADE LARGURA PESCOCO D" },
                     new { name = "TIP_CAPACIDADE_M3", title = "TIP CAPACIDADE M3" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3580,6 +3726,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TRA_FONE", title = "TRA FONE" },
                     new { name = "TRA_ID_INTEGRACAO", title = "TRA ID INTEGRACAO" },
                     new { name = "TRA_ID_INTEGRACAO_ERP", title = "TRA ID INTEGRACAO ERP" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3608,6 +3755,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TURM_HORA_FIM_DIA6", title = "TURM HORA FIM DIA6" },
                     new { name = "TURM_HORA_INI_DIA7", title = "TURM HORA INI DIA7" },
                     new { name = "TURM_HORA_FIM_DIA7", title = "TURM HORA FIM DIA7" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3637,6 +3785,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TURN_HORA_FIM_DIA6", title = "TURN HORA FIM DIA6" },
                     new { name = "TURN_HORA_INI_DIA7", title = "TURN HORA INI DIA7" },
                     new { name = "TURN_HORA_FIM_DIA7", title = "TURN HORA FIM DIA7" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3652,6 +3801,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "UNI_ID", title = "UNI ID" },
                     new { name = "DEESCRICAO", title = "DEESCRICAO" },
                     new { name = "UN", title = "UN" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3666,6 +3816,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "UNI_ID", title = "UNI ID" },
                     new { name = "UNI_DESCRICAO", title = "UNI DESCRICAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3681,6 +3832,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "UNI_ID", title = "UNI ID" },
                     new { name = "UNI_DESCRICAO", title = "UNI DESCRICAO" },
                     new { name = "UNI_ESCALA_TEMPO", title = "UNI ESCALA TEMPO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3696,6 +3848,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "USERGRU_ID", title = "USERGRU ID" },
                     new { name = "UNI_ID", title = "UNI ID" },
                     new { name = "USE_ID", title = "USE ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3715,6 +3868,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TURM_ID", title = "TURM ID" },
                     new { name = "USE_ATIVO", title = "USE ATIVO" },
                     new { name = "USE_CODERP", title = "USE CODERP" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3731,6 +3885,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "USE_ID", title = "USE ID" },
                     new { name = "OBJ_ID", title = "OBJ ID" },
                     new { name = "USU_OBJETO_ACAO", title = "USU OBJETO ACAO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3746,6 +3901,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "USE_ID", title = "USE ID" },
                     new { name = "PER_ID", title = "PER ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3762,6 +3918,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "USE_ID", title = "USE ID" },
                     new { name = "CAR_ID", title = "CAR ID" },
                     new { name = "RGO_ID", title = "RGO ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3779,6 +3936,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "VAR_DESCRICAO", title = "VAR DESCRICAO" },
                     new { name = "CON_ID", title = "CON ID" },
                     new { name = "VAR_MODO", title = "VAR MODO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3794,6 +3952,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "Id" },
                     new { name = "VAR_ID", title = "VAR ID" },
                     new { name = "PLO_ID", title = "PLO ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3822,6 +3981,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "VEI_EMISSAO", title = "VEI EMISSAO" },
                     new { name = "VEI_VENCIMENTO", title = "VEI VENCIMENTO" },
                     new { name = "VEI_STATUS", title = "VEI STATUS" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3838,6 +3998,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "VER_ID", title = "VER ID" },
                     new { name = "VER_STATUS", title = "VER STATUS" },
                     new { name = "VER_OBS", title = "VER OBS" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3855,6 +4016,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "VER_STATUS", title = "VER STATUS" },
                     new { name = "VER_DATA_VERSSAO_CUSTO", title = "VER DATA VERSSAO CUSTO" },
                     new { name = "VER_OBS", title = "VER OBS" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3870,6 +4032,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "VIN_ID", title = "VIN ID" },
                     new { name = "VIN_DESCRICAO", title = "VIN DESCRICAO" },
                     new { name = "VIN_ID_DESLOCAMENTO", title = "VIN ID DESLOCAMENTO" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3886,6 +4049,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "VIS_PLANID", title = "VIS PLANID" },
                     new { name = "VIS_FORMULA", title = "VIS FORMULA" },
                     new { name = "CAB_ID", title = "CAB ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -3898,6 +4062,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yConfigArcteture",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "AuditTrackerActived", title = "AuditTrackerActived" },
                     new { name = "AuditCRUDActived", title = "AuditCRUDActived" },
@@ -3913,6 +4078,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yConfigNotification",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "EmailSmtpClient", title = "EmailSmtpClient" },
@@ -3940,6 +4106,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CreatedAt", title = "Criado em" },
                     new { name = "CompletedAt", title = "Finalizado em" },
                     new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -3951,6 +4118,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yGrant",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "Description", title = "Descrição" },
                     new { name = "TenantID", title = "TenantID" },
@@ -3981,6 +4149,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "SagaId", title = "SagaId" },
                     new { name = "SagaStepId", title = "SagaStepId" },
                     new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -4021,6 +4190,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "SagaId", title = "SagaId" },
                     new { name = "SagaStepId", title = "SagaStepId" },
                     new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -4032,6 +4202,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yPerfil",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "Description", title = "Descrição" },
                     new { name = "TenantID", title = "TenantID" },
@@ -4046,6 +4217,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yPerfilGrant",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "PerfilId", title = "ID Perfil" },
                     new { name = "GrantId", title = "ID Permição" },
@@ -4080,6 +4252,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LockedAt", title = "LockedAt" },
                     new { name = "LockedBy", title = "LockedBy" },
                     new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -4104,6 +4277,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Payload", title = "Payload" },
                     new { name = "RetryCount", title = "Tentativas" },
                     new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -4115,6 +4289,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yTenant",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "CnpjCpf", title = "Cnpj/Cpf" },
                     new { name = "Nome", title = "Nome" },
@@ -4129,6 +4304,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yTenantModule",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "ModuleId", title = "ID Modulo" },
                     new { name = "TenantID", title = "TenantID" },
@@ -4154,6 +4330,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LastUsedAt", title = "Ultimo uso" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "UserId", title = "User ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                 }
@@ -4164,6 +4341,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yUser",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "Nome", title = "Nome Usuario" },
                     new { name = "Email", title = "Email" },
@@ -4179,6 +4357,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yUserGrant",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "PerfilId", title = "ID Perfil" },
                     new { name = "GrantId", title = "ID Permição" },
@@ -4200,6 +4379,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yUserModule",
                 fields = new[]
                 {
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "ModuleId", title = "ID Modulo" },
                     new { name = "UserId", title = "User ID" },
@@ -6149,15 +6329,6 @@ app.MapPost("/yapi/yPerfil/PostyPerfil", async ([FromServices] Command.Receivers
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/yModule/PostyModule", async ([FromServices] Command.Receivers.Write.InsertyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
 app.MapPost("/yapi/yTenantModule/PostyTenantModule", async ([FromServices] Command.Receivers.Write.InsertyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -6199,6 +6370,15 @@ app.MapPost("/yapi/yUserGrant/PostyUserGrant", async ([FromServices] Command.Rec
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/yModule/PostyModule", async ([FromServices] Command.Receivers.Write.InsertyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -7877,15 +8057,6 @@ app.MapPut("/yapi/yPerfil/PutyPerfil", async ([FromServices] Command.Receivers.W
 .RequireAuthorization();
 
 
-app.MapPut("/yapi/yModule/PutyModule", async ([FromServices] Command.Receivers.Write.UpdateyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
 app.MapPut("/yapi/yTenantModule/PutyTenantModule", async ([FromServices] Command.Receivers.Write.UpdateyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -7927,6 +8098,15 @@ app.MapPut("/yapi/yUserGrant/PutyUserGrant", async ([FromServices] Command.Recei
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/yModule/PutyModule", async ([FromServices] Command.Receivers.Write.UpdateyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -9605,15 +9785,6 @@ app.MapDelete("/yapi/yPerfil/DeleteyPerfil", async ([FromServices] Command.Recei
 .RequireAuthorization();
 
 
-app.MapDelete("/yapi/yModule/DeleteyModule", async ([FromServices] Command.Receivers.Write.DeleteyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
 app.MapDelete("/yapi/yTenantModule/DeleteyTenantModule", async ([FromServices] Command.Receivers.Write.DeleteyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -9659,14 +9830,120 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
 .RequireAuthorization();
 
 
+app.MapDelete("/yapi/yModule/DeleteyModule", async ([FromServices] Command.Receivers.Write.DeleteyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
 
-                    app.MapGet("/yapi/getMenu", (HttpContext context) =>
+
+
+                    app.MapGet("/yapi/getMenu", async (
+                        HttpContext context,
+                        [FromServices] JwtSettings jwtSettings,
+                        [FromServices] Command.Receivers.UseCase.OpenApplicationSessionHandler sessionHandler) =>
                     {
+                        const string applicationName = "APS.ADM";
+                        var tokenOrigin = context.User.FindFirst("tokenOrigin")?.Value;
+                        var tokenApplication = context.User.FindFirst("application")?.Value;
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;
                         var catalogsClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userCatalogs")?.Value;
                         var hasCatalogAccess = (catalogsClaim ?? string.Empty)
                             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                            .Contains("APS.ADM", StringComparer.OrdinalIgnoreCase);
+                            .Contains(applicationName, StringComparer.OrdinalIgnoreCase);
+
+                        var isCentralApplication = string.Equals(
+                            applicationName,
+                            "Central",
+                            StringComparison.OrdinalIgnoreCase);
+                        var isCurrentApplicationToken = string.Equals(
+                                tokenApplication,
+                                applicationName,
+                                StringComparison.OrdinalIgnoreCase)
+                            && (string.Equals(tokenOrigin, "Application", StringComparison.OrdinalIgnoreCase)
+                                || (isCentralApplication
+                                    && string.Equals(tokenOrigin, "Central", StringComparison.OrdinalIgnoreCase)));
+
+                        if (!isCurrentApplicationToken
+                            && !string.IsNullOrWhiteSpace(tokenOrigin))
+                        {
+                            if (!hasCatalogAccess)
+                                return Results.Unauthorized();
+
+                            var tenantIdentity = context.User.FindFirst("tenantIdentity")?.Value;
+                            var userIdentity = context.User.FindFirst("userIdentity")?.Value;
+                            var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
+                            if (string.IsNullOrWhiteSpace(tenantIdentity)
+                                || string.IsNullOrWhiteSpace(userIdentity)
+                                || string.IsNullOrWhiteSpace(email))
+                                return Results.Unauthorized();
+
+                            var centralTenantIdClaim = context.User.FindFirst("centralTenantId")?.Value;
+                            var centralUserIdClaim = context.User.FindFirst("centralUserId")?.Value;
+                            var localTenantId = 0;
+                            var localUserId = 0;
+
+                            if (isCentralApplication)
+                            {
+                                if (!int.TryParse(centralTenantIdClaim, out localTenantId)
+                                    || !int.TryParse(centralUserIdClaim, out localUserId))
+                                    return Results.Unauthorized();
+                            }
+                            else
+                            {
+                                var session = await sessionHandler.ExecuteAsync(
+                                    new Command.UseCase.OpenApplicationSessionInputCommand
+                                    {
+                                        TenantIdentity = tenantIdentity,
+                                        TenantDocument = context.User.FindFirst("tenantDocument")?.Value ?? string.Empty,
+                                        TenantName = context.User.FindFirst("tenantName")?.Value ?? string.Empty,
+                                        UserIdentity = userIdentity,
+                                        UserName = context.User.FindFirst("userName")?.Value ?? email,
+                                        Email = email
+                                    },
+                                    context.RequestAborted);
+
+                                if (session.StatusCode is < 200 or >= 300 || session.Data is null)
+                                    return Results.BadRequest(session);
+
+                                localTenantId = session.Data.TenantId;
+                                localUserId = session.Data.UserId;
+                            }
+
+                            var claims = new List<Claim>
+                            {
+                                new(ClaimTypes.NameIdentifier, localUserId.ToString()),
+                                new(ClaimTypes.Email, email),
+                                new(ClaimTypes.Role, context.User.FindFirst(ClaimTypes.Role)?.Value ?? "Admin"),
+                                new("tenantId", localTenantId.ToString()),
+                                new("userModules", string.Empty),
+                                new("userCatalogs", catalogsClaim ?? string.Empty),
+                                new("tokenOrigin", isCentralApplication ? "Central" : "Application"),
+                                new("application", applicationName),
+                                new("tenantIdentity", tenantIdentity),
+                                new("tenantDocument", context.User.FindFirst("tenantDocument")?.Value ?? string.Empty),
+                                new("tenantName", context.User.FindFirst("tenantName")?.Value ?? string.Empty),
+                                new("userIdentity", userIdentity),
+                                new("userName", context.User.FindFirst("userName")?.Value ?? email),
+                                new("centralTenantId", centralTenantIdClaim ?? localTenantId.ToString()),
+                                new("centralUserId", centralUserIdClaim ?? localUserId.ToString())
+                            };
+                            var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+                            {
+                                Subject = new ClaimsIdentity(claims),
+                                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
+                                SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                                    new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                                        System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                                    Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+                            };
+                            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                            context.Response.Headers["X-Yeshua-Application-Token"] =
+                                tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+                            context.Response.Headers.CacheControl = "no-store";
+                        }
 
                         if (modulesClaim == null && !hasCatalogAccess)
                             return Results.Unauthorized();
@@ -9704,7 +9981,7 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                         }).ToList();
 
                         return Results.Ok(result);
-                    }).RequireAuthorization();
+                    }).RequireAuthorization("ApplicationEntry");
             
 app.MapPost("/yapi/Produto/ReadProduto", async ([FromServices] Command.Receivers.Read.ProdutoReadReceiver receiver, [FromBody] Command.Read.ProdutoReadCommand command) =>
 {
@@ -11380,15 +11657,6 @@ app.MapPost("/yapi/yPerfil/ReadyPerfil", async ([FromServices] Command.Receivers
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/yModule/ReadyModule", async ([FromServices] Command.Receivers.Read.yModuleReadReceiver receiver, [FromBody] Command.Read.yModuleReadCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
 app.MapPost("/yapi/yTenantModule/ReadyTenantModule", async ([FromServices] Command.Receivers.Read.yTenantModuleReadReceiver receiver, [FromBody] Command.Read.yTenantModuleReadCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -11430,6 +11698,15 @@ app.MapPost("/yapi/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Rec
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/yModule/ReadyModule", async ([FromServices] Command.Receivers.Read.yModuleReadReceiver receiver, [FromBody] Command.Read.yModuleReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -36580,65 +36857,6 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
-app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
-{
-    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (string.IsNullOrEmpty(userId))
-        return Results.Unauthorized();
-    var metadatacrud = new
-    {
-        entityName = "yModule",
-        entityDescription = "yModule",
-        source = new
-        {
-            kind = "table",
-            name = "yModule"
-        },
-        capabilities = new
-        {
-            create = true,
-            update = true,
-            delete = true
-        },
-        search = new[]{
-            new {
-                id = "Standard",
-                description = "Standard",
-                endpoint = "/yModule/ReadyModule",
-            resultFields = new[]
-            {
-                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            },
-            filterFields = new[]
-            {
-                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            },
-            quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
-            {
-            }
-            },
-        },
-        formFields = new[]
-        {
-            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-        },
-        relationTabs = Array.Empty<object>(),
-        customTabs = Array.Empty<object>(),
-        actions = Array.Empty<object>(),
-        endpoints = new
-        {
-            create = "/yModule/PostyModule",
-            read = "/yModule/ReadyModule",
-            update = "/yModule/PutyModule",
-            delete = "/yModule/DeleteyModule"
-        }
-    };
-    return Results.Ok(metadatacrud);
-}).RequireAuthorization();
 app.MapGet("/yapi/getMetaDatayTenantModule", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -37004,6 +37222,65 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
+app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "yModule",
+        entityDescription = "yModule",
+        source = new
+        {
+            kind = "table",
+            name = "yModule"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/yModule/ReadyModule",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "/yModule/PostyModule",
+            read = "/yModule/ReadyModule",
+            update = "/yModule/PutyModule",
+            delete = "/yModule/DeleteyModule"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 #region ServicesMethod
 app.MapPost("/yapi/APSADM/PlanejamentoTransporteInformarDadosTransporteCargaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarDadosTransporteCargaHandler receiver, [FromBody] Command.UseCase.InformarDadosTransporteCargaInputCommand command) =>
 {
@@ -37363,6 +37640,23 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.RecoveryAccountHandler receiver, [FromBody] Command.UseCase.RecoveryAccountInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Y/ContasOpenApplicationSessionUseCase", async ([FromServices] Command.Receivers.UseCase.OpenApplicationSessionHandler receiver, [FromBody] Command.UseCase.OpenApplicationSessionInputCommand command) =>
 {
 try
 {

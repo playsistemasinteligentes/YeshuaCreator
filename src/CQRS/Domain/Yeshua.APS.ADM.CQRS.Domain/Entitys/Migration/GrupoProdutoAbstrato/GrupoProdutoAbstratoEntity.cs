@@ -66,6 +66,7 @@
     public Decimal? GRP_PERCENTUAL_PERDA_MEDIA { get; set; }
     public int? GRP_FILTRA_SEQ_TRANS { get; set; }
     public string? GRP_IMG_CAIXA { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -118,6 +119,7 @@
  GRP_PERCENTUAL_PERDA_MEDIA = grp_percentual_perda_media; 
  GRP_FILTRA_SEQ_TRANS = grp_filtra_seq_trans; 
  GRP_IMG_CAIXA = grp_img_caixa; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

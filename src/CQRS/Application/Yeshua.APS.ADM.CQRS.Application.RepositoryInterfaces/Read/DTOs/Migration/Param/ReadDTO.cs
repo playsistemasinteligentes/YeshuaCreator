@@ -23,6 +23,7 @@ namespace Repositorio.Outputs
     public string par_valor_s { get; set; } = string.Empty;
     public Decimal par_valor_n { get; set; }
     public DateTime par_valor_d { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

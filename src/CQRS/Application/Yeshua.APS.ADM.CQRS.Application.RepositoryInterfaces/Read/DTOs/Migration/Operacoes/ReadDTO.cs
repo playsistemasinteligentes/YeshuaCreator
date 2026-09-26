@@ -28,6 +28,7 @@ namespace Repositorio.Outputs
     public int rot_seq_tranformacao { get; set; }
     public string ord_id { get; set; } = string.Empty;
     public int fpr_seq_repeticao { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

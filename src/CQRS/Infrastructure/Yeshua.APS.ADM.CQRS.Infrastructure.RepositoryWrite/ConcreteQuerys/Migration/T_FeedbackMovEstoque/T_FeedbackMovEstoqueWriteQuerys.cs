@@ -30,11 +30,12 @@ namespace Query.Write
         }
         public QueryModel InserirT_FeedbackMovEstoqueQuery(IT_FeedbackMovEstoqueEntity T_FeedbackMovEstoque)
         {
-            this.Query = $@" INSERT INTO [T_FeedbackMovEstoque] ([FeedbackId], [MovimentoEstoqueId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FeedbackId, @MovimentoEstoqueId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_FeedbackMovEstoque] ([FeedbackId], [MovimentoEstoqueId], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FeedbackId, @MovimentoEstoqueId, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 FeedbackId = T_FeedbackMovEstoque.FeedbackId,
                 MovimentoEstoqueId = T_FeedbackMovEstoque.MovimentoEstoqueId,
+                OperationalEntityId = T_FeedbackMovEstoque.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -71,6 +72,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 MovimentoEstoqueId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

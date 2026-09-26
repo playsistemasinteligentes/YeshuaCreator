@@ -28,6 +28,7 @@ namespace IRepository.Read
         public bool ExistsByNome(string value );
         public bool ExistsByEndereco(string value );
         public bool ExistsByTelefone(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public ClinicaDTO FirstByNome(string value );
         public ClinicaDTO FirstByEndereco(string value );
         public ClinicaDTO FirstByTelefone(string value );
+        public ClinicaDTO FirstByOperationalEntityId(string value );
         public ClinicaDTO FirstByTenantID(int value );
         public ClinicaDTO FirstByDeleted(bool value );
         public ClinicaDTO FirstByChanged(DateTime value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public IEnumerable<ClinicaDTO> GetAllByNome(string value );
         public IEnumerable<ClinicaDTO> GetAllByEndereco(string value );
         public IEnumerable<ClinicaDTO> GetAllByTelefone(string value );
+        public IEnumerable<ClinicaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ClinicaDTO> GetAllByTenantID(int value );
         public IEnumerable<ClinicaDTO> GetAllByDeleted(bool value );
         public IEnumerable<ClinicaDTO> GetAllByChanged(DateTime value );

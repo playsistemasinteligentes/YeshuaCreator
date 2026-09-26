@@ -23,6 +23,7 @@
     public int? Id { get; set; }
     public int FeedbackId { get; set; }
     public int MovimentoEstoqueId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -32,6 +33,7 @@
  Id = id; 
  FeedbackId = feedbackid; 
  MovimentoEstoqueId = movimentoestoqueid; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

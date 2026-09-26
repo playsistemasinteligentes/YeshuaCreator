@@ -230,6 +230,14 @@ namespace Dominio
                 return this.AlterColumns.Last().DefaultValue(value);
         }
 
+        public Entity Immutable()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().Immutable();
+            else
+                return this.AlterColumns.Last().Immutable();
+        }
+
         public Entity EditFront(bool value)
         {
             if (this.StatusColuns == 1)

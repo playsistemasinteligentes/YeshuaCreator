@@ -53,6 +53,7 @@
     public DateTime CriadoEmUtc { get; set; }
     public DateTime? AtualizadoEmUtc { get; set; }
     public int Status { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -94,6 +95,7 @@
  AtualizadoEmUtc = atualizadoemutc.HasValue && atualizadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : atualizadoemutc; 
  Status = status; 
  CertificadoDigitalId = certificadodigitalid; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

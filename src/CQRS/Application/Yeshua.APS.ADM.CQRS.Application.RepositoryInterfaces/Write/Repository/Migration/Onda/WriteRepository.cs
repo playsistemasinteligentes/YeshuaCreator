@@ -29,6 +29,7 @@ namespace IRepository.Write
         void UpdateOND_PROFUNDIDADE_VINCO(string ond_id, int value);
         void UpdateOND_ID_INTEGRACAO(string ond_id, string value);
         void UpdateVIN_ID(string ond_id, int value);
+        void UpdateOperationalEntityId(string ond_id, string value);
         void UpdateTenantID(string ond_id, int value);
         void UpdateDeleted(string ond_id, bool value);
         void UpdateChanged(string ond_id, DateTime value);

@@ -26,6 +26,7 @@ namespace IRepository.Write
         void UpdateVER_STATUS(int id, string value);
         void UpdateVER_DATA_VERSSAO_CUSTO(int id, DateTime value);
         void UpdateVER_OBS(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirTipoAvaliacaoQuery(ITipoAvaliacaoEntity TipoAvaliacao);
         public QueryModel UpdateTipoAvaliacaoQuery(ITipoAvaliacaoEntity TipoAvaliacao);
         QueryModel UpdateTA_DESC(int ta_id, string value);
+        QueryModel UpdateOperationalEntityId(int ta_id, string value);
         QueryModel UpdateTenantID(int ta_id, int value);
         QueryModel UpdateDeleted(int ta_id, bool value);
         QueryModel UpdateChanged(int ta_id, DateTime value);

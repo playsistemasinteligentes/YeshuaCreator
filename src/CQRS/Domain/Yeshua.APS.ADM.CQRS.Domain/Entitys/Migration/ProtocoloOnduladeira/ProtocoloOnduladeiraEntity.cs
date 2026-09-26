@@ -25,6 +25,7 @@
     public string PTO_CHAVE { get; set; }
     public string MAQ_ID { get; set; }
     public string PTO_COMANDO { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
@@ -36,6 +37,7 @@
  PTO_CHAVE = pto_chave; 
  MAQ_ID = maq_id; 
  PTO_COMANDO = pto_comando; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

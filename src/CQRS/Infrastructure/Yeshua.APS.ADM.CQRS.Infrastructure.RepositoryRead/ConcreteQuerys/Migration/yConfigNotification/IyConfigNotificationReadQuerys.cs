@@ -16,6 +16,7 @@ namespace IQuery.Read
         public QueryModel yConfigNotificationQuery(Command.Read.yConfigNotificationReadCommand Command );
         public QueryModel yConfigNotificationTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel yConfigNotificationUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByEmailSmtpClientQuery(string value );
@@ -25,6 +26,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByEmailSmtpClientQuery(string value );

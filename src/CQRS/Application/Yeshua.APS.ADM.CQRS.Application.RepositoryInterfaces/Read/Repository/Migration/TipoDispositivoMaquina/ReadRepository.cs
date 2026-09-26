@@ -27,6 +27,7 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByTDI_ID(string value );
         public bool ExistsByMAQ_ID(string value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public TipoDispositivoMaquinaDTO FirstById(int value );
         public TipoDispositivoMaquinaDTO FirstByTDI_ID(string value );
         public TipoDispositivoMaquinaDTO FirstByMAQ_ID(string value );
+        public TipoDispositivoMaquinaDTO FirstByOperationalEntityId(string value );
         public TipoDispositivoMaquinaDTO FirstByTenantID(int value );
         public TipoDispositivoMaquinaDTO FirstByDeleted(bool value );
         public TipoDispositivoMaquinaDTO FirstByChanged(DateTime value );
@@ -41,6 +43,7 @@ namespace IRepository.Read
         public IEnumerable<TipoDispositivoMaquinaDTO> GetAllById(int value );
         public IEnumerable<TipoDispositivoMaquinaDTO> GetAllByTDI_ID(string value );
         public IEnumerable<TipoDispositivoMaquinaDTO> GetAllByMAQ_ID(string value );
+        public IEnumerable<TipoDispositivoMaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoDispositivoMaquinaDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoDispositivoMaquinaDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoDispositivoMaquinaDTO> GetAllByChanged(DateTime value );

@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] from [Observacoes] ";
+            this.Query = $@" select [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Observacoes] ";
 if (Command.OBS_ID.HasValue) dict["OBS_ID"] = Command.OBS_ID.Value;
 if (Command.OBS_ID.HasValue) whereClauses.Add($"[OBS_ID] = @OBS_ID");
 if (!string.IsNullOrEmpty(Command.OBS_TIPO)) dict["OBS_TIPO"] = $"%{Command.OBS_TIPO}%";
@@ -51,6 +51,8 @@ if (Command.ROT_SEQ_TRANFORMACAO.HasValue) dict["ROT_SEQ_TRANFORMACAO"] = Comman
 if (Command.ROT_SEQ_TRANFORMACAO.HasValue) whereClauses.Add($"[ROT_SEQ_TRANFORMACAO] = @ROT_SEQ_TRANFORMACAO");
 if (!string.IsNullOrEmpty(Command.OBS_INTEGRACAO)) dict["OBS_INTEGRACAO"] = $"%{Command.OBS_INTEGRACAO}%";
 if (!string.IsNullOrEmpty(Command.OBS_INTEGRACAO)) whereClauses.Add($"[OBS_INTEGRACAO] like @OBS_INTEGRACAO");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -292,6 +294,23 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Observacoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -365,7 +384,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -382,7 +401,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -399,7 +418,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -416,7 +435,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -433,7 +452,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -450,7 +469,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -467,7 +486,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -484,7 +503,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -496,12 +515,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -518,7 +554,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -535,7 +571,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -552,7 +588,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
+            this.Query = $"SELECT [OBS_ID], [OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Observacoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

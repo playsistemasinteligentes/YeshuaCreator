@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InseriryPerfilQuery(IyPerfilEntity yPerfil)
         {
-            this.Query = $@" INSERT INTO [yPerfil] ([Description], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Description, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yPerfil] ([OperationalEntityId], [Description], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OperationalEntityId, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OperationalEntityId = yPerfil.OperationalEntityId,
                 Description = yPerfil.Description,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
@@ -50,6 +51,16 @@ namespace Query.Write
                 Changed = yPerfil.Changed,
                 UserId = _executionContext.UserId,
                 Id = yPerfil.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yPerfil] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

@@ -19,6 +19,7 @@ namespace IQuery.Write
         public QueryModel UpdateTabelaQuery(ITabelaEntity Tabela);
         QueryModel UpdateCODIGO(int id_tabela, string value);
         QueryModel UpdateNOME(int id_tabela, string value);
+        QueryModel UpdateOperationalEntityId(int id_tabela, string value);
         QueryModel UpdateTenantID(int id_tabela, int value);
         QueryModel UpdateDeleted(int id_tabela, bool value);
         QueryModel UpdateChanged(int id_tabela, DateTime value);

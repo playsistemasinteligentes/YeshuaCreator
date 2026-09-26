@@ -25,6 +25,7 @@ namespace IRepository.Write
         void UpdateTT_ESPECIFICACAO(int tt_id, Decimal value);
         void UpdateTT_ORIGEM_ESPECIFICACAO(int tt_id, string value);
         void UpdateTT_IMPRIME_NO_LAUDO(int tt_id, string value);
+        void UpdateOperationalEntityId(int tt_id, string value);
         void UpdateTenantID(int tt_id, int value);
         void UpdateDeleted(int tt_id, bool value);
         void UpdateChanged(int tt_id, DateTime value);

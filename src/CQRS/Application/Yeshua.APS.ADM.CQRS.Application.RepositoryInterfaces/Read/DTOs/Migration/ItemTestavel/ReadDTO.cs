@@ -27,6 +27,7 @@ namespace Repositorio.Outputs
     public Decimal ite_valor_da_condicional { get; set; }
     public string ite_valor_calculado_da_condicional { get; set; } = string.Empty;
     public string ite_tipo_avaliacao_final { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
