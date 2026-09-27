@@ -9,7 +9,6 @@ APS_ADM_DIR="$APP_DIR/infra/APS.ADM/DockerCompose"
 FISCAL_DIR="$APP_DIR/infra/Fiscal/DockerCompose"
 DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
 TARGET="${1:-all}"
-LAYOUT_MARKER="/root/YeshuaDB/persistent/.multi-app-layout-v1"
 
 if [[ -f "$DEPLOY_ENV" ]]; then
   set -a
@@ -35,59 +34,6 @@ chmod +x \
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
-legacy_runtime_present() {
-  local name project
-
-  for name in yeshua-sqlserver yeshua-redis yeshua-rabbitmq yeshua-nginx; do
-    if docker inspect "$name" >/dev/null 2>&1; then
-      project="$(docker inspect \
-        --format '{{ index .Config.Labels "com.docker.compose.project" }}' \
-        "$name" 2>/dev/null || true)"
-      if [[ "$project" != "playsis-shared" ]]; then
-        return 0
-      fi
-    fi
-  done
-
-  if [[ -n "$(docker ps -aq --filter label=com.docker.compose.project=docker)" ]]; then
-    return 0
-  fi
-  if [[ -n "$(docker ps -aq --filter label=com.docker.compose.project=yeshua-production)" ]]; then
-    return 0
-  fi
-
-  return 1
-}
-
-migrate_legacy_runtime() {
-  local ids name
-
-  if [[ -f "$LAYOUT_MARKER" ]] || ! legacy_runtime_present; then
-    return
-  fi
-  if [[ "${TARGET,,}" != "all" ]]; then
-    echo "A migracao inicial para multiaplicativo exige deploy completo." >&2
-    echo "Execute deploy.sh sem argumento." >&2
-    exit 1
-  fi
-
-  echo "Migrando containers antigos para a composicao multiaplicativo..."
-  for project in docker yeshua-production; do
-    ids="$(docker ps -aq --filter "label=com.docker.compose.project=$project")"
-    if [[ -n "$ids" ]]; then
-      docker rm -f $ids
-    fi
-  done
-
-  for name in yeshua-sqlserver yeshua-redis yeshua-rabbitmq yeshua-nginx; do
-    if docker inspect "$name" >/dev/null 2>&1; then
-      docker rm -f "$name"
-    fi
-  done
-}
-
-migrate_legacy_runtime
-
 prepare_https_config() {
   local disabled="$SHARED_DIR/nginx/conf.d/20-https.conf.disabled"
   local active="$SHARED_DIR/nginx/conf.d/20-https.conf"
@@ -96,36 +42,6 @@ prepare_https_config() {
     cp "$disabled" "$active"
   else
     rm -f "$active"
-  fi
-}
-
-assert_gateway_dependencies_ready() {
-  local project service
-  local missing=()
-
-  while read -r project service; do
-    if [[ -z "$(docker ps \
-      --filter "label=com.docker.compose.project=$project" \
-      --filter "label=com.docker.compose.service=$service" \
-      --format '{{.ID}}')" ]]; then
-      missing+=("$project/$service")
-    fi
-  done <<'EOF'
-playsis-central central-front
-playsis-central central-api
-playsis-central central-worker
-playsis-clinica clinica-api
-playsis-clinica clinica-worker
-playsis-aps-adm aps-adm-api
-playsis-aps-adm aps-adm-worker
-playsis-fiscal fiscal-api
-playsis-fiscal fiscal-worker
-EOF
-
-  if (( ${#missing[@]} > 0 )); then
-    echo "Nao foi possivel atualizar o Nginx. Containers ausentes:" >&2
-    printf '  - %s\n' "${missing[@]}" >&2
-    return 1
   fi
 }
 
@@ -143,9 +59,36 @@ assert_central_front_route() {
   fi
 }
 
+gateway_dependencies_ready() {
+  local project service
+
+  while read -r project service; do
+    if [[ -z "$(docker ps \
+      --filter "label=com.docker.compose.project=$project" \
+      --filter "label=com.docker.compose.service=$service" \
+      --format '{{.ID}}')" ]]; then
+      return 1
+    fi
+  done <<'EOF'
+playsis-central central-front
+playsis-central central-api
+playsis-central central-worker
+playsis-clinica clinica-api
+playsis-clinica clinica-worker
+playsis-aps-adm aps-adm-api
+playsis-aps-adm aps-adm-worker
+playsis-fiscal fiscal-api
+playsis-fiscal fiscal-worker
+EOF
+}
+
 deploy_gateway() {
   prepare_https_config
-  assert_gateway_dependencies_ready
+
+  if ! gateway_dependencies_ready; then
+    echo "Nginx aguardando os aplicativos configurados no servidor."
+    return
+  fi
 
   cd "$SHARED_DIR"
   docker compose up -d nginx
@@ -179,25 +122,24 @@ case "${TARGET,,}" in
     deploy_aps_adm
     deploy_fiscal
     deploy_gateway
-    touch "$LAYOUT_MARKER"
     ;;
   central)
-    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    bash "$SHARED_DIR/deploy.sh"
     deploy_central
     deploy_gateway
     ;;
   clinica)
-    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    bash "$SHARED_DIR/deploy.sh"
     deploy_clinica
     deploy_gateway
     ;;
   aps|aps-adm|aps_adm)
-    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    bash "$SHARED_DIR/deploy.sh"
     deploy_aps_adm
     deploy_gateway
     ;;
   fiscal)
-    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
+    bash "$SHARED_DIR/deploy.sh"
     deploy_fiscal
     deploy_gateway
     ;;

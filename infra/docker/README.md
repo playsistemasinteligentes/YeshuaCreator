@@ -1,9 +1,9 @@
-# Compatibilidade Da Clinica
+# Deploy Da Plataforma
 
-Este diretorio preserva a entrada operacional historica e concentra o
-orquestrador atual. `deploy.sh` coordena Shared, Central, Clinica, APS.ADM e
-Fiscal; sem argumento atualiza tudo e com os argumentos `central`, `clinica`,
-`aps-adm`, `fiscal` ou `shared` limita o destino.
+Este diretorio concentra o orquestrador atual. `deploy.sh` coordena Shared,
+Central, Clinica, APS.ADM e Fiscal. Sem argumento, executa `all`, preservando o
+comportamento historico. Os argumentos `central`, `clinica`, `aps-adm`,
+`fiscal` e `shared` limitam o destino.
 
 O `docker-compose.yml` permanece apenas como compatibilidade para inspecao da
 Clinica. A operacao normal deve usar `deploy.sh`.
@@ -11,17 +11,23 @@ Clinica. A operacao normal deve usar `deploy.sh`.
 ## Front E Gateway
 
 Somente `playsis-central/central-front` e publicado. Clinica, APS.ADM e Fiscal
-publicam API, Worker e Migration. Ao final do deploy, o orquestrador reconcilia
-o Nginx, valida a configuracao, recarrega as rotas e confirma que `/` e `/spa/`
-apontam para o Front da Central. O container do Nginx nao e recriado quando sua
-definicao nao mudou. A ausencia de qualquer container exigido interrompe o
-deploy; o gateway nao pode permanecer antigo com uma mensagem falsa de sucesso.
+publicam API, Worker e Migration. O fluxo continua conceitualmente igual ao
+deploy historico da Clinica: limpa e atualiza a copia local do repositorio,
+constroi as imagens, executa as migrations, sobe os servicos e reconcilia o
+Nginx por ultimo.
 
-A retirada dos Fronts antigos nao faz parte do deploy normal. Quando for
-necessario reconstruir todo o runtime na primeira transicao, execute manualmente
-`bash infra/docker/rebuild-runtime-for-central-front.sh`. O script
-remove os containers conhecidos da plataforma e executa um deploy completo,
-sem apagar bancos, certificados, volumes ou arquivos persistentes.
+O deploy normal nao possui migracao automatica de layout nem varredura com
+`docker rm -f`. O Nginx somente e validado e recarregado depois que todos os
+servicos configurados para o gateway estao em execucao. Se algum estiver
+ausente, a configuracao atual permanece ativa.
+
+Exemplos:
+
+```bash
+bash infra/docker/deploy.sh central
+bash infra/docker/deploy.sh fiscal
+bash infra/docker/deploy.sh all
+```
 
 ## Bancos
 

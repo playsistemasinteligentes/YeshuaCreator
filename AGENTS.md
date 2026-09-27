@@ -880,6 +880,12 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Containers de Migration executam o Studio com `--database-only`; geracao de codigo nunca acontece durante o deploy.
 - O nginx pertence ao Shared e possui arquivos de rota separados por aplicativo.
 - Deploys de aplicativo nao executam `docker compose down` e nao alteram containers de outros aplicativos.
+- O deploy multiaplicativo preserva o fluxo conceitual historico da Clinica:
+  `git reset --hard`, `git clean -fd`, `git pull`, build, migration, subida dos
+  servicos e reconciliacao do Nginx ao final.
+- Migracao extraordinaria de layout e remocao indiscriminada de containers nao
+  pertencem ao deploy cotidiano. O Nginx somente e recarregado quando os
+  servicos configurados para o gateway estiverem em execucao.
 - Para execucao local no Windows, a Engine replica do `appsettings.json` do
   Studio para API e Worker apenas `MyConfig.ReadConectionString` e
   `MyConfig.WriteConectionString`; demais parametros de host antigos nao devem
@@ -889,9 +895,10 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   `MYCONFIG__WRITECONECTIONSTRING`, mantendo o `appsettings` como fallback
   local.
 - A operacao publica permanece em tres passos: `setup.sh`, `setup-cert.sh` e `deploy.sh`.
-- `deploy.sh` sem argumento atualiza todo o servidor; `clinica`, `mdfe` e `shared` limitam o destino.
+- `deploy.sh` sem argumento executa `all`; `central`, `clinica`, `aps-adm`,
+  `fiscal` e `shared` limitam o destino.
 - A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.
-- A infraestrutura do MDF-e fica em `infra/Fiscal.MDFe/DockerCompose`.
+- A infraestrutura Fiscal fica em `infra/Fiscal/DockerCompose`.
 - A infraestrutura compartilhada fica em `infra/Shared/DockerCompose`.
 - `infra/docker/deploy.sh` permanece como a entrada operacional publica.
 - O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
