@@ -13,10 +13,10 @@ namespace Command.Write
 {
     public struct yConfigArctetureCrudCommand : ICommand, IOperationalTelemetryCommand
     {
-        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

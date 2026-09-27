@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.EstruturaCusto;
 
-[SeedTestOrder(167)]
+[SeedTestOrder(168)]
 public partial class EstruturaCustoCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/EstruturaCusto/PostEstruturaCusto";

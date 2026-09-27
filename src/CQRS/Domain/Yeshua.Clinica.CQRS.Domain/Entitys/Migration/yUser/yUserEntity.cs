@@ -20,12 +20,12 @@
                 {
                     public partial class yUserEntity : IyUserEntity
 {
-    public string OperationalEntityId { get; set; }
     public int? Id { get; set; }
     public string Nome { get; set; }
     public string Email { get; set; }
     public string? Senha { get; set; }
     public int? TenantID { get; set; }
+    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     private List<string> _erroMensagem = new List<string>();

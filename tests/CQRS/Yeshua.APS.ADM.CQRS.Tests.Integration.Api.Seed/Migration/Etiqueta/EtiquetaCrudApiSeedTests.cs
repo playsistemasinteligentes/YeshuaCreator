@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Etiqueta;
 
-[SeedTestOrder(168)]
+[SeedTestOrder(169)]
 public partial class EtiquetaCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Etiqueta/PostEtiqueta";

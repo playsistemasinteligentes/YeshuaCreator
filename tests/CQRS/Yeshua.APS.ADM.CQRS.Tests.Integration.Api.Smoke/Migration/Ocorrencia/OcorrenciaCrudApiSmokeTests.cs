@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Ocorrencia;
 
-[SmokeTestOrder(152)]
+[SmokeTestOrder(155)]
 public partial class OcorrenciaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Ocorrencia/PostOcorrencia";

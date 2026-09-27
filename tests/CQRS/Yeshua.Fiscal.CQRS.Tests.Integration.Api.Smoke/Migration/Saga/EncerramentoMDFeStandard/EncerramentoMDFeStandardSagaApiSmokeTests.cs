@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.Saga.EncerramentoMDFeStandard;
 
-[SmokeTestOrder(43)]
+[SmokeTestOrder(44)]
 [Trait("TestPurpose", "SagaE2ESmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D1")]

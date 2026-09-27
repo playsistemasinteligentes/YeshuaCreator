@@ -18,11 +18,11 @@ namespace Repositorio.Outputs
 {
     public partial record yTenantModuleDTO
     {
-    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public string moduleid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public DateTime validuntil { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }

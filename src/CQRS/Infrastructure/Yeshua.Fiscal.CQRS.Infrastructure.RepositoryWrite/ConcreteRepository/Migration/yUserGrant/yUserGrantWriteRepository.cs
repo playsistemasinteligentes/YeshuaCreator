@@ -51,11 +51,6 @@ namespace Input.Repository.yUserGrant
             var query = _query.DeleteyUserGrantQuery(yUserGrant);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdatePerfilId(int id, int value)
         {
             var query = _query.UpdatePerfilId(id, value);
@@ -94,6 +89,11 @@ namespace Input.Repository.yUserGrant
         public void UpdateValidUntil(int id, DateTime value)
         {
             var query = _query.UpdateValidUntil(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(int id, int value)

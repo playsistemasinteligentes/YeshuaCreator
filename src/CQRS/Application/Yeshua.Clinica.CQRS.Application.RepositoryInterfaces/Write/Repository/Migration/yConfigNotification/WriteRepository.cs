@@ -22,12 +22,12 @@ namespace IRepository.Write
         void Insert(IyConfigNotificationEntity yconfignotification);
         void Update(IyConfigNotificationEntity yconfignotification);
         void Delete(IyConfigNotificationEntity yconfignotification);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateEmailSmtpClient(int id, string value);
         void UpdateEmailPort(int id, int value);
         void UpdateEmailUserName(int id, string value);
         void UpdateEmailPassword(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);

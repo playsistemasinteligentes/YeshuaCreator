@@ -117,14 +117,6 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsById(int value )
         {
             var query = _query.ExistsByIdQuery(value );
@@ -157,6 +149,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -179,14 +179,6 @@ namespace Read.Repository
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
-        }
-
-        public yUserModuleDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<yUserModuleDTO>(query.Query, query.Parameters);
-                return result;
         }
 
         public yUserModuleDTO FirstById(int value )
@@ -221,6 +213,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public yUserModuleDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<yUserModuleDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yUserModuleDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -242,14 +242,6 @@ namespace Read.Repository
             var query = _query.FirstByChangedQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yUserModuleDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public IEnumerable<yUserModuleDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -280,6 +272,14 @@ namespace Read.Repository
         public IEnumerable<yUserModuleDTO> GetAllByValidUntil(DateTime value )
         {
             var query = _query.FirstByValidUntilQuery(value );
+
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<yUserModuleDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;

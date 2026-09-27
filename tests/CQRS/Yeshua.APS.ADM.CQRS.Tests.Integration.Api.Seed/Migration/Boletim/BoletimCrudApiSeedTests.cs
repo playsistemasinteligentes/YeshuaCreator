@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Boletim;
 
-[SeedTestOrder(183)]
+[SeedTestOrder(184)]
 public partial class BoletimCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Boletim/PostBoletim";

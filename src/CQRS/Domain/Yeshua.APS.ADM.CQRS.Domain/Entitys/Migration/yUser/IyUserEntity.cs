@@ -20,12 +20,12 @@
                 {
                     public interface IyUserEntity
 {
-    string OperationalEntityId { get; }
     int? Id { get; set; }
     string Nome { get; set; }
     string Email { get; set; }
     string? Senha { get; set; }
     int? TenantID { get; set; }
+    string OperationalEntityId { get; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     

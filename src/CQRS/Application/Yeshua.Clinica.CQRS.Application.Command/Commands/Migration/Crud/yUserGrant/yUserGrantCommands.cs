@@ -13,7 +13,6 @@ namespace Command.Write
 {
     public struct yUserGrantCrudCommand : ICommand, IOperationalTelemetryCommand
     {
-        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public string? GrantId { get; set; }
@@ -23,6 +22,7 @@ namespace Command.Write
         public bool? CanUpdate { get; set; }
         public bool? CanDelete { get; set; }
         public DateTime? ValidUntil { get; set; }
+        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

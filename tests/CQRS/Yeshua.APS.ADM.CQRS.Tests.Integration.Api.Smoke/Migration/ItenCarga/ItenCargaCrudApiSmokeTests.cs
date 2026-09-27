@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.ItenCarga;
 
-[SmokeTestOrder(175)]
+[SmokeTestOrder(176)]
 public partial class ItenCargaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/ItenCarga/PostItenCarga";

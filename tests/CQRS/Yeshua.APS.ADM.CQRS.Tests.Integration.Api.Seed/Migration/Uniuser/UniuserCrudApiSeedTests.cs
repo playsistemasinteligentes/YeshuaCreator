@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Uniuser;
 
-[SeedTestOrder(160)]
+[SeedTestOrder(163)]
 public partial class UniuserCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Uniuser/PostUniuser";

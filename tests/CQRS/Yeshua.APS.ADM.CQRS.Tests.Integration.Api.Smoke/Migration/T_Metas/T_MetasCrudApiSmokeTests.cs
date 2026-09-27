@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.T_Metas;
 
-[SmokeTestOrder(150)]
+[SmokeTestOrder(153)]
 public partial class T_MetasCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_Metas/PostT_Metas";

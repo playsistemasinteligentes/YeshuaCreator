@@ -100,14 +100,6 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsById(int value )
         {
             var query = _query.ExistsByIdQuery(value );
@@ -119,6 +111,14 @@ namespace Read.Repository
         public bool ExistsByDescription(string value )
         {
             var query = _query.ExistsByDescriptionQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -156,14 +156,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public yPerfilDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<yPerfilDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public yPerfilDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -175,6 +167,14 @@ namespace Read.Repository
         public yPerfilDTO FirstByDescription(string value )
         {
             var query = _query.FirstByDescriptionQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yPerfilDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yPerfilDTO>(query.Query, query.Parameters);
                 return result;
@@ -212,14 +212,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yPerfilDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.Query<yPerfilDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
         public IEnumerable<yPerfilDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -231,6 +223,14 @@ namespace Read.Repository
         public IEnumerable<yPerfilDTO> GetAllByDescription(string value )
         {
             var query = _query.FirstByDescriptionQuery(value );
+
+                var result = _unitOfWork.Query<yPerfilDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<yPerfilDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<yPerfilDTO>(query.Query,query.Parameters).ToList();
                 return result;

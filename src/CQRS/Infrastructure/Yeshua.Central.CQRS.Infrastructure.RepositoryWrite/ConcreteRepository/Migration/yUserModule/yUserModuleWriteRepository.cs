@@ -51,11 +51,6 @@ namespace Input.Repository.yUserModule
             var query = _query.DeleteyUserModuleQuery(yUserModule);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateModuleId(int id, string value)
         {
             var query = _query.UpdateModuleId(id, value);
@@ -69,6 +64,11 @@ namespace Input.Repository.yUserModule
         public void UpdateValidUntil(int id, DateTime value)
         {
             var query = _query.UpdateValidUntil(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(int id, int value)

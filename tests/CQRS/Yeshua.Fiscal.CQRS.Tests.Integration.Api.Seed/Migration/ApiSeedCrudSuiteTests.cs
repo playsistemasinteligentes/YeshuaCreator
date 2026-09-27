@@ -124,35 +124,38 @@ public sealed class ApiSeedCrudSuiteTests
         var step30 = new yToken.yTokenCrudApiSeedTests();
         await step30.ExecuteAsync();
 
-        var step31 = new yUser.yUserCrudApiSeedTests();
+        var step31 = new yTenantApplication.yTenantApplicationCrudApiSeedTests();
         await step31.ExecuteAsync();
 
-        var step32 = new yConfigArcteture.yConfigArctetureCrudApiSeedTests();
+        var step32 = new yUser.yUserCrudApiSeedTests();
         await step32.ExecuteAsync();
 
-        var step33 = new yConfigNotification.yConfigNotificationCrudApiSeedTests();
+        var step33 = new yConfigArcteture.yConfigArctetureCrudApiSeedTests();
         await step33.ExecuteAsync();
 
-        var step34 = new yPerfil.yPerfilCrudApiSeedTests();
+        var step34 = new yConfigNotification.yConfigNotificationCrudApiSeedTests();
         await step34.ExecuteAsync();
 
-        var step35 = new yGrant.yGrantCrudApiSeedTests();
+        var step35 = new yPerfil.yPerfilCrudApiSeedTests();
         await step35.ExecuteAsync();
 
-        var step36 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        var step36 = new yModule.yModuleCrudApiSeedTests();
         await step36.ExecuteAsync();
 
-        var step37 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        var step37 = new yTenantModule.yTenantModuleCrudApiSeedTests();
         await step37.ExecuteAsync();
 
-        var step38 = new yModule.yModuleCrudApiSeedTests();
+        var step38 = new yUserModule.yUserModuleCrudApiSeedTests();
         await step38.ExecuteAsync();
 
-        var step39 = new yTenantModule.yTenantModuleCrudApiSeedTests();
+        var step39 = new yGrant.yGrantCrudApiSeedTests();
         await step39.ExecuteAsync();
 
-        var step40 = new yUserModule.yUserModuleCrudApiSeedTests();
+        var step40 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
         await step40.ExecuteAsync();
+
+        var step41 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        await step41.ExecuteAsync();
 
     }
 }

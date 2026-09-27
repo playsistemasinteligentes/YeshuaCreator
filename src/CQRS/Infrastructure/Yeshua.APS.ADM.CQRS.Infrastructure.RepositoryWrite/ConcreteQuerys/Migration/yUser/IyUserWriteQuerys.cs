@@ -17,11 +17,11 @@ namespace IQuery.Write
      {
         public QueryModel InseriryUserQuery(IyUserEntity yUser);
         public QueryModel UpdateyUserQuery(IyUserEntity yUser);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateNome(int id, string value);
         QueryModel UpdateEmail(int id, string value);
         QueryModel UpdateSenha(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         public QueryModel DeleteyUserQuery(IyUserEntity yUser);

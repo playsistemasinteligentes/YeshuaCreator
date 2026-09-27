@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.ItensCalendario;
 
-[SeedTestOrder(147)]
+[SeedTestOrder(150)]
 public partial class ItensCalendarioCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/ItensCalendario/PostItensCalendario";

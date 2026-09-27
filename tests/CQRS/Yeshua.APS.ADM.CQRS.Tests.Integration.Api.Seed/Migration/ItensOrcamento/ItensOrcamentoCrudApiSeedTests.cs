@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.ItensOrcamento;
 
-[SeedTestOrder(176)]
+[SeedTestOrder(177)]
 public partial class ItensOrcamentoCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/ItensOrcamento/PostItensOrcamento";

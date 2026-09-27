@@ -18,7 +18,6 @@ namespace Repositorio.Outputs
 {
     public partial record yUserGrantDTO
     {
-    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public int perfilid { get; set; }
     public string grantid { get; set; } = string.Empty;
@@ -28,6 +27,7 @@ namespace Repositorio.Outputs
     public bool canupdate { get; set; }
     public bool candelete { get; set; }
     public DateTime validuntil { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

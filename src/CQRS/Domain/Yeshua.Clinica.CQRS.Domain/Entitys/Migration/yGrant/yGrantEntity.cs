@@ -20,9 +20,9 @@
                 {
                     public partial class yGrantEntity : IyGrantEntity
 {
-    public string OperationalEntityId { get; set; }
     public string? Id { get; set; }
     public string? Description { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }

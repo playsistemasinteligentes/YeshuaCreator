@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.GrupoIndicador;
 
-[SeedTestOrder(172)]
+[SeedTestOrder(173)]
 public partial class GrupoIndicadorCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/GrupoIndicador/PostGrupoIndicador";

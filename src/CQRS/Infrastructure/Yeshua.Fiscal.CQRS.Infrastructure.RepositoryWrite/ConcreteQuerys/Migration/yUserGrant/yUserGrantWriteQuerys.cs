@@ -30,10 +30,9 @@ namespace Query.Write
         }
         public QueryModel InseriryUserGrantQuery(IyUserGrantEntity yUserGrant)
         {
-            this.Query = $@" INSERT INTO [yUserGrant] ([OperationalEntityId], [PerfilId], [GrantId], [CanGrant], [CanCreate], [CanRead], [CanUpdate], [CanDelete], [ValidUntil], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OperationalEntityId, @PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yUserGrant] ([PerfilId], [GrantId], [CanGrant], [CanCreate], [CanRead], [CanUpdate], [CanDelete], [ValidUntil], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
-                OperationalEntityId = yUserGrant.OperationalEntityId,
                 PerfilId = yUserGrant.PerfilId,
                 GrantId = yUserGrant.GrantId,
                 CanGrant = yUserGrant.CanGrant,
@@ -42,6 +41,7 @@ namespace Query.Write
                 CanUpdate = yUserGrant.CanUpdate,
                 CanDelete = yUserGrant.CanDelete,
                 ValidUntil = yUserGrant.ValidUntil,
+                OperationalEntityId = yUserGrant.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -65,16 +65,6 @@ namespace Query.Write
                 Changed = yUserGrant.Changed,
                 UserId = _executionContext.UserId,
                 Id = yUserGrant.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yUserGrant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -154,6 +144,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 ValidUntil = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yUserGrant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

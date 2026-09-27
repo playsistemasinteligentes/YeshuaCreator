@@ -18,13 +18,13 @@ namespace Repositorio.Outputs
 {
     public partial record yConfigNotificationDTO
     {
-    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public int tenantid { get; set; }
     public string emailsmtpclient { get; set; } = string.Empty;
     public int emailport { get; set; }
     public string emailusername { get; set; } = string.Empty;
     public string emailpassword { get; set; } = string.Empty;
+    public string operationalentityid { get; set; } = string.Empty;
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }

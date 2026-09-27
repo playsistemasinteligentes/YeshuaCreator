@@ -56,12 +56,6 @@ namespace Input.Repository.yConfigArcteture
             var query = _query.DeleteyConfigArctetureQuery(yConfigArcteture);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            _cacheService.RemoveByPrefix("yConfigArcteture");
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateAuditTrackerActived(int id, int value)
         {
             _cacheService.RemoveByPrefix("yConfigArcteture");
@@ -72,6 +66,12 @@ namespace Input.Repository.yConfigArcteture
         {
             _cacheService.RemoveByPrefix("yConfigArcteture");
             var query = _query.UpdateAuditCRUDActived(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(int id, int value)

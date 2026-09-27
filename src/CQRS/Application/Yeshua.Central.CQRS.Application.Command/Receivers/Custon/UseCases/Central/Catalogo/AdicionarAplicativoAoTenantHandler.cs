@@ -25,9 +25,9 @@ namespace Command.Receivers.UseCase
         private readonly IUnitOfWork _unitOfWork = default!;
         private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IyTenantReadRepository _repReadyTenant = default!;
-        private readonly ITenantCatalogoReadRepository _repReadTenantCatalogo = default!;
-        private readonly ITenantCatalogoWriteRepository _repWriteTenantCatalogo = default!;
-        public AdicionarAplicativoAoTenantHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyTenantReadRepository repReadyTenant,ITenantCatalogoReadRepository repReadTenantCatalogo,ITenantCatalogoWriteRepository repWriteTenantCatalogo)
+        private readonly IyTenantApplicationReadRepository _repReadTenantApplication = default!;
+        private readonly IyTenantApplicationWriteRepository _repWriteTenantApplication = default!;
+        public AdicionarAplicativoAoTenantHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyTenantReadRepository repReadyTenant,IyTenantApplicationReadRepository repReadTenantApplication,IyTenantApplicationWriteRepository repWriteTenantApplication)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -35,8 +35,8 @@ namespace Command.Receivers.UseCase
            _executionContext = executionContext;
             _domainTrackingPolicy = domainTrackingPolicy;
             _repReadyTenant = repReadyTenant;
-            _repReadTenantCatalogo = repReadTenantCatalogo;
-            _repWriteTenantCatalogo = repWriteTenantCatalogo;
+            _repReadTenantApplication = repReadTenantApplication;
+            _repWriteTenantApplication = repWriteTenantApplication;
         }
 protected partial Task<State<AdicionarAplicativoAoTenantOutputCommand>> CustomActionHookAsync(State<AdicionarAplicativoAoTenantOutputCommand> state, AdicionarAplicativoAoTenantInputCommand comand, CancellationToken cancellationToken)
 {
@@ -51,24 +51,24 @@ protected partial Task<State<AdicionarAplicativoAoTenantOutputCommand>> CustomAc
         throw new ReceiverException<AdicionarAplicativoAoTenantOutputCommand>(
             Error("Somente o proprietario do tenant pode adicionar aplicativos.", default));
 
-    var tenantCatalogs = _repReadTenantCatalogo.GetAllByTenantID(_executionContext.TenantID)
+    var tenantApplications = _repReadTenantApplication.GetAllByTenantID(_executionContext.TenantID)
         .Where(item => item.validuntil >= DateTime.UtcNow)
-        .Select(item => item.catalogo)
+        .Select(item => item.applicationkey)
         .Where(item => !string.IsNullOrWhiteSpace(item))
         .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-    if (!tenantCatalogs.Contains(application))
+    if (!tenantApplications.Contains(application))
     {
         try
         {
             _unitOfWork.BeginTran();
-            var catalog = new TenantCatalogoFactory(_logger, _domainTrackingPolicy)
+            var tenantApplication = new yTenantApplicationFactory(_logger, _domainTrackingPolicy)
                 .Create(null, application, DateTime.UtcNow.AddYears(100));
-            catalog.TenantID = _executionContext.TenantID;
-            catalog.UserId = _executionContext.UserId;
-            _repWriteTenantCatalogo.Insert(catalog);
+            tenantApplication.TenantID = _executionContext.TenantID;
+            tenantApplication.UserId = _executionContext.UserId;
+            _repWriteTenantApplication.Insert(tenantApplication);
             _unitOfWork.Commit();
-            tenantCatalogs.Add(application);
+            tenantApplications.Add(application);
         }
         catch
         {
@@ -82,7 +82,7 @@ protected partial Task<State<AdicionarAplicativoAoTenantOutputCommand>> CustomAc
         Adicionado = true,
         Aplicativo = application,
         Catalogos = new[] { "Central" }
-            .Concat(tenantCatalogs)
+            .Concat(tenantApplications)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList()
     });

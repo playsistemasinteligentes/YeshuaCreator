@@ -18,10 +18,10 @@ namespace Repositorio.Outputs
 {
     public partial record yConfigArctetureDTO
     {
-    public string operationalentityid { get; set; } = string.Empty;
     public int id { get; set; }
     public int audittrackeractived { get; set; }
     public int auditcrudactived { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.T_Favoritos;
 
-[SeedTestOrder(169)]
+[SeedTestOrder(170)]
 public partial class T_FavoritosCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_Favoritos/PostT_Favoritos";

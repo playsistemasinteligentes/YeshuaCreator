@@ -22,10 +22,10 @@ namespace IRepository.Write
         void Insert(IyTenantModuleEntity ytenantmodule);
         void Update(IyTenantModuleEntity ytenantmodule);
         void Delete(IyTenantModuleEntity ytenantmodule);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateModuleId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateValidUntil(int id, DateTime value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);

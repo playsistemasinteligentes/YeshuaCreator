@@ -28,7 +28,7 @@ public sealed class M000001 : MigrationBase
             .Authorization(Authorization.User)
             .AddScope("central.catalogo.adicionar")
             .AddEntity("yTenant")
-            .AddEntity("TenantCatalogo");
+            .AddEntity("yTenantApplication");
     }
 }
 

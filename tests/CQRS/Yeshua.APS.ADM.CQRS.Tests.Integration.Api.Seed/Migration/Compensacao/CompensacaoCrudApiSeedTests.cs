@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Compensacao;
 
-[SeedTestOrder(184)]
+[SeedTestOrder(185)]
 public partial class CompensacaoCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Compensacao/PostCompensacao";

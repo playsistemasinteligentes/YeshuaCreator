@@ -479,6 +479,14 @@ Regra resumida:
 - As tabelas internas Y continuam presentes em todos os aplicativos. Esta
   mudanca nao centraliza, remove nem inventaria tabelas Y; preserva a futura
   possibilidade de replicacao.
+- `yTenantApplication` e a tabela Y padrao que representa quais aplicativos de
+  primeiro nivel estao autorizados para um tenant. Sua estrutura nasce em
+  migration S da Engine e existe em todos os bancos; no modelo atual, somente a
+  Central concede ou revoga aplicativos. Catalogo comercial, apresentacao e
+  precificacao continuam sendo conceitos exclusivos da Central.
+- `yTenantApplication` nao substitui `yTenantModule`: a primeira controla a
+  entrada do tenant em um aplicativo, enquanto a segunda controla modulos
+  internos do proprio aplicativo.
 - Durante a transicao, os projetos de Front antigos ficam congelados. Qualquer
   codigo ainda util deve ser migrado conscientemente para o Front Central antes
   da exclusao desses projetos; nao existe copia automatica.

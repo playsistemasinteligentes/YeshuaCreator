@@ -17,7 +17,6 @@ namespace IQuery.Write
      {
         public QueryModel InseriryPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant);
         public QueryModel UpdateyPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdatePerfilId(int id, int value);
         QueryModel UpdateGrantId(int id, string value);
         QueryModel UpdateCanGrant(int id, bool value);
@@ -26,6 +25,7 @@ namespace IQuery.Write
         QueryModel UpdateCanUpdate(int id, bool value);
         QueryModel UpdateCanDelete(int id, bool value);
         QueryModel UpdateValidUntil(int id, DateTime value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);

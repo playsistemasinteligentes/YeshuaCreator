@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Planoacao;
 
-[SeedTestOrder(156)]
+[SeedTestOrder(159)]
 public partial class PlanoacaoCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Planoacao/PostPlanoacao";

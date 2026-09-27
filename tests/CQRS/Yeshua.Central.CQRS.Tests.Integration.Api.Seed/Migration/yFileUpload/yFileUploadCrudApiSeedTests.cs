@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Central.CQRS.Tests.Integration.Api.Seed.Migration.yFileUpload;
 
-[SeedTestOrder(2)]
+[SeedTestOrder(1)]
 public partial class yFileUploadCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yFileUpload/PostyFileUpload";

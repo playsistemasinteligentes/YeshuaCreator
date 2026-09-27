@@ -67,17 +67,6 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
 
 
-builder.Services.AddTransient<IRepository.Write.ITenantCatalogoWriteRepository, Input.Repository.TenantCatalogo.TenantCatalogoWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.ITenantCatalogoReadRepository, Read.Repository.TenantCatalogoReadRepository>();
-builder.Services.AddTransient<IQuery.Read.ITenantCatalogoQueryRead, Query.Read.TenantCatalogoQueryRead>();
-builder.Services.AddTransient<IQuery.Write.ITenantCatalogoQueryWrite, Query.Write.TenantCatalogoQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertTenantCatalogoReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateTenantCatalogoReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteTenantCatalogoReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.TenantCatalogoReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.TenantCatalogoReadFKTenantIDReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.TenantCatalogoReadFKUserIdReceiver>();
-
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
@@ -149,6 +138,17 @@ builder.Services.AddTransient<Command.Receivers.Write.DeleteyTokenReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yTokenReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yTokenReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yTokenReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IyTenantApplicationWriteRepository, Input.Repository.yTenantApplication.yTenantApplicationWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyTenantApplicationReadRepository, Read.Repository.yTenantApplicationReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyTenantApplicationQueryRead, Query.Read.yTenantApplicationQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyTenantApplicationQueryWrite, Query.Write.yTenantApplicationQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyTenantApplicationReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyTenantApplicationReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyTenantApplicationReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yTenantApplicationReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yTenantApplicationReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yTenantApplicationReadFKUserIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IyTenantWriteRepository, Input.Repository.yTenant.yTenantWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyTenantReadRepository, Read.Repository.yTenantReadRepository>();
@@ -236,6 +236,15 @@ builder.Services.AddTransient<Command.Receivers.Read.yPerfilReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yPerfilReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yPerfilReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IyModuleWriteRepository, Input.Repository.yModule.yModuleWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyModuleReadRepository, Read.Repository.yModuleReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyModuleQueryRead, Query.Read.yModuleQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyModuleQueryWrite, Query.Write.yModuleQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyModuleReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyModuleReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyModuleReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yModuleReadReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IyTenantModuleWriteRepository, Input.Repository.yTenantModule.yTenantModuleWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyTenantModuleReadRepository, Read.Repository.yTenantModuleReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyTenantModuleQueryRead, Query.Read.yTenantModuleQueryRead>();
@@ -297,20 +306,13 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdRece
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 
-builder.Services.AddTransient<IRepository.Write.IyModuleWriteRepository, Input.Repository.yModule.yModuleWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IyModuleReadRepository, Read.Repository.yModuleReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IyModuleQueryRead, Query.Read.yModuleQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IyModuleQueryWrite, Query.Write.yModuleQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertyModuleReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateyModuleReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteyModuleReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.yModuleReadReceiver>();
-
 builder.Services.AddTransient<Command.Receivers.UseCase.AdicionarAplicativoAoTenantHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.RetrySagaStepHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.CreateContaHandler>();
 

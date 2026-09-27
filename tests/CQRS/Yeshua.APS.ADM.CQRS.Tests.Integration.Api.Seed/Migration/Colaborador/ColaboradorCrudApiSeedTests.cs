@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Colaborador;
 
-[SeedTestOrder(139)]
+[SeedTestOrder(142)]
 public partial class ColaboradorCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Colaborador/PostColaborador";

@@ -34,25 +34,25 @@ public sealed class ApiSeedCrudSuiteTests
     {
         ApiSeedTestContext.Clear();
 
-        var step1 = new TenantCatalogo.TenantCatalogoCrudApiSeedTests();
+        var step1 = new yFileUpload.yFileUploadCrudApiSeedTests();
         await step1.ExecuteAsync();
 
-        var step2 = new yFileUpload.yFileUploadCrudApiSeedTests();
+        var step2 = new ySaga.ySagaCrudApiSeedTests();
         await step2.ExecuteAsync();
 
-        var step3 = new ySaga.ySagaCrudApiSeedTests();
+        var step3 = new ySagaStep.ySagaStepCrudApiSeedTests();
         await step3.ExecuteAsync();
 
-        var step4 = new ySagaStep.ySagaStepCrudApiSeedTests();
+        var step4 = new yOutbox.yOutboxCrudApiSeedTests();
         await step4.ExecuteAsync();
 
-        var step5 = new yOutbox.yOutboxCrudApiSeedTests();
+        var step5 = new yInbox.yInboxCrudApiSeedTests();
         await step5.ExecuteAsync();
 
-        var step6 = new yInbox.yInboxCrudApiSeedTests();
+        var step6 = new yToken.yTokenCrudApiSeedTests();
         await step6.ExecuteAsync();
 
-        var step7 = new yToken.yTokenCrudApiSeedTests();
+        var step7 = new yTenantApplication.yTenantApplicationCrudApiSeedTests();
         await step7.ExecuteAsync();
 
         var step8 = new yUser.yUserCrudApiSeedTests();
@@ -67,22 +67,22 @@ public sealed class ApiSeedCrudSuiteTests
         var step11 = new yPerfil.yPerfilCrudApiSeedTests();
         await step11.ExecuteAsync();
 
-        var step12 = new yGrant.yGrantCrudApiSeedTests();
+        var step12 = new yModule.yModuleCrudApiSeedTests();
         await step12.ExecuteAsync();
 
-        var step13 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        var step13 = new yTenantModule.yTenantModuleCrudApiSeedTests();
         await step13.ExecuteAsync();
 
-        var step14 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        var step14 = new yUserModule.yUserModuleCrudApiSeedTests();
         await step14.ExecuteAsync();
 
-        var step15 = new yModule.yModuleCrudApiSeedTests();
+        var step15 = new yGrant.yGrantCrudApiSeedTests();
         await step15.ExecuteAsync();
 
-        var step16 = new yTenantModule.yTenantModuleCrudApiSeedTests();
+        var step16 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
         await step16.ExecuteAsync();
 
-        var step17 = new yUserModule.yUserModuleCrudApiSeedTests();
+        var step17 = new yUserGrant.yUserGrantCrudApiSeedTests();
         await step17.ExecuteAsync();
 
     }

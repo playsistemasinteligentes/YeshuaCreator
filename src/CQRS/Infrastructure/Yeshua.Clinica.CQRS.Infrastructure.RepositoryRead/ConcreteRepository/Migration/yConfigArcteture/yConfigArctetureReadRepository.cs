@@ -100,14 +100,6 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsById(int value )
         {
             var query = _query.ExistsByIdQuery(value );
@@ -127,6 +119,14 @@ namespace Read.Repository
         public bool ExistsByAuditCRUDActived(int value )
         {
             var query = _query.ExistsByAuditCRUDActivedQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -164,14 +164,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public yConfigArctetureDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<yConfigArctetureDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public yConfigArctetureDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -191,6 +183,14 @@ namespace Read.Repository
         public yConfigArctetureDTO FirstByAuditCRUDActived(int value )
         {
             var query = _query.FirstByAuditCRUDActivedQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigArctetureDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigArctetureDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yConfigArctetureDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,14 +228,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
         public IEnumerable<yConfigArctetureDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -255,6 +247,14 @@ namespace Read.Repository
         public IEnumerable<yConfigArctetureDTO> GetAllByAuditCRUDActived(int value )
         {
             var query = _query.FirstByAuditCRUDActivedQuery(value );
+
+                var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters).ToList();
                 return result;

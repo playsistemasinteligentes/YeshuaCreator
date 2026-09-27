@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.IndicadoresDepartamentos;
 
-[SeedTestOrder(143)]
+[SeedTestOrder(146)]
 public partial class IndicadoresDepartamentosCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/IndicadoresDepartamentos/PostIndicadoresDepartamentos";

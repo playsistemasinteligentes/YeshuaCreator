@@ -20,10 +20,10 @@
                 {
                     public static class yConfigArctetureTrackingFields
         {
-            public const ulong OperationalEntityId = 1UL << 0;
-            public const ulong Id = 1UL << 1;
-            public const ulong AuditTrackerActived = 1UL << 2;
-            public const ulong AuditCRUDActived = 1UL << 3;
+            public const ulong Id = 1UL << 0;
+            public const ulong AuditTrackerActived = 1UL << 1;
+            public const ulong AuditCRUDActived = 1UL << 2;
+            public const ulong OperationalEntityId = 1UL << 3;
             public const ulong TenantID = 1UL << 4;
             public const ulong Deleted = 1UL << 5;
             public const ulong Changed = 1UL << 6;
@@ -56,8 +56,7 @@
                             _trackingTraceId = context?.TraceId ?? string.Empty;
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
-                        }    public string OperationalEntityId => _inner.OperationalEntityId;
-
+                        }
                                     public int? Id
                                     {
                                         get => _inner.Id;
@@ -99,6 +98,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {

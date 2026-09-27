@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.OrderTrack;
 
-[SeedTestOrder(179)]
+[SeedTestOrder(180)]
 public partial class OrderTrackCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/OrderTrack/PostOrderTrack";

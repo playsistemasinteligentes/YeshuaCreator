@@ -13,11 +13,11 @@ namespace Command.Write
 {
     public struct yTenantModuleCrudCommand : ICommand, IOperationalTelemetryCommand
     {
-        public string OperationalEntityId { get; set; }
         public int? Id { get; set; }
         public string? ModuleId { get; set; }
         public int? TenantID { get; set; }
         public DateTime? ValidUntil { get; set; }
+        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }

@@ -17,8 +17,8 @@ namespace IQuery.Write
      {
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant);
         public QueryModel UpdateyGrantQuery(IyGrantEntity yGrant);
-        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdateDescription(string id, string value);
+        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdateTenantID(string id, int value);
         QueryModel UpdateDeleted(string id, bool value);
         QueryModel UpdateChanged(string id, DateTime value);

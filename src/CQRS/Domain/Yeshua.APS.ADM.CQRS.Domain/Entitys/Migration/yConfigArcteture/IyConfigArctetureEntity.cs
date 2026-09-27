@@ -20,10 +20,10 @@
                 {
                     public interface IyConfigArctetureEntity
 {
-    string OperationalEntityId { get; }
     int? Id { get; set; }
     int? AuditTrackerActived { get; set; }
     int? AuditCRUDActived { get; set; }
+    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

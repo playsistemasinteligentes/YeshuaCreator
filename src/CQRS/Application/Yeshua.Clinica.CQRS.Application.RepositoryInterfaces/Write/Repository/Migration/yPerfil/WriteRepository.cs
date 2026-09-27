@@ -22,8 +22,8 @@ namespace IRepository.Write
         void Insert(IyPerfilEntity yperfil);
         void Update(IyPerfilEntity yperfil);
         void Delete(IyPerfilEntity yperfil);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateDescription(int id, string value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

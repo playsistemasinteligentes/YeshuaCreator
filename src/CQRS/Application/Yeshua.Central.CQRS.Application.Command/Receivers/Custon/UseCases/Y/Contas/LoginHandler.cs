@@ -24,9 +24,9 @@ namespace Command.Receivers.UseCase
         private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IyUserReadRepository _repReadyUser = default!;
         private readonly IyUserWriteRepository _repWriteyUser = default!;
-        private readonly ITenantCatalogoReadRepository _repReadTenantCatalogo = default!;
+        private readonly IyTenantApplicationReadRepository _repReadTenantApplication = default!;
         private readonly IyTenantReadRepository _repReadTenant = default!;
-        public LoginHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,ITenantCatalogoReadRepository repReadTenantCatalogo,IyTenantReadRepository repReadTenant)
+        public LoginHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,IyTenantApplicationReadRepository repReadTenantApplication,IyTenantReadRepository repReadTenant)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -35,7 +35,7 @@ namespace Command.Receivers.UseCase
            _domainTrackingPolicy = domainTrackingPolicy;
             _repReadyUser = repReadyUser;
             _repWriteyUser = repWriteyUser;
-            _repReadTenantCatalogo = repReadTenantCatalogo;
+            _repReadTenantApplication = repReadTenantApplication;
             _repReadTenant = repReadTenant;
         }
 protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<LoginOutputCommand> state, LoginInputCommand comand, CancellationToken cancellationToken)
@@ -52,9 +52,9 @@ protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<Lo
 
     var now = DateTime.UtcNow;
     var catalogs = new[] { "Central" }
-        .Concat(_repReadTenantCatalogo.GetAllByTenantID(user.tenantid)
-            .Where(catalog => catalog.validuntil >= now)
-            .Select(catalog => catalog.catalogo))
+        .Concat(_repReadTenantApplication.GetAllByTenantID(user.tenantid)
+            .Where(application => application.validuntil >= now)
+            .Select(application => application.applicationkey))
         .Where(catalog => !string.IsNullOrWhiteSpace(catalog))
         .Distinct(StringComparer.OrdinalIgnoreCase)
         .ToList();

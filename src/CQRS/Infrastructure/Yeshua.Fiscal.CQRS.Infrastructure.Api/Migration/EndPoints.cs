@@ -689,10 +689,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yConfigArcteture",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "AuditTrackerActived", title = "AuditTrackerActived" },
                     new { name = "AuditCRUDActived", title = "AuditCRUDActived" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -705,13 +705,13 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yConfigNotification",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "EmailSmtpClient", title = "EmailSmtpClient" },
                     new { name = "EmailPort", title = "EmailPort" },
                     new { name = "EmailUserName", title = "EmailUserName" },
                     new { name = "EmailPassword", title = "EmailPassword" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -745,9 +745,9 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yGrant",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "Description", title = "Descrição" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -829,9 +829,9 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yPerfil",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "Description", title = "Descrição" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -844,7 +844,6 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yPerfilGrant",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "PerfilId", title = "ID Perfil" },
                     new { name = "GrantId", title = "ID Permição" },
@@ -854,6 +853,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CanUpdate", title = "Permite Atualizar" },
                     new { name = "CanDelete", title = "Permite Deletar" },
                     new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -916,13 +916,29 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yTenant",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "CnpjCpf", title = "Cnpj/Cpf" },
                     new { name = "Nome", title = "Nome" },
                     new { name = "UserId", title = "User ID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
+                }
+            },
+            new
+            {
+                name = "yTenantApplication",
+                title = "Aplicativos autorizados do tenant",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID" },
+                    new { name = "ApplicationKey", title = "Aplicativo" },
+                    new { name = "TenantID", title = "TenantID" },
+                    new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
+                    new { name = "Deleted", title = "Deleted" },
+                    new { name = "Changed", title = "Changed" },
+                    new { name = "UserId", title = "User ID" },
                 }
             },
             new
@@ -931,11 +947,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yTenantModule",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "ModuleId", title = "ID Modulo" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                     new { name = "UserId", title = "User ID" },
@@ -968,12 +984,12 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yUser",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "Nome", title = "Nome Usuario" },
                     new { name = "Email", title = "Email" },
                     new { name = "Senha", title = "Senha" },
                     new { name = "TenantID", title = "TenantID" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
                 }
@@ -984,7 +1000,6 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yUserGrant",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "PerfilId", title = "ID Perfil" },
                     new { name = "GrantId", title = "ID Permição" },
@@ -994,6 +1009,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CanUpdate", title = "Permite Atualizar" },
                     new { name = "CanDelete", title = "Permite Deletar" },
                     new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1006,11 +1022,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 title = "yUserModule",
                 fields = new[]
                 {
-                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "Id", title = "ID" },
                     new { name = "ModuleId", title = "ID Modulo" },
                     new { name = "UserId", title = "User ID" },
                     new { name = "ValidUntil", title = "Valido ate" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional" },
                     new { name = "TenantID", title = "TenantID" },
                     new { name = "Deleted", title = "Deleted" },
                     new { name = "Changed", title = "Changed" },
@@ -1319,6 +1335,15 @@ app.MapPost("/yapi/yToken/PostyToken", async ([FromServices] Command.Receivers.W
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/yTenantApplication/PostyTenantApplication", async ([FromServices] Command.Receivers.Write.InsertyTenantApplicationReceiver receiver, [FromBody] Command.Write.yTenantApplicationCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yTenant/PostyTenant", async ([FromServices] Command.Receivers.Write.InsertyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1364,6 +1389,15 @@ app.MapPost("/yapi/yPerfil/PostyPerfil", async ([FromServices] Command.Receivers
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/yModule/PostyModule", async ([FromServices] Command.Receivers.Write.InsertyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yTenantModule/PostyTenantModule", async ([FromServices] Command.Receivers.Write.InsertyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1405,15 +1439,6 @@ app.MapPost("/yapi/yUserGrant/PostyUserGrant", async ([FromServices] Command.Rec
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPost("/yapi/yModule/PostyModule", async ([FromServices] Command.Receivers.Write.InsertyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1688,6 +1713,15 @@ app.MapPut("/yapi/yToken/PutyToken", async ([FromServices] Command.Receivers.Wri
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/yTenantApplication/PutyTenantApplication", async ([FromServices] Command.Receivers.Write.UpdateyTenantApplicationReceiver receiver, [FromBody] Command.Write.yTenantApplicationCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yTenant/PutyTenant", async ([FromServices] Command.Receivers.Write.UpdateyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1733,6 +1767,15 @@ app.MapPut("/yapi/yPerfil/PutyPerfil", async ([FromServices] Command.Receivers.W
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/yModule/PutyModule", async ([FromServices] Command.Receivers.Write.UpdateyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yTenantModule/PutyTenantModule", async ([FromServices] Command.Receivers.Write.UpdateyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1774,15 +1817,6 @@ app.MapPut("/yapi/yUserGrant/PutyUserGrant", async ([FromServices] Command.Recei
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPut("/yapi/yModule/PutyModule", async ([FromServices] Command.Receivers.Write.UpdateyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -2057,6 +2091,15 @@ app.MapDelete("/yapi/yToken/DeleteyToken", async ([FromServices] Command.Receive
 .RequireAuthorization();
 
 
+app.MapDelete("/yapi/yTenantApplication/DeleteyTenantApplication", async ([FromServices] Command.Receivers.Write.DeleteyTenantApplicationReceiver receiver, [FromBody] Command.Write.yTenantApplicationCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapDelete("/yapi/yTenant/DeleteyTenant", async ([FromServices] Command.Receivers.Write.DeleteyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2102,6 +2145,15 @@ app.MapDelete("/yapi/yPerfil/DeleteyPerfil", async ([FromServices] Command.Recei
 .RequireAuthorization();
 
 
+app.MapDelete("/yapi/yModule/DeleteyModule", async ([FromServices] Command.Receivers.Write.DeleteyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapDelete("/yapi/yTenantModule/DeleteyTenantModule", async ([FromServices] Command.Receivers.Write.DeleteyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2143,15 +2195,6 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapDelete("/yapi/yModule/DeleteyModule", async ([FromServices] Command.Receivers.Write.DeleteyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -2570,6 +2613,15 @@ app.MapPost("/yapi/yToken/ReadyToken", async ([FromServices] Command.Receivers.R
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/yTenantApplication/ReadyTenantApplication", async ([FromServices] Command.Receivers.Read.yTenantApplicationReadReceiver receiver, [FromBody] Command.Read.yTenantApplicationReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTenantApplicationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yTenant/ReadyTenant", async ([FromServices] Command.Receivers.Read.yTenantReadReceiver receiver, [FromBody] Command.Read.yTenantReadCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2615,6 +2667,15 @@ app.MapPost("/yapi/yPerfil/ReadyPerfil", async ([FromServices] Command.Receivers
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/yModule/ReadyModule", async ([FromServices] Command.Receivers.Read.yModuleReadReceiver receiver, [FromBody] Command.Read.yModuleReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yTenantModule/ReadyTenantModule", async ([FromServices] Command.Receivers.Read.yTenantModuleReadReceiver receiver, [FromBody] Command.Read.yTenantModuleReadCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2656,15 +2717,6 @@ app.MapPost("/yapi/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Rec
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPost("/yapi/yModule/ReadyModule", async ([FromServices] Command.Receivers.Read.yModuleReadReceiver receiver, [FromBody] Command.Read.yModuleReadCommand command) =>
-{
- return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
-}).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -4175,6 +4227,40 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/yToken/yTokenReadFKUserId", async ([FromServices] Command.Receivers.Read.yTokenReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/yTenantApplication/yTenantApplicationReadFKTenantID", async ([FromServices] Command.Receivers.Read.yTenantApplicationReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/yTenantApplication/yTenantApplicationReadFKUserId", async ([FromServices] Command.Receivers.Read.yTenantApplicationReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -7415,6 +7501,73 @@ app.MapGet("/yapi/getMetaDatayToken", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
+app.MapGet("/yapi/getMetaDatayTenantApplication", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "yTenantApplication",
+        entityDescription = "Aplicativos autorizados do tenant",
+        source = new
+        {
+            kind = "table",
+            name = "yTenantApplication"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/yTenantApplication/ReadyTenantApplication",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "applicationkey", label = "Aplicativo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "applicationkey", label = "Aplicativo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                tenantid = "/yTenantApplication/yTenantApplicationReadFKTenantID",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "applicationkey", label = "Aplicativo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+                 tenantid = "/yTenantApplication/yTenantApplicationReadFKTenantID",
+            create = "/yTenantApplication/PostyTenantApplication",
+            read = "/yTenantApplication/ReadyTenantApplication",
+            update = "/yTenantApplication/PutyTenantApplication",
+            delete = "/yTenantApplication/DeleteyTenantApplication"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -7735,6 +7888,65 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
             read = "/yPerfil/ReadyPerfil",
             update = "/yPerfil/PutyPerfil",
             delete = "/yPerfil/DeleteyPerfil"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "yModule",
+        entityDescription = "yModule",
+        source = new
+        {
+            kind = "table",
+            name = "yModule"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/yModule/ReadyModule",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "/yModule/PostyModule",
+            read = "/yModule/ReadyModule",
+            update = "/yModule/PutyModule",
+            delete = "/yModule/DeleteyModule"
         }
     };
     return Results.Ok(metadatacrud);
@@ -8104,65 +8316,6 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
-app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
-{
-    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (string.IsNullOrEmpty(userId))
-        return Results.Unauthorized();
-    var metadatacrud = new
-    {
-        entityName = "yModule",
-        entityDescription = "yModule",
-        source = new
-        {
-            kind = "table",
-            name = "yModule"
-        },
-        capabilities = new
-        {
-            create = true,
-            update = true,
-            delete = true
-        },
-        search = new[]{
-            new {
-                id = "Standard",
-                description = "Standard",
-                endpoint = "/yModule/ReadyModule",
-            resultFields = new[]
-            {
-                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            },
-            filterFields = new[]
-            {
-                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            },
-            quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
-            {
-            }
-            },
-        },
-        formFields = new[]
-        {
-            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-        },
-        relationTabs = Array.Empty<object>(),
-        customTabs = Array.Empty<object>(),
-        actions = Array.Empty<object>(),
-        endpoints = new
-        {
-            create = "/yModule/PostyModule",
-            read = "/yModule/ReadyModule",
-            update = "/yModule/PutyModule",
-            delete = "/yModule/DeleteyModule"
-        }
-    };
-    return Results.Ok(metadatacrud);
-}).RequireAuthorization();
 #region ServicesMethod
 app.MapPost("/yapi/Fiscal/EntradaReceberNotasFiscaisProdutoUseCase", async ([FromServices] Command.Receivers.UseCase.ReceberNotasFiscaisProdutoHandler receiver, [FromBody] Command.UseCase.ReceberNotasFiscaisProdutoInputCommand command) =>
 {
@@ -8216,22 +8369,6 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarProcessamentoContingenciaFiscalHandler receiver, [FromBody] Command.UseCase.ConsultarProcessamentoContingenciaFiscalInputCommand command) =>
-{
-try
-{
-var result = await receiver.ExecuteAsync(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-app.MapPost("/yapi/Saga/OperacaoRetrySagaStepUseCase", async ([FromServices] Command.Receivers.UseCase.RetrySagaStepHandler receiver, [FromBody] Command.UseCase.RetrySagaStepInputCommand command) =>
 {
 try
 {
@@ -8759,6 +8896,23 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.SendFileHandler receiver, [FromBody] Command.UseCase.SendFileInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Saga/OperacaoRetrySagaStepUseCase", async ([FromServices] Command.Receivers.UseCase.RetrySagaStepHandler receiver, [FromBody] Command.UseCase.RetrySagaStepInputCommand command) =>
 {
 try
 {

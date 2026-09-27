@@ -22,9 +22,9 @@ namespace IRepository.Write
         void Insert(IyConfigArctetureEntity yconfigarcteture);
         void Update(IyConfigArctetureEntity yconfigarcteture);
         void Delete(IyConfigArctetureEntity yconfigarcteture);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateAuditTrackerActived(int id, int value);
         void UpdateAuditCRUDActived(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.FilaProducao;
 
-[SeedTestOrder(171)]
+[SeedTestOrder(172)]
 public partial class FilaProducaoCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/FilaProducao/PostFilaProducao";

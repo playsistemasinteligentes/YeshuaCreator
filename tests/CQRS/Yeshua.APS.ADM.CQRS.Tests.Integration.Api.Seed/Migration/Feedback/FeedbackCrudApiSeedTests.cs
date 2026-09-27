@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Feedback;
 
-[SeedTestOrder(170)]
+[SeedTestOrder(171)]
 public partial class FeedbackCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Feedback/PostFeedback";

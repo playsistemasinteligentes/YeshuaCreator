@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.T_Indicadores;
 
-[SmokeTestOrder(142)]
+[SmokeTestOrder(145)]
 public partial class T_IndicadoresCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_Indicadores/PostT_Indicadores";
