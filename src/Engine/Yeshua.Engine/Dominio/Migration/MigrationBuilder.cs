@@ -85,8 +85,6 @@ namespace Dominio.Migration
                 }
             }
 
-            ExpandStandardFieldUpgradeMigrations(migration, columns);
-
             foreach (var m in migration)
                 m.Entitys.RemoveAll(x => x.EntityName == "yStandardFields");
 
@@ -95,11 +93,23 @@ namespace Dominio.Migration
             foreach (var schema in _schemas.OfType<ISchemaDataBase>())
             {
                 var (maxID, minID) = GetLastVersion(schema._unitOfWork);
+                var standardFieldExpansions = ExpandStandardFieldUpgradeMigrations(
+                    migration,
+                    columns,
+                    maxID,
+                    minID);
 
-                foreach (var item in migration.Where(x => x.ID < minID).OrderByDescending(x=>x.ID) )
-                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
-                foreach (var item in migration.Where(x => x.ID > maxID))
-                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
+                try
+                {
+                    foreach (var item in migration.Where(x => x.ID < minID).OrderByDescending(x => x.ID))
+                        AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
+                    foreach (var item in migration.Where(x => x.ID > maxID).OrderBy(x => x.ID))
+                        AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
+                }
+                finally
+                {
+                    RemoveStandardFieldUpgradeExpansions(standardFieldExpansions);
+                }
             }
 
             foreach (var schema in _schemas.OfType<IMigrationProjectionSchema>())
@@ -123,17 +133,24 @@ namespace Dominio.Migration
             }
         }
 
-        private static void ExpandStandardFieldUpgradeMigrations(
+        private static List<StandardFieldUpgradeExpansion> ExpandStandardFieldUpgradeMigrations(
             IEnumerable<MigrationBase> migrations,
-            IReadOnlyCollection<Column> standardColumns)
+            IReadOnlyCollection<Column> standardColumns,
+            int maxAppliedApplicationMigrationId,
+            int minAppliedStandardMigrationId)
         {
             var migrationList = migrations.ToList();
             var createdEntities = migrationList
+                .Where(item => IsMigrationApplied(
+                    item.ID,
+                    maxAppliedApplicationMigrationId,
+                    minAppliedStandardMigrationId))
                 .SelectMany(item => item.Entitys)
                 .Where(entity => entity.create && !entity.IsFromView && entity.EntityName != "yStandardFields")
                 .GroupBy(entity => entity.EntityName, StringComparer.OrdinalIgnoreCase)
                 .Select(group => group.First())
                 .ToList();
+            var expansions = new List<StandardFieldUpgradeExpansion>();
 
             foreach (var upgrade in migrationList.OfType<IStandardFieldUpgradeMigration>())
             {
@@ -146,14 +163,58 @@ namespace Dominio.Migration
 
                     foreach (var field in fields)
                     {
-                        var target = migration.AddToListEntity(sourceEntity.EntityName, false);
+                        var target = migration.Entitys.FirstOrDefault(entity =>
+                            entity.EntityName.Equals(sourceEntity.EntityName, StringComparison.OrdinalIgnoreCase));
+                        var targetCreated = target == null;
+                        target ??= migration.AddToListEntity(sourceEntity.EntityName, false);
                         target.CachedTable = sourceEntity.CachedTable;
                         if (target.AddColumns.All(column => column.Name != field.Name))
-                            target.AddColumns.Add(field.DeepCopy(target));
+                        {
+                            var copiedField = field.DeepCopy(target);
+                            target.AddColumns.Add(copiedField);
+                            expansions.Add(new StandardFieldUpgradeExpansion(
+                                migration,
+                                target,
+                                copiedField,
+                                targetCreated));
+                        }
                     }
                 }
             }
+
+            return expansions;
         }
+
+        private static bool IsMigrationApplied(
+            int migrationId,
+            int maxAppliedApplicationMigrationId,
+            int minAppliedStandardMigrationId)
+        {
+            if (migrationId > 0)
+                return migrationId <= maxAppliedApplicationMigrationId;
+
+            if (migrationId < 0)
+                return minAppliedStandardMigrationId < 0 && migrationId >= minAppliedStandardMigrationId;
+
+            return false;
+        }
+
+        private static void RemoveStandardFieldUpgradeExpansions(
+            IEnumerable<StandardFieldUpgradeExpansion> expansions)
+        {
+            foreach (var expansion in expansions.Reverse())
+            {
+                expansion.Entity.AddColumns.Remove(expansion.Column);
+                if (expansion.EntityCreated && expansion.Entity.AddColumns.Count == 0)
+                    expansion.Migration.Entitys.Remove(expansion.Entity);
+            }
+        }
+
+        private sealed record StandardFieldUpgradeExpansion(
+            MigrationBase Migration,
+            Entity Entity,
+            Column Column,
+            bool EntityCreated);
         private void SanitizeMigrationEndEntityToCodeGenerete(MigrationBase migration)
         {
             // Cria um dicionário para acesso rápido às entidades já sanitizadas
