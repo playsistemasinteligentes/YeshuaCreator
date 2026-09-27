@@ -4,10 +4,10 @@ services:
   clinica-api:
     build:
       context: ../../..
-      dockerfile: infra/Clinica/DockerCompose/api/Dockerfile
+      dockerfile: infra/Clinica/DockerCompose/Dockerfile
+      target: api
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -33,10 +33,10 @@ services:
   clinica-worker:
     build:
       context: ../../..
-      dockerfile: infra/Clinica/DockerCompose/worker/Dockerfile
+      dockerfile: infra/Clinica/DockerCompose/Dockerfile
+      target: worker
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -69,7 +69,10 @@ services:
   clinica-migration:
     build:
       context: ../../..
-      dockerfile: infra/Clinica/DockerCompose/migration/Dockerfile
+      dockerfile: infra/Clinica/DockerCompose/Dockerfile
+      target: migration
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"

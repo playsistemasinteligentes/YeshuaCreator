@@ -4,10 +4,10 @@ services:
   aps-adm-api:
     build:
       context: ../../..
-      dockerfile: infra/APS.ADM/DockerCompose/api/Dockerfile
+      dockerfile: infra/APS.ADM/DockerCompose/Dockerfile
+      target: api
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -28,10 +28,10 @@ services:
   aps-adm-worker:
     build:
       context: ../../..
-      dockerfile: infra/APS.ADM/DockerCompose/worker/Dockerfile
+      dockerfile: infra/APS.ADM/DockerCompose/Dockerfile
+      target: worker
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -57,7 +57,10 @@ services:
   aps-adm-migration:
     build:
       context: ../../..
-      dockerfile: infra/APS.ADM/DockerCompose/migration/Dockerfile
+      dockerfile: infra/APS.ADM/DockerCompose/Dockerfile
+      target: migration
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"

@@ -24,14 +24,14 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
 fi
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
-export YESHUA_BUILD_TIMESTAMP_UTC="${YESHUA_BUILD_TIMESTAMP_UTC:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}"
 
 if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
   bash "$SHARED_DIR/deploy.sh"
 fi
 
 cd "$COMPOSE_DIR"
-docker compose build
+docker compose build clinica-migration
+docker compose build clinica-api clinica-worker
 echo "Executando migration Clinica no banco ${YESHUA_DB_CLINICA:-YESHUA_CLINICA}..."
 docker compose run --rm clinica-migration
 docker compose up -d --remove-orphans \

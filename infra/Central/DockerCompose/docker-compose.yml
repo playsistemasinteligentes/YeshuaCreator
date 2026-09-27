@@ -4,10 +4,10 @@ services:
   central-front:
     build:
       context: ../../..
-      dockerfile: infra/Central/DockerCompose/front/Dockerfile
+      dockerfile: infra/Central/DockerCompose/Dockerfile
+      target: front
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -20,10 +20,10 @@ services:
   central-api:
     build:
       context: ../../..
-      dockerfile: infra/Central/DockerCompose/api/Dockerfile
+      dockerfile: infra/Central/DockerCompose/Dockerfile
+      target: api
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -39,10 +39,10 @@ services:
   central-worker:
     build:
       context: ../../..
-      dockerfile: infra/Central/DockerCompose/worker/Dockerfile
+      dockerfile: infra/Central/DockerCompose/Dockerfile
+      target: worker
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
-        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -65,7 +65,10 @@ services:
   central-migration:
     build:
       context: ../../..
-      dockerfile: infra/Central/DockerCompose/migration/Dockerfile
+      dockerfile: infra/Central/DockerCompose/Dockerfile
+      target: migration
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"

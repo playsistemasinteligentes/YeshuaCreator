@@ -34,7 +34,6 @@ chmod +x \
   "$FISCAL_DIR"/*.sh
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
-export YESHUA_BUILD_TIMESTAMP_UTC="${YESHUA_BUILD_TIMESTAMP_UTC:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}"
 
 legacy_runtime_present() {
   local name project

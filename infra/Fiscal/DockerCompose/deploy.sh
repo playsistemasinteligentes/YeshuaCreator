@@ -24,7 +24,6 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
 fi
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
-export YESHUA_BUILD_TIMESTAMP_UTC="${YESHUA_BUILD_TIMESTAMP_UTC:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}"
 
 if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
   bash "$SHARED_DIR/deploy.sh"
@@ -33,7 +32,8 @@ fi
 mkdir -p /root/YeshuaStorage
 
 cd "$COMPOSE_DIR"
-docker compose build
+docker compose build fiscal-migration
+docker compose build fiscal-api fiscal-worker
 echo "Executando migration Fiscal no banco ${YESHUA_DB_FISCAL:-YESHUA_FISCAL}..."
 docker compose run --rm fiscal-migration
 docker compose up -d --remove-orphans \
