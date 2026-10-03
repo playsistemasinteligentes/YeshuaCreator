@@ -14,6 +14,13 @@ public static class OperationalTelemetryRegistration
         IConfiguration configuration,
         RuntimeIdentity identity)
     {
+        var exportSettings = OperationalTelemetryExportSettings.FromConfiguration(configuration);
+        services.AddSingleton(exportSettings);
+        services.AddSingleton<IOperationalLogSink>(sp =>
+            OperationalLogSinkFactory.Create(
+                exportSettings,
+                sp.GetRequiredService<IRuntimeIdentityProvider>()));
+
         services
             .AddOpenTelemetry()
             .ConfigureResource(resource =>
@@ -27,14 +34,20 @@ public static class OperationalTelemetryRegistration
             .WithTracing(tracing =>
             {
                 tracing.AddSource(OperationalActivity.SourceName);
-                tracing.AddProcessor(provider =>
-                    new BatchActivityExportProcessor(
-                        new YeshuaJsonlActivityExporter(
-                            provider.GetRequiredService<IRuntimeIdentityProvider>())));
-
-                var endpoint = configuration["OpenTelemetry:Otlp:Endpoint"];
-                if (Uri.TryCreate(endpoint, UriKind.Absolute, out var uri))
-                    tracing.AddOtlpExporter(options => options.Endpoint = uri);
+                if (exportSettings.Mode == OperationalTelemetryExportMode.Otlp)
+                {
+                    var endpoint = exportSettings.OtlpEndpoint
+                        ?? throw new InvalidOperationException(
+                            "OpenTelemetry:Otlp:Endpoint deve estar configurado para o modo Otlp.");
+                    tracing.AddOtlpExporter(options => options.Endpoint = endpoint);
+                }
+                else
+                {
+                    tracing.AddProcessor(provider =>
+                        new BatchActivityExportProcessor(
+                            new YeshuaJsonlActivityExporter(
+                                provider.GetRequiredService<IRuntimeIdentityProvider>())));
+                }
             });
 
         return services;

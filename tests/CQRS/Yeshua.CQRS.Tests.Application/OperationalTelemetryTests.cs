@@ -4,10 +4,12 @@ using Command.Patterns;
 using Command.Patterns.Command;
 using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
+using Microsoft.Extensions.Configuration;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Saga;
 using RepositoryInterfaces.Patterns.Worker;
 using Shered.DB.Connection;
+using Shared.Operational;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading;
@@ -177,6 +179,57 @@ public sealed class OperationalTelemetryTests
         Assert.NotNull(record);
         Assert.NotEqual(batch.TraceId, record.TraceId);
         Assert.Equal(default, record.ParentSpanId);
+    }
+
+    [Fact]
+    public void Export_mode_defaults_to_console_jsonl_without_endpoint()
+    {
+        var settings = OperationalTelemetryExportSettings.FromConfiguration(
+            Configuration([]));
+
+        Assert.Equal(OperationalTelemetryExportMode.ConsoleJsonl, settings.Mode);
+        Assert.Null(settings.OtlpEndpoint);
+    }
+
+    [Fact]
+    public void Export_mode_uses_otlp_when_endpoint_is_configured()
+    {
+        var settings = OperationalTelemetryExportSettings.FromConfiguration(
+            Configuration([
+                new KeyValuePair<string, string?>(
+                    "OpenTelemetry:Otlp:Endpoint",
+                    "http://yeshua-telemetry:4317")
+            ]));
+
+        Assert.Equal(OperationalTelemetryExportMode.Otlp, settings.Mode);
+        Assert.Equal("http://yeshua-telemetry:4317/", settings.OtlpEndpoint!.ToString());
+    }
+
+    [Fact]
+    public void Export_mode_console_jsonl_is_exclusive_even_with_endpoint()
+    {
+        var settings = OperationalTelemetryExportSettings.FromConfiguration(
+            Configuration([
+                new KeyValuePair<string, string?>("OpenTelemetry:ExportMode", "ConsoleJsonl"),
+                new KeyValuePair<string, string?>(
+                    "OpenTelemetry:Otlp:Endpoint",
+                    "http://yeshua-telemetry:4317")
+            ]));
+
+        Assert.Equal(OperationalTelemetryExportMode.ConsoleJsonl, settings.Mode);
+        Assert.Null(settings.OtlpEndpoint);
+    }
+
+    [Fact]
+    public void Export_mode_otlp_requires_absolute_endpoint()
+    {
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+            OperationalTelemetryExportSettings.FromConfiguration(
+                Configuration([
+                    new KeyValuePair<string, string?>("OpenTelemetry:ExportMode", "Otlp")
+                ])));
+
+        Assert.Contains("OpenTelemetry:Otlp:Endpoint", exception.Message);
     }
 
     [Fact]
@@ -553,6 +606,12 @@ public sealed class OperationalTelemetryTests
         ActivitySource.AddActivityListener(listener);
         return listener;
     }
+
+    private static IConfiguration Configuration(
+        IEnumerable<KeyValuePair<string, string?>> values) =>
+        new ConfigurationBuilder()
+            .AddInMemoryCollection(values)
+            .Build();
 
     private sealed class TrackedTestReceiver : ReciverBase<TrackedTestCommand, WorkerResult>
     {

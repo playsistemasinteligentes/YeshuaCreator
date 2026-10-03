@@ -63,7 +63,8 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddSingleton<Shered.Logger.Logger>(sp =>
                         new Shered.Logger.Logger(
-                            sp.GetRequiredService<Dominio.Interfaces.IOperationalTelemetryPolicy>()));
+                            sp.GetRequiredService<Dominio.Interfaces.IOperationalTelemetryPolicy>(),
+                            sp.GetRequiredService<IOperationalLogSink>()));
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();

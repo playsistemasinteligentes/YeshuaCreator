@@ -1,7 +1,7 @@
 using Dominio.Interfaces;
+using Shared.Operational;
 using System.Buffers;
 using System.Collections.Concurrent;
-using System.Text;
 using System.Text.Json;
 
 namespace Shered.Logger
@@ -13,18 +13,28 @@ namespace Shered.Logger
         private readonly ConcurrentQueue<SagaTelemetryEventSnapshot> _sagas = new();
         private readonly ConcurrentDictionary<string, OperationalMetricSnapshot> _metrics = new();
         private readonly IOperationalTelemetryPolicy? _policy;
+        private readonly IOperationalLogSink _logSink;
         private readonly bool _localDetailEnabled = string.Equals(
             Environment.GetEnvironmentVariable("YESHUA_TELEMETRY_DETAIL"),
             "true",
             StringComparison.OrdinalIgnoreCase);
 
         public Logger()
+            : this(null, ConsoleJsonlOperationalLogSink.Instance)
         {
         }
 
         public Logger(IOperationalTelemetryPolicy policy)
+            : this(policy, ConsoleJsonlOperationalLogSink.Instance)
+        {
+        }
+
+        public Logger(
+            IOperationalTelemetryPolicy? policy,
+            IOperationalLogSink logSink)
         {
             _policy = policy;
+            _logSink = logSink;
         }
 
         public OperationalTelemetryDecision Evaluate(
@@ -293,7 +303,7 @@ namespace Shered.Logger
                 DateTimeOffset.UtcNow);
         }
 
-        private static void WriteApplication(string message)
+        private void WriteApplication(string message)
         {
             try
             {
@@ -301,7 +311,7 @@ namespace Shered.Logger
                 using var writer = new Utf8JsonWriter(buffer);
                 WriteHeader(writer, "Information", "Application");
                 writer.WriteString("Message", message);
-                WriteFooter(writer, buffer);
+                WriteFooter(writer, buffer, "Information", "Application");
             }
             catch
             {
@@ -309,7 +319,7 @@ namespace Shered.Logger
             }
         }
 
-        private static void WriteCommand(
+        private void WriteCommand(
             string level,
             string commandName,
             string traceId,
@@ -347,7 +357,7 @@ namespace Shered.Logger
                     writer.WriteString("StackTrace", exception.StackTrace);
                 }
 
-                WriteFooter(writer, buffer);
+                WriteFooter(writer, buffer, level, "Command");
             }
             catch
             {
@@ -355,7 +365,7 @@ namespace Shered.Logger
             }
         }
 
-        private static void WriteRepository(
+        private void WriteRepository(
             string level,
             string operation,
             string queryId,
@@ -380,7 +390,7 @@ namespace Shered.Logger
                     writer.WriteString("ExceptionMessage", exception.Message);
                 }
 
-                WriteFooter(writer, buffer);
+                WriteFooter(writer, buffer, level, "Repository");
             }
             catch
             {
@@ -388,7 +398,7 @@ namespace Shered.Logger
             }
         }
 
-        private static void WriteSaga(SagaTelemetryEventSnapshot snapshot)
+        private void WriteSaga(SagaTelemetryEventSnapshot snapshot)
         {
             try
             {
@@ -404,7 +414,7 @@ namespace Shered.Logger
                     writer.WriteString("ExecutionId", snapshot.ExecutionId);
                 if (!string.IsNullOrWhiteSpace(snapshot.CausationId))
                     writer.WriteString("CausationId", snapshot.CausationId);
-                WriteFooter(writer, buffer);
+                WriteFooter(writer, buffer, "Information", "Saga");
             }
             catch
             {
@@ -412,7 +422,7 @@ namespace Shered.Logger
             }
         }
 
-        private static void WriteDomainValueChanged(
+        private void WriteDomainValueChanged(
             string entity,
             string field,
             string traceId,
@@ -433,7 +443,7 @@ namespace Shered.Logger
                 if (!string.IsNullOrWhiteSpace(recordId))
                     writer.WriteString("RecordId", recordId);
                 WriteTelemetryValue(writer, "Value", value);
-                WriteFooter(writer, buffer);
+                WriteFooter(writer, buffer, "Information", "DomainTracker");
             }
             catch
             {
@@ -451,14 +461,16 @@ namespace Shered.Logger
             writer.WriteStartObject();
         }
 
-        private static void WriteFooter(
+        private void WriteFooter(
             Utf8JsonWriter writer,
-            ArrayBufferWriter<byte> buffer)
+            ArrayBufferWriter<byte> buffer,
+            string level,
+            string category)
         {
             writer.WriteEndObject();
             writer.WriteEndObject();
             writer.Flush();
-            Console.WriteLine(Encoding.UTF8.GetString(buffer.WrittenSpan));
+            _logSink.Write(level, category, buffer.WrittenSpan);
         }
 
         private static void WriteTelemetryValue(

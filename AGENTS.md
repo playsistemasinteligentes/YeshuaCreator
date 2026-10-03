@@ -318,10 +318,11 @@ Miolos que IA/dev devem preencher:
   o SDK oficial do OpenTelemetry para processar/exportar spans. Nao usar
   reflection nem instrumentacao automatica no caminho quente enquanto ela nao
   respeitar a politica operacional do Yeshua.
-- Enquanto nao houver centralizacao OTLP, spans habilitados sao escritos em
-  JSONL no stdout para coleta sob demanda pelos logs do Docker. A configuracao
-  opcional `OpenTelemetry:Otlp:Endpoint` adiciona exportacao OTLP sem alterar os
-  pontos de instrumentacao existentes.
+- A saida de telemetria operacional e uma decisao estatica de implantacao por
+  host, controlada por `OpenTelemetry:ExportMode`. `ConsoleJsonl` escreve spans
+  e logs operacionais estruturados no stdout/Docker. `Otlp` envia spans e logs
+  operacionais para o endpoint `OpenTelemetry:Otlp:Endpoint`. Os modos sao
+  exclusivos: nunca emitir JSONL e OTLP ao mesmo tempo para a mesma telemetria.
 - Cada registro retirado por worker inicia uma raiz tecnica independente; o
   lote de polling nao e pai dos traces dos registros processados em paralelo.
 - `OperationalEntityId` e a identidade imutavel de vida da entidade, criada
@@ -975,6 +976,12 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   permitindo configuracoes independentes para producao e homologacao.
 - Cada host gerado mantem snapshot local e sincroniza a politica por polling. O
   RabbitMQ somente sera considerado se a latencia ou o custo medidos justificarem.
+- A primeira centralizacao OTLP do Yeshua usa um pacote unico
+  `yeshua-telemetry` no Compose Shared, baseado em OpenTelemetry Collector,
+  Loki, Tempo, Prometheus e Grafana. O pacote inicia como um bloco operacional
+  unico, com retencao padrao de 5 dias e limites apertados de CPU/memoria; a
+  separacao fisica dos componentes so deve ocorrer quando medicao real
+  justificar.
 - Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.
