@@ -1463,6 +1463,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaTrackingFields.LockedAt;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "LockedBy"))
                         mask |= ySagaTrackingFields.LockedBy;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "ProcessingScope"))
+                        mask |= ySagaTrackingFields.ProcessingScope;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "TenantID"))
                         mask |= ySagaTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "OperationalEntityId"))
@@ -1561,6 +1563,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yOutboxTrackingFields.SagaId;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "SagaStepId"))
                         mask |= yOutboxTrackingFields.SagaStepId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "ProcessingScope"))
+                        mask |= yOutboxTrackingFields.ProcessingScope;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "TenantID"))
                         mask |= yOutboxTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "OperationalEntityId"))
@@ -1610,6 +1614,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yInboxTrackingFields.SagaId;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "SagaStepId"))
                         mask |= yInboxTrackingFields.SagaStepId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "ProcessingScope"))
+                        mask |= yInboxTrackingFields.ProcessingScope;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "TenantID"))
                         mask |= yInboxTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "OperationalEntityId"))

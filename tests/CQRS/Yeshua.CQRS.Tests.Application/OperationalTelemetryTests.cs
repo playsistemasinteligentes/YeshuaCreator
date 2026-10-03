@@ -580,6 +580,7 @@ public sealed class OperationalTelemetryTests
         public IEnumerable<Claim> Claims => [];
         public string TraceId { get; private set; } = "trace-test";
         public ExecutionOrigin Origem { get; private set; } = ExecutionOrigin.Worker;
+        public string ProcessingScope => "test";
         public void SetTenantId(int id) => TenantID = id;
         public void SetUserId(int id) => UserId = id;
         public void SetTraceId(string traceId) => TraceId = traceId;

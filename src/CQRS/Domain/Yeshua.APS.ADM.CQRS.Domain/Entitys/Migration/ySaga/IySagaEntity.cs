@@ -32,6 +32,7 @@
     DateTime? NextExecutionAt { get; set; }
     DateTime? LockedAt { get; set; }
     string? LockedBy { get; set; }
+    string ProcessingScope { get; }
     int? TenantID { get; set; }
     string OperationalEntityId { get; }
     bool? Deleted { get; set; }

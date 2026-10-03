@@ -11,6 +11,7 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
+      YeshuaProcessing__Scope: "production"
       JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
@@ -35,6 +36,7 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
+      YeshuaProcessing__Scope: "production"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       RabbitMq__HostName: "rabbitmq"

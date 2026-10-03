@@ -32,11 +32,12 @@
             public const ulong NextExecutionAt = 1UL << 9;
             public const ulong LockedAt = 1UL << 10;
             public const ulong LockedBy = 1UL << 11;
-            public const ulong TenantID = 1UL << 12;
-            public const ulong OperationalEntityId = 1UL << 13;
-            public const ulong Deleted = 1UL << 14;
-            public const ulong Changed = 1UL << 15;
-            public const ulong UserId = 1UL << 16;
+            public const ulong ProcessingScope = 1UL << 12;
+            public const ulong TenantID = 1UL << 13;
+            public const ulong OperationalEntityId = 1UL << 14;
+            public const ulong Deleted = 1UL << 15;
+            public const ulong Changed = 1UL << 16;
+            public const ulong UserId = 1UL << 17;
         }
 
         public partial class ySagaDecorator : IySagaEntity
@@ -233,6 +234,7 @@
                                             }
                                         }
                                     }
+    public string ProcessingScope => _inner.ProcessingScope;
 
                                     public int? TenantID
                                     {

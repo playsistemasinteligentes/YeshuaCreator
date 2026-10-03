@@ -8,7 +8,13 @@ namespace Shered.Services
         private int? _manualTenantId;
 
         private readonly IHttpContextAccessor _http;
-        public executionContextHttp(IHttpContextAccessor http) => _http = http;
+        private readonly string _processingScope;
+
+        public executionContextHttp(IHttpContextAccessor http, IConfiguration configuration)
+        {
+            _http = http;
+            _processingScope = GetRequiredProcessingScope(configuration);
+        }
 
         public int TenantID => _manualTenantId ?? GetTenantId();
 
@@ -42,6 +48,8 @@ namespace Shered.Services
             _manualOrigem ??
             (_http.HttpContext != null ? ExecutionOrigin.Http : ExecutionOrigin.Worker);
 
+        public string ProcessingScope => _processingScope;
+
         /// <summary>
         /// ⚠️ Método temporário para setar o TenantID manualmente.
         /// Use com extrema cautela e remova assim que possível.
@@ -67,6 +75,14 @@ namespace Shered.Services
         public void SetOrigem(ExecutionOrigin origem)
         {
             _manualOrigem = origem;
+        }
+
+        private static string GetRequiredProcessingScope(IConfiguration configuration)
+        {
+            var scope = configuration["YeshuaProcessing:Scope"]?.Trim();
+            return !string.IsNullOrWhiteSpace(scope)
+                ? scope
+                : throw new InvalidOperationException("YeshuaProcessing:Scope nao foi configurado.");
         }
     }
 }

@@ -2439,18 +2439,24 @@ namespace Shered.Services;
 public sealed class executionContextHttp : IExecutionContext
 {
     private readonly IHttpContextAccessor _http;
+    private readonly string _processingScope;
     private readonly string _fallbackTraceId = Guid.NewGuid().ToString(""N"");
     private int? _manualTenantId;
     private int? _manualUserId;
     private string? _manualTraceId;
     private ExecutionOrigin? _manualOrigin;
 
-    public executionContextHttp(IHttpContextAccessor http) => _http = http;
+    public executionContextHttp(IHttpContextAccessor http, IConfiguration configuration)
+    {
+        _http = http;
+        _processingScope = GetRequiredProcessingScope(configuration);
+    }
 
     public int TenantID => _manualTenantId ?? GetTenantId();
     public int UserId => _manualUserId ?? GetUserId();
     public IEnumerable<Claim> Claims => _http.HttpContext?.User?.Claims ?? Enumerable.Empty<Claim>();
     public string TraceId => _manualTraceId ?? _http.HttpContext?.TraceIdentifier ?? _fallbackTraceId;
+    public string ProcessingScope => _processingScope;
     public ExecutionOrigin Origem =>
         _manualOrigin ?? (_http.HttpContext is null ? ExecutionOrigin.Worker : ExecutionOrigin.Http);
 
@@ -2466,6 +2472,14 @@ public sealed class executionContextHttp : IExecutionContext
     {
         var value = _http.HttpContext?.User?.FindFirst(claimType)?.Value;
         return int.TryParse(value, out var id) ? id : 0;
+    }
+
+    private static string GetRequiredProcessingScope(IConfiguration configuration)
+    {
+        var scope = configuration[""YeshuaProcessing:Scope""]?.Trim();
+        return !string.IsNullOrWhiteSpace(scope)
+            ? scope
+            : throw new InvalidOperationException(""YeshuaProcessing:Scope nao foi configurado."");
     }
 }");
 
@@ -2526,6 +2540,11 @@ public static class EndpointsCuston
   ""JwtSettings"": {
     ""SecretKey"": ""configure-using-user-secrets-or-environment-variables"",
     ""ExpirationMinutes"": 60
+  },
+  ""YeshuaExecutionContext"": {
+    ""Scope"": ""local"",
+    ""TechnicalTenantID"": 1,
+    ""TechnicalUserId"": 1
   },
   ""RabbitMq"": {},
   ""Storage"": {}
@@ -2780,16 +2799,19 @@ public sealed class WorkerExecutionContext : IExecutionContext
     private int _userId;
     private string _traceId = Guid.NewGuid().ToString(""N"");
     private ExecutionOrigin _origin = ExecutionOrigin.Worker;
+    private readonly string _processingScope;
 
     public WorkerExecutionContext(IConfiguration configuration)
     {
-        _tenantId = configuration.GetValue(""WorkerExecutionContext:TenantID"", 1);
-        _userId = configuration.GetValue(""WorkerExecutionContext:UserId"", 1);
+        _tenantId = GetWorkerTenantId(configuration);
+        _userId = GetWorkerUserId(configuration);
+        _processingScope = GetRequiredProcessingScope(configuration);
     }
 
     public int UserId => _userId;
     public int TenantID => _tenantId;
     public string TraceId => _traceId;
+    public string ProcessingScope => _processingScope;
     public ExecutionOrigin Origem => _origin;
     public IEnumerable<Claim> Claims => Enumerable.Empty<Claim>();
 
@@ -2797,6 +2819,24 @@ public sealed class WorkerExecutionContext : IExecutionContext
     public void SetUserId(int id) => _userId = id;
     public void SetTraceId(string traceId) => _traceId = traceId;
     public void SetOrigem(ExecutionOrigin origem) => _origin = origem;
+
+    private static int GetWorkerTenantId(IConfiguration configuration)
+    {
+        return configuration.GetValue(""YeshuaExecutionContext:TechnicalTenantID"", 1);
+    }
+
+    private static int GetWorkerUserId(IConfiguration configuration)
+    {
+        return configuration.GetValue(""YeshuaExecutionContext:TechnicalUserId"", 1);
+    }
+
+    private static string GetRequiredProcessingScope(IConfiguration configuration)
+    {
+        var scope = configuration[""YeshuaExecutionContext:Scope""]?.Trim();
+        return !string.IsNullOrWhiteSpace(scope)
+            ? scope
+            : throw new InvalidOperationException(""YeshuaExecutionContext:Scope nao foi configurado."");
+    }
 }");
 
             WriteTextIfMissing(
@@ -2813,6 +2853,11 @@ public static class CustonDependenceInjection
             WriteTextIfMissing(
                 Path.Combine(projectDirectory, "appsettings.json"),
                 @"{
+  ""YeshuaExecutionContext"": {
+    ""Scope"": ""local"",
+    ""TechnicalTenantID"": 1,
+    ""TechnicalUserId"": 1
+  },
   ""RabbitMq"": {},
   ""Storage"": {}
         }");

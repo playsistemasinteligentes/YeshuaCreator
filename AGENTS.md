@@ -190,6 +190,14 @@ Miolos que IA/dev devem preencher:
   agenda a mesma saga para o Worker. A borda nunca executa o handler nem chama
   integracao externa diretamente; assim, retry automatico e manual percorrem o
   mesmo caminho operacional.
+- `ProcessingScope` isola a execucao assincrona entre ambientes que compartilham
+  o mesmo banco. API e Worker devem exigir `YeshuaProcessing:Scope`; a API grava
+  esse valor em `ySaga`, `yInbox` e `yOutbox`, e o Worker somente processa
+  registros do mesmo escopo.
+  `LockedBy`/`LockedAt` continuam distribuindo e protegendo a concorrencia entre
+  Workers dentro do escopo. Escopo nao representa versao, fila nova nem substitui
+  o lock SQL existente. O campo pertence somente a essas tres entidades internas;
+  nao e campo standard aplicado globalmente as entidades de negocio.
 - `pendencia`: padronizar na Engine os repositórios internos de saga
   (`Save`, `ClaimRunnableSagas`, `ReleaseLock`, `SetPendingApply`) para todos
   os aplicativos, evitando copiar miolo custom entre apps.
@@ -335,6 +343,15 @@ Miolos que IA/dev devem preencher:
 
 O projeto ja usa a ideia de separar codigo gerado e codigo customizado.
 Preservar e fortalecer essa divisao.
+
+- Para compreender ou alterar comportamento gerado, ler primeiro a DSL, as
+  migrations e os templates da Engine, que sao a fonte da verdade arquitetural.
+- Nao varrer nem interpretar copias geradas de varios aplicativos para inferir
+  como a arquitetura funciona. Depois de compreender a Engine, conferir no
+  maximo uma saida gerada representativa e usar verificacoes objetivas para as
+  demais.
+- Arquivos `Migration` dos aplicativos sao saida da Engine, nao o lugar onde um
+  comportamento padrao deve ser inventado ou corrigido manualmente.
 
 - `Migration` representa codigo gerado ou regeneravel.
 - `Custon` representa codigo customizado/protegido do usuario.

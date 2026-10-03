@@ -17,6 +17,7 @@ namespace Aplication.Interfaces.Services
         // Rastreio
         string TraceId { get; }
         ExecutionOrigin Origem { get; }
+        string ProcessingScope { get; }
 
         // Mutação de contexto
         void SetTenantId(int id);

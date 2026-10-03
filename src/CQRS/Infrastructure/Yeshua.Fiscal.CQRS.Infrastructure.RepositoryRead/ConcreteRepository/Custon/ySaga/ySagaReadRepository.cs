@@ -26,6 +26,7 @@ namespace Read.Repository
                     SELECT TOP (@Limit) *
                     FROM [ySaga] WITH (UPDLOCK, READPAST, ROWLOCK)
                     WHERE [Status] = 1
+                      AND [ProcessingScope] = @ProcessingScope
                       AND ([LockedBy] IS NULL OR [LockedAt] < @StaleLockLimit)
                       AND EXISTS (
                           SELECT 1
@@ -57,6 +58,7 @@ namespace Read.Repository
                 LockedBy = lockedBy,
                 LockedAt = lockedAt,
                 NextExecutionAt = nextExecutionAt,
+                ProcessingScope = _executionContext.ProcessingScope,
                 Now = DateTime.UtcNow,
                 StaleLockLimit = lockedAt.AddMinutes(-1)
             }).ToList();
@@ -91,6 +93,7 @@ namespace Read.Repository
                        [NextExecutionAt] = @NextExecutionAt
                  WHERE [Id] = @SagaId
                    AND [Status] = 1
+                   AND [ProcessingScope] = @ProcessingScope
                    AND ([LockedBy] IS NULL OR [LockedBy] = @LockedBy OR [LockedAt] IS NULL OR [LockedAt] < @StaleLockLimit);
 
                 SELECT @@ROWCOUNT;";
@@ -101,6 +104,7 @@ namespace Read.Repository
                 LockedBy = lockedBy,
                 LockedAt = lockedAt,
                 NextExecutionAt = nextExecutionAt,
+                ProcessingScope = _executionContext.ProcessingScope,
                 StaleLockLimit = lockedAt.AddMinutes(-1)
             });
 

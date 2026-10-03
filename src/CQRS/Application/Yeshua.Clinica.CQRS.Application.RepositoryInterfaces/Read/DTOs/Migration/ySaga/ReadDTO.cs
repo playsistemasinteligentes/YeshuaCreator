@@ -30,6 +30,7 @@ namespace Repositorio.Outputs
     public DateTime nextexecutionat { get; set; }
     public DateTime lockedat { get; set; }
     public string lockedby { get; set; } = string.Empty;
+    public string processingscope { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
     public bool deleted { get; set; }

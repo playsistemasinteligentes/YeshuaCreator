@@ -77,7 +77,7 @@ function pageHtml() {
             <p class="mt-2 text-xs text-gray-500">Substitua usuario@servidor, datas e CORRELATION_OU_ID. A busca usa os nomes de servico do Docker Compose.</p>
         </details>
         <section class="mt-4"><h2 class="mb-2 text-lg font-bold">Componentes</h2><div id="operational-components" class="divide-y border bg-white"></div></section>
-        <section class="mt-5"><div class="mb-2 flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-lg font-bold">Rastreamento de dominio</h2><p class="text-sm text-gray-600">Selecione somente as entidades e campos que precisam ser acompanhados.</p></div><input id="operational-entity-search" type="search" placeholder="Buscar entidade" class="w-full border px-3 py-2 md:w-72" /></div><div id="operational-entities" class="divide-y border bg-white"></div></section>
+        <section class="mt-5"><div class="mb-2 flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-lg font-bold">Rastreamento de dominio</h2><p class="text-sm text-gray-600">Selecione somente as entidades e campos que precisam ser acompanhados.</p></div><input id="operational-entity-search" type="search" placeholder="Buscar entidade" class="w-full border px-3 py-2 md:w-72" /></div><label class="mb-2 flex cursor-pointer items-center gap-3 border bg-white p-3 hover:bg-gray-50"><input id="operational-domain-all" class="h-4 w-4" type="checkbox" /><span><strong class="block text-sm">Todos</strong><span class="text-sm text-gray-600">Todas as entidades e todos os campos.</span></span></label><div id="operational-entities" class="divide-y border bg-white"></div></section>
     </main>`;
 }
 
@@ -87,9 +87,13 @@ function renderState(state) {
     document.getElementById('operational-default-level').value = policy.defaultLevel || 'Information';
     document.getElementById('operational-default-depth').value = policy.defaultDepth || 'D0';
     renderLogCommands(catalog.application);
-    document.getElementById('operational-components').innerHTML = catalog.components.map(component => `
+    document.getElementById('operational-components').innerHTML = catalog.components.filter(component => component.id !== 'DomainTracker').map(component => `
         <label class="flex cursor-pointer items-start gap-3 p-3 hover:bg-gray-50"><input class="operational-component mt-1 h-4 w-4" type="checkbox" data-component="${html(component.id)}" ${isEnabled(policy.targets, component.id) ? 'checked' : ''} /><span><strong class="block text-sm">${html(component.title)}</strong><span class="text-sm text-gray-600">${html(component.description)}</span></span></label>`).join('');
     renderEntities(state);
+    const domainAll = document.getElementById('operational-domain-all');
+    domainAll.checked = isExactEnabled(policy.targets, 'DomainTracker');
+    domainAll.onchange = () => applyDomainAllState(domainAll.checked);
+    applyDomainAllState(domainAll.checked);
     document.getElementById('operational-entity-search').oninput = event => {
         const value = String(event.target.value || '').trim().toLowerCase();
         document.querySelectorAll('.operational-entity').forEach(element => {
@@ -121,9 +125,24 @@ function buildUpdate(state) {
     const defaultLevel = document.getElementById('operational-default-level').value;
     const defaultDepth = document.getElementById('operational-default-depth').value;
     document.querySelectorAll('.operational-component').forEach(input => targets.push({ component: input.dataset.component, level: input.checked ? defaultLevel : 'None', depth: defaultDepth }));
-    document.querySelectorAll('.operational-entity-toggle:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, level: defaultLevel, depth: defaultDepth }));
-    document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: defaultDepth }));
+    if (document.getElementById('operational-domain-all').checked) {
+        targets.push({ component: 'DomainTracker', level: defaultLevel, depth: 'D1' });
+    } else {
+        document.querySelectorAll('.operational-entity-toggle:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, level: defaultLevel, depth: 'D1' }));
+        document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: 'D1' }));
+    }
     return { defaultLevel, defaultDepth, targets };
+}
+
+function applyDomainAllState(enabled) {
+    const entities = document.getElementById('operational-entities');
+    entities.classList.toggle('opacity-50', enabled);
+    entities.querySelectorAll('input').forEach(input => { input.disabled = enabled; });
+    document.getElementById('operational-entity-search').disabled = enabled;
+}
+
+function isExactEnabled(targets, component) {
+    return (targets || []).some(target => target.component === component && !target.operation && !target.entity && !target.recordId && !target.field && target.level !== 'None');
 }
 
 function isEnabled(targets, component, entity = '', field = '') {

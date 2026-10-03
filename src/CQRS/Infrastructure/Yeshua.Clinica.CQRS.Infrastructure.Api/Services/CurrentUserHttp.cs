@@ -1,4 +1,4 @@
-﻿using Aplication.Interfaces.Services;
+using Aplication.Interfaces.Services;
 using System.Security.Claims;
 
 namespace Shered.Services;
@@ -6,18 +6,24 @@ namespace Shered.Services;
 public sealed class executionContextHttp : IExecutionContext
 {
     private readonly IHttpContextAccessor _http;
+    private readonly string _processingScope;
     private readonly string _fallbackTraceId = Guid.NewGuid().ToString("N");
     private int? _manualTenantId;
     private int? _manualUserId;
     private string? _manualTraceId;
     private ExecutionOrigin? _manualOrigin;
 
-    public executionContextHttp(IHttpContextAccessor http) => _http = http;
+    public executionContextHttp(IHttpContextAccessor http, IConfiguration configuration)
+    {
+        _http = http;
+        _processingScope = GetRequiredProcessingScope(configuration);
+    }
 
     public int TenantID => _manualTenantId ?? GetTenantId();
     public int UserId => _manualUserId ?? GetUserId();
     public IEnumerable<Claim> Claims => _http.HttpContext?.User?.Claims ?? Enumerable.Empty<Claim>();
     public string TraceId => _manualTraceId ?? _http.HttpContext?.TraceIdentifier ?? _fallbackTraceId;
+    public string ProcessingScope => _processingScope;
     public ExecutionOrigin Origem =>
         _manualOrigin ?? (_http.HttpContext is null ? ExecutionOrigin.Worker : ExecutionOrigin.Http);
 
@@ -33,5 +39,13 @@ public sealed class executionContextHttp : IExecutionContext
     {
         var value = _http.HttpContext?.User?.FindFirst(claimType)?.Value;
         return int.TryParse(value, out var id) ? id : 0;
+    }
+
+    private static string GetRequiredProcessingScope(IConfiguration configuration)
+    {
+        var scope = configuration["YeshuaProcessing:Scope"]?.Trim();
+        return !string.IsNullOrWhiteSpace(scope)
+            ? scope
+            : throw new InvalidOperationException("YeshuaProcessing:Scope nao foi configurado.");
     }
 }

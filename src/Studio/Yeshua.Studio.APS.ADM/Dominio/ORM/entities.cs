@@ -4259,6 +4259,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? NextExecutionAt { get; set; }
         public DateTime? LockedAt { get; set; }
         public string? LockedBy { get; set; }
+        public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public string OperationalEntityId { get; set; }
@@ -4318,6 +4319,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }
         public ySagaStep ySagaStep { get; set; }
+        public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public string OperationalEntityId { get; set; }
@@ -4348,6 +4350,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }
         public ySagaStep ySagaStep { get; set; }
+        public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public string OperationalEntityId { get; set; }
