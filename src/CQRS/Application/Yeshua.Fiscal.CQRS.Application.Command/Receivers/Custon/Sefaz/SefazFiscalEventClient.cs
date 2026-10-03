@@ -44,6 +44,35 @@ internal static class SefazFiscalEventContextResolver
             documentoRepository, certificadoRepository, "CT-e");
     }
 
+    public static SefazFiscalEventContext ResolveExternalCTe(
+        string chave,
+        string protocoloAutorizacao,
+        int ambiente,
+        int tenantId,
+        ICertificadoDigitalReadRepository certificadoRepository)
+    {
+        var normalized = Digits(chave);
+        ValidateKey(normalized, "CT-e");
+
+        var protocolo = Digits(protocoloAutorizacao);
+        if (protocolo.Length != 15)
+            throw new ArgumentException("O protocolo de autorizacao do CT-e deve possuir 15 digitos.");
+        if (ambiente is not 1 and not 2)
+            throw new ArgumentException("O ambiente deve ser 1 (producao) ou 2 (homologacao).");
+        if (tenantId <= 0)
+            throw new InvalidOperationException("O tenant autenticado nao foi identificado.");
+
+        var cnpj = normalized.Substring(6, 14);
+        return new SefazFiscalEventContext(
+            normalized,
+            protocolo,
+            ambiente,
+            int.Parse(normalized[..2]),
+            cnpj,
+            tenantId,
+            ResolveCertificate(tenantId, cnpj, certificadoRepository, $"CT-e externo {normalized}"));
+    }
+
     public static SefazFiscalEventContext ResolveMDFe(
         string chave,
         IMDFeTentativaEmissaoReadRepository tentativaRepository,
@@ -77,13 +106,11 @@ internal static class SefazFiscalEventContextResolver
             throw new InvalidOperationException($"{tipo} {chave}: protocolo de autorizacao nao foi localizado.");
 
         var cnpj = chave.Substring(6, 14);
-        var certificado = certificadoRepository.GetAllByTenantID(tenantId)
-            .Where(x => x.ativo == 1 && !x.deleted)
-            .OrderByDescending(x => x.validoate)
-            .FirstOrDefault(x => SameBase(x.documentotitular, cnpj));
-
-        var certificateReference = FiscalCertificateResolver.Resolve(certificado, $"{tipo} {chave}");
-        FiscalCertificateResolver.ValidateIssuer(certificateReference, cnpj, $"{tipo} {chave}");
+        var certificateReference = ResolveCertificate(
+            tenantId,
+            cnpj,
+            certificadoRepository,
+            $"{tipo} {chave}");
 
         var ambiente = documento?.ambiente is 1 or 2 ? documento.ambiente : 2;
         return new SefazFiscalEventContext(
@@ -94,6 +121,22 @@ internal static class SefazFiscalEventContextResolver
             cnpj,
             tenantId,
             certificateReference);
+    }
+
+    private static FiscalCertificateReference ResolveCertificate(
+        int tenantId,
+        string cnpj,
+        ICertificadoDigitalReadRepository certificadoRepository,
+        string context)
+    {
+        var certificado = certificadoRepository.GetAllByTenantID(tenantId)
+            .Where(x => x.ativo == 1 && !x.deleted)
+            .OrderByDescending(x => x.validoate)
+            .FirstOrDefault(x => SameBase(x.documentotitular, cnpj));
+
+        var certificateReference = FiscalCertificateResolver.Resolve(certificado, context);
+        FiscalCertificateResolver.ValidateIssuer(certificateReference, cnpj, context);
+        return certificateReference;
     }
 
     private static void ValidateKey(string chave, string tipo)

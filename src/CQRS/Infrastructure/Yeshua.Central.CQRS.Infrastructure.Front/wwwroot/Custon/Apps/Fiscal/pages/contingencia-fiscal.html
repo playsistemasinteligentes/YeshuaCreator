@@ -455,6 +455,15 @@
             <label>Sequencia do evento
                 <input id="fiscal-utilitario-sequencia" type="number" min="1" max="99" value="1">
             </label>
+            <label>Protocolo de autorizacao (CT-e externo)
+                <input id="fiscal-utilitario-protocolo-cte" type="text" maxlength="15" inputmode="numeric" placeholder="15 digitos">
+            </label>
+            <label>Ambiente do CT-e externo
+                <select id="fiscal-utilitario-ambiente-cte">
+                    <option value="2">Homologacao</option>
+                    <option value="1">Producao</option>
+                </select>
+            </label>
             <label class="wide">Justificativa do cancelamento
                 <input id="fiscal-utilitario-justificativa" type="text" maxlength="255">
             </label>
@@ -492,7 +501,8 @@
                 <button id="fiscal-utilitario-consultar-mdfe" type="button">Consultar MDF-e</button>
                 <button id="fiscal-utilitario-xml-mdfe" type="button">Baixar XML MDF-e</button>
                 <button id="fiscal-utilitario-damdfe" type="button">Gerar DAMDFE</button>
-                <button id="fiscal-utilitario-cancelar-cte" type="button">Cancelar CT-e</button>
+                <button id="fiscal-utilitario-cancelar-cte" type="button">Cancelar CT-e registrado</button>
+                <button id="fiscal-utilitario-cancelar-cte-externo" type="button">Cancelar CT-e externo</button>
                 <button id="fiscal-utilitario-corrigir-cte" type="button">Carta de correcao CT-e</button>
                 <button id="fiscal-utilitario-cancelar-mdfe" type="button">Cancelar MDF-e</button>
                 <button id="fiscal-utilitario-condutor-mdfe" type="button">Incluir condutor MDF-e</button>

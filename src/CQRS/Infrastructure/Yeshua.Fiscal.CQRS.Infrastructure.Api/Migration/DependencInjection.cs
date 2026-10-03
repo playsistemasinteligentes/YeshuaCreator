@@ -695,6 +695,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.IncluirCondutorMDFeHandl
 
 builder.Services.AddTransient<Command.Receivers.UseCase.EncerrarMDFePorChaveHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.CancelarCTeExternoHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();

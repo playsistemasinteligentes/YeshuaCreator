@@ -211,6 +211,7 @@ function bindEvents() {
     document.getElementById('fiscal-utilitario-xml-mdfe')?.addEventListener('click', () => executarUtilitarioDocumento('xmlMdfe'));
     document.getElementById('fiscal-utilitario-damdfe')?.addEventListener('click', () => executarUtilitarioDocumento('damdfe'));
     document.getElementById('fiscal-utilitario-cancelar-cte')?.addEventListener('click', () => executarEventoFiscal('cancelarCte'));
+    document.getElementById('fiscal-utilitario-cancelar-cte-externo')?.addEventListener('click', () => executarEventoFiscal('cancelarCteExterno'));
     document.getElementById('fiscal-utilitario-corrigir-cte')?.addEventListener('click', () => executarEventoFiscal('corrigirCte'));
     document.getElementById('fiscal-utilitario-cancelar-mdfe')?.addEventListener('click', () => executarEventoFiscal('cancelarMdfe'));
     document.getElementById('fiscal-utilitario-condutor-mdfe')?.addEventListener('click', () => executarEventoFiscal('incluirCondutorMdfe'));
@@ -339,6 +340,16 @@ async function executarEventoFiscal(operation) {
         cancelarCte: {
             endpoint: '/Fiscal/CTeUtilitariosCancelarCTeUseCase',
             body: { chaveAcesso, justificativa: valueOf('fiscal-utilitario-justificativa'), sequenciaEvento }
+        },
+        cancelarCteExterno: {
+            endpoint: '/Fiscal/CTeUtilitariosCancelarCTeExternoUseCase',
+            body: {
+                chaveAcesso,
+                protocoloAutorizacao: valueOf('fiscal-utilitario-protocolo-cte').replace(/\D/g, ''),
+                ambiente: Number(valueOf('fiscal-utilitario-ambiente-cte') || 2),
+                justificativa: valueOf('fiscal-utilitario-justificativa'),
+                sequenciaEvento
+            }
         },
         corrigirCte: {
             endpoint: '/Fiscal/CTeUtilitariosCorrigirCTeUseCase',
