@@ -39,9 +39,32 @@ prepare_https_config() {
   local active="$SHARED_DIR/nginx/conf.d/20-https.conf"
 
   if [[ -f /etc/letsencrypt/live/playsis.com.br/fullchain.pem ]]; then
+    if [[ ! -f "$disabled" ]]; then
+      echo "Template HTTPS nao encontrado: $disabled" >&2
+      return 1
+    fi
+
     cp "$disabled" "$active"
   else
     rm -f "$active"
+  fi
+}
+
+assert_https_config() {
+  if [[ ! -f /etc/letsencrypt/live/playsis.com.br/fullchain.pem ]]; then
+    return
+  fi
+
+  if ! docker exec yeshua-nginx nginx -T 2>&1 \
+    | grep -F 'listen 443 ssl' >/dev/null; then
+    echo "Certificado encontrado, mas o Nginx nao carregou listen 443 ssl." >&2
+    return 1
+  fi
+
+  if ! docker exec yeshua-nginx nginx -T 2>&1 \
+    | grep -F 'ssl_certificate /etc/letsencrypt/live/playsis.com.br/fullchain.pem;' >/dev/null; then
+    echo "Certificado encontrado, mas o Nginx nao carregou o certificado HTTPS esperado." >&2
+    return 1
   fi
 }
 
@@ -94,6 +117,7 @@ deploy_gateway() {
   docker compose up -d nginx
   docker exec yeshua-nginx nginx -t
   docker exec yeshua-nginx nginx -s reload
+  assert_https_config
   assert_central_front_route
   echo "Gateway reconciliado: configuracao validada e recarregada."
 }
