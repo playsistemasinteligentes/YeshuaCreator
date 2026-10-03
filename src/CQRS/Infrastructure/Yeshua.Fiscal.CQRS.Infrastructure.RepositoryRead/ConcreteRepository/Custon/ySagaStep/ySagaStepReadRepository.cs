@@ -28,8 +28,11 @@ namespace Read.Repository
                        s.[Payload] = i.[Payload]
                   FROM [ySagaStep] s
                  INNER JOIN [yInbox] i ON i.[CorrelationId] = s.[CorrelationId]
+                 INNER JOIN [ySaga] sg ON sg.[Id] = s.[SagaId]
                  WHERE i.[Status] = 0
-                   AND s.[Status] = 3;
+                   AND s.[Status] = 3
+                   AND i.[ProcessingScope] = @ProcessingScope
+                   AND sg.[ProcessingScope] = @ProcessingScope;
 
                 DECLARE @Applied INT = @@ROWCOUNT;
 
@@ -39,20 +42,28 @@ namespace Read.Repository
                  INNER JOIN [ySagaStep] s ON s.[SagaId] = sg.[Id]
                  INNER JOIN [yInbox] i ON i.[CorrelationId] = s.[CorrelationId]
                  WHERE s.[Status] = 4
-                   AND i.[Status] = 0;
+                   AND i.[Status] = 0
+                   AND i.[ProcessingScope] = @ProcessingScope
+                   AND sg.[ProcessingScope] = @ProcessingScope;
 
                 UPDATE i
                    SET i.[Status] = 1
-                  FROM [yInbox] i
+                 FROM [yInbox] i
                  INNER JOIN [ySagaStep] s ON s.[CorrelationId] = i.[CorrelationId]
+                 INNER JOIN [ySaga] sg ON sg.[Id] = s.[SagaId]
                  WHERE s.[Status] = 4
-                   AND i.[Status] = 0;
+                   AND i.[Status] = 0
+                   AND i.[ProcessingScope] = @ProcessingScope
+                   AND sg.[ProcessingScope] = @ProcessingScope;
 
                 COMMIT;
 
                 SELECT @Applied;";
 
-            return _unitOfWork.ExecuteScalar<int>(sql);
+            return _unitOfWork.ExecuteScalar<int>(sql, new
+            {
+                ProcessingScope = _executionContext.ProcessingScope
+            });
         }
 
         public int SetPendingApplyByInboxId(int inboxId)
@@ -66,8 +77,11 @@ namespace Read.Repository
                                       AND i.[CorrelationId] = s.[CorrelationId]
                                       AND i.[SagaId] = s.[SagaId]
                                       AND i.[SagaStepId] = s.[Id]
+                 INNER JOIN [ySaga] sg ON sg.[Id] = s.[SagaId]
                  WHERE i.[Status] = 0
-                   AND s.[Status] = 3;
+                   AND s.[Status] = 3
+                   AND i.[ProcessingScope] = @ProcessingScope
+                   AND sg.[ProcessingScope] = @ProcessingScope;
 
                 DECLARE @Applied INT = @@ROWCOUNT;
 
@@ -76,16 +90,23 @@ namespace Read.Repository
                   FROM [ySaga] sg
                  INNER JOIN [yInbox] i ON i.[Id] = @InboxId
                                       AND i.[SagaId] = sg.[Id]
-                 WHERE @Applied > 0;
+                 WHERE @Applied > 0
+                   AND i.[ProcessingScope] = @ProcessingScope
+                   AND sg.[ProcessingScope] = @ProcessingScope;
 
                 UPDATE [yInbox]
                    SET [Status] = 1
                  WHERE [Id] = @InboxId
+                   AND [ProcessingScope] = @ProcessingScope
                    AND @Applied > 0;
 
                 SELECT @Applied;";
 
-            return _unitOfWork.ExecuteScalar<int>(sql, new { InboxId = inboxId });
+            return _unitOfWork.ExecuteScalar<int>(sql, new
+            {
+                InboxId = inboxId,
+                ProcessingScope = _executionContext.ProcessingScope
+            });
         }
 
         public ySagaStepDTO? GetFirstBySagaStepKeyAndStatuses(int sagaId, string stepKey, IEnumerable<int> statuses)

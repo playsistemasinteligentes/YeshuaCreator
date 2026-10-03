@@ -1,4 +1,4 @@
-﻿using Migration.Dominio;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
 using System.Text;
@@ -103,7 +103,9 @@ namespace Dominio.Schemas.CQRS
             }
             else
             {
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x =>
+                    !x.IsBackEndField &&
+                    !(x.IsProcessingScope)))
                 {
 
                     if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))

@@ -29,6 +29,7 @@ namespace Read.Repository
                             WHERE 
                                 Status = @Pending
                                 AND TenantID = @TenantID
+                                AND ProcessingScope = @ProcessingScope
                             ORDER BY CreatedAt
                         )
                         UPDATE cte
@@ -42,7 +43,8 @@ namespace Read.Repository
                 Limit = limit,
                 Processing = 3,
                 Pending = 0,
-                TenantID = _executionContext.TenantID
+                TenantID = _executionContext.TenantID,
+                ProcessingScope = _executionContext.ProcessingScope
             }).ToList();
 
             return inbox;

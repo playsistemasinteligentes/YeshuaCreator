@@ -36,6 +36,7 @@ namespace Repositorio.Outputs
     public DateTime nextattemptat { get; set; }
     public int sagaid { get; set; }
     public int sagastepid { get; set; }
+    public string processingscope { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
     public bool deleted { get; set; }

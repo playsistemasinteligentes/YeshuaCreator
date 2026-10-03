@@ -68,6 +68,7 @@ namespace Migration.Dominio.Migration
             .AddColumn("NextExecutionAt", "Proxima execucao").DateTime()
             .AddColumn("LockedAt", "LockedAt").DateTime()
             .AddColumn("LockedBy", "LockedBy").Varchar(100)
+            .AddColumn("ProcessingScope", "Escopo de processamento").Varchar(100).NotNull().DefaultValue("#_executionContext.ProcessingScope").Immutable().EditFront(false).VisivelFront(false).NeedBeWhere()
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
             AddEntity("ySagaStep").AddModule("ADM")
@@ -132,6 +133,7 @@ namespace Migration.Dominio.Migration
 
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
+                .AddColumn("ProcessingScope", "Escopo de processamento").Varchar(100).NotNull().DefaultValue("#_executionContext.ProcessingScope").Immutable().EditFront(false).VisivelFront(false).NeedBeWhere()
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
             
             AddQuery<yOutbox>("Standard", q => q
@@ -165,6 +167,7 @@ namespace Migration.Dominio.Migration
 
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
+                .AddColumn("ProcessingScope", "Escopo de processamento").Varchar(100).NotNull().DefaultValue("#_executionContext.ProcessingScope").Immutable().EditFront(false).VisivelFront(false).NeedBeWhere()
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
             /*

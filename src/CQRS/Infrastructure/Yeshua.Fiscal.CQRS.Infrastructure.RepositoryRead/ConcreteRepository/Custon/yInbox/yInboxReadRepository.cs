@@ -27,9 +27,10 @@ namespace Read.Repository
                 WITH NextInbox AS
                 (
                     SELECT TOP (@Limit) *
-                      FROM [yInbox] WITH (UPDLOCK, READPAST, ROWLOCK)
+                     FROM [yInbox] WITH (UPDLOCK, READPAST, ROWLOCK)
                      WHERE [Status] = @PendingStatus
                        AND [Type] = @Type
+                       AND [ProcessingScope] = @ProcessingScope
                      ORDER BY [CreatedAt]
                 )
                 UPDATE NextInbox
@@ -44,7 +45,8 @@ namespace Read.Repository
                 Type = type,
                 PendingStatus = pendingStatus,
                 ProcessingStatus = processingStatus,
-                ProcessingAt = processingAt
+                ProcessingAt = processingAt,
+                ProcessingScope = _executionContext.ProcessingScope
             });
         }
     }

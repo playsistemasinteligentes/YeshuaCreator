@@ -1,4 +1,4 @@
-﻿using Dominio.Migration;
+using Dominio.Migration;
 using Dominio.Schemas.CQRS.Abstraction;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
@@ -46,13 +46,13 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand Command {takeOff});");
                 }
                 // exist retorno bool 
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value {takeOff});");
                 }
                 // firt by 
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value {takeOff});");
@@ -196,7 +196,7 @@ namespace Dominio.Schemas.CQRS
 
 
                 // exist retorno bool 
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value {takeOff})");
@@ -222,7 +222,7 @@ namespace Dominio.Schemas.CQRS
 
 
                 // firt by 
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value {takeOff})");

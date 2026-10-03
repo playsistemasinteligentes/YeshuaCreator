@@ -35,6 +35,7 @@
     DateTime? NextAttemptAt { get; set; }
     int? SagaId { get; set; }
     int? SagaStepId { get; set; }
+    string ProcessingScope { get; }
     int? TenantID { get; set; }
     string OperationalEntityId { get; }
     bool? Deleted { get; set; }

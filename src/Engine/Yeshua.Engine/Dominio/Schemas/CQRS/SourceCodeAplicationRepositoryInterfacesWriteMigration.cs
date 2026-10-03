@@ -1,4 +1,4 @@
-﻿using Migration.Dominio;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Text;
 
@@ -40,7 +40,7 @@ namespace Dominio.Schemas.CQRS
             var keys = _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).ToList();
             var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
 
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && !x.IsProcessingScope))
             {
                 var type = column.getCsharpType();
                 sb.AppendLine($"        void Update{column.Name}({methodParamsKeys}, {type} value);");

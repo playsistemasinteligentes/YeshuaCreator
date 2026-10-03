@@ -35,11 +35,12 @@
             public const ulong NextAttemptAt = 1UL << 12;
             public const ulong SagaId = 1UL << 13;
             public const ulong SagaStepId = 1UL << 14;
-            public const ulong TenantID = 1UL << 15;
-            public const ulong OperationalEntityId = 1UL << 16;
-            public const ulong Deleted = 1UL << 17;
-            public const ulong Changed = 1UL << 18;
-            public const ulong UserId = 1UL << 19;
+            public const ulong ProcessingScope = 1UL << 15;
+            public const ulong TenantID = 1UL << 16;
+            public const ulong OperationalEntityId = 1UL << 17;
+            public const ulong Deleted = 1UL << 18;
+            public const ulong Changed = 1UL << 19;
+            public const ulong UserId = 1UL << 20;
         }
 
         public partial class yInboxDecorator : IyInboxEntity
@@ -278,6 +279,7 @@
                                             }
                                         }
                                     }
+    public string ProcessingScope => _inner.ProcessingScope;
 
                                     public int? TenantID
                                     {

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" INSERT INTO [yOutbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [TransportType], [TransportData], [CreatedAt], [SentAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yOutbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [TransportType], [TransportData], [CreatedAt], [SentAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [ProcessingScope], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @ProcessingScope, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = yOutbox.MessageId,
@@ -50,6 +50,7 @@ namespace Query.Write
                 NextAttemptAt = yOutbox.NextAttemptAt,
                 SagaId = yOutbox.SagaId,
                 SagaStepId = yOutbox.SagaStepId,
+                ProcessingScope = _executionContext.ProcessingScope,
                 TenantID = _executionContext.TenantID,
                 OperationalEntityId = yOutbox.OperationalEntityId,
                 Deleted = 0,

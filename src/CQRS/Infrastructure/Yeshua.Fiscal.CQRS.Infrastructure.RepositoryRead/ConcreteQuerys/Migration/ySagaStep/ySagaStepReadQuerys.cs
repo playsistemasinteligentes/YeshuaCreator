@@ -96,6 +96,8 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
                       whereClauses.Add($" [Id] like @Id ");//02
                  }
            }
+ dict["ProcessingScope"] = _executionContext.ProcessingScope;
+ whereClauses.Add($"[ProcessingScope] = @ProcessingScope");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

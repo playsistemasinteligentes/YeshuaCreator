@@ -1,4 +1,4 @@
-﻿using Migration.Dominio;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
 using System.Text;
@@ -39,7 +39,7 @@ namespace Dominio.Schemas.CQRS
                 var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
 
                 // UPDATE por coluna (leve + unificado)
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && !x.IsProcessingScope))
                 {
                     var type = column.getCsharpType();
 
@@ -96,7 +96,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            this.Parameters = new");
                 sb.AppendLine("            {");
                 foreach (var column in _entity.AddColumns.Where(x => !x.AutoIncremento))
-                    if (column.IsImmutable)
+                    if (column.IsExecutionContextBound)
+                        sb.AppendLine($"                {column.Name} = {column.ValueDefault[1..]},");
+                    else if (column.IsImmutable)
                         sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
                     else if (column.IsValueDefault)
                     {
@@ -143,7 +145,7 @@ namespace Dominio.Schemas.CQRS
                 var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
                 var whereClause = string.Join(" AND ", keys.Select(k => $"{SqlIdentifier(k.Name)} = @{k.Name}"));
 
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && !x.IsProcessingScope))
                 {
                     var columnType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel Update{column.Name}({methodParamsKeys}, {columnType} value)");

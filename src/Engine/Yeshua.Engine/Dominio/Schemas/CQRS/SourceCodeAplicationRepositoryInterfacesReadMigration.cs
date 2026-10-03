@@ -1,4 +1,4 @@
-﻿using Dominio.Migration;
+using Dominio.Migration;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
@@ -50,15 +50,15 @@ namespace Dominio.Schemas.CQRS
 
 
             //Exist
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value {takeOff});");
 
             //FirstBy
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value {takeOff});");
 
             //GetAllBy
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsProcessingScope))
                 sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> GetAllBy{column.Name}({column.getCsharpType()} value {takeOff});");
 
 

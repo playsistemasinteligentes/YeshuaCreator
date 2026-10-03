@@ -49,6 +49,12 @@ namespace Dominio
         public bool IsValueDefault { get; set; } = false;
         public string ValueDefault { get; internal set; }
         public bool IsImmutable { get; private set; }
+        public bool IsExecutionContextBound =>
+            IsValueDefault &&
+            ValueDefault?.StartsWith("#_executionContext.", StringComparison.Ordinal) == true;
+
+        public bool IsProcessingScope =>
+            Name.Equals("ProcessingScope", StringComparison.OrdinalIgnoreCase);
         public bool FrontEdit { get; set; } = true;
         public bool FrontVisibol { get; set; } = true;
         public bool WhereCanTakeOff { get; set; } = false;

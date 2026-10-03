@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" INSERT INTO [yInbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [CreatedAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yInbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [CreatedAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [ProcessingScope], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @ProcessingScope, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
@@ -47,6 +47,7 @@ namespace Query.Write
                 NextAttemptAt = yInbox.NextAttemptAt,
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
+                ProcessingScope = _executionContext.ProcessingScope,
                 TenantID = _executionContext.TenantID,
                 OperationalEntityId = yInbox.OperationalEntityId,
                 Deleted = 0,
