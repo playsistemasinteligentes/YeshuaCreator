@@ -2541,11 +2541,6 @@ public static class EndpointsCuston
     ""SecretKey"": ""configure-using-user-secrets-or-environment-variables"",
     ""ExpirationMinutes"": 60
   },
-  ""YeshuaExecutionContext"": {
-    ""Scope"": ""local"",
-    ""TechnicalTenantID"": 1,
-    ""TechnicalUserId"": 1
-  },
   ""RabbitMq"": {},
   ""Storage"": {}
 }");
@@ -2822,20 +2817,20 @@ public sealed class WorkerExecutionContext : IExecutionContext
 
     private static int GetWorkerTenantId(IConfiguration configuration)
     {
-        return configuration.GetValue(""YeshuaExecutionContext:TechnicalTenantID"", 1);
+        return configuration.GetValue(""WorkerExecutionContext:TenantID"", 1);
     }
 
     private static int GetWorkerUserId(IConfiguration configuration)
     {
-        return configuration.GetValue(""YeshuaExecutionContext:TechnicalUserId"", 1);
+        return configuration.GetValue(""WorkerExecutionContext:UserId"", 1);
     }
 
     private static string GetRequiredProcessingScope(IConfiguration configuration)
     {
-        var scope = configuration[""YeshuaExecutionContext:Scope""]?.Trim();
+        var scope = configuration[""YeshuaProcessing:Scope""]?.Trim();
         return !string.IsNullOrWhiteSpace(scope)
             ? scope
-            : throw new InvalidOperationException(""YeshuaExecutionContext:Scope nao foi configurado."");
+            : throw new InvalidOperationException(""YeshuaProcessing:Scope nao foi configurado."");
     }
 }");
 
@@ -2853,11 +2848,6 @@ public static class CustonDependenceInjection
             WriteTextIfMissing(
                 Path.Combine(projectDirectory, "appsettings.json"),
                 @"{
-  ""YeshuaExecutionContext"": {
-    ""Scope"": ""local"",
-    ""TechnicalTenantID"": 1,
-    ""TechnicalUserId"": 1
-  },
   ""RabbitMq"": {},
   ""Storage"": {}
         }");

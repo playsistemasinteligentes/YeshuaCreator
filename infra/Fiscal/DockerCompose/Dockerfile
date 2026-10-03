@@ -12,7 +12,8 @@ RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Fiscal.CQRS.Infrastructure.Wor
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS aspnet-health
 WORKDIR /app
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl \
+  && apt-get install -y --no-install-recommends ca-certificates curl \
+  && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 FROM aspnet-health AS api
