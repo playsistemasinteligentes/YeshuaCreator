@@ -16,7 +16,23 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates \
+  && apt-get install -y --no-install-recommends ca-certificates curl openssl \
+  && mkdir -p /usr/local/share/ca-certificates/icp-brasil \
+  && download_cert() { \
+       url="$1"; \
+       dest="$2"; \
+       tmp="/tmp/$(basename "$dest")"; \
+       curl -fsSL "$url" -o "$tmp"; \
+       if grep -q "BEGIN CERTIFICATE" "$tmp"; then \
+         cp "$tmp" "$dest"; \
+       else \
+         openssl x509 -inform DER -in "$tmp" -out "$dest"; \
+       fi; \
+       chmod 0644 "$dest"; \
+       rm -f "$tmp"; \
+     } \
+  && download_cert "https://acraiz.icpbrasil.gov.br/credenciadas/RAIZ/ICP-Brasilv10.crt" "/usr/local/share/ca-certificates/icp-brasil/icp-brasil-v10.crt" \
+  && download_cert "https://acraiz.icpbrasil.gov.br/credenciadas/SOLUTI/v10/p/AC-SOLUTI-SSL-EV-G4.crt" "/usr/local/share/ca-certificates/icp-brasil/ac-soluti-ssl-ev-g4.crt" \
   && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 

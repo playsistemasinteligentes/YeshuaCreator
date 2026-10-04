@@ -67,15 +67,26 @@ function pageHtml() {
             <label class="text-sm font-semibold">Nivel padrao<select id="operational-default-level" class="mt-1 w-full border p-2 font-normal"><option value="None">Desligado</option><option value="Error">Erro</option><option value="Warning">Aviso</option><option value="Information">Informacao</option></select></label>
             <label class="text-sm font-semibold">Profundidade padrao<select id="operational-default-depth" class="mt-1 w-full border p-2 font-normal"><option>D0</option><option>D1</option></select></label>
         </div></section>
-        <details class="mt-4 border border-gray-200 bg-white p-4">
-            <summary class="cursor-pointer font-semibold text-gray-900">Consulta de logs via SSH</summary>
-            <p class="mt-2 text-sm text-gray-600">Os comandos consultam os logs da API e do Worker diretamente no servidor, sem alterar a aplicacao.</p>
-            <h3 class="mt-4 text-sm font-semibold">Tudo dentro de um periodo</h3>
-            <pre id="operational-log-command-period" class="mt-2 overflow-x-auto bg-gray-950 p-3 text-xs text-gray-100"></pre>
-            <h3 class="mt-4 text-sm font-semibold">Um identificador dentro do periodo</h3>
-            <pre id="operational-log-command-id" class="mt-2 overflow-x-auto bg-gray-950 p-3 text-xs text-gray-100"></pre>
-            <p class="mt-2 text-xs text-gray-500">Substitua usuario@servidor, datas e CORRELATION_OU_ID. A busca usa os nomes de servico do Docker Compose.</p>
-        </details>
+        <section class="mt-4 border border-gray-200 bg-white p-4">
+            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div><h2 class="text-lg font-bold text-gray-900">Logs e telemetria</h2><p class="text-sm text-gray-600">Acessos operacionais para consultar a aplicacao selecionada.</p></div>
+                <span id="operational-log-scope" class="border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-600"></span>
+            </div>
+            <div id="operational-log-access" class="grid gap-3 md:grid-cols-2 lg:grid-cols-4"></div>
+            <div class="mt-4 grid gap-4 lg:grid-cols-2">
+                <div class="border border-gray-200 bg-gray-50 p-3">
+                    <h3 class="text-sm font-semibold text-gray-900">Filtro Loki sugerido</h3>
+                    <pre id="operational-logql-query" class="mt-2 overflow-x-auto bg-gray-950 p-3 text-xs text-gray-100"></pre>
+                </div>
+                <details class="border border-gray-200 bg-gray-50 p-3">
+                    <summary class="cursor-pointer text-sm font-semibold text-gray-900">Consulta via SSH</summary>
+                    <h3 class="mt-4 text-sm font-semibold">Tudo dentro de um periodo</h3>
+                    <pre id="operational-log-command-period" class="mt-2 overflow-x-auto bg-gray-950 p-3 text-xs text-gray-100"></pre>
+                    <h3 class="mt-4 text-sm font-semibold">Um identificador dentro do periodo</h3>
+                    <pre id="operational-log-command-id" class="mt-2 overflow-x-auto bg-gray-950 p-3 text-xs text-gray-100"></pre>
+                </details>
+            </div>
+        </section>
         <section class="mt-4"><h2 class="mb-2 text-lg font-bold">Componentes</h2><div id="operational-components" class="divide-y border bg-white"></div></section>
         <section class="mt-5"><div class="mb-2 flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-lg font-bold">Rastreamento de dominio</h2><p class="text-sm text-gray-600">Selecione somente as entidades e campos que precisam ser acompanhados.</p></div><input id="operational-entity-search" type="search" placeholder="Buscar entidade" class="w-full border px-3 py-2 md:w-72" /></div><label class="mb-2 flex cursor-pointer items-center gap-3 border bg-white p-3 hover:bg-gray-50"><input id="operational-domain-all" class="h-4 w-4" type="checkbox" /><span><strong class="block text-sm">Todos</strong><span class="text-sm text-gray-600">Todas as entidades e todos os campos.</span></span></label><div id="operational-entities" class="divide-y border bg-white"></div></section>
     </main>`;
@@ -86,7 +97,7 @@ function renderState(state) {
     document.getElementById('operational-application').textContent = `${catalog.application} / ${policy.environment}`;
     document.getElementById('operational-default-level').value = policy.defaultLevel || 'Information';
     document.getElementById('operational-default-depth').value = policy.defaultDepth || 'D0';
-    renderLogCommands(catalog.application);
+    renderLogAccess(catalog.application, policy.environment);
     document.getElementById('operational-components').innerHTML = catalog.components.filter(component => component.id !== 'DomainTracker').map(component => `
         <label class="flex cursor-pointer items-start gap-3 p-3 hover:bg-gray-50"><input class="operational-component mt-1 h-4 w-4" type="checkbox" data-component="${html(component.id)}" ${isEnabled(policy.targets, component.id) ? 'checked' : ''} /><span><strong class="block text-sm">${html(component.title)}</strong><span class="text-sm text-gray-600">${html(component.description)}</span></span></label>`).join('');
     renderEntities(state);
@@ -102,16 +113,57 @@ function renderState(state) {
     };
 }
 
-function renderLogCommands(application) {
+function renderLogAccess(application, environment) {
     const app = String(application || 'aplicativo')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-zA-Z0-9]+/g, '-')
         .replace(/^-|-$/g, '')
         .toLowerCase();
+    const title = String(application || 'Aplicacao');
+    const env = String(environment || 'Production');
+    const logql = `{service_name=~".*${escapeLogQuery(app)}.*"} |~ "(?i)(error|exception|failed|failure|falhou|erro)"`;
+    const telemetryBase = '/telemetry/';
+    const exploreLogs = buildGrafanaExploreUrl('Loki', logql);
+    const exploreTraces = buildGrafanaExploreUrl('Tempo', `{ resource.service.name =~ ".*${escapeLogQuery(app)}.*" }`);
+    const exploreMetrics = `${telemetryBase}explore?orgId=1`;
+
+    document.getElementById('operational-log-scope').textContent = `${title} / ${env}`;
+    document.getElementById('operational-logql-query').textContent = logql;
+    document.getElementById('operational-log-access').innerHTML = [
+        accessCard('Grafana', 'Painel geral de observabilidade.', telemetryBase, 'Abrir'),
+        accessCard('Logs da aplicacao', 'Explore Loki com filtro do aplicativo.', exploreLogs, 'Ver logs'),
+        accessCard('Traces', 'Explore Tempo para chamadas e spans.', exploreTraces, 'Ver traces'),
+        accessCard('Metricas', 'Explore Prometheus e paineis tecnicos.', exploreMetrics, 'Ver metricas')
+    ].join('');
+
     const prefix = `ssh usuario@servidor 'for service in ${app}-api ${app}-worker; do container=$(docker ps -q --filter "label=com.docker.compose.service=$service" | head -n 1); if [ -n "$container" ]; then echo "===== $service ====="; docker logs --since "2026-09-20T00:00:00-03:00" --until "2026-09-21T00:00:00-03:00" "$container" 2>&1; fi; done`;
     document.getElementById('operational-log-command-period').textContent = `${prefix}'`;
     document.getElementById('operational-log-command-id').textContent = `${prefix} | grep -F "CORRELATION_OU_ID"'`;
+}
+
+function accessCard(title, description, href, action) {
+    return `<a class="block border border-gray-200 bg-white p-3 hover:border-green-700 hover:bg-green-50" href="${html(href)}" target="_blank" rel="noopener noreferrer">
+        <strong class="block text-sm text-gray-900">${html(title)}</strong>
+        <span class="mt-1 block min-h-10 text-sm text-gray-600">${html(description)}</span>
+        <span class="mt-3 inline-flex border border-green-700 px-3 py-1 text-sm font-semibold text-green-800">${html(action)}</span>
+    </a>`;
+}
+
+function buildGrafanaExploreUrl(datasource, query) {
+    const left = encodeURIComponent(JSON.stringify([
+        'now-1h',
+        'now',
+        datasource,
+        { expr: query, refId: 'A' }
+    ]));
+    return `/telemetry/explore?orgId=1&left=${left}`;
+}
+
+function escapeLogQuery(value) {
+    return String(value || '')
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"');
 }
 
 function renderEntities(state) {

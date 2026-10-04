@@ -20,6 +20,8 @@ tail -f /root/setup-cert.log
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/docker/deploy.sh | bash
+
+comando é apenas o de cima os pontos são comentarios 
 ```
 
 O deploy sem argumento atualiza Shared, Central, Clinica, APS.ADM, Fiscal e

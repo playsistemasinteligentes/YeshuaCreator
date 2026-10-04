@@ -1,7 +1,7 @@
 import { handleRouting } from './router.js?v=20260926-userarea01';
 import { initFkModal } from './components/fk-modal.js';
 import { initializeApplicationContext } from './application-context.js';
-import './pages/operational-control.js?v=20261001-operational03';
+import './pages/operational-control.js?v=20261004-logs-panel01';
 
 window.addEventListener('DOMContentLoaded', async () => {
     await initializeApplicationContext();

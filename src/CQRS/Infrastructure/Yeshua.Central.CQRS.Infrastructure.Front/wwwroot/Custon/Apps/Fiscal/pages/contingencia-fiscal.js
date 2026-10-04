@@ -883,13 +883,6 @@ async function confirmarPlano() {
 }
 
 async function vincularCertificado() {
-    if (!hasProtocol()) {
-        const message = 'Envie os XMLs para abrir o protocolo antes de vincular o certificado.';
-        feedback(message);
-        notify(message, 'warning');
-        return;
-    }
-
     syncCertificadoTitularComEmitente();
     const documentoTitular = onlyDigits(getValue('fiscal-certificado-documento') || getValue('fiscal-emitente'));
     if (documentoTitular.length !== 14) {
@@ -902,6 +895,12 @@ async function vincularCertificado() {
     renderSectionStatus('certificado', 'sending');
 
     try {
+        const protocoloOk = await ensureProtocol([]);
+        if (!protocoloOk) {
+            renderSectionStatus('certificado', 'error');
+            return;
+        }
+
         const result = await postUseCase(endpoints.registrarCertificado, {
             entradaFiscalContingenciaId: state.entradaId,
             documentoTitular,
@@ -2346,7 +2345,7 @@ function updateRequestUi() {
     setButtonDisabled('fiscal-send-notas', requesting || emissaoSolicitada);
     setButtonDisabled('fiscal-send-preview', requesting || emissaoSolicitada || !hasProtocol() || state.sectionStatus.xmls !== 'sent');
     setButtonDisabled('fiscal-confirmar-plano', requesting || emissaoSolicitada || !previewValida);
-    setButtonDisabled('fiscal-vincular-certificado', requesting || emissaoSolicitada || !hasProtocol());
+    setButtonDisabled('fiscal-vincular-certificado', requesting || emissaoSolicitada);
     setButtonDisabled('fiscal-consultar-processamento', requesting || !emissaoSolicitada);
     setButtonDisabled('fiscal-baixar-documentos', requesting || !emissaoSolicitada || !state.downloadAvailable);
     actionButtonIds
