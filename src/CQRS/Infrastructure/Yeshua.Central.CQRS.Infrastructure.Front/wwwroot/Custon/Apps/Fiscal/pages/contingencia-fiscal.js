@@ -973,6 +973,7 @@ async function consultarProcessamentoFiscal(options = {}) {
         renderResult(state.correlationId, state.entradaId, mensagem);
         renderSagaProgress(sagas);
         renderFiscalDocuments(documentos, status, etapaAtual);
+        setStage('emissao');
         setProcessingActions(true, downloadDisponivel);
         setText('fiscal-contingencia-status', concluida ? 'emissao concluida' : status.toLowerCase());
         feedback(`${status}. Etapa atual: ${etapaAtual}. ${mensagem}`);
