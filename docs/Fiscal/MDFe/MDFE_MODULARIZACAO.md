@@ -24,7 +24,8 @@ O MDF-e deve continuar como aplicativo fiscal independente:
 - `Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite`
 - `Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared`
 - `Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Worker`
-- `Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front`, se houver UI propria.
+- `Yeshua.Central.CQRS.Infrastructure.Front`, com as telas especificas do Fiscal
+  em `wwwroot/Custon/Apps/Fiscal`.
 
 `Yeshua.Fiscal` pode existir como pacote comercial, menu agregado, deploy
 coordenado ou composicao de modulos fiscais. Ele nao deve virar justificativa

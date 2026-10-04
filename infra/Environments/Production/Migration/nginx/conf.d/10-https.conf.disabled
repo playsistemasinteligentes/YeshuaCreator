@@ -36,9 +36,9 @@ server {
     }
 
     location /mdfe {
-        set $fiscal_mdfe_front_upstream fiscal-mdfe-front:8080;
+        set $central_front_upstream central-front:8080;
         rewrite ^/mdfe(?:/(.*))?$ /$1 break;
-        proxy_pass http://$fiscal_mdfe_front_upstream;
+        proxy_pass http://$central_front_upstream;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -61,8 +61,8 @@ server {
     }
 
     location / {
-        set $clinica_front_upstream clinica-front:8080;
-        proxy_pass http://$clinica_front_upstream;
+        set $central_front_upstream central-front:8080;
+        proxy_pass http://$central_front_upstream;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

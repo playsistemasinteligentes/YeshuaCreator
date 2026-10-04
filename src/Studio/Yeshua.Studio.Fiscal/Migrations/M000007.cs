@@ -32,7 +32,7 @@ public class M000007 : MigrationBase
             .AddUseCaseSubGrup("MDFeUtilitarios")
             .AddCommand(
                 "CancelarMDFe",
-                new CancelarMDFeInput(string.Empty, string.Empty, 1),
+                new CancelarMDFeInput(string.Empty, string.Empty, 2, string.Empty, 1),
                 new EventoFiscalOutput(string.Empty, false, 0, string.Empty, string.Empty, 0))
             .Authorization(Authorization.User)
             .AddScope("fiscal.mdfe.utilitarios.cancelar")
@@ -42,7 +42,7 @@ public class M000007 : MigrationBase
             .AddUseCaseSubGrup("MDFeUtilitarios")
             .AddCommand(
                 "IncluirCondutorMDFe",
-                new IncluirCondutorMDFeInput(string.Empty, string.Empty, string.Empty, 1),
+                new IncluirCondutorMDFeInput(string.Empty, string.Empty, 2, string.Empty, string.Empty, 1),
                 new EventoFiscalOutput(string.Empty, false, 0, string.Empty, string.Empty, 0))
             .Authorization(Authorization.User)
             .AddScope("fiscal.mdfe.utilitarios.condutor.incluir")
@@ -65,11 +65,15 @@ public sealed record CorrigirCTeInput(
 
 public sealed record CancelarMDFeInput(
     string ChaveAcesso,
+    string ProtocoloAutorizacao,
+    int Ambiente,
     string Justificativa,
     int SequenciaEvento);
 
 public sealed record IncluirCondutorMDFeInput(
     string ChaveAcesso,
+    string ProtocoloAutorizacao,
+    int Ambiente,
     string NomeCondutor,
     string CpfCondutor,
     int SequenciaEvento);

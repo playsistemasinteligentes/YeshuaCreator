@@ -425,10 +425,9 @@ Regra resumida:
 - A Engine nao cria, sincroniza, replica nem compoe projetos de Front. A DSL
   dos Studios continua gerando menus, permissoes e metadata entregues pelas
   APIs, mas nao gera arquivos, manifestos ou projetos de Front.
-- Os projetos de Front dos demais aplicativos e o antigo
-  `Yeshua.CQRS.Infrastructure.Front` permanecem temporariamente no repositorio
-  apenas como acervo para revisao e futura exclusao. Eles nao sao atualizados
-  pela Engine nem publicados.
+- Os projetos de Front dos aplicativos e o antigo
+  `Yeshua.CQRS.Infrastructure.Front` foram removidos depois da consolidacao.
+  Nao recriar Front por aplicativo nem manter copias da implementacao central.
 - O catalogo de aplicativos, suas rotas logicas e os caminhos de assets sao
   mantidos diretamente no Front Central, inicialmente em `applications.json`.
 - O Front chama rotas logicas como `/apps/clinica/yapi` e
@@ -505,11 +504,10 @@ Regra resumida:
 - `yTenantApplication` nao substitui `yTenantModule`: a primeira controla a
   entrada do tenant em um aplicativo, enquanto a segunda controla modulos
   internos do proprio aplicativo.
-- Durante a transicao, os projetos de Front antigos ficam congelados. Qualquer
-  codigo ainda util deve ser migrado conscientemente para o Front Central antes
-  da exclusao desses projetos; nao existe copia automatica.
-- Executar qualquer Studio nao pode alterar arquivos do Front Central nem dos
-  Fronts antigos.
+- Customizacoes visuais de aplicativos devem ser migradas conscientemente para
+  o Front Central; nao existe copia automatica nem projeto de Front intermediario.
+- Executar qualquer Studio nao pode criar Front nem alterar arquivos do Front
+  Central.
 - `wwwroot/Custon` do Front Central e codigo normal da aplicacao e deve ser
   editado diretamente, sem sobrescrita ou regeneracao pela Engine.
 - Telas customizadas completas de aplicativo devem ter ancora pequena na DSL
@@ -989,6 +987,21 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - `Yeshua.OperationalIntelligence.Api` consulta o indice e nao referencia a Engine nem projetos de aplicativos.
 - Quando o usuario solicitar uma investigacao, o agente deve chamar diretamente a Operational Intelligence API e interpretar o resultado; o Swagger e opcional e nao deve ser delegado ao usuario sem necessidade.
 - A API, o orquestrador e os coletores permanecem no mesmo projeto e processo nesta fase.
+- A camada MCP inicial fica dentro de
+  `Yeshua.OperationalIntelligence.Api/Modules/Mcp`, no mesmo processo da API.
+  Ela deve expor somente ferramentas de leitura e dados crus para agentes:
+  health, logs, errors, traces, metrics, source search, correlacao simples
+  log -> fonte indexada e SELECT SQL por conexoes configuradas. Nao criar ainda
+  assinatura operacional, especialistas, trilhas, comandos de negocio ou
+  persistencia propria.
+- `DEBITO TECNICO CRITICO`: definir o conceito formal de controle de acesso
+  para ferramentas MCP que leem banco de dados, codigo-fonte, bundles,
+  historico Git, logs e telemetria. O modelo atual deve ser tratado apenas como
+  recurso interno/confiavel. Antes de expor para usuarios, tenants, clientes ou
+  agentes externos, e obrigatorio definir autorizacao por usuario, tenant,
+  aplicativo, ambiente, escopo, finalidade, tabelas/colunas permitidas,
+  mascaramento de dados sensiveis, auditoria e limites operacionais. Acesso a
+  banco e fontes nunca pode ser livre ou implicito.
 - O gate R05 roda no Console transitorio `Yeshua.OperationalIntelligence.PostBuild`; a API Central nao executa builds ou testes e futuramente apenas recebera os relatorios.
 - A Engine gera `PostBuildManifest.json` por aplicativo junto ao projeto de smoke tests. O runner confere identidade, versao, saude de API e Worker, executa o smoke CRUD e retorna exit code de gate.
 - Identificadores como R05 e R06 representam requisitos/etapas do plano, nunca classificacoes de codigo, namespaces ou projetos. Testes usam categorias funcionais como `TechnicalSmoke` e `BusinessSmoke` e sao mapeados documentalmente aos requisitos que comprovam.

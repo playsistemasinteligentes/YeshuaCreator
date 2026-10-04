@@ -206,6 +206,8 @@ namespace Command.Receivers
                 CondutorCpf = FirstNotEmpty(solicitacao.condutordocumento, defaults.CondutorCpf),
                 CondutorNome = FirstNotEmpty(JsonText(snapshot, "condutorNome", "CondutorNome"), defaults.CondutorNome),
                 Rntrc = FirstNotEmpty(JsonText(snapshot, "Rntrc", "rntrc", "RNTRC"), defaults.Rntrc),
+                CiotNumero = FirstNotEmpty(JsonText(snapshot, "CiotNumero", "ciotNumero", "numeroCiot", "CIOT", "ciot"), defaults.CiotNumero),
+                CiotResponsavelDocumento = FirstNotEmpty(JsonText(snapshot, "CiotResponsavelDocumento", "ciotResponsavelDocumento", "documentoResponsavelCiot", "ciotDocumentoResponsavel"), defaults.CiotResponsavelDocumento),
                 Renavam = FirstNotEmpty(JsonText(snapshot, "Renavam", "renavam"), defaults.Renavam),
                 TaraKg = FirstNotEmpty(JsonText(snapshot, "TaraKg", "taraKg"), defaults.TaraKg),
                 CapacidadeKg = FirstNotEmpty(JsonText(snapshot, "CapacidadeKg", "capacidadeKg"), defaults.CapacidadeKg),

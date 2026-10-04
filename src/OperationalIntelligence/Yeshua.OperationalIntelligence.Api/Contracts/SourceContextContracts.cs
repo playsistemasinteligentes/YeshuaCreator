@@ -37,6 +37,11 @@ public sealed class FunctionSearchRequest : SourceSearchRequest
     public int? Line { get; init; }
 }
 
+public sealed class FileSearchRequest : SourceSearchRequest
+{
+    public IReadOnlyList<string> Files { get; init; } = [];
+}
+
 public sealed record SymbolMatch(
     Guid SymbolId,
     string MatchKind,

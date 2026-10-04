@@ -19,13 +19,16 @@ mount de forma portavel.
 
 ## Ativacao nas aplicacoes
 
-As APIs e Workers continuam em `ConsoleJsonl` por padrao. Para enviar logs e
-spans operacionais ao pacote OTLP, ajuste no `infra/docker/deploy.env`:
+No servidor, o `infra/docker/deploy.env` ja deixa APIs e Workers em `Otlp` por
+padrao:
 
 ```env
 YESHUA_TELEMETRY_EXPORT_MODE=Otlp
 YESHUA_TELEMETRY_OTLP_ENDPOINT=http://yeshua-telemetry:4317
 ```
+
+Em execucao local, se essa variavel nao existir, o codigo continua em
+`ConsoleJsonl`.
 
 O controle runtime D0/D1 continua separado e volatil. Esta configuracao decide
 somente o destino de saida da telemetria habilitada.

@@ -141,6 +141,56 @@ public sealed class SourceContextRepository : ISourceContextRepository
         return Response(build, matches, references, chains, files);
     }
 
+    public async Task<SourceContextResponse> SearchFilesAsync(
+        FileSearchRequest request,
+        CancellationToken cancellationToken)
+    {
+        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken);
+        var maxResults = NormalizeMaxResults(request.MaxResults);
+        var fileHints = request.Files
+            .Where(file => !string.IsNullOrWhiteSpace(file))
+            .Select(NormalizePathHint)
+            .Where(file => !string.IsNullOrWhiteSpace(file))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Take(Math.Min(maxResults, 25))
+            .ToArray();
+
+        if (fileHints.Length == 0)
+            return Response(build, [], [], [], []);
+
+        await using var connection = await _database.OpenConnectionAsync(cancellationToken);
+        var files = new List<SourceFileCandidate>();
+
+        foreach (var file in fileHints)
+        {
+            var rows = await connection.QueryAsync<SourceFileCandidate>(Command(
+                FileSql,
+                new
+                {
+                    build.BuildId,
+                    FilePath = file,
+                    Suffix = "%" + EscapeLike(file),
+                    MaxResults = Math.Max(1, maxResults)
+                },
+                cancellationToken));
+            files.AddRange(rows);
+
+            if (files.Count >= maxResults)
+                break;
+        }
+
+        var distinctFiles = files
+            .GroupBy(file => file.File, StringComparer.OrdinalIgnoreCase)
+            .Select(group => group
+                .OrderBy(file => file.Reason, StringComparer.Ordinal)
+                .First())
+            .OrderBy(file => file.File, StringComparer.OrdinalIgnoreCase)
+            .Take(maxResults)
+            .ToArray();
+
+        return Response(build, [], [], [], distinctFiles);
+    }
+
     public async Task<IReadOnlyList<SourceFileContent>> GetSourceContentsAsync(
         Guid buildId,
         IReadOnlyList<string> files,
@@ -273,11 +323,27 @@ public sealed class SourceContextRepository : ISourceContextRepository
         IReadOnlyList<FunctionChain> chains,
         IReadOnlyList<SourceFileCandidate> files)
     {
-        var warnings = matches.Count == 0 && references.Count == 0
+        var warnings = matches.Count == 0 && references.Count == 0 && files.Count == 0
             ? new[] { "No matching source symbol was found in the selected build." }
             : Array.Empty<string>();
         return new SourceContextResponse(build, matches, references, chains, files, warnings);
     }
+
+    private static string NormalizePathHint(string value)
+    {
+        var normalized = value.Trim().Trim('"').Replace('\\', '/');
+        var srcIndex = normalized.IndexOf("/src/", StringComparison.OrdinalIgnoreCase);
+        if (srcIndex >= 0)
+            normalized = normalized[(srcIndex + 1)..];
+
+        return normalized;
+    }
+
+    private static string EscapeLike(string value) =>
+        value.Replace(@"\", @"\\", StringComparison.Ordinal)
+            .Replace("%", @"\%", StringComparison.Ordinal)
+            .Replace("_", @"\_", StringComparison.Ordinal)
+            .Replace("[", @"\[", StringComparison.Ordinal);
 
     private const string FieldSql = """
         DECLARE @FieldName NVARCHAR(500) = RIGHT(@FieldSearch, CHARINDEX('.', REVERSE(@FieldSearch) + '.') - 1);
@@ -643,6 +709,26 @@ public sealed class SourceContextRepository : ISourceContextRepository
         FROM RelevantFiles rf
         JOIN OI_Files f ON f.FileId = rf.FileId
         ORDER BY f.RelativePath, Reason;
+        """;
+
+    private const string FileSql = """
+        SELECT TOP (@MaxResults) f.RelativePath AS [File],
+               CASE
+                   WHEN REPLACE(f.RelativePath, '\', '/') = @FilePath THEN N'LOG_FILE_EXACT'
+                   ELSE N'LOG_FILE_SUFFIX'
+               END AS Reason,
+               f.ArtifactKind, f.SourceRole, f.Ownership, f.Editable, f.SourceOfTruth
+        FROM OI_Files f
+        WHERE f.BuildId = @BuildId
+          AND
+          (
+              REPLACE(f.RelativePath, '\', '/') = @FilePath
+              OR REPLACE(f.RelativePath, '\', '/') LIKE @Suffix ESCAPE '\'
+          )
+        ORDER BY
+            CASE WHEN REPLACE(f.RelativePath, '\', '/') = @FilePath THEN 0 ELSE 1 END,
+            LEN(f.RelativePath),
+            f.RelativePath;
         """;
 
     private sealed class SourceContentRow

@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Yeshua.CQRS.Tests.Integration.Api.TestKit\Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj" />
+    <ProjectReference Include="..\..\..\src\CQRS\Application\Yeshua.Fiscal.CQRS.Application.Command\Yeshua.Fiscal.CQRS.Application.Command.csproj" />
+    <ProjectReference Include="..\..\..\src\CQRS\Application\Yeshua.Fiscal.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.CQRS.Application.RepositoryInterfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

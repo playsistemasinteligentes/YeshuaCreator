@@ -44,7 +44,22 @@ protected partial async Task<State<IncluirCondutorMDFeOutputCommand>> CustomActi
     var cpf = SefazFiscalEventContextResolver.Digits(comand.CpfCondutor);
     if (string.IsNullOrWhiteSpace(comand.NomeCondutor) || cpf.Length != 11)
         return ValidationError("Nome e CPF valido do condutor devem ser informados.");
-    var context = SefazFiscalEventContextResolver.ResolveMDFe(comand.ChaveAcesso, _repReadMDFeTentativaEmissao, _documentos, _certificados);
+
+    SefazFiscalEventContext context;
+    try
+    {
+        context = SefazFiscalEventContextResolver.ResolveExternalMDFe(
+            comand.ChaveAcesso,
+            comand.ProtocoloAutorizacao,
+            comand.Ambiente,
+            _executionContext.TenantID,
+            _certificados);
+    }
+    catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or FileNotFoundException)
+    {
+        return ValidationError(exception.Message);
+    }
+
     var result = await MdfeEventoFiscalClient.IncluirCondutorAsync(context, comand.NomeCondutor, cpf, comand.SequenciaEvento, cancellationToken);
     var output = new IncluirCondutorMDFeOutputCommand { ChaveAcesso = result.ChaveAcesso, Registrado = result.Registrado, CodigoRetorno = result.CodigoRetorno, Motivo = result.Motivo, ProtocoloEvento = result.ProtocoloEvento ?? string.Empty, HttpStatusCode = result.HttpStatusCode };
     return result.Registrado ? Success("Inclusao de condutor registrada no MDF-e.", output) : new State<IncluirCondutorMDFeOutputCommand>(400, result.Motivo, output, false);

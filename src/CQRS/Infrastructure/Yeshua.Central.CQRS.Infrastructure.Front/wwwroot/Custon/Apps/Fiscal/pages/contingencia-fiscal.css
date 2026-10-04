@@ -4,7 +4,8 @@
 }
 
 .fiscal-contingencia-header,
-.fiscal-contingencia-layout {
+.fiscal-contingencia-layout,
+.fiscal-cases-panel {
     margin: 0 auto;
     max-width: 1480px;
 }
@@ -77,10 +78,26 @@ body.yeshua-request-wait * {
     cursor: wait !important;
 }
 
+.fiscal-field-pending {
+    color: #991b1b;
+}
+
+.fiscal-field-pending input,
+.fiscal-field-pending select,
+.fiscal-field-pending textarea {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.14);
+}
+
 .fiscal-contingencia-layout {
     display: grid;
     gap: 14px;
     grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+}
+
+.fiscal-cases-panel {
+    margin-bottom: 14px;
+    min-height: 0;
 }
 
 .fiscal-contingencia-panel {
@@ -89,6 +106,94 @@ body.yeshua-request-wait * {
     border-radius: 8px;
     min-height: 320px;
     padding: 14px;
+}
+
+.fiscal-cases-panel.fiscal-contingencia-panel {
+    min-height: 0;
+}
+
+.fiscal-case-filter-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin-bottom: 12px;
+}
+
+.fiscal-case-filter-grid label {
+    color: #475569;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 5px;
+}
+
+.fiscal-case-filter-grid input {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    color: #172033;
+    font-size: 14px;
+    min-height: 38px;
+    padding: 7px 9px;
+}
+
+.fiscal-case-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.fiscal-case-table-wrap {
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.fiscal-case-table {
+    border-collapse: collapse;
+    min-width: 1080px;
+    width: 100%;
+}
+
+.fiscal-case-table th,
+.fiscal-case-table td {
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.35;
+    padding: 9px 10px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.fiscal-case-table th {
+    background: #f8fafc;
+    color: #172033;
+    font-weight: 800;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.fiscal-case-table tbody tr {
+    cursor: pointer;
+}
+
+.fiscal-case-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.fiscal-case-table tbody tr.selected {
+    background: #e8f5ee;
+}
+
+.fiscal-case-empty {
+    color: #94a3b8;
+    font-weight: 700;
+    text-align: center;
 }
 
 .fiscal-contingencia-main {
@@ -1055,6 +1160,7 @@ body.yeshua-request-wait * {
 @media (max-width: 1080px) {
     .fiscal-contingencia-layout,
     .fiscal-contingencia-grid,
+    .fiscal-case-filter-grid,
     .fiscal-participants-grid,
     .fiscal-documento-grid,
     .fiscal-xml-grid,
@@ -1083,6 +1189,7 @@ body.yeshua-request-wait * {
 
     .fiscal-contingencia-layout,
     .fiscal-contingencia-grid,
+    .fiscal-case-filter-grid,
     .fiscal-participants-grid,
     .fiscal-participant-fields,
     .fiscal-documento-grid,

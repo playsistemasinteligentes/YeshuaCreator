@@ -43,7 +43,22 @@ protected partial async Task<State<CancelarMDFeOutputCommand>> CustomActionHookA
 {
     if (string.IsNullOrWhiteSpace(comand.Justificativa) || comand.Justificativa.Trim().Length is < 15 or > 255)
         return ValidationError("A justificativa deve possuir entre 15 e 255 caracteres.");
-    var context = SefazFiscalEventContextResolver.ResolveMDFe(comand.ChaveAcesso, _repReadMDFeTentativaEmissao, _documentos, _certificados);
+
+    SefazFiscalEventContext context;
+    try
+    {
+        context = SefazFiscalEventContextResolver.ResolveExternalMDFe(
+            comand.ChaveAcesso,
+            comand.ProtocoloAutorizacao,
+            comand.Ambiente,
+            _executionContext.TenantID,
+            _certificados);
+    }
+    catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or FileNotFoundException)
+    {
+        return ValidationError(exception.Message);
+    }
+
     var result = await MdfeEventoFiscalClient.CancelarAsync(context, comand.Justificativa, comand.SequenciaEvento, cancellationToken);
     var output = new CancelarMDFeOutputCommand { ChaveAcesso = result.ChaveAcesso, Registrado = result.Registrado, CodigoRetorno = result.CodigoRetorno, Motivo = result.Motivo, ProtocoloEvento = result.ProtocoloEvento ?? string.Empty, HttpStatusCode = result.HttpStatusCode };
     return result.Registrado ? Success("Cancelamento do MDF-e registrado.", output) : new State<CancelarMDFeOutputCommand>(400, result.Motivo, output, false);

@@ -155,6 +155,7 @@ namespace Command.Receivers
             Require(pendencias, Value(entrada.uffim, complemento, "ufFim", "UFFim"), "UFFim");
             Require(pendencias, Value(entrada.municipioiniciocodigoibge, complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"), "MunicipioInicioCodigoIbge");
             Require(pendencias, Value(entrada.municipiofimcodigoibge, complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"), "MunicipioFimCodigoIbge");
+            ValidarCiotManual(pendencias, entrada, complemento);
 
             if (entrada.certificadodigitalid <= 0)
                 pendencias.Add("CertificadoDigital");
@@ -269,6 +270,8 @@ namespace Command.Receivers
                 tipoAgrupamentoCTe = Text(complemento, "tipoAgrupamentoCTe", "tipoAgrupamentoCte"),
                 estrategiaRateioFrete = Text(complemento, "estrategiaRateioFrete"),
                 origemRotaFiscal = Text(complemento, "origemRotaFiscal"),
+                ciotNumero = Digits(Text(complemento, "ciotNumero", "numeroCiot", "CIOT", "ciot")),
+                ciotResponsavelDocumento = Digits(Text(complemento, "ciotResponsavelDocumento", "documentoResponsavelCiot", "ciotDocumentoResponsavel")),
                 tipoCargaMDFe = Text(complemento, "tipoCargaMDFe", "tipoCarga"),
                 produtoPredominanteMDFe = Text(complemento, "produtoPredominanteMDFe", "produtoPredominante"),
                 ncmProdutoPredominanteMDFe = Text(complemento, "ncmProdutoPredominanteMDFe", "ncmProdutoPredominante"),
@@ -341,6 +344,8 @@ namespace Command.Receivers
             var cnpjSeguradora = FirstNonEmpty(Text(complemento, "cnpjSeguradora", "CnpjSeguradora"), defaultsMdfe.CnpjSeguradora);
             var numeroApolice = FirstNonEmpty(Text(complemento, "numeroApolice", "NumeroApolice"), defaultsMdfe.NumeroApolice);
             var numeroAverbacao = FirstNonEmpty(Text(complemento, "numeroAverbacao", "NumeroAverbacao"), defaultsMdfe.NumeroAverbacao);
+            var ciotNumero = Digits(Text(complemento, "ciotNumero", "numeroCiot", "CIOT", "ciot"));
+            var ciotResponsavelDocumento = Digits(Text(complemento, "ciotResponsavelDocumento", "documentoResponsavelCiot", "ciotDocumentoResponsavel"));
             var preferenciasEfetivasJson = BuildEffectivePreferencesJson(complemento, new Dictionary<string, object?>
             {
                 ["emitenteUf"] = ufEmitente,
@@ -369,7 +374,9 @@ namespace Command.Receivers
                 ["nomeSeguradora"] = nomeSeguradora,
                 ["cnpjSeguradora"] = cnpjSeguradora,
                 ["numeroApolice"] = numeroApolice,
-                ["numeroAverbacao"] = numeroAverbacao
+                ["numeroAverbacao"] = numeroAverbacao,
+                ["ciotNumero"] = ciotNumero,
+                ["ciotResponsavelDocumento"] = ciotResponsavelDocumento
             });
             var grupos = AgruparDocumentos(entrada, documentos, tipoAgrupamento);
             var totalBaseRateio = grupos.Sum(x => BaseRateio(x.Documentos, estrategiaRateio));
@@ -444,6 +451,8 @@ namespace Command.Receivers
                 modal,
                 globalizado,
                 origemRotaFiscal = Text(complemento, "origemRotaFiscal"),
+                ciotNumero,
+                ciotResponsavelDocumento,
                 observacaoFiscal = Text(complemento, "observacaoFiscal"),
                 parametrosFiscaisEfetivos = new
                 {
@@ -474,7 +483,9 @@ namespace Command.Receivers
                     nomeSeguradora,
                     cnpjSeguradora,
                     numeroApolice,
-                    numeroAverbacao
+                    numeroAverbacao,
+                    ciotNumero,
+                    ciotResponsavelDocumento
                 },
                 dadosComplementaresJson = preferenciasEfetivasJson,
                 preferenciasFiscaisJson = preferenciasEfetivasJson,
@@ -500,6 +511,8 @@ namespace Command.Receivers
                         municipioiniciocodigoibge = Value(entrada.municipioiniciocodigoibge, complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"),
                         municipiofimcodigoibge = Value(entrada.municipiofimcodigoibge, complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"),
                         rntrc = Value(entrada.rntrc, complemento, "rntrc", "RNTRC"),
+                        ciotNumero,
+                        ciotResponsavelDocumento,
                         placaveiculo = Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"),
                         condutordocumento = Value(entrada.condutordocumento, complemento, "condutorDocumento", "cpfMotorista", "cpfCondutor"),
                         condutornome = Value(entrada.condutornome, complemento, "condutorNome", "nomeMotorista", "nomeCondutor"),
@@ -620,6 +633,38 @@ namespace Command.Receivers
             catch (JsonException)
             {
                 pendencias.Add(label + "Participante");
+            }
+        }
+
+        private static void ValidarCiotManual(List<string> pendencias, EntradaFiscalContingenciaDTO entrada, string complemento)
+        {
+            var rntrc = Digits(Value(entrada.rntrc, complemento, "rntrc", "RNTRC"));
+            if (string.IsNullOrWhiteSpace(rntrc))
+                return;
+
+            var ciotNumero = Digits(Text(complemento, "ciotNumero", "numeroCiot", "CIOT", "ciot"));
+            var ciotResponsavelDocumento = Digits(Text(
+                complemento,
+                "ciotResponsavelDocumento",
+                "documentoResponsavelCiot",
+                "ciotDocumentoResponsavel"));
+
+            if (string.IsNullOrWhiteSpace(ciotNumero))
+            {
+                pendencias.Add("CIOT");
+            }
+            else if (ciotNumero.Length != 12)
+            {
+                pendencias.Add("CIOTInvalido");
+            }
+
+            if (string.IsNullOrWhiteSpace(ciotResponsavelDocumento))
+            {
+                pendencias.Add("CIOTResponsavelDocumento");
+            }
+            else if (ciotResponsavelDocumento.Length is not 11 and not 14)
+            {
+                pendencias.Add("CIOTResponsavelDocumentoInvalido");
             }
         }
 

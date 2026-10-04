@@ -6,6 +6,70 @@
         </div>
     </div>
 
+    <section class="fiscal-contingencia-panel fiscal-cases-panel">
+        <div class="fiscal-panel-title">
+            <h2>Casos de Contingencia</h2>
+            <span id="fiscal-case-status">sem busca</span>
+        </div>
+
+        <div class="fiscal-case-filter-grid">
+            <label>
+                Carga
+                <input id="fiscal-case-filter-carga" type="text">
+            </label>
+            <label>
+                Emitente
+                <input id="fiscal-case-filter-emitente" type="text">
+            </label>
+            <label>
+                Transportador
+                <input id="fiscal-case-filter-transportador" type="text">
+            </label>
+            <label>
+                Status
+                <input id="fiscal-case-filter-status" type="number" min="0" placeholder="codigo">
+            </label>
+            <label>
+                Inicio
+                <input id="fiscal-case-filter-from" type="date">
+            </label>
+            <label>
+                Fim
+                <input id="fiscal-case-filter-to" type="date">
+            </label>
+        </div>
+
+        <div class="fiscal-case-action-row">
+            <button id="fiscal-case-search" class="primary" type="button">Buscar</button>
+            <button id="fiscal-case-first" type="button">Primeiro</button>
+            <button id="fiscal-case-prev" type="button">Anterior</button>
+            <button id="fiscal-case-next" type="button">Proximo</button>
+            <button id="fiscal-case-last" type="button">Ultimo</button>
+        </div>
+
+        <div class="fiscal-case-table-wrap">
+            <table class="fiscal-case-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Carga</th>
+                        <th>Emitente</th>
+                        <th>Transportador</th>
+                        <th>Status</th>
+                        <th>Docs</th>
+                        <th>Criado</th>
+                        <th>Atualizado</th>
+                    </tr>
+                </thead>
+                <tbody id="fiscal-case-results">
+                    <tr>
+                        <td colspan="8" class="fiscal-case-empty">Use Buscar para listar contingencias ja criadas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <div class="fiscal-contingencia-layout">
         <main class="fiscal-contingencia-panel fiscal-contingencia-main">
             <div class="fiscal-panel-title">
@@ -131,6 +195,14 @@
                 <label>
                     RNTRC
                     <input id="fiscal-rntrc" type="text">
+                </label>
+                <label>
+                    CIOT
+                    <input id="fiscal-ciot-numero" type="text" inputmode="numeric" placeholder="12 digitos">
+                </label>
+                <label>
+                    Responsavel CIOT
+                    <input id="fiscal-ciot-responsavel-documento" type="text" inputmode="numeric" placeholder="CPF ou CNPJ">
                 </label>
                 <label>
                     Placa
@@ -455,10 +527,10 @@
             <label>Sequencia do evento
                 <input id="fiscal-utilitario-sequencia" type="number" min="1" max="99" value="1">
             </label>
-            <label>Protocolo de autorizacao (CT-e externo)
+            <label>Protocolo de autorizacao
                 <input id="fiscal-utilitario-protocolo-cte" type="text" maxlength="15" inputmode="numeric" placeholder="15 digitos">
             </label>
-            <label>Ambiente do CT-e externo
+            <label>Ambiente do documento
                 <select id="fiscal-utilitario-ambiente-cte">
                     <option value="2">Homologacao</option>
                     <option value="1">Producao</option>

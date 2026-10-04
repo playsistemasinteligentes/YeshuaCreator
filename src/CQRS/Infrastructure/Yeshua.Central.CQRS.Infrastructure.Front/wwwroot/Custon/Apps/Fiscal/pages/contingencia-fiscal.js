@@ -3,10 +3,11 @@ import { showAlert } from '/spa/scripts/alerts.js?v=20260919-parametros01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260926-integration-doc05';
+const assetVersion = '20261004-casos-contingencia01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
+    listarCasos: '/EntradaFiscalContingencia/ReadEntradaFiscalContingencia',
     consultarProcessamento: '/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase',
     baixarPacote: '/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase',
     retrySagaStep: '/Saga/OperacaoRetrySagaStepUseCase',
@@ -79,12 +80,23 @@ const state = {
     downloadAvailable: false,
     certificadoDigitalId: 0,
     nfeFiles: [],
-    documentosOriginarios: null
+    documentosOriginarios: null,
+    cases: {
+        page: 1,
+        pageSize: 8,
+        items: [],
+        selectedId: 0
+    }
 };
 
 let pendingRequests = 0;
 const actionButtonIds = [
     'fiscal-contingencia-new',
+    'fiscal-case-search',
+    'fiscal-case-first',
+    'fiscal-case-prev',
+    'fiscal-case-next',
+    'fiscal-case-last',
     'fiscal-send-notas',
     'fiscal-send-preview',
     'fiscal-confirmar-plano',
@@ -110,6 +122,15 @@ const preparationSectionByCommand = {
     InformarFreteERateioContingencia: 'frete',
     InformarDadosTransporteContingencia: 'transporte',
     ConfirmarPlanoEmissaoFiscalContingencia: 'preview'
+};
+
+const pendingFieldMap = {
+    CIOT: ['fiscal-ciot-numero'],
+    CIOTInvalido: ['fiscal-ciot-numero'],
+    CIOTResponsavelDocumento: ['fiscal-ciot-responsavel-documento'],
+    CIOTResponsavelDocumentoInvalido: ['fiscal-ciot-responsavel-documento'],
+    CertificadoDigital: ['fiscal-certificado-documento', 'fiscal-certificado-arquivo', 'fiscal-certificado-senha'],
+    CertificadoDigitalIncompativelComEmitente: ['fiscal-emitente', 'fiscal-certificado-documento']
 };
 
 const stageLabels = {
@@ -178,6 +199,7 @@ function injectCss() {
 
 function bindEvents() {
     bindIntegrationCopyButtons();
+    bindCaseSearchEvents();
     document.getElementById('fiscal-contingencia-new')?.addEventListener('click', resetForm);
     document.getElementById('fiscal-clear-xmls')?.addEventListener('click', clearXmls);
     document.getElementById('fiscal-nfe-files')?.addEventListener('change', event => {
@@ -217,6 +239,20 @@ function bindEvents() {
     document.getElementById('fiscal-utilitario-condutor-mdfe')?.addEventListener('click', () => executarEventoFiscal('incluirCondutorMdfe'));
     document.getElementById('fiscal-utilitario-encerrar-mdfe')?.addEventListener('click', () => executarEventoFiscal('encerrarMdfe'));
     bindPreparationPreviewEvents();
+}
+
+function bindCaseSearchEvents() {
+    document.getElementById('fiscal-case-search')?.addEventListener('click', () => buscarCasos(1));
+    document.getElementById('fiscal-case-first')?.addEventListener('click', () => buscarCasos(1));
+    document.getElementById('fiscal-case-prev')?.addEventListener('click', () => buscarCasos(Math.max(1, state.cases.page - 1)));
+    document.getElementById('fiscal-case-next')?.addEventListener('click', () => buscarCasos(state.cases.page + 1));
+    document.getElementById('fiscal-case-last')?.addEventListener('click', buscarUltimoCaso);
+    document.getElementById('fiscal-case-results')?.addEventListener('click', event => {
+        const row = event.target.closest('[data-case-index]');
+        if (!row) return;
+
+        abrirCaso(Number(row.dataset.caseIndex || -1));
+    });
 }
 
 function bindIntegrationCopyButtons() {
@@ -357,16 +393,31 @@ async function executarEventoFiscal(operation) {
         },
         cancelarMdfe: {
             endpoint: '/Fiscal/MDFeUtilitariosCancelarMDFeUseCase',
-            body: { chaveAcesso, justificativa: valueOf('fiscal-utilitario-justificativa'), sequenciaEvento }
+            body: {
+                chaveAcesso,
+                protocoloAutorizacao: valueOf('fiscal-utilitario-protocolo-cte').replace(/\D/g, ''),
+                ambiente: Number(valueOf('fiscal-utilitario-ambiente-cte') || 2),
+                justificativa: valueOf('fiscal-utilitario-justificativa'),
+                sequenciaEvento
+            }
         },
         incluirCondutorMdfe: {
             endpoint: '/Fiscal/MDFeUtilitariosIncluirCondutorMDFeUseCase',
-            body: { chaveAcesso, nomeCondutor: valueOf('fiscal-utilitario-condutor-nome'), cpfCondutor: valueOf('fiscal-utilitario-condutor-cpf').replace(/\D/g, ''), sequenciaEvento }
+            body: {
+                chaveAcesso,
+                protocoloAutorizacao: valueOf('fiscal-utilitario-protocolo-cte').replace(/\D/g, ''),
+                ambiente: Number(valueOf('fiscal-utilitario-ambiente-cte') || 2),
+                nomeCondutor: valueOf('fiscal-utilitario-condutor-nome'),
+                cpfCondutor: valueOf('fiscal-utilitario-condutor-cpf').replace(/\D/g, ''),
+                sequenciaEvento
+            }
         },
         encerrarMdfe: {
             endpoint: '/Fiscal/MDFeUtilitariosEncerrarMDFePorChaveUseCase',
             body: {
                 chaveAcesso,
+                protocoloAutorizacao: valueOf('fiscal-utilitario-protocolo-cte').replace(/\D/g, ''),
+                ambiente: Number(valueOf('fiscal-utilitario-ambiente-cte') || 2),
                 codigoUfEncerramento: Number(valueOf('fiscal-utilitario-encerramento-uf') || 0),
                 codigoMunicipioEncerramento: Number(valueOf('fiscal-utilitario-encerramento-municipio') || 0),
                 dataEncerramento: valueOf('fiscal-utilitario-encerramento-data'),
@@ -448,6 +499,8 @@ function bindPreparationPreviewEvents() {
         'fiscal-destinatario-telefone',
         'fiscal-transportador',
         'fiscal-rntrc',
+        'fiscal-ciot-numero',
+        'fiscal-ciot-responsavel-documento',
         'fiscal-placa',
         'fiscal-uf-veiculo',
         'fiscal-condutor-documento',
@@ -491,7 +544,8 @@ function bindPreparationPreviewEvents() {
 }
 
 function resetForm() {
-    state.correlationId = crypto.randomUUID();
+    clearPendingFields();
+    state.correlationId = newCorrelationId();
     state.cargaId = 'CONT-FISCAL-' + compactDate(new Date());
     state.entradaId = 0;
     state.sagaId = 0;
@@ -509,6 +563,7 @@ function resetForm() {
     state.certificadoDigitalId = 0;
     state.nfeFiles = [];
     state.documentosOriginarios = null;
+    state.cases.selectedId = 0;
 
     setValue('fiscal-carga-id', state.cargaId);
     setValue('fiscal-tenant-id', String(currentTenantId()));
@@ -546,6 +601,8 @@ function resetForm() {
     renderSectionStatus('certificado', 'pending');
     setText('fiscal-certificado-resumo', 'Informe o CNPJ para reutilizar um certificado valido ou selecione um PFX para cadastrar.');
     setValue('fiscal-rntrc', '45861338');
+    setValue('fiscal-ciot-numero', '');
+    setValue('fiscal-ciot-responsavel-documento', '');
     setValue('fiscal-placa', 'KYC7G21');
     setValue('fiscal-uf-veiculo', 'PE');
     setValue('fiscal-condutor-documento', '00000000191');
@@ -588,6 +645,7 @@ function resetForm() {
     setStage('preparacao');
     updatePrimaryButton();
     renderPlanPreview();
+    renderCaseGrid(state.cases.items, state.cases.page);
     updateRequestUi();
 }
 
@@ -755,6 +813,7 @@ async function enviarPreparacao(commandName, options = {}) {
 }
 
 async function enviarPreview() {
+    clearPendingFields();
     if (!hasProtocol() || state.sectionStatus.xmls !== 'sent') {
         const message = 'Envie os XMLs antes de gerar o preview.';
         setText('fiscal-contingencia-status', 'aguardando xmls');
@@ -784,6 +843,7 @@ async function enviarPreview() {
 
     state.planPreview = planoEmissao;
     applyEffectivePlanToForm(planoEmissao);
+    syncCertificadoTitularComEmitente();
     const pendencias = normalizeArray(readField(planoEmissao, 'pendencias', 'Pendencias')).filter(Boolean);
     state.certificadoDigitalId = Number(readField(planoEmissao, 'certificadoDigitalId', 'CertificadoDigitalId') || 0);
 
@@ -802,6 +862,7 @@ async function enviarPreview() {
     renderPlanPreview();
     updateRequestUi();
     if (pendencias.length > 0) {
+        markPendingFields(pendencias);
         feedback('Preview calculado com pendencias. Corrija os itens indicados antes de confirmar.');
         notify('Preview calculado com pendencias.', 'warning');
         return;
@@ -829,9 +890,10 @@ async function vincularCertificado() {
         return;
     }
 
-    const documentoTitular = onlyDigits(getValue('fiscal-certificado-documento') || getValue('fiscal-transportador'));
+    syncCertificadoTitularComEmitente();
+    const documentoTitular = onlyDigits(getValue('fiscal-certificado-documento') || getValue('fiscal-emitente'));
     if (documentoTitular.length !== 14) {
-        notify('Informe o CNPJ do titular do certificado.', 'warning');
+        notify('Informe o CNPJ do emitente fiscal titular do certificado.', 'warning');
         return;
     }
 
@@ -849,6 +911,7 @@ async function vincularCertificado() {
         });
 
         state.certificadoDigitalId = Number(readField(result, 'certificadoDigitalId', 'CertificadoDigitalId') || 0);
+        clearPendingFields(['CertificadoDigital', 'CertificadoDigitalIncompativelComEmitente']);
         renderSectionStatus('certificado', state.certificadoDigitalId > 0 ? 'sent' : 'error');
         setValue('fiscal-certificado-senha', '');
         const input = document.getElementById('fiscal-certificado-arquivo');
@@ -878,12 +941,13 @@ function fileToBase64(file) {
     });
 }
 
-async function consultarProcessamentoFiscal() {
+async function consultarProcessamentoFiscal(options = {}) {
+    const keepPersistedOnError = Boolean(options && options.keepPersistedOnError === true);
     if (!state.entradaId) {
         const message = 'Nenhum protocolo de contingencia foi iniciado.';
         feedback(message);
         notify(message, 'warning');
-        return;
+        return false;
     }
 
     setText('fiscal-contingencia-status', 'consultando emissao');
@@ -915,11 +979,18 @@ async function consultarProcessamentoFiscal() {
         notify(
             downloadDisponivel ? 'Documentos fiscais prontos para download.' : mensagem,
             downloadDisponivel ? 'success' : 'info');
+        return true;
     } catch (error) {
         const message = error.message || 'Nao foi possivel consultar o processamento fiscal.';
+        if (keepPersistedOnError) {
+            feedback(`Caso carregado pelo resumo persistido. Acompanhamento atual indisponivel: ${message}`);
+            return false;
+        }
+
         setText('fiscal-contingencia-status', 'erro na consulta');
         feedback(message);
         notify(message, 'error');
+        return false;
     }
 }
 
@@ -954,6 +1025,259 @@ async function baixarDocumentosFiscais() {
         feedback(message);
         notify(message, 'error');
     }
+}
+
+async function buscarCasos(page = 1) {
+    const targetPage = Math.max(1, Number(page) || 1);
+    setText('fiscal-case-status', 'buscando');
+
+    try {
+        const items = await carregarCasos(targetPage);
+        state.cases.page = targetPage;
+        state.cases.items = items;
+        renderCaseGrid(items, targetPage);
+        feedback(items.length ? `${items.length} caso(s) encontrado(s).` : 'Nenhum caso encontrado para os filtros informados.');
+    } catch (error) {
+        const message = error.message || 'Nao foi possivel buscar os casos de contingencia.';
+        setText('fiscal-case-status', 'erro');
+        feedback(message);
+        notify(message, 'error');
+    }
+}
+
+async function buscarUltimoCaso() {
+    setText('fiscal-case-status', 'buscando ultimo');
+
+    try {
+        if (!hasCaseDateFilter()) {
+            const firstPage = await carregarCasosPage(1, true);
+            const totalItems = Number(firstPage.totalItems || 0);
+            const lastPageNumber = Math.max(1, Math.ceil(totalItems / state.cases.pageSize));
+            const lastPage = lastPageNumber === 1
+                ? firstPage
+                : await carregarCasosPage(lastPageNumber, false);
+
+            state.cases.page = lastPageNumber;
+            state.cases.items = lastPage.items;
+            renderCaseGrid(lastPage.items, lastPageNumber);
+            feedback(lastPage.items.length ? 'Ultima pagina de casos carregada.' : 'Nenhum caso encontrado para os filtros informados.');
+            return;
+        }
+
+        let page = 1;
+        let lastPage = page;
+        let lastItems = [];
+
+        for (let attempts = 0; attempts < 200; attempts += 1) {
+            const items = await carregarCasos(page);
+            if (!items.length) break;
+
+            lastPage = page;
+            lastItems = items;
+            if (items.length < state.cases.pageSize) break;
+            page += 1;
+        }
+
+        state.cases.page = lastPage;
+        state.cases.items = lastItems;
+        renderCaseGrid(lastItems, lastPage);
+        feedback(lastItems.length ? 'Ultima pagina de casos carregada.' : 'Nenhum caso encontrado para os filtros informados.');
+    } catch (error) {
+        const message = error.message || 'Nao foi possivel localizar a ultima pagina.';
+        setText('fiscal-case-status', 'erro');
+        feedback(message);
+        notify(message, 'error');
+    }
+}
+
+async function carregarCasos(page) {
+    return (await carregarCasosPage(page, false)).items;
+}
+
+async function carregarCasosPage(page, includeCount) {
+    const payload = buildCaseSearchPayload(page);
+    payload.Paginacao.pageWhithCount = includeCount === true;
+
+    const result = await postUseCase(endpoints.listarCasos, payload);
+    return {
+        items: applyCaseDateFilter(readItems(result)),
+        totalItems: readField(result, 'totalItems', 'TotalItems'),
+        totalPages: readField(result, 'totalPages', 'TotalPages')
+    };
+}
+
+function buildCaseSearchPayload(page) {
+    const payload = {
+        Paginacao: {
+            ...pagination(state.cases.pageSize),
+            page: Math.max(1, Number(page) || 1)
+        }
+    };
+
+    const cargaId = textOrNull(getValue('fiscal-case-filter-carga'));
+    const emitente = digitsOrNull(getValue('fiscal-case-filter-emitente'));
+    const transportador = digitsOrNull(getValue('fiscal-case-filter-transportador'));
+    const status = numberOrNull(getValue('fiscal-case-filter-status'));
+
+    if (cargaId) payload.CargaId = cargaId;
+    if (emitente) payload.EmitenteFiscalDocumento = emitente;
+    if (transportador) payload.TransportadorDocumento = transportador;
+    if (status !== null) payload.Status = status;
+
+    return payload;
+}
+
+function applyCaseDateFilter(items) {
+    const from = dateFromInput('fiscal-case-filter-from', false);
+    const to = dateFromInput('fiscal-case-filter-to', true);
+    if (!from && !to) return items;
+
+    return items.filter(item => {
+        const date = readCaseDate(item);
+        if (!date) return false;
+        if (from && date < from) return false;
+        if (to && date > to) return false;
+        return true;
+    });
+}
+
+function hasCaseDateFilter() {
+    return Boolean(getValue('fiscal-case-filter-from') || getValue('fiscal-case-filter-to'));
+}
+
+function renderCaseGrid(items, page) {
+    const body = document.getElementById('fiscal-case-results');
+    if (!body) return;
+
+    if (!items.length) {
+        body.innerHTML = '<tr><td colspan="8" class="fiscal-case-empty">Nenhum caso encontrado.</td></tr>';
+        setText('fiscal-case-status', `pagina ${page} | 0 casos`);
+        return;
+    }
+
+    body.innerHTML = items.map((item, index) => {
+        const id = caseId(item);
+        const selected = id > 0 && id === state.cases.selectedId ? ' class="selected"' : '';
+        const carga = readField(item, 'cargaid', 'CargaId', 'cargaId') || '-';
+        const emitente = readField(item, 'emitentefiscaldocumento', 'EmitenteFiscalDocumento', 'emitenteFiscalDocumento') || '-';
+        const transportador = readField(item, 'transportadordocumento', 'TransportadorDocumento', 'transportadorDocumento') || '-';
+        const status = caseStatusText(readField(item, 'status', 'Status'));
+        const quantidade = readField(item, 'quantidadedocumentos', 'QuantidadeDocumentos', 'quantidadeDocumentos') || '-';
+        const criado = formatCaseDate(readField(item, 'criadoemutc', 'CriadoEmUtc', 'criadoEmUtc'));
+        const atualizado = formatCaseDate(readField(item, 'atualizadoemutc', 'AtualizadoEmUtc', 'atualizadoEmUtc'));
+
+        return `
+            <tr data-case-index="${index}"${selected}>
+                <td>${escapeHtml(id || '-')}</td>
+                <td>${escapeHtml(carga)}</td>
+                <td>${escapeHtml(emitente)}</td>
+                <td>${escapeHtml(transportador)}</td>
+                <td>${escapeHtml(status)}</td>
+                <td>${escapeHtml(quantidade)}</td>
+                <td>${escapeHtml(criado)}</td>
+                <td>${escapeHtml(atualizado)}</td>
+            </tr>
+        `;
+    }).join('');
+
+    setText('fiscal-case-status', `pagina ${page} | ${items.length} caso(s)`);
+}
+
+async function abrirCaso(index) {
+    const item = state.cases.items[index];
+    if (!item) return;
+
+    applyCaseRecord(item);
+    renderCaseGrid(state.cases.items, state.cases.page);
+    renderPersistedCaseSummary(item);
+    notify('Caso carregado.', 'success');
+
+    if (state.entradaId) {
+        await consultarProcessamentoFiscal({ keepPersistedOnError: true });
+    }
+}
+
+function applyCaseRecord(item) {
+    const snapshot = parseJsonObject(readField(item, 'snapshotjson', 'SnapshotJson', 'snapshotJson'));
+    const readValue = (...names) => {
+        const fromItem = readField(item, ...names);
+        if (fromItem !== undefined && fromItem !== null && fromItem !== '') return fromItem;
+        return snapshot ? readField(snapshot, ...names) : undefined;
+    };
+
+    state.entradaId = Number(readValue('id', 'Id') || 0);
+    state.cases.selectedId = state.entradaId;
+    state.correlationId = readValue('correlationid', 'CorrelationId', 'correlationId') || '';
+    state.cargaId = readValue('cargaid', 'CargaId', 'cargaId') || '';
+    state.sagaId = Number(readValue('emissaofiscalsagaid', 'EmissaoFiscalSagaId', 'emissaoFiscalSagaId') || 0);
+    state.currentStepKey = '';
+    state.currentStepStatus = 0;
+    state.planPreview = snapshot;
+    state.started = state.entradaId > 0;
+    state.fiscalProcessingStarted = Boolean(readValue('emissaofiscalcorrelationid', 'EmissaoFiscalCorrelationId', 'emissaoFiscalCorrelationId') || state.sagaId);
+    state.downloadAvailable = false;
+    state.certificadoDigitalId = Number(readValue('certificadodigitalid', 'CertificadoDigitalId', 'certificadoDigitalId') || 0);
+    state.nfeFiles = [];
+
+    setValue('fiscal-carga-id', state.cargaId);
+    setValue('fiscal-tenant-id', String(readValue('tenantid', 'TenantID', 'tenantId') || currentTenantId()));
+    setValue('fiscal-ambiente', String(readValue('ambiente', 'Ambiente') || 2));
+    setValue('fiscal-tipo-solicitante', String(readValue('tiposolicitante', 'TipoSolicitante', 'tipoSolicitante') || 1));
+    setValue('fiscal-emitente', readValue('emitentefiscaldocumento', 'EmitenteFiscalDocumento', 'emitenteFiscalDocumento') || '');
+    setValue('fiscal-tomador', readValue('tomadordocumento', 'TomadorDocumento', 'tomadorDocumento') || '');
+    setValue('fiscal-transportador', readValue('transportadordocumento', 'TransportadorDocumento', 'transportadorDocumento') || '');
+    setValue('fiscal-remetente', readValue('remetentedocumento', 'RemetenteDocumento', 'remetenteDocumento') || '');
+    setValue('fiscal-destinatario', readValue('destinatariodocumento', 'DestinatarioDocumento', 'destinatarioDocumento') || '');
+    setValue('fiscal-uf-inicio', readValue('ufinicio', 'UFInicio', 'ufInicio') || '');
+    setValue('fiscal-municipio-inicio', readValue('municipioiniciocodigoibge', 'MunicipioInicioCodigoIbge', 'municipioInicioCodigoIbge') || '');
+    setValue('fiscal-uf-fim', readValue('uffim', 'UFFim', 'ufFim') || '');
+    setValue('fiscal-municipio-fim', readValue('municipiofimcodigoibge', 'MunicipioFimCodigoIbge', 'municipioFimCodigoIbge') || '');
+    setValue('fiscal-rntrc', readValue('rntrc', 'RNTRC') || '');
+    setValue('fiscal-placa', readValue('placaveiculo', 'PlacaVeiculo', 'placaVeiculo') || '');
+    setValue('fiscal-uf-veiculo', readValue('ufveiculo', 'UFVeiculo', 'ufVeiculo') || '');
+    setValue('fiscal-condutor-documento', readValue('condutordocumento', 'CondutorDocumento', 'condutorDocumento') || '');
+    setValue('fiscal-condutor-nome', readValue('condutornome', 'CondutorNome', 'condutorNome') || '');
+    setValue('fiscal-ciot-numero', readValue('ciotnumero', 'CIOTNumero', 'ciotNumero') || '');
+    setValue('fiscal-ciot-responsavel-documento', readValue('ciotresponsaveldocumento', 'CIOTResponsavelDocumento', 'ciotResponsavelDocumento') || '');
+    setValue('fiscal-valor-frete', decimalToInput(readValue('valorfrete', 'ValorFrete', 'valorFrete')));
+    setValue('fiscal-tipo-agrupamento-cte', readValue('tipoagrupamentocte', 'TipoAgrupamentoCTe', 'tipoAgrupamentoCTe') || 'um_cte_por_nfe');
+    setValue('fiscal-estrategia-rateio-frete', readValue('estrategiarateiofrete', 'EstrategiaRateioFrete', 'estrategiaRateioFrete') || 'proporcional_valor_documento');
+    setValue('fiscal-origem-rota-fiscal', readValue('origemrotafiscal', 'OrigemRotaFiscal', 'origemRotaFiscal') || 'manual_contingencia');
+    setValue('fiscal-observacao-fiscal', readValue('observacaofiscal', 'ObservacaoFiscal', 'observacaoFiscal') || '');
+
+    const documentos = snapshot ? readField(snapshot, 'documentosOriginarios', 'DocumentosOriginarios') : null;
+    state.documentosOriginarios = null;
+    if (documentos) {
+        applyDocumentosOriginarios(documentos);
+    } else {
+        renderXmlPreview();
+    }
+
+    setLoadedSectionStatus('certificado', state.certificadoDigitalId > 0 ? 'sent' : 'pending');
+    setLoadedSectionStatus('preview', snapshot ? 'sent' : 'pending');
+    setLoadedSectionStatus('transporte', getValue('fiscal-transportador') || getValue('fiscal-rntrc') || getValue('fiscal-placa') ? 'sent' : 'pending');
+    setLoadedSectionStatus('frete', getValue('fiscal-valor-frete') ? 'sent' : 'pending');
+    setLoadedSectionStatus('agrupamento', getValue('fiscal-tipo-agrupamento-cte') ? 'sent' : 'pending');
+
+    renderPlanPreview();
+    setStage('preparacao');
+    updateRequestUi();
+}
+
+function renderPersistedCaseSummary(item) {
+    const status = caseStatusText(readField(item, 'status', 'Status'));
+    const message = `Caso carregado. Status persistido: ${status}.`;
+    renderResult(state.correlationId || '-', state.entradaId || '-', message);
+    renderSagaProgress(null);
+    renderFiscalDocuments(null);
+    setProcessingActions(Boolean(state.entradaId), false);
+    setText('fiscal-contingencia-status', status.toLowerCase());
+    feedback(`${message} Use Atualizar para consultar a saga e os documentos atuais.`);
+}
+
+function setLoadedSectionStatus(section, status) {
+    state.sectionStatus[section] = status;
+    renderSectionStatus(section, status);
 }
 
 function setProcessingActions(showQuery, downloadAvailable) {
@@ -1023,7 +1347,7 @@ function downloadBase64File(base64, contentType, fileName) {
 }
 
 async function executarTesteSync() {
-    const correlationId = crypto.randomUUID();
+    const correlationId = newCorrelationId();
     const entityId = 'TESTE-SYNC-FRONT-' + compactDate(new Date());
 
     setText('fiscal-contingencia-status', 'teste sync');
@@ -1278,14 +1602,14 @@ function buildBasePayload() {
     state.cargaId = cargaId;
 
     return {
-        correlationId: state.correlationId || crypto.randomUUID(),
+        correlationId: state.correlationId || newCorrelationId(),
         tenantId: currentTenantId(),
         tipoSolicitante: Number(getValue('fiscal-tipo-solicitante') || 1),
         ambiente: Number(getValue('fiscal-ambiente') || 2),
         cargaId,
         sourceApplication: 'FiscalFront',
         sourceModule: 'ContingenciaFiscal',
-        sourceMessageId: crypto.randomUUID(),
+        sourceMessageId: newCorrelationId(),
         payloadHash: '',
         payloadStorageKey: `front/contingencia/${cargaId}.json`
     };
@@ -1398,6 +1722,8 @@ function buildTransporteComplemento() {
         municipioInicioCodigoIbge: getValue('fiscal-municipio-inicio'),
         municipioFimCodigoIbge: getValue('fiscal-municipio-fim'),
         rntrc: onlyDigits(getValue('fiscal-rntrc')),
+        ciotNumero: onlyDigits(getValue('fiscal-ciot-numero')),
+        ciotResponsavelDocumento: onlyDigits(getValue('fiscal-ciot-responsavel-documento')),
         placaVeiculo: upper(getValue('fiscal-placa')),
         ufVeiculo: upper(getValue('fiscal-uf-veiculo')),
         condutorDocumento: onlyDigits(getValue('fiscal-condutor-documento')),
@@ -1464,6 +1790,8 @@ function applyEffectivePlanToForm(plano) {
         ['fiscal-tara-kg', 'taraKg'],
         ['fiscal-capacidade-kg', 'capacidadeKg'],
         ['fiscal-capacidade-m3', 'capacidadeM3'],
+        ['fiscal-ciot-numero', 'ciotNumero'],
+        ['fiscal-ciot-responsavel-documento', 'ciotResponsavelDocumento'],
         ['fiscal-tipo-rodado', 'tipoRodado'],
         ['fiscal-tipo-carroceria', 'tipoCarroceria'],
         ['fiscal-seguro-responsavel-documento', 'cnpjResponsavelSeguro'],
@@ -1478,6 +1806,15 @@ function applyEffectivePlanToForm(plano) {
         if (value !== undefined && value !== null && String(value) !== '') {
             setValue(id, String(value));
         }
+    }
+
+    syncCertificadoTitularComEmitente();
+}
+
+function syncCertificadoTitularComEmitente() {
+    const emitente = onlyDigits(getValue('fiscal-emitente'));
+    if (emitente.length === 14 && !onlyDigits(getValue('fiscal-certificado-documento'))) {
+        setValue('fiscal-certificado-documento', emitente);
     }
 }
 
@@ -1775,6 +2112,8 @@ function renderBackendPlanPreview(host, plano) {
         municipioInicioCodigoIbge: readField(mdfe, 'municipioiniciocodigoibge', 'municipioInicioCodigoIbge', 'MunicipioInicioCodigoIbge') || '-',
         municipioFimCodigoIbge: readField(mdfe, 'municipiofimcodigoibge', 'municipioFimCodigoIbge', 'MunicipioFimCodigoIbge') || '-',
         rntrc: readField(mdfe, 'rntrc', 'RNTRC') || '-',
+        ciotNumero: readField(mdfe, 'ciotNumero', 'CiotNumero') || '-',
+        ciotResponsavelDocumento: readField(mdfe, 'ciotResponsavelDocumento', 'CiotResponsavelDocumento') || '-',
         placaVeiculo: readField(mdfe, 'placaveiculo', 'placaVeiculo', 'PlacaVeiculo') || '-',
         condutorDocumento: readField(mdfe, 'condutordocumento', 'condutorDocumento', 'CondutorDocumento') || '-',
         condutorNome: readField(mdfe, 'condutornome', 'condutorNome', 'CondutorNome') || '-',
@@ -1837,9 +2176,50 @@ function renderPendenciasPreview(pendencias) {
     `;
 }
 
+function markPendingFields(pendencias) {
+    clearPendingFields();
+    const ids = [];
+    for (const pendencia of pendencias) {
+        for (const id of pendingFieldMap[pendencia] || []) {
+            ids.push(id);
+        }
+    }
+
+    const uniqueIds = Array.from(new Set(ids));
+    for (const id of uniqueIds) {
+        const element = document.getElementById(id);
+        const label = element?.closest('label');
+        label?.classList.add('fiscal-field-pending');
+    }
+
+    const first = uniqueIds.map(id => document.getElementById(id)).find(Boolean);
+    if (first) {
+        first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        first.focus({ preventScroll: true });
+    }
+}
+
+function clearPendingFields(keys = null) {
+    const ids = keys
+        ? Array.from(new Set(keys.flatMap(key => pendingFieldMap[key] || [])))
+        : null;
+
+    for (const label of document.querySelectorAll('.fiscal-field-pending')) {
+        if (!ids) {
+            label.classList.remove('fiscal-field-pending');
+            continue;
+        }
+
+        const field = label.querySelector('input, select, textarea');
+        if (field && ids.includes(field.id)) {
+            label.classList.remove('fiscal-field-pending');
+        }
+    }
+}
+
 function pendingLabel(item) {
     if (item === 'CertificadoDigital') {
-        return 'Informe ou vincule um certificado digital para o transportador antes de confirmar.';
+        return 'Informe ou vincule um certificado digital para o emitente fiscal antes de confirmar.';
     }
 
     if (item === 'CertificadoDigitalIncompativelComEmitente') {
@@ -1848,6 +2228,22 @@ function pendingLabel(item) {
 
     if (item === 'TomadorOutrosRequerCadastroCompletoToma4') {
         return 'O tomador deve ser o remetente ou o destinatario. Outro tomador exige cadastro fiscal completo (toma4), ainda nao disponivel nesta tela.';
+    }
+
+    if (item === 'CIOT') {
+        return 'Informe o CIOT quando houver RNTRC para o MDF-e.';
+    }
+
+    if (item === 'CIOTInvalido') {
+        return 'O CIOT deve ter 12 digitos.';
+    }
+
+    if (item === 'CIOTResponsavelDocumento') {
+        return 'Informe o CPF ou CNPJ do responsavel pelo CIOT.';
+    }
+
+    if (item === 'CIOTResponsavelDocumentoInvalido') {
+        return 'O documento do responsavel pelo CIOT deve ter 11 ou 14 digitos.';
     }
 
     return item;
@@ -1885,6 +2281,7 @@ function renderMdfeGroupsPreview(mdfes) {
                     <span>emitente ${escapeHtml(mdfe.emitenteDocumento)} | IE ${escapeHtml(mdfe.emitenteInscricaoEstadual)} | ${escapeHtml(mdfe.emitenteUf)}/${escapeHtml(mdfe.emitenteMunicipioCodigoIbge)} ${escapeHtml(mdfe.emitenteMunicipioNome)}</span>
                     <span>${mdfe.quantidadeCTes} CT-e | ${escapeHtml(mdfe.ufInicio)}/${escapeHtml(mdfe.municipioInicioCodigoIbge)} -> ${escapeHtml(mdfe.ufFim)}/${escapeHtml(mdfe.municipioFimCodigoIbge)}</span>
                     <span>RNTRC ${escapeHtml(mdfe.rntrc)} | placa ${escapeHtml(mdfe.placaVeiculo)} | condutor ${escapeHtml(mdfe.condutorNome)} (${escapeHtml(mdfe.condutorDocumento)})</span>
+                    <span>CIOT ${escapeHtml(mdfe.ciotNumero || '-')} | responsavel ${escapeHtml(mdfe.ciotResponsavelDocumento || '-')}</span>
                     <span>produto ${escapeHtml(mdfe.produtoPredominante)} | tipo ${escapeHtml(mdfe.tipoCarga)} | NCM ${escapeHtml(mdfe.ncmProdutoPredominante)}</span>
                     <span>carga ${formatMoney(mdfe.valorCarga)} | frete ${formatMoney(mdfe.valorFrete)} | peso ${formatDecimal(mdfe.pesoBruto)}</span>
                     ${mdfe.observacaoFiscal ? `<span>observacao: ${escapeHtml(mdfe.observacaoFiscal)}</span>` : ''}
@@ -1940,6 +2337,11 @@ function updateRequestUi() {
     const emissaoSolicitada = state.fiscalProcessingStarted;
 
     setButtonDisabled('fiscal-contingencia-new', requesting);
+    setButtonDisabled('fiscal-case-search', requesting);
+    setButtonDisabled('fiscal-case-first', requesting);
+    setButtonDisabled('fiscal-case-prev', requesting || state.cases.page <= 1);
+    setButtonDisabled('fiscal-case-next', requesting);
+    setButtonDisabled('fiscal-case-last', requesting);
     setButtonDisabled('fiscal-send-notas', requesting || emissaoSolicitada);
     setButtonDisabled('fiscal-send-preview', requesting || emissaoSolicitada || !hasProtocol() || state.sectionStatus.xmls !== 'sent');
     setButtonDisabled('fiscal-confirmar-plano', requesting || emissaoSolicitada || !previewValida);
@@ -2260,6 +2662,23 @@ function onlyDigits(value) {
     return String(value || '').replace(/\D/g, '');
 }
 
+function textOrNull(value) {
+    const text = String(value || '').trim();
+    return text ? text : null;
+}
+
+function digitsOrNull(value) {
+    const text = onlyDigits(value);
+    return text ? text : null;
+}
+
+function numberOrNull(value) {
+    const text = String(value || '').trim();
+    if (!text) return null;
+    const number = Number(text);
+    return Number.isFinite(number) ? number : null;
+}
+
 function upper(value) {
     return String(value || '').trim().toUpperCase();
 }
@@ -2272,6 +2691,70 @@ function compactDate(date) {
         + pad(date.getHours())
         + pad(date.getMinutes())
         + pad(date.getSeconds());
+}
+
+function newCorrelationId() {
+    if (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function') {
+        return globalThis.crypto.randomUUID();
+    }
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, character => {
+        const random = Math.floor(Math.random() * 16);
+        const value = character === 'x' ? random : ((random & 0x3) | 0x8);
+        return value.toString(16);
+    });
+}
+
+function caseId(item) {
+    return Number(readField(item, 'id', 'Id') || 0);
+}
+
+function caseStatusText(value) {
+    const code = Number(value);
+    if (code === 0) return 'criado';
+    if (code === 1) return 'preparacao';
+    if (code === 2) return 'em andamento';
+    if (code === 3) return 'falhou';
+    if (code === 4) return 'emissao solicitada';
+    if (code === 5) return 'concluido';
+    if (code === 6) return 'falhou';
+    return value ?? '-';
+}
+
+function dateFromInput(id, endOfDay) {
+    const value = getValue(id);
+    if (!value) return null;
+
+    const suffix = endOfDay ? 'T23:59:59.999' : 'T00:00:00.000';
+    const date = new Date(`${value}${suffix}`);
+    return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function readCaseDate(item) {
+    const value = readField(item, 'criadoemutc', 'CriadoEmUtc', 'criadoEmUtc') ||
+        readField(item, 'changed', 'Changed') ||
+        readField(item, 'atualizadoemutc', 'AtualizadoEmUtc', 'atualizadoEmUtc');
+    if (!value) return null;
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatCaseDate(value) {
+    if (!value) return '-';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '-';
+    return date.toLocaleString('pt-BR');
+}
+
+function decimalToInput(value) {
+    if (value === undefined || value === null || value === '') return '';
+    const number = Number(value);
+    if (!Number.isFinite(number)) return String(value);
+    return number.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 }
 
 function sagaStatusText(value) {
@@ -2361,7 +2844,9 @@ function readJsonField(json, ...names) {
 }
 
 function parseJsonObject(json) {
-    if (!json || typeof json !== 'string') return null;
+    if (!json) return null;
+    if (typeof json === 'object' && !Array.isArray(json)) return json;
+    if (typeof json !== 'string') return null;
 
     try {
         const value = JSON.parse(json);

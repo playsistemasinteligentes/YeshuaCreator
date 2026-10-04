@@ -18,6 +18,8 @@ namespace Command.UseCase
 public partial record EncerrarMDFePorChaveInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public string ChaveAcesso { get; set; } = string.Empty;
+    public string ProtocoloAutorizacao { get; set; } = string.Empty;
+    public int Ambiente { get; set; }
     public int CodigoUfEncerramento { get; set; }
     public int CodigoMunicipioEncerramento { get; set; }
     public string DataEncerramento { get; set; } = string.Empty;

@@ -14,8 +14,8 @@ require_env() {
 # Deploy independente do aplicativo Clinica.
 require_env
 docker compose up -d --wait rabbit01 redis01 sql01
-docker compose build clinica-api clinica-front clinica-worker clinica-migration clinica-ai-worker clinica-ai-summarizer
+docker compose build clinica-api clinica-worker clinica-migration clinica-ai-worker clinica-ai-summarizer
 docker compose --profile jobs run --rm clinica-migration
-docker compose up -d --scale clinica-front=2 clinica-api clinica-front clinica-worker clinica-ai-worker clinica-ai-summarizer
+docker compose up -d clinica-api clinica-worker clinica-ai-worker clinica-ai-summarizer
 docker compose up -d gateway
 docker compose ps

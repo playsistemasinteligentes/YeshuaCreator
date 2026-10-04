@@ -56,11 +56,21 @@ protected partial async Task<State<EncerrarMDFePorChaveOutputCommand>> CustomAct
     if (comand.SequenciaEvento <= 0)
         return ValidationError("A sequencia do evento deve ser maior que zero.");
 
-    var context = SefazFiscalEventContextResolver.ResolveMDFe(
-        comand.ChaveAcesso,
-        _repReadMDFeTentativaEmissao,
-        _documentos,
-        _certificados);
+    SefazFiscalEventContext context;
+    try
+    {
+        context = SefazFiscalEventContextResolver.ResolveExternalMDFe(
+            comand.ChaveAcesso,
+            comand.ProtocoloAutorizacao,
+            comand.Ambiente,
+            _executionContext.TenantID,
+            _certificados);
+    }
+    catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or FileNotFoundException)
+    {
+        return ValidationError(exception.Message);
+    }
+
     var result = await MdfeEventoFiscalClient.EncerrarAsync(
         context,
         comand.CodigoUfEncerramento,

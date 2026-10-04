@@ -71,9 +71,9 @@
       "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker"
     },
     {
-      "name": "Clinica Front",
-      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front/Yeshua.Clinica.CQRS.Infrastructure.Front.csproj",
-      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front"
+      "name": "Front Central",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front"
     }
   ],
   "repositories": [

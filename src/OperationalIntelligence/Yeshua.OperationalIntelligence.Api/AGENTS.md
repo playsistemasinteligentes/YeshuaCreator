@@ -27,7 +27,18 @@ Fluxo padrao:
 4. Para contexto compacto, usar POST /api/investigations/context.
 5. Para analisar os fontes completos, preferir
    POST /api/investigations/context/bundle.
-6. Ler o resultado retornado e responder ao usuario; nao limitar o trabalho a
+6. Para agentes compativeis com MCP, usar POST /mcp com `tools/list` e
+   `tools/call`. As tools iniciais sao `yeshua.health`,
+   `yeshua.errors.query`, `yeshua.logs.query`, `yeshua.traces.query`,
+   `yeshua.metrics.query`, `yeshua.source.search` e
+   `yeshua.logs.source_context`. Quando uma consulta SQL operacional for
+   necessaria, usar `yeshua.database.select`, que aceita somente conexoes
+   nomeadas configuradas no servidor e consultas SELECT/CTE.
+   Quando o usuario pedir logs com contexto, preferir
+   `includeKnowledgeReferences=true` em `yeshua.logs.query` ou
+   `yeshua.errors.query`. Usar `yeshua.logs.source_context` quando ja houver um
+   log especifico em maos e for preciso resolver suas fontes depois.
+7. Ler o resultado retornado e responder ao usuario; nao limitar o trabalho a
    informar a URL ou o comando HTTP.
 
 O endereco local padrao e http://localhost:5728. Se ele nao responder,
@@ -50,6 +61,15 @@ concreto que impedir a chamada.
 - Respeitar ownership, editable e sourceOfTruth ao sugerir alteracoes.
 - Evidencias TEXT_REFERENCE selecionam fontes candidatos, mas nao provam
   semanticamente leitura ou escrita.
+- A camada MCP inicial e deliberadamente crua e somente leitura. Ela nao
+  implementa assinatura operacional, agente especialista, comando de negocio
+  nem persistencia propria.
+- DEBITO TECNICO CRITICO: acesso MCP a banco de dados e fontes indexados ainda
+  nao possui modelo formal de autorizacao. Antes de expor fora de ambiente
+  interno/confiavel, definir controle por usuario, tenant, aplicativo, ambiente,
+  escopo, finalidade, tabela/coluna, mascaramento, auditoria e limites. Nunca
+  tratar acesso a banco, codigo-fonte, logs ou bundles como livre para qualquer
+  agente.
 
 O Swagger permanece disponivel para exploracao humana, mas nao e uma etapa
 obrigatoria quando o agente foi solicitado a executar a consulta.

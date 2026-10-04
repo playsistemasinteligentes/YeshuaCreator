@@ -50,6 +50,7 @@ POST /api/source-context/function
 POST /api/investigations
 POST /api/investigations/context
 POST /api/investigations/context/bundle
+POST /mcp
 ```
 
 Exemplo de investigacao:
@@ -89,3 +90,118 @@ para orientar mudancas na DSL, nos templates ou nos arquivos customizados.
 O orquestrador e uma classe interna da API. Coletores futuros devem implementar
 `IContextCollector`; somente quando a coleta se tornar longa ou assincrona ela
 devera ser movida para um Worker separado.
+
+## MCP
+
+O endpoint `POST /mcp` expoe uma camada MCP minima em JSON-RPC para agentes.
+Ele suporta `initialize`, `server/discover`, `ping`, `tools/list` e
+`tools/call`. As ferramentas iniciais sao somente leitura:
+
+```text
+yeshua.health
+yeshua.database.select
+yeshua.errors.query
+yeshua.logs.query
+yeshua.logs.source_context
+yeshua.traces.query
+yeshua.metrics.query
+yeshua.source.search
+```
+
+No servidor, as consultas de telemetria apontam para o pacote `yeshua-telemetry`
+via configuracao `Mcp__LokiBaseUrl`, `Mcp__TempoBaseUrl` e
+`Mcp__PrometheusBaseUrl`. Localmente, os defaults usam `localhost`.
+
+As consultas SQL via MCP usam apenas aliases configurados no servidor em
+`Mcp:DatabaseQuery:Connections`. O agente nunca envia connection string. A tool
+`yeshua.database.select` aceita somente uma instrucao `SELECT` ou `WITH`,
+rejeita comandos de escrita/DDL/execucao, aplica timeout e trunca o retorno no
+limite configurado.
+
+ATENCAO / DEBITO TECNICO CRITICO: acesso MCP a banco de dados, fontes, logs,
+bundles e historico Git ainda precisa de um modelo formal de autorizacao antes
+de exposicao ampla. Definir controle por usuario, tenant, aplicativo, ambiente,
+escopo, finalidade, tabela/coluna, mascaramento de dados sensiveis, auditoria e
+limites operacionais. Esse recurso deve ser tratado como interno/confiavel ate
+esse controle existir.
+
+Exemplo de descoberta:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/list"
+}
+```
+
+Exemplo de contexto de fonte a partir de um erro retornado pelos logs:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "yeshua.logs.source_context",
+    "arguments": {
+      "application": "Fiscal",
+      "version": "commit-fec665473d7a",
+      "log": "System.InvalidOperationException: Falha ao emitir CTe\n   at Yeshua.Fiscal.Application.EmitirCteReceiver.Execute(...) in C:\\repos\\YeshuaCreator\\src\\Fiscal\\EmitirCteReceiver.cs:line 42",
+      "maxFiles": 5,
+      "includeContent": true
+    }
+  }
+}
+```
+
+Essa tool tenta extrair funcao, classe, tipo de excecao e caminho de arquivo do
+log bruto. O retorno inclui `extractedSignals`, contexto ranqueado e,
+quando `includeContent=true`, o conteudo dos principais fontes no snapshot
+indexado.
+
+Exemplo de busca de erros:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "yeshua.errors.query",
+    "arguments": {
+      "application": "Fiscal",
+      "version": "commit-fec665473d7a",
+      "environment": "Production",
+      "fromUtc": "2026-10-04T10:00:00Z",
+      "toUtc": "2026-10-04T12:00:00Z",
+      "limit": 100,
+      "includeKnowledgeReferences": true,
+      "knowledgeMaxFiles": 5
+    }
+  }
+}
+```
+
+Quando `includeKnowledgeReferences=true`, a resposta estruturada passa a trazer
+`telemetry`, `knowledgeReferences` e `warnings`. Nesta fase, as referencias de
+conhecimento sao inferidas dos logs e apontam para o codigo-fonte indexado.
+Documentacoes podem entrar depois no mesmo bloco sem mudar o fluxo do agente.
+
+Exemplo de SELECT operacional:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "tools/call",
+  "params": {
+    "name": "yeshua.database.select",
+    "arguments": {
+      "connection": "Fiscal",
+      "query": "SELECT TOP (20) Id, CreatedAt FROM yOutbox ORDER BY Id DESC",
+      "maxRows": 20
+    }
+  }
+}
+```

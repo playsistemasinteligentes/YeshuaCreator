@@ -134,22 +134,6 @@ public class ApplicationDomainProjectGenerationTests
                     "Yeshua.CQRS.Infrastructure.Shared.csproj"),
                 "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net8.0</TargetFramework></PropertyGroup></Project>");
 
-            var sharedFrontProjectDirectory = Path.Combine(
-                solutionDirectory,
-                "src",
-                "CQRS",
-                "Infrastructure",
-                "Yeshua.CQRS.Infrastructure.Front");
-            Directory.CreateDirectory(Path.Combine(sharedFrontProjectDirectory, "wwwroot", "spa"));
-            File.WriteAllText(
-                Path.Combine(sharedFrontProjectDirectory, "Yeshua.CQRS.Infrastructure.Front.csproj"),
-                "<Project Sdk=\"Microsoft.NET.Sdk.Web\"><PropertyGroup><TargetFramework>net8.0</TargetFramework></PropertyGroup></Project>");
-            var sharedFrontIndexPath = Path.Combine(
-                sharedFrontProjectDirectory,
-                "wwwroot",
-                "spa",
-                "index.html");
-            File.WriteAllText(sharedFrontIndexPath, "front-v1");
             File.WriteAllText(
                 Path.Combine(solutionDirectory, "YeshuaCreator.sln"),
                 "Microsoft Visual Studio Solution File, Format Version 12.00\r\n" +
@@ -540,28 +524,9 @@ public class ApplicationDomainProjectGenerationTests
                 "Infrastructure",
                 "Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front",
                 "Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front.csproj");
-            Assert.IsTrue(File.Exists(applicationInfrastructureFrontProjectPath));
-            var applicationInfrastructureFrontDirectory =
-                Path.GetDirectoryName(applicationInfrastructureFrontProjectPath)!;
-            var applicationInfrastructureFrontIndexPath = Path.Combine(
-                applicationInfrastructureFrontDirectory,
-                "wwwroot",
-                "spa",
-                "index.html");
-            Assert.AreEqual("front-v1", File.ReadAllText(applicationInfrastructureFrontIndexPath));
-            var applicationInfrastructureFrontCustomPath = Path.Combine(
-                applicationInfrastructureFrontDirectory,
-                "wwwroot",
-                "Custon",
-                "extensions.js");
-            Assert.IsTrue(File.Exists(applicationInfrastructureFrontCustomPath));
-            var applicationInfrastructureFrontProjectContent = File.ReadAllText(
-                applicationInfrastructureFrontProjectPath);
             Assert.IsFalse(
-                applicationInfrastructureFrontProjectContent.Contains(
-                    "ProjectReference",
-                    StringComparison.OrdinalIgnoreCase),
-                "O Front do aplicativo deve ser publicavel sem dependencia de runtime para a matriz.");
+                File.Exists(applicationInfrastructureFrontProjectPath),
+                "A Engine nao deve criar Front por aplicativo; o Front Central e a unica fonte da verdade.");
 
             var solutionPath = Path.Combine(solutionDirectory, "YeshuaCreator.sln");
             const string relativeApplicationProjectPath =
@@ -589,9 +554,11 @@ public class ApplicationDomainProjectGenerationTests
             const string relativeApplicationInfrastructureWorkerProjectPath =
                 @"src\CQRS\Infrastructure\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Worker\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Worker.csproj";
             StringAssert.Contains(solutionContent, relativeApplicationInfrastructureWorkerProjectPath);
-            const string relativeApplicationInfrastructureFrontProjectPath =
-                @"src\CQRS\Infrastructure\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front.csproj";
-            StringAssert.Contains(solutionContent, relativeApplicationInfrastructureFrontProjectPath);
+            Assert.IsFalse(
+                solutionContent.Contains(
+                    @"Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front",
+                    StringComparison.OrdinalIgnoreCase),
+                "A solucao nao deve receber Front gerado por aplicativo.");
             StringAssert.Contains(
                 solutionContent,
                 @") = ""Yeshua.CQRS.Application"", ""Yeshua.CQRS.Application"",");
@@ -600,8 +567,6 @@ public class ApplicationDomainProjectGenerationTests
                     @") = ""Yeshua.CQRS.Application.Command"", ""Yeshua.CQRS.Application.Command"","),
                 "O projeto Command do aplicativo nao deve criar uma nova pasta de solucao.");
 
-            File.WriteAllText(applicationInfrastructureFrontCustomPath, "custom-preserved");
-            File.WriteAllText(sharedFrontIndexPath, "front-v2");
             generator.AppSolutionGenerate(null!);
 
             Assert.AreEqual(applicationProjectContent, File.ReadAllText(applicationProjectPath));
@@ -624,11 +589,7 @@ public class ApplicationDomainProjectGenerationTests
             Assert.AreEqual(
                 applicationInfrastructureWorkerProjectContent,
                 File.ReadAllText(applicationInfrastructureWorkerProjectPath));
-            Assert.AreEqual(
-                applicationInfrastructureFrontProjectContent,
-                File.ReadAllText(applicationInfrastructureFrontProjectPath));
-            Assert.AreEqual("front-v2", File.ReadAllText(applicationInfrastructureFrontIndexPath));
-            Assert.AreEqual("custom-preserved", File.ReadAllText(applicationInfrastructureFrontCustomPath));
+            Assert.IsFalse(File.Exists(applicationInfrastructureFrontProjectPath));
             Assert.AreEqual(
                 solutionContent,
                 File.ReadAllText(solutionPath),

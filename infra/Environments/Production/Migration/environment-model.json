@@ -219,47 +219,6 @@
     {
       "Application": "Clinica",
       "Workload": {
-        "Name": "front",
-        "Identity": "clinica-front",
-        "Mode": "Service",
-        "Source": {
-          "Kind": "Project",
-          "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front/Yeshua.Clinica.CQRS.Infrastructure.Front.csproj",
-          "BuildContext": ".",
-          "Dockerfile": "infra/Clinica/Migration/workloads/front/Dockerfile"
-        },
-        "Replicas": 2,
-        "Requires": [
-          "clinica-api"
-        ],
-        "Consumes": [],
-        "Produces": [],
-        "Configuration": {
-          "ASPNETCORE_ENVIRONMENT": "Production"
-        },
-        "Secrets": [],
-        "Ports": [
-          {
-            "Name": "http",
-            "ContainerPort": 8080,
-            "Protocol": "Http",
-            "Route": "/"
-          }
-        ],
-        "Mounts": [],
-        "HealthCheck": {
-          "Kind": "Tcp",
-          "Port": "http",
-          "Command": [],
-          "IntervalSeconds": 30,
-          "TimeoutSeconds": 5,
-          "Retries": 3
-        }
-      }
-    },
-    {
-      "Application": "Clinica",
-      "Workload": {
         "Name": "worker",
         "Identity": "clinica-worker",
         "Mode": "Service",
@@ -489,48 +448,6 @@
             "Protocol": "Http",
             "Route": "/mdfe/yapi",
             "UpstreamRoute": "/yapi"
-          }
-        ],
-        "Mounts": [],
-        "HealthCheck": {
-          "Kind": "Tcp",
-          "Port": "http",
-          "Command": [],
-          "IntervalSeconds": 30,
-          "TimeoutSeconds": 5,
-          "Retries": 3
-        }
-      }
-    },
-    {
-      "Application": "Fiscal.MDFe",
-      "Workload": {
-        "Name": "front",
-        "Identity": "fiscal-mdfe-front",
-        "Mode": "Service",
-        "Source": {
-          "Kind": "Project",
-          "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front.csproj",
-          "BuildContext": ".",
-          "Dockerfile": "infra/Fiscal.MDFe/Migration/workloads/front/Dockerfile"
-        },
-        "Replicas": 1,
-        "Requires": [
-          "fiscal-mdfe-api"
-        ],
-        "Consumes": [],
-        "Produces": [],
-        "Configuration": {
-          "ASPNETCORE_ENVIRONMENT": "Production"
-        },
-        "Secrets": [],
-        "Ports": [
-          {
-            "Name": "http",
-            "ContainerPort": 8080,
-            "Protocol": "Http",
-            "Route": "/mdfe",
-            "UpstreamRoute": "/"
           }
         ],
         "Mounts": [],

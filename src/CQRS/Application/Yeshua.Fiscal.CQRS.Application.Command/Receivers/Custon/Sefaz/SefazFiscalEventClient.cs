@@ -86,6 +86,35 @@ internal static class SefazFiscalEventContextResolver
             documentoRepository, certificadoRepository, "MDF-e");
     }
 
+    public static SefazFiscalEventContext ResolveExternalMDFe(
+        string chave,
+        string protocoloAutorizacao,
+        int ambiente,
+        int tenantId,
+        ICertificadoDigitalReadRepository certificadoRepository)
+    {
+        var normalized = Digits(chave);
+        ValidateKey(normalized, "MDF-e");
+
+        var protocolo = Digits(protocoloAutorizacao);
+        if (protocolo.Length != 15)
+            throw new ArgumentException("O protocolo de autorizacao do MDF-e deve possuir 15 digitos.");
+        if (ambiente is not 1 and not 2)
+            throw new ArgumentException("O ambiente deve ser 1 (producao) ou 2 (homologacao).");
+        if (tenantId <= 0)
+            throw new InvalidOperationException("O tenant autenticado nao foi identificado.");
+
+        var cnpj = normalized.Substring(6, 14);
+        return new SefazFiscalEventContext(
+            normalized,
+            protocolo,
+            ambiente,
+            int.Parse(normalized[..2]),
+            cnpj,
+            tenantId,
+            ResolveCertificate(tenantId, cnpj, certificadoRepository, $"MDF-e externo {normalized}"));
+    }
+
     private static SefazFiscalEventContext Resolve(
         string chave,
         string? protocoloTentativa,

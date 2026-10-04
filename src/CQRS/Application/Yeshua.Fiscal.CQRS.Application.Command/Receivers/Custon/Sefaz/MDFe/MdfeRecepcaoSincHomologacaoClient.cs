@@ -42,6 +42,8 @@ namespace Command.Receivers
         string UfDescarga,
         string CepDescarga,
         string Rntrc,
+        string CiotNumero,
+        string CiotResponsavelDocumento,
         string Placa,
         string Renavam,
         string TaraKg,
@@ -98,6 +100,8 @@ namespace Command.Receivers
                 UfDescarga: "PE",
                 CepDescarga: "54000000",
                 Rntrc: "45861338",
+                CiotNumero: string.Empty,
+                CiotResponsavelDocumento: string.Empty,
                 Placa: "ABC1D23",
                 Renavam: "12345678901",
                 TaraKg: "1000",
@@ -144,6 +148,10 @@ namespace Command.Receivers
                     GetValue("YESHUA_MDFE_SEGURO_AVERBACAO", fixedOptions.NumeroAverbacao),
                 NcmProdutoPredominante =
                     OnlyDigits(Environment.GetEnvironmentVariable("YESHUA_MDFE_NCM_PRODUTO_PREDOMINANTE") ?? fixedOptions.NcmProdutoPredominante),
+                CiotNumero =
+                    OnlyDigits(Environment.GetEnvironmentVariable("YESHUA_MDFE_CIOT") ?? fixedOptions.CiotNumero),
+                CiotResponsavelDocumento =
+                    OnlyDigits(Environment.GetEnvironmentVariable("YESHUA_MDFE_CIOT_RESPONSAVEL_DOCUMENTO") ?? fixedOptions.CiotResponsavelDocumento),
                 Placa =
                     OnlyDigitsLetters(Environment.GetEnvironmentVariable("YESHUA_MDFE_PLACA") ?? GenerateHomologacaoPlate()),
                 TipoCarga = GetValue("YESHUA_MDFE_TIPO_CARGA", "05"),
@@ -183,6 +191,7 @@ namespace Command.Receivers
             ValidateDigits(CodigoMunicipioDescarga, 7, nameof(CodigoMunicipioDescarga));
             ValidateDigits(Cep, 8, nameof(Cep));
             ValidateDigits(CepDescarga, 8, nameof(CepDescarga));
+            ValidateCiot();
             var chavesCTe = EffectiveChavesCTe();
             if (chavesCTe.Count == 0)
                 throw new InvalidOperationException("Ao menos uma chave CT-e deve ser informada para o MDF-e.");
@@ -223,6 +232,19 @@ namespace Command.Receivers
             ValidateDigits(TipoCarga, 2, nameof(TipoCarga));
             if (string.IsNullOrWhiteSpace(ProdutoPredominante))
                 throw new InvalidOperationException("O produto predominante do MDF-e deve ser informado.");
+        }
+
+        private void ValidateCiot()
+        {
+            var ciotNumero = OnlyDigits(CiotNumero);
+            if (string.IsNullOrWhiteSpace(ciotNumero))
+                return;
+
+            ValidateDigits(ciotNumero, 12, nameof(CiotNumero));
+
+            var documentoResponsavel = OnlyDigits(CiotResponsavelDocumento);
+            if (documentoResponsavel.Length is not 11 and not 14)
+                throw new InvalidOperationException("O documento do responsavel pelo CIOT deve ter 11 ou 14 digitos.");
         }
 
         public IReadOnlyList<string> EffectiveChavesCTe()
@@ -661,6 +683,7 @@ namespace Command.Receivers
             var rodo = AppendElement(doc, infModal, "rodo");
             var infANTT = AppendElement(doc, rodo, "infANTT");
             AppendElement(doc, infANTT, "RNTRC", options.Rntrc);
+            AppendCiotIfPresent(doc, infANTT, options);
 
             var infContratante = AppendElement(doc, infANTT, "infContratante");
             AppendElement(doc, infContratante, "CNPJ", options.CnpjEmitente);
@@ -696,6 +719,18 @@ namespace Command.Receivers
             AppendElement(doc, veicTracao, "tpRod", options.TipoRodado);
             AppendElement(doc, veicTracao, "tpCar", options.TipoCarroceria);
             AppendElement(doc, veicTracao, "UF", options.UfEmitente);
+        }
+
+        private static void AppendCiotIfPresent(XmlDocument doc, XmlElement infANTT, MdfeRecepcaoSincOptions options)
+        {
+            var ciotNumero = OnlyDigits(options.CiotNumero);
+            if (string.IsNullOrWhiteSpace(ciotNumero))
+                return;
+
+            var documentoResponsavel = OnlyDigits(options.CiotResponsavelDocumento);
+            var infCIOT = AppendElement(doc, infANTT, "infCIOT");
+            AppendElement(doc, infCIOT, "CIOT", ciotNumero);
+            AppendElement(doc, infCIOT, documentoResponsavel.Length == 11 ? "CPF" : "CNPJ", documentoResponsavel);
         }
 
         private static void AppendDocumentos(XmlDocument doc, XmlElement infMDFe, MdfeRecepcaoSincOptions options)

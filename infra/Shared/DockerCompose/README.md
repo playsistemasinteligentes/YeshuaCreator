@@ -18,4 +18,6 @@ O servico `yeshua-telemetry` e o pacote unico inicial para centralizacao OTLP:
 OpenTelemetry Collector, Loki, Tempo, Prometheus e Grafana no mesmo container.
 Ele guarda dados em `/root/YeshuaDB/persistent/telemetry`, com retencao padrao
 de 5 dias. APIs e Workers so usam esse pacote quando
-`YESHUA_TELEMETRY_EXPORT_MODE=Otlp`; o padrao continua `ConsoleJsonl`.
+`YESHUA_TELEMETRY_EXPORT_MODE=Otlp`. O deploy de servidor ja usa `Otlp` por
+padrao em `infra/docker/deploy.env`; execucoes locais sem essa variavel
+continuam em `ConsoleJsonl`.

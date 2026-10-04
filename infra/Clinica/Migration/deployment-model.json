@@ -138,44 +138,6 @@
       }
     },
     {
-      "Name": "front",
-      "Identity": "clinica-front",
-      "Mode": "Service",
-      "Source": {
-        "Kind": "Project",
-        "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front/Yeshua.Clinica.CQRS.Infrastructure.Front.csproj",
-        "BuildContext": ".",
-        "Dockerfile": "infra/Clinica/Migration/workloads/front/Dockerfile"
-      },
-      "Replicas": 2,
-      "Requires": [
-        "api"
-      ],
-      "Consumes": [],
-      "Produces": [],
-      "Configuration": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
-      },
-      "Secrets": [],
-      "Ports": [
-        {
-          "Name": "http",
-          "ContainerPort": 8080,
-          "Protocol": "Http",
-          "Route": "/"
-        }
-      ],
-      "Mounts": [],
-      "HealthCheck": {
-        "Kind": "Tcp",
-        "Port": "http",
-        "Command": [],
-        "IntervalSeconds": 30,
-        "TimeoutSeconds": 5,
-        "Retries": 3
-      }
-    },
-    {
       "Name": "worker",
       "Identity": "clinica-worker",
       "Mode": "Service",
