@@ -17,6 +17,10 @@ com quota de 10 GB. O Compose aplica limite de CPU/memoria do container e a
 retencao por componente, mas Docker Compose puro nao limita tamanho de bind
 mount de forma portavel.
 
+No Tempo 3, a retencao nao fica mais no bloco legado `compactor`. Ela fica em
+`backend_scheduler.provider.compaction.compaction` e no override padrao em
+`overrides.defaults.compaction`.
+
 ## Ativacao nas aplicacoes
 
 No servidor, o `infra/docker/deploy.env` ja deixa APIs e Workers em `Otlp` por

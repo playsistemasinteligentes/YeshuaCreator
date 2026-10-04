@@ -27,10 +27,13 @@ storage:
     local:
       path: /data/tempo/blocks
 
-compactor:
-  compaction:
-    block_retention: 120h
-    compacted_block_retention: 1h
+backend_scheduler:
+  provider:
+    compaction:
+      compaction:
+        block_retention: 120h
+        compacted_block_retention: 1h
+        compaction_window: 1h
 
 metrics_generator:
   processor:
@@ -47,5 +50,8 @@ metrics_generator:
 
 overrides:
   defaults:
+    compaction:
+      block_retention: 120h
+      compaction_window: 1h
     metrics_generator:
       processors: [service-graphs, span-metrics]

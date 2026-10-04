@@ -32,8 +32,16 @@ fi
 mkdir -p /root/YeshuaStorage
 
 cd "$COMPOSE_DIR"
-docker compose build fiscal-migration
-docker compose build fiscal-api fiscal-worker
+BUILD_OPTIONS=()
+if [[ "${YESHUA_DOCKER_BUILD_NO_CACHE:-0}" == "1" ]]; then
+  BUILD_OPTIONS+=(--no-cache)
+fi
+if [[ "${YESHUA_DOCKER_BUILD_PULL:-0}" == "1" ]]; then
+  BUILD_OPTIONS+=(--pull)
+fi
+
+docker compose build "${BUILD_OPTIONS[@]}" fiscal-migration
+docker compose build "${BUILD_OPTIONS[@]}" fiscal-api fiscal-worker
 echo "Executando migration Fiscal no banco ${YESHUA_DB_FISCAL:-YESHUA_FISCAL}..."
 docker compose run --rm fiscal-migration
 docker compose up -d --remove-orphans \
