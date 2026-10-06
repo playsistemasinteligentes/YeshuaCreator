@@ -138,10 +138,26 @@ body.yeshua-request-wait * {
 }
 
 .fiscal-case-action-row {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 12px;
+}
+
+.fiscal-case-count-toggle {
+    align-items: center;
+    color: #475569;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 700;
+    gap: 6px;
+    min-height: 38px;
+}
+
+.fiscal-case-count-toggle input {
+    height: 16px;
+    width: 16px;
 }
 
 .fiscal-case-table-wrap {

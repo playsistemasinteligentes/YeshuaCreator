@@ -31,11 +31,11 @@
             </label>
             <label>
                 Inicio
-                <input id="fiscal-case-filter-from" type="date" disabled title="Filtro por periodo precisa de consulta de intervalo no backend">
+                <input id="fiscal-case-filter-from" type="date">
             </label>
             <label>
                 Fim
-                <input id="fiscal-case-filter-to" type="date" disabled title="Filtro por periodo precisa de consulta de intervalo no backend">
+                <input id="fiscal-case-filter-to" type="date">
             </label>
         </div>
 
@@ -45,6 +45,10 @@
             <button id="fiscal-case-prev" type="button">Anterior</button>
             <button id="fiscal-case-next" type="button">Proximo</button>
             <button id="fiscal-case-last" type="button">Ultimo</button>
+            <label class="fiscal-case-count-toggle">
+                <input id="fiscal-case-count-total" type="checkbox">
+                Contar total de registros
+            </label>
         </div>
 
         <div class="fiscal-case-table-wrap">

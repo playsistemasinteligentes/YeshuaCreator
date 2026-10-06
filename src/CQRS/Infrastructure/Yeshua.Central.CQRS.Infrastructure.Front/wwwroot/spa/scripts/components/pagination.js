@@ -1,4 +1,4 @@
-export function createPaginationState({ page = 1, pageSize = 10, pageWhithCount = true } = {}) {
+export function createPaginationState({ page = 1, pageSize = 10, pageWhithCount = false } = {}) {
     return {
         page,
         pageSize,
