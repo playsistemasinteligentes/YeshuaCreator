@@ -1,9 +1,16 @@
 import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
 import { showAlert } from '/spa/scripts/alerts.js?v=20260919-parametros01';
+import {
+    applyPaginationResult,
+    buildPaginationRequest,
+    createPaginationState,
+    paginationStatusText,
+    readPaginatedResult
+} from '/spa/scripts/components/pagination.js?v=20261005-contingencia01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20261005-casos-recentes01';
+const assetVersion = '20261005-paginacao-contingencia01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
@@ -82,9 +89,7 @@ const state = {
     nfeFiles: [],
     documentosOriginarios: null,
     cases: {
-        page: 1,
-        pageSize: 8,
-        totalPages: 1,
+        ...createPaginationState({ pageSize: 8 }),
         items: [],
         selectedId: 0
     }
@@ -646,7 +651,7 @@ function resetForm() {
     setStage('preparacao');
     updatePrimaryButton();
     renderPlanPreview();
-    renderCaseGrid(state.cases.items, state.cases.page);
+    renderCaseGrid(state.cases.items);
     updateRequestUi();
 }
 
@@ -1033,14 +1038,8 @@ async function buscarCasos(page = 1) {
     setText('fiscal-case-status', 'buscando');
 
     try {
-        const pageResult = hasCaseDateFilter()
-            ? await carregarCasosFiltradosPorData(targetPage)
-            : await carregarCasosRecentes(targetPage);
-
-        state.cases.page = pageResult.page;
-        state.cases.totalPages = pageResult.totalPages;
-        state.cases.items = pageResult.items;
-        renderCaseGrid(pageResult.items, pageResult.page);
+        const pageResult = await carregarCasosPage(targetPage);
+        applyCasePageResult(pageResult);
         feedback(pageResult.items.length ? `${pageResult.items.length} caso(s) encontrado(s).` : 'Nenhum caso encontrado para os filtros informados.');
     } catch (error) {
         const message = error.message || 'Nao foi possivel buscar os casos de contingencia.';
@@ -1054,38 +1053,14 @@ async function buscarUltimoCaso() {
     setText('fiscal-case-status', 'buscando ultimo');
 
     try {
-        if (!hasCaseDateFilter()) {
-            const countPage = await carregarCasosPage(1, true);
-            const totalPages = totalPagesFromResult(countPage);
-            const pageResult = await carregarCasosRecentes(totalPages, countPage);
+        const countPage = await carregarCasosPage(1);
+        const lastPage = Math.max(1, countPage.totalPages || 1);
+        const pageResult = lastPage === countPage.page
+            ? countPage
+            : await carregarCasosPage(lastPage);
 
-            state.cases.page = pageResult.page;
-            state.cases.totalPages = pageResult.totalPages;
-            state.cases.items = pageResult.items;
-            renderCaseGrid(pageResult.items, pageResult.page);
-            feedback(pageResult.items.length ? 'Ultima pagina de casos carregada.' : 'Nenhum caso encontrado para os filtros informados.');
-            return;
-        }
-
-        let page = 1;
-        let lastPage = page;
-        let lastItems = [];
-
-        for (let attempts = 0; attempts < 200; attempts += 1) {
-            const pageResult = await carregarCasosFiltradosPorData(page);
-            if (!pageResult.items.length) break;
-
-            lastPage = page;
-            lastItems = pageResult.items;
-            if (pageResult.items.length < state.cases.pageSize) break;
-            page += 1;
-        }
-
-        state.cases.page = lastPage;
-        state.cases.totalPages = Math.max(state.cases.totalPages || 1, lastPage);
-        state.cases.items = lastItems;
-        renderCaseGrid(lastItems, lastPage);
-        feedback(lastItems.length ? 'Ultima pagina de casos carregada.' : 'Nenhum caso encontrado para os filtros informados.');
+        applyCasePageResult(pageResult);
+        feedback(pageResult.items.length ? 'Ultima pagina de casos carregada.' : 'Nenhum caso encontrado para os filtros informados.');
     } catch (error) {
         const message = error.message || 'Nao foi possivel localizar a ultima pagina.';
         setText('fiscal-case-status', 'erro');
@@ -1094,72 +1069,22 @@ async function buscarUltimoCaso() {
     }
 }
 
-async function carregarCasos(page) {
-    return (await carregarCasosPage(page, false)).items;
-}
-
-async function carregarCasosRecentes(page, knownFirstPage) {
-    const requestedPage = Math.max(1, Number(page) || 1);
-    const firstPage = knownFirstPage || await carregarCasosPage(1, true);
-    const totalPages = totalPagesFromResult(firstPage);
-    const logicalPage = Math.min(requestedPage, totalPages);
-    const serverPage = Math.max(1, totalPages - logicalPage + 1);
-    const result = serverPage === 1
-        ? firstPage
-        : await carregarCasosPage(serverPage, false);
-
-    return {
-        page: logicalPage,
-        totalPages,
-        items: sortCasesByIdDesc(result.items)
-    };
-}
-
-async function carregarCasosFiltradosPorData(page) {
-    const result = await carregarCasosPage(page, true);
-    const targetPage = Math.max(1, Number(page) || 1);
-
-    return {
-        page: targetPage,
-        totalPages: totalPagesFromResult(result),
-        items: sortCasesByIdDesc(result.items)
-    };
-}
-
-async function carregarCasosPage(page, includeCount) {
+async function carregarCasosPage(page) {
     const payload = buildCaseSearchPayload(page);
-    payload.Paginacao.pageWhithCount = includeCount === true;
 
     const result = await postUseCase(endpoints.listarCasos, payload);
-    return {
-        items: applyCaseDateFilter(readItems(result)),
-        totalItems: readField(result, 'totalItems', 'TotalItems'),
-        totalPages: readField(result, 'totalPages', 'TotalPages')
-    };
+    return readPaginatedResult(result, state.cases);
 }
 
-function totalPagesFromResult(result) {
-    const totalPages = Number(result.totalPages || 0);
-    if (totalPages > 0) return totalPages;
-
-    const totalItems = Number(result.totalItems || 0);
-    if (totalItems > 0) {
-        return Math.max(1, Math.ceil(totalItems / state.cases.pageSize));
-    }
-
-    return Math.max(1, Number(state.cases.totalPages || 1));
-}
-
-function sortCasesByIdDesc(items) {
-    return [...normalizeArray(items)].sort((left, right) => caseId(right) - caseId(left));
+function applyCasePageResult(pageResult) {
+    applyPaginationResult(state.cases, pageResult);
+    state.cases.items = pageResult.items;
+    renderCaseGrid(pageResult.items);
 }
 
 function buildCaseSearchPayload(page) {
     const payload = {
-        Paginacao: {
-            ...pagination(state.cases.pageSize),
-            page: Math.max(1, Number(page) || 1)
-        }
+        Paginacao: buildPaginationRequest(state.cases, page)
     };
 
     const cargaId = textOrNull(getValue('fiscal-case-filter-carga'));
@@ -1175,31 +1100,13 @@ function buildCaseSearchPayload(page) {
     return payload;
 }
 
-function applyCaseDateFilter(items) {
-    const from = dateFromInput('fiscal-case-filter-from', false);
-    const to = dateFromInput('fiscal-case-filter-to', true);
-    if (!from && !to) return items;
-
-    return items.filter(item => {
-        const date = readCaseDate(item);
-        if (!date) return false;
-        if (from && date < from) return false;
-        if (to && date > to) return false;
-        return true;
-    });
-}
-
-function hasCaseDateFilter() {
-    return Boolean(getValue('fiscal-case-filter-from') || getValue('fiscal-case-filter-to'));
-}
-
-function renderCaseGrid(items, page) {
+function renderCaseGrid(items) {
     const body = document.getElementById('fiscal-case-results');
     if (!body) return;
 
     if (!items.length) {
         body.innerHTML = '<tr><td colspan="8" class="fiscal-case-empty">Nenhum caso encontrado.</td></tr>';
-        setText('fiscal-case-status', `pagina ${page} | 0 casos`);
+        setText('fiscal-case-status', `pagina ${state.cases.page} | 0 casos`);
         return;
     }
 
@@ -1228,7 +1135,7 @@ function renderCaseGrid(items, page) {
         `;
     }).join('');
 
-    setText('fiscal-case-status', `pagina ${page} | ${items.length} caso(s)`);
+    setText('fiscal-case-status', paginationStatusText(state.cases, items.length));
 }
 
 async function abrirCaso(index) {
@@ -1236,7 +1143,7 @@ async function abrirCaso(index) {
     if (!item) return;
 
     applyCaseRecord(item);
-    renderCaseGrid(state.cases.items, state.cases.page);
+    renderCaseGrid(state.cases.items);
     renderPersistedCaseSummary(item);
     notify('Caso carregado.', 'success');
 
