@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "Yeshua.Memorias.CQRS.Infrastructure.Api": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    }
+  }
+}

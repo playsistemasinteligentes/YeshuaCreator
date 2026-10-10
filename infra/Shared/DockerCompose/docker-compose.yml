@@ -54,8 +54,36 @@ services:
       Mcp__DatabaseQuery__Connections__Clinica: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
       Mcp__DatabaseQuery__Connections__ApsAdm: "Server=sqlserver,1433;Database=${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM};User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
       Mcp__DatabaseQuery__Connections__Fiscal: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
+      Mcp__DatabaseQuery__Connections__Memorias: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
     ports:
       - "127.0.0.1:5728:5728"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  operational-intelligence-agent:
+    build:
+      context: ./operational-intelligence-agent
+      dockerfile: Dockerfile
+    container_name: yeshua-operational-intelligence-agent
+    environment:
+      OPERATIONAL_INTELLIGENCE_BASE_URL: "http://operational-intelligence-api:5728"
+      OPERATIONAL_INTELLIGENCE_MCP_URL: "http://operational-intelligence-api:5728/mcp"
+      YESHUA_AGENT_SOURCE: "/server/YeshuaCreator"
+      YESHUA_AGENT_WORKSPACE: "/workspace/YeshuaCreator"
+      YESHUA_AGENT_SYNC_ON_START: "${YESHUA_AGENT_SYNC_ON_START:-auto}"
+      YESHUA_AGENT_MODE: "${YESHUA_AGENT_MODE:-observe}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+    volumes:
+      - /root/YeshuaCreator:/server/YeshuaCreator:ro
+      - /root/YeshuaStorage:/storage:ro
+      - operational-agent-workspace:/workspace
+      - operational-agent-codex:/home/agent/.codex
+      - operational-agent-claude:/home/agent/.claude
+    depends_on:
+      - operational-intelligence-api
+      - yeshua-telemetry
     restart: unless-stopped
     networks:
       - yeshua-net
@@ -115,3 +143,8 @@ services:
 networks:
   yeshua-net:
     name: yeshua-net
+
+volumes:
+  operational-agent-workspace:
+  operational-agent-codex:
+  operational-agent-claude:

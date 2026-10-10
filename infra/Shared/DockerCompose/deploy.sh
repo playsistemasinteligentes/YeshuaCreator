@@ -13,6 +13,6 @@ fi
 cd "$COMPOSE_DIR"
 mkdir -p /root/YeshuaDB/persistent/telemetry
 if [[ "${YESHUA_BUILD_SHARED:-0}" == "1" ]]; then
-  docker compose build operational-intelligence-api
+  docker compose build operational-intelligence-api operational-intelligence-agent
 fi
-docker compose up -d sqlserver redis rabbitmq operational-intelligence-api yeshua-telemetry
+docker compose up -d sqlserver redis rabbitmq operational-intelligence-api yeshua-telemetry operational-intelligence-agent

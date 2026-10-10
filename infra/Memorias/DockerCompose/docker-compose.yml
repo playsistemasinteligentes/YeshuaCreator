@@ -1,0 +1,108 @@
+name: playsis-memorias
+
+services:
+  memorias-api:
+    build:
+      context: ../../..
+      dockerfile: infra/Memorias/DockerCompose/Dockerfile
+      target: api
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7214"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      YeshuaProcessing__Scope: "production"
+      OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
+      OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      YESHUA_MEMORIAS_STORAGE_ROOT: "/storage"
+      STORAGE_ROOT: "/storage"
+      RabbitMq__HostName: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "yeshua"
+      RabbitMq__Password: "yeshua123"
+      RabbitMq__VirtualHost: "/"
+    expose:
+      - "7214"
+    volumes:
+      - /root/YeshuaStorage:/storage
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  memorias-worker:
+    build:
+      context: ../../..
+      dockerfile: infra/Memorias/DockerCompose/Dockerfile
+      target: worker
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7215"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      YeshuaProcessing__Scope: "production"
+      OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
+      OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      YESHUA_MEMORIAS_STORAGE_ROOT: "/storage"
+      STORAGE_ROOT: "/storage"
+      RabbitMq__HostName: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "yeshua"
+      RabbitMq__Password: "yeshua123"
+      RabbitMq__VirtualHost: "/"
+      WorkerExecutionContext__TenantID: "1"
+      WorkerExecutionContext__UserId: "1"
+      OperationalControl__Enabled: "true"
+      OperationalControl__ApplicationApiBaseUrl: "http://memorias-api:7214"
+      OperationalControl__RefreshSeconds: "5"
+    expose:
+      - "7215"
+    volumes:
+      - /root/YeshuaStorage:/storage
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  memorias-migration:
+    build:
+      context: ../../..
+      dockerfile: infra/Memorias/DockerCompose/Dockerfile
+      target: migration
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+    environment:
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+    restart: "no"
+    networks:
+      - yeshua-net
+
+  memorias-media-renderer:
+    build:
+      context: ./media-renderer
+      dockerfile: Dockerfile
+    environment:
+      CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+      STORAGE_ROOT: "/storage"
+      FFMPEG_PRESET: "medium"
+      FFMPEG_CRF: "18"
+    volumes:
+      - /root/YeshuaStorage:/storage
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+
+networks:
+  yeshua-net:
+    external: true
+    name: yeshua-net
