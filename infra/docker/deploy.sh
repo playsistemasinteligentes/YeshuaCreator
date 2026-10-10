@@ -11,12 +11,6 @@ MEMORIAS_DIR="$APP_DIR/infra/Memorias/DockerCompose"
 DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
 TARGET="${1:-all}"
 
-if [[ -f "$DEPLOY_ENV" ]]; then
-  set -a
-  source "$DEPLOY_ENV"
-  set +a
-fi
-
 exec 9>/var/lock/yeshua-deploy.lock
 flock 9
 
@@ -25,6 +19,8 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" clean -fd
   git -C "$APP_DIR" pull origin main
 fi
+
+source "$APP_DIR/infra/docker/load-deploy-env.sh"
 
 chmod +x \
   "$SHARED_DIR"/*.sh \
