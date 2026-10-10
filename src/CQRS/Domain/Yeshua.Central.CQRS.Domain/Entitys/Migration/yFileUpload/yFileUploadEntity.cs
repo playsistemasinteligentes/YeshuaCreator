@@ -30,10 +30,10 @@
     public DateTime CreatedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
     public int? TenantID { get; set; }
-    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal yFileUploadEntity(int? id, string type, int status, string? filepath, long? filesize, string? entitytype, string? entityid, DateTime createdat, DateTime? completedat ){
  Id = id; 
@@ -45,9 +45,9 @@
  EntityId = entityid; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
  CompletedAt = completedat.HasValue && completedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : completedat; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

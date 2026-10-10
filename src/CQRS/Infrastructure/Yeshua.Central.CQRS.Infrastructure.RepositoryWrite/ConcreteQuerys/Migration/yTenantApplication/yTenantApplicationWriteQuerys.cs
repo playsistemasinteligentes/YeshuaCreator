@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InseriryTenantApplicationQuery(IyTenantApplicationEntity yTenantApplication)
         {
-            this.Query = $@" INSERT INTO [yTenantApplication] ([ApplicationKey], [TenantID], [ValidUntil], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ApplicationKey, @TenantID, @ValidUntil, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yTenantApplication] ([ApplicationKey], [TenantID], [ValidUntil], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@ApplicationKey, @TenantID, @ValidUntil, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 ApplicationKey = yTenantApplication.ApplicationKey,
                 TenantID = _executionContext.TenantID,
                 ValidUntil = yTenantApplication.ValidUntil,
-                OperationalEntityId = yTenantApplication.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = yTenantApplication.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -86,16 +86,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yTenantApplication] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE [yTenantApplication] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
@@ -122,6 +112,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenantApplication] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

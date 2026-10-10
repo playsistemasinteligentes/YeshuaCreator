@@ -21,6 +21,7 @@
                     public partial class yUserEntity : IyUserEntity
 {
     public int Id { get; set; }
+    public string OperationalEntityId { get; set; }
     public string Nome { get; set; }
     public string Email { get; set; }
     public string? Senha { get; set; }
@@ -33,6 +34,7 @@
  Nome = nome; 
  Email = email; 
  Senha = senha; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

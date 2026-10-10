@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IyUserEntity yuser);
         void Delete(IyUserEntity yuser);
         int NextGlobalId();
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateNome(int id, string value);
         void UpdateEmail(int id, string value);
         void UpdateSenha(int id, string value);

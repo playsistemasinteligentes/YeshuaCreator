@@ -19,10 +19,10 @@ namespace Command.Read
         public int? EmailPort { get; set; }
         public string? EmailUserName { get; set; }
         public string? EmailPassword { get; set; }
-        public string? OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "yConfigNotification";
  public string? OperationalRecordId => OperationalEntityId;

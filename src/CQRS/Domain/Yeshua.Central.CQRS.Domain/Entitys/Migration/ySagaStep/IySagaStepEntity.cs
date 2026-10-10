@@ -32,15 +32,15 @@
     string? ErrorMessage { get; set; }
     string? Payload { get; set; }
     int RetryCount { get; set; }
-    int? TenantID { get; set; }
-    string OperationalEntityId { get; }
-    bool? Deleted { get; set; }
-    DateTime? Changed { get; set; }
-    int? UserId { get; set; }
     string? RootOperationId { get; set; }
     string? OperationId { get; set; }
     string? ExecutionId { get; set; }
     string? CausationId { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

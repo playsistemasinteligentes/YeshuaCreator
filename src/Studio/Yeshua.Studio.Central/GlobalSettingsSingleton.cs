@@ -32,6 +32,7 @@ public sealed class GS
 
         MYC.Source = ResolveDefault(MYC.Source, FindSolutionRoot());
         MYC.Project = ResolveDefault(MYC.Project, "Central");
+        OverrideIfExists("MYCONFIG__SOURCE", value => MYC.Source = value);
         OverrideIfExists(
             "MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING",
             value => MYC.CentralAuthorizationConectionString = value);

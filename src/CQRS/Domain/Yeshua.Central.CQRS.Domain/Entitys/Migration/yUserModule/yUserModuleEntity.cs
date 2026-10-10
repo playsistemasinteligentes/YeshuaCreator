@@ -24,19 +24,19 @@
     public string? ModuleId { get; set; }
     public int? UserId { get; set; }
     public DateTime? ValidUntil { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal yUserModuleEntity(int? id, string? moduleid, int? userid, DateTime? validuntil ){
  Id = id; 
  ModuleId = moduleid; 
  UserId = userid; 
  ValidUntil = validuntil.HasValue && validuntil.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validuntil; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -313,14 +313,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yFileUploadTrackingFields.CompletedAt;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "TenantID"))
                         mask |= yFileUploadTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "OperationalEntityId"))
-                        mask |= yFileUploadTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "Deleted"))
                         mask |= yFileUploadTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "Changed"))
                         mask |= yFileUploadTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "UserId"))
                         mask |= yFileUploadTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yFileUpload", operation, recordId, "OperationalEntityId"))
+                        mask |= yFileUploadTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -354,18 +354,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaTrackingFields.LockedAt;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "LockedBy"))
                         mask |= ySagaTrackingFields.LockedBy;
-                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "ProcessingScope"))
-                        mask |= ySagaTrackingFields.ProcessingScope;
-                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "TenantID"))
-                        mask |= ySagaTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "OperationalEntityId"))
-                        mask |= ySagaTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "Deleted"))
-                        mask |= ySagaTrackingFields.Deleted;
-                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "Changed"))
-                        mask |= ySagaTrackingFields.Changed;
-                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "UserId"))
-                        mask |= ySagaTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "RootOperationId"))
                         mask |= ySagaTrackingFields.RootOperationId;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "OperationId"))
@@ -374,6 +362,18 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaTrackingFields.ExecutionId;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "CausationId"))
                         mask |= ySagaTrackingFields.CausationId;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "ProcessingScope"))
+                        mask |= ySagaTrackingFields.ProcessingScope;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "TenantID"))
+                        mask |= ySagaTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "Deleted"))
+                        mask |= ySagaTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "Changed"))
+                        mask |= ySagaTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "UserId"))
+                        mask |= ySagaTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "OperationalEntityId"))
+                        mask |= ySagaTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -407,16 +407,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaStepTrackingFields.Payload;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "RetryCount"))
                         mask |= ySagaStepTrackingFields.RetryCount;
-                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "TenantID"))
-                        mask |= ySagaStepTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "OperationalEntityId"))
-                        mask |= ySagaStepTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "Deleted"))
-                        mask |= ySagaStepTrackingFields.Deleted;
-                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "Changed"))
-                        mask |= ySagaStepTrackingFields.Changed;
-                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "UserId"))
-                        mask |= ySagaStepTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "RootOperationId"))
                         mask |= ySagaStepTrackingFields.RootOperationId;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "OperationId"))
@@ -425,6 +415,16 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaStepTrackingFields.ExecutionId;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "CausationId"))
                         mask |= ySagaStepTrackingFields.CausationId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "TenantID"))
+                        mask |= ySagaStepTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "Deleted"))
+                        mask |= ySagaStepTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "Changed"))
+                        mask |= ySagaStepTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "UserId"))
+                        mask |= ySagaStepTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "OperationalEntityId"))
+                        mask |= ySagaStepTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -466,22 +466,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yOutboxTrackingFields.ProcessingAt;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "NextAttemptAt"))
                         mask |= yOutboxTrackingFields.NextAttemptAt;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "SagaId"))
-                        mask |= yOutboxTrackingFields.SagaId;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "SagaStepId"))
-                        mask |= yOutboxTrackingFields.SagaStepId;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "ProcessingScope"))
-                        mask |= yOutboxTrackingFields.ProcessingScope;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "TenantID"))
-                        mask |= yOutboxTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "OperationalEntityId"))
-                        mask |= yOutboxTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "Deleted"))
-                        mask |= yOutboxTrackingFields.Deleted;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "Changed"))
-                        mask |= yOutboxTrackingFields.Changed;
-                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "UserId"))
-                        mask |= yOutboxTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "RootOperationId"))
                         mask |= yOutboxTrackingFields.RootOperationId;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "OperationId"))
@@ -490,6 +474,22 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yOutboxTrackingFields.ExecutionId;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "CausationId"))
                         mask |= yOutboxTrackingFields.CausationId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "SagaId"))
+                        mask |= yOutboxTrackingFields.SagaId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "SagaStepId"))
+                        mask |= yOutboxTrackingFields.SagaStepId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "ProcessingScope"))
+                        mask |= yOutboxTrackingFields.ProcessingScope;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "TenantID"))
+                        mask |= yOutboxTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "Deleted"))
+                        mask |= yOutboxTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "Changed"))
+                        mask |= yOutboxTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "UserId"))
+                        mask |= yOutboxTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "OperationalEntityId"))
+                        mask |= yOutboxTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -525,22 +525,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yInboxTrackingFields.ProcessingAt;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "NextAttemptAt"))
                         mask |= yInboxTrackingFields.NextAttemptAt;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "SagaId"))
-                        mask |= yInboxTrackingFields.SagaId;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "SagaStepId"))
-                        mask |= yInboxTrackingFields.SagaStepId;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "ProcessingScope"))
-                        mask |= yInboxTrackingFields.ProcessingScope;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "TenantID"))
-                        mask |= yInboxTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "OperationalEntityId"))
-                        mask |= yInboxTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "Deleted"))
-                        mask |= yInboxTrackingFields.Deleted;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "Changed"))
-                        mask |= yInboxTrackingFields.Changed;
-                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "UserId"))
-                        mask |= yInboxTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "RootOperationId"))
                         mask |= yInboxTrackingFields.RootOperationId;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "OperationId"))
@@ -549,6 +533,22 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yInboxTrackingFields.ExecutionId;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "CausationId"))
                         mask |= yInboxTrackingFields.CausationId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "SagaId"))
+                        mask |= yInboxTrackingFields.SagaId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "SagaStepId"))
+                        mask |= yInboxTrackingFields.SagaStepId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "ProcessingScope"))
+                        mask |= yInboxTrackingFields.ProcessingScope;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "TenantID"))
+                        mask |= yInboxTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "Deleted"))
+                        mask |= yInboxTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "Changed"))
+                        mask |= yInboxTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "UserId"))
+                        mask |= yInboxTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "OperationalEntityId"))
+                        mask |= yInboxTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -578,12 +578,12 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yTokenTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yToken", operation, recordId, "UserId"))
                         mask |= yTokenTrackingFields.UserId;
-                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "OperationalEntityId"))
-                        mask |= yTokenTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yToken", operation, recordId, "Deleted"))
                         mask |= yTokenTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yToken", operation, recordId, "Changed"))
                         mask |= yTokenTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "OperationalEntityId"))
+                        mask |= yTokenTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -601,14 +601,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yTenantApplicationTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yTenantApplication", operation, recordId, "ValidUntil"))
                         mask |= yTenantApplicationTrackingFields.ValidUntil;
-                    if (DomainFieldTracked(policy, "yTenantApplication", operation, recordId, "OperationalEntityId"))
-                        mask |= yTenantApplicationTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yTenantApplication", operation, recordId, "Deleted"))
                         mask |= yTenantApplicationTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yTenantApplication", operation, recordId, "Changed"))
                         mask |= yTenantApplicationTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yTenantApplication", operation, recordId, "UserId"))
                         mask |= yTenantApplicationTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yTenantApplication", operation, recordId, "OperationalEntityId"))
+                        mask |= yTenantApplicationTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -620,6 +620,8 @@ private OperationalLoggingDecision Evaluate(
                     ulong mask = 0UL;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "Id"))
                         mask |= yTenantTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "yTenant", operation, recordId, "OperationalEntityId"))
+                        mask |= yTenantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "CnpjCpf"))
                         mask |= yTenantTrackingFields.CnpjCpf;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "Nome"))
@@ -641,6 +643,8 @@ private OperationalLoggingDecision Evaluate(
                     ulong mask = 0UL;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Id"))
                         mask |= yUserTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "yUser", operation, recordId, "OperationalEntityId"))
+                        mask |= yUserTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Nome"))
                         mask |= yUserTrackingFields.Nome;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Email"))
@@ -668,8 +672,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yConfigArctetureTrackingFields.AuditTrackerActived;
                     if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "AuditCRUDActived"))
                         mask |= yConfigArctetureTrackingFields.AuditCRUDActived;
-                    if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "OperationalEntityId"))
-                        mask |= yConfigArctetureTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "TenantID"))
                         mask |= yConfigArctetureTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "Deleted"))
@@ -678,6 +680,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yConfigArctetureTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "UserId"))
                         mask |= yConfigArctetureTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yConfigArcteture", operation, recordId, "OperationalEntityId"))
+                        mask |= yConfigArctetureTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -699,14 +703,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yConfigNotificationTrackingFields.EmailUserName;
                     if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "EmailPassword"))
                         mask |= yConfigNotificationTrackingFields.EmailPassword;
-                    if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "OperationalEntityId"))
-                        mask |= yConfigNotificationTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "Deleted"))
                         mask |= yConfigNotificationTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "Changed"))
                         mask |= yConfigNotificationTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "UserId"))
                         mask |= yConfigNotificationTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yConfigNotification", operation, recordId, "OperationalEntityId"))
+                        mask |= yConfigNotificationTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -720,8 +724,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yPerfilTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "Description"))
                         mask |= yPerfilTrackingFields.Description;
-                    if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "OperationalEntityId"))
-                        mask |= yPerfilTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "TenantID"))
                         mask |= yPerfilTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "Deleted"))
@@ -730,6 +732,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yPerfilTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "UserId"))
                         mask |= yPerfilTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yPerfil", operation, recordId, "OperationalEntityId"))
+                        mask |= yPerfilTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -760,14 +764,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yTenantModuleTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "ValidUntil"))
                         mask |= yTenantModuleTrackingFields.ValidUntil;
-                    if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "OperationalEntityId"))
-                        mask |= yTenantModuleTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "Deleted"))
                         mask |= yTenantModuleTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "Changed"))
                         mask |= yTenantModuleTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "UserId"))
                         mask |= yTenantModuleTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yTenantModule", operation, recordId, "OperationalEntityId"))
+                        mask |= yTenantModuleTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -785,14 +789,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yUserModuleTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "ValidUntil"))
                         mask |= yUserModuleTrackingFields.ValidUntil;
-                    if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "OperationalEntityId"))
-                        mask |= yUserModuleTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "TenantID"))
                         mask |= yUserModuleTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "Deleted"))
                         mask |= yUserModuleTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "Changed"))
                         mask |= yUserModuleTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "yUserModule", operation, recordId, "OperationalEntityId"))
+                        mask |= yUserModuleTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -806,8 +810,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yGrantTrackingFields.Id;
                     if (DomainFieldTracked(policy, "yGrant", operation, recordId, "Description"))
                         mask |= yGrantTrackingFields.Description;
-                    if (DomainFieldTracked(policy, "yGrant", operation, recordId, "OperationalEntityId"))
-                        mask |= yGrantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yGrant", operation, recordId, "TenantID"))
                         mask |= yGrantTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yGrant", operation, recordId, "Deleted"))
@@ -816,6 +818,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yGrantTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yGrant", operation, recordId, "UserId"))
                         mask |= yGrantTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yGrant", operation, recordId, "OperationalEntityId"))
+                        mask |= yGrantTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -843,8 +847,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yPerfilGrantTrackingFields.CanDelete;
                     if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "ValidUntil"))
                         mask |= yPerfilGrantTrackingFields.ValidUntil;
-                    if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "OperationalEntityId"))
-                        mask |= yPerfilGrantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "TenantID"))
                         mask |= yPerfilGrantTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "Deleted"))
@@ -853,6 +855,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yPerfilGrantTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "UserId"))
                         mask |= yPerfilGrantTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yPerfilGrant", operation, recordId, "OperationalEntityId"))
+                        mask |= yPerfilGrantTrackingFields.OperationalEntityId;
                     return mask;
                 }
 
@@ -880,8 +884,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yUserGrantTrackingFields.CanDelete;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "ValidUntil"))
                         mask |= yUserGrantTrackingFields.ValidUntil;
-                    if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "OperationalEntityId"))
-                        mask |= yUserGrantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "TenantID"))
                         mask |= yUserGrantTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "Deleted"))
@@ -890,6 +892,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yUserGrantTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "UserId"))
                         mask |= yUserGrantTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yUserGrant", operation, recordId, "OperationalEntityId"))
+                        mask |= yUserGrantTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

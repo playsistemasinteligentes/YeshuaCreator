@@ -25,11 +25,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yFileUpload> Query() => new MyApp.QueryBuilder.Query<yFileUpload>();
     }
@@ -48,18 +48,18 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public DateTime? NextExecutionAt { get; set; }
         public DateTime? LockedAt { get; set; }
         public string? LockedBy { get; set; }
-        public string ProcessingScope { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
         public string? RootOperationId { get; set; }
         public string? OperationId { get; set; }
         public string? ExecutionId { get; set; }
         public string? CausationId { get; set; }
+        public string ProcessingScope { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<ySaga> Query() => new MyApp.QueryBuilder.Query<ySaga>();
     }
@@ -79,17 +79,17 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public string? ErrorMessage { get; set; }
         public string? Payload { get; set; }
         public int RetryCount { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
         public string? RootOperationId { get; set; }
         public string? OperationId { get; set; }
         public string? ExecutionId { get; set; }
         public string? CausationId { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<ySagaStep> Query() => new MyApp.QueryBuilder.Query<ySagaStep>();
     }
@@ -112,6 +112,10 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
+        public string? RootOperationId { get; set; }
+        public string? OperationId { get; set; }
+        public string? ExecutionId { get; set; }
+        public string? CausationId { get; set; }
         public int? SagaId { get; set; }
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }
@@ -119,15 +123,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
-        public string? RootOperationId { get; set; }
-        public string? OperationId { get; set; }
-        public string? ExecutionId { get; set; }
-        public string? CausationId { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yOutbox> Query() => new MyApp.QueryBuilder.Query<yOutbox>();
     }
@@ -147,6 +147,10 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
+        public string? RootOperationId { get; set; }
+        public string? OperationId { get; set; }
+        public string? ExecutionId { get; set; }
+        public string? CausationId { get; set; }
         public int? SagaId { get; set; }
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }
@@ -154,15 +158,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
-        public string? RootOperationId { get; set; }
-        public string? OperationId { get; set; }
-        public string? ExecutionId { get; set; }
-        public string? CausationId { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yInbox> Query() => new MyApp.QueryBuilder.Query<yInbox>();
     }
@@ -181,9 +181,9 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public yTenant yTenant { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yToken> Query() => new MyApp.QueryBuilder.Query<yToken>();
     }
@@ -195,11 +195,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public DateTime ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yTenantApplication> Query() => new MyApp.QueryBuilder.Query<yTenantApplication>();
     }
@@ -207,6 +207,7 @@ namespace Yeshua.Studio.Central.Domain.Entities
     public class yTenant
     {
         public int Id { get; set; }
+        public string OperationalEntityId { get; set; }
         public string CnpjCpf { get; set; }
         public string Nome { get; set; }
         public int? UserId { get; set; }
@@ -219,6 +220,7 @@ namespace Yeshua.Studio.Central.Domain.Entities
     public class yUser
     {
         public int Id { get; set; }
+        public string OperationalEntityId { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string? Senha { get; set; }
@@ -235,13 +237,13 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yConfigArcteture> Query() => new MyApp.QueryBuilder.Query<yConfigArcteture>();
     }
@@ -255,11 +257,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public int? EmailPort { get; set; }
         public string? EmailUserName { get; set; }
         public string? EmailPassword { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yConfigNotification> Query() => new MyApp.QueryBuilder.Query<yConfigNotification>();
     }
@@ -268,13 +270,13 @@ namespace Yeshua.Studio.Central.Domain.Entities
     {
         public int? Id { get; set; }
         public string Description { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yPerfil> Query() => new MyApp.QueryBuilder.Query<yPerfil>();
     }
@@ -295,11 +297,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yTenantModule> Query() => new MyApp.QueryBuilder.Query<yTenantModule>();
     }
@@ -312,11 +314,11 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserModule> Query() => new MyApp.QueryBuilder.Query<yUserModule>();
     }
@@ -325,13 +327,13 @@ namespace Yeshua.Studio.Central.Domain.Entities
     {
         public string? Id { get; set; }
         public string? Description { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yGrant> Query() => new MyApp.QueryBuilder.Query<yGrant>();
     }
@@ -349,13 +351,13 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public bool? CanUpdate { get; set; }
         public bool? CanDelete { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yPerfilGrant> Query() => new MyApp.QueryBuilder.Query<yPerfilGrant>();
     }
@@ -373,13 +375,13 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public bool? CanUpdate { get; set; }
         public bool? CanDelete { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserGrant> Query() => new MyApp.QueryBuilder.Query<yUserGrant>();
     }

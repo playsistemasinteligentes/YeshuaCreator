@@ -55,6 +55,7 @@ namespace Command.Receivers.Write
                      executionIdentity = _executionContext.OperationalIdentity;
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyTenant", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyTenantReceiver), commandName: "Command.Write.yTenantCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
                  var ytenant = new yTenantFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CnpjCpf, c.Nome, c.UserId, trackingMask: trackingMask);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ytenant.OperationalEntityId);
                  var domainResult = yTenantDomainBehavior.Apply(ytenant, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

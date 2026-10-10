@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" INSERT INTO [yGrant] ([Id], [Description], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Description, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yGrant] ([Id], [Description], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@Id, @Description, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 Id = yGrant.Id,
                 Description = yGrant.Description,
-                OperationalEntityId = yGrant.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = yGrant.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -61,16 +61,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 Description = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(string id, string value)
-        {
-            this.Query = $@" UPDATE [yGrant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -111,6 +101,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string id, string value)
+        {
+            this.Query = $@" UPDATE [yGrant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
