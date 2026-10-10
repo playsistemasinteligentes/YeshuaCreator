@@ -1,20 +1,20 @@
 # Deploy Da Plataforma
 
 Este diretorio concentra o orquestrador atual. `deploy.sh` coordena Shared,
-Central, Clinica, APS.ADM e Fiscal. Sem argumento, executa `all`, preservando o
-comportamento historico. Os argumentos `central`, `clinica`, `aps-adm`,
-`fiscal` e `shared` limitam o destino.
+Central, Clinica, APS.ADM, Fiscal e Memorias. Sem argumento, executa `all`,
+preservando o comportamento historico. Os argumentos `central`, `clinica`,
+`aps-adm`, `fiscal`, `memorias` e `shared` limitam o destino.
 
 O `docker-compose.yml` permanece apenas como compatibilidade para inspecao da
 Clinica. A operacao normal deve usar `deploy.sh`.
 
 ## Front E Gateway
 
-Somente `playsis-central/central-front` e publicado. Clinica, APS.ADM e Fiscal
-publicam API, Worker e Migration. O fluxo continua conceitualmente igual ao
-deploy historico da Clinica: limpa e atualiza a copia local do repositorio,
-constroi as imagens, executa as migrations, sobe os servicos e reconcilia o
-Nginx por ultimo.
+Somente `playsis-central/central-front` e publicado. Clinica, APS.ADM, Fiscal e
+Memorias publicam API, Worker e Migration; Memorias tambem publica seu worker
+Python de midia. O fluxo continua conceitualmente igual ao deploy historico da
+Clinica: limpa e atualiza a copia local do repositorio, constroi as imagens,
+executa as migrations, sobe os servicos e reconcilia o Nginx por ultimo.
 
 O deploy normal nao possui migracao automatica de layout nem varredura com
 `docker rm -f`. O Nginx somente e validado e recarregado depois que todos os
@@ -26,6 +26,7 @@ Exemplos:
 ```bash
 bash infra/docker/deploy.sh central
 bash infra/docker/deploy.sh fiscal
+bash infra/docker/deploy.sh memorias
 bash infra/docker/deploy.sh all
 ```
 

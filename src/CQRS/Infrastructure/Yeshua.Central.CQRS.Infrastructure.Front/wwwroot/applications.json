@@ -43,5 +43,16 @@
       "ADM",
       "FIS"
     ]
+  },
+  {
+    "application": "Memorias",
+    "title": "Memorias",
+    "apiBasePath": "/apps/memorias/yapi",
+    "menuEndpoint": "/getMenu",
+    "customAssetsPath": "/Custon/Apps/Memorias",
+    "modules": [
+      "ADM",
+      "MEM"
+    ]
   }
 ]

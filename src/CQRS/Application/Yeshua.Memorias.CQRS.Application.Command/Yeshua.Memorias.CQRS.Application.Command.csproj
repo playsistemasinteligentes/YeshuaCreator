@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BuildInParallel>false</BuildInParallel>
+  </PropertyGroup>
+
+  <ItemGroup>
+                    <ProjectReference Include="..\Yeshua.CQRS.Application.Command\Yeshua.CQRS.Application.Command.csproj" />
+                    <ProjectReference Include="..\..\Domain\Yeshua.Memorias.CQRS.Domain\Yeshua.Memorias.CQRS.Domain.csproj" />
+                    <ProjectReference Include="..\Yeshua.Memorias.CQRS.Application.RepositoryInterfaces\Yeshua.Memorias.CQRS.Application.RepositoryInterfaces.csproj" />
+                  </ItemGroup>
+
+</Project>

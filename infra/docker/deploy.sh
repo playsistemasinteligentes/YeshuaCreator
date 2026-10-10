@@ -7,6 +7,7 @@ CENTRAL_DIR="$APP_DIR/infra/Central/DockerCompose"
 CLINICA_DIR="$APP_DIR/infra/Clinica/DockerCompose"
 APS_ADM_DIR="$APP_DIR/infra/APS.ADM/DockerCompose"
 FISCAL_DIR="$APP_DIR/infra/Fiscal/DockerCompose"
+MEMORIAS_DIR="$APP_DIR/infra/Memorias/DockerCompose"
 DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
 TARGET="${1:-all}"
 
@@ -30,7 +31,8 @@ chmod +x \
   "$CENTRAL_DIR"/*.sh \
   "$CLINICA_DIR"/*.sh \
   "$APS_ADM_DIR"/*.sh \
-  "$FISCAL_DIR"/*.sh
+  "$FISCAL_DIR"/*.sh \
+  "$MEMORIAS_DIR"/*.sh
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
@@ -102,6 +104,8 @@ playsis-aps-adm aps-adm-api
 playsis-aps-adm aps-adm-worker
 playsis-fiscal fiscal-api
 playsis-fiscal fiscal-worker
+playsis-memorias memorias-api
+playsis-memorias memorias-worker
 EOF
 }
 
@@ -141,6 +145,13 @@ deploy_fiscal() {
     bash "$FISCAL_DIR/deploy.sh"
 }
 
+deploy_memorias() {
+  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 YESHUA_SKIP_SHARED=1 \
+    YESHUA_DOCKER_BUILD_NO_CACHE="${YESHUA_DOCKER_BUILD_NO_CACHE:-0}" \
+    YESHUA_DOCKER_BUILD_PULL="${YESHUA_DOCKER_BUILD_PULL:-0}" \
+    bash "$MEMORIAS_DIR/deploy.sh"
+}
+
 case "${TARGET,,}" in
   all)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
@@ -148,6 +159,7 @@ case "${TARGET,,}" in
     deploy_clinica
     deploy_aps_adm
     deploy_fiscal
+    deploy_memorias
     deploy_gateway
     ;;
   central)
@@ -170,12 +182,17 @@ case "${TARGET,,}" in
     deploy_fiscal
     deploy_gateway
     ;;
+  memorias)
+    bash "$SHARED_DIR/deploy.sh"
+    deploy_memorias
+    deploy_gateway
+    ;;
   shared)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_gateway
     ;;
   *)
-    echo "Destino invalido: $TARGET. Use all, central, clinica, aps-adm, fiscal ou shared." >&2
+    echo "Destino invalido: $TARGET. Use all, central, clinica, aps-adm, fiscal, memorias ou shared." >&2
     exit 1
     ;;
 esac

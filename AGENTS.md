@@ -417,6 +417,20 @@ Regra resumida:
   periodicamente essa API e atualiza seu singleton. Esse fluxo nao depende de
   API operacional central, banco adicional nem Front central.
 
+## Memorias E Processamento De Midia
+
+- O aplicativo Memorias reutiliza o caminho assincrono padrao do Yeshua:
+  Saga -> Outbox -> RabbitMQ/Celery -> Worker Python -> RabbitMQ -> Inbox -> Saga.
+- O worker Python de midia pertence ao aplicativo Memorias e tem responsabilidade
+  unica: transformar um manifesto de fotos em video por FFmpeg. Ele nao acessa
+  banco do aplicativo, nao decide regra de negocio e nao armazena credenciais do
+  YouTube.
+- Mensagens de fila carregam somente identificadores, correlacao e a chave do
+  manifesto no storage. Fotos e videos nunca trafegam dentro da mensagem.
+- OAuth, tokens e envio ao YouTube pertencem ao miolo customizado .NET do
+  aplicativo Memorias, usando a API oficial. A Engine gera somente as bordas,
+  a saga e os pontos de extensao dessa integracao.
+
 ## Front Central
 
 - `Yeshua.Central.CQRS.Infrastructure.Front` e a unica fonte da verdade do

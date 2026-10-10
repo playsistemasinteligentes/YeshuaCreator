@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "outputStorageKey": "volatile/memorias/render/output/album-exemplo.mp4",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "secondsPerPhoto": 4,
+  "photos": [
+    {
+      "storageKey": "persistent/memorias/photos/foto-001.jpg",
+      "durationSeconds": 4,
+      "caption": ""
+    },
+    {
+      "storageKey": "persistent/memorias/photos/foto-002.jpg",
+      "durationSeconds": 5,
+      "caption": ""
+    }
+  ]
+}

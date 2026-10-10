@@ -1,0 +1,75 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+// </yeshua>
+
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
+using Dominio.Entitys;
+using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
+using IRepository.Write;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Command.Receivers.Write
+{
+    public class InsertPublicacaoAlbumReceiver : ReciverBase<ICommand, IPublicacaoAlbumEntity>
+    {
+        private readonly IPublicacaoAlbumWriteRepository _repository;
+        private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+
+        public InsertPublicacaoAlbumReceiver(
+            IPublicacaoAlbumWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _repository = repository;
+            _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
+            _executionContext = context;
+        }
+
+        protected override Task<State<IPublicacaoAlbumEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        {
+             if(comand is Command.Write.PublicacaoAlbumCrudCommand c) 
+             {    
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPublicacaoAlbum", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPublicacaoAlbumReceiver), commandName: "Command.Write.PublicacaoAlbumCrudCommand");
+                 var publicacaoalbum = new PublicacaoAlbumFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.CorrelationId, c.ManifestStorageKey, c.VideoStorageKey, c.YouTubeVideoId, c.YouTubeUrl, c.Mensagem, c.SolicitadaEmUtc, c.PublicadaEmUtc, c.Status);
+                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", publicacaoalbum.OperationalEntityId);
+                 var domainResult = PublicacaoAlbumDomainBehavior.Apply(publicacaoalbum, context);
+                 if (!domainResult.IsValid)
+                     return Task.FromResult(ValidationError(domainResult.Errors));
+
+                 try
+                 {
+                     _repository.Insert(publicacaoalbum);
+                     return Task.FromResult(Success("OK", publicacaoalbum));
+                 }
+                 catch (Exception e)
+                 {
+                    return Task.FromResult(Error(e, publicacaoalbum));
+                 }
+            }
+            else 
+            {
+                 return Task.FromResult(Error("ErroConversao"));
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
