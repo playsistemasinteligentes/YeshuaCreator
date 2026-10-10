@@ -23,11 +23,11 @@ namespace IRepository.Write
         void Update(IEnderecosEntity enderecos);
         void Delete(IEnderecosEntity enderecos);
         void UpdateEND_GRUPO(string end_id, string value);
-        void UpdateOperationalEntityId(string end_id, string value);
         void UpdateTenantID(string end_id, int value);
         void UpdateDeleted(string end_id, bool value);
         void UpdateChanged(string end_id, DateTime value);
         void UpdateUserId(string end_id, int value);
+        void UpdateOperationalEntityId(string end_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

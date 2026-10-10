@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPublicacaoAlbumQuery(IPublicacaoAlbumEntity PublicacaoAlbum)
         {
-            this.Query = $@" INSERT INTO [PublicacaoAlbum] ([AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@AlbumId, @CorrelationId, @ManifestStorageKey, @VideoStorageKey, @YouTubeVideoId, @YouTubeUrl, @Mensagem, @SolicitadaEmUtc, @PublicadaEmUtc, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PublicacaoAlbum] ([AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@AlbumId, @CorrelationId, @ManifestStorageKey, @VideoStorageKey, @YouTubeVideoId, @YouTubeUrl, @Mensagem, @SolicitadaEmUtc, @PublicadaEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 AlbumId = PublicacaoAlbum.AlbumId,
@@ -43,11 +43,11 @@ namespace Query.Write
                 SolicitadaEmUtc = PublicacaoAlbum.SolicitadaEmUtc,
                 PublicadaEmUtc = PublicacaoAlbum.PublicadaEmUtc,
                 Status = PublicacaoAlbum.Status,
-                OperationalEntityId = PublicacaoAlbum.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = PublicacaoAlbum.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -172,16 +172,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [PublicacaoAlbum] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [PublicacaoAlbum] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -218,6 +208,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

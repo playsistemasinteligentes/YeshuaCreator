@@ -68,11 +68,11 @@
     public string? MOV_GRUPO_CONTABIL { get; set; }
     public string? FOR_ID { get; set; }
     public string? CLI_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MovimentoEstoqueEntity(int id, string produtoid, string? orderid, string tipo, string? turnoid, string? turmaid, Decimal quantidade, Decimal mov_peso_unitario, DateTime datahoracriacao, DateTime? datahoraemissao, string? diaturma, string? lote, string? sublote, string? maquinaid, int? use_id, string? observacao, string? ocorrenciaid, string? armazem, string? endereco, string? estorno, int? sequenciatransformacao, int? sequenciarepeticao, string? obsopparcial, string? ocoidopparcial, string? mov_id_integracao, string? mov_id_integracao_erp, string? car_id, int? mov_id_destino, string? pro_id_destino, string? mov_lote_destino, string? mov_sub_lote_destino, int? mov_id_origem, string? pro_id_origem, string? mov_lote_origem, string? mov_sub_lote_origem, int? mov_type, string? mov_doc, string? mov_aproveitamento, string? mov_retido, string? mov_vincos_onduladeira, string? bol_id, string? ord_id_origem, int? cor_sequencia, int? ver_id, string? mov_tipo_custo, string? mov_grupo_contabil, string? for_id, string? cli_id ){
  Id = id; 
@@ -123,9 +123,9 @@
  MOV_GRUPO_CONTABIL = mov_grupo_contabil; 
  FOR_ID = for_id; 
  CLI_ID = cli_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -24,11 +24,11 @@ namespace IRepository.Write
         void Delete(IDisponibilidadeAgendaEntity disponibilidadeagenda);
         void UpdateProfissionalId(int id, int value);
         void UpdateDataHora(int id, DateTime value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

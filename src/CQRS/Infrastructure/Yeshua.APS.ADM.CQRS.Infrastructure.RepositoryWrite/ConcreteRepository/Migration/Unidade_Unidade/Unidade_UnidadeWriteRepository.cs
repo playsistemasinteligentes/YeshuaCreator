@@ -56,11 +56,6 @@ namespace Input.Repository.Unidade_Unidade
             var query = _query.UpdateUNI_DESCRICAO(uni_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int uni_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(uni_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int uni_id, int value)
         {
             var query = _query.UpdateTenantID(uni_id, value);
@@ -79,6 +74,11 @@ namespace Input.Repository.Unidade_Unidade
         public void UpdateUserId(int uni_id, int value)
         {
             var query = _query.UpdateUserId(uni_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int uni_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(uni_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

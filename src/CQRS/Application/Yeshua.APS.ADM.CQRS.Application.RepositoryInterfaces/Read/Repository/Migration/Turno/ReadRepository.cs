@@ -41,11 +41,11 @@ namespace IRepository.Read
         public bool ExistsByTURN_HORA_FIM_DIA6(DateTime value );
         public bool ExistsByTURN_HORA_INI_DIA7(DateTime value );
         public bool ExistsByTURN_HORA_FIM_DIA7(DateTime value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TurnoDTO FirstById(string value );
         public TurnoDTO FirstByDescricao(string value );
         public TurnoDTO FirstByTURN_PRIORIDADE(int value );
@@ -63,11 +63,11 @@ namespace IRepository.Read
         public TurnoDTO FirstByTURN_HORA_FIM_DIA6(DateTime value );
         public TurnoDTO FirstByTURN_HORA_INI_DIA7(DateTime value );
         public TurnoDTO FirstByTURN_HORA_FIM_DIA7(DateTime value );
-        public TurnoDTO FirstByOperationalEntityId(string value );
         public TurnoDTO FirstByTenantID(int value );
         public TurnoDTO FirstByDeleted(bool value );
         public TurnoDTO FirstByChanged(DateTime value );
         public TurnoDTO FirstByUserId(int value );
+        public TurnoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TurnoDTO> GetAllById(string value );
         public IEnumerable<TurnoDTO> GetAllByDescricao(string value );
         public IEnumerable<TurnoDTO> GetAllByTURN_PRIORIDADE(int value );
@@ -85,11 +85,11 @@ namespace IRepository.Read
         public IEnumerable<TurnoDTO> GetAllByTURN_HORA_FIM_DIA6(DateTime value );
         public IEnumerable<TurnoDTO> GetAllByTURN_HORA_INI_DIA7(DateTime value );
         public IEnumerable<TurnoDTO> GetAllByTURN_HORA_FIM_DIA7(DateTime value );
-        public IEnumerable<TurnoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TurnoDTO> GetAllByTenantID(int value );
         public IEnumerable<TurnoDTO> GetAllByDeleted(bool value );
         public IEnumerable<TurnoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TurnoDTO> GetAllByUserId(int value );
+        public IEnumerable<TurnoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

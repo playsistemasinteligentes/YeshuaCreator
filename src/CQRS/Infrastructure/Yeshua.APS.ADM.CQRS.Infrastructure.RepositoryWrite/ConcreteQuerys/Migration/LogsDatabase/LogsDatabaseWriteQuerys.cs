@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirLogsDatabaseQuery(ILogsDatabaseEntity LogsDatabase)
         {
-            this.Query = $@" INSERT INTO [LogsDatabase] ([LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[LOGS_ID] VALUES(@LOGS_TABLE, @LOGS_KEY, @LOGS_KEY1, @LOGS_KEY2, @LOGS_KEY3, @LOGS_KEY4, @LOGS_COLUMN, @LOGS_BEFORE, @LOGS_AFTER, @LOGS_ACTION, @LOGS_DATE, @USE_ID, @LOGS_ORIGEM, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [LogsDatabase] ([LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[LOGS_ID] VALUES(@LOGS_TABLE, @LOGS_KEY, @LOGS_KEY1, @LOGS_KEY2, @LOGS_KEY3, @LOGS_KEY4, @LOGS_COLUMN, @LOGS_BEFORE, @LOGS_AFTER, @LOGS_ACTION, @LOGS_DATE, @USE_ID, @LOGS_ORIGEM, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 LOGS_TABLE = LogsDatabase.LOGS_TABLE,
@@ -46,11 +46,11 @@ namespace Query.Write
                 LOGS_DATE = LogsDatabase.LOGS_DATE,
                 USE_ID = LogsDatabase.USE_ID,
                 LOGS_ORIGEM = LogsDatabase.LOGS_ORIGEM,
-                OperationalEntityId = LogsDatabase.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = LogsDatabase.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -208,16 +208,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int logs_id, string value)
-        {
-            this.Query = $@" UPDATE [LogsDatabase] SET [OperationalEntityId] = @OperationalEntityId WHERE [LOGS_ID] = @LOGS_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                LOGS_ID = logs_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int logs_id, int value)
         {
             this.Query = $@" UPDATE [LogsDatabase] SET [TenantID] = @TenantID WHERE [LOGS_ID] = @LOGS_ID ";
@@ -254,6 +244,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                LOGS_ID = logs_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int logs_id, string value)
+        {
+            this.Query = $@" UPDATE [LogsDatabase] SET [OperationalEntityId] = @OperationalEntityId WHERE [LOGS_ID] = @LOGS_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 LOGS_ID = logs_id,
             };
             return new QueryModel(this.Query, this.Parameters);

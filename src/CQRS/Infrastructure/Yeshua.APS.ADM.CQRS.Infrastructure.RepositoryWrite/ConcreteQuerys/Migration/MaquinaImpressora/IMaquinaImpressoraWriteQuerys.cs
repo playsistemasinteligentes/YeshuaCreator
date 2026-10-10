@@ -20,11 +20,11 @@ namespace IQuery.Write
         QueryModel UpdateMAQ_ID(int maq_imp_id, string value);
         QueryModel UpdateIMP_ID(int maq_imp_id, int value);
         QueryModel UpdateMAI_FACAO(int maq_imp_id, int value);
-        QueryModel UpdateOperationalEntityId(int maq_imp_id, string value);
         QueryModel UpdateTenantID(int maq_imp_id, int value);
         QueryModel UpdateDeleted(int maq_imp_id, bool value);
         QueryModel UpdateChanged(int maq_imp_id, DateTime value);
         QueryModel UpdateUserId(int maq_imp_id, int value);
+        QueryModel UpdateOperationalEntityId(int maq_imp_id, string value);
         public QueryModel DeleteMaquinaImpressoraQuery(IMaquinaImpressoraEntity MaquinaImpressora);
     }
 }

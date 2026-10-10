@@ -77,11 +77,11 @@
     DateTime? TAR_DATA_FINAL { get; set; }
     string? TAR_APROVADO { get; set; }
     int? TAR_TEMPO_PRODUZINDO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

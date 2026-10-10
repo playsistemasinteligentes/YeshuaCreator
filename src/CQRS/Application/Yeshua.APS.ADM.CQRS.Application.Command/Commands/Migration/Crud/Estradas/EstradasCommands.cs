@@ -18,11 +18,11 @@ namespace Command.Write
         public string? EST_DESCRICAO { get; set; }
         public int? EST_ID_LIGACAO_PONTO_A { get; set; }
         public int? EST_ID_LIGACAO_PONTO_B { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Estradas";
  public string? OperationalRecordId => OperationalEntityId;
     }

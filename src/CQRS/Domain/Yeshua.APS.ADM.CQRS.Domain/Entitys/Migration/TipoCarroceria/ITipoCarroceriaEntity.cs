@@ -23,11 +23,11 @@
     int? Id { get; set; }
     string TCA_ID { get; set; }
     string? TCA_DESCRICAO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

@@ -101,11 +101,6 @@ namespace Input.Repository.Planoacao
             var query = _query.UpdateUSE_ID(pla_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int pla_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(pla_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int pla_id, int value)
         {
             var query = _query.UpdateTenantID(pla_id, value);
@@ -124,6 +119,11 @@ namespace Input.Repository.Planoacao
         public void UpdateUserId(int pla_id, int value)
         {
             var query = _query.UpdateUserId(pla_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int pla_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(pla_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

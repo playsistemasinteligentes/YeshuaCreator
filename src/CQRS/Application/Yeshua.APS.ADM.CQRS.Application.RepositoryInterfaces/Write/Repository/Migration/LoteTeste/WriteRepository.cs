@@ -25,11 +25,11 @@ namespace IRepository.Write
         void UpdateLT_ID(int id, int value);
         void UpdateTES_ID(int id, int value);
         void UpdateRL_ID(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

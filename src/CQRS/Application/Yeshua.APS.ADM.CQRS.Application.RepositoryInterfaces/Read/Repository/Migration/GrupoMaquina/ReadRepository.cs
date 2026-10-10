@@ -27,29 +27,29 @@ namespace IRepository.Read
         public bool ExistsById(string value );
         public bool ExistsByDescricao(string value );
         public bool ExistsByStatus(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByGMA_TIPO_PLANEJAMENTO(string value );
         public GrupoMaquinaDTO FirstById(string value );
         public GrupoMaquinaDTO FirstByDescricao(string value );
         public GrupoMaquinaDTO FirstByStatus(string value );
-        public GrupoMaquinaDTO FirstByOperationalEntityId(string value );
         public GrupoMaquinaDTO FirstByTenantID(int value );
         public GrupoMaquinaDTO FirstByDeleted(bool value );
         public GrupoMaquinaDTO FirstByChanged(DateTime value );
         public GrupoMaquinaDTO FirstByUserId(int value );
+        public GrupoMaquinaDTO FirstByOperationalEntityId(string value );
         public GrupoMaquinaDTO FirstByGMA_TIPO_PLANEJAMENTO(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllById(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByDescricao(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByStatus(string value );
-        public IEnumerable<GrupoMaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByTenantID(int value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByDeleted(bool value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByUserId(int value );
+        public IEnumerable<GrupoMaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByGMA_TIPO_PLANEJAMENTO(string value );
     }
 }

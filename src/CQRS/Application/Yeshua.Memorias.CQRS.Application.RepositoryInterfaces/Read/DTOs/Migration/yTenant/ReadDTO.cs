@@ -19,10 +19,10 @@ namespace Repositorio.Outputs
     public partial record yTenantDTO
     {
     public int id { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public string cnpjcpf { get; set; } = string.Empty;
     public string nome { get; set; } = string.Empty;
     public int userid { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     }

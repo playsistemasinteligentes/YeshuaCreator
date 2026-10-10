@@ -32,12 +32,16 @@
     public DateTime? NextExecutionAt { get; set; }
     public DateTime? LockedAt { get; set; }
     public string? LockedBy { get; set; }
+    public string? RootOperationId { get; set; }
+    public string? OperationId { get; set; }
+    public string? ExecutionId { get; set; }
+    public string? CausationId { get; set; }
     public string ProcessingScope { get; set; }
     public int? TenantID { get; set; }
-    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ySagaEntity(int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby ){
  Id = id; 
@@ -52,9 +56,13 @@
  NextExecutionAt = nextexecutionat.HasValue && nextexecutionat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : nextexecutionat; 
  LockedAt = lockedat.HasValue && lockedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : lockedat; 
  LockedBy = lockedby; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
+ RootOperationId = null; 
+ OperationId = null; 
+ ExecutionId = null; 
+ CausationId = null; 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

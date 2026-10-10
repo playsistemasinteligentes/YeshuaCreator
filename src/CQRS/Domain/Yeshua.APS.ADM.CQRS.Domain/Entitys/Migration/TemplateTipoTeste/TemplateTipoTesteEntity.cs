@@ -23,19 +23,19 @@
     public int TTT_ID { get; set; }
     public int TT_ID { get; set; }
     public int TEM_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TemplateTipoTesteEntity(int ttt_id, int tt_id, int tem_id ){
  TTT_ID = ttt_id; 
  TT_ID = tt_id; 
  TEM_ID = tem_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

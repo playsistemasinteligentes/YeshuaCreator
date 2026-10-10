@@ -25,11 +25,11 @@
     int? ORC_ID { get; set; }
     Decimal? MEM_VALOR { get; set; }
     string? MEM_DESCRICAO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

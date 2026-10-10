@@ -34,11 +34,11 @@ namespace IRepository.Read
         public bool ExistsByROT_PRO_ID(string value );
         public bool ExistsByFPR_SEQ_REPETICAO(int value );
         public bool ExistsByUSE_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public LaudoTesteFisicoDTO FirstById(int value );
         public LaudoTesteFisicoDTO FirstByLTF_ID(int value );
         public LaudoTesteFisicoDTO FirstByLTF_EMISSAO(DateTime value );
@@ -49,11 +49,11 @@ namespace IRepository.Read
         public LaudoTesteFisicoDTO FirstByROT_PRO_ID(string value );
         public LaudoTesteFisicoDTO FirstByFPR_SEQ_REPETICAO(int value );
         public LaudoTesteFisicoDTO FirstByUSE_ID(int value );
-        public LaudoTesteFisicoDTO FirstByOperationalEntityId(string value );
         public LaudoTesteFisicoDTO FirstByTenantID(int value );
         public LaudoTesteFisicoDTO FirstByDeleted(bool value );
         public LaudoTesteFisicoDTO FirstByChanged(DateTime value );
         public LaudoTesteFisicoDTO FirstByUserId(int value );
+        public LaudoTesteFisicoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllById(int value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByLTF_ID(int value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByLTF_EMISSAO(DateTime value );
@@ -64,11 +64,11 @@ namespace IRepository.Read
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByROT_PRO_ID(string value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByFPR_SEQ_REPETICAO(int value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByUSE_ID(int value );
-        public IEnumerable<LaudoTesteFisicoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByTenantID(int value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByDeleted(bool value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<LaudoTesteFisicoDTO> GetAllByUserId(int value );
+        public IEnumerable<LaudoTesteFisicoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

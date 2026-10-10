@@ -21,11 +21,11 @@ namespace Command.Write
         public int? OND_PROFUNDIDADE_VINCO { get; set; }
         public string OND_ID_INTEGRACAO { get; set; }
         public int VIN_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Onda";
  public string? OperationalRecordId => OperationalEntityId;
     }

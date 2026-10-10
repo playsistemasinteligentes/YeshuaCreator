@@ -24,11 +24,11 @@
             public const ulong NOME = 1UL << 1;
             public const ulong EXIBELISTA = 1UL << 2;
             public const ulong GRU_DESCRICAO = 1UL << 3;
-            public const ulong OperationalEntityId = 1UL << 4;
-            public const ulong TenantID = 1UL << 5;
-            public const ulong Deleted = 1UL << 6;
-            public const ulong Changed = 1UL << 7;
-            public const ulong UserId = 1UL << 8;
+            public const ulong TenantID = 1UL << 4;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
+            public const ulong UserId = 1UL << 7;
+            public const ulong OperationalEntityId = 1UL << 8;
         }
 
         public static class T_GrupoOperationalFields
@@ -37,11 +37,11 @@
             public const Dominio.Operational.OperationalDataClassification NOME = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification EXIBELISTA = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification GRU_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class T_GrupoDecorator : IT_GrupoEntity
@@ -134,7 +134,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -191,6 +190,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

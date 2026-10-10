@@ -28,11 +28,11 @@
             public const ulong MEN_TYPE = 1UL << 5;
             public const ulong MEN_QTD_TRY_SEND = 1UL << 6;
             public const ulong MEN_DATE_TRY_SEND = 1UL << 7;
-            public const ulong OperationalEntityId = 1UL << 8;
-            public const ulong TenantID = 1UL << 9;
-            public const ulong Deleted = 1UL << 10;
-            public const ulong Changed = 1UL << 11;
-            public const ulong UserId = 1UL << 12;
+            public const ulong TenantID = 1UL << 8;
+            public const ulong Deleted = 1UL << 9;
+            public const ulong Changed = 1UL << 10;
+            public const ulong UserId = 1UL << 11;
+            public const ulong OperationalEntityId = 1UL << 12;
         }
 
         public static class MensagemOperationalFields
@@ -45,11 +45,11 @@
             public const Dominio.Operational.OperationalDataClassification MEN_TYPE = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification MEN_QTD_TRY_SEND = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification MEN_DATE_TRY_SEND = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class MensagemDecorator : IMensagemEntity
@@ -198,7 +198,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -255,6 +254,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

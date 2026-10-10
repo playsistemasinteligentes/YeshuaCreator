@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Etiqueta] ";
+            this.Query = $@" select [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [Etiqueta] ";
 if (Command.ETI_ID.HasValue) dict["ETI_ID"] = Command.ETI_ID.Value;
 if (Command.ETI_ID.HasValue) whereClauses.Add($"[ETI_ID] = @ETI_ID");
 if (!string.IsNullOrEmpty(Command.ETI_CODIGO_BARRAS)) dict["ETI_CODIGO_BARRAS"] = $"%{Command.ETI_CODIGO_BARRAS}%";
@@ -75,14 +75,14 @@ if (!string.IsNullOrEmpty(Command.BOL_ID)) dict["BOL_ID"] = $"%{Command.BOL_ID}%
 if (!string.IsNullOrEmpty(Command.BOL_ID)) whereClauses.Add($"[BOL_ID] like @BOL_ID");
 if (Command.COR_SEQUENCIA.HasValue) dict["COR_SEQUENCIA"] = Command.COR_SEQUENCIA.Value;
 if (Command.COR_SEQUENCIA.HasValue) whereClauses.Add($"[COR_SEQUENCIA] = @COR_SEQUENCIA");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -601,23 +601,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [Etiqueta] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -686,12 +669,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Etiqueta] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByETI_IDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -708,7 +708,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -725,7 +725,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -742,7 +742,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -759,7 +759,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -776,7 +776,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -793,7 +793,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -810,7 +810,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -827,7 +827,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -844,7 +844,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -861,7 +861,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -878,7 +878,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -895,7 +895,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -912,7 +912,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -929,7 +929,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -946,7 +946,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -963,7 +963,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -980,7 +980,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -997,7 +997,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1014,7 +1014,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1031,7 +1031,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1048,7 +1048,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1065,7 +1065,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1077,29 +1077,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1116,7 +1099,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1133,7 +1116,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1150,13 +1133,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Etiqueta] ";
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [ETI_ID], [ETI_EMISSAO], [ETI_CODIGO_BARRAS], [ETI_SEQUENCIA], [ETI_NUMERO_COPIAS], [ETI_STATUS], [ETI_DATA_FABRICACAO], [ETI_COD_BARRAS_ORIGINAL], [ETI_OP_ORIGINAL], [MAQ_ID], [IMP_ID], [USE_ID], [ORD_ID], [ROT_PRO_ID], [ROT_SEQ_TRANFORMACAO], [FPR_SEQ_REPETICAO], [ETI_QUANTIDADE_PALETE], [ETI_LOTE], [ETI_SUB_LOTE], [ETI_IMPRIMIR_DE], [ETI_IMPRIMIR_ATE], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Etiqueta] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

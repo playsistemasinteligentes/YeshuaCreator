@@ -26,25 +26,25 @@ namespace IRepository.Read
         public IEnumerable<GrupoRecursoUserIdDTO> getGrupoRecursoReadFKUserId(object command );
         public bool ExistsByGRE_ID(string value );
         public bool ExistsByGRE_DESCRICAO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public GrupoRecursoDTO FirstByGRE_ID(string value );
         public GrupoRecursoDTO FirstByGRE_DESCRICAO(string value );
-        public GrupoRecursoDTO FirstByOperationalEntityId(string value );
         public GrupoRecursoDTO FirstByTenantID(int value );
         public GrupoRecursoDTO FirstByDeleted(bool value );
         public GrupoRecursoDTO FirstByChanged(DateTime value );
         public GrupoRecursoDTO FirstByUserId(int value );
+        public GrupoRecursoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<GrupoRecursoDTO> GetAllByGRE_ID(string value );
         public IEnumerable<GrupoRecursoDTO> GetAllByGRE_DESCRICAO(string value );
-        public IEnumerable<GrupoRecursoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<GrupoRecursoDTO> GetAllByTenantID(int value );
         public IEnumerable<GrupoRecursoDTO> GetAllByDeleted(bool value );
         public IEnumerable<GrupoRecursoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<GrupoRecursoDTO> GetAllByUserId(int value );
+        public IEnumerable<GrupoRecursoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

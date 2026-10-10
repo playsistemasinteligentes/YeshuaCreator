@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSefazEndpointQuery(ISefazEndpointEntity SefazEndpoint)
         {
-            this.Query = $@" INSERT INTO [SefazEndpoint] ([ProdutoFiscal], [UF], [Ambiente], [Servico], [Versao], [Url], [Ativo], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ProdutoFiscal, @UF, @Ambiente, @Servico, @Versao, @Url, @Ativo, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [SefazEndpoint] ([ProdutoFiscal], [UF], [Ambiente], [Servico], [Versao], [Url], [Ativo], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@ProdutoFiscal, @UF, @Ambiente, @Servico, @Versao, @Url, @Ativo, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 ProdutoFiscal = SefazEndpoint.ProdutoFiscal,
@@ -40,11 +40,11 @@ namespace Query.Write
                 Versao = SefazEndpoint.Versao,
                 Url = SefazEndpoint.Url,
                 Ativo = SefazEndpoint.Ativo,
-                OperationalEntityId = SefazEndpoint.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = SefazEndpoint.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -136,16 +136,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [SefazEndpoint] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [SefazEndpoint] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -182,6 +172,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [SefazEndpoint] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -43,11 +43,11 @@
     public Decimal? BOL_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
     public Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
     public int? BOL_REFILE_OBRIGATORIO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal BoletimEstudoEntity(int? id, string bol_id, string? bol_id_origem, string? bol_solver, string? bol_integracao, Decimal? bol_sequencia, Decimal grp_pap_gramatura_programado, string grp_id_programado, string? grp_papel1_programado, string? grp_papel2_programado, string? grp_papel3_programado, string? grp_papel4_programado, string? grp_papel5_programado, string? bol_status_interface, string? bol_tipo, int? bol_formato, Decimal? bol_gramatura_papeis_programados, Decimal? bol_gramatura_papeis_realizado, Decimal? bol_custo_papeis_programados, Decimal? bol_custo_papeis_realizado, Decimal? bol_gramatura_resina_programados, Decimal? bol_custo_resina_programados, int? bol_refile_obrigatorio ){
  Id = id; 
@@ -73,9 +73,9 @@
  BOL_GRAMATURA_RESINA_PROGRAMADOS = bol_gramatura_resina_programados; 
  BOL_CUSTO_RESINA_PROGRAMADOS = bol_custo_resina_programados; 
  BOL_REFILE_OBRIGATORIO = bol_refile_obrigatorio; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

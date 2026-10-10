@@ -36,11 +36,11 @@ namespace IRepository.Read
         public bool ExistsByORD_HASH_KEY(string value );
         public bool ExistsByNOT_ID(string value );
         public bool ExistsByNOT_EMISSAO(DateTime value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ItenCargaDTO FirstById(int value );
         public ItenCargaDTO FirstByCAR_ID(string value );
         public ItenCargaDTO FirstByORD_ID(string value );
@@ -52,11 +52,11 @@ namespace IRepository.Read
         public ItenCargaDTO FirstByORD_HASH_KEY(string value );
         public ItenCargaDTO FirstByNOT_ID(string value );
         public ItenCargaDTO FirstByNOT_EMISSAO(DateTime value );
-        public ItenCargaDTO FirstByOperationalEntityId(string value );
         public ItenCargaDTO FirstByTenantID(int value );
         public ItenCargaDTO FirstByDeleted(bool value );
         public ItenCargaDTO FirstByChanged(DateTime value );
         public ItenCargaDTO FirstByUserId(int value );
+        public ItenCargaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ItenCargaDTO> GetAllById(int value );
         public IEnumerable<ItenCargaDTO> GetAllByCAR_ID(string value );
         public IEnumerable<ItenCargaDTO> GetAllByORD_ID(string value );
@@ -68,11 +68,11 @@ namespace IRepository.Read
         public IEnumerable<ItenCargaDTO> GetAllByORD_HASH_KEY(string value );
         public IEnumerable<ItenCargaDTO> GetAllByNOT_ID(string value );
         public IEnumerable<ItenCargaDTO> GetAllByNOT_EMISSAO(DateTime value );
-        public IEnumerable<ItenCargaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItenCargaDTO> GetAllByTenantID(int value );
         public IEnumerable<ItenCargaDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItenCargaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ItenCargaDTO> GetAllByUserId(int value );
+        public IEnumerable<ItenCargaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

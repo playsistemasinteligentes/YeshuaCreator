@@ -28,26 +28,26 @@ namespace IRepository.Read
         public bool ExistsByApplicationKey(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByValidUntil(DateTime value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public yTenantApplicationDTO FirstById(int value );
         public yTenantApplicationDTO FirstByApplicationKey(string value );
         public yTenantApplicationDTO FirstByTenantID(int value );
         public yTenantApplicationDTO FirstByValidUntil(DateTime value );
-        public yTenantApplicationDTO FirstByOperationalEntityId(string value );
         public yTenantApplicationDTO FirstByDeleted(bool value );
         public yTenantApplicationDTO FirstByChanged(DateTime value );
         public yTenantApplicationDTO FirstByUserId(int value );
+        public yTenantApplicationDTO FirstByOperationalEntityId(string value );
         public IEnumerable<yTenantApplicationDTO> GetAllById(int value );
         public IEnumerable<yTenantApplicationDTO> GetAllByApplicationKey(string value );
         public IEnumerable<yTenantApplicationDTO> GetAllByTenantID(int value );
         public IEnumerable<yTenantApplicationDTO> GetAllByValidUntil(DateTime value );
-        public IEnumerable<yTenantApplicationDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yTenantApplicationDTO> GetAllByDeleted(bool value );
         public IEnumerable<yTenantApplicationDTO> GetAllByChanged(DateTime value );
         public IEnumerable<yTenantApplicationDTO> GetAllByUserId(int value );
+        public IEnumerable<yTenantApplicationDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

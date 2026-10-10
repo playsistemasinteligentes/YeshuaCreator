@@ -141,14 +141,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -181,6 +173,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public DisponibilidadeAgendaDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -200,14 +200,6 @@ namespace Read.Repository
         public DisponibilidadeAgendaDTO FirstByDataHora(DateTime value )
         {
             var query = _query.FirstByDataHoraQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public DisponibilidadeAgendaDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
                 return result;
@@ -245,6 +237,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public DisponibilidadeAgendaDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -264,14 +264,6 @@ namespace Read.Repository
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByDataHora(DateTime value )
         {
             var query = _query.FirstByDataHoraQuery(value );
-
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<DisponibilidadeAgendaDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -304,6 +296,14 @@ namespace Read.Repository
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<DisponibilidadeAgendaDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;

@@ -31,11 +31,11 @@
     public int? CDV_SEXTA { get; set; }
     public int? CDV_SABADO { get; set; }
     public int? CDV_DOMINGO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CalendarioDisponibilidadeVeiculosEntity(int? id, int cdv_id, DateTime? cdv_data_de, DateTime? cdv_data_ate, int? cdv_segunda, int? cdv_terca, int? cdv_quarta, int? cdv_quinta, int? cdv_sexta, int? cdv_sabado, int? cdv_domingo ){
  Id = id; 
@@ -49,9 +49,9 @@
  CDV_SEXTA = cdv_sexta; 
  CDV_SABADO = cdv_sabado; 
  CDV_DOMINGO = cdv_domingo; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

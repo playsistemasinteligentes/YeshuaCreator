@@ -23,19 +23,19 @@
     public int ID_TABELA { get; set; }
     public string CODIGO { get; set; }
     public string NOME { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TabelaEntity(int id_tabela, string codigo, string nome ){
  ID_TABELA = id_tabela; 
  CODIGO = codigo; 
  NOME = nome; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

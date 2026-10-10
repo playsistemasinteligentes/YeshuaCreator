@@ -26,11 +26,11 @@
     public string? TEM_RESINA_DE { get; set; }
     public string? TEM_RESINA_PARA { get; set; }
     public int? TEM_TEMPO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TempoSetupOnduladeiraEntity(int tem_id, string? ond_id_de, string? ond_id_para, string? tem_resina_de, string? tem_resina_para, int? tem_tempo ){
  TEM_ID = tem_id; 
@@ -39,9 +39,9 @@
  TEM_RESINA_DE = tem_resina_de; 
  TEM_RESINA_PARA = tem_resina_para; 
  TEM_TEMPO = tem_tempo; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

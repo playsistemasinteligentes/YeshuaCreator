@@ -23,19 +23,19 @@
     public int VIN_ID { get; set; }
     public string VIN_DESCRICAO { get; set; }
     public string VIN_ID_DESLOCAMENTO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal VincoEntity(int vin_id, string vin_descricao, string vin_id_deslocamento ){
  VIN_ID = vin_id; 
  VIN_DESCRICAO = vin_descricao; 
  VIN_ID_DESLOCAMENTO = vin_id_deslocamento; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

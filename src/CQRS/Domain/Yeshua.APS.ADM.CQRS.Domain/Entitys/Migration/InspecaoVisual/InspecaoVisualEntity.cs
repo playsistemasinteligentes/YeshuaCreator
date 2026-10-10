@@ -37,11 +37,11 @@
     public int? FPR_SEQ_REPETICAO { get; set; }
     public string? IPV_STATUS_LIBERACAO { get; set; }
     public Decimal? IPV_VALOR_MEDIDA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal InspecaoVisualEntity(int ipv_id, string? ipv_valor, int? ipv_id_operador, int? ipv_id_liberacao, string? ipv_obs, DateTime? ipv_data_coleta, DateTime? ipv_data_aval, int? tiv_id, string? turn_id, string? turm_id, string? ord_id, string? rot_pro_id, string? rot_maq_id, int? rot_seq_transformacao, int? fpr_seq_repeticao, string? ipv_status_liberacao, Decimal? ipv_valor_medida ){
  IPV_ID = ipv_id; 
@@ -61,9 +61,9 @@
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  IPV_STATUS_LIBERACAO = ipv_status_liberacao; 
  IPV_VALOR_MEDIDA = ipv_valor_medida; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

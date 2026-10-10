@@ -30,11 +30,11 @@ namespace Repositorio.Outputs
     public Decimal valordocumento { get; set; }
     public Decimal pesobruto { get; set; }
     public string snapshotjson { get; set; } = string.Empty;
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

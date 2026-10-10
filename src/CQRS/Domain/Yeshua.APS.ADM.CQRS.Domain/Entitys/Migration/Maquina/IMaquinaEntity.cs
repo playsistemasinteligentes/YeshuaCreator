@@ -23,11 +23,11 @@
     string? Id { get; set; }
     string? Descricao { get; set; }
     string? Status { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     int? CAL_ID { get; set; }
     string? MAQ_CONTROL_IP { get; set; }
     string GMA_ID { get; set; }

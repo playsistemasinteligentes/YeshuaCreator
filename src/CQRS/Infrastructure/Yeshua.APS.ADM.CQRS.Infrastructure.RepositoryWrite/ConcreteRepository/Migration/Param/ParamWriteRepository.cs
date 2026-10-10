@@ -71,11 +71,6 @@ namespace Input.Repository.Param
             var query = _query.UpdatePAR_VALOR_D(par_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string par_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(par_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string par_id, int value)
         {
             var query = _query.UpdateTenantID(par_id, value);
@@ -94,6 +89,11 @@ namespace Input.Repository.Param
         public void UpdateUserId(string par_id, int value)
         {
             var query = _query.UpdateUserId(par_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string par_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(par_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

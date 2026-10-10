@@ -25,11 +25,11 @@
     public int FotoId { get; set; }
     public int Ordem { get; set; }
     public string? Legenda { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal AlbumFotoEntity(int? id, int albumid, int fotoid, int ordem, string? legenda ){
  Id = id; 
@@ -37,9 +37,9 @@
  FotoId = fotoid; 
  Ordem = ordem; 
  Legenda = legenda; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

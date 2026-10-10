@@ -55,11 +55,11 @@ namespace IRepository.Read
         public bool ExistsByOCO_ID(string value );
         public bool ExistsByCAR_ID_JUNTADA(string value );
         public bool ExistsByCAR_OBSERVACAO_OTIMIZADOR(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CargaPrevistaDTO FirstById(int value );
         public CargaPrevistaDTO FirstByCAR_ID(string value );
         public CargaPrevistaDTO FirstByORD_ID(string value );
@@ -91,11 +91,11 @@ namespace IRepository.Read
         public CargaPrevistaDTO FirstByOCO_ID(string value );
         public CargaPrevistaDTO FirstByCAR_ID_JUNTADA(string value );
         public CargaPrevistaDTO FirstByCAR_OBSERVACAO_OTIMIZADOR(string value );
-        public CargaPrevistaDTO FirstByOperationalEntityId(string value );
         public CargaPrevistaDTO FirstByTenantID(int value );
         public CargaPrevistaDTO FirstByDeleted(bool value );
         public CargaPrevistaDTO FirstByChanged(DateTime value );
         public CargaPrevistaDTO FirstByUserId(int value );
+        public CargaPrevistaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CargaPrevistaDTO> GetAllById(int value );
         public IEnumerable<CargaPrevistaDTO> GetAllByCAR_ID(string value );
         public IEnumerable<CargaPrevistaDTO> GetAllByORD_ID(string value );
@@ -127,11 +127,11 @@ namespace IRepository.Read
         public IEnumerable<CargaPrevistaDTO> GetAllByOCO_ID(string value );
         public IEnumerable<CargaPrevistaDTO> GetAllByCAR_ID_JUNTADA(string value );
         public IEnumerable<CargaPrevistaDTO> GetAllByCAR_OBSERVACAO_OTIMIZADOR(string value );
-        public IEnumerable<CargaPrevistaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CargaPrevistaDTO> GetAllByTenantID(int value );
         public IEnumerable<CargaPrevistaDTO> GetAllByDeleted(bool value );
         public IEnumerable<CargaPrevistaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CargaPrevistaDTO> GetAllByUserId(int value );
+        public IEnumerable<CargaPrevistaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

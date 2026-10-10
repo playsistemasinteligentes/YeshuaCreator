@@ -19,11 +19,11 @@ namespace Repositorio.Outputs
     public partial record ConfiguracoesDTO
     {
     public int con_id { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -51,11 +51,11 @@
     public string? OCO_ID { get; set; }
     public string? CAR_ID_JUNTADA { get; set; }
     public string? CAR_OBSERVACAO_OTIMIZADOR { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CargaPrevistaEntity(int? id, string car_id, string ord_id, Decimal itc_qtd_planejada, DateTime? car_previsao_materia_prima, DateTime? car_data_inicio_previsto, DateTime? car_data_inicio_realizado, DateTime? car_data_fim_previsto, DateTime? car_data_fim_realizado, DateTime? car_inicio_janela_embarque, DateTime? car_fim_janela_embarque, DateTime? car_embarque_alvo, Decimal? car_status, Decimal? car_peso_teorico, Decimal? car_volume_teorico, Decimal? car_peso_real, Decimal? car_volume_real, Decimal? car_peso_embalagem, Decimal? car_peso_entrada, Decimal? car_peso_saida, string? car_id_doca, string? vei_placa, int? tip_id, string? tra_id, Decimal? car_grupo_produtivo, string? rot_id, string? car_observacao_de_transporte, string? car_justificativa_de_carregamento, string? oco_id, string? car_id_juntada, string? car_observacao_otimizador ){
  Id = id; 
@@ -89,9 +89,9 @@
  OCO_ID = oco_id; 
  CAR_ID_JUNTADA = car_id_juntada; 
  CAR_OBSERVACAO_OTIMIZADOR = car_observacao_otimizador; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

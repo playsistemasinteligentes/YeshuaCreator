@@ -113,6 +113,19 @@ namespace Command.Patterns
                 _executionContext.SetTraceId(sagaDto.correlationid);
 
             var saga = _registry.Map(sagaDto);
+            if (_executionContext.TryGetOperationalIdentity(out var currentIdentity))
+            {
+                saga.SetOperationalIdentity(
+                    currentIdentity.RootOperationId,
+                    currentIdentity.OperationId,
+                    currentIdentity.ExecutionId,
+                    currentIdentity.CausationId);
+                saga.GetCurrent()?.SetOperationalIdentity(
+                    currentIdentity.RootOperationId,
+                    currentIdentity.OperationId,
+                    currentIdentity.ExecutionId,
+                    currentIdentity.CausationId);
+            }
             saga.LockedBy = lockedBy;
             saga.LockedAt = lockedAt;
 
@@ -194,13 +207,24 @@ namespace Command.Patterns
                         "Execute",
                         "ySaga",
                         sagaDto.correlationid);
+                    var parentIdentity = new OperationalExecutionIdentity(
+                        sagaDto.rootoperationid,
+                        sagaDto.operationid,
+                        sagaDto.executionid,
+                        sagaDto.causationid);
+                    using var recordExecution = recordTelemetry.Enabled
+                        ? _executionContext.BeginOperationalExecution(
+                            parentIdentity,
+                            "SagaWorker.Record")
+                        : null;
                     using var recordActivity = recordTelemetry.Enabled
                         ? OperationalActivity.StartRoot("SagaWorker.Record")
                         : null;
                     recordActivity?.SetTag("yeshua.component", "SagaWorkerRecord");
                     recordActivity?.SetTag("yeshua.entity", "ySaga");
                     recordActivity?.SetTag("yeshua.operational_entity_id", sagaDto.correlationid);
-                    recordActivity?.SetTag("yeshua.root_operation_id", sagaDto.correlationid);
+                    if (_executionContext.TryGetOperationalIdentity(out var executionIdentity))
+                        OperationalActivity.SetIdentity(recordActivity, executionIdentity);
 
                     try
                     {
@@ -212,6 +236,19 @@ namespace Command.Patterns
                             _executionContext.SetTraceId(sagaDto.correlationid);
 
                         var saga = _registry.Map(sagaDto);
+                        if (_executionContext.TryGetOperationalIdentity(out executionIdentity))
+                        {
+                            saga.SetOperationalIdentity(
+                                executionIdentity.RootOperationId,
+                                executionIdentity.OperationId,
+                                executionIdentity.ExecutionId,
+                                executionIdentity.CausationId);
+                            saga.GetCurrent()?.SetOperationalIdentity(
+                                executionIdentity.RootOperationId,
+                                executionIdentity.OperationId,
+                                executionIdentity.ExecutionId,
+                                executionIdentity.CausationId);
+                        }
                         sagaId = saga.CorrelationId.ToString();
                         saga.LockedBy = lockedBy;
                         saga.LockedAt = lockedAt;

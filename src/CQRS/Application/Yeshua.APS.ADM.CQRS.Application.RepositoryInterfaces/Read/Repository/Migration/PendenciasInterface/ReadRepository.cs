@@ -31,11 +31,11 @@ namespace IRepository.Read
         public bool ExistsByPEN_PROTOCOLO_IN(string value );
         public bool ExistsByPEN_ID_PROTOCOLO_IN(string value );
         public bool ExistsByDATA_ENTRADA(DateTime value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByPEN_ID(int value );
         public PendenciasInterfaceDTO FirstByPEN_STATUS_OUT(string value );
         public PendenciasInterfaceDTO FirstByPEN_PROTOCOLO_OUT(string value );
@@ -44,11 +44,11 @@ namespace IRepository.Read
         public PendenciasInterfaceDTO FirstByPEN_PROTOCOLO_IN(string value );
         public PendenciasInterfaceDTO FirstByPEN_ID_PROTOCOLO_IN(string value );
         public PendenciasInterfaceDTO FirstByDATA_ENTRADA(DateTime value );
-        public PendenciasInterfaceDTO FirstByOperationalEntityId(string value );
         public PendenciasInterfaceDTO FirstByTenantID(int value );
         public PendenciasInterfaceDTO FirstByDeleted(bool value );
         public PendenciasInterfaceDTO FirstByChanged(DateTime value );
         public PendenciasInterfaceDTO FirstByUserId(int value );
+        public PendenciasInterfaceDTO FirstByOperationalEntityId(string value );
         public PendenciasInterfaceDTO FirstByPEN_ID(int value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_STATUS_OUT(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_PROTOCOLO_OUT(string value );
@@ -57,11 +57,11 @@ namespace IRepository.Read
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_PROTOCOLO_IN(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_ID_PROTOCOLO_IN(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByDATA_ENTRADA(DateTime value );
-        public IEnumerable<PendenciasInterfaceDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByTenantID(int value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByDeleted(bool value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByUserId(int value );
+        public IEnumerable<PendenciasInterfaceDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PendenciasInterfaceDTO> GetAllByPEN_ID(int value );
     }
 }

@@ -30,13 +30,14 @@ namespace Query.Write
         }
         public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
         {
-            this.Query = $@" INSERT INTO [yTenant] ([CnpjCpf], [Nome], [UserId], [OperationalEntityId], [Deleted], [Changed]) OUTPUT INSERTED.[Id] VALUES(@CnpjCpf, @Nome, @UserId, @OperationalEntityId, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [OperationalEntityId], [CnpjCpf], [Nome], [UserId], [Deleted], [Changed]) VALUES(@Id, @OperationalEntityId, @CnpjCpf, @Nome, @UserId, @Deleted, @Changed) ";
             this.Parameters = new
             {
+                Id = yTenant.Id,
+                OperationalEntityId = yTenant.OperationalEntityId,
                 CnpjCpf = yTenant.CnpjCpf,
                 Nome = yTenant.Nome,
                 UserId = yTenant.UserId,
-                OperationalEntityId = yTenant.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
             };
@@ -52,6 +53,16 @@ namespace Query.Write
                 UserId = _executionContext.UserId,
                 Changed = yTenant.Changed,
                 Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -81,16 +92,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yTenant] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -21,11 +21,11 @@ namespace IQuery.Write
         QueryModel UpdateCAL_ID(string rec_id, int value);
         QueryModel UpdateREC_CONTROL_IP(string rec_id, string value);
         QueryModel UpdateGRE_ID(string rec_id, string value);
-        QueryModel UpdateOperationalEntityId(string rec_id, string value);
         QueryModel UpdateTenantID(string rec_id, int value);
         QueryModel UpdateDeleted(string rec_id, bool value);
         QueryModel UpdateChanged(string rec_id, DateTime value);
         QueryModel UpdateUserId(string rec_id, int value);
+        QueryModel UpdateOperationalEntityId(string rec_id, string value);
         public QueryModel DeleteRecursosQuery(IRecursosEntity Recursos);
     }
 }

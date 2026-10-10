@@ -61,11 +61,6 @@ namespace Input.Repository.Maquina
             var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -84,6 +79,11 @@ namespace Input.Repository.Maquina
         public void UpdateUserId(string id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateCAL_ID(string id, int value)

@@ -22,11 +22,11 @@
 {
     int? Id { get; set; }
     int IES_CUSTOM_FONT_SIZE { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

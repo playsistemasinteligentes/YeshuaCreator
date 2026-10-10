@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsByID_TABELA(int value );
         public bool ExistsByCODIGO(string value );
         public bool ExistsByNOME(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TabelaDTO FirstByID_TABELA(int value );
         public TabelaDTO FirstByCODIGO(string value );
         public TabelaDTO FirstByNOME(string value );
-        public TabelaDTO FirstByOperationalEntityId(string value );
         public TabelaDTO FirstByTenantID(int value );
         public TabelaDTO FirstByDeleted(bool value );
         public TabelaDTO FirstByChanged(DateTime value );
         public TabelaDTO FirstByUserId(int value );
+        public TabelaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TabelaDTO> GetAllByID_TABELA(int value );
         public IEnumerable<TabelaDTO> GetAllByCODIGO(string value );
         public IEnumerable<TabelaDTO> GetAllByNOME(string value );
-        public IEnumerable<TabelaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TabelaDTO> GetAllByTenantID(int value );
         public IEnumerable<TabelaDTO> GetAllByDeleted(bool value );
         public IEnumerable<TabelaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TabelaDTO> GetAllByUserId(int value );
+        public IEnumerable<TabelaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -30,31 +30,31 @@ namespace IRepository.Read
         public bool ExistsByINF_VALOR(Decimal value );
         public bool ExistsByMET_ID(int value );
         public bool ExistsByINF_DATA(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public InformacoesComplementaresDTO FirstByINF_ID(int value );
         public InformacoesComplementaresDTO FirstByINF_DESCRICAO(string value );
         public InformacoesComplementaresDTO FirstByINF_VALOR(Decimal value );
         public InformacoesComplementaresDTO FirstByMET_ID(int value );
         public InformacoesComplementaresDTO FirstByINF_DATA(string value );
-        public InformacoesComplementaresDTO FirstByOperationalEntityId(string value );
         public InformacoesComplementaresDTO FirstByTenantID(int value );
         public InformacoesComplementaresDTO FirstByDeleted(bool value );
         public InformacoesComplementaresDTO FirstByChanged(DateTime value );
         public InformacoesComplementaresDTO FirstByUserId(int value );
+        public InformacoesComplementaresDTO FirstByOperationalEntityId(string value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByINF_ID(int value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByINF_DESCRICAO(string value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByINF_VALOR(Decimal value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByMET_ID(int value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByINF_DATA(string value );
-        public IEnumerable<InformacoesComplementaresDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByTenantID(int value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByDeleted(bool value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByChanged(DateTime value );
         public IEnumerable<InformacoesComplementaresDTO> GetAllByUserId(int value );
+        public IEnumerable<InformacoesComplementaresDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

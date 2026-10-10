@@ -34,13 +34,17 @@ namespace IQuery.Read
         public QueryModel ExistsByLastErrorQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByProcessingAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByNextAttemptAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByRootOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByExecutionIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCausationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsBySagaIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsBySagaStepIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
-        public QueryModel ExistsByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByMessageIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByTypeQuery(string value , bool TakeOffTenantID = false);
@@ -57,13 +61,17 @@ namespace IQuery.Read
         public QueryModel FirstByLastErrorQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByProcessingAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByNextAttemptAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByRootOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByExecutionIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCausationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstBySagaIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstBySagaStepIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);
-        public QueryModel FirstByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByOperationalEntityIdQuery(string value , bool TakeOffTenantID = false);
     public QueryModel yOutboxProximaPendenteQuery(Command.Read.yOutboxProximaPendenteCommand Command , bool TakeOffTenantID = false);
     }
 }

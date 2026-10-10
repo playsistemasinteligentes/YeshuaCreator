@@ -25,11 +25,11 @@
     public string? PER_QTD { get; set; }
     public string? UNI_ID { get; set; }
     public string? GRP_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PeriodicidadeTesteEntity(int? id, int per_id, string? per_qtd, string? uni_id, string? grp_id ){
  Id = id; 
@@ -37,9 +37,9 @@
  PER_QTD = per_qtd; 
  UNI_ID = uni_id; 
  GRP_ID = grp_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

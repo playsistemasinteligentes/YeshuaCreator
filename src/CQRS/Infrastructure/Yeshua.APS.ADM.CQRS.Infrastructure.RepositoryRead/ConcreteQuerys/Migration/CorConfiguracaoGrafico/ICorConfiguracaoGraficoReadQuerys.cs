@@ -20,20 +20,20 @@ namespace IQuery.Read
         public QueryModel ExistsByCOR_PERCENTUAL_INIQuery(Decimal value );
         public QueryModel ExistsByCOR_PERCENTUAL_FIMQuery(Decimal value );
         public QueryModel ExistsByCOR_DESCRICAOQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByCOR_IDQuery(string value );
         public QueryModel FirstByCOR_PERCENTUAL_INIQuery(Decimal value );
         public QueryModel FirstByCOR_PERCENTUAL_FIMQuery(Decimal value );
         public QueryModel FirstByCOR_DESCRICAOQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

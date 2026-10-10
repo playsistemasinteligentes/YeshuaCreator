@@ -43,11 +43,11 @@ namespace IRepository.Write
         void UpdatePRO_ID_PALETE(int cor_id, string value);
         void UpdateCOR_STATUS_PALETE(int cor_id, string value);
         void UpdateCOR_GRUPO_PRODUTIVO(int cor_id, Decimal value);
-        void UpdateOperationalEntityId(int cor_id, string value);
         void UpdateTenantID(int cor_id, int value);
         void UpdateDeleted(int cor_id, bool value);
         void UpdateChanged(int cor_id, DateTime value);
         void UpdateUserId(int cor_id, int value);
+        void UpdateOperationalEntityId(int cor_id, string value);
         void UpdateCOR_STATUS(int cor_id, string value);
         void UpdateCOR_STATUS_INTERFACE(int cor_id, string value);
         void UpdateMAQ_ID(int cor_id, string value);

@@ -31,11 +31,11 @@
     public string? MAQ_ID { get; set; }
     public string? PRO_ID { get; set; }
     public int? ICA_LIMPESA_MAQUINA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ItensCalendarioEntity(int ica_id, DateTime ica_data_de, DateTime ica_data_ate, string? ica_observacao, int ica_tipo, string? urm_id, string? urn_id, int cal_id, string? maq_id, string? pro_id, int? ica_limpesa_maquina ){
  ICA_ID = ica_id; 
@@ -49,9 +49,9 @@
  MAQ_ID = maq_id; 
  PRO_ID = pro_id; 
  ICA_LIMPESA_MAQUINA = ica_limpesa_maquina; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -18,11 +18,11 @@ namespace Command.Read
         public string? PRO_ID { get; set; }
         public string? CUS_ID { get; set; }
         public string? PAR_VALOR { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "ParametrosDeCusto";
  public string? OperationalRecordId => OperationalEntityId;

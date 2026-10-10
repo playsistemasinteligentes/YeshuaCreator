@@ -66,11 +66,11 @@
             public const ulong GRP_PERCENTUAL_PERDA_MEDIA = 1UL << 43;
             public const ulong GRP_FILTRA_SEQ_TRANS = 1UL << 44;
             public const ulong GRP_IMG_CAIXA = 1UL << 45;
-            public const ulong OperationalEntityId = 1UL << 46;
-            public const ulong TenantID = 1UL << 47;
-            public const ulong Deleted = 1UL << 48;
-            public const ulong Changed = 1UL << 49;
-            public const ulong UserId = 1UL << 50;
+            public const ulong TenantID = 1UL << 46;
+            public const ulong Deleted = 1UL << 47;
+            public const ulong Changed = 1UL << 48;
+            public const ulong UserId = 1UL << 49;
+            public const ulong OperationalEntityId = 1UL << 50;
         }
 
         public static class GrupoProdutoAbstratoOperationalFields
@@ -121,11 +121,11 @@
             public const Dominio.Operational.OperationalDataClassification GRP_PERCENTUAL_PERDA_MEDIA = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification GRP_FILTRA_SEQ_TRANS = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification GRP_IMG_CAIXA = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class GrupoProdutoAbstratoDecorator : IGrupoProdutoAbstratoEntity
@@ -806,7 +806,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -863,6 +862,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

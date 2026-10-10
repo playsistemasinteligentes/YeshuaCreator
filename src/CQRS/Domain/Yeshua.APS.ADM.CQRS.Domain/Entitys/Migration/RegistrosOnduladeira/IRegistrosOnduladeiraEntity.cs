@@ -25,11 +25,11 @@
     string REG_RESPOSTA { get; set; }
     string REG_STATUS { get; set; }
     DateTime REG_DATA_INICIO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

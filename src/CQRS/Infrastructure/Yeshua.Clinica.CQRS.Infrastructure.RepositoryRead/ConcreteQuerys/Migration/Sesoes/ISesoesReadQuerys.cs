@@ -48,11 +48,11 @@ namespace IQuery.Read
         public QueryModel ExistsByServicoIdQuery(int value );
         public QueryModel ExistsByMovimentacaoFinanceiraIdQuery(int value );
         public QueryModel ExistsByProfissionalIdQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByPacienteIdQuery(int value );
         public QueryModel FirstByDataInicioQuery(DateTime value );
         public QueryModel FirstByDataFimQuery(DateTime value );
@@ -81,11 +81,11 @@ namespace IQuery.Read
         public QueryModel FirstByServicoIdQuery(int value );
         public QueryModel FirstByMovimentacaoFinanceiraIdQuery(int value );
         public QueryModel FirstByProfissionalIdQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

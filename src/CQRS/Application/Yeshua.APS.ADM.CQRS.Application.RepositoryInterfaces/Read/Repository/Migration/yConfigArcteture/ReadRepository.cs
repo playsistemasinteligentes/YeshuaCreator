@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByAuditTrackerActived(int value );
         public bool ExistsByAuditCRUDActived(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public yConfigArctetureDTO FirstById(int value );
         public yConfigArctetureDTO FirstByAuditTrackerActived(int value );
         public yConfigArctetureDTO FirstByAuditCRUDActived(int value );
-        public yConfigArctetureDTO FirstByOperationalEntityId(string value );
         public yConfigArctetureDTO FirstByTenantID(int value );
         public yConfigArctetureDTO FirstByDeleted(bool value );
         public yConfigArctetureDTO FirstByChanged(DateTime value );
         public yConfigArctetureDTO FirstByUserId(int value );
+        public yConfigArctetureDTO FirstByOperationalEntityId(string value );
         public IEnumerable<yConfigArctetureDTO> GetAllById(int value );
         public IEnumerable<yConfigArctetureDTO> GetAllByAuditTrackerActived(int value );
         public IEnumerable<yConfigArctetureDTO> GetAllByAuditCRUDActived(int value );
-        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yConfigArctetureDTO> GetAllByTenantID(int value );
         public IEnumerable<yConfigArctetureDTO> GetAllByDeleted(bool value );
         public IEnumerable<yConfigArctetureDTO> GetAllByChanged(DateTime value );
         public IEnumerable<yConfigArctetureDTO> GetAllByUserId(int value );
+        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

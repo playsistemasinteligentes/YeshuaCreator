@@ -66,11 +66,6 @@ namespace Input.Repository.Cabvisao
             var query = _query.UpdateUSE_ID(cab_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int cab_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(cab_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int cab_id, int value)
         {
             var query = _query.UpdateTenantID(cab_id, value);
@@ -89,6 +84,11 @@ namespace Input.Repository.Cabvisao
         public void UpdateUserId(int cab_id, int value)
         {
             var query = _query.UpdateUserId(cab_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int cab_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(cab_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

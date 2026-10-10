@@ -38,11 +38,11 @@ namespace IRepository.Read
         public bool ExistsByMAQ_ID(string value );
         public bool ExistsByPRO_ID(string value );
         public bool ExistsByICA_LIMPESA_MAQUINA(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ItensCalendarioDTO FirstByICA_ID(int value );
         public ItensCalendarioDTO FirstByICA_DATA_DE(DateTime value );
         public ItensCalendarioDTO FirstByICA_DATA_ATE(DateTime value );
@@ -54,11 +54,11 @@ namespace IRepository.Read
         public ItensCalendarioDTO FirstByMAQ_ID(string value );
         public ItensCalendarioDTO FirstByPRO_ID(string value );
         public ItensCalendarioDTO FirstByICA_LIMPESA_MAQUINA(int value );
-        public ItensCalendarioDTO FirstByOperationalEntityId(string value );
         public ItensCalendarioDTO FirstByTenantID(int value );
         public ItensCalendarioDTO FirstByDeleted(bool value );
         public ItensCalendarioDTO FirstByChanged(DateTime value );
         public ItensCalendarioDTO FirstByUserId(int value );
+        public ItensCalendarioDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByICA_ID(int value );
         public IEnumerable<ItensCalendarioDTO> GetAllByICA_DATA_DE(DateTime value );
         public IEnumerable<ItensCalendarioDTO> GetAllByICA_DATA_ATE(DateTime value );
@@ -70,11 +70,11 @@ namespace IRepository.Read
         public IEnumerable<ItensCalendarioDTO> GetAllByMAQ_ID(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByPRO_ID(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByICA_LIMPESA_MAQUINA(int value );
-        public IEnumerable<ItensCalendarioDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItensCalendarioDTO> GetAllByTenantID(int value );
         public IEnumerable<ItensCalendarioDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItensCalendarioDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ItensCalendarioDTO> GetAllByUserId(int value );
+        public IEnumerable<ItensCalendarioDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

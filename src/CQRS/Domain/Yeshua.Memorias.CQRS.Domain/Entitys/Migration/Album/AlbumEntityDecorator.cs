@@ -26,11 +26,26 @@
             public const ulong Privacidade = 1UL << 3;
             public const ulong SegundosPorFoto = 1UL << 4;
             public const ulong Status = 1UL << 5;
-            public const ulong OperationalEntityId = 1UL << 6;
-            public const ulong TenantID = 1UL << 7;
-            public const ulong Deleted = 1UL << 8;
-            public const ulong Changed = 1UL << 9;
-            public const ulong UserId = 1UL << 10;
+            public const ulong TenantID = 1UL << 6;
+            public const ulong Deleted = 1UL << 7;
+            public const ulong Changed = 1UL << 8;
+            public const ulong UserId = 1UL << 9;
+            public const ulong OperationalEntityId = 1UL << 10;
+        }
+
+        public static class AlbumOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Titulo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Descricao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Privacidade = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SegundosPorFoto = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class AlbumDecorator : IAlbumEntity
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public AlbumDecorator(IAlbumEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.Titulo = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Titulo) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Titulo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Titulo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Titulo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.Descricao = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Descricao) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Descricao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.Privacidade = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Privacidade) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Privacidade", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Privacidade", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Privacidade, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.SegundosPorFoto = value;
                                                 if ((_trackingMask & AlbumTrackingFields.SegundosPorFoto) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "SegundosPorFoto", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "SegundosPorFoto", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.SegundosPorFoto, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,11 +162,10 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -154,7 +176,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & AlbumTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +190,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +204,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & AlbumTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,10 +218,11 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & AlbumTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Album", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Album", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

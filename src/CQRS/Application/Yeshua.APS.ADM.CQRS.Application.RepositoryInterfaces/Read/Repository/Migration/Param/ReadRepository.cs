@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByPAR_VALOR_S(string value );
         public bool ExistsByPAR_VALOR_N(Decimal value );
         public bool ExistsByPAR_VALOR_D(DateTime value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ParamDTO FirstByPAR_ID(string value );
         public ParamDTO FirstByPAR_DESCRICAO(string value );
         public ParamDTO FirstByPAR_VALOR_S(string value );
         public ParamDTO FirstByPAR_VALOR_N(Decimal value );
         public ParamDTO FirstByPAR_VALOR_D(DateTime value );
-        public ParamDTO FirstByOperationalEntityId(string value );
         public ParamDTO FirstByTenantID(int value );
         public ParamDTO FirstByDeleted(bool value );
         public ParamDTO FirstByChanged(DateTime value );
         public ParamDTO FirstByUserId(int value );
+        public ParamDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ParamDTO> GetAllByPAR_ID(string value );
         public IEnumerable<ParamDTO> GetAllByPAR_DESCRICAO(string value );
         public IEnumerable<ParamDTO> GetAllByPAR_VALOR_S(string value );
         public IEnumerable<ParamDTO> GetAllByPAR_VALOR_N(Decimal value );
         public IEnumerable<ParamDTO> GetAllByPAR_VALOR_D(DateTime value );
-        public IEnumerable<ParamDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ParamDTO> GetAllByTenantID(int value );
         public IEnumerable<ParamDTO> GetAllByDeleted(bool value );
         public IEnumerable<ParamDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ParamDTO> GetAllByUserId(int value );
+        public IEnumerable<ParamDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -61,11 +61,6 @@ namespace Input.Repository.GrupoMaquina
             var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -84,6 +79,11 @@ namespace Input.Repository.GrupoMaquina
         public void UpdateUserId(string id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateGMA_TIPO_PLANEJAMENTO(string id, string value)

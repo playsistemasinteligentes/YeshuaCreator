@@ -25,11 +25,11 @@
     public DateTime HRE_HORA_FINAL { get; set; }
     public string CLI_ID { get; set; }
     public int HRE_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal T_HORARIO_RECEBIMENTOEntity(int hre_dia_da_semana, DateTime hre_hora_inicial, DateTime hre_hora_final, string cli_id, int hre_id ){
  HRE_DIA_DA_SEMANA = hre_dia_da_semana; 
@@ -37,9 +37,9 @@
  HRE_HORA_FINAL = (hre_hora_final < (new DateTime(1800, 1, 1))) ? DateTime.Now : hre_hora_final; 
  CLI_ID = cli_id; 
  HRE_ID = hre_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -156,11 +156,6 @@ namespace Input.Repository.CorridasOnduladeira
             var query = _query.UpdateCOR_GRUPO_PRODUTIVO(cor_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int cor_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(cor_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int cor_id, int value)
         {
             var query = _query.UpdateTenantID(cor_id, value);
@@ -179,6 +174,11 @@ namespace Input.Repository.CorridasOnduladeira
         public void UpdateUserId(int cor_id, int value)
         {
             var query = _query.UpdateUserId(cor_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int cor_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(cor_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateCOR_STATUS(int cor_id, string value)

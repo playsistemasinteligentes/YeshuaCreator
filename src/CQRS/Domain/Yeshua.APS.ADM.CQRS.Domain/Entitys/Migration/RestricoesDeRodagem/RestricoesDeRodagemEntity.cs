@@ -28,11 +28,11 @@
     public Decimal? RES_VELOCIDADE_HORA_RUSH { get; set; }
     public int? TVE_ID { get; set; }
     public int? MAP_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RestricoesDeRodagemEntity(int? id, int res_id, string res_tipo, string? res_hora_ini, string? res_hora_fim, Decimal? res_velocidade_hora_rush, int? tve_id, int? map_id ){
  Id = id; 
@@ -43,9 +43,9 @@
  RES_VELOCIDADE_HORA_RUSH = res_velocidade_hora_rush; 
  TVE_ID = tve_id; 
  MAP_ID = map_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

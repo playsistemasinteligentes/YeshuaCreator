@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoVeiculoQuery(ITipoVeiculoEntity TipoVeiculo)
         {
-            this.Query = $@" INSERT INTO [TipoVeiculo] ([TIP_ID], [TIP_DESCRICAO], [TIP_QTD_DISPONIVEL], [TIP_VALOR_KM], [TIP_VALOR_DIARIA], [TIP_VALOR_AJUDANTE], [TIP_QTD_EIXOS], [TIP_VELOCIDADE_MEDIA], [TIP_CAPACIDADE_ALTURA], [TIP_CAPACIDADE_COMPRIMENTO], [TIP_CAPACIDADE_LARGURA], [TIP_CAPACIDADE_ALTURA_PESCOCO_E], [TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E], [TIP_CAPACIDADE_LARGURA_PESCOCO_E], [TIP_CAPACIDADE_ALTURA_PESCOCO_D], [TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D], [TIP_CAPACIDADE_LARGURA_PESCOCO_D], [TIP_CAPACIDADE_M3], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TIP_ID, @TIP_DESCRICAO, @TIP_QTD_DISPONIVEL, @TIP_VALOR_KM, @TIP_VALOR_DIARIA, @TIP_VALOR_AJUDANTE, @TIP_QTD_EIXOS, @TIP_VELOCIDADE_MEDIA, @TIP_CAPACIDADE_ALTURA, @TIP_CAPACIDADE_COMPRIMENTO, @TIP_CAPACIDADE_LARGURA, @TIP_CAPACIDADE_ALTURA_PESCOCO_E, @TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E, @TIP_CAPACIDADE_LARGURA_PESCOCO_E, @TIP_CAPACIDADE_ALTURA_PESCOCO_D, @TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D, @TIP_CAPACIDADE_LARGURA_PESCOCO_D, @TIP_CAPACIDADE_M3, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoVeiculo] ([TIP_ID], [TIP_DESCRICAO], [TIP_QTD_DISPONIVEL], [TIP_VALOR_KM], [TIP_VALOR_DIARIA], [TIP_VALOR_AJUDANTE], [TIP_QTD_EIXOS], [TIP_VELOCIDADE_MEDIA], [TIP_CAPACIDADE_ALTURA], [TIP_CAPACIDADE_COMPRIMENTO], [TIP_CAPACIDADE_LARGURA], [TIP_CAPACIDADE_ALTURA_PESCOCO_E], [TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E], [TIP_CAPACIDADE_LARGURA_PESCOCO_E], [TIP_CAPACIDADE_ALTURA_PESCOCO_D], [TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D], [TIP_CAPACIDADE_LARGURA_PESCOCO_D], [TIP_CAPACIDADE_M3], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@TIP_ID, @TIP_DESCRICAO, @TIP_QTD_DISPONIVEL, @TIP_VALOR_KM, @TIP_VALOR_DIARIA, @TIP_VALOR_AJUDANTE, @TIP_QTD_EIXOS, @TIP_VELOCIDADE_MEDIA, @TIP_CAPACIDADE_ALTURA, @TIP_CAPACIDADE_COMPRIMENTO, @TIP_CAPACIDADE_LARGURA, @TIP_CAPACIDADE_ALTURA_PESCOCO_E, @TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E, @TIP_CAPACIDADE_LARGURA_PESCOCO_E, @TIP_CAPACIDADE_ALTURA_PESCOCO_D, @TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D, @TIP_CAPACIDADE_LARGURA_PESCOCO_D, @TIP_CAPACIDADE_M3, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 TIP_ID = TipoVeiculo.TIP_ID,
@@ -51,11 +51,11 @@ namespace Query.Write
                 TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D = TipoVeiculo.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D,
                 TIP_CAPACIDADE_LARGURA_PESCOCO_D = TipoVeiculo.TIP_CAPACIDADE_LARGURA_PESCOCO_D,
                 TIP_CAPACIDADE_M3 = TipoVeiculo.TIP_CAPACIDADE_M3,
-                OperationalEntityId = TipoVeiculo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = TipoVeiculo.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -268,16 +268,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [TipoVeiculo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [TipoVeiculo] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -314,6 +304,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [TipoVeiculo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

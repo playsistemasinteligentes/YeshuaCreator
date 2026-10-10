@@ -27,11 +27,11 @@ namespace IQuery.Read
         public QueryModel ExistsByCanUpdateQuery(bool value );
         public QueryModel ExistsByCanDeleteQuery(bool value );
         public QueryModel ExistsByValidUntilQuery(DateTime value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByPerfilIdQuery(int value );
         public QueryModel FirstByGrantIdQuery(string value );
@@ -41,11 +41,11 @@ namespace IQuery.Read
         public QueryModel FirstByCanUpdateQuery(bool value );
         public QueryModel FirstByCanDeleteQuery(bool value );
         public QueryModel FirstByValidUntilQuery(DateTime value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

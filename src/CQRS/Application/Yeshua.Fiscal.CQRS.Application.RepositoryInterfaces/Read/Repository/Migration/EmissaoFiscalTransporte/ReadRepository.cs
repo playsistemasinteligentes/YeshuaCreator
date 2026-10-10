@@ -48,11 +48,11 @@ namespace IRepository.Read
         public bool ExistsByAtualizadoEmUtc(DateTime value );
         public bool ExistsByConcluidoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public EmissaoFiscalTransporteDTO FirstById(int value );
         public EmissaoFiscalTransporteDTO FirstByCorrelationId(string value );
         public EmissaoFiscalTransporteDTO FirstByOrigemFluxo(int value );
@@ -77,11 +77,11 @@ namespace IRepository.Read
         public EmissaoFiscalTransporteDTO FirstByAtualizadoEmUtc(DateTime value );
         public EmissaoFiscalTransporteDTO FirstByConcluidoEmUtc(DateTime value );
         public EmissaoFiscalTransporteDTO FirstByStatus(int value );
-        public EmissaoFiscalTransporteDTO FirstByOperationalEntityId(string value );
         public EmissaoFiscalTransporteDTO FirstByTenantID(int value );
         public EmissaoFiscalTransporteDTO FirstByDeleted(bool value );
         public EmissaoFiscalTransporteDTO FirstByChanged(DateTime value );
         public EmissaoFiscalTransporteDTO FirstByUserId(int value );
+        public EmissaoFiscalTransporteDTO FirstByOperationalEntityId(string value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllById(int value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByCorrelationId(string value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByOrigemFluxo(int value );
@@ -106,11 +106,11 @@ namespace IRepository.Read
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByAtualizadoEmUtc(DateTime value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByConcluidoEmUtc(DateTime value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByStatus(int value );
-        public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByTenantID(int value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByDeleted(bool value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByUserId(int value );
+        public IEnumerable<EmissaoFiscalTransporteDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

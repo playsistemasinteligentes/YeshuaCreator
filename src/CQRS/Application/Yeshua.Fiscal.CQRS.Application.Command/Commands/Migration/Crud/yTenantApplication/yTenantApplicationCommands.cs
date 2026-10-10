@@ -17,10 +17,10 @@ namespace Command.Write
         public string ApplicationKey { get; set; }
         public int? TenantID { get; set; }
         public DateTime ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "yTenantApplication";
  public string? OperationalRecordId => OperationalEntityId;
     }

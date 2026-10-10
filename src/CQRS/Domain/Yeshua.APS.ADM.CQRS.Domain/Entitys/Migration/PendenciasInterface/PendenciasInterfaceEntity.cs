@@ -27,11 +27,11 @@
     public string? PEN_PROTOCOLO_IN { get; set; }
     public string? PEN_ID_PROTOCOLO_IN { get; set; }
     public DateTime DATA_ENTRADA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int PEN_ID { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PendenciasInterfaceEntity(string? pen_status_out, string? pen_protocolo_out, string? pen_id_protocolo_out, string? pen_status_in, string? pen_protocolo_in, string? pen_id_protocolo_in, DateTime data_entrada, int pen_id ){
@@ -43,9 +43,9 @@
  PEN_ID_PROTOCOLO_IN = pen_id_protocolo_in; 
  DATA_ENTRADA = (data_entrada < (new DateTime(1800, 1, 1))) ? DateTime.Now : data_entrada; 
  PEN_ID = pen_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

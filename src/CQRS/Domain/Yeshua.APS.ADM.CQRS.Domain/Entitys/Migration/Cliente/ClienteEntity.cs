@@ -47,11 +47,11 @@
     public string? CLI_INTEGRACAO_ERP { get; set; }
     public Decimal? CLI_LATITUDE_ENTREGA { get; set; }
     public Decimal? CLI_LONGITUDE_ENTREGA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ClienteEntity(string cli_id, string cli_nome, string? cli_fone, string? cli_obs, string? cli_endereco_entrega, string? cli_cpf_cnpj, string? cli_bairro_entrega, string? cli_cep_entrega, string? cli_email, string? cli_integracao, string? mun_id_entrega, Decimal? cli_translado, string? cli_regiao_entrega, int? cli_exigente_na_impressao, Decimal? cli_tempo_medio_espera_de_descarregamento, Decimal? cli_tempo_descarregamento_unitario, Decimal? cli_percentual_janela_embarque, string? rep_id, string? cli_razao_social, string? cli_email_monitoramento_transporte, string? cli_contato, string? cli_setor, string? seg_id, string? cli_tipo, string? cli_integracao_erp, Decimal? cli_latitude_entrega, Decimal? cli_longitude_entrega ){
  CLI_ID = cli_id; 
@@ -81,9 +81,9 @@
  CLI_INTEGRACAO_ERP = cli_integracao_erp; 
  CLI_LATITUDE_ENTREGA = cli_latitude_entrega; 
  CLI_LONGITUDE_ENTREGA = cli_longitude_entrega; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

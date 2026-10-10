@@ -24,20 +24,20 @@
     public int VER_ID { get; set; }
     public string? VER_STATUS { get; set; }
     public string? VER_OBS { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal VersaoCustoEntity(int? id, int ver_id, string? ver_status, string? ver_obs ){
  Id = id; 
  VER_ID = ver_id; 
  VER_STATUS = ver_status; 
  VER_OBS = ver_obs; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

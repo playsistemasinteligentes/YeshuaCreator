@@ -24,20 +24,20 @@
     public int FEC_ID { get; set; }
     public int? FEC_QTD { get; set; }
     public string? GRP_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal FechamentoTesteEntity(int? id, int fec_id, int? fec_qtd, string? grp_id ){
  Id = id; 
  FEC_ID = fec_id; 
  FEC_QTD = fec_qtd; 
  GRP_ID = grp_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

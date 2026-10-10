@@ -28,11 +28,11 @@
     public DateTime? ORC_EMISSAO { get; set; }
     public string? CLI_ID { get; set; }
     public int VER_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal OrcamentoEntity(int? id, int orc_id, string? rep_id, string? con_id, string? orc_tipo_frete, DateTime? orc_emissao, string? cli_id, int ver_id ){
  Id = id; 
@@ -43,9 +43,9 @@
  ORC_EMISSAO = orc_emissao.HasValue && orc_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : orc_emissao; 
  CLI_ID = cli_id; 
  VER_ID = ver_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

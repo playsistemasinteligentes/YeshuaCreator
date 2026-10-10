@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCTeParticipanteSnapshotQuery(ICTeParticipanteSnapshotEntity CTeParticipanteSnapshot)
         {
-            this.Query = $@" INSERT INTO [CTeParticipanteSnapshot] ([CTeSolicitacaoFiscalId], [Papel], [Documento], [Nome], [InscricaoEstadual], [UF], [MunicipioCodigoIbge], [EnderecoJson], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CTeSolicitacaoFiscalId, @Papel, @Documento, @Nome, @InscricaoEstadual, @UF, @MunicipioCodigoIbge, @EnderecoJson, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CTeParticipanteSnapshot] ([CTeSolicitacaoFiscalId], [Papel], [Documento], [Nome], [InscricaoEstadual], [UF], [MunicipioCodigoIbge], [EnderecoJson], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@CTeSolicitacaoFiscalId, @Papel, @Documento, @Nome, @InscricaoEstadual, @UF, @MunicipioCodigoIbge, @EnderecoJson, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 CTeSolicitacaoFiscalId = CTeParticipanteSnapshot.CTeSolicitacaoFiscalId,
@@ -41,11 +41,11 @@ namespace Query.Write
                 UF = CTeParticipanteSnapshot.UF,
                 MunicipioCodigoIbge = CTeParticipanteSnapshot.MunicipioCodigoIbge,
                 EnderecoJson = CTeParticipanteSnapshot.EnderecoJson,
-                OperationalEntityId = CTeParticipanteSnapshot.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = CTeParticipanteSnapshot.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -148,16 +148,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [CTeParticipanteSnapshot] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [CTeParticipanteSnapshot] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -194,6 +184,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [CTeParticipanteSnapshot] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

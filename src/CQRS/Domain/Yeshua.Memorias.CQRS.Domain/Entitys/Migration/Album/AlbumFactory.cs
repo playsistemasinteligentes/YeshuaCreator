@@ -34,13 +34,14 @@
                             }
 
                             public IAlbumEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status, ulong? trackingMask = null )
                             {
                             var entity = new AlbumEntity(id, titulo, descricao, privacidade, segundosporfoto, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Album", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new AlbumDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Album", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new AlbumDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -31,33 +31,33 @@ namespace IRepository.Read
         public bool ExistsByTEM_RESINA_DE(string value );
         public bool ExistsByTEM_RESINA_PARA(string value );
         public bool ExistsByTEM_TEMPO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TempoSetupOnduladeiraDTO FirstByTEM_ID(int value );
         public TempoSetupOnduladeiraDTO FirstByOND_ID_DE(string value );
         public TempoSetupOnduladeiraDTO FirstByOND_ID_PARA(string value );
         public TempoSetupOnduladeiraDTO FirstByTEM_RESINA_DE(string value );
         public TempoSetupOnduladeiraDTO FirstByTEM_RESINA_PARA(string value );
         public TempoSetupOnduladeiraDTO FirstByTEM_TEMPO(int value );
-        public TempoSetupOnduladeiraDTO FirstByOperationalEntityId(string value );
         public TempoSetupOnduladeiraDTO FirstByTenantID(int value );
         public TempoSetupOnduladeiraDTO FirstByDeleted(bool value );
         public TempoSetupOnduladeiraDTO FirstByChanged(DateTime value );
         public TempoSetupOnduladeiraDTO FirstByUserId(int value );
+        public TempoSetupOnduladeiraDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_ID(int value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByOND_ID_DE(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByOND_ID_PARA(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_RESINA_DE(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_RESINA_PARA(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTEM_TEMPO(int value );
-        public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByUserId(int value );
+        public IEnumerable<TempoSetupOnduladeiraDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

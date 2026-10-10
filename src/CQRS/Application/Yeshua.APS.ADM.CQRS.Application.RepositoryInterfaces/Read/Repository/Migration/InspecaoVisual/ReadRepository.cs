@@ -43,11 +43,11 @@ namespace IRepository.Read
         public bool ExistsByFPR_SEQ_REPETICAO(int value );
         public bool ExistsByIPV_STATUS_LIBERACAO(string value );
         public bool ExistsByIPV_VALOR_MEDIDA(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public InspecaoVisualDTO FirstByIPV_ID(int value );
         public InspecaoVisualDTO FirstByIPV_VALOR(string value );
         public InspecaoVisualDTO FirstByIPV_ID_OPERADOR(int value );
@@ -65,11 +65,11 @@ namespace IRepository.Read
         public InspecaoVisualDTO FirstByFPR_SEQ_REPETICAO(int value );
         public InspecaoVisualDTO FirstByIPV_STATUS_LIBERACAO(string value );
         public InspecaoVisualDTO FirstByIPV_VALOR_MEDIDA(Decimal value );
-        public InspecaoVisualDTO FirstByOperationalEntityId(string value );
         public InspecaoVisualDTO FirstByTenantID(int value );
         public InspecaoVisualDTO FirstByDeleted(bool value );
         public InspecaoVisualDTO FirstByChanged(DateTime value );
         public InspecaoVisualDTO FirstByUserId(int value );
+        public InspecaoVisualDTO FirstByOperationalEntityId(string value );
         public IEnumerable<InspecaoVisualDTO> GetAllByIPV_ID(int value );
         public IEnumerable<InspecaoVisualDTO> GetAllByIPV_VALOR(string value );
         public IEnumerable<InspecaoVisualDTO> GetAllByIPV_ID_OPERADOR(int value );
@@ -87,11 +87,11 @@ namespace IRepository.Read
         public IEnumerable<InspecaoVisualDTO> GetAllByFPR_SEQ_REPETICAO(int value );
         public IEnumerable<InspecaoVisualDTO> GetAllByIPV_STATUS_LIBERACAO(string value );
         public IEnumerable<InspecaoVisualDTO> GetAllByIPV_VALOR_MEDIDA(Decimal value );
-        public IEnumerable<InspecaoVisualDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<InspecaoVisualDTO> GetAllByTenantID(int value );
         public IEnumerable<InspecaoVisualDTO> GetAllByDeleted(bool value );
         public IEnumerable<InspecaoVisualDTO> GetAllByChanged(DateTime value );
         public IEnumerable<InspecaoVisualDTO> GetAllByUserId(int value );
+        public IEnumerable<InspecaoVisualDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

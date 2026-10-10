@@ -26,11 +26,11 @@
     public Decimal? PON_LATITUDE { get; set; }
     public Decimal? PON_LONGITUDE { get; set; }
     public Decimal? PON_DISTANCIA_KM { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public string? MUN_ID { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PontosMapaEntity(string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string? mun_id ){
@@ -41,9 +41,9 @@
  PON_LONGITUDE = pon_longitude; 
  PON_DISTANCIA_KM = pon_distancia_km; 
  MUN_ID = mun_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

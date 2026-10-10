@@ -30,11 +30,11 @@ namespace IQuery.Write
         QueryModel UpdateLOGS_DATE(int logs_id, DateTime value);
         QueryModel UpdateUSE_ID(int logs_id, int value);
         QueryModel UpdateLOGS_ORIGEM(int logs_id, string value);
-        QueryModel UpdateOperationalEntityId(int logs_id, string value);
         QueryModel UpdateTenantID(int logs_id, int value);
         QueryModel UpdateDeleted(int logs_id, bool value);
         QueryModel UpdateChanged(int logs_id, DateTime value);
         QueryModel UpdateUserId(int logs_id, int value);
+        QueryModel UpdateOperationalEntityId(int logs_id, string value);
         public QueryModel DeleteLogsDatabaseQuery(ILogsDatabaseEntity LogsDatabase);
     }
 }

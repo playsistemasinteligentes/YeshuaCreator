@@ -56,11 +56,6 @@ namespace Input.Repository.PlanoAmostralTeste
             var query = _query.UpdateGRP_TIPO(pat_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int pat_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(pat_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int pat_id, int value)
         {
             var query = _query.UpdateTenantID(pat_id, value);
@@ -79,6 +74,11 @@ namespace Input.Repository.PlanoAmostralTeste
         public void UpdateUserId(int pat_id, int value)
         {
             var query = _query.UpdateUserId(pat_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int pat_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(pat_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdatePAT_QTD_CAIXAS_DE(int pat_id, int value)

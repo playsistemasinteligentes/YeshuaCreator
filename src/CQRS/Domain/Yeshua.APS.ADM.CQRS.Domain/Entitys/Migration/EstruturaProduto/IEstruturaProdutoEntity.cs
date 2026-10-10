@@ -29,11 +29,11 @@
     Decimal EST_BASE_PRODUCAO { get; set; }
     string EST_TIPO_REQUISICAO { get; set; }
     string EST_CODIGO_DE_EXCECAO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

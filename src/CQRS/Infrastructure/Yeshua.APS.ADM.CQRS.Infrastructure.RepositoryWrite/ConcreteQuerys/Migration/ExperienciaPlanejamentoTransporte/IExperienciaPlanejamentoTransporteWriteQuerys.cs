@@ -29,11 +29,11 @@ namespace IQuery.Write
         QueryModel UpdateObservacao(int id, string value);
         QueryModel UpdateCriadoEm(int id, DateTime value);
         QueryModel UpdateCriadoPor(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteExperienciaPlanejamentoTransporteQuery(IExperienciaPlanejamentoTransporteEntity ExperienciaPlanejamentoTransporte);
     }
 }

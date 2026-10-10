@@ -34,19 +34,19 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Turma] ";
+            this.Query = $@" select [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [Turma] ";
 if (!string.IsNullOrEmpty(Command.Id)) dict["Id"] = $"%{Command.Id}%";
 if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"[Id] like @Id");
 if (!string.IsNullOrEmpty(Command.Descricao)) dict["Descricao"] = $"%{Command.Descricao}%";
 if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"[Descricao] like @Descricao");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -390,23 +390,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [Turma] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -475,12 +458,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Turma] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(string value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -497,7 +497,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -514,7 +514,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -531,7 +531,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -548,7 +548,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -565,7 +565,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -582,7 +582,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -599,7 +599,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -616,7 +616,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -633,7 +633,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -650,7 +650,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -667,7 +667,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -684,7 +684,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -701,7 +701,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -718,7 +718,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -735,7 +735,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -747,29 +747,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -786,7 +769,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -803,7 +786,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -820,13 +803,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Turma] ";
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [Descricao], [TURM_HORA_INI_DIA1], [TURM_HORA_FIM_DIA1], [TURM_HORA_INI_DIA2], [TURM_HORA_FIM_DIA2], [TURM_HORA_INI_DIA3], [TURM_HORA_FIM_DIA3], [TURM_HORA_INI_DIA4], [TURM_HORA_FIM_DIA4], [TURM_HORA_INI_DIA5], [TURM_HORA_FIM_DIA5], [TURM_HORA_INI_DIA6], [TURM_HORA_FIM_DIA6], [TURM_HORA_INI_DIA7], [TURM_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Turma] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

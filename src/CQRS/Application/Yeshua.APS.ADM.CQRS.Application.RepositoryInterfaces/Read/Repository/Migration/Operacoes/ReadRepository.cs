@@ -34,11 +34,11 @@ namespace IRepository.Read
         public bool ExistsByROT_SEQ_TRANFORMACAO(int value );
         public bool ExistsByORD_ID(string value );
         public bool ExistsByFPR_SEQ_REPETICAO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public OperacoesDTO FirstById(int value );
         public OperacoesDTO FirstByOPE_TIPO_REGISTRO(string value );
         public OperacoesDTO FirstByOPE_ID(string value );
@@ -49,11 +49,11 @@ namespace IRepository.Read
         public OperacoesDTO FirstByROT_SEQ_TRANFORMACAO(int value );
         public OperacoesDTO FirstByORD_ID(string value );
         public OperacoesDTO FirstByFPR_SEQ_REPETICAO(int value );
-        public OperacoesDTO FirstByOperationalEntityId(string value );
         public OperacoesDTO FirstByTenantID(int value );
         public OperacoesDTO FirstByDeleted(bool value );
         public OperacoesDTO FirstByChanged(DateTime value );
         public OperacoesDTO FirstByUserId(int value );
+        public OperacoesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<OperacoesDTO> GetAllById(int value );
         public IEnumerable<OperacoesDTO> GetAllByOPE_TIPO_REGISTRO(string value );
         public IEnumerable<OperacoesDTO> GetAllByOPE_ID(string value );
@@ -64,11 +64,11 @@ namespace IRepository.Read
         public IEnumerable<OperacoesDTO> GetAllByROT_SEQ_TRANFORMACAO(int value );
         public IEnumerable<OperacoesDTO> GetAllByORD_ID(string value );
         public IEnumerable<OperacoesDTO> GetAllByFPR_SEQ_REPETICAO(int value );
-        public IEnumerable<OperacoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<OperacoesDTO> GetAllByTenantID(int value );
         public IEnumerable<OperacoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<OperacoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<OperacoesDTO> GetAllByUserId(int value );
+        public IEnumerable<OperacoesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

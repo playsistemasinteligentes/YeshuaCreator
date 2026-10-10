@@ -22,11 +22,11 @@ namespace Command.Write
         public Decimal EST_BASE_PRODUCAO { get; set; }
         public string EST_TIPO_REQUISICAO { get; set; }
         public string EST_CODIGO_DE_EXCECAO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "EstruturaProduto";
  public string? OperationalRecordId => OperationalEntityId;
     }

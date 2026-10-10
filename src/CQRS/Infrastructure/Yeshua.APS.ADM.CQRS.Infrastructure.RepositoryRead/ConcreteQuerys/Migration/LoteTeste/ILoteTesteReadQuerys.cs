@@ -20,20 +20,20 @@ namespace IQuery.Read
         public QueryModel ExistsByLT_IDQuery(int value );
         public QueryModel ExistsByTES_IDQuery(int value );
         public QueryModel ExistsByRL_IDQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByLT_IDQuery(int value );
         public QueryModel FirstByTES_IDQuery(int value );
         public QueryModel FirstByRL_IDQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

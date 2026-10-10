@@ -40,11 +40,11 @@ namespace IRepository.Read
         public bool ExistsByVEI_EMISSAO(DateTime value );
         public bool ExistsByVEI_VENCIMENTO(DateTime value );
         public bool ExistsByVEI_STATUS(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public VeiculoDTO FirstById(int value );
         public VeiculoDTO FirstByVEI_PLACA(string value );
         public VeiculoDTO FirstByVEI_UF(string value );
@@ -61,11 +61,11 @@ namespace IRepository.Read
         public VeiculoDTO FirstByVEI_EMISSAO(DateTime value );
         public VeiculoDTO FirstByVEI_VENCIMENTO(DateTime value );
         public VeiculoDTO FirstByVEI_STATUS(string value );
-        public VeiculoDTO FirstByOperationalEntityId(string value );
         public VeiculoDTO FirstByTenantID(int value );
         public VeiculoDTO FirstByDeleted(bool value );
         public VeiculoDTO FirstByChanged(DateTime value );
         public VeiculoDTO FirstByUserId(int value );
+        public VeiculoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<VeiculoDTO> GetAllById(int value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_PLACA(string value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_UF(string value );
@@ -82,11 +82,11 @@ namespace IRepository.Read
         public IEnumerable<VeiculoDTO> GetAllByVEI_EMISSAO(DateTime value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_VENCIMENTO(DateTime value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_STATUS(string value );
-        public IEnumerable<VeiculoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VeiculoDTO> GetAllByTenantID(int value );
         public IEnumerable<VeiculoDTO> GetAllByDeleted(bool value );
         public IEnumerable<VeiculoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<VeiculoDTO> GetAllByUserId(int value );
+        public IEnumerable<VeiculoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

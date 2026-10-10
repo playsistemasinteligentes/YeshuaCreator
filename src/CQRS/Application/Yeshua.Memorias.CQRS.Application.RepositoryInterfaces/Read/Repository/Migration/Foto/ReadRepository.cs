@@ -33,11 +33,11 @@ namespace IRepository.Read
         public bool ExistsByLargura(int value );
         public bool ExistsByAltura(int value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public FotoDTO FirstById(int value );
         public FotoDTO FirstByStorageKey(string value );
         public FotoDTO FirstByNomeOriginal(string value );
@@ -47,11 +47,11 @@ namespace IRepository.Read
         public FotoDTO FirstByLargura(int value );
         public FotoDTO FirstByAltura(int value );
         public FotoDTO FirstByStatus(int value );
-        public FotoDTO FirstByOperationalEntityId(string value );
         public FotoDTO FirstByTenantID(int value );
         public FotoDTO FirstByDeleted(bool value );
         public FotoDTO FirstByChanged(DateTime value );
         public FotoDTO FirstByUserId(int value );
+        public FotoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<FotoDTO> GetAllById(int value );
         public IEnumerable<FotoDTO> GetAllByStorageKey(string value );
         public IEnumerable<FotoDTO> GetAllByNomeOriginal(string value );
@@ -61,11 +61,11 @@ namespace IRepository.Read
         public IEnumerable<FotoDTO> GetAllByLargura(int value );
         public IEnumerable<FotoDTO> GetAllByAltura(int value );
         public IEnumerable<FotoDTO> GetAllByStatus(int value );
-        public IEnumerable<FotoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<FotoDTO> GetAllByTenantID(int value );
         public IEnumerable<FotoDTO> GetAllByDeleted(bool value );
         public IEnumerable<FotoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<FotoDTO> GetAllByUserId(int value );
+        public IEnumerable<FotoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -28,29 +28,29 @@ namespace IRepository.Read
         public bool ExistsByVER_ID(int value );
         public bool ExistsByVER_STATUS(string value );
         public bool ExistsByVER_OBS(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public VersaoCustoDTO FirstById(int value );
         public VersaoCustoDTO FirstByVER_ID(int value );
         public VersaoCustoDTO FirstByVER_STATUS(string value );
         public VersaoCustoDTO FirstByVER_OBS(string value );
-        public VersaoCustoDTO FirstByOperationalEntityId(string value );
         public VersaoCustoDTO FirstByTenantID(int value );
         public VersaoCustoDTO FirstByDeleted(bool value );
         public VersaoCustoDTO FirstByChanged(DateTime value );
         public VersaoCustoDTO FirstByUserId(int value );
+        public VersaoCustoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<VersaoCustoDTO> GetAllById(int value );
         public IEnumerable<VersaoCustoDTO> GetAllByVER_ID(int value );
         public IEnumerable<VersaoCustoDTO> GetAllByVER_STATUS(string value );
         public IEnumerable<VersaoCustoDTO> GetAllByVER_OBS(string value );
-        public IEnumerable<VersaoCustoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VersaoCustoDTO> GetAllByTenantID(int value );
         public IEnumerable<VersaoCustoDTO> GetAllByDeleted(bool value );
         public IEnumerable<VersaoCustoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<VersaoCustoDTO> GetAllByUserId(int value );
+        public IEnumerable<VersaoCustoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -23,11 +23,11 @@
     public string? Id { get; set; }
     public string? Descricao { get; set; }
     public string? Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int? CAL_ID { get; set; }
     public string? MAQ_CONTROL_IP { get; set; }
     public string GMA_ID { get; set; }
@@ -163,9 +163,9 @@
  MAQ_TOTAL_PECAS_REFILANDO = maq_total_pecas_refilando; 
  MAQ_TOTAL_PECAS_NAO_REFILANDO = maq_total_pecas_nao_refilando; 
  MAQ_TOTAL_VINCOS = maq_total_vincos; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

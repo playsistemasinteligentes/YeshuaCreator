@@ -89,11 +89,11 @@ namespace IRepository.Read
         public bool ExistsByFPR_TOLERANCIA_MENOS(Decimal value );
         public bool ExistsByFPR_TOLERANCIA_MAIS(Decimal value );
         public bool ExistsByFPR_DATA_ENCERRAMENTO(DateTime value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public FilaProducaoDTO FirstById(int value );
         public FilaProducaoDTO FirstByORD_ID(string value );
         public FilaProducaoDTO FirstByROT_PRO_ID(string value );
@@ -157,11 +157,11 @@ namespace IRepository.Read
         public FilaProducaoDTO FirstByFPR_TOLERANCIA_MENOS(Decimal value );
         public FilaProducaoDTO FirstByFPR_TOLERANCIA_MAIS(Decimal value );
         public FilaProducaoDTO FirstByFPR_DATA_ENCERRAMENTO(DateTime value );
-        public FilaProducaoDTO FirstByOperationalEntityId(string value );
         public FilaProducaoDTO FirstByTenantID(int value );
         public FilaProducaoDTO FirstByDeleted(bool value );
         public FilaProducaoDTO FirstByChanged(DateTime value );
         public FilaProducaoDTO FirstByUserId(int value );
+        public FilaProducaoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<FilaProducaoDTO> GetAllById(int value );
         public IEnumerable<FilaProducaoDTO> GetAllByORD_ID(string value );
         public IEnumerable<FilaProducaoDTO> GetAllByROT_PRO_ID(string value );
@@ -225,11 +225,11 @@ namespace IRepository.Read
         public IEnumerable<FilaProducaoDTO> GetAllByFPR_TOLERANCIA_MENOS(Decimal value );
         public IEnumerable<FilaProducaoDTO> GetAllByFPR_TOLERANCIA_MAIS(Decimal value );
         public IEnumerable<FilaProducaoDTO> GetAllByFPR_DATA_ENCERRAMENTO(DateTime value );
-        public IEnumerable<FilaProducaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<FilaProducaoDTO> GetAllByTenantID(int value );
         public IEnumerable<FilaProducaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<FilaProducaoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<FilaProducaoDTO> GetAllByUserId(int value );
+        public IEnumerable<FilaProducaoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

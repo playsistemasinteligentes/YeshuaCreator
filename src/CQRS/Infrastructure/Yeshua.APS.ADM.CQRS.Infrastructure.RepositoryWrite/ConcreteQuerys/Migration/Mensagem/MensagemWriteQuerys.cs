@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMensagemQuery(IMensagemEntity Mensagem)
         {
-            this.Query = $@" INSERT INTO [Mensagem] ([MEN_ID], [MEN_SEND], [MEN_EMISSION], [MEN_STATUS], [MEN_RECEIVE], [MEN_TYPE], [MEN_QTD_TRY_SEND], [MEN_DATE_TRY_SEND], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MEN_ID, @MEN_SEND, @MEN_EMISSION, @MEN_STATUS, @MEN_RECEIVE, @MEN_TYPE, @MEN_QTD_TRY_SEND, @MEN_DATE_TRY_SEND, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Mensagem] ([MEN_ID], [MEN_SEND], [MEN_EMISSION], [MEN_STATUS], [MEN_RECEIVE], [MEN_TYPE], [MEN_QTD_TRY_SEND], [MEN_DATE_TRY_SEND], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@MEN_ID, @MEN_SEND, @MEN_EMISSION, @MEN_STATUS, @MEN_RECEIVE, @MEN_TYPE, @MEN_QTD_TRY_SEND, @MEN_DATE_TRY_SEND, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 MEN_ID = Mensagem.MEN_ID,
@@ -41,11 +41,11 @@ namespace Query.Write
                 MEN_TYPE = Mensagem.MEN_TYPE,
                 MEN_QTD_TRY_SEND = Mensagem.MEN_QTD_TRY_SEND,
                 MEN_DATE_TRY_SEND = Mensagem.MEN_DATE_TRY_SEND,
-                OperationalEntityId = Mensagem.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Mensagem.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -137,16 +137,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(string men_id, string value)
-        {
-            this.Query = $@" UPDATE [Mensagem] SET [OperationalEntityId] = @OperationalEntityId WHERE [MEN_ID] = @MEN_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                MEN_ID = men_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(string men_id, int value)
         {
             this.Query = $@" UPDATE [Mensagem] SET [TenantID] = @TenantID WHERE [MEN_ID] = @MEN_ID ";
@@ -183,6 +173,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                MEN_ID = men_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string men_id, string value)
+        {
+            this.Query = $@" UPDATE [Mensagem] SET [OperationalEntityId] = @OperationalEntityId WHERE [MEN_ID] = @MEN_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 MEN_ID = men_id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -27,11 +27,11 @@ namespace IQuery.Read
         public QueryModel ExistsByNomeResponsavelQuery(string value );
         public QueryModel ExistsByTelefoneResponsavelQuery(string value );
         public QueryModel ExistsByObservacaoQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByNomeQuery(string value );
         public QueryModel FirstByTelefoneQuery(string value );
@@ -43,11 +43,11 @@ namespace IQuery.Read
         public QueryModel FirstByNomeResponsavelQuery(string value );
         public QueryModel FirstByTelefoneResponsavelQuery(string value );
         public QueryModel FirstByObservacaoQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

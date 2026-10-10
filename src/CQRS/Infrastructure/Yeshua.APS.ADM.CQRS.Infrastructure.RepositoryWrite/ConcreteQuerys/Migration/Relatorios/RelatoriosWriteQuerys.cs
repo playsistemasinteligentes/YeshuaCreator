@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRelatoriosQuery(IRelatoriosEntity Relatorios)
         {
-            this.Query = $@" INSERT INTO [Relatorios] ([REL_NOME_RELATORIO], [REL_NOME_CAMPO], [REL_TIPO_CAMPO], [REL_POS_X], [REL_POS_Y], [REL_TAMANHO_FONTE], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[REL_ID] VALUES(@REL_NOME_RELATORIO, @REL_NOME_CAMPO, @REL_TIPO_CAMPO, @REL_POS_X, @REL_POS_Y, @REL_TAMANHO_FONTE, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Relatorios] ([REL_NOME_RELATORIO], [REL_NOME_CAMPO], [REL_TIPO_CAMPO], [REL_POS_X], [REL_POS_Y], [REL_TAMANHO_FONTE], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[REL_ID] VALUES(@REL_NOME_RELATORIO, @REL_NOME_CAMPO, @REL_TIPO_CAMPO, @REL_POS_X, @REL_POS_Y, @REL_TAMANHO_FONTE, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 REL_NOME_RELATORIO = Relatorios.REL_NOME_RELATORIO,
@@ -39,11 +39,11 @@ namespace Query.Write
                 REL_POS_X = Relatorios.REL_POS_X,
                 REL_POS_Y = Relatorios.REL_POS_Y,
                 REL_TAMANHO_FONTE = Relatorios.REL_TAMANHO_FONTE,
-                OperationalEntityId = Relatorios.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Relatorios.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -124,16 +124,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int rel_id, string value)
-        {
-            this.Query = $@" UPDATE [Relatorios] SET [OperationalEntityId] = @OperationalEntityId WHERE [REL_ID] = @REL_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                REL_ID = rel_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int rel_id, int value)
         {
             this.Query = $@" UPDATE [Relatorios] SET [TenantID] = @TenantID WHERE [REL_ID] = @REL_ID ";
@@ -170,6 +160,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                REL_ID = rel_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int rel_id, string value)
+        {
+            this.Query = $@" UPDATE [Relatorios] SET [OperationalEntityId] = @OperationalEntityId WHERE [REL_ID] = @REL_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 REL_ID = rel_id,
             };
             return new QueryModel(this.Query, this.Parameters);

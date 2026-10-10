@@ -16,11 +16,11 @@ namespace Command.Read
         public int? ID_TABELA { get; set; }
         public string? CODIGO { get; set; }
         public string? NOME { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Tabela";
  public string? OperationalRecordId => OperationalEntityId;

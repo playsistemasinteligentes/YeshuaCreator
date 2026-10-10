@@ -44,11 +44,11 @@
     public int? COM_VINCO8_CONVERSAO { get; set; }
     public int? COM_VINCO9_CONVERSAO { get; set; }
     public int? COM_VINCO10_CONVERSAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CompensacaoEntity(int? id, int com_id, string? grp_id, string? ond_id, int? com_vinco1_ond, int? com_vinco2_ond, int? com_vinco3_ond, int? com_vinco4_ond, int? com_vinco5_ond, int? com_vinco6_ond, int? com_vinco7_ond, int? com_vinco8_ond, int? com_vinco9_ond, int? com_vinco10_ond, int? com_vinco1_conversao, int? com_vinco2_conversao, int? com_vinco3_conversao, int? com_vinco4_conversao, int? com_vinco5_conversao, int? com_vinco6_conversao, int? com_vinco7_conversao, int? com_vinco8_conversao, int? com_vinco9_conversao, int? com_vinco10_conversao ){
  Id = id; 
@@ -75,9 +75,9 @@
  COM_VINCO8_CONVERSAO = com_vinco8_conversao; 
  COM_VINCO9_CONVERSAO = com_vinco9_conversao; 
  COM_VINCO10_CONVERSAO = com_vinco10_conversao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

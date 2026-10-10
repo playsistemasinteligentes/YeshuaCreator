@@ -17,11 +17,11 @@ namespace Command.Read
         public int? CDV_ID { get; set; }
         public int? TIP_ID { get; set; }
         public int? IDV_QTD { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "ItenCalendarioDisponibilidadeVeiculos";
  public string? OperationalRecordId => OperationalEntityId;

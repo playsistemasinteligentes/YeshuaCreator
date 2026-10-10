@@ -175,14 +175,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -210,6 +202,14 @@ namespace Read.Repository
         public bool ExistsByUserId(int value )
         {
             var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -1295,14 +1295,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public ProdutoDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<ProdutoDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public ProdutoDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -1330,6 +1322,14 @@ namespace Read.Repository
         public ProdutoDTO FirstByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ProdutoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProdutoDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<ProdutoDTO>(query.Query, query.Parameters);
                 return result;
@@ -2415,14 +2415,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<ProdutoDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.Query<ProdutoDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
         public IEnumerable<ProdutoDTO> GetAllByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -2450,6 +2442,14 @@ namespace Read.Repository
         public IEnumerable<ProdutoDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<ProdutoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ProdutoDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<ProdutoDTO>(query.Query,query.Parameters).ToList();
                 return result;

@@ -56,11 +56,6 @@ namespace Input.Repository.Enderecos
             var query = _query.UpdateEND_GRUPO(end_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string end_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(end_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string end_id, int value)
         {
             var query = _query.UpdateTenantID(end_id, value);
@@ -79,6 +74,11 @@ namespace Input.Repository.Enderecos
         public void UpdateUserId(string end_id, int value)
         {
             var query = _query.UpdateUserId(end_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string end_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(end_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

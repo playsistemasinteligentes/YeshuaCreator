@@ -19,11 +19,11 @@ namespace Command.Write
         public Decimal? MDT_VALOR_ESPERADO { get; set; }
         public Decimal? MDT_ENCONTRADO { get; set; }
         public string? UNI_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "MedidasTeste";
  public string? OperationalRecordId => OperationalEntityId;
     }

@@ -34,13 +34,14 @@
                             }
 
                             public IyTenantApplicationEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string applicationkey, DateTime validuntil )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string applicationkey, DateTime validuntil, ulong? trackingMask = null )
                             {
                             var entity = new yTenantApplicationEntity(id, applicationkey, validuntil );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yTenantApplication", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yTenantApplicationDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenantApplication", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantApplicationDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

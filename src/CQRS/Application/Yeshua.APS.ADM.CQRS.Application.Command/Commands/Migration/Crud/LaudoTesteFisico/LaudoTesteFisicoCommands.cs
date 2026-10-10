@@ -23,11 +23,11 @@ namespace Command.Write
         public string? ROT_PRO_ID { get; set; }
         public int? FPR_SEQ_REPETICAO { get; set; }
         public int? USE_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "LaudoTesteFisico";
  public string? OperationalRecordId => OperationalEntityId;
     }

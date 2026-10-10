@@ -33,11 +33,11 @@
     public DateTime? EncerradoEm { get; set; }
     public DateTime? CanceladoEm { get; set; }
     public int Situacao { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MDFeEntity(int? id, string chaveacesso, int serie, int numero, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime emitidoem, DateTime? autorizadoem, DateTime? iniciadoem, DateTime? encerradoem, DateTime? canceladoem, int situacao ){
  Id = id; 
@@ -53,9 +53,9 @@
  EncerradoEm = encerradoem.HasValue && encerradoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : encerradoem; 
  CanceladoEm = canceladoem.HasValue && canceladoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : canceladoem; 
  Situacao = situacao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

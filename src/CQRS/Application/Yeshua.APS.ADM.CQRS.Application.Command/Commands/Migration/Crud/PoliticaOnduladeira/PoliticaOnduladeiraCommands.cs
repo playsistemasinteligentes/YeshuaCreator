@@ -19,11 +19,11 @@ namespace Command.Write
         public int? POL_PROMOCAO { get; set; }
         public int? POL_DIAS_ANTECIPACAO { get; set; }
         public int? POL_METROS_LINEARES { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "PoliticaOnduladeira";
  public string? OperationalRecordId => OperationalEntityId;
     }

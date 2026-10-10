@@ -41,11 +41,11 @@ namespace Repositorio.Outputs
     public Decimal bol_gramatura_resina_programados { get; set; }
     public Decimal bol_custo_resina_programados { get; set; }
     public int bol_refile_obrigatorio { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

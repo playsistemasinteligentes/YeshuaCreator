@@ -35,11 +35,11 @@
     public string? PER_ID { get; set; }
     public string? DOM_EMPRESA { get; set; }
     public string? DOM_FILIAL { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal T_MetasEntity(int met_id, string met_dtinicio, string met_dtfim, string met_alvo, int met_tipoalvo, int ind_id, Decimal? met_range01, Decimal? met_range02, Decimal? met_range03, int? dim_id, string? fat_id, string? dim_subdimensao_id, string? per_id, string? dom_empresa, string? dom_filial ){
  MET_ID = met_id; 
@@ -57,9 +57,9 @@
  PER_ID = per_id; 
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

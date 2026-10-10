@@ -121,11 +121,6 @@ namespace Input.Repository.T_Metas
             var query = _query.UpdateDOM_FILIAL(met_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int met_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(met_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int met_id, int value)
         {
             var query = _query.UpdateTenantID(met_id, value);
@@ -144,6 +139,11 @@ namespace Input.Repository.T_Metas
         public void UpdateUserId(int met_id, int value)
         {
             var query = _query.UpdateUserId(met_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int met_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(met_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

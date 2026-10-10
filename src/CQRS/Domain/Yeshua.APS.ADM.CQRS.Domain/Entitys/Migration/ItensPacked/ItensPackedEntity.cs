@@ -32,11 +32,11 @@
     public Decimal? IPA_DIML { get; set; }
     public Decimal? IPA_DIMA { get; set; }
     public Decimal? IPA_QTD_POR_PALETE { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ItensPackedEntity(int? id, int ipa_id, string car_id, string? pro_id, string? ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete ){
  Id = id; 
@@ -51,9 +51,9 @@
  IPA_DIML = ipa_diml; 
  IPA_DIMA = ipa_dima; 
  IPA_QTD_POR_PALETE = ipa_qtd_por_palete; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

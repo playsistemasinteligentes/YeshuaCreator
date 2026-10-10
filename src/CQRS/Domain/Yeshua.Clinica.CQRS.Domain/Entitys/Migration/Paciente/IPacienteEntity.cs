@@ -31,11 +31,11 @@
     string? NomeResponsavel { get; set; }
     string? TelefoneResponsavel { get; set; }
     string? Observacao { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

@@ -21,11 +21,11 @@ namespace Repositorio.Outputs
     public string uni_id { get; set; } = string.Empty;
     public string uni_descricao { get; set; } = string.Empty;
     public string uni_escala_tempo { get; set; } = string.Empty;
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

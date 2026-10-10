@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Boletim] ";
+            this.Query = $@" select [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [Boletim] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (!string.IsNullOrEmpty(Command.BOL_ID)) dict["BOL_ID"] = $"%{Command.BOL_ID}%";
@@ -67,14 +67,14 @@ if (Command.BOL_REFILE_OBRIGATORIO.HasValue) dict["BOL_REFILE_OBRIGATORIO"] = Co
 if (Command.BOL_REFILE_OBRIGATORIO.HasValue) whereClauses.Add($"[BOL_REFILE_OBRIGATORIO] = @BOL_REFILE_OBRIGATORIO");
 if (!string.IsNullOrEmpty(Command.BOL_OBS)) dict["BOL_OBS"] = $"%{Command.BOL_OBS}%";
 if (!string.IsNullOrEmpty(Command.BOL_OBS)) whereClauses.Add($"[BOL_OBS] like @BOL_OBS");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -582,23 +582,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [Boletim] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -667,12 +650,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Boletim] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -689,7 +689,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -706,7 +706,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -723,7 +723,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -740,7 +740,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -757,7 +757,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -774,7 +774,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -791,7 +791,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -808,7 +808,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -825,7 +825,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -842,7 +842,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -859,7 +859,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -876,7 +876,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -893,7 +893,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -910,7 +910,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -927,7 +927,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -944,7 +944,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -961,7 +961,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -978,7 +978,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -995,7 +995,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1012,7 +1012,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1029,7 +1029,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1046,7 +1046,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1063,7 +1063,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1075,29 +1075,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1114,7 +1097,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1131,7 +1114,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1148,13 +1131,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Boletim] ";
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [BOL_OBS], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Boletim] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

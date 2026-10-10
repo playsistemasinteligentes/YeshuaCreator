@@ -28,11 +28,11 @@
     public string? PRE_VALOR { get; set; }
     public int? USE_ID { get; set; }
     public int? PER_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal T_PREFERENCIASEntity(int? id, int pre_id, string? pre_descricao, string? pre_namespace, string? pre_tipo, string? pre_valor, int? use_id, int? per_id ){
  Id = id; 
@@ -43,9 +43,9 @@
  PRE_VALOR = pre_valor; 
  USE_ID = use_id; 
  PER_ID = per_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

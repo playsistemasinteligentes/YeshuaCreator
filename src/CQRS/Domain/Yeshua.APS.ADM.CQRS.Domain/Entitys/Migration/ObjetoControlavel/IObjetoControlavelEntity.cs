@@ -25,11 +25,11 @@
     string? OBJ_DESCRICAO { get; set; }
     string? OBJ_TIPO { get; set; }
     string? OBJ_GRUPO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

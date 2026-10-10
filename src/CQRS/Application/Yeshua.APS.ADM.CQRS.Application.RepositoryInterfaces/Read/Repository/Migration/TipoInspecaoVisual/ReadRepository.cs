@@ -26,11 +26,11 @@ namespace IRepository.Read
         public IEnumerable<TipoInspecaoVisualUserIdDTO> getTipoInspecaoVisualReadFKUserId(object command );
         public bool ExistsById(int value );
         public bool ExistsByTIV_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTIV_NOME(string value );
         public bool ExistsByTIV_DESCRICAO(string value );
         public bool ExistsByTIV_FECHAMENTO(string value );
@@ -42,11 +42,11 @@ namespace IRepository.Read
         public bool ExistsByTIV_TOL_MENOS(Decimal value );
         public TipoInspecaoVisualDTO FirstById(int value );
         public TipoInspecaoVisualDTO FirstByTIV_ID(int value );
-        public TipoInspecaoVisualDTO FirstByOperationalEntityId(string value );
         public TipoInspecaoVisualDTO FirstByTenantID(int value );
         public TipoInspecaoVisualDTO FirstByDeleted(bool value );
         public TipoInspecaoVisualDTO FirstByChanged(DateTime value );
         public TipoInspecaoVisualDTO FirstByUserId(int value );
+        public TipoInspecaoVisualDTO FirstByOperationalEntityId(string value );
         public TipoInspecaoVisualDTO FirstByTIV_NOME(string value );
         public TipoInspecaoVisualDTO FirstByTIV_DESCRICAO(string value );
         public TipoInspecaoVisualDTO FirstByTIV_FECHAMENTO(string value );
@@ -58,11 +58,11 @@ namespace IRepository.Read
         public TipoInspecaoVisualDTO FirstByTIV_TOL_MENOS(Decimal value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllById(int value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByTIV_ID(int value );
-        public IEnumerable<TipoInspecaoVisualDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByUserId(int value );
+        public IEnumerable<TipoInspecaoVisualDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByTIV_NOME(string value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByTIV_DESCRICAO(string value );
         public IEnumerable<TipoInspecaoVisualDTO> GetAllByTIV_FECHAMENTO(string value );

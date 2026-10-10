@@ -124,14 +124,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public ImpressoraDTO FirstByIMP_ID(int value )
         {
             var query = _query.FirstByIMP_IDQuery(value );
@@ -183,14 +183,6 @@ namespace Read.Repository
         public ImpressoraDTO FirstByIMP_NOME(string value )
         {
             var query = _query.FirstByIMP_NOMEQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<ImpressoraDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ImpressoraDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<ImpressoraDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public ImpressoraDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ImpressoraDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<ImpressoraDTO> GetAllByIMP_ID(int value )
         {
             var query = _query.FirstByIMP_IDQuery(value );
@@ -247,14 +247,6 @@ namespace Read.Repository
         public IEnumerable<ImpressoraDTO> GetAllByIMP_NOME(string value )
         {
             var query = _query.FirstByIMP_NOMEQuery(value );
-
-                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<ImpressoraDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -287,6 +279,14 @@ namespace Read.Repository
         public IEnumerable<ImpressoraDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ImpressoraDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters).ToList();
                 return result;

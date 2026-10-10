@@ -31,33 +31,33 @@ namespace IRepository.Read
         public bool ExistsByCOL_EMAIL(string value );
         public bool ExistsByCOL_MATRICULA(string value );
         public bool ExistsByTURM_id(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ColaboradorDTO FirstByCOL_CPF(string value );
         public ColaboradorDTO FirstByCOL_NOME(string value );
         public ColaboradorDTO FirstByCOL_NASCIMENTO(DateTime value );
         public ColaboradorDTO FirstByCOL_EMAIL(string value );
         public ColaboradorDTO FirstByCOL_MATRICULA(string value );
         public ColaboradorDTO FirstByTURM_id(string value );
-        public ColaboradorDTO FirstByOperationalEntityId(string value );
         public ColaboradorDTO FirstByTenantID(int value );
         public ColaboradorDTO FirstByDeleted(bool value );
         public ColaboradorDTO FirstByChanged(DateTime value );
         public ColaboradorDTO FirstByUserId(int value );
+        public ColaboradorDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ColaboradorDTO> GetAllByCOL_CPF(string value );
         public IEnumerable<ColaboradorDTO> GetAllByCOL_NOME(string value );
         public IEnumerable<ColaboradorDTO> GetAllByCOL_NASCIMENTO(DateTime value );
         public IEnumerable<ColaboradorDTO> GetAllByCOL_EMAIL(string value );
         public IEnumerable<ColaboradorDTO> GetAllByCOL_MATRICULA(string value );
         public IEnumerable<ColaboradorDTO> GetAllByTURM_id(string value );
-        public IEnumerable<ColaboradorDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ColaboradorDTO> GetAllByTenantID(int value );
         public IEnumerable<ColaboradorDTO> GetAllByDeleted(bool value );
         public IEnumerable<ColaboradorDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ColaboradorDTO> GetAllByUserId(int value );
+        public IEnumerable<ColaboradorDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -66,11 +66,6 @@ namespace Input.Repository.MaquinaImpressora
             var query = _query.UpdateMAI_FACAO(maq_imp_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int maq_imp_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(maq_imp_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int maq_imp_id, int value)
         {
             var query = _query.UpdateTenantID(maq_imp_id, value);
@@ -89,6 +84,11 @@ namespace Input.Repository.MaquinaImpressora
         public void UpdateUserId(int maq_imp_id, int value)
         {
             var query = _query.UpdateUserId(maq_imp_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int maq_imp_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(maq_imp_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

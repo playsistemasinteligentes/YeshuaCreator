@@ -25,11 +25,11 @@ namespace IRepository.Write
         void UpdateTIP_DESCRICAO(string tip_id, string value);
         void UpdateTIP_TYPE(string tip_id, int value);
         void UpdateSPR(string tip_id, int value);
-        void UpdateOperationalEntityId(string tip_id, string value);
         void UpdateTenantID(string tip_id, int value);
         void UpdateDeleted(string tip_id, bool value);
         void UpdateChanged(string tip_id, DateTime value);
         void UpdateUserId(string tip_id, int value);
+        void UpdateOperationalEntityId(string tip_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

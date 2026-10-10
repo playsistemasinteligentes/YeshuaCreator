@@ -32,11 +32,11 @@
             public const ulong IPA_DIML = 1UL << 9;
             public const ulong IPA_DIMA = 1UL << 10;
             public const ulong IPA_QTD_POR_PALETE = 1UL << 11;
-            public const ulong OperationalEntityId = 1UL << 12;
-            public const ulong TenantID = 1UL << 13;
-            public const ulong Deleted = 1UL << 14;
-            public const ulong Changed = 1UL << 15;
-            public const ulong UserId = 1UL << 16;
+            public const ulong TenantID = 1UL << 12;
+            public const ulong Deleted = 1UL << 13;
+            public const ulong Changed = 1UL << 14;
+            public const ulong UserId = 1UL << 15;
+            public const ulong OperationalEntityId = 1UL << 16;
         }
 
         public static class ItensPackedOperationalFields
@@ -53,11 +53,11 @@
             public const Dominio.Operational.OperationalDataClassification IPA_DIML = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification IPA_DIMA = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification IPA_QTD_POR_PALETE = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ItensPackedDecorator : IItensPackedEntity
@@ -262,7 +262,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -319,6 +318,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

@@ -111,6 +111,26 @@ namespace Input.Repository.yInbox
             var query = _query.UpdateNextAttemptAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateRootOperationId(int id, string value)
+        {
+            var query = _query.UpdateRootOperationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationId(int id, string value)
+        {
+            var query = _query.UpdateOperationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateExecutionId(int id, string value)
+        {
+            var query = _query.UpdateExecutionId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCausationId(int id, string value)
+        {
+            var query = _query.UpdateCausationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateSagaId(int id, int value)
         {
             var query = _query.UpdateSagaId(id, value);
@@ -126,11 +146,6 @@ namespace Input.Repository.yInbox
             var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateDeleted(int id, bool value)
         {
             var query = _query.UpdateDeleted(id, value);
@@ -144,6 +159,11 @@ namespace Input.Repository.yInbox
         public void UpdateUserId(int id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

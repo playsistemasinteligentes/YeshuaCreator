@@ -76,11 +76,11 @@ namespace Command.Read
         public Decimal? FPR_TOLERANCIA_MENOS { get; set; }
         public Decimal? FPR_TOLERANCIA_MAIS { get; set; }
         public DateTime? FPR_DATA_ENCERRAMENTO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "FilaProducao";
  public string? OperationalRecordId => OperationalEntityId;

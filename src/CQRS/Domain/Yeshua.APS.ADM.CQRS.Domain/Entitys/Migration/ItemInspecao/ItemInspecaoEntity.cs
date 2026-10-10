@@ -23,19 +23,19 @@
     public int? Id { get; set; }
     public int ITI_ID { get; set; }
     public string? ITI_DESC { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ItemInspecaoEntity(int? id, int iti_id, string? iti_desc ){
  Id = id; 
  ITI_ID = iti_id; 
  ITI_DESC = iti_desc; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

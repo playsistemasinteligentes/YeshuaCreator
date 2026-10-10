@@ -21,11 +21,11 @@ namespace Repositorio.Outputs
     public int inddep_id { get; set; }
     public int dep_id { get; set; }
     public int ind_id { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

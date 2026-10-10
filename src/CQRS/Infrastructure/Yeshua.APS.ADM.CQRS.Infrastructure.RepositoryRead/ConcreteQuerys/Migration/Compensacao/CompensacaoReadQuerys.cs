@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [Compensacao] ";
+            this.Query = $@" select [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [Compensacao] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (Command.COM_ID.HasValue) dict["COM_ID"] = Command.COM_ID.Value;
@@ -83,14 +83,14 @@ if (Command.COM_VINCO9_CONVERSAO.HasValue) dict["COM_VINCO9_CONVERSAO"] = Comman
 if (Command.COM_VINCO9_CONVERSAO.HasValue) whereClauses.Add($"[COM_VINCO9_CONVERSAO] = @COM_VINCO9_CONVERSAO");
 if (Command.COM_VINCO10_CONVERSAO.HasValue) dict["COM_VINCO10_CONVERSAO"] = Command.COM_VINCO10_CONVERSAO.Value;
 if (Command.COM_VINCO10_CONVERSAO.HasValue) whereClauses.Add($"[COM_VINCO10_CONVERSAO] = @COM_VINCO10_CONVERSAO");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -626,23 +626,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [Compensacao] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -711,12 +694,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Compensacao] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -733,7 +733,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -750,7 +750,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -767,7 +767,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -784,7 +784,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -801,7 +801,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -818,7 +818,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -835,7 +835,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -852,7 +852,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -869,7 +869,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -886,7 +886,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -903,7 +903,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -920,7 +920,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -937,7 +937,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -954,7 +954,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -971,7 +971,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -988,7 +988,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1005,7 +1005,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1022,7 +1022,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1039,7 +1039,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1056,7 +1056,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1073,7 +1073,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1090,7 +1090,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1107,7 +1107,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1119,29 +1119,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1158,7 +1141,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1175,7 +1158,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1192,13 +1175,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [Compensacao] ";
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [COM_ID], [GRP_ID], [OND_ID], [COM_VINCO1_OND], [COM_VINCO2_OND], [COM_VINCO3_OND], [COM_VINCO4_OND], [COM_VINCO5_OND], [COM_VINCO6_OND], [COM_VINCO7_OND], [COM_VINCO8_OND], [COM_VINCO9_OND], [COM_VINCO10_OND], [COM_VINCO1_CONVERSAO], [COM_VINCO2_CONVERSAO], [COM_VINCO3_CONVERSAO], [COM_VINCO4_CONVERSAO], [COM_VINCO5_CONVERSAO], [COM_VINCO6_CONVERSAO], [COM_VINCO7_CONVERSAO], [COM_VINCO8_CONVERSAO], [COM_VINCO9_CONVERSAO], [COM_VINCO10_CONVERSAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Compensacao] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

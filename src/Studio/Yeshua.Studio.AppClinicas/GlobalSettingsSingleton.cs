@@ -35,6 +35,7 @@ public sealed class GS
             OverrideIfExists("MYCONFIG__READCONECTIONSTRING", v => MYC.ReadConectionString = v);
             OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", v => MYC.WriteConectionString = v);
             OverrideIfExists("MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING", v => MYC.CentralAuthorizationConectionString = v);
+            OverrideIfExists("MYCONFIG__SOURCE", v => MYC.Source = v);
 
         }
         catch (Exception ex)

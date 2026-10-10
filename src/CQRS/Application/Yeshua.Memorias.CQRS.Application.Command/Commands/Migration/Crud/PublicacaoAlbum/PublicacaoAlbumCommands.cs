@@ -24,11 +24,11 @@ namespace Command.Write
         public DateTime SolicitadaEmUtc { get; set; }
         public DateTime? PublicadaEmUtc { get; set; }
         public int Status { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "PublicacaoAlbum";
  public string? OperationalRecordId => OperationalEntityId;
     }

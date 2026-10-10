@@ -124,14 +124,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public RepresentantesDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -183,14 +183,6 @@ namespace Read.Repository
         public RepresentantesDTO FirstByREP_NOME(string value )
         {
             var query = _query.FirstByREP_NOMEQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<RepresentantesDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public RepresentantesDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<RepresentantesDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public RepresentantesDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<RepresentantesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<RepresentantesDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -247,14 +247,6 @@ namespace Read.Repository
         public IEnumerable<RepresentantesDTO> GetAllByREP_NOME(string value )
         {
             var query = _query.FirstByREP_NOMEQuery(value );
-
-                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<RepresentantesDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -287,6 +279,14 @@ namespace Read.Repository
         public IEnumerable<RepresentantesDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<RepresentantesDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters).ToList();
                 return result;

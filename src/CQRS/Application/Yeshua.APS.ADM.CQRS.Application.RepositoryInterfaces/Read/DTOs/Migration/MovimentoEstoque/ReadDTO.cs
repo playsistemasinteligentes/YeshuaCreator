@@ -66,11 +66,11 @@ namespace Repositorio.Outputs
     public string mov_grupo_contabil { get; set; } = string.Empty;
     public string for_id { get; set; } = string.Empty;
     public string cli_id { get; set; } = string.Empty;
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

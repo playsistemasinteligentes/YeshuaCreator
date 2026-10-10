@@ -86,12 +86,6 @@ namespace Input.Repository.yConfigNotification
             var query = _query.UpdateEmailPassword(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateDeleted(int id, bool value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
@@ -108,6 +102,12 @@ namespace Input.Repository.yConfigNotification
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            _cacheService.RemoveByPrefix("yConfigNotification");
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

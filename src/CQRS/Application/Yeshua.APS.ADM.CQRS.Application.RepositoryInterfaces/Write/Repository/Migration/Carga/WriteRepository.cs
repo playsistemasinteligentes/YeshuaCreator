@@ -62,11 +62,11 @@ namespace IRepository.Write
         void UpdateCAR_DATA_AGENCIAMENTO(int id, DateTime value);
         void UpdateTURN_ID(int id, string value);
         void UpdateTURM_ID(int id, string value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

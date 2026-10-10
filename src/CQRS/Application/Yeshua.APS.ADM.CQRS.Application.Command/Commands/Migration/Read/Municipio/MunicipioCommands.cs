@@ -23,11 +23,11 @@ namespace Command.Read
         public string? MUN_CODIGO_SIAFI { get; set; }
         public string? MUN_CODIGO_CNPJ { get; set; }
         public Decimal? MUN_DISTANCIA_KM { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Municipio";
  public string? OperationalRecordId => OperationalEntityId;

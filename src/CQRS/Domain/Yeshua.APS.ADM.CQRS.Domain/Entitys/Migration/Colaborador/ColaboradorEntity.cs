@@ -26,11 +26,11 @@
     public string COL_EMAIL { get; set; }
     public string COL_MATRICULA { get; set; }
     public string TURM_id { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ColaboradorEntity(string col_cpf, string col_nome, DateTime col_nascimento, string col_email, string col_matricula, string turm_id ){
  COL_CPF = col_cpf; 
@@ -39,9 +39,9 @@
  COL_EMAIL = col_email; 
  COL_MATRICULA = col_matricula; 
  TURM_id = turm_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

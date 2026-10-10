@@ -30,17 +30,17 @@ namespace Query.Write
         }
         public QueryModel InserirGrupoSegmentoQuery(IGrupoSegmentoEntity GrupoSegmento)
         {
-            this.Query = $@" INSERT INTO [GrupoSegmento] ([GRS_ID], [GRS_DESCRICAO], [GRS_INTEGRACAO_ERP], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@GRS_ID, @GRS_DESCRICAO, @GRS_INTEGRACAO_ERP, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [GrupoSegmento] ([GRS_ID], [GRS_DESCRICAO], [GRS_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@GRS_ID, @GRS_DESCRICAO, @GRS_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 GRS_ID = GrupoSegmento.GRS_ID,
                 GRS_DESCRICAO = GrupoSegmento.GRS_DESCRICAO,
                 GRS_INTEGRACAO_ERP = GrupoSegmento.GRS_INTEGRACAO_ERP,
-                OperationalEntityId = GrupoSegmento.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = GrupoSegmento.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -88,16 +88,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [GrupoSegmento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [GrupoSegmento] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -134,6 +124,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [GrupoSegmento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

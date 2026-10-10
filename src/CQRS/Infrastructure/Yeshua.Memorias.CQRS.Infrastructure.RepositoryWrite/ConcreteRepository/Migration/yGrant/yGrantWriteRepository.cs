@@ -56,11 +56,6 @@ namespace Input.Repository.yGrant
             var query = _query.UpdateDescription(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -79,6 +74,11 @@ namespace Input.Repository.yGrant
         public void UpdateUserId(string id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

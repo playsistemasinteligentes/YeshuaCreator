@@ -21,11 +21,11 @@
                     public interface IPlanoAmostralTesteEntity
 {
     Decimal? GRP_TIPO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     int PAT_ID { get; set; }
     int? PAT_QTD_CAIXAS_DE { get; set; }
     int? PAT_QTD_CAIXAS_ATE { get; set; }

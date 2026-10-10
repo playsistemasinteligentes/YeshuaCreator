@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryTokenQuery(IyTokenEntity yToken)
         {
-            this.Query = $@" INSERT INTO [yToken] ([TokenHash], [Description], [ConnectorKey], [Active], [ValidUntil], [CreatedAt], [LastUsedAt], [TenantID], [UserId], [OperationalEntityId], [Deleted], [Changed]) OUTPUT INSERTED.[Id] VALUES(@TokenHash, @Description, @ConnectorKey, @Active, @ValidUntil, @CreatedAt, @LastUsedAt, @TenantID, @UserId, @OperationalEntityId, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO [yToken] ([TokenHash], [Description], [ConnectorKey], [Active], [ValidUntil], [CreatedAt], [LastUsedAt], [TenantID], [UserId], [Deleted], [Changed], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@TokenHash, @Description, @ConnectorKey, @Active, @ValidUntil, @CreatedAt, @LastUsedAt, @TenantID, @UserId, @Deleted, @Changed, @OperationalEntityId) ";
             this.Parameters = new
             {
                 TokenHash = yToken.TokenHash,
@@ -42,9 +42,9 @@ namespace Query.Write
                 LastUsedAt = yToken.LastUsedAt,
                 TenantID = _executionContext.TenantID,
                 UserId = _executionContext.UserId,
-                OperationalEntityId = yToken.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
+                OperationalEntityId = yToken.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -156,16 +156,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yToken] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE [yToken] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
@@ -182,6 +172,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Changed = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yToken] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -23,11 +23,11 @@
     string? Id { get; set; }
     string? Descricao { get; set; }
     string? Status { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     Decimal? PRO_ESTOQUE_ATUAL { get; set; }
     string UNI_ID { get; set; }
     Decimal? PRO_FARDOS_POR_CAMADA { get; set; }

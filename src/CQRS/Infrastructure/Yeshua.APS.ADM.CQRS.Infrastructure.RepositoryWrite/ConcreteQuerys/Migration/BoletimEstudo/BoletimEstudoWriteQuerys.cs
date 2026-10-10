@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirBoletimEstudoQuery(IBoletimEstudoEntity BoletimEstudo)
         {
-            this.Query = $@" INSERT INTO [BoletimEstudo] ([BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@BOL_ID, @BOL_ID_ORIGEM, @BOL_SOLVER, @BOL_INTEGRACAO, @BOL_SEQUENCIA, @GRP_PAP_GRAMATURA_PROGRAMADO, @GRP_ID_PROGRAMADO, @GRP_PAPEL1_PROGRAMADO, @GRP_PAPEL2_PROGRAMADO, @GRP_PAPEL3_PROGRAMADO, @GRP_PAPEL4_PROGRAMADO, @GRP_PAPEL5_PROGRAMADO, @BOL_STATUS_INTERFACE, @BOL_TIPO, @BOL_FORMATO, @BOL_GRAMATURA_PAPEIS_PROGRAMADOS, @BOL_GRAMATURA_PAPEIS_REALIZADO, @BOL_CUSTO_PAPEIS_PROGRAMADOS, @BOL_CUSTO_PAPEIS_REALIZADO, @BOL_GRAMATURA_RESINA_PROGRAMADOS, @BOL_CUSTO_RESINA_PROGRAMADOS, @BOL_REFILE_OBRIGATORIO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [BoletimEstudo] ([BOL_ID], [BOL_ID_ORIGEM], [BOL_SOLVER], [BOL_INTEGRACAO], [BOL_SEQUENCIA], [GRP_PAP_GRAMATURA_PROGRAMADO], [GRP_ID_PROGRAMADO], [GRP_PAPEL1_PROGRAMADO], [GRP_PAPEL2_PROGRAMADO], [GRP_PAPEL3_PROGRAMADO], [GRP_PAPEL4_PROGRAMADO], [GRP_PAPEL5_PROGRAMADO], [BOL_STATUS_INTERFACE], [BOL_TIPO], [BOL_FORMATO], [BOL_GRAMATURA_PAPEIS_PROGRAMADOS], [BOL_GRAMATURA_PAPEIS_REALIZADO], [BOL_CUSTO_PAPEIS_PROGRAMADOS], [BOL_CUSTO_PAPEIS_REALIZADO], [BOL_GRAMATURA_RESINA_PROGRAMADOS], [BOL_CUSTO_RESINA_PROGRAMADOS], [BOL_REFILE_OBRIGATORIO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@BOL_ID, @BOL_ID_ORIGEM, @BOL_SOLVER, @BOL_INTEGRACAO, @BOL_SEQUENCIA, @GRP_PAP_GRAMATURA_PROGRAMADO, @GRP_ID_PROGRAMADO, @GRP_PAPEL1_PROGRAMADO, @GRP_PAPEL2_PROGRAMADO, @GRP_PAPEL3_PROGRAMADO, @GRP_PAPEL4_PROGRAMADO, @GRP_PAPEL5_PROGRAMADO, @BOL_STATUS_INTERFACE, @BOL_TIPO, @BOL_FORMATO, @BOL_GRAMATURA_PAPEIS_PROGRAMADOS, @BOL_GRAMATURA_PAPEIS_REALIZADO, @BOL_CUSTO_PAPEIS_PROGRAMADOS, @BOL_CUSTO_PAPEIS_REALIZADO, @BOL_GRAMATURA_RESINA_PROGRAMADOS, @BOL_CUSTO_RESINA_PROGRAMADOS, @BOL_REFILE_OBRIGATORIO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 BOL_ID = BoletimEstudo.BOL_ID,
@@ -55,11 +55,11 @@ namespace Query.Write
                 BOL_GRAMATURA_RESINA_PROGRAMADOS = BoletimEstudo.BOL_GRAMATURA_RESINA_PROGRAMADOS,
                 BOL_CUSTO_RESINA_PROGRAMADOS = BoletimEstudo.BOL_CUSTO_RESINA_PROGRAMADOS,
                 BOL_REFILE_OBRIGATORIO = BoletimEstudo.BOL_REFILE_OBRIGATORIO,
-                OperationalEntityId = BoletimEstudo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = BoletimEstudo.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -316,16 +316,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [BoletimEstudo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [BoletimEstudo] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -362,6 +352,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [BoletimEstudo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -21,17 +21,19 @@
                     public static class yUserTrackingFields
         {
             public const ulong Id = 1UL << 0;
-            public const ulong Nome = 1UL << 1;
-            public const ulong Email = 1UL << 2;
-            public const ulong Senha = 1UL << 3;
-            public const ulong TenantID = 1UL << 4;
-            public const ulong Deleted = 1UL << 5;
-            public const ulong Changed = 1UL << 6;
+            public const ulong OperationalEntityId = 1UL << 1;
+            public const ulong Nome = 1UL << 2;
+            public const ulong Email = 1UL << 3;
+            public const ulong Senha = 1UL << 4;
+            public const ulong TenantID = 1UL << 5;
+            public const ulong Deleted = 1UL << 6;
+            public const ulong Changed = 1UL << 7;
         }
 
         public static class yUserOperationalFields
         {
             public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Nome = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification Email = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification Senha = Dominio.Operational.OperationalDataClassification.NeverCapture;
@@ -75,6 +77,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }    public int Id => _inner.Id;
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public string Nome
                                     {

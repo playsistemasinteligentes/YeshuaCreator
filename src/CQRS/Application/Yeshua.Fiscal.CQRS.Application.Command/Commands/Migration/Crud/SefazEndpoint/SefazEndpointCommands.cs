@@ -21,11 +21,11 @@ namespace Command.Write
         public string Versao { get; set; }
         public string Url { get; set; }
         public int Ativo { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "SefazEndpoint";
  public string? OperationalRecordId => OperationalEntityId;
     }

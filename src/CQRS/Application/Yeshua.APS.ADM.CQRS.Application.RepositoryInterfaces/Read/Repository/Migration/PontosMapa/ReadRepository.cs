@@ -31,11 +31,11 @@ namespace IRepository.Read
         public bool ExistsByPON_LATITUDE(Decimal value );
         public bool ExistsByPON_LONGITUDE(Decimal value );
         public bool ExistsByPON_DISTANCIA_KM(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByMUN_ID(string value );
         public PontosMapaDTO FirstByPON_ID(string value );
         public PontosMapaDTO FirstByPON_DESCRICAO(string value );
@@ -43,11 +43,11 @@ namespace IRepository.Read
         public PontosMapaDTO FirstByPON_LATITUDE(Decimal value );
         public PontosMapaDTO FirstByPON_LONGITUDE(Decimal value );
         public PontosMapaDTO FirstByPON_DISTANCIA_KM(Decimal value );
-        public PontosMapaDTO FirstByOperationalEntityId(string value );
         public PontosMapaDTO FirstByTenantID(int value );
         public PontosMapaDTO FirstByDeleted(bool value );
         public PontosMapaDTO FirstByChanged(DateTime value );
         public PontosMapaDTO FirstByUserId(int value );
+        public PontosMapaDTO FirstByOperationalEntityId(string value );
         public PontosMapaDTO FirstByMUN_ID(string value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_ID(string value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_DESCRICAO(string value );
@@ -55,11 +55,11 @@ namespace IRepository.Read
         public IEnumerable<PontosMapaDTO> GetAllByPON_LATITUDE(Decimal value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_LONGITUDE(Decimal value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_DISTANCIA_KM(Decimal value );
-        public IEnumerable<PontosMapaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PontosMapaDTO> GetAllByTenantID(int value );
         public IEnumerable<PontosMapaDTO> GetAllByDeleted(bool value );
         public IEnumerable<PontosMapaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PontosMapaDTO> GetAllByUserId(int value );
+        public IEnumerable<PontosMapaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PontosMapaDTO> GetAllByMUN_ID(string value );
     }
 }

@@ -25,11 +25,11 @@ namespace IRepository.Write
         void UpdateMAQ_ID(int maq_imp_id, string value);
         void UpdateIMP_ID(int maq_imp_id, int value);
         void UpdateMAI_FACAO(int maq_imp_id, int value);
-        void UpdateOperationalEntityId(int maq_imp_id, string value);
         void UpdateTenantID(int maq_imp_id, int value);
         void UpdateDeleted(int maq_imp_id, bool value);
         void UpdateChanged(int maq_imp_id, DateTime value);
         void UpdateUserId(int maq_imp_id, int value);
+        void UpdateOperationalEntityId(int maq_imp_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -30,33 +30,33 @@ namespace IRepository.Read
         public bool ExistsByMDT_VALOR_ESPERADO(Decimal value );
         public bool ExistsByMDT_ENCONTRADO(Decimal value );
         public bool ExistsByUNI_ID(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MedidasTesteDTO FirstById(int value );
         public MedidasTesteDTO FirstByMDT_ID(int value );
         public MedidasTesteDTO FirstByMDT_DESC(string value );
         public MedidasTesteDTO FirstByMDT_VALOR_ESPERADO(Decimal value );
         public MedidasTesteDTO FirstByMDT_ENCONTRADO(Decimal value );
         public MedidasTesteDTO FirstByUNI_ID(string value );
-        public MedidasTesteDTO FirstByOperationalEntityId(string value );
         public MedidasTesteDTO FirstByTenantID(int value );
         public MedidasTesteDTO FirstByDeleted(bool value );
         public MedidasTesteDTO FirstByChanged(DateTime value );
         public MedidasTesteDTO FirstByUserId(int value );
+        public MedidasTesteDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MedidasTesteDTO> GetAllById(int value );
         public IEnumerable<MedidasTesteDTO> GetAllByMDT_ID(int value );
         public IEnumerable<MedidasTesteDTO> GetAllByMDT_DESC(string value );
         public IEnumerable<MedidasTesteDTO> GetAllByMDT_VALOR_ESPERADO(Decimal value );
         public IEnumerable<MedidasTesteDTO> GetAllByMDT_ENCONTRADO(Decimal value );
         public IEnumerable<MedidasTesteDTO> GetAllByUNI_ID(string value );
-        public IEnumerable<MedidasTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MedidasTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<MedidasTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<MedidasTesteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MedidasTesteDTO> GetAllByUserId(int value );
+        public IEnumerable<MedidasTesteDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

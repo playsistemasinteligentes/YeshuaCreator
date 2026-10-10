@@ -27,11 +27,11 @@
     public int? REL_POS_X { get; set; }
     public int? REL_POS_Y { get; set; }
     public int? REL_TAMANHO_FONTE { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RelatoriosEntity(int rel_id, string? rel_nome_relatorio, string rel_nome_campo, string rel_tipo_campo, int? rel_pos_x, int? rel_pos_y, int? rel_tamanho_fonte ){
  REL_ID = rel_id; 
@@ -41,9 +41,9 @@
  REL_POS_X = rel_pos_x; 
  REL_POS_Y = rel_pos_y; 
  REL_TAMANHO_FONTE = rel_tamanho_fonte; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

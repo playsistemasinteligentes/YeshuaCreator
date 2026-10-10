@@ -18,11 +18,11 @@ namespace Command.Write
         public int FotoId { get; set; }
         public int Ordem { get; set; }
         public string? Legenda { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "AlbumFoto";
  public string? OperationalRecordId => OperationalEntityId;
     }

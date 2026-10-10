@@ -25,11 +25,11 @@ namespace IQuery.Read
         public QueryModel ExistsByMAP_CUSTO_PEDAGIO_POR_EIXOQuery(Decimal value );
         public QueryModel ExistsByROD_IDQuery(int value );
         public QueryModel ExistsByMAP_ALTURA_RODQuery(Decimal value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByMAP_IDQuery(int value );
         public QueryModel FirstByPON_IDQuery(string value );
@@ -38,11 +38,11 @@ namespace IQuery.Read
         public QueryModel FirstByMAP_CUSTO_PEDAGIO_POR_EIXOQuery(Decimal value );
         public QueryModel FirstByROD_IDQuery(int value );
         public QueryModel FirstByMAP_ALTURA_RODQuery(Decimal value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

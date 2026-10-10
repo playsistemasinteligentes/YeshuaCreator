@@ -81,11 +81,11 @@ namespace IQuery.Read
         public QueryModel ExistsByFPR_TOLERANCIA_MENOSQuery(Decimal value );
         public QueryModel ExistsByFPR_TOLERANCIA_MAISQuery(Decimal value );
         public QueryModel ExistsByFPR_DATA_ENCERRAMENTOQuery(DateTime value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByORD_IDQuery(string value );
         public QueryModel FirstByROT_PRO_IDQuery(string value );
@@ -149,11 +149,11 @@ namespace IQuery.Read
         public QueryModel FirstByFPR_TOLERANCIA_MENOSQuery(Decimal value );
         public QueryModel FirstByFPR_TOLERANCIA_MAISQuery(Decimal value );
         public QueryModel FirstByFPR_DATA_ENCERRAMENTOQuery(DateTime value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

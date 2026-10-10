@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMDFeDocumentoOriginarioQuery(IMDFeDocumentoOriginarioEntity MDFeDocumentoOriginario)
         {
-            this.Query = $@" INSERT INTO [MDFeDocumentoOriginario] ([MDFeSolicitacaoFiscalId], [DocumentoFiscalOriginarioId], [TipoDocumento], [ChaveAcesso], [SnapshotJson], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @DocumentoFiscalOriginarioId, @TipoDocumento, @ChaveAcesso, @SnapshotJson, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MDFeDocumentoOriginario] ([MDFeSolicitacaoFiscalId], [DocumentoFiscalOriginarioId], [TipoDocumento], [ChaveAcesso], [SnapshotJson], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@MDFeSolicitacaoFiscalId, @DocumentoFiscalOriginarioId, @TipoDocumento, @ChaveAcesso, @SnapshotJson, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 MDFeSolicitacaoFiscalId = MDFeDocumentoOriginario.MDFeSolicitacaoFiscalId,
@@ -38,11 +38,11 @@ namespace Query.Write
                 TipoDocumento = MDFeDocumentoOriginario.TipoDocumento,
                 ChaveAcesso = MDFeDocumentoOriginario.ChaveAcesso,
                 SnapshotJson = MDFeDocumentoOriginario.SnapshotJson,
-                OperationalEntityId = MDFeDocumentoOriginario.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = MDFeDocumentoOriginario.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -112,16 +112,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [MDFeDocumentoOriginario] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [MDFeDocumentoOriginario] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -158,6 +148,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MDFeDocumentoOriginario] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

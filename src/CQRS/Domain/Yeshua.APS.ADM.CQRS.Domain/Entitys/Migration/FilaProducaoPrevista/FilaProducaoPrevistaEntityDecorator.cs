@@ -82,8 +82,8 @@
             public const ulong OCO_ID = 1UL << 59;
             public const ulong FPR_PESO_UNITARIO = 1UL << 60;
             public const ulong FPR_M2_UNITARIO = 1UL << 61;
-            public const ulong OperationalEntityId = 1UL << 62;
-            public const ulong TenantID = 1UL << 63;
+            public const ulong TenantID = 1UL << 62;
+            public const ulong Deleted = 1UL << 63;
         }
 
         public static class FilaProducaoPrevistaOperationalFields
@@ -150,8 +150,8 @@
             public const Dominio.Operational.OperationalDataClassification OCO_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification FPR_PESO_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification FPR_M2_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class FilaProducaoPrevistaDecorator : IFilaProducaoPrevistaEntity
@@ -1056,7 +1056,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1080,7 +1079,8 @@
                                             if (_inner.Deleted != value)
                                             {
                                                 _inner.Deleted = value;
-
+                                                if ((_trackingMask & FilaProducaoPrevistaTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("FilaProducaoPrevista", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoPrevistaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -1110,6 +1110,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

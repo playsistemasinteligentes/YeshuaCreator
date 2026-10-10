@@ -61,11 +61,6 @@ namespace Input.Repository.TemplateTipoInspecaoVisual
             var query = _query.UpdateTEM_ID(tti_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int tti_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(tti_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int tti_id, int value)
         {
             var query = _query.UpdateTenantID(tti_id, value);
@@ -84,6 +79,11 @@ namespace Input.Repository.TemplateTipoInspecaoVisual
         public void UpdateUserId(int tti_id, int value)
         {
             var query = _query.UpdateUserId(tti_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int tti_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(tti_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

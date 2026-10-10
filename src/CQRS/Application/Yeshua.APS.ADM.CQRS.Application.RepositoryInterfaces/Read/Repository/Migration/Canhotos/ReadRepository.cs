@@ -32,11 +32,11 @@ namespace IRepository.Read
         public bool ExistsByCAN_IMG(string value );
         public bool ExistsByCAN_LAT_ENTREGA(Decimal value );
         public bool ExistsByCAN_LONG_ENTREGA(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CanhotosDTO FirstById(int value );
         public CanhotosDTO FirstByCAR_ID(string value );
         public CanhotosDTO FirstByORD_ID(string value );
@@ -45,11 +45,11 @@ namespace IRepository.Read
         public CanhotosDTO FirstByCAN_IMG(string value );
         public CanhotosDTO FirstByCAN_LAT_ENTREGA(Decimal value );
         public CanhotosDTO FirstByCAN_LONG_ENTREGA(Decimal value );
-        public CanhotosDTO FirstByOperationalEntityId(string value );
         public CanhotosDTO FirstByTenantID(int value );
         public CanhotosDTO FirstByDeleted(bool value );
         public CanhotosDTO FirstByChanged(DateTime value );
         public CanhotosDTO FirstByUserId(int value );
+        public CanhotosDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CanhotosDTO> GetAllById(int value );
         public IEnumerable<CanhotosDTO> GetAllByCAR_ID(string value );
         public IEnumerable<CanhotosDTO> GetAllByORD_ID(string value );
@@ -58,11 +58,11 @@ namespace IRepository.Read
         public IEnumerable<CanhotosDTO> GetAllByCAN_IMG(string value );
         public IEnumerable<CanhotosDTO> GetAllByCAN_LAT_ENTREGA(Decimal value );
         public IEnumerable<CanhotosDTO> GetAllByCAN_LONG_ENTREGA(Decimal value );
-        public IEnumerable<CanhotosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CanhotosDTO> GetAllByTenantID(int value );
         public IEnumerable<CanhotosDTO> GetAllByDeleted(bool value );
         public IEnumerable<CanhotosDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CanhotosDTO> GetAllByUserId(int value );
+        public IEnumerable<CanhotosDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

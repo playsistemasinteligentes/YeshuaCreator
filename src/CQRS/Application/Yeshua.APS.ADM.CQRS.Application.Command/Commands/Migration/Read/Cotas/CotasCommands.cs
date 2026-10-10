@@ -20,11 +20,11 @@ namespace Command.Read
         public Decimal? COT_VALOR { get; set; }
         public Decimal? COT_OCUPADO { get; set; }
         public int? REP_ID { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Cotas";
  public string? OperationalRecordId => OperationalEntityId;

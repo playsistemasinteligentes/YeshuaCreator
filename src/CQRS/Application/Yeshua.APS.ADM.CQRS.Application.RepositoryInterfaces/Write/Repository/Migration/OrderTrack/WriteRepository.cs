@@ -32,11 +32,11 @@ namespace IRepository.Write
         void UpdateOTK_DATA_PREVISTA(int id, DateTime value);
         void UpdateOTK_DATA_REALIZADA(int id, DateTime value);
         void UpdateFPR_ID(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

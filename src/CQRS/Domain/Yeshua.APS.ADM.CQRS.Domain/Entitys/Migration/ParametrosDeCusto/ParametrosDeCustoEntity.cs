@@ -25,11 +25,11 @@
     public string PRO_ID { get; set; }
     public string CUS_ID { get; set; }
     public string PAR_VALOR { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ParametrosDeCustoEntity(int? id, int par_id, string pro_id, string cus_id, string par_valor ){
  Id = id; 
@@ -37,9 +37,9 @@
  PRO_ID = pro_id; 
  CUS_ID = cus_id; 
  PAR_VALOR = par_valor; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

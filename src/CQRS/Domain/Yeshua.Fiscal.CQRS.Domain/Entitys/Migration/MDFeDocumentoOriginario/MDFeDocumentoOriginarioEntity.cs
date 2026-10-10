@@ -26,11 +26,11 @@
     public string TipoDocumento { get; set; }
     public string? ChaveAcesso { get; set; }
     public string? SnapshotJson { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MDFeDocumentoOriginarioEntity(int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? snapshotjson ){
  Id = id; 
@@ -39,9 +39,9 @@
  TipoDocumento = tipodocumento; 
  ChaveAcesso = chaveacesso; 
  SnapshotJson = snapshotjson; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -17,11 +17,11 @@ namespace Command.Read
         public string? MAQ_ID { get; set; }
         public int? IMP_ID { get; set; }
         public int? MAI_FACAO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "MaquinaImpressora";
  public string? OperationalRecordId => OperationalEntityId;

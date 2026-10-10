@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEstruturaProdutoQuery(IEstruturaProdutoEntity EstruturaProduto)
         {
-            this.Query = $@" INSERT INTO [EstruturaProduto] ([EST_DATA_VALIDADE], [PRO_ID_PRODUTO], [PRO_ID_COMPONENTE], [EST_QUANT], [EST_DATA_INCLUSAO], [EST_BASE_PRODUCAO], [EST_TIPO_REQUISICAO], [EST_CODIGO_DE_EXCECAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@EST_DATA_VALIDADE, @PRO_ID_PRODUTO, @PRO_ID_COMPONENTE, @EST_QUANT, @EST_DATA_INCLUSAO, @EST_BASE_PRODUCAO, @EST_TIPO_REQUISICAO, @EST_CODIGO_DE_EXCECAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [EstruturaProduto] ([EST_DATA_VALIDADE], [PRO_ID_PRODUTO], [PRO_ID_COMPONENTE], [EST_QUANT], [EST_DATA_INCLUSAO], [EST_BASE_PRODUCAO], [EST_TIPO_REQUISICAO], [EST_CODIGO_DE_EXCECAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@EST_DATA_VALIDADE, @PRO_ID_PRODUTO, @PRO_ID_COMPONENTE, @EST_QUANT, @EST_DATA_INCLUSAO, @EST_BASE_PRODUCAO, @EST_TIPO_REQUISICAO, @EST_CODIGO_DE_EXCECAO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 EST_DATA_VALIDADE = EstruturaProduto.EST_DATA_VALIDADE,
@@ -41,11 +41,11 @@ namespace Query.Write
                 EST_BASE_PRODUCAO = EstruturaProduto.EST_BASE_PRODUCAO,
                 EST_TIPO_REQUISICAO = EstruturaProduto.EST_TIPO_REQUISICAO,
                 EST_CODIGO_DE_EXCECAO = EstruturaProduto.EST_CODIGO_DE_EXCECAO,
-                OperationalEntityId = EstruturaProduto.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = EstruturaProduto.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -148,16 +148,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [EstruturaProduto] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [EstruturaProduto] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -194,6 +184,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [EstruturaProduto] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

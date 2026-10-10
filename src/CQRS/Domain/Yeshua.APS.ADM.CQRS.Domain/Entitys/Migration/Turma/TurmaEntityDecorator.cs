@@ -36,11 +36,11 @@
             public const ulong TURM_HORA_FIM_DIA6 = 1UL << 13;
             public const ulong TURM_HORA_INI_DIA7 = 1UL << 14;
             public const ulong TURM_HORA_FIM_DIA7 = 1UL << 15;
-            public const ulong OperationalEntityId = 1UL << 16;
-            public const ulong TenantID = 1UL << 17;
-            public const ulong Deleted = 1UL << 18;
-            public const ulong Changed = 1UL << 19;
-            public const ulong UserId = 1UL << 20;
+            public const ulong TenantID = 1UL << 16;
+            public const ulong Deleted = 1UL << 17;
+            public const ulong Changed = 1UL << 18;
+            public const ulong UserId = 1UL << 19;
+            public const ulong OperationalEntityId = 1UL << 20;
         }
 
         public static class TurmaOperationalFields
@@ -61,11 +61,11 @@
             public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA6 = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA7 = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA7 = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class TurmaDecorator : ITurmaEntity
@@ -326,7 +326,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -383,6 +382,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

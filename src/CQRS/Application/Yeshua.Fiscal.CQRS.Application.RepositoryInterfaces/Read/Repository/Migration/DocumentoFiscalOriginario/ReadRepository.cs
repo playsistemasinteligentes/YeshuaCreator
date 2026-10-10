@@ -42,11 +42,11 @@ namespace IRepository.Read
         public bool ExistsByVolume(Decimal value );
         public bool ExistsBySnapshotJson(string value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public DocumentoFiscalOriginarioDTO FirstById(int value );
         public DocumentoFiscalOriginarioDTO FirstByDocumentoFiscalId(int value );
         public DocumentoFiscalOriginarioDTO FirstByCorrelationId(string value );
@@ -64,11 +64,11 @@ namespace IRepository.Read
         public DocumentoFiscalOriginarioDTO FirstByVolume(Decimal value );
         public DocumentoFiscalOriginarioDTO FirstBySnapshotJson(string value );
         public DocumentoFiscalOriginarioDTO FirstByStatus(int value );
-        public DocumentoFiscalOriginarioDTO FirstByOperationalEntityId(string value );
         public DocumentoFiscalOriginarioDTO FirstByTenantID(int value );
         public DocumentoFiscalOriginarioDTO FirstByDeleted(bool value );
         public DocumentoFiscalOriginarioDTO FirstByChanged(DateTime value );
         public DocumentoFiscalOriginarioDTO FirstByUserId(int value );
+        public DocumentoFiscalOriginarioDTO FirstByOperationalEntityId(string value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllById(int value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByDocumentoFiscalId(int value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByCorrelationId(string value );
@@ -86,11 +86,11 @@ namespace IRepository.Read
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByVolume(Decimal value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllBySnapshotJson(string value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByStatus(int value );
-        public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByTenantID(int value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByDeleted(bool value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByChanged(DateTime value );
         public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByUserId(int value );
+        public IEnumerable<DocumentoFiscalOriginarioDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

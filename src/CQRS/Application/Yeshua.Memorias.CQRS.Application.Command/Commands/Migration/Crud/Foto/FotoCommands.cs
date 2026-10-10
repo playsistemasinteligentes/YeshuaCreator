@@ -22,11 +22,11 @@ namespace Command.Write
         public int? Largura { get; set; }
         public int? Altura { get; set; }
         public int Status { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Foto";
  public string? OperationalRecordId => OperationalEntityId;
     }

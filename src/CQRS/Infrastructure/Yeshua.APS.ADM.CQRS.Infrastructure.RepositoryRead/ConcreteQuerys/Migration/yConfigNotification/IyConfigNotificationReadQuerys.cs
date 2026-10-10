@@ -22,20 +22,20 @@ namespace IQuery.Read
         public QueryModel ExistsByEmailPortQuery(int value );
         public QueryModel ExistsByEmailUserNameQuery(string value );
         public QueryModel ExistsByEmailPasswordQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByEmailSmtpClientQuery(string value );
         public QueryModel FirstByEmailPortQuery(int value );
         public QueryModel FirstByEmailUserNameQuery(string value );
         public QueryModel FirstByEmailPasswordQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

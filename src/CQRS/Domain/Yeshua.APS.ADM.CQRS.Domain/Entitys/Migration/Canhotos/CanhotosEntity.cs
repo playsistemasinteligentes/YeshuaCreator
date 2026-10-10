@@ -28,11 +28,11 @@
     public string? CAN_IMG { get; set; }
     public Decimal? CAN_LAT_ENTREGA { get; set; }
     public Decimal? CAN_LONG_ENTREGA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CanhotosEntity(int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string? can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega ){
  Id = id; 
@@ -43,9 +43,9 @@
  CAN_IMG = can_img; 
  CAN_LAT_ENTREGA = can_lat_entrega; 
  CAN_LONG_ENTREGA = can_long_entrega; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByCON_CASAS_DECIMAIS(string value );
         public bool ExistsByCON_CONEXAO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ConsultasDTO FirstById(int value );
         public ConsultasDTO FirstByCON_CASAS_DECIMAIS(string value );
         public ConsultasDTO FirstByCON_CONEXAO(string value );
-        public ConsultasDTO FirstByOperationalEntityId(string value );
         public ConsultasDTO FirstByTenantID(int value );
         public ConsultasDTO FirstByDeleted(bool value );
         public ConsultasDTO FirstByChanged(DateTime value );
         public ConsultasDTO FirstByUserId(int value );
+        public ConsultasDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ConsultasDTO> GetAllById(int value );
         public IEnumerable<ConsultasDTO> GetAllByCON_CASAS_DECIMAIS(string value );
         public IEnumerable<ConsultasDTO> GetAllByCON_CONEXAO(string value );
-        public IEnumerable<ConsultasDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ConsultasDTO> GetAllByTenantID(int value );
         public IEnumerable<ConsultasDTO> GetAllByDeleted(bool value );
         public IEnumerable<ConsultasDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ConsultasDTO> GetAllByUserId(int value );
+        public IEnumerable<ConsultasDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

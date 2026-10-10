@@ -25,23 +25,23 @@ namespace IRepository.Read
         public IEnumerable<MedicoesOnduladeiraTenantIDDTO> getMedicoesOnduladeiraReadFKTenantID(object command );
         public IEnumerable<MedicoesOnduladeiraUserIdDTO> getMedicoesOnduladeiraReadFKUserId(object command );
         public bool ExistsById(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MedicoesOnduladeiraDTO FirstById(int value );
-        public MedicoesOnduladeiraDTO FirstByOperationalEntityId(string value );
         public MedicoesOnduladeiraDTO FirstByTenantID(int value );
         public MedicoesOnduladeiraDTO FirstByDeleted(bool value );
         public MedicoesOnduladeiraDTO FirstByChanged(DateTime value );
         public MedicoesOnduladeiraDTO FirstByUserId(int value );
+        public MedicoesOnduladeiraDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MedicoesOnduladeiraDTO> GetAllById(int value );
-        public IEnumerable<MedicoesOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MedicoesOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<MedicoesOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<MedicoesOnduladeiraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MedicoesOnduladeiraDTO> GetAllByUserId(int value );
+        public IEnumerable<MedicoesOnduladeiraDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

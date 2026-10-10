@@ -23,11 +23,11 @@ namespace IRepository.Write
         void Update(IItensEstruturaImpressaoEntity itensestruturaimpressao);
         void Delete(IItensEstruturaImpressaoEntity itensestruturaimpressao);
         void UpdateIES_CUSTOM_FONT_SIZE(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

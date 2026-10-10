@@ -72,11 +72,11 @@ namespace IRepository.Read
         public bool ExistsByGRP_PERCENTUAL_PERDA_MEDIA(Decimal value );
         public bool ExistsByGRP_FILTRA_SEQ_TRANS(int value );
         public bool ExistsByGRP_IMG_CAIXA(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public GrupoProdutoAbstratoDTO FirstByGRP_ID(string value );
         public GrupoProdutoAbstratoDTO FirstByGRP_DESCRICAO(string value );
         public GrupoProdutoAbstratoDTO FirstByTEM_ID(int value );
@@ -123,11 +123,11 @@ namespace IRepository.Read
         public GrupoProdutoAbstratoDTO FirstByGRP_PERCENTUAL_PERDA_MEDIA(Decimal value );
         public GrupoProdutoAbstratoDTO FirstByGRP_FILTRA_SEQ_TRANS(int value );
         public GrupoProdutoAbstratoDTO FirstByGRP_IMG_CAIXA(string value );
-        public GrupoProdutoAbstratoDTO FirstByOperationalEntityId(string value );
         public GrupoProdutoAbstratoDTO FirstByTenantID(int value );
         public GrupoProdutoAbstratoDTO FirstByDeleted(bool value );
         public GrupoProdutoAbstratoDTO FirstByChanged(DateTime value );
         public GrupoProdutoAbstratoDTO FirstByUserId(int value );
+        public GrupoProdutoAbstratoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByGRP_ID(string value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByGRP_DESCRICAO(string value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByTEM_ID(int value );
@@ -174,11 +174,11 @@ namespace IRepository.Read
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByGRP_PERCENTUAL_PERDA_MEDIA(Decimal value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByGRP_FILTRA_SEQ_TRANS(int value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByGRP_IMG_CAIXA(string value );
-        public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByTenantID(int value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByDeleted(bool value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByUserId(int value );
+        public IEnumerable<GrupoProdutoAbstratoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

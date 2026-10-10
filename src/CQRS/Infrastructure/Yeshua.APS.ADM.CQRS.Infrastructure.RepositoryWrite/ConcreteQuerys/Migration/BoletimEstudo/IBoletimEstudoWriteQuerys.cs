@@ -39,11 +39,11 @@ namespace IQuery.Write
         QueryModel UpdateBOL_GRAMATURA_RESINA_PROGRAMADOS(int id, Decimal value);
         QueryModel UpdateBOL_CUSTO_RESINA_PROGRAMADOS(int id, Decimal value);
         QueryModel UpdateBOL_REFILE_OBRIGATORIO(int id, int value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteBoletimEstudoQuery(IBoletimEstudoEntity BoletimEstudo);
     }
 }

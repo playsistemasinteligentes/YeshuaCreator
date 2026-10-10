@@ -24,11 +24,11 @@ namespace IRepository.Write
         void Delete(IUnidadeMedidaEntity unidademedida);
         void UpdateUNI_DESCRICAO(string uni_id, string value);
         void UpdateUNI_ESCALA_TEMPO(string uni_id, string value);
-        void UpdateOperationalEntityId(string uni_id, string value);
         void UpdateTenantID(string uni_id, int value);
         void UpdateDeleted(string uni_id, bool value);
         void UpdateChanged(string uni_id, DateTime value);
         void UpdateUserId(string uni_id, int value);
+        void UpdateOperationalEntityId(string uni_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -26,11 +26,11 @@
     public int MOV_PLAID { get; set; }
     public int MOV_UNID { get; set; }
     public int? Tr_Unidade_UNI_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MovimentosEntity(int mov_id, string mov_data, Decimal mov_valor, int mov_plaid, int mov_unid, int? tr_unidade_uni_id ){
  MOV_ID = mov_id; 
@@ -39,9 +39,9 @@
  MOV_PLAID = mov_plaid; 
  MOV_UNID = mov_unid; 
  Tr_Unidade_UNI_ID = tr_unidade_uni_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

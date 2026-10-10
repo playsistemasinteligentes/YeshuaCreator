@@ -99,11 +99,6 @@ namespace Read.Repository
                 return _inner.ExistsByAuditCRUDActived(value );
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-                return _inner.ExistsByOperationalEntityId(value );
-        }
-
         public bool ExistsByTenantID(int value )
         {
                 return _inner.ExistsByTenantID(value );
@@ -124,6 +119,11 @@ namespace Read.Repository
                 return _inner.ExistsByUserId(value );
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+                return _inner.ExistsByOperationalEntityId(value );
+        }
+
         public yConfigArctetureDTO FirstById(int value )
         {
                 return _inner.FirstById(value );
@@ -137,11 +137,6 @@ namespace Read.Repository
         public yConfigArctetureDTO FirstByAuditCRUDActived(int value )
         {
                 return _inner.FirstByAuditCRUDActived(value );
-        }
-
-        public yConfigArctetureDTO FirstByOperationalEntityId(string value )
-        {
-                return _inner.FirstByOperationalEntityId(value );
         }
 
         public yConfigArctetureDTO FirstByTenantID(int value )
@@ -164,6 +159,11 @@ namespace Read.Repository
                 return _inner.FirstByUserId(value );
         }
 
+        public yConfigArctetureDTO FirstByOperationalEntityId(string value )
+        {
+                return _inner.FirstByOperationalEntityId(value );
+        }
+
         public IEnumerable<yConfigArctetureDTO> GetAllById(int value )
         {
                 return _inner.GetAllById(value );
@@ -177,11 +177,6 @@ namespace Read.Repository
         public IEnumerable<yConfigArctetureDTO> GetAllByAuditCRUDActived(int value )
         {
                 return _inner.GetAllByAuditCRUDActived(value );
-        }
-
-        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value )
-        {
-                return _inner.GetAllByOperationalEntityId(value );
         }
 
         public IEnumerable<yConfigArctetureDTO> GetAllByTenantID(int value )
@@ -202,6 +197,11 @@ namespace Read.Repository
         public IEnumerable<yConfigArctetureDTO> GetAllByUserId(int value )
         {
                 return _inner.GetAllByUserId(value );
+        }
+
+        public IEnumerable<yConfigArctetureDTO> GetAllByOperationalEntityId(string value )
+        {
+                return _inner.GetAllByOperationalEntityId(value );
         }
 
     }

@@ -43,11 +43,11 @@ namespace IRepository.Write
         void UpdateDOM_EMPRESA(int id, string value);
         void UpdateDOM_FILIAL(int id, string value);
         void UpdateMED_VALOR_DISPER(int id, string value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -24,11 +24,11 @@ namespace IQuery.Write
         QueryModel UpdatePEN_PROTOCOLO_IN(int pen_id, string value);
         QueryModel UpdatePEN_ID_PROTOCOLO_IN(int pen_id, string value);
         QueryModel UpdateDATA_ENTRADA(int pen_id, DateTime value);
-        QueryModel UpdateOperationalEntityId(int pen_id, string value);
         QueryModel UpdateTenantID(int pen_id, int value);
         QueryModel UpdateDeleted(int pen_id, bool value);
         QueryModel UpdateChanged(int pen_id, DateTime value);
         QueryModel UpdateUserId(int pen_id, int value);
+        QueryModel UpdateOperationalEntityId(int pen_id, string value);
         public QueryModel DeletePendenciasInterfaceQuery(IPendenciasInterfaceEntity PendenciasInterface);
     }
 }

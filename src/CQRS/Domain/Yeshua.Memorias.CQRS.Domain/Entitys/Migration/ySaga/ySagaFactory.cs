@@ -34,13 +34,14 @@
                             }
 
                             public IySagaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby, ulong? trackingMask = null )
                             {
                             var entity = new ySagaEntity(id, correlationid, type, status, keycurrentstep, createdat, completedat, entitytype, entityid, nextexecutionat, lockedat, lockedby );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ySaga", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ySagaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ySaga", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ySagaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

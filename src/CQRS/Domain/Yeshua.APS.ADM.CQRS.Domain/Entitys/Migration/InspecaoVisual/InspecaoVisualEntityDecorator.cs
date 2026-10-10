@@ -37,11 +37,11 @@
             public const ulong FPR_SEQ_REPETICAO = 1UL << 14;
             public const ulong IPV_STATUS_LIBERACAO = 1UL << 15;
             public const ulong IPV_VALOR_MEDIDA = 1UL << 16;
-            public const ulong OperationalEntityId = 1UL << 17;
-            public const ulong TenantID = 1UL << 18;
-            public const ulong Deleted = 1UL << 19;
-            public const ulong Changed = 1UL << 20;
-            public const ulong UserId = 1UL << 21;
+            public const ulong TenantID = 1UL << 17;
+            public const ulong Deleted = 1UL << 18;
+            public const ulong Changed = 1UL << 19;
+            public const ulong UserId = 1UL << 20;
+            public const ulong OperationalEntityId = 1UL << 21;
         }
 
         public static class InspecaoVisualOperationalFields
@@ -63,11 +63,11 @@
             public const Dominio.Operational.OperationalDataClassification FPR_SEQ_REPETICAO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification IPV_STATUS_LIBERACAO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification IPV_VALOR_MEDIDA = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class InspecaoVisualDecorator : IInspecaoVisualEntity
@@ -342,7 +342,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -399,6 +398,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

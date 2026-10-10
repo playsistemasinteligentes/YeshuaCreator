@@ -24,11 +24,11 @@ namespace Command.Write
         public string? NomeResponsavel { get; set; }
         public string? TelefoneResponsavel { get; set; }
         public string? Observacao { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Paciente";
  public string? OperationalRecordId => OperationalEntityId;
     }

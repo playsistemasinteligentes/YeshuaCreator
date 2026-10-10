@@ -34,19 +34,19 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] from [TipoTeste] ";
+            this.Query = $@" select [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] from [TipoTeste] ";
 if (!string.IsNullOrEmpty(Command.TT_ORIGEM_ESPECIFICACAO)) dict["TT_ORIGEM_ESPECIFICACAO"] = $"%{Command.TT_ORIGEM_ESPECIFICACAO}%";
 if (!string.IsNullOrEmpty(Command.TT_ORIGEM_ESPECIFICACAO)) whereClauses.Add($"[TT_ORIGEM_ESPECIFICACAO] like @TT_ORIGEM_ESPECIFICACAO");
 if (!string.IsNullOrEmpty(Command.TT_IMPRIME_NO_LAUDO)) dict["TT_IMPRIME_NO_LAUDO"] = $"%{Command.TT_IMPRIME_NO_LAUDO}%";
 if (!string.IsNullOrEmpty(Command.TT_IMPRIME_NO_LAUDO)) whereClauses.Add($"[TT_IMPRIME_NO_LAUDO] like @TT_IMPRIME_NO_LAUDO");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
 if (Command.TT_ID.HasValue) dict["TT_ID"] = Command.TT_ID.Value;
 if (Command.TT_ID.HasValue) whereClauses.Add($"[TT_ID] = @TT_ID");
 if (!string.IsNullOrEmpty(Command.TT_NOME)) dict["TT_NOME"] = $"%{Command.TT_NOME}%";
@@ -217,23 +217,6 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [TipoTeste] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -297,6 +280,23 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //04
                       whereClauses.Add($" [UserId] = @UserId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [TipoTeste] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -511,7 +511,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -528,7 +528,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -545,7 +545,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -557,29 +557,12 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -596,7 +579,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -613,7 +596,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -630,7 +613,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -642,12 +625,29 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTT_IDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -664,7 +664,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -681,7 +681,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -698,7 +698,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -715,7 +715,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -732,7 +732,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -749,7 +749,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -766,7 +766,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -783,7 +783,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -800,7 +800,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -817,7 +817,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -834,7 +834,7 @@ if (Command.TT_MAX_DEF_GRAVE.HasValue) whereClauses.Add($"[TT_MAX_DEF_GRAVE] = @
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
+            this.Query = $"SELECT [TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_ID], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE] FROM [TipoTeste] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

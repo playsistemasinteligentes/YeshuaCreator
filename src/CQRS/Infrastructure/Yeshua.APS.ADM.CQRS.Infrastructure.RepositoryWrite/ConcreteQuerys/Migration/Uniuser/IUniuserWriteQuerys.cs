@@ -19,11 +19,11 @@ namespace IQuery.Write
         public QueryModel UpdateUniuserQuery(IUniuserEntity Uniuser);
         QueryModel UpdateUNI_ID(int usergru_id, int value);
         QueryModel UpdateUSE_ID(int usergru_id, int value);
-        QueryModel UpdateOperationalEntityId(int usergru_id, string value);
         QueryModel UpdateTenantID(int usergru_id, int value);
         QueryModel UpdateDeleted(int usergru_id, bool value);
         QueryModel UpdateChanged(int usergru_id, DateTime value);
         QueryModel UpdateUserId(int usergru_id, int value);
+        QueryModel UpdateOperationalEntityId(int usergru_id, string value);
         public QueryModel DeleteUniuserQuery(IUniuserEntity Uniuser);
     }
 }

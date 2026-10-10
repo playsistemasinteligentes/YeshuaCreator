@@ -34,11 +34,11 @@ namespace Command.Write
         public string? PRO_ID_PALETE { get; set; }
         public string? COR_STATUS_PALETE { get; set; }
         public Decimal? COR_GRUPO_PRODUTIVO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
         public int COR_ID { get; set; }
         public string? COR_STATUS { get; set; }
         public string? COR_STATUS_INTERFACE { get; set; }

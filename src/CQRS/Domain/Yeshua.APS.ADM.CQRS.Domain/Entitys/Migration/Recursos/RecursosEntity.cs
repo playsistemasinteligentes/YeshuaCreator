@@ -25,11 +25,11 @@
     public int? CAL_ID { get; set; }
     public string? REC_CONTROL_IP { get; set; }
     public string? GRE_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RecursosEntity(string rec_id, string rec_descricao, int? cal_id, string? rec_control_ip, string? gre_id ){
  REC_ID = rec_id; 
@@ -37,9 +37,9 @@
  CAL_ID = cal_id; 
  REC_CONTROL_IP = rec_control_ip; 
  GRE_ID = gre_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

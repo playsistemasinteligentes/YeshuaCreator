@@ -48,8 +48,17 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yOutboxCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyOutbox", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyOutboxReceiver), commandName: "Command.Write.yOutboxCrudCommand");
-                 var youtbox = new yOutboxFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.TransportType, c.TransportData, c.CreatedAt, c.SentAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yOutbox", "DeleteyOutbox", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yOutboxCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyOutbox", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyOutboxReceiver), commandName: "Command.Write.yOutboxCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var youtbox = new yOutboxFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.TransportType, c.TransportData, c.CreatedAt, c.SentAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId, trackingMask: trackingMask);
+                 youtbox.RootOperationId = hasExecutionIdentity ? executionIdentity.RootOperationId : c.RootOperationId;
+                 youtbox.OperationId = hasExecutionIdentity ? executionIdentity.OperationId : c.OperationId;
+                 youtbox.ExecutionId = hasExecutionIdentity ? executionIdentity.ExecutionId : c.ExecutionId;
+                 youtbox.CausationId = hasExecutionIdentity ? executionIdentity.CausationId : c.CausationId;
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", youtbox.OperationalEntityId);
                  var domainResult = yOutboxDomainBehavior.Apply(youtbox, context);
                  if (!domainResult.IsValid)

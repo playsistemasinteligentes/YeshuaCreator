@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByITI_ID(int value );
         public bool ExistsByITI_DESC(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ItemInspecaoDTO FirstById(int value );
         public ItemInspecaoDTO FirstByITI_ID(int value );
         public ItemInspecaoDTO FirstByITI_DESC(string value );
-        public ItemInspecaoDTO FirstByOperationalEntityId(string value );
         public ItemInspecaoDTO FirstByTenantID(int value );
         public ItemInspecaoDTO FirstByDeleted(bool value );
         public ItemInspecaoDTO FirstByChanged(DateTime value );
         public ItemInspecaoDTO FirstByUserId(int value );
+        public ItemInspecaoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ItemInspecaoDTO> GetAllById(int value );
         public IEnumerable<ItemInspecaoDTO> GetAllByITI_ID(int value );
         public IEnumerable<ItemInspecaoDTO> GetAllByITI_DESC(string value );
-        public IEnumerable<ItemInspecaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItemInspecaoDTO> GetAllByTenantID(int value );
         public IEnumerable<ItemInspecaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItemInspecaoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ItemInspecaoDTO> GetAllByUserId(int value );
+        public IEnumerable<ItemInspecaoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

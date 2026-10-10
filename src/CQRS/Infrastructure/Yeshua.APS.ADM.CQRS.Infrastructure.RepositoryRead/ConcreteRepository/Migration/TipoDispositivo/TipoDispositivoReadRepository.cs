@@ -124,14 +124,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public TipoDispositivoDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -183,14 +183,6 @@ namespace Read.Repository
         public TipoDispositivoDTO FirstByTDI_DESCRICAO(string value )
         {
             var query = _query.FirstByTDI_DESCRICAOQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<TipoDispositivoDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public TipoDispositivoDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<TipoDispositivoDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TipoDispositivoDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TipoDispositivoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<TipoDispositivoDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -247,14 +247,6 @@ namespace Read.Repository
         public IEnumerable<TipoDispositivoDTO> GetAllByTDI_DESCRICAO(string value )
         {
             var query = _query.FirstByTDI_DESCRICAOQuery(value );
-
-                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<TipoDispositivoDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -287,6 +279,14 @@ namespace Read.Repository
         public IEnumerable<TipoDispositivoDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<TipoDispositivoDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters).ToList();
                 return result;

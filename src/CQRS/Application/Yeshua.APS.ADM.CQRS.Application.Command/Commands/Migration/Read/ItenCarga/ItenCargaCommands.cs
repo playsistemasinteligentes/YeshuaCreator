@@ -24,11 +24,11 @@ namespace Command.Read
         public string? ORD_HASH_KEY { get; set; }
         public string? NOT_ID { get; set; }
         public DateTime? NOT_EMISSAO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "ItenCarga";
  public string? OperationalRecordId => OperationalEntityId;

@@ -29,27 +29,27 @@ namespace IRepository.Read
         public bool ExistsByIDFAVORITO(int value );
         public bool ExistsByUSE_ID(int value );
         public bool ExistsByID_INDICADOR(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_FavoritosDTO FirstByIDFAVORITO(int value );
         public T_FavoritosDTO FirstByUSE_ID(int value );
         public T_FavoritosDTO FirstByID_INDICADOR(int value );
-        public T_FavoritosDTO FirstByOperationalEntityId(string value );
         public T_FavoritosDTO FirstByTenantID(int value );
         public T_FavoritosDTO FirstByDeleted(bool value );
         public T_FavoritosDTO FirstByChanged(DateTime value );
         public T_FavoritosDTO FirstByUserId(int value );
+        public T_FavoritosDTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_FavoritosDTO> GetAllByIDFAVORITO(int value );
         public IEnumerable<T_FavoritosDTO> GetAllByUSE_ID(int value );
         public IEnumerable<T_FavoritosDTO> GetAllByID_INDICADOR(int value );
-        public IEnumerable<T_FavoritosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_FavoritosDTO> GetAllByTenantID(int value );
         public IEnumerable<T_FavoritosDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_FavoritosDTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_FavoritosDTO> GetAllByUserId(int value );
+        public IEnumerable<T_FavoritosDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

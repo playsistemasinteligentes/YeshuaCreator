@@ -19,11 +19,11 @@ namespace IQuery.Write
         public QueryModel UpdateRodoviasQuery(IRodoviasEntity Rodovias);
         QueryModel UpdateROD_ID(int id, int value);
         QueryModel UpdateROD_DESCRICAO(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteRodoviasQuery(IRodoviasEntity Rodovias);
     }
 }

@@ -37,17 +37,17 @@ namespace IRepository.Write
         void UpdateLastError(int id, string value);
         void UpdateProcessingAt(int id, DateTime value);
         void UpdateNextAttemptAt(int id, DateTime value);
-        void UpdateSagaId(int id, int value);
-        void UpdateSagaStepId(int id, int value);
-        void UpdateTenantID(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
-        void UpdateDeleted(int id, bool value);
-        void UpdateChanged(int id, DateTime value);
-        void UpdateUserId(int id, int value);
         void UpdateRootOperationId(int id, string value);
         void UpdateOperationId(int id, string value);
         void UpdateExecutionId(int id, string value);
         void UpdateCausationId(int id, string value);
+        void UpdateSagaId(int id, int value);
+        void UpdateSagaStepId(int id, int value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

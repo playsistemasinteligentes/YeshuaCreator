@@ -96,11 +96,6 @@ namespace Input.Repository.Municipio
             var query = _query.UpdateMUN_DISTANCIA_KM(mun_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string mun_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(mun_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string mun_id, int value)
         {
             var query = _query.UpdateTenantID(mun_id, value);
@@ -119,6 +114,11 @@ namespace Input.Repository.Municipio
         public void UpdateUserId(string mun_id, int value)
         {
             var query = _query.UpdateUserId(mun_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string mun_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(mun_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

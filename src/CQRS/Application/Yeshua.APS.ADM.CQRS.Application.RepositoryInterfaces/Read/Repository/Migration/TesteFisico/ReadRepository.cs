@@ -42,11 +42,11 @@ namespace IRepository.Read
         public bool ExistsByMAQ_ID(string value );
         public bool ExistsByFPR_SEQ_REPETICAO(int value );
         public bool ExistsByFPR_SEQ_TRANFORMACAO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TesteFisicoDTO FirstById(int value );
         public TesteFisicoDTO FirstByTES_ID(int value );
         public TesteFisicoDTO FirstByITE_ID(int value );
@@ -63,11 +63,11 @@ namespace IRepository.Read
         public TesteFisicoDTO FirstByMAQ_ID(string value );
         public TesteFisicoDTO FirstByFPR_SEQ_REPETICAO(int value );
         public TesteFisicoDTO FirstByFPR_SEQ_TRANFORMACAO(int value );
-        public TesteFisicoDTO FirstByOperationalEntityId(string value );
         public TesteFisicoDTO FirstByTenantID(int value );
         public TesteFisicoDTO FirstByDeleted(bool value );
         public TesteFisicoDTO FirstByChanged(DateTime value );
         public TesteFisicoDTO FirstByUserId(int value );
+        public TesteFisicoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TesteFisicoDTO> GetAllById(int value );
         public IEnumerable<TesteFisicoDTO> GetAllByTES_ID(int value );
         public IEnumerable<TesteFisicoDTO> GetAllByITE_ID(int value );
@@ -84,11 +84,11 @@ namespace IRepository.Read
         public IEnumerable<TesteFisicoDTO> GetAllByMAQ_ID(string value );
         public IEnumerable<TesteFisicoDTO> GetAllByFPR_SEQ_REPETICAO(int value );
         public IEnumerable<TesteFisicoDTO> GetAllByFPR_SEQ_TRANFORMACAO(int value );
-        public IEnumerable<TesteFisicoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TesteFisicoDTO> GetAllByTenantID(int value );
         public IEnumerable<TesteFisicoDTO> GetAllByDeleted(bool value );
         public IEnumerable<TesteFisicoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TesteFisicoDTO> GetAllByUserId(int value );
+        public IEnumerable<TesteFisicoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

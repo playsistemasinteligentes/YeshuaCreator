@@ -19,11 +19,11 @@ namespace Command.Read
         public int? CON_PARCELAS { get; set; }
         public Decimal? CON_VALOR_ACRECIMO { get; set; }
         public string? CON_INTEGRACAO_ERP { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "CondicaoPagamento";
  public string? OperationalRecordId => OperationalEntityId;

@@ -29,11 +29,11 @@ namespace IQuery.Read
         public QueryModel ExistsByIPA_DIMLQuery(Decimal value );
         public QueryModel ExistsByIPA_DIMAQuery(Decimal value );
         public QueryModel ExistsByIPA_QTD_POR_PALETEQuery(Decimal value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByIPA_IDQuery(int value );
         public QueryModel FirstByCAR_IDQuery(string value );
@@ -46,11 +46,11 @@ namespace IQuery.Read
         public QueryModel FirstByIPA_DIMLQuery(Decimal value );
         public QueryModel FirstByIPA_DIMAQuery(Decimal value );
         public QueryModel FirstByIPA_QTD_POR_PALETEQuery(Decimal value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

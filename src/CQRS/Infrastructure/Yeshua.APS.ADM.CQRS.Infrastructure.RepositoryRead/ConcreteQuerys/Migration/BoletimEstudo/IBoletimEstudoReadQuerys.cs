@@ -39,11 +39,11 @@ namespace IQuery.Read
         public QueryModel ExistsByBOL_GRAMATURA_RESINA_PROGRAMADOSQuery(Decimal value );
         public QueryModel ExistsByBOL_CUSTO_RESINA_PROGRAMADOSQuery(Decimal value );
         public QueryModel ExistsByBOL_REFILE_OBRIGATORIOQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByBOL_IDQuery(string value );
         public QueryModel FirstByBOL_ID_ORIGEMQuery(string value );
@@ -67,11 +67,11 @@ namespace IQuery.Read
         public QueryModel FirstByBOL_GRAMATURA_RESINA_PROGRAMADOSQuery(Decimal value );
         public QueryModel FirstByBOL_CUSTO_RESINA_PROGRAMADOSQuery(Decimal value );
         public QueryModel FirstByBOL_REFILE_OBRIGATORIOQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

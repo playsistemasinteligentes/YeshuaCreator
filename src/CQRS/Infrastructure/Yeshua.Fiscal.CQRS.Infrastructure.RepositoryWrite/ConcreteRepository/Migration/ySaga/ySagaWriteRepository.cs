@@ -106,31 +106,6 @@ namespace Input.Repository.ySaga
             var query = _query.UpdateLockedBy(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(int id, int value)
-        {
-            var query = _query.UpdateTenantID(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateDeleted(int id, bool value)
-        {
-            var query = _query.UpdateDeleted(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateChanged(int id, DateTime value)
-        {
-            var query = _query.UpdateChanged(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateUserId(int id, int value)
-        {
-            var query = _query.UpdateUserId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateRootOperationId(int id, string value)
         {
             var query = _query.UpdateRootOperationId(id, value);
@@ -149,6 +124,31 @@ namespace Input.Repository.ySaga
         public void UpdateCausationId(int id, string value)
         {
             var query = _query.UpdateCausationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateTenantID(int id, int value)
+        {
+            var query = _query.UpdateTenantID(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateDeleted(int id, bool value)
+        {
+            var query = _query.UpdateDeleted(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateChanged(int id, DateTime value)
+        {
+            var query = _query.UpdateChanged(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

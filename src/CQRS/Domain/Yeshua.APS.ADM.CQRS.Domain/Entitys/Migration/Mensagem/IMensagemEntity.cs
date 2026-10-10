@@ -28,11 +28,11 @@
     string? MEN_TYPE { get; set; }
     Decimal? MEN_QTD_TRY_SEND { get; set; }
     DateTime? MEN_DATE_TRY_SEND { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

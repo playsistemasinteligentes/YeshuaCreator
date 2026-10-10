@@ -23,19 +23,19 @@
     public int? Id { get; set; }
     public string EQU_ID { get; set; }
     public Decimal? EQU_HIERARQUIA_SEQ_TRANSFORMACAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal EquipeEntity(int? id, string equ_id, Decimal? equ_hierarquia_seq_transformacao ){
  Id = id; 
  EQU_ID = equ_id; 
  EQU_HIERARQUIA_SEQ_TRANSFORMACAO = equ_hierarquia_seq_transformacao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -23,22 +23,22 @@ namespace IQuery.Read
         public QueryModel ExistsByCOL_EMAILQuery(string value );
         public QueryModel ExistsByCOL_MATRICULAQuery(string value );
         public QueryModel ExistsByTURM_idQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByCOL_CPFQuery(string value );
         public QueryModel FirstByCOL_NOMEQuery(string value );
         public QueryModel FirstByCOL_NASCIMENTOQuery(DateTime value );
         public QueryModel FirstByCOL_EMAILQuery(string value );
         public QueryModel FirstByCOL_MATRICULAQuery(string value );
         public QueryModel FirstByTURM_idQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -35,11 +35,11 @@ namespace IRepository.Read
         public bool ExistsByCDV_SEXTA(int value );
         public bool ExistsByCDV_SABADO(int value );
         public bool ExistsByCDV_DOMINGO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CalendarioDisponibilidadeVeiculosDTO FirstById(int value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByCDV_ID(int value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByCDV_DATA_DE(DateTime value );
@@ -51,11 +51,11 @@ namespace IRepository.Read
         public CalendarioDisponibilidadeVeiculosDTO FirstByCDV_SEXTA(int value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByCDV_SABADO(int value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByCDV_DOMINGO(int value );
-        public CalendarioDisponibilidadeVeiculosDTO FirstByOperationalEntityId(string value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByTenantID(int value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByDeleted(bool value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByChanged(DateTime value );
         public CalendarioDisponibilidadeVeiculosDTO FirstByUserId(int value );
+        public CalendarioDisponibilidadeVeiculosDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllById(int value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_ID(int value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_DATA_DE(DateTime value );
@@ -67,11 +67,11 @@ namespace IRepository.Read
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_SEXTA(int value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_SABADO(int value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByCDV_DOMINGO(int value );
-        public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByTenantID(int value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByDeleted(bool value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByUserId(int value );
+        public IEnumerable<CalendarioDisponibilidadeVeiculosDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

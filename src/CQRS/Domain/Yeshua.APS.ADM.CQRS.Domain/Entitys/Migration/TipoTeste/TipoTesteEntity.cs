@@ -23,11 +23,11 @@
     public Decimal? TT_ESPECIFICACAO { get; set; }
     public string? TT_ORIGEM_ESPECIFICACAO { get; set; }
     public string? TT_IMPRIME_NO_LAUDO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int TT_ID { get; set; }
     public string TT_NOME { get; set; }
     public string TT_DESC { get; set; }
@@ -57,9 +57,9 @@
  TT_N_AMOSTRAS_P_TESTE = tt_n_amostras_p_teste; 
  TT_MAX_DEF_CRITICO = tt_max_def_critico; 
  TT_MAX_DEF_GRAVE = tt_max_def_grave; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

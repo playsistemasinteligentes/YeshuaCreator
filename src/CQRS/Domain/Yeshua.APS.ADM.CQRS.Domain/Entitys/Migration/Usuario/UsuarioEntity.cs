@@ -27,11 +27,11 @@
     public string? TURM_ID { get; set; }
     public int USE_ATIVO { get; set; }
     public string? USE_CODERP { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal UsuarioEntity(int use_id, string use_nome, string use_email, string use_senha, string? turm_id, int use_ativo, string? use_coderp ){
  USE_ID = use_id; 
@@ -41,9 +41,9 @@
  TURM_ID = turm_id; 
  USE_ATIVO = use_ativo; 
  USE_CODERP = use_coderp; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

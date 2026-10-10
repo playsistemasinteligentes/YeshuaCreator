@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InserirIndicadoresDepartamentosQuery(IIndicadoresDepartamentosEntity IndicadoresDepartamentos)
         {
-            this.Query = $@" INSERT INTO [IndicadoresDepartamentos] ([DEP_ID], [IND_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[INDDEP_ID] VALUES(@DEP_ID, @IND_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [IndicadoresDepartamentos] ([DEP_ID], [IND_ID], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[INDDEP_ID] VALUES(@DEP_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 DEP_ID = IndicadoresDepartamentos.DEP_ID,
                 IND_ID = IndicadoresDepartamentos.IND_ID,
-                OperationalEntityId = IndicadoresDepartamentos.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = IndicadoresDepartamentos.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -72,16 +72,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 IND_ID = value,
-                INDDEP_ID = inddep_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int inddep_id, string value)
-        {
-            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [OperationalEntityId] = @OperationalEntityId WHERE [INDDEP_ID] = @INDDEP_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 INDDEP_ID = inddep_id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -122,6 +112,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                INDDEP_ID = inddep_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int inddep_id, string value)
+        {
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [OperationalEntityId] = @OperationalEntityId WHERE [INDDEP_ID] = @INDDEP_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 INDDEP_ID = inddep_id,
             };
             return new QueryModel(this.Query, this.Parameters);

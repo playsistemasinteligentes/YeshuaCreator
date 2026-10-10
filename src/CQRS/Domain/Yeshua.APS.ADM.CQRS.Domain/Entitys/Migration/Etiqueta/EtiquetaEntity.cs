@@ -43,11 +43,11 @@
     public int? ETI_IMPRIMIR_ATE { get; set; }
     public string? BOL_ID { get; set; }
     public int? COR_SEQUENCIA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal EtiquetaEntity(int eti_id, DateTime? eti_emissao, string? eti_codigo_barras, int? eti_sequencia, int? eti_numero_copias, string? eti_status, DateTime? eti_data_fabricacao, string? eti_cod_barras_original, string? eti_op_original, string? maq_id, int? imp_id, int? use_id, string? ord_id, string? rot_pro_id, int? rot_seq_tranformacao, int? fpr_seq_repeticao, Decimal? eti_quantidade_palete, string? eti_lote, string? eti_sub_lote, int? eti_imprimir_de, int? eti_imprimir_ate, string? bol_id, int? cor_sequencia ){
  ETI_ID = eti_id; 
@@ -73,9 +73,9 @@
  ETI_IMPRIMIR_ATE = eti_imprimir_ate; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

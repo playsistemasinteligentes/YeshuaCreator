@@ -23,11 +23,11 @@
     public string? Id { get; set; }
     public string? Descricao { get; set; }
     public string? Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public Decimal? PRO_ESTOQUE_ATUAL { get; set; }
     public string UNI_ID { get; set; }
     public Decimal? PRO_FARDOS_POR_CAMADA { get; set; }
@@ -297,9 +297,9 @@
  PRO_QUEBRA_VINCO_MAIOR = pro_quebra_vinco_maior; 
  PRO_QUEBRA_VINCO_MENOR = pro_quebra_vinco_menor; 
  CLI_ID = cli_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -26,11 +26,11 @@ namespace Command.Write
         public DateTime? EncerradoEm { get; set; }
         public DateTime? CanceladoEm { get; set; }
         public int Situacao { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "MDFe";
  public string? OperationalRecordId => OperationalEntityId;
     }

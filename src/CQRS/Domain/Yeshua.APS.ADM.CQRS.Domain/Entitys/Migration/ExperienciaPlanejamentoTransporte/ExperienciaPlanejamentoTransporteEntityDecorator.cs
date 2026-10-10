@@ -33,11 +33,11 @@
             public const ulong Observacao = 1UL << 10;
             public const ulong CriadoEm = 1UL << 11;
             public const ulong CriadoPor = 1UL << 12;
-            public const ulong OperationalEntityId = 1UL << 13;
-            public const ulong TenantID = 1UL << 14;
-            public const ulong Deleted = 1UL << 15;
-            public const ulong Changed = 1UL << 16;
-            public const ulong UserId = 1UL << 17;
+            public const ulong TenantID = 1UL << 13;
+            public const ulong Deleted = 1UL << 14;
+            public const ulong Changed = 1UL << 15;
+            public const ulong UserId = 1UL << 16;
+            public const ulong OperationalEntityId = 1UL << 17;
         }
 
         public static class ExperienciaPlanejamentoTransporteOperationalFields
@@ -55,11 +55,11 @@
             public const Dominio.Operational.OperationalDataClassification Observacao = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CriadoEm = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CriadoPor = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ExperienciaPlanejamentoTransporteDecorator : IExperienciaPlanejamentoTransporteEntity
@@ -278,7 +278,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -335,6 +334,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

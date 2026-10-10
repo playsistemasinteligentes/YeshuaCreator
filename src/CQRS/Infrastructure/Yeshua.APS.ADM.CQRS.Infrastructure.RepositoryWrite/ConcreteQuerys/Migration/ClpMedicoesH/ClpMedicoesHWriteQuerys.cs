@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirClpMedicoesHQuery(IClpMedicoesHEntity ClpMedicoesH)
         {
-            this.Query = $@" INSERT INTO [ClpMedicoesH] ([ID], [MAQUINA_ID], [DATA_INI], [DATA_FIM], [CLP_EMISSAO], [QTD], [GRUPO], [STATUS], [URN_ID], [URM_ID], [ID_LOTE_CLP], [OCO_ID], [FASE], [CLP_ORIGEM], [CLP_LOTE], [COMPACTA], [BOL_ID], [COR_SEQUENCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@ID, @MAQUINA_ID, @DATA_INI, @DATA_FIM, @CLP_EMISSAO, @QTD, @GRUPO, @STATUS, @URN_ID, @URM_ID, @ID_LOTE_CLP, @OCO_ID, @FASE, @CLP_ORIGEM, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ClpMedicoesH] ([ID], [MAQUINA_ID], [DATA_INI], [DATA_FIM], [CLP_EMISSAO], [QTD], [GRUPO], [STATUS], [URN_ID], [URM_ID], [ID_LOTE_CLP], [OCO_ID], [FASE], [CLP_ORIGEM], [CLP_LOTE], [COMPACTA], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@ID, @MAQUINA_ID, @DATA_INI, @DATA_FIM, @CLP_EMISSAO, @QTD, @GRUPO, @STATUS, @URN_ID, @URM_ID, @ID_LOTE_CLP, @OCO_ID, @FASE, @CLP_ORIGEM, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 ID = ClpMedicoesH.ID,
@@ -51,11 +51,11 @@ namespace Query.Write
                 COMPACTA = ClpMedicoesH.COMPACTA,
                 BOL_ID = ClpMedicoesH.BOL_ID,
                 COR_SEQUENCIA = ClpMedicoesH.COR_SEQUENCIA,
-                OperationalEntityId = ClpMedicoesH.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = ClpMedicoesH.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -257,16 +257,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [ClpMedicoesH] SET [OperationalEntityId] = @OperationalEntityId WHERE [ID] = @ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                ID = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [ClpMedicoesH] SET [TenantID] = @TenantID WHERE [ID] = @ID ";
@@ -303,6 +293,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                ID = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ClpMedicoesH] SET [OperationalEntityId] = @OperationalEntityId WHERE [ID] = @ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 ID = id,
             };
             return new QueryModel(this.Query, this.Parameters);

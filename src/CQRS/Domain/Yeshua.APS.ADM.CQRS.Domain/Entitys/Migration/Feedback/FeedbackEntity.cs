@@ -40,11 +40,11 @@
     public Decimal? FEE_QTD_TOTAL_PRODUCAO_AJUSTADA { get; set; }
     public string? BOL_ID { get; set; }
     public int? COR_SEQUENCIA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal FeedbackEntity(int id, DateTime datainicial, DateTime datafinal, string maquinaid, string? ocorrenciaid, string? turnoid, string? turmaid, int usuarioid, string? orderid, string? produtoid, string? observacoes, Decimal grupo, string? diaturma, int? sequenciatransformacao, int? sequenciarepeticao, Decimal quantidadepulsos, Decimal? quantidadepecasporpulso, Decimal? fee_qtd_total_producao_ajustada, string? bol_id, int? cor_sequencia ){
  Id = id; 
@@ -67,9 +67,9 @@
  FEE_QTD_TOTAL_PRODUCAO_AJUSTADA = fee_qtd_total_producao_ajustada; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

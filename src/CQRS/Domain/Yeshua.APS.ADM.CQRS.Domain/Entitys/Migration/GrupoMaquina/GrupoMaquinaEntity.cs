@@ -23,11 +23,11 @@
     public string? Id { get; set; }
     public string? Descricao { get; set; }
     public string? Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public string? GMA_TIPO_PLANEJAMENTO { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal GrupoMaquinaEntity(string? id, string? descricao, string? status, string? gma_tipo_planejamento ){
@@ -35,9 +35,9 @@
  Descricao = descricao; 
  Status = status; 
  GMA_TIPO_PLANEJAMENTO = gma_tipo_planejamento; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

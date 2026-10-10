@@ -23,11 +23,11 @@ namespace Repositorio.Outputs
     public string reg_resposta { get; set; } = string.Empty;
     public string reg_status { get; set; } = string.Empty;
     public DateTime reg_data_inicio { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

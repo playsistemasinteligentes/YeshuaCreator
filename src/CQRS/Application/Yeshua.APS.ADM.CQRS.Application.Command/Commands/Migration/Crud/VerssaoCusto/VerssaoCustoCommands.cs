@@ -18,11 +18,11 @@ namespace Command.Write
         public string? VER_STATUS { get; set; }
         public DateTime? VER_DATA_VERSSAO_CUSTO { get; set; }
         public string? VER_OBS { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "VerssaoCusto";
  public string? OperationalRecordId => OperationalEntityId;
     }

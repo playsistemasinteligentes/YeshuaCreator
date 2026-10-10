@@ -276,11 +276,6 @@ namespace Input.Repository.GrupoProdutoAbstrato
             var query = _query.UpdateGRP_IMG_CAIXA(grp_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string grp_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(grp_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string grp_id, int value)
         {
             var query = _query.UpdateTenantID(grp_id, value);
@@ -299,6 +294,11 @@ namespace Input.Repository.GrupoProdutoAbstrato
         public void UpdateUserId(string grp_id, int value)
         {
             var query = _query.UpdateUserId(grp_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string grp_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(grp_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

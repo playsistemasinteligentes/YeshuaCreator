@@ -61,11 +61,6 @@ namespace Input.Repository.UnidadeMedida
             var query = _query.UpdateUNI_ESCALA_TEMPO(uni_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string uni_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(uni_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string uni_id, int value)
         {
             var query = _query.UpdateTenantID(uni_id, value);
@@ -84,6 +79,11 @@ namespace Input.Repository.UnidadeMedida
         public void UpdateUserId(string uni_id, int value)
         {
             var query = _query.UpdateUserId(uni_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string uni_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(uni_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

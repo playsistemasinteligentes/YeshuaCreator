@@ -26,11 +26,11 @@
     public int? POL_PROMOCAO { get; set; }
     public int? POL_DIAS_ANTECIPACAO { get; set; }
     public int? POL_METROS_LINEARES { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PoliticaOnduladeiraEntity(int? id, int pol_id, int? pol_nivel, int? pol_promocao, int? pol_dias_antecipacao, int? pol_metros_lineares ){
  Id = id; 
@@ -39,9 +39,9 @@
  POL_PROMOCAO = pol_promocao; 
  POL_DIAS_ANTECIPACAO = pol_dias_antecipacao; 
  POL_METROS_LINEARES = pol_metros_lineares; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -19,11 +19,11 @@ namespace Command.Read
         public Decimal? LOT_LARGURA { get; set; }
         public Decimal? LOT_COMPRIMENTO { get; set; }
         public Decimal? LOT_DIAMETRO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Lotes";
  public string? OperationalRecordId => OperationalEntityId;

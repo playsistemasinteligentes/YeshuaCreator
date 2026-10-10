@@ -19,11 +19,11 @@ namespace IQuery.Write
         public QueryModel UpdateProdutoQuery(IProdutoEntity Produto);
         QueryModel UpdateDescricao(string id, string value);
         QueryModel UpdateStatus(string id, string value);
-        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdateTenantID(string id, int value);
         QueryModel UpdateDeleted(string id, bool value);
         QueryModel UpdateChanged(string id, DateTime value);
         QueryModel UpdateUserId(string id, int value);
+        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdatePRO_ESTOQUE_ATUAL(string id, Decimal value);
         QueryModel UpdateUNI_ID(string id, string value);
         QueryModel UpdatePRO_FARDOS_POR_CAMADA(string id, Decimal value);

@@ -36,11 +36,11 @@ namespace Command.Write
         public Decimal? BOL_GRAMATURA_RESINA_PROGRAMADOS { get; set; }
         public Decimal? BOL_CUSTO_RESINA_PROGRAMADOS { get; set; }
         public int? BOL_REFILE_OBRIGATORIO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "BoletimEstudo";
  public string? OperationalRecordId => OperationalEntityId;
     }

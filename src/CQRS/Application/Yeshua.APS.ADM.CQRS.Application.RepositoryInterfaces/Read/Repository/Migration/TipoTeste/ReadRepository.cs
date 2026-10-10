@@ -28,11 +28,11 @@ namespace IRepository.Read
         public bool ExistsByTT_ESPECIFICACAO(Decimal value );
         public bool ExistsByTT_ORIGEM_ESPECIFICACAO(string value );
         public bool ExistsByTT_IMPRIME_NO_LAUDO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTT_ID(int value );
         public bool ExistsByTT_NOME(string value );
         public bool ExistsByTT_DESC(string value );
@@ -48,11 +48,11 @@ namespace IRepository.Read
         public TipoTesteDTO FirstByTT_ESPECIFICACAO(Decimal value );
         public TipoTesteDTO FirstByTT_ORIGEM_ESPECIFICACAO(string value );
         public TipoTesteDTO FirstByTT_IMPRIME_NO_LAUDO(string value );
-        public TipoTesteDTO FirstByOperationalEntityId(string value );
         public TipoTesteDTO FirstByTenantID(int value );
         public TipoTesteDTO FirstByDeleted(bool value );
         public TipoTesteDTO FirstByChanged(DateTime value );
         public TipoTesteDTO FirstByUserId(int value );
+        public TipoTesteDTO FirstByOperationalEntityId(string value );
         public TipoTesteDTO FirstByTT_ID(int value );
         public TipoTesteDTO FirstByTT_NOME(string value );
         public TipoTesteDTO FirstByTT_DESC(string value );
@@ -68,11 +68,11 @@ namespace IRepository.Read
         public IEnumerable<TipoTesteDTO> GetAllByTT_ESPECIFICACAO(Decimal value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_ORIGEM_ESPECIFICACAO(string value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_IMPRIME_NO_LAUDO(string value );
-        public IEnumerable<TipoTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoTesteDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoTesteDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoTesteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TipoTesteDTO> GetAllByUserId(int value );
+        public IEnumerable<TipoTesteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_ID(int value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_NOME(string value );
         public IEnumerable<TipoTesteDTO> GetAllByTT_DESC(string value );

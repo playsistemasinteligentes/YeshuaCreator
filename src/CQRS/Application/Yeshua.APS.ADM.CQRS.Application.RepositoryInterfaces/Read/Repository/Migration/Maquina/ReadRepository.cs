@@ -28,11 +28,11 @@ namespace IRepository.Read
         public bool ExistsById(string value );
         public bool ExistsByDescricao(string value );
         public bool ExistsByStatus(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByCAL_ID(int value );
         public bool ExistsByMAQ_CONTROL_IP(string value );
         public bool ExistsByGMA_ID(string value );
@@ -101,11 +101,11 @@ namespace IRepository.Read
         public MaquinaDTO FirstById(string value );
         public MaquinaDTO FirstByDescricao(string value );
         public MaquinaDTO FirstByStatus(string value );
-        public MaquinaDTO FirstByOperationalEntityId(string value );
         public MaquinaDTO FirstByTenantID(int value );
         public MaquinaDTO FirstByDeleted(bool value );
         public MaquinaDTO FirstByChanged(DateTime value );
         public MaquinaDTO FirstByUserId(int value );
+        public MaquinaDTO FirstByOperationalEntityId(string value );
         public MaquinaDTO FirstByCAL_ID(int value );
         public MaquinaDTO FirstByMAQ_CONTROL_IP(string value );
         public MaquinaDTO FirstByGMA_ID(string value );
@@ -174,11 +174,11 @@ namespace IRepository.Read
         public IEnumerable<MaquinaDTO> GetAllById(string value );
         public IEnumerable<MaquinaDTO> GetAllByDescricao(string value );
         public IEnumerable<MaquinaDTO> GetAllByStatus(string value );
-        public IEnumerable<MaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MaquinaDTO> GetAllByTenantID(int value );
         public IEnumerable<MaquinaDTO> GetAllByDeleted(bool value );
         public IEnumerable<MaquinaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MaquinaDTO> GetAllByUserId(int value );
+        public IEnumerable<MaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MaquinaDTO> GetAllByCAL_ID(int value );
         public IEnumerable<MaquinaDTO> GetAllByMAQ_CONTROL_IP(string value );
         public IEnumerable<MaquinaDTO> GetAllByGMA_ID(string value );

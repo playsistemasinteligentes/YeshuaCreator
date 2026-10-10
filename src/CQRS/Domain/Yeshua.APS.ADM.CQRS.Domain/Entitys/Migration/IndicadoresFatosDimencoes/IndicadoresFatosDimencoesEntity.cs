@@ -25,11 +25,11 @@
     public int IND_ID { get; set; }
     public int DIM_ID { get; set; }
     public string FAT_DESCRICAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal IndicadoresFatosDimencoesEntity(int? id, string fat_id, int ind_id, int dim_id, string fat_descricao ){
  Id = id; 
@@ -37,9 +37,9 @@
  IND_ID = ind_id; 
  DIM_ID = dim_id; 
  FAT_DESCRICAO = fat_descricao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

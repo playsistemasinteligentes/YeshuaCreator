@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryFileUploadQuery(IyFileUploadEntity yFileUpload)
         {
-            this.Query = $@" INSERT INTO [yFileUpload] ([Type], [Status], [FilePath], [FileSize], [EntityType], [EntityId], [CreatedAt], [CompletedAt], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Type, @Status, @FilePath, @FileSize, @EntityType, @EntityId, @CreatedAt, @CompletedAt, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yFileUpload] ([Type], [Status], [FilePath], [FileSize], [EntityType], [EntityId], [CreatedAt], [CompletedAt], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@Type, @Status, @FilePath, @FileSize, @EntityType, @EntityId, @CreatedAt, @CompletedAt, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 Type = yFileUpload.Type,
@@ -42,10 +42,10 @@ namespace Query.Write
                 CreatedAt = yFileUpload.CreatedAt,
                 CompletedAt = yFileUpload.CompletedAt,
                 TenantID = _executionContext.TenantID,
-                OperationalEntityId = yFileUpload.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = yFileUpload.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -158,16 +158,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yFileUpload] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE [yFileUpload] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
@@ -194,6 +184,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yFileUpload] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

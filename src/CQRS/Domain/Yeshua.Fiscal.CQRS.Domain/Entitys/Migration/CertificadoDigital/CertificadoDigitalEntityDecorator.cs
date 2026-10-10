@@ -28,11 +28,11 @@
             public const ulong ValidoDe = 1UL << 5;
             public const ulong ValidoAte = 1UL << 6;
             public const ulong Ativo = 1UL << 7;
-            public const ulong OperationalEntityId = 1UL << 8;
-            public const ulong TenantID = 1UL << 9;
-            public const ulong Deleted = 1UL << 10;
-            public const ulong Changed = 1UL << 11;
-            public const ulong UserId = 1UL << 12;
+            public const ulong TenantID = 1UL << 8;
+            public const ulong Deleted = 1UL << 9;
+            public const ulong Changed = 1UL << 10;
+            public const ulong UserId = 1UL << 11;
+            public const ulong OperationalEntityId = 1UL << 12;
             public const ulong SenhaStorageKey = 1UL << 13;
         }
 
@@ -46,11 +46,11 @@
             public const Dominio.Operational.OperationalDataClassification ValidoDe = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification ValidoAte = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Ativo = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification SenhaStorageKey = Dominio.Operational.OperationalDataClassification.NeverCapture;
         }
 
@@ -200,7 +200,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -257,6 +256,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public string? SenhaStorageKey
                                     {

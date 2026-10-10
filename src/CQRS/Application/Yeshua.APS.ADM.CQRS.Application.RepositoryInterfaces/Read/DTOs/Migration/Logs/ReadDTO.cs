@@ -24,11 +24,11 @@ namespace Repositorio.Outputs
     public string log_conteudo { get; set; } = string.Empty;
     public int log_id { get; set; }
     public DateTime log_emissao { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -18,11 +18,11 @@ namespace Command.Read
         public int? CAL_ID { get; set; }
         public string? REC_CONTROL_IP { get; set; }
         public string? GRE_ID { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Recursos";
  public string? OperationalRecordId => OperationalEntityId;

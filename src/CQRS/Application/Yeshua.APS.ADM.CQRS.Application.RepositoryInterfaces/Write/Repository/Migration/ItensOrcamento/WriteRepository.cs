@@ -40,11 +40,11 @@ namespace IRepository.Write
         void UpdateGRP_ID_COMPOSICAO(int id, string value);
         void UpdateITO_LARGURA(int id, Decimal value);
         void UpdateITO_COMPRIMENTO(int id, Decimal value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

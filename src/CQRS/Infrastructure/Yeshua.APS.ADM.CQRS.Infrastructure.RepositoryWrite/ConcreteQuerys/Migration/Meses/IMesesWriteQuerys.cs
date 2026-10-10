@@ -18,11 +18,11 @@ namespace IQuery.Write
         public QueryModel InserirMesesQuery(IMesesEntity Meses);
         public QueryModel UpdateMesesQuery(IMesesEntity Meses);
         QueryModel Updatefator(string mes, int value);
-        QueryModel UpdateOperationalEntityId(string mes, string value);
         QueryModel UpdateTenantID(string mes, int value);
         QueryModel UpdateDeleted(string mes, bool value);
         QueryModel UpdateChanged(string mes, DateTime value);
         QueryModel UpdateUserId(string mes, int value);
+        QueryModel UpdateOperationalEntityId(string mes, string value);
         public QueryModel DeleteMesesQuery(IMesesEntity Meses);
     }
 }

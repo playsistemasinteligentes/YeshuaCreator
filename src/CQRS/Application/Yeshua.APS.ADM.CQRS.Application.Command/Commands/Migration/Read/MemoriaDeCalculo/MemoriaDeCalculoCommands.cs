@@ -18,11 +18,11 @@ namespace Command.Read
         public int? ORC_ID { get; set; }
         public Decimal? MEM_VALOR { get; set; }
         public string? MEM_DESCRICAO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "MemoriaDeCalculo";
  public string? OperationalRecordId => OperationalEntityId;

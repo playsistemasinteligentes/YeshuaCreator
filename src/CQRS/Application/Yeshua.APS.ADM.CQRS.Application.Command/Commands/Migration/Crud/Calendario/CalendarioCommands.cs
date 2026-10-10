@@ -16,11 +16,11 @@ namespace Command.Write
         public int CAL_ID { get; set; }
         public string CAL_DESCRICAO { get; set; }
         public int? CAL_DIVIDE_DIA_EM { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Calendario";
  public string? OperationalRecordId => OperationalEntityId;
     }

@@ -25,11 +25,11 @@
     public string? OBJ_DESCRICAO { get; set; }
     public string? OBJ_TIPO { get; set; }
     public string? OBJ_GRUPO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ObjetoControlavelEntity(int? id, string obj_id, string? obj_descricao, string? obj_tipo, string? obj_grupo ){
  Id = id; 
@@ -37,9 +37,9 @@
  OBJ_DESCRICAO = obj_descricao; 
  OBJ_TIPO = obj_tipo; 
  OBJ_GRUPO = obj_grupo; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

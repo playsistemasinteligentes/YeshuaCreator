@@ -29,11 +29,11 @@
     public int? Largura { get; set; }
     public int? Altura { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal FotoEntity(int? id, string storagekey, string nomeoriginal, string contenttype, string? hasharquivo, DateTime? capturadaemutc, int? largura, int? altura, int status ){
  Id = id; 
@@ -45,9 +45,9 @@
  Largura = largura; 
  Altura = altura; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

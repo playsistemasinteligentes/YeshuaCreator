@@ -30,17 +30,17 @@ namespace Query.Write
         }
         public QueryModel InserirPlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
-            this.Query = $@" INSERT INTO [PlanoConta] ([Codigo], [Nome], [Tipo], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Codigo, @Nome, @Tipo, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PlanoConta] ([Codigo], [Nome], [Tipo], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@Codigo, @Nome, @Tipo, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 Codigo = PlanoConta.Codigo,
                 Nome = PlanoConta.Nome,
                 Tipo = PlanoConta.Tipo,
-                OperationalEntityId = PlanoConta.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = PlanoConta.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -88,16 +88,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [PlanoConta] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [PlanoConta] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -134,6 +124,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [PlanoConta] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

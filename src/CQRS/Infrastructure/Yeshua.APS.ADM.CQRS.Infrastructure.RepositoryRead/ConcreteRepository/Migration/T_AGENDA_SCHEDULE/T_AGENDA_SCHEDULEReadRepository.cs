@@ -236,14 +236,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -271,6 +263,14 @@ namespace Read.Repository
         public bool ExistsByUserId(int value )
         {
             var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -412,14 +412,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public T_AGENDA_SCHEDULEDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<T_AGENDA_SCHEDULEDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public T_AGENDA_SCHEDULEDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -447,6 +439,14 @@ namespace Read.Repository
         public T_AGENDA_SCHEDULEDTO FirstByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<T_AGENDA_SCHEDULEDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public T_AGENDA_SCHEDULEDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<T_AGENDA_SCHEDULEDTO>(query.Query, query.Parameters);
                 return result;
@@ -588,14 +588,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -623,6 +615,14 @@ namespace Read.Repository
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters).ToList();
                 return result;

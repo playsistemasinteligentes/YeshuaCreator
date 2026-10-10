@@ -30,18 +30,18 @@ namespace Query.Write
         }
         public QueryModel InserirVariavelQuery(IVariavelEntity Variavel)
         {
-            this.Query = $@" INSERT INTO [Variavel] ([VAR_ID], [VAR_DESCRICAO], [CON_ID], [VAR_MODO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VAR_ID, @VAR_DESCRICAO, @CON_ID, @VAR_MODO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Variavel] ([VAR_ID], [VAR_DESCRICAO], [CON_ID], [VAR_MODO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@VAR_ID, @VAR_DESCRICAO, @CON_ID, @VAR_MODO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 VAR_ID = Variavel.VAR_ID,
                 VAR_DESCRICAO = Variavel.VAR_DESCRICAO,
                 CON_ID = Variavel.CON_ID,
                 VAR_MODO = Variavel.VAR_MODO,
-                OperationalEntityId = Variavel.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Variavel.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -100,16 +100,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [Variavel] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [Variavel] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -146,6 +136,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Variavel] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

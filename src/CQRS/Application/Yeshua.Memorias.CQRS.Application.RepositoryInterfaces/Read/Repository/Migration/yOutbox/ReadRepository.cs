@@ -42,13 +42,17 @@ namespace IRepository.Read
         public bool ExistsByLastError(string value , bool TakeOffTenantID = false);
         public bool ExistsByProcessingAt(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByNextAttemptAt(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByRootOperationId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByExecutionId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByCausationId(string value , bool TakeOffTenantID = false);
         public bool ExistsBySagaId(int value , bool TakeOffTenantID = false);
         public bool ExistsBySagaStepId(int value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
-        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstById(int value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByMessageId(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByType(string value , bool TakeOffTenantID = false);
@@ -65,13 +69,17 @@ namespace IRepository.Read
         public yOutboxDTO FirstByLastError(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByProcessingAt(DateTime value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByNextAttemptAt(DateTime value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByRootOperationId(string value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByOperationId(string value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByExecutionId(string value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByCausationId(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstBySagaStepId(int value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
-        public yOutboxDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByUserId(int value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllById(int value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByMessageId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByType(string value , bool TakeOffTenantID = false);
@@ -88,13 +96,17 @@ namespace IRepository.Read
         public IEnumerable<yOutboxDTO> GetAllByLastError(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByProcessingAt(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByNextAttemptAt(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByRootOperationId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByOperationId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByExecutionId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByCausationId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllBySagaStepId(int value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
-        public IEnumerable<yOutboxDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public DataPagination<yOutboxStandardDTO> GetyOutboxProximaPendente(ICommandRead command , bool TakeOffTenantID = false);
     }
 }

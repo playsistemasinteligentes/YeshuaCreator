@@ -39,11 +39,11 @@
     public string? GRP_ID_COMPOSICAO { get; set; }
     public Decimal? ITO_LARGURA { get; set; }
     public Decimal? ITO_COMPRIMENTO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ItensOrcamentoEntity(int? id, int ito_id, int? orc_id, int? tip_id, string? pro_id, string? ito_obs, Decimal? ito_quantidade, Decimal? ito_custo, Decimal? ito_margem, Decimal? ito_valor_unitario, DateTime? ito_verssao_custo, string? ito_status, Decimal? ito_erp_custos_fixos, Decimal? ito_erp_custos_variaveis, Decimal? ito_erp_despesas_var_venda, Decimal? ito_erp_impostos, string? grp_id_composicao, Decimal? ito_largura, Decimal? ito_comprimento ){
  Id = id; 
@@ -65,9 +65,9 @@
  GRP_ID_COMPOSICAO = grp_id_composicao; 
  ITO_LARGURA = ito_largura; 
  ITO_COMPRIMENTO = ito_comprimento; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

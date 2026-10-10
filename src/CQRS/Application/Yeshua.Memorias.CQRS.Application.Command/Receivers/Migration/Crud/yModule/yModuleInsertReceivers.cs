@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yModuleCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyModuleReceiver), commandName: "Command.Write.yModuleCrudCommand");
-                 var ymodule = new yModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yModule", "InsertyModule", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yModuleCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyModuleReceiver), commandName: "Command.Write.yModuleCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ymodule = new yModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description, trackingMask: trackingMask);
                  var domainResult = yModuleDomainBehavior.Apply(ymodule, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

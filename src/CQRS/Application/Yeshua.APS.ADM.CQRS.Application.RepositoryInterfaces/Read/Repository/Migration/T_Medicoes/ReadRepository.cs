@@ -46,11 +46,11 @@ namespace IRepository.Read
         public bool ExistsByDOM_EMPRESA(string value );
         public bool ExistsByDOM_FILIAL(string value );
         public bool ExistsByMED_VALOR_DISPER(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_MedicoesDTO FirstById(int value );
         public T_MedicoesDTO FirstByMED_ID(int value );
         public T_MedicoesDTO FirstByIND_ID(int value );
@@ -73,11 +73,11 @@ namespace IRepository.Read
         public T_MedicoesDTO FirstByDOM_EMPRESA(string value );
         public T_MedicoesDTO FirstByDOM_FILIAL(string value );
         public T_MedicoesDTO FirstByMED_VALOR_DISPER(string value );
-        public T_MedicoesDTO FirstByOperationalEntityId(string value );
         public T_MedicoesDTO FirstByTenantID(int value );
         public T_MedicoesDTO FirstByDeleted(bool value );
         public T_MedicoesDTO FirstByChanged(DateTime value );
         public T_MedicoesDTO FirstByUserId(int value );
+        public T_MedicoesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_MedicoesDTO> GetAllById(int value );
         public IEnumerable<T_MedicoesDTO> GetAllByMED_ID(int value );
         public IEnumerable<T_MedicoesDTO> GetAllByIND_ID(int value );
@@ -100,11 +100,11 @@ namespace IRepository.Read
         public IEnumerable<T_MedicoesDTO> GetAllByDOM_EMPRESA(string value );
         public IEnumerable<T_MedicoesDTO> GetAllByDOM_FILIAL(string value );
         public IEnumerable<T_MedicoesDTO> GetAllByMED_VALOR_DISPER(string value );
-        public IEnumerable<T_MedicoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_MedicoesDTO> GetAllByTenantID(int value );
         public IEnumerable<T_MedicoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_MedicoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_MedicoesDTO> GetAllByUserId(int value );
+        public IEnumerable<T_MedicoesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -34,11 +34,11 @@ namespace IQuery.Read
         public QueryModel ExistsByMAQ_IDQuery(string value );
         public QueryModel ExistsByFPR_SEQ_REPETICAOQuery(int value );
         public QueryModel ExistsByFPR_SEQ_TRANFORMACAOQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTES_IDQuery(int value );
         public QueryModel FirstByITE_IDQuery(int value );
@@ -55,11 +55,11 @@ namespace IQuery.Read
         public QueryModel FirstByMAQ_IDQuery(string value );
         public QueryModel FirstByFPR_SEQ_REPETICAOQuery(int value );
         public QueryModel FirstByFPR_SEQ_TRANFORMACAOQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

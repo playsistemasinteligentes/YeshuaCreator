@@ -27,11 +27,11 @@ namespace Repositorio.Outputs
     public bool canupdate { get; set; }
     public bool candelete { get; set; }
     public DateTime validuntil { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

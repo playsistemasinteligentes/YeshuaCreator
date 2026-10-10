@@ -37,11 +37,11 @@ namespace Repositorio.Outputs
     public Decimal tip_capacidade_comprimento_pescoco_d { get; set; }
     public Decimal tip_capacidade_largura_pescoco_d { get; set; }
     public Decimal tip_capacidade_m3 { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

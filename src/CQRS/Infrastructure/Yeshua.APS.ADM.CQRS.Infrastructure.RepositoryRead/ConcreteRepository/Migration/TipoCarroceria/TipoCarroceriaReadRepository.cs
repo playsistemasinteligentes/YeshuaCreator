@@ -124,14 +124,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public TipoCarroceriaDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -183,14 +183,6 @@ namespace Read.Repository
         public TipoCarroceriaDTO FirstByTCA_DESCRICAO(string value )
         {
             var query = _query.FirstByTCA_DESCRICAOQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<TipoCarroceriaDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public TipoCarroceriaDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<TipoCarroceriaDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TipoCarroceriaDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TipoCarroceriaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<TipoCarroceriaDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -247,14 +247,6 @@ namespace Read.Repository
         public IEnumerable<TipoCarroceriaDTO> GetAllByTCA_DESCRICAO(string value )
         {
             var query = _query.FirstByTCA_DESCRICAOQuery(value );
-
-                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<TipoCarroceriaDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -287,6 +279,14 @@ namespace Read.Repository
         public IEnumerable<TipoCarroceriaDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<TipoCarroceriaDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters).ToList();
                 return result;

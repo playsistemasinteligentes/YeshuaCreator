@@ -30,16 +30,16 @@ namespace Repositorio.Outputs
     public DateTime nextexecutionat { get; set; }
     public DateTime lockedat { get; set; }
     public string lockedby { get; set; } = string.Empty;
-    public string processingscope { get; set; } = string.Empty;
-    public int tenantid { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
-    public bool deleted { get; set; }
-    public DateTime changed { get; set; }
-    public int userid { get; set; }
     public string rootoperationid { get; set; } = string.Empty;
     public string operationid { get; set; } = string.Empty;
     public string executionid { get; set; } = string.Empty;
     public string causationid { get; set; } = string.Empty;
+    public string processingscope { get; set; } = string.Empty;
+    public int tenantid { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

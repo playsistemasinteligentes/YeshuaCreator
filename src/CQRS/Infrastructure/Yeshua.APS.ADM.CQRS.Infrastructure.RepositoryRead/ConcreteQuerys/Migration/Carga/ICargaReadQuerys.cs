@@ -58,11 +58,11 @@ namespace IQuery.Read
         public QueryModel ExistsByCAR_DATA_AGENCIAMENTOQuery(DateTime value );
         public QueryModel ExistsByTURN_IDQuery(string value );
         public QueryModel ExistsByTURM_IDQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByCAR_IDQuery(string value );
         public QueryModel FirstByCAR_PREVISAO_MATERIA_PRIMAQuery(DateTime value );
@@ -104,11 +104,11 @@ namespace IQuery.Read
         public QueryModel FirstByCAR_DATA_AGENCIAMENTOQuery(DateTime value );
         public QueryModel FirstByTURN_IDQuery(string value );
         public QueryModel FirstByTURM_IDQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

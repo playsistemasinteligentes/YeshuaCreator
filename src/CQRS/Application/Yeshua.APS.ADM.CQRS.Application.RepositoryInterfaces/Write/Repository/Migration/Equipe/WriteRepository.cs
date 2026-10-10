@@ -24,11 +24,11 @@ namespace IRepository.Write
         void Delete(IEquipeEntity equipe);
         void UpdateEQU_ID(int id, string value);
         void UpdateEQU_HIERARQUIA_SEQ_TRANSFORMACAO(int id, Decimal value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -31,11 +31,11 @@
     int? CDV_SEXTA { get; set; }
     int? CDV_SABADO { get; set; }
     int? CDV_DOMINGO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

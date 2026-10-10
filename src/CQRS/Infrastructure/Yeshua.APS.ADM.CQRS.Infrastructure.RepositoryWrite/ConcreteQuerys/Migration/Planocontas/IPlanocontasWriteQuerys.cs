@@ -21,11 +21,11 @@ namespace IQuery.Write
         QueryModel UpdatePLA_DESCRICAO(int pla_id, string value);
         QueryModel UpdatePLA_TIPO(int pla_id, int value);
         QueryModel UpdatePLA_NATUREZA(int pla_id, string value);
-        QueryModel UpdateOperationalEntityId(int pla_id, string value);
         QueryModel UpdateTenantID(int pla_id, int value);
         QueryModel UpdateDeleted(int pla_id, bool value);
         QueryModel UpdateChanged(int pla_id, DateTime value);
         QueryModel UpdateUserId(int pla_id, int value);
+        QueryModel UpdateOperationalEntityId(int pla_id, string value);
         public QueryModel DeletePlanocontasQuery(IPlanocontasEntity Planocontas);
     }
 }

@@ -30,15 +30,15 @@ namespace Query.Write
         }
         public QueryModel InserirT_NegocioQuery(IT_NegocioEntity T_Negocio)
         {
-            this.Query = $@" INSERT INTO [T_Negocio] ([NEG_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[NEG_ID] VALUES(@NEG_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Negocio] ([NEG_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[NEG_ID] VALUES(@NEG_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 NEG_DESCRICAO = T_Negocio.NEG_DESCRICAO,
-                OperationalEntityId = T_Negocio.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = T_Negocio.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -60,16 +60,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 NEG_DESCRICAO = value,
-                NEG_ID = neg_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int neg_id, string value)
-        {
-            this.Query = $@" UPDATE [T_Negocio] SET [OperationalEntityId] = @OperationalEntityId WHERE [NEG_ID] = @NEG_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 NEG_ID = neg_id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -110,6 +100,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                NEG_ID = neg_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int neg_id, string value)
+        {
+            this.Query = $@" UPDATE [T_Negocio] SET [OperationalEntityId] = @OperationalEntityId WHERE [NEG_ID] = @NEG_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 NEG_ID = neg_id,
             };
             return new QueryModel(this.Query, this.Parameters);

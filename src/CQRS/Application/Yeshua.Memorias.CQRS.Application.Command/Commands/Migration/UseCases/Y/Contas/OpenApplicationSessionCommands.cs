@@ -17,10 +17,10 @@ namespace Command.UseCase
 {
 public partial record OpenApplicationSessionInputCommand : ICommand, IOperationalTelemetryCommand
 {
-    public string TenantIdentity { get; set; } = string.Empty;
+    public int TenantId { get; set; }
     public string TenantDocument { get; set; } = string.Empty;
     public string TenantName { get; set; } = string.Empty;
-    public string UserIdentity { get; set; } = string.Empty;
+    public int UserId { get; set; }
     public string UserName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 

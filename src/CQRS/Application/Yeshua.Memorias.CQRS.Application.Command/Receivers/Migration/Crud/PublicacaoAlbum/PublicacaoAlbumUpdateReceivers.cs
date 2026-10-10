@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PublicacaoAlbumCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePublicacaoAlbum", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePublicacaoAlbumReceiver), commandName: "Command.Write.PublicacaoAlbumCrudCommand");
-                 var publicacaoalbum = new PublicacaoAlbumFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.CorrelationId, c.ManifestStorageKey, c.VideoStorageKey, c.YouTubeVideoId, c.YouTubeUrl, c.Mensagem, c.SolicitadaEmUtc, c.PublicadaEmUtc, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PublicacaoAlbum", "UpdatePublicacaoAlbum", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PublicacaoAlbumCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePublicacaoAlbum", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePublicacaoAlbumReceiver), commandName: "Command.Write.PublicacaoAlbumCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var publicacaoalbum = new PublicacaoAlbumFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.CorrelationId, c.ManifestStorageKey, c.VideoStorageKey, c.YouTubeVideoId, c.YouTubeUrl, c.Mensagem, c.SolicitadaEmUtc, c.PublicadaEmUtc, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", publicacaoalbum.OperationalEntityId);
                  var domainResult = PublicacaoAlbumDomainBehavior.Apply(publicacaoalbum, context);
                  if (!domainResult.IsValid)

@@ -86,11 +86,6 @@ namespace Input.Repository.Ocorrencia
             var query = _query.UpdateSUB_ID(oco_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string oco_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(oco_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string oco_id, int value)
         {
             var query = _query.UpdateTenantID(oco_id, value);
@@ -109,6 +104,11 @@ namespace Input.Repository.Ocorrencia
         public void UpdateUserId(string oco_id, int value)
         {
             var query = _query.UpdateUserId(oco_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string oco_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(oco_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

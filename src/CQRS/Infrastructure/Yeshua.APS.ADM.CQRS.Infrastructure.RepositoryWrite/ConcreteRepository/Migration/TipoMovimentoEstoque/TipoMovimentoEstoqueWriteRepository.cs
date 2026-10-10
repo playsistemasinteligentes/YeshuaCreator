@@ -66,11 +66,6 @@ namespace Input.Repository.TipoMovimentoEstoque
             var query = _query.UpdateSPR(tip_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string tip_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(tip_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string tip_id, int value)
         {
             var query = _query.UpdateTenantID(tip_id, value);
@@ -89,6 +84,11 @@ namespace Input.Repository.TipoMovimentoEstoque
         public void UpdateUserId(string tip_id, int value)
         {
             var query = _query.UpdateUserId(tip_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string tip_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(tip_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

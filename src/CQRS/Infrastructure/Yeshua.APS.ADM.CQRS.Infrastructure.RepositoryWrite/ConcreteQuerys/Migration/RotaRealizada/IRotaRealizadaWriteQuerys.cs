@@ -21,11 +21,11 @@ namespace IQuery.Write
         QueryModel UpdateROT_DATA_HORA(int rot_id, DateTime value);
         QueryModel UpdateROT_LAT(int rot_id, Decimal value);
         QueryModel UpdateROT_LONG(int rot_id, Decimal value);
-        QueryModel UpdateOperationalEntityId(int rot_id, string value);
         QueryModel UpdateTenantID(int rot_id, int value);
         QueryModel UpdateDeleted(int rot_id, bool value);
         QueryModel UpdateChanged(int rot_id, DateTime value);
         QueryModel UpdateUserId(int rot_id, int value);
+        QueryModel UpdateOperationalEntityId(int rot_id, string value);
         public QueryModel DeleteRotaRealizadaQuery(IRotaRealizadaEntity RotaRealizada);
     }
 }

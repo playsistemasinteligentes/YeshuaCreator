@@ -32,15 +32,15 @@
             public const ulong ErrorMessage = 1UL << 9;
             public const ulong Payload = 1UL << 10;
             public const ulong RetryCount = 1UL << 11;
-            public const ulong TenantID = 1UL << 12;
-            public const ulong OperationalEntityId = 1UL << 13;
-            public const ulong Deleted = 1UL << 14;
-            public const ulong Changed = 1UL << 15;
-            public const ulong UserId = 1UL << 16;
-            public const ulong RootOperationId = 1UL << 17;
-            public const ulong OperationId = 1UL << 18;
-            public const ulong ExecutionId = 1UL << 19;
-            public const ulong CausationId = 1UL << 20;
+            public const ulong RootOperationId = 1UL << 12;
+            public const ulong OperationId = 1UL << 13;
+            public const ulong ExecutionId = 1UL << 14;
+            public const ulong CausationId = 1UL << 15;
+            public const ulong TenantID = 1UL << 16;
+            public const ulong Deleted = 1UL << 17;
+            public const ulong Changed = 1UL << 18;
+            public const ulong UserId = 1UL << 19;
+            public const ulong OperationalEntityId = 1UL << 20;
         }
 
         public static class ySagaStepOperationalFields
@@ -57,15 +57,15 @@
             public const Dominio.Operational.OperationalDataClassification ErrorMessage = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Payload = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification RetryCount = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification RootOperationId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification ExecutionId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CausationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ySagaStepDecorator : IySagaStepEntity
@@ -271,63 +271,6 @@
                                         }
                                     }
 
-                                    public int? TenantID
-                                    {
-                                        get => _inner.TenantID;
-                                        set
-                                        {
-                                            if (_inner.TenantID != value)
-                                            {
-                                                _inner.TenantID = value;
-                                                if ((_trackingMask & ySagaStepTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ySagaStep", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.TenantID, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-    public string OperationalEntityId => _inner.OperationalEntityId;
-
-                                    public bool? Deleted
-                                    {
-                                        get => _inner.Deleted;
-                                        set
-                                        {
-                                            if (_inner.Deleted != value)
-                                            {
-                                                _inner.Deleted = value;
-                                                if ((_trackingMask & ySagaStepTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ySagaStep", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.Deleted, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-
-                                    public DateTime? Changed
-                                    {
-                                        get => _inner.Changed;
-                                        set
-                                        {
-                                            if (_inner.Changed != value)
-                                            {
-                                                _inner.Changed = value;
-                                                if ((_trackingMask & ySagaStepTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ySagaStep", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.Changed, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-
-                                    public int? UserId
-                                    {
-                                        get => _inner.UserId;
-                                        set
-                                        {
-                                            if (_inner.UserId != value)
-                                            {
-                                                _inner.UserId = value;
-                                                if ((_trackingMask & ySagaStepTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ySagaStep", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.UserId, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-
                                     public string? RootOperationId
                                     {
                                         get => _inner.RootOperationId;
@@ -383,6 +326,63 @@
                                             }
                                         }
                                     }
+
+                                    public int? TenantID
+                                    {
+                                        get => _inner.TenantID;
+                                        set
+                                        {
+                                            if (_inner.TenantID != value)
+                                            {
+                                                _inner.TenantID = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.TenantID, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public bool? Deleted
+                                    {
+                                        get => _inner.Deleted;
+                                        set
+                                        {
+                                            if (_inner.Deleted != value)
+                                            {
+                                                _inner.Deleted = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.Deleted, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? Changed
+                                    {
+                                        get => _inner.Changed;
+                                        set
+                                        {
+                                            if (_inner.Changed != value)
+                                            {
+                                                _inner.Changed = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.Changed, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? UserId
+                                    {
+                                        get => _inner.UserId;
+                                        set
+                                        {
+                                            if (_inner.UserId != value)
+                                            {
+                                                _inner.UserId = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.UserId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

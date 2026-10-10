@@ -56,11 +56,6 @@ namespace Input.Repository.Perfil
             var query = _query.UpdatePER_NOME(per_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int per_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(per_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int per_id, int value)
         {
             var query = _query.UpdateTenantID(per_id, value);
@@ -79,6 +74,11 @@ namespace Input.Repository.Perfil
         public void UpdateUserId(int per_id, int value)
         {
             var query = _query.UpdateUserId(per_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int per_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(per_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

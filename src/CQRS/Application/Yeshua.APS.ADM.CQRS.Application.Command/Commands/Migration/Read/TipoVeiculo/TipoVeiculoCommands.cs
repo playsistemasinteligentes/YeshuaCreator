@@ -32,11 +32,11 @@ namespace Command.Read
         public Decimal? TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D { get; set; }
         public Decimal? TIP_CAPACIDADE_LARGURA_PESCOCO_D { get; set; }
         public Decimal? TIP_CAPACIDADE_M3 { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "TipoVeiculo";
  public string? OperationalRecordId => OperationalEntityId;

@@ -28,11 +28,11 @@ namespace Repositorio.Outputs
     public string mun_codigo_siafi { get; set; } = string.Empty;
     public string mun_codigo_cnpj { get; set; } = string.Empty;
     public Decimal mun_distancia_km { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

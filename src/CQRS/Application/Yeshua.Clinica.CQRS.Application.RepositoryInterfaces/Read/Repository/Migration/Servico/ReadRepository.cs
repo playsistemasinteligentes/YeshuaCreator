@@ -29,29 +29,29 @@ namespace IRepository.Read
         public bool ExistsByGrupoServicoId(int value );
         public bool ExistsByNome(string value );
         public bool ExistsByValor(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ServicoDTO FirstById(int value );
         public ServicoDTO FirstByGrupoServicoId(int value );
         public ServicoDTO FirstByNome(string value );
         public ServicoDTO FirstByValor(Decimal value );
-        public ServicoDTO FirstByOperationalEntityId(string value );
         public ServicoDTO FirstByTenantID(int value );
         public ServicoDTO FirstByDeleted(bool value );
         public ServicoDTO FirstByChanged(DateTime value );
         public ServicoDTO FirstByUserId(int value );
+        public ServicoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ServicoDTO> GetAllById(int value );
         public IEnumerable<ServicoDTO> GetAllByGrupoServicoId(int value );
         public IEnumerable<ServicoDTO> GetAllByNome(string value );
         public IEnumerable<ServicoDTO> GetAllByValor(Decimal value );
-        public IEnumerable<ServicoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ServicoDTO> GetAllByTenantID(int value );
         public IEnumerable<ServicoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ServicoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ServicoDTO> GetAllByUserId(int value );
+        public IEnumerable<ServicoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

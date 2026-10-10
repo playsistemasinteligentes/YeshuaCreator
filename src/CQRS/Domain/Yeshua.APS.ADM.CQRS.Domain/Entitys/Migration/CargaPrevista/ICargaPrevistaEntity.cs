@@ -51,11 +51,11 @@
     string? OCO_ID { get; set; }
     string? CAR_ID_JUNTADA { get; set; }
     string? CAR_OBSERVACAO_OTIMIZADOR { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

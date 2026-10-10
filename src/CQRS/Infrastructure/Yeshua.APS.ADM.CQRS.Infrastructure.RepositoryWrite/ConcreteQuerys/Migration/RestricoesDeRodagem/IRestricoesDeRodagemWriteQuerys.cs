@@ -24,11 +24,11 @@ namespace IQuery.Write
         QueryModel UpdateRES_VELOCIDADE_HORA_RUSH(int id, Decimal value);
         QueryModel UpdateTVE_ID(int id, int value);
         QueryModel UpdateMAP_ID(int id, int value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteRestricoesDeRodagemQuery(IRestricoesDeRodagemEntity RestricoesDeRodagem);
     }
 }

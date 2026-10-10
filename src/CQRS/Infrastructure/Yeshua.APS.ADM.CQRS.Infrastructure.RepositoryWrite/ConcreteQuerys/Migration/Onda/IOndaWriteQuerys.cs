@@ -24,11 +24,11 @@ namespace IQuery.Write
         QueryModel UpdateOND_PROFUNDIDADE_VINCO(string ond_id, int value);
         QueryModel UpdateOND_ID_INTEGRACAO(string ond_id, string value);
         QueryModel UpdateVIN_ID(string ond_id, int value);
-        QueryModel UpdateOperationalEntityId(string ond_id, string value);
         QueryModel UpdateTenantID(string ond_id, int value);
         QueryModel UpdateDeleted(string ond_id, bool value);
         QueryModel UpdateChanged(string ond_id, DateTime value);
         QueryModel UpdateUserId(string ond_id, int value);
+        QueryModel UpdateOperationalEntityId(string ond_id, string value);
         public QueryModel DeleteOndaQuery(IOndaEntity Onda);
     }
 }

@@ -22,22 +22,22 @@ namespace IQuery.Read
         public QueryModel ExistsByCON_PARCELASQuery(int value );
         public QueryModel ExistsByCON_VALOR_ACRECIMOQuery(Decimal value );
         public QueryModel ExistsByCON_INTEGRACAO_ERPQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByCON_IDQuery(string value );
         public QueryModel FirstByCON_DESCRICAOQuery(string value );
         public QueryModel FirstByCON_PARCELASQuery(int value );
         public QueryModel FirstByCON_VALOR_ACRECIMOQuery(Decimal value );
         public QueryModel FirstByCON_INTEGRACAO_ERPQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -33,11 +33,11 @@ namespace Command.Read
         public Decimal? PercentualInicioPassoAnterior { get; set; }
         public string? LinhaDireta { get; set; }
         public int? TemplateDeTestesId { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Roteiro";
  public string? OperationalRecordId => OperationalEntityId;

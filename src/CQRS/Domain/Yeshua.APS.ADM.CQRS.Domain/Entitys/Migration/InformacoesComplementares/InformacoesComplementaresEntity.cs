@@ -25,11 +25,11 @@
     public Decimal INF_VALOR { get; set; }
     public int MET_ID { get; set; }
     public string INF_DATA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal InformacoesComplementaresEntity(int inf_id, string inf_descricao, Decimal inf_valor, int met_id, string inf_data ){
  INF_ID = inf_id; 
@@ -37,9 +37,9 @@
  INF_VALOR = inf_valor; 
  MET_ID = met_id; 
  INF_DATA = inf_data; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

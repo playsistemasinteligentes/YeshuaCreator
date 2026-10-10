@@ -29,11 +29,29 @@
             public const ulong Largura = 1UL << 6;
             public const ulong Altura = 1UL << 7;
             public const ulong Status = 1UL << 8;
-            public const ulong OperationalEntityId = 1UL << 9;
-            public const ulong TenantID = 1UL << 10;
-            public const ulong Deleted = 1UL << 11;
-            public const ulong Changed = 1UL << 12;
-            public const ulong UserId = 1UL << 13;
+            public const ulong TenantID = 1UL << 9;
+            public const ulong Deleted = 1UL << 10;
+            public const ulong Changed = 1UL << 11;
+            public const ulong UserId = 1UL << 12;
+            public const ulong OperationalEntityId = 1UL << 13;
+        }
+
+        public static class FotoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification StorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NomeOriginal = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification ContentType = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HashArquivo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CapturadaEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Largura = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Altura = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class FotoDecorator : IFotoEntity
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public FotoDecorator(IFotoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & FotoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.StorageKey = value;
                                                 if ((_trackingMask & FotoTrackingFields.StorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "StorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "StorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.StorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.NomeOriginal = value;
                                                 if ((_trackingMask & FotoTrackingFields.NomeOriginal) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "NomeOriginal", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "NomeOriginal", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.NomeOriginal, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.ContentType = value;
                                                 if ((_trackingMask & FotoTrackingFields.ContentType) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "ContentType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "ContentType", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.ContentType, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.HashArquivo = value;
                                                 if ((_trackingMask & FotoTrackingFields.HashArquivo) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "HashArquivo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "HashArquivo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.HashArquivo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.CapturadaEmUtc = value;
                                                 if ((_trackingMask & FotoTrackingFields.CapturadaEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "CapturadaEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "CapturadaEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.CapturadaEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.Largura = value;
                                                 if ((_trackingMask & FotoTrackingFields.Largura) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "Largura", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "Largura", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.Largura, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.Altura = value;
                                                 if ((_trackingMask & FotoTrackingFields.Altura) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "Altura", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "Altura", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.Altura, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,11 +210,10 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & FotoTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -199,7 +224,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & FotoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +238,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & FotoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +252,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & FotoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,10 +266,11 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & FotoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Foto", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Foto", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FotoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

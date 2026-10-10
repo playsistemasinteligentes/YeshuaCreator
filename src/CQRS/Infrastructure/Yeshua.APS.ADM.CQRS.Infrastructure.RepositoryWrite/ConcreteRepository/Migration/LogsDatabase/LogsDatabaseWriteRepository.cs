@@ -116,11 +116,6 @@ namespace Input.Repository.LogsDatabase
             var query = _query.UpdateLOGS_ORIGEM(logs_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int logs_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(logs_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int logs_id, int value)
         {
             var query = _query.UpdateTenantID(logs_id, value);
@@ -139,6 +134,11 @@ namespace Input.Repository.LogsDatabase
         public void UpdateUserId(int logs_id, int value)
         {
             var query = _query.UpdateUserId(logs_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int logs_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(logs_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

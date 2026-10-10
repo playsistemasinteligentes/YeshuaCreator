@@ -19,11 +19,11 @@ namespace IQuery.Write
         public QueryModel UpdateSubOcorrenciaQuery(ISubOcorrenciaEntity SubOcorrencia);
         QueryModel UpdateSUB_ID(int id, string value);
         QueryModel UpdateSUB_DESCRICAO(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteSubOcorrenciaQuery(ISubOcorrenciaEntity SubOcorrencia);
     }
 }

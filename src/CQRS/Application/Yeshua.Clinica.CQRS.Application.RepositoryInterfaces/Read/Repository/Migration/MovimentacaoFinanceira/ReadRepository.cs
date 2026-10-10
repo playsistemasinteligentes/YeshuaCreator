@@ -33,11 +33,11 @@ namespace IRepository.Read
         public bool ExistsByTipoMovimentacao(int value );
         public bool ExistsByDataMovimentacao(DateTime value );
         public bool ExistsBySaldoAtual(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MovimentacaoFinanceiraDTO FirstById(int value );
         public MovimentacaoFinanceiraDTO FirstByPacienteId(int value );
         public MovimentacaoFinanceiraDTO FirstByServicoId(int value );
@@ -45,11 +45,11 @@ namespace IRepository.Read
         public MovimentacaoFinanceiraDTO FirstByTipoMovimentacao(int value );
         public MovimentacaoFinanceiraDTO FirstByDataMovimentacao(DateTime value );
         public MovimentacaoFinanceiraDTO FirstBySaldoAtual(Decimal value );
-        public MovimentacaoFinanceiraDTO FirstByOperationalEntityId(string value );
         public MovimentacaoFinanceiraDTO FirstByTenantID(int value );
         public MovimentacaoFinanceiraDTO FirstByDeleted(bool value );
         public MovimentacaoFinanceiraDTO FirstByChanged(DateTime value );
         public MovimentacaoFinanceiraDTO FirstByUserId(int value );
+        public MovimentacaoFinanceiraDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllById(int value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByPacienteId(int value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByServicoId(int value );
@@ -57,11 +57,11 @@ namespace IRepository.Read
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByTipoMovimentacao(int value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByDataMovimentacao(DateTime value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllBySaldoAtual(Decimal value );
-        public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByTenantID(int value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByUserId(int value );
+        public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

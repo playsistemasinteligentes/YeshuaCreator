@@ -29,11 +29,11 @@ namespace Command.Write
         public Decimal EST_BASE_PRODUCAO { get; set; }
         public Decimal? EST_NIVEL { get; set; }
         public int? FPR_SEQ_REPETICAO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "EstruturaCusto";
  public string? OperationalRecordId => OperationalEntityId;
     }

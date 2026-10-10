@@ -16,11 +16,11 @@ namespace Command.Read
         public string? Id { get; set; }
         public string? Descricao { get; set; }
         public string? Status { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
         public Decimal? PRO_ESTOQUE_ATUAL { get; set; }
         public string? UNI_ID { get; set; }
         public Decimal? PRO_FARDOS_POR_CAMADA { get; set; }

@@ -42,11 +42,11 @@
     public string? DOM_EMPRESA { get; set; }
     public string? DOM_FILIAL { get; set; }
     public string? MED_VALOR_DISPER { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal T_MedicoesEntity(int? id, int med_id, int? ind_id, int? met_id, int? uni_id, DateTime med_data, string? med_valor, string? med_ac_ano, string? med_datamedicao, Decimal? med_ponderacao, string? dim_id, string? dim_descricao, string? dim_subdimensao_id, string? dim_sub_descricao, string? per_id, string? per_descricao, string? fat_id, string? fat_descricao, string? med_sql, string? dom_empresa, string? dom_filial, string? med_valor_disper ){
  Id = id; 
@@ -71,9 +71,9 @@
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
  MED_VALOR_DISPER = med_valor_disper; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

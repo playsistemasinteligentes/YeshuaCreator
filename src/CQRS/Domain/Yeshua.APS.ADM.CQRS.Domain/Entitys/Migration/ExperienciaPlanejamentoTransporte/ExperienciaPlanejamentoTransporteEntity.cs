@@ -33,11 +33,11 @@
     public string? Observacao { get; set; }
     public DateTime CriadoEm { get; set; }
     public string CriadoPor { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ExperienciaPlanejamentoTransporteEntity(int? id, int tipo, string? referencia, string? pedidoid, string? clienteid, string? municipio, string? regiao, string? rotaid, Decimal? peso, Decimal? volume, string? observacao, DateTime criadoem, string criadopor ){
  Id = id; 
@@ -53,9 +53,9 @@
  Observacao = observacao; 
  CriadoEm = (criadoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : criadoem; 
  CriadoPor = criadopor; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

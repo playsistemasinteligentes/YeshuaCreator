@@ -39,11 +39,11 @@
     public Decimal? TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D { get; set; }
     public Decimal? TIP_CAPACIDADE_LARGURA_PESCOCO_D { get; set; }
     public Decimal? TIP_CAPACIDADE_M3 { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TipoVeiculoEntity(int? id, int tip_id, string? tip_descricao, int? tip_qtd_disponivel, Decimal? tip_valor_km, Decimal? tip_valor_diaria, Decimal? tip_valor_ajudante, Decimal? tip_qtd_eixos, Decimal? tip_velocidade_media, Decimal? tip_capacidade_altura, Decimal? tip_capacidade_comprimento, Decimal? tip_capacidade_largura, Decimal? tip_capacidade_altura_pescoco_e, Decimal? tip_capacidade_comprimento_pescoco_e, Decimal? tip_capacidade_largura_pescoco_e, Decimal? tip_capacidade_altura_pescoco_d, Decimal? tip_capacidade_comprimento_pescoco_d, Decimal? tip_capacidade_largura_pescoco_d, Decimal? tip_capacidade_m3 ){
  Id = id; 
@@ -65,9 +65,9 @@
  TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D = tip_capacidade_comprimento_pescoco_d; 
  TIP_CAPACIDADE_LARGURA_PESCOCO_D = tip_capacidade_largura_pescoco_d; 
  TIP_CAPACIDADE_M3 = tip_capacidade_m3; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

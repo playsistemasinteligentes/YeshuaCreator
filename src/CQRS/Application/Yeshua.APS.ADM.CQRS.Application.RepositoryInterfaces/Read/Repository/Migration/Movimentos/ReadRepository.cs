@@ -32,33 +32,33 @@ namespace IRepository.Read
         public bool ExistsByMOV_PLAID(int value );
         public bool ExistsByMOV_UNID(int value );
         public bool ExistsByTr_Unidade_UNI_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MovimentosDTO FirstByMOV_ID(int value );
         public MovimentosDTO FirstByMOV_DATA(string value );
         public MovimentosDTO FirstByMOV_VALOR(Decimal value );
         public MovimentosDTO FirstByMOV_PLAID(int value );
         public MovimentosDTO FirstByMOV_UNID(int value );
         public MovimentosDTO FirstByTr_Unidade_UNI_ID(int value );
-        public MovimentosDTO FirstByOperationalEntityId(string value );
         public MovimentosDTO FirstByTenantID(int value );
         public MovimentosDTO FirstByDeleted(bool value );
         public MovimentosDTO FirstByChanged(DateTime value );
         public MovimentosDTO FirstByUserId(int value );
+        public MovimentosDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MovimentosDTO> GetAllByMOV_ID(int value );
         public IEnumerable<MovimentosDTO> GetAllByMOV_DATA(string value );
         public IEnumerable<MovimentosDTO> GetAllByMOV_VALOR(Decimal value );
         public IEnumerable<MovimentosDTO> GetAllByMOV_PLAID(int value );
         public IEnumerable<MovimentosDTO> GetAllByMOV_UNID(int value );
         public IEnumerable<MovimentosDTO> GetAllByTr_Unidade_UNI_ID(int value );
-        public IEnumerable<MovimentosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MovimentosDTO> GetAllByTenantID(int value );
         public IEnumerable<MovimentosDTO> GetAllByDeleted(bool value );
         public IEnumerable<MovimentosDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MovimentosDTO> GetAllByUserId(int value );
+        public IEnumerable<MovimentosDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -17,11 +17,11 @@ namespace Command.Write
         public string? HTML_ESTRUTURA { get; set; }
         public string? CLI_ID { get; set; }
         public string? EST_DESCRICAO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "EstruturaImpressao";
  public string? OperationalRecordId => OperationalEntityId;
     }

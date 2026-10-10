@@ -24,11 +24,11 @@
     int USE_ID { get; set; }
     string OBJ_ID { get; set; }
     string? USU_OBJETO_ACAO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

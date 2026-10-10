@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEmissaoFiscalTransporteDocumentoQuery(IEmissaoFiscalTransporteDocumentoEntity EmissaoFiscalTransporteDocumento)
         {
-            this.Query = $@" INSERT INTO [EmissaoFiscalTransporteDocumento] ([EmissaoFiscalTransporteId], [DocumentoFiscalId], [DocumentoFiscalOriginarioId], [NFeProdutoSnapshotId], [ProdutoFiscal], [Papel], [TipoEvento], [ChaveAcesso], [XmlStorageKey], [PdfStorageKey], [Protocolo], [CodigoRetorno], [MensagemRetorno], [CriadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@EmissaoFiscalTransporteId, @DocumentoFiscalId, @DocumentoFiscalOriginarioId, @NFeProdutoSnapshotId, @ProdutoFiscal, @Papel, @TipoEvento, @ChaveAcesso, @XmlStorageKey, @PdfStorageKey, @Protocolo, @CodigoRetorno, @MensagemRetorno, @CriadoEmUtc, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [EmissaoFiscalTransporteDocumento] ([EmissaoFiscalTransporteId], [DocumentoFiscalId], [DocumentoFiscalOriginarioId], [NFeProdutoSnapshotId], [ProdutoFiscal], [Papel], [TipoEvento], [ChaveAcesso], [XmlStorageKey], [PdfStorageKey], [Protocolo], [CodigoRetorno], [MensagemRetorno], [CriadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@EmissaoFiscalTransporteId, @DocumentoFiscalId, @DocumentoFiscalOriginarioId, @NFeProdutoSnapshotId, @ProdutoFiscal, @Papel, @TipoEvento, @ChaveAcesso, @XmlStorageKey, @PdfStorageKey, @Protocolo, @CodigoRetorno, @MensagemRetorno, @CriadoEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 EmissaoFiscalTransporteId = EmissaoFiscalTransporteDocumento.EmissaoFiscalTransporteId,
@@ -48,11 +48,11 @@ namespace Query.Write
                 MensagemRetorno = EmissaoFiscalTransporteDocumento.MensagemRetorno,
                 CriadoEmUtc = EmissaoFiscalTransporteDocumento.CriadoEmUtc,
                 Status = EmissaoFiscalTransporteDocumento.Status,
-                OperationalEntityId = EmissaoFiscalTransporteDocumento.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = EmissaoFiscalTransporteDocumento.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -232,16 +232,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [EmissaoFiscalTransporteDocumento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [EmissaoFiscalTransporteDocumento] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -278,6 +268,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [EmissaoFiscalTransporteDocumento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -21,11 +21,11 @@ namespace Command.Write
         public Decimal? RES_VELOCIDADE_HORA_RUSH { get; set; }
         public int? TVE_ID { get; set; }
         public int? MAP_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "RestricoesDeRodagem";
  public string? OperationalRecordId => OperationalEntityId;
     }

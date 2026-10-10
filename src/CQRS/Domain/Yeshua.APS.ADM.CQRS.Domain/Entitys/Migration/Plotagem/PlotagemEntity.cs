@@ -29,11 +29,11 @@
     public string? PLO_Z { get; set; }
     public string? PLO_GRAFICO { get; set; }
     public int? CON_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PlotagemEntity(int? id, int plo_id, string? plo_nome, string? plo_dimensao, string? plo_x, string? plo_y, string? plo_z, string? plo_grafico, int? con_id ){
  Id = id; 
@@ -45,9 +45,9 @@
  PLO_Z = plo_z; 
  PLO_GRAFICO = plo_grafico; 
  CON_ID = con_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

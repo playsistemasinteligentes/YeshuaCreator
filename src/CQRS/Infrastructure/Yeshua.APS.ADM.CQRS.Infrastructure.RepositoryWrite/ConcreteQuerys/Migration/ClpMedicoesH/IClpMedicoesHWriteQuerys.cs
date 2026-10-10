@@ -34,11 +34,11 @@ namespace IQuery.Write
         QueryModel UpdateCOMPACTA(int id, int value);
         QueryModel UpdateBOL_ID(int id, string value);
         QueryModel UpdateCOR_SEQUENCIA(int id, int value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteClpMedicoesHQuery(IClpMedicoesHEntity ClpMedicoesH);
     }
 }

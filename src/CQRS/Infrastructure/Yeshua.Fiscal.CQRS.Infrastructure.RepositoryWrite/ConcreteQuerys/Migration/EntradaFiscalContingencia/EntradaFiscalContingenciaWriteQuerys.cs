@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEntradaFiscalContingenciaQuery(IEntradaFiscalContingenciaEntity EntradaFiscalContingencia)
         {
-            this.Query = $@" INSERT INTO [EntradaFiscalContingencia] ([CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [CertificadoDigitalId]) OUTPUT INSERTED.[Id] VALUES(@CorrelationId, @CargaId, @TipoSolicitante, @Ambiente, @SourceApplication, @SourceModule, @SourceMessageId, @EmitenteFiscalDocumento, @TomadorDocumento, @TransportadorDocumento, @RemetenteDocumento, @DestinatarioDocumento, @UFInicio, @UFFim, @MunicipioInicioCodigoIbge, @MunicipioFimCodigoIbge, @RNTRC, @PlacaVeiculo, @UFVeiculo, @CondutorDocumento, @CondutorNome, @QuantidadeDocumentos, @ValorCarga, @PesoBruto, @Volume, @PendenciasJson, @SnapshotJson, @EmissaoFiscalCorrelationId, @EmissaoFiscalSagaId, @CriadoEmUtc, @AtualizadoEmUtc, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @CertificadoDigitalId) ";
+            this.Query = $@" INSERT INTO [EntradaFiscalContingencia] ([CorrelationId], [CargaId], [TipoSolicitante], [Ambiente], [SourceApplication], [SourceModule], [SourceMessageId], [EmitenteFiscalDocumento], [TomadorDocumento], [TransportadorDocumento], [RemetenteDocumento], [DestinatarioDocumento], [UFInicio], [UFFim], [MunicipioInicioCodigoIbge], [MunicipioFimCodigoIbge], [RNTRC], [PlacaVeiculo], [UFVeiculo], [CondutorDocumento], [CondutorNome], [QuantidadeDocumentos], [ValorCarga], [PesoBruto], [Volume], [PendenciasJson], [SnapshotJson], [EmissaoFiscalCorrelationId], [EmissaoFiscalSagaId], [CriadoEmUtc], [AtualizadoEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [CertificadoDigitalId]) OUTPUT INSERTED.[Id] VALUES(@CorrelationId, @CargaId, @TipoSolicitante, @Ambiente, @SourceApplication, @SourceModule, @SourceMessageId, @EmitenteFiscalDocumento, @TomadorDocumento, @TransportadorDocumento, @RemetenteDocumento, @DestinatarioDocumento, @UFInicio, @UFFim, @MunicipioInicioCodigoIbge, @MunicipioFimCodigoIbge, @RNTRC, @PlacaVeiculo, @UFVeiculo, @CondutorDocumento, @CondutorNome, @QuantidadeDocumentos, @ValorCarga, @PesoBruto, @Volume, @PendenciasJson, @SnapshotJson, @EmissaoFiscalCorrelationId, @EmissaoFiscalSagaId, @CriadoEmUtc, @AtualizadoEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @CertificadoDigitalId) ";
             this.Parameters = new
             {
                 CorrelationId = EntradaFiscalContingencia.CorrelationId,
@@ -65,11 +65,11 @@ namespace Query.Write
                 CriadoEmUtc = EntradaFiscalContingencia.CriadoEmUtc,
                 AtualizadoEmUtc = EntradaFiscalContingencia.AtualizadoEmUtc,
                 Status = EntradaFiscalContingencia.Status,
-                OperationalEntityId = EntradaFiscalContingencia.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = EntradaFiscalContingencia.OperationalEntityId,
                 CertificadoDigitalId = EntradaFiscalContingencia.CertificadoDigitalId,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -438,16 +438,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [EntradaFiscalContingencia] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [EntradaFiscalContingencia] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -484,6 +474,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [EntradaFiscalContingencia] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

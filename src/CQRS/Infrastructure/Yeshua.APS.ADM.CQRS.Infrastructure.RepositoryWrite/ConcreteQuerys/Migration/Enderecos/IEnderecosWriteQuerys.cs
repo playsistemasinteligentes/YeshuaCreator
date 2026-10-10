@@ -18,11 +18,11 @@ namespace IQuery.Write
         public QueryModel InserirEnderecosQuery(IEnderecosEntity Enderecos);
         public QueryModel UpdateEnderecosQuery(IEnderecosEntity Enderecos);
         QueryModel UpdateEND_GRUPO(string end_id, string value);
-        QueryModel UpdateOperationalEntityId(string end_id, string value);
         QueryModel UpdateTenantID(string end_id, int value);
         QueryModel UpdateDeleted(string end_id, bool value);
         QueryModel UpdateChanged(string end_id, DateTime value);
         QueryModel UpdateUserId(string end_id, int value);
+        QueryModel UpdateOperationalEntityId(string end_id, string value);
         public QueryModel DeleteEnderecosQuery(IEnderecosEntity Enderecos);
     }
 }

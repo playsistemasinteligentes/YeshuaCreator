@@ -31,11 +31,31 @@
             public const ulong SolicitadaEmUtc = 1UL << 8;
             public const ulong PublicadaEmUtc = 1UL << 9;
             public const ulong Status = 1UL << 10;
-            public const ulong OperationalEntityId = 1UL << 11;
-            public const ulong TenantID = 1UL << 12;
-            public const ulong Deleted = 1UL << 13;
-            public const ulong Changed = 1UL << 14;
-            public const ulong UserId = 1UL << 15;
+            public const ulong TenantID = 1UL << 11;
+            public const ulong Deleted = 1UL << 12;
+            public const ulong Changed = 1UL << 13;
+            public const ulong UserId = 1UL << 14;
+            public const ulong OperationalEntityId = 1UL << 15;
+        }
+
+        public static class PublicacaoAlbumOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AlbumId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CorrelationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ManifestStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VideoStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification YouTubeVideoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification YouTubeUrl = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Mensagem = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SolicitadaEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PublicadaEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class PublicacaoAlbumDecorator : IPublicacaoAlbumEntity
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PublicacaoAlbumDecorator(IPublicacaoAlbumEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.AlbumId = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.AlbumId) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "AlbumId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "AlbumId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.AlbumId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.CorrelationId = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.CorrelationId) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.CorrelationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.ManifestStorageKey = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.ManifestStorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "ManifestStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "ManifestStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.ManifestStorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.VideoStorageKey = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.VideoStorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "VideoStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "VideoStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.VideoStorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.YouTubeVideoId = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.YouTubeVideoId) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "YouTubeVideoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "YouTubeVideoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.YouTubeVideoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.YouTubeUrl = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.YouTubeUrl) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "YouTubeUrl", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "YouTubeUrl", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.YouTubeUrl, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.Mensagem = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.Mensagem) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Mensagem", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Mensagem", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.Mensagem, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.SolicitadaEmUtc = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.SolicitadaEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "SolicitadaEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "SolicitadaEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.SolicitadaEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.PublicadaEmUtc = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.PublicadaEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "PublicadaEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "PublicadaEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.PublicadaEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,11 +242,10 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -229,7 +256,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +270,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +284,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,10 +298,11 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PublicacaoAlbumTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PublicacaoAlbum", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PublicacaoAlbum", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoAlbumOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

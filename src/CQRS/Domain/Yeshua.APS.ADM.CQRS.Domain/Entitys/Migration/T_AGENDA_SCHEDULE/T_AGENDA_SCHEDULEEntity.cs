@@ -37,11 +37,11 @@
     public string? AGE_PARAMETROS { get; set; }
     public string? AGE_EXCECAO { get; set; }
     public string? AGE_DESCRICAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal T_AGENDA_SCHEDULEEntity(int? id, int age_id, DateTime? age_data_especifica, string? age_horario_inicio, string? age_horario_fim, string? age_segunda, string? age_terca, string? age_quarta, string? age_quinta, string? age_sexta, string? age_sabado, string? age_domingo, Decimal? age_intervalo, string? age_ordem_execucao, string? age_parametros, string? age_excecao, string? age_descricao ){
  Id = id; 
@@ -61,9 +61,9 @@
  AGE_PARAMETROS = age_parametros; 
  AGE_EXCECAO = age_excecao; 
  AGE_DESCRICAO = age_descricao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

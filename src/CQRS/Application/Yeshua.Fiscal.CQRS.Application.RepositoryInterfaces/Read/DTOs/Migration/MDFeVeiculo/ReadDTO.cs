@@ -25,11 +25,11 @@ namespace Repositorio.Outputs
     public Decimal tara { get; set; }
     public Decimal capacidadekg { get; set; }
     public Decimal capacidadem3 { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

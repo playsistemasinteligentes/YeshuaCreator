@@ -22,11 +22,11 @@ namespace Command.Read
         public bool? CanUpdate { get; set; }
         public bool? CanDelete { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "yUserGrant";
  public string? OperationalRecordId => OperationalEntityId;

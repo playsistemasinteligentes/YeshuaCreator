@@ -20,11 +20,11 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int tiv_id { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     public string tiv_nome { get; set; } = string.Empty;
     public string tiv_descricao { get; set; } = string.Empty;
     public string tiv_fechamento { get; set; } = string.Empty;

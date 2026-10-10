@@ -28,29 +28,29 @@ namespace IRepository.Read
         public bool ExistsByRSM_ID(int value );
         public bool ExistsByRL_ID(int value );
         public bool ExistsByMDT_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ResultMedidaDTO FirstById(int value );
         public ResultMedidaDTO FirstByRSM_ID(int value );
         public ResultMedidaDTO FirstByRL_ID(int value );
         public ResultMedidaDTO FirstByMDT_ID(int value );
-        public ResultMedidaDTO FirstByOperationalEntityId(string value );
         public ResultMedidaDTO FirstByTenantID(int value );
         public ResultMedidaDTO FirstByDeleted(bool value );
         public ResultMedidaDTO FirstByChanged(DateTime value );
         public ResultMedidaDTO FirstByUserId(int value );
+        public ResultMedidaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ResultMedidaDTO> GetAllById(int value );
         public IEnumerable<ResultMedidaDTO> GetAllByRSM_ID(int value );
         public IEnumerable<ResultMedidaDTO> GetAllByRL_ID(int value );
         public IEnumerable<ResultMedidaDTO> GetAllByMDT_ID(int value );
-        public IEnumerable<ResultMedidaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ResultMedidaDTO> GetAllByTenantID(int value );
         public IEnumerable<ResultMedidaDTO> GetAllByDeleted(bool value );
         public IEnumerable<ResultMedidaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ResultMedidaDTO> GetAllByUserId(int value );
+        public IEnumerable<ResultMedidaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

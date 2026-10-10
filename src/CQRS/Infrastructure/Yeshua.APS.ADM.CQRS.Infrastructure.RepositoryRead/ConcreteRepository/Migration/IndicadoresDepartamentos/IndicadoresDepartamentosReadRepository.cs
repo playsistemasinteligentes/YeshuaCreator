@@ -158,14 +158,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -198,6 +190,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public IndicadoresDepartamentosDTO FirstByINDDEP_ID(int value )
         {
             var query = _query.FirstByINDDEP_IDQuery(value );
@@ -217,14 +217,6 @@ namespace Read.Repository
         public IndicadoresDepartamentosDTO FirstByIND_ID(int value )
         {
             var query = _query.FirstByIND_IDQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<IndicadoresDepartamentosDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public IndicadoresDepartamentosDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<IndicadoresDepartamentosDTO>(query.Query, query.Parameters);
                 return result;
@@ -262,6 +254,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public IndicadoresDepartamentosDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<IndicadoresDepartamentosDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByINDDEP_ID(int value )
         {
             var query = _query.FirstByINDDEP_IDQuery(value );
@@ -281,14 +281,6 @@ namespace Read.Repository
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByIND_ID(int value )
         {
             var query = _query.FirstByIND_IDQuery(value );
-
-                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<IndicadoresDepartamentosDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -321,6 +313,14 @@ namespace Read.Repository
         public IEnumerable<IndicadoresDepartamentosDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<IndicadoresDepartamentosDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<IndicadoresDepartamentosDTO>(query.Query,query.Parameters).ToList();
                 return result;

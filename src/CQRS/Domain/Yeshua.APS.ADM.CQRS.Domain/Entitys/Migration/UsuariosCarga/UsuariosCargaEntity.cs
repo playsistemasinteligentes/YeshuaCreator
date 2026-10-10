@@ -24,20 +24,20 @@
     public int USE_ID { get; set; }
     public string CAR_ID { get; set; }
     public string RGO_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal UsuariosCargaEntity(int? id, int use_id, string car_id, string rgo_id ){
  Id = id; 
  USE_ID = use_id; 
  CAR_ID = car_id; 
  RGO_ID = rgo_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

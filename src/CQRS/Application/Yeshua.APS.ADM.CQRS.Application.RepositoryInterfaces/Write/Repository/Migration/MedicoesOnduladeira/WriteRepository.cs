@@ -22,11 +22,11 @@ namespace IRepository.Write
         void Insert(IMedicoesOnduladeiraEntity medicoesonduladeira);
         void Update(IMedicoesOnduladeiraEntity medicoesonduladeira);
         void Delete(IMedicoesOnduladeiraEntity medicoesonduladeira);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

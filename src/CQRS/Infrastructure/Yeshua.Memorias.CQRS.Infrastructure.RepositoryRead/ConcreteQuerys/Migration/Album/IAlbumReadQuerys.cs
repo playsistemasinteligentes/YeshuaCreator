@@ -22,22 +22,22 @@ namespace IQuery.Read
         public QueryModel ExistsByPrivacidadeQuery(int value );
         public QueryModel ExistsBySegundosPorFotoQuery(int value );
         public QueryModel ExistsByStatusQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTituloQuery(string value );
         public QueryModel FirstByDescricaoQuery(string value );
         public QueryModel FirstByPrivacidadeQuery(int value );
         public QueryModel FirstBySegundosPorFotoQuery(int value );
         public QueryModel FirstByStatusQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMedidasTesteQuery(IMedidasTesteEntity MedidasTeste)
         {
-            this.Query = $@" INSERT INTO [MedidasTeste] ([MDT_ID], [MDT_DESC], [MDT_VALOR_ESPERADO], [MDT_ENCONTRADO], [UNI_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MDT_ID, @MDT_DESC, @MDT_VALOR_ESPERADO, @MDT_ENCONTRADO, @UNI_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MedidasTeste] ([MDT_ID], [MDT_DESC], [MDT_VALOR_ESPERADO], [MDT_ENCONTRADO], [UNI_ID], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@MDT_ID, @MDT_DESC, @MDT_VALOR_ESPERADO, @MDT_ENCONTRADO, @UNI_ID, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 MDT_ID = MedidasTeste.MDT_ID,
@@ -38,11 +38,11 @@ namespace Query.Write
                 MDT_VALOR_ESPERADO = MedidasTeste.MDT_VALOR_ESPERADO,
                 MDT_ENCONTRADO = MedidasTeste.MDT_ENCONTRADO,
                 UNI_ID = MedidasTeste.UNI_ID,
-                OperationalEntityId = MedidasTeste.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = MedidasTeste.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -112,16 +112,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [MedidasTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [MedidasTeste] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -158,6 +148,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [MedidasTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -26,11 +26,11 @@
             public const ulong COL_EMAIL = 1UL << 3;
             public const ulong COL_MATRICULA = 1UL << 4;
             public const ulong TURM_id = 1UL << 5;
-            public const ulong OperationalEntityId = 1UL << 6;
-            public const ulong TenantID = 1UL << 7;
-            public const ulong Deleted = 1UL << 8;
-            public const ulong Changed = 1UL << 9;
-            public const ulong UserId = 1UL << 10;
+            public const ulong TenantID = 1UL << 6;
+            public const ulong Deleted = 1UL << 7;
+            public const ulong Changed = 1UL << 8;
+            public const ulong UserId = 1UL << 9;
+            public const ulong OperationalEntityId = 1UL << 10;
         }
 
         public static class ColaboradorOperationalFields
@@ -41,11 +41,11 @@
             public const Dominio.Operational.OperationalDataClassification COL_EMAIL = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification COL_MATRICULA = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TURM_id = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ColaboradorDecorator : IColaboradorEntity
@@ -166,7 +166,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -223,6 +222,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

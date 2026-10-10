@@ -15,11 +15,11 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public string Description { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "yPerfil";
  public string? OperationalRecordId => OperationalEntityId;
     }

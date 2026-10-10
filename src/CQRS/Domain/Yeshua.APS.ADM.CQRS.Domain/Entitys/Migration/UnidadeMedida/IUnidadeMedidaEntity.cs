@@ -23,11 +23,11 @@
     string UNI_ID { get; set; }
     string UNI_DESCRICAO { get; set; }
     string? UNI_ESCALA_TEMPO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

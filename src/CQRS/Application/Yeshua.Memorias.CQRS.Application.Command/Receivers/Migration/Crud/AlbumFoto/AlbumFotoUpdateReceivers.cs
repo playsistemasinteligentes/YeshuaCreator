@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.AlbumFotoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateAlbumFoto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateAlbumFotoReceiver), commandName: "Command.Write.AlbumFotoCrudCommand");
-                 var albumfoto = new AlbumFotoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.FotoId, c.Ordem, c.Legenda);
+                 var trackingMask = _domainTrackingPolicy.GetMask("AlbumFoto", "UpdateAlbumFoto", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.AlbumFotoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateAlbumFoto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateAlbumFotoReceiver), commandName: "Command.Write.AlbumFotoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var albumfoto = new AlbumFotoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.FotoId, c.Ordem, c.Legenda, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", albumfoto.OperationalEntityId);
                  var domainResult = AlbumFotoDomainBehavior.Apply(albumfoto, context);
                  if (!domainResult.IsValid)

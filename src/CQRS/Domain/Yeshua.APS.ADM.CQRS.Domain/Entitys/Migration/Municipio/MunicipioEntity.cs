@@ -30,11 +30,11 @@
     public string? MUN_CODIGO_SIAFI { get; set; }
     public string? MUN_CODIGO_CNPJ { get; set; }
     public Decimal? MUN_DISTANCIA_KM { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MunicipioEntity(string mun_id, string? mun_nome, string? uf_cod, string? mun_codigo_ibge, Decimal? mun_latitude, Decimal? mun_longitude, string? mun_id_integracao_erp, string? mun_codigo_siafi, string? mun_codigo_cnpj, Decimal? mun_distancia_km ){
  MUN_ID = mun_id; 
@@ -47,9 +47,9 @@
  MUN_CODIGO_SIAFI = mun_codigo_siafi; 
  MUN_CODIGO_CNPJ = mun_codigo_cnpj; 
  MUN_DISTANCIA_KM = mun_distancia_km; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

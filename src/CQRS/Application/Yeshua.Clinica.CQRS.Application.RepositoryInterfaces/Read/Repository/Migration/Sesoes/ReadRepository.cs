@@ -56,11 +56,11 @@ namespace IRepository.Read
         public bool ExistsByServicoId(int value );
         public bool ExistsByMovimentacaoFinanceiraId(int value );
         public bool ExistsByProfissionalId(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public SesoesDTO FirstByPacienteId(int value );
         public SesoesDTO FirstByDataInicio(DateTime value );
         public SesoesDTO FirstByDataFim(DateTime value );
@@ -89,11 +89,11 @@ namespace IRepository.Read
         public SesoesDTO FirstByServicoId(int value );
         public SesoesDTO FirstByMovimentacaoFinanceiraId(int value );
         public SesoesDTO FirstByProfissionalId(int value );
-        public SesoesDTO FirstByOperationalEntityId(string value );
         public SesoesDTO FirstByTenantID(int value );
         public SesoesDTO FirstByDeleted(bool value );
         public SesoesDTO FirstByChanged(DateTime value );
         public SesoesDTO FirstByUserId(int value );
+        public SesoesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value );
         public IEnumerable<SesoesDTO> GetAllByDataInicio(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByDataFim(DateTime value );
@@ -122,11 +122,11 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByServicoId(int value );
         public IEnumerable<SesoesDTO> GetAllByMovimentacaoFinanceiraId(int value );
         public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value );
-        public IEnumerable<SesoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<SesoesDTO> GetAllByTenantID(int value );
         public IEnumerable<SesoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<SesoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByUserId(int value );
+        public IEnumerable<SesoesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -23,11 +23,11 @@ namespace IQuery.Read
         public QueryModel ExistsByCOT_VALORQuery(Decimal value );
         public QueryModel ExistsByCOT_OCUPADOQuery(Decimal value );
         public QueryModel ExistsByREP_IDQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByCOT_IDQuery(int value );
         public QueryModel FirstByCOT_DATA_DEQuery(DateTime value );
@@ -35,11 +35,11 @@ namespace IQuery.Read
         public QueryModel FirstByCOT_VALORQuery(Decimal value );
         public QueryModel FirstByCOT_OCUPADOQuery(Decimal value );
         public QueryModel FirstByREP_IDQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

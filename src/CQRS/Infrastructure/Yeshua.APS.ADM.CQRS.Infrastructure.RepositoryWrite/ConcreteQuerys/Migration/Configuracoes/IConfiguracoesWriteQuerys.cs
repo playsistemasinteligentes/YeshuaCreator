@@ -17,11 +17,11 @@ namespace IQuery.Write
      {
         public QueryModel InserirConfiguracoesQuery(IConfiguracoesEntity Configuracoes);
         public QueryModel UpdateConfiguracoesQuery(IConfiguracoesEntity Configuracoes);
-        QueryModel UpdateOperationalEntityId(int con_id, string value);
         QueryModel UpdateTenantID(int con_id, int value);
         QueryModel UpdateDeleted(int con_id, bool value);
         QueryModel UpdateChanged(int con_id, DateTime value);
         QueryModel UpdateUserId(int con_id, int value);
+        QueryModel UpdateOperationalEntityId(int con_id, string value);
         public QueryModel DeleteConfiguracoesQuery(IConfiguracoesEntity Configuracoes);
     }
 }

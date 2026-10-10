@@ -32,11 +32,15 @@
     public string? ErrorMessage { get; set; }
     public string? Payload { get; set; }
     public int RetryCount { get; set; }
+    public string? RootOperationId { get; set; }
+    public string? OperationId { get; set; }
+    public string? ExecutionId { get; set; }
+    public string? CausationId { get; set; }
     public int? TenantID { get; set; }
-    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ySagaStepEntity(int? id, int sagaid, string stepkey, int indexorder, string correlationid, int status, int executioncount, DateTime? lastexecutionat, DateTime? completedat, string? errormessage, string? payload, int retrycount ){
  Id = id; 
@@ -51,9 +55,13 @@
  ErrorMessage = errormessage; 
  Payload = payload; 
  RetryCount = retrycount; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
+ RootOperationId = null; 
+ OperationId = null; 
+ ExecutionId = null; 
+ CausationId = null; 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

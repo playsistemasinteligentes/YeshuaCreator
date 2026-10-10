@@ -32,11 +32,11 @@ namespace IRepository.Read
         public bool ExistsByRES_VELOCIDADE_HORA_RUSH(Decimal value );
         public bool ExistsByTVE_ID(int value );
         public bool ExistsByMAP_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public RestricoesDeRodagemDTO FirstById(int value );
         public RestricoesDeRodagemDTO FirstByRES_ID(int value );
         public RestricoesDeRodagemDTO FirstByRES_TIPO(string value );
@@ -45,11 +45,11 @@ namespace IRepository.Read
         public RestricoesDeRodagemDTO FirstByRES_VELOCIDADE_HORA_RUSH(Decimal value );
         public RestricoesDeRodagemDTO FirstByTVE_ID(int value );
         public RestricoesDeRodagemDTO FirstByMAP_ID(int value );
-        public RestricoesDeRodagemDTO FirstByOperationalEntityId(string value );
         public RestricoesDeRodagemDTO FirstByTenantID(int value );
         public RestricoesDeRodagemDTO FirstByDeleted(bool value );
         public RestricoesDeRodagemDTO FirstByChanged(DateTime value );
         public RestricoesDeRodagemDTO FirstByUserId(int value );
+        public RestricoesDeRodagemDTO FirstByOperationalEntityId(string value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllById(int value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByRES_ID(int value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByRES_TIPO(string value );
@@ -58,11 +58,11 @@ namespace IRepository.Read
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByRES_VELOCIDADE_HORA_RUSH(Decimal value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByTVE_ID(int value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByMAP_ID(int value );
-        public IEnumerable<RestricoesDeRodagemDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByTenantID(int value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByDeleted(bool value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RestricoesDeRodagemDTO> GetAllByUserId(int value );
+        public IEnumerable<RestricoesDeRodagemDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

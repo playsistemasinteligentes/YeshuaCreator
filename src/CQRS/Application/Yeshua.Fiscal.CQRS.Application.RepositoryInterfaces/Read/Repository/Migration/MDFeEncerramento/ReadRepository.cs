@@ -36,11 +36,11 @@ namespace IRepository.Read
         public bool ExistsByProtocolo(string value );
         public bool ExistsByCodigoRetorno(string value );
         public bool ExistsByMensagemRetorno(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MDFeEncerramentoDTO FirstById(int value );
         public MDFeEncerramentoDTO FirstByMDFeId(int value );
         public MDFeEncerramentoDTO FirstByChaveAcesso(string value );
@@ -52,11 +52,11 @@ namespace IRepository.Read
         public MDFeEncerramentoDTO FirstByProtocolo(string value );
         public MDFeEncerramentoDTO FirstByCodigoRetorno(string value );
         public MDFeEncerramentoDTO FirstByMensagemRetorno(string value );
-        public MDFeEncerramentoDTO FirstByOperationalEntityId(string value );
         public MDFeEncerramentoDTO FirstByTenantID(int value );
         public MDFeEncerramentoDTO FirstByDeleted(bool value );
         public MDFeEncerramentoDTO FirstByChanged(DateTime value );
         public MDFeEncerramentoDTO FirstByUserId(int value );
+        public MDFeEncerramentoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllById(int value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByMDFeId(int value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByChaveAcesso(string value );
@@ -68,11 +68,11 @@ namespace IRepository.Read
         public IEnumerable<MDFeEncerramentoDTO> GetAllByProtocolo(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByCodigoRetorno(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByMensagemRetorno(string value );
-        public IEnumerable<MDFeEncerramentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MDFeEncerramentoDTO> GetAllByUserId(int value );
+        public IEnumerable<MDFeEncerramentoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -29,27 +29,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByFeedbackId(int value );
         public bool ExistsByMovimentoEstoqueId(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_FeedbackMovEstoqueDTO FirstById(int value );
         public T_FeedbackMovEstoqueDTO FirstByFeedbackId(int value );
         public T_FeedbackMovEstoqueDTO FirstByMovimentoEstoqueId(int value );
-        public T_FeedbackMovEstoqueDTO FirstByOperationalEntityId(string value );
         public T_FeedbackMovEstoqueDTO FirstByTenantID(int value );
         public T_FeedbackMovEstoqueDTO FirstByDeleted(bool value );
         public T_FeedbackMovEstoqueDTO FirstByChanged(DateTime value );
         public T_FeedbackMovEstoqueDTO FirstByUserId(int value );
+        public T_FeedbackMovEstoqueDTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllById(int value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByFeedbackId(int value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByMovimentoEstoqueId(int value );
-        public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByTenantID(int value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByUserId(int value );
+        public IEnumerable<T_FeedbackMovEstoqueDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

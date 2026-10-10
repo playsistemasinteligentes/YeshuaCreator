@@ -31,11 +31,11 @@
             public const ulong TRA_FONE = 1UL << 8;
             public const ulong TRA_ID_INTEGRACAO = 1UL << 9;
             public const ulong TRA_ID_INTEGRACAO_ERP = 1UL << 10;
-            public const ulong OperationalEntityId = 1UL << 11;
-            public const ulong TenantID = 1UL << 12;
-            public const ulong Deleted = 1UL << 13;
-            public const ulong Changed = 1UL << 14;
-            public const ulong UserId = 1UL << 15;
+            public const ulong TenantID = 1UL << 11;
+            public const ulong Deleted = 1UL << 12;
+            public const ulong Changed = 1UL << 13;
+            public const ulong UserId = 1UL << 14;
+            public const ulong OperationalEntityId = 1UL << 15;
         }
 
         public static class TransportadoraOperationalFields
@@ -51,11 +51,11 @@
             public const Dominio.Operational.OperationalDataClassification TRA_FONE = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification TRA_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TRA_ID_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class TransportadoraDecorator : ITransportadoraEntity
@@ -246,7 +246,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -303,6 +302,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

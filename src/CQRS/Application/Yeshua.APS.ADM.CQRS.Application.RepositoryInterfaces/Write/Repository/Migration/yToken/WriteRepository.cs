@@ -31,9 +31,9 @@ namespace IRepository.Write
         void UpdateLastUsedAt(int id, DateTime value);
         void UpdateTenantID(int id, int value);
         void UpdateUserId(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

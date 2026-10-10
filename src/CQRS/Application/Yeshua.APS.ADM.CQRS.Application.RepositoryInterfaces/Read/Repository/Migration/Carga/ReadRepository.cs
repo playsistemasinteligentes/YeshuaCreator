@@ -66,11 +66,11 @@ namespace IRepository.Read
         public bool ExistsByCAR_DATA_AGENCIAMENTO(DateTime value );
         public bool ExistsByTURN_ID(string value );
         public bool ExistsByTURM_ID(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CargaDTO FirstById(int value );
         public CargaDTO FirstByCAR_ID(string value );
         public CargaDTO FirstByCAR_PREVISAO_MATERIA_PRIMA(DateTime value );
@@ -112,11 +112,11 @@ namespace IRepository.Read
         public CargaDTO FirstByCAR_DATA_AGENCIAMENTO(DateTime value );
         public CargaDTO FirstByTURN_ID(string value );
         public CargaDTO FirstByTURM_ID(string value );
-        public CargaDTO FirstByOperationalEntityId(string value );
         public CargaDTO FirstByTenantID(int value );
         public CargaDTO FirstByDeleted(bool value );
         public CargaDTO FirstByChanged(DateTime value );
         public CargaDTO FirstByUserId(int value );
+        public CargaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CargaDTO> GetAllById(int value );
         public IEnumerable<CargaDTO> GetAllByCAR_ID(string value );
         public IEnumerable<CargaDTO> GetAllByCAR_PREVISAO_MATERIA_PRIMA(DateTime value );
@@ -158,11 +158,11 @@ namespace IRepository.Read
         public IEnumerable<CargaDTO> GetAllByCAR_DATA_AGENCIAMENTO(DateTime value );
         public IEnumerable<CargaDTO> GetAllByTURN_ID(string value );
         public IEnumerable<CargaDTO> GetAllByTURM_ID(string value );
-        public IEnumerable<CargaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CargaDTO> GetAllByTenantID(int value );
         public IEnumerable<CargaDTO> GetAllByDeleted(bool value );
         public IEnumerable<CargaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CargaDTO> GetAllByUserId(int value );
+        public IEnumerable<CargaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

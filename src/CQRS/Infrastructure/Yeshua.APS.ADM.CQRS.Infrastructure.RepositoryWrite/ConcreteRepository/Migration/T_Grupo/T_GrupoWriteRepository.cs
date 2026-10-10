@@ -66,11 +66,6 @@ namespace Input.Repository.T_Grupo
             var query = _query.UpdateGRU_DESCRICAO(gru_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int gru_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(gru_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int gru_id, int value)
         {
             var query = _query.UpdateTenantID(gru_id, value);
@@ -89,6 +84,11 @@ namespace Input.Repository.T_Grupo
         public void UpdateUserId(int gru_id, int value)
         {
             var query = _query.UpdateUserId(gru_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int gru_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(gru_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

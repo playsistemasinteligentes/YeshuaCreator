@@ -33,11 +33,11 @@ namespace Repositorio.Outputs
     public string per_id { get; set; } = string.Empty;
     public string dom_empresa { get; set; } = string.Empty;
     public string dom_filial { get; set; } = string.Empty;
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

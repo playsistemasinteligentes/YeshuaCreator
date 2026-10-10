@@ -40,11 +40,11 @@ namespace IRepository.Read
         public bool ExistsByEnviadoEmUtc(DateTime value );
         public bool ExistsByAutorizadoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MDFeTentativaEmissaoDTO FirstById(int value );
         public MDFeTentativaEmissaoDTO FirstByMDFeSolicitacaoFiscalId(int value );
         public MDFeTentativaEmissaoDTO FirstByChaveAcesso(string value );
@@ -60,11 +60,11 @@ namespace IRepository.Read
         public MDFeTentativaEmissaoDTO FirstByEnviadoEmUtc(DateTime value );
         public MDFeTentativaEmissaoDTO FirstByAutorizadoEmUtc(DateTime value );
         public MDFeTentativaEmissaoDTO FirstByStatus(int value );
-        public MDFeTentativaEmissaoDTO FirstByOperationalEntityId(string value );
         public MDFeTentativaEmissaoDTO FirstByTenantID(int value );
         public MDFeTentativaEmissaoDTO FirstByDeleted(bool value );
         public MDFeTentativaEmissaoDTO FirstByChanged(DateTime value );
         public MDFeTentativaEmissaoDTO FirstByUserId(int value );
+        public MDFeTentativaEmissaoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllById(int value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByMDFeSolicitacaoFiscalId(int value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByChaveAcesso(string value );
@@ -80,11 +80,11 @@ namespace IRepository.Read
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByEnviadoEmUtc(DateTime value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByAutorizadoEmUtc(DateTime value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByStatus(int value );
-        public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByUserId(int value );
+        public IEnumerable<MDFeTentativaEmissaoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

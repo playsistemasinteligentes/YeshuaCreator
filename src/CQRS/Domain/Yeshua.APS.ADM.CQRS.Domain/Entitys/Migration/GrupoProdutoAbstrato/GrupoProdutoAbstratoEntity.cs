@@ -66,11 +66,11 @@
     public Decimal? GRP_PERCENTUAL_PERDA_MEDIA { get; set; }
     public int? GRP_FILTRA_SEQ_TRANS { get; set; }
     public string? GRP_IMG_CAIXA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal GrupoProdutoAbstratoEntity(string grp_id, string grp_descricao, int? tem_id, Decimal? grp_tipo, string? grp_pap_onda, Decimal? grp_pap_gramatura, Decimal? grp_pap_altura, string? grp_pap_nome_comercial, string? grp_ativo, DateTime? grp_dt_criacao, string? grp_papel1, string? grp_papel2, string? grp_papel3, string? grp_papel4, string? grp_papel5, string? grp_id_integracao, string? grp_id_integracao_erp, int? grp_type, Decimal? grp_performance, Decimal? grp_performance_metro_linear_por_segundo, string? grp_resina, string? grp_endurecedor_miolo, int vin_id, Decimal? grp_coluna_de, Decimal? grp_coluna_ate, Decimal? grp_crush, string? grp_id_familia, Decimal? grp_refile_largura, Decimal? grp_refile_comprimento, string? grp_tipo_lap, string? grp_lap_prolongado, Decimal? grp_tamanho_lap_ond_simples, Decimal? grp_tamanho_lap_ond_dupla, Decimal? grp_tamanho_lap_prolongado_ond_simples, Decimal? grp_tamanho_lap_prolongado_ond_dupla, string? grp_fefco, int? grp_tolerancia_dimencao_chapa_de, int? grp_tolerancia_dimencao_chapa_ate, string? grp_prefixo_id_produto, Decimal? grp_coluna_caixa, Decimal? grp_coluna_chapa, Decimal? grp_mullen, int? grp_tendencia_tolerancia_pedido, Decimal? grp_percentual_perda_media, int? grp_filtra_seq_trans, string? grp_img_caixa ){
  GRP_ID = grp_id; 
@@ -119,9 +119,9 @@
  GRP_PERCENTUAL_PERDA_MEDIA = grp_percentual_perda_media; 
  GRP_FILTRA_SEQ_TRANS = grp_filtra_seq_trans; 
  GRP_IMG_CAIXA = grp_img_caixa; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

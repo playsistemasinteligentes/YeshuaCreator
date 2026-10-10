@@ -23,11 +23,11 @@
     Decimal? TT_ESPECIFICACAO { get; set; }
     string? TT_ORIGEM_ESPECIFICACAO { get; set; }
     string? TT_IMPRIME_NO_LAUDO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     int TT_ID { get; set; }
     string TT_NOME { get; set; }
     string TT_DESC { get; set; }

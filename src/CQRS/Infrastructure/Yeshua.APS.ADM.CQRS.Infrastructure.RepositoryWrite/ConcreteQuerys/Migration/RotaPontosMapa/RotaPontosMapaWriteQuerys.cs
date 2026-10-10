@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRotaPontosMapaQuery(IRotaPontosMapaEntity RotaPontosMapa)
         {
-            this.Query = $@" INSERT INTO [RotaPontosMapa] ([ROT_ID], [PON_ID_DESTINO], [PON_ID_ORIGEM], [ROT_CUSTO_TOTAL], [PON_ID_ROTEIRO], [ROT_ORDEM_ROTEIRO], [ROT_TIPO], [ROT_DISTANCIA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ROT_ID, @PON_ID_DESTINO, @PON_ID_ORIGEM, @ROT_CUSTO_TOTAL, @PON_ID_ROTEIRO, @ROT_ORDEM_ROTEIRO, @ROT_TIPO, @ROT_DISTANCIA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RotaPontosMapa] ([ROT_ID], [PON_ID_DESTINO], [PON_ID_ORIGEM], [ROT_CUSTO_TOTAL], [PON_ID_ROTEIRO], [ROT_ORDEM_ROTEIRO], [ROT_TIPO], [ROT_DISTANCIA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@ROT_ID, @PON_ID_DESTINO, @PON_ID_ORIGEM, @ROT_CUSTO_TOTAL, @PON_ID_ROTEIRO, @ROT_ORDEM_ROTEIRO, @ROT_TIPO, @ROT_DISTANCIA, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 ROT_ID = RotaPontosMapa.ROT_ID,
@@ -41,11 +41,11 @@ namespace Query.Write
                 ROT_ORDEM_ROTEIRO = RotaPontosMapa.ROT_ORDEM_ROTEIRO,
                 ROT_TIPO = RotaPontosMapa.ROT_TIPO,
                 ROT_DISTANCIA = RotaPontosMapa.ROT_DISTANCIA,
-                OperationalEntityId = RotaPontosMapa.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = RotaPontosMapa.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -148,16 +148,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [RotaPontosMapa] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [RotaPontosMapa] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -194,6 +184,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

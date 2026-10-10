@@ -77,11 +77,11 @@
             public const ulong TAR_DATA_FINAL = 1UL << 54;
             public const ulong TAR_APROVADO = 1UL << 55;
             public const ulong TAR_TEMPO_PRODUZINDO = 1UL << 56;
-            public const ulong OperationalEntityId = 1UL << 57;
-            public const ulong TenantID = 1UL << 58;
-            public const ulong Deleted = 1UL << 59;
-            public const ulong Changed = 1UL << 60;
-            public const ulong UserId = 1UL << 61;
+            public const ulong TenantID = 1UL << 57;
+            public const ulong Deleted = 1UL << 58;
+            public const ulong Changed = 1UL << 59;
+            public const ulong UserId = 1UL << 60;
+            public const ulong OperationalEntityId = 1UL << 61;
         }
 
         public static class TargetProdutoOperationalFields
@@ -143,11 +143,11 @@
             public const Dominio.Operational.OperationalDataClassification TAR_DATA_FINAL = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TAR_APROVADO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TAR_TEMPO_PRODUZINDO = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class TargetProdutoDecorator : ITargetProdutoEntity
@@ -982,7 +982,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1039,6 +1038,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

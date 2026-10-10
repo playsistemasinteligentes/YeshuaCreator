@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByVAR_DESCRICAO(string value );
         public bool ExistsByCON_ID(int value );
         public bool ExistsByVAR_MODO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public VariavelDTO FirstById(int value );
         public VariavelDTO FirstByVAR_ID(int value );
         public VariavelDTO FirstByVAR_DESCRICAO(string value );
         public VariavelDTO FirstByCON_ID(int value );
         public VariavelDTO FirstByVAR_MODO(int value );
-        public VariavelDTO FirstByOperationalEntityId(string value );
         public VariavelDTO FirstByTenantID(int value );
         public VariavelDTO FirstByDeleted(bool value );
         public VariavelDTO FirstByChanged(DateTime value );
         public VariavelDTO FirstByUserId(int value );
+        public VariavelDTO FirstByOperationalEntityId(string value );
         public IEnumerable<VariavelDTO> GetAllById(int value );
         public IEnumerable<VariavelDTO> GetAllByVAR_ID(int value );
         public IEnumerable<VariavelDTO> GetAllByVAR_DESCRICAO(string value );
         public IEnumerable<VariavelDTO> GetAllByCON_ID(int value );
         public IEnumerable<VariavelDTO> GetAllByVAR_MODO(int value );
-        public IEnumerable<VariavelDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VariavelDTO> GetAllByTenantID(int value );
         public IEnumerable<VariavelDTO> GetAllByDeleted(bool value );
         public IEnumerable<VariavelDTO> GetAllByChanged(DateTime value );
         public IEnumerable<VariavelDTO> GetAllByUserId(int value );
+        public IEnumerable<VariavelDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

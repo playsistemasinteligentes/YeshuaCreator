@@ -31,11 +31,11 @@ namespace IQuery.Write
         QueryModel UpdateDIM_ID(int ind_id, string value);
         QueryModel UpdateDOM_EMPRESA(int ind_id, string value);
         QueryModel UpdateDOM_FILIAL(int ind_id, string value);
-        QueryModel UpdateOperationalEntityId(int ind_id, string value);
         QueryModel UpdateTenantID(int ind_id, int value);
         QueryModel UpdateDeleted(int ind_id, bool value);
         QueryModel UpdateChanged(int ind_id, DateTime value);
         QueryModel UpdateUserId(int ind_id, int value);
+        QueryModel UpdateOperationalEntityId(int ind_id, string value);
         public QueryModel DeleteT_IndicadoresQuery(IT_IndicadoresEntity T_Indicadores);
     }
 }

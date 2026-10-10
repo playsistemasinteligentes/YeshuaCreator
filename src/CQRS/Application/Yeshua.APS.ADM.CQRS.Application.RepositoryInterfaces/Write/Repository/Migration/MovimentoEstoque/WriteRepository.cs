@@ -69,11 +69,11 @@ namespace IRepository.Write
         void UpdateMOV_GRUPO_CONTABIL(int id, string value);
         void UpdateFOR_ID(int id, string value);
         void UpdateCLI_ID(int id, string value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

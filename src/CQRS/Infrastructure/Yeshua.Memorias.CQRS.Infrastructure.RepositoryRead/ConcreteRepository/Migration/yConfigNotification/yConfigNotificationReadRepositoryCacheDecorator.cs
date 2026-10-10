@@ -114,11 +114,6 @@ namespace Read.Repository
                 return _inner.ExistsByEmailPassword(value );
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-                return _inner.ExistsByOperationalEntityId(value );
-        }
-
         public bool ExistsByDeleted(bool value )
         {
                 return _inner.ExistsByDeleted(value );
@@ -132,6 +127,11 @@ namespace Read.Repository
         public bool ExistsByUserId(int value )
         {
                 return _inner.ExistsByUserId(value );
+        }
+
+        public bool ExistsByOperationalEntityId(string value )
+        {
+                return _inner.ExistsByOperationalEntityId(value );
         }
 
         public yConfigNotificationDTO FirstById(int value )
@@ -164,11 +164,6 @@ namespace Read.Repository
                 return _inner.FirstByEmailPassword(value );
         }
 
-        public yConfigNotificationDTO FirstByOperationalEntityId(string value )
-        {
-                return _inner.FirstByOperationalEntityId(value );
-        }
-
         public yConfigNotificationDTO FirstByDeleted(bool value )
         {
                 return _inner.FirstByDeleted(value );
@@ -182,6 +177,11 @@ namespace Read.Repository
         public yConfigNotificationDTO FirstByUserId(int value )
         {
                 return _inner.FirstByUserId(value );
+        }
+
+        public yConfigNotificationDTO FirstByOperationalEntityId(string value )
+        {
+                return _inner.FirstByOperationalEntityId(value );
         }
 
         public IEnumerable<yConfigNotificationDTO> GetAllById(int value )
@@ -214,11 +214,6 @@ namespace Read.Repository
                 return _inner.GetAllByEmailPassword(value );
         }
 
-        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value )
-        {
-                return _inner.GetAllByOperationalEntityId(value );
-        }
-
         public IEnumerable<yConfigNotificationDTO> GetAllByDeleted(bool value )
         {
                 return _inner.GetAllByDeleted(value );
@@ -232,6 +227,11 @@ namespace Read.Repository
         public IEnumerable<yConfigNotificationDTO> GetAllByUserId(int value )
         {
                 return _inner.GetAllByUserId(value );
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value )
+        {
+                return _inner.GetAllByOperationalEntityId(value );
         }
 
     }

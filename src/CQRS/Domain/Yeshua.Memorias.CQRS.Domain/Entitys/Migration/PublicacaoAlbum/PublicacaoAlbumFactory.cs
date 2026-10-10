@@ -34,13 +34,14 @@
                             }
 
                             public IPublicacaoAlbumEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status, ulong? trackingMask = null )
                             {
                             var entity = new PublicacaoAlbumEntity(id, albumid, correlationid, manifeststoragekey, videostoragekey, youtubevideoid, youtubeurl, mensagem, solicitadaemutc, publicadaemutc, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PublicacaoAlbum", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PublicacaoAlbumDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PublicacaoAlbum", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PublicacaoAlbumDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

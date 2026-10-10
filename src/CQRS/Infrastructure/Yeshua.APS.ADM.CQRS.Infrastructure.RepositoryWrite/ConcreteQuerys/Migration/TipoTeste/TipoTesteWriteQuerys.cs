@@ -30,17 +30,17 @@ namespace Query.Write
         }
         public QueryModel InserirTipoTesteQuery(ITipoTesteEntity TipoTeste)
         {
-            this.Query = $@" INSERT INTO [TipoTeste] ([TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE]) OUTPUT INSERTED.[TT_ID] VALUES(@TT_ESPECIFICACAO, @TT_ORIGEM_ESPECIFICACAO, @TT_IMPRIME_NO_LAUDO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @TT_NOME, @TT_DESC, @TT_TOL_MAIS, @TT_TOL_MENOS, @TT_NORMA, @TT_INICIO_PROCESSO, @TA_ID, @UNI_ID, @TT_N_AMOSTRAS_P_TESTE, @TT_MAX_DEF_CRITICO, @TT_MAX_DEF_GRAVE) ";
+            this.Query = $@" INSERT INTO [TipoTeste] ([TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE]) OUTPUT INSERTED.[TT_ID] VALUES(@TT_ESPECIFICACAO, @TT_ORIGEM_ESPECIFICACAO, @TT_IMPRIME_NO_LAUDO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @TT_NOME, @TT_DESC, @TT_TOL_MAIS, @TT_TOL_MENOS, @TT_NORMA, @TT_INICIO_PROCESSO, @TA_ID, @UNI_ID, @TT_N_AMOSTRAS_P_TESTE, @TT_MAX_DEF_CRITICO, @TT_MAX_DEF_GRAVE) ";
             this.Parameters = new
             {
                 TT_ESPECIFICACAO = TipoTeste.TT_ESPECIFICACAO,
                 TT_ORIGEM_ESPECIFICACAO = TipoTeste.TT_ORIGEM_ESPECIFICACAO,
                 TT_IMPRIME_NO_LAUDO = TipoTeste.TT_IMPRIME_NO_LAUDO,
-                OperationalEntityId = TipoTeste.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = TipoTeste.OperationalEntityId,
                 TT_NOME = TipoTeste.TT_NOME,
                 TT_DESC = TipoTeste.TT_DESC,
                 TT_TOL_MAIS = TipoTeste.TT_TOL_MAIS,
@@ -110,16 +110,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int tt_id, string value)
-        {
-            this.Query = $@" UPDATE [TipoTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [TT_ID] = @TT_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                TT_ID = tt_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int tt_id, int value)
         {
             this.Query = $@" UPDATE [TipoTeste] SET [TenantID] = @TenantID WHERE [TT_ID] = @TT_ID ";
@@ -156,6 +146,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                TT_ID = tt_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int tt_id, string value)
+        {
+            this.Query = $@" UPDATE [TipoTeste] SET [OperationalEntityId] = @OperationalEntityId WHERE [TT_ID] = @TT_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 TT_ID = tt_id,
             };
             return new QueryModel(this.Query, this.Parameters);

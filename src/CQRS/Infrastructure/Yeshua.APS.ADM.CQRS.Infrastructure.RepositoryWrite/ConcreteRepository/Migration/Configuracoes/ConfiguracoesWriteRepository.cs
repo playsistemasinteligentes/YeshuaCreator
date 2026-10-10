@@ -51,11 +51,6 @@ namespace Input.Repository.Configuracoes
             var query = _query.DeleteConfiguracoesQuery(Configuracoes);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int con_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(con_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int con_id, int value)
         {
             var query = _query.UpdateTenantID(con_id, value);
@@ -74,6 +69,11 @@ namespace Input.Repository.Configuracoes
         public void UpdateUserId(int con_id, int value)
         {
             var query = _query.UpdateUserId(con_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int con_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(con_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

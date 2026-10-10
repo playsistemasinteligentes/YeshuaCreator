@@ -17,11 +17,11 @@ namespace Command.Write
         public int VIS_PLANID { get; set; }
         public string? VIS_FORMULA { get; set; }
         public int CAB_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Visoes";
  public string? OperationalRecordId => OperationalEntityId;
     }

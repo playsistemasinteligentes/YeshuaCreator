@@ -30,10 +30,28 @@
             public const ulong CreatedAt = 1UL << 7;
             public const ulong CompletedAt = 1UL << 8;
             public const ulong TenantID = 1UL << 9;
-            public const ulong OperationalEntityId = 1UL << 10;
-            public const ulong Deleted = 1UL << 11;
-            public const ulong Changed = 1UL << 12;
-            public const ulong UserId = 1UL << 13;
+            public const ulong Deleted = 1UL << 10;
+            public const ulong Changed = 1UL << 11;
+            public const ulong UserId = 1UL << 12;
+            public const ulong OperationalEntityId = 1UL << 13;
+        }
+
+        public static class yFileUploadOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Type = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FilePath = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FileSize = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntityType = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CreatedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CompletedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class yFileUploadDecorator : IyFileUploadEntity
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yFileUploadDecorator(IyFileUploadEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.Type = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.Type) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.Type, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.FilePath = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.FilePath) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "FilePath", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "FilePath", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.FilePath, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.FileSize = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.FileSize) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "FileSize", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "FileSize", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.FileSize, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.EntityType = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.EntityType) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.EntityType, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.EntityId = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.EntityId) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.EntityId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.CreatedAt = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.CreatedAt) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.CreatedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +210,7 @@
                                             {
                                                 _inner.CompletedAt = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.CompletedAt) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "CompletedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "CompletedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.CompletedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -198,11 +224,10 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public bool? Deleted
                                     {
@@ -213,7 +238,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +252,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,10 +266,11 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & yFileUploadTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("yFileUpload", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yFileUpload", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yFileUploadOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

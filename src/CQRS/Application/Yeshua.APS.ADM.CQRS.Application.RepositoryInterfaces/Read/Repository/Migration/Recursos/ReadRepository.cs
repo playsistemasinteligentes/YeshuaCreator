@@ -30,31 +30,31 @@ namespace IRepository.Read
         public bool ExistsByCAL_ID(int value );
         public bool ExistsByREC_CONTROL_IP(string value );
         public bool ExistsByGRE_ID(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public RecursosDTO FirstByREC_ID(string value );
         public RecursosDTO FirstByREC_DESCRICAO(string value );
         public RecursosDTO FirstByCAL_ID(int value );
         public RecursosDTO FirstByREC_CONTROL_IP(string value );
         public RecursosDTO FirstByGRE_ID(string value );
-        public RecursosDTO FirstByOperationalEntityId(string value );
         public RecursosDTO FirstByTenantID(int value );
         public RecursosDTO FirstByDeleted(bool value );
         public RecursosDTO FirstByChanged(DateTime value );
         public RecursosDTO FirstByUserId(int value );
+        public RecursosDTO FirstByOperationalEntityId(string value );
         public IEnumerable<RecursosDTO> GetAllByREC_ID(string value );
         public IEnumerable<RecursosDTO> GetAllByREC_DESCRICAO(string value );
         public IEnumerable<RecursosDTO> GetAllByCAL_ID(int value );
         public IEnumerable<RecursosDTO> GetAllByREC_CONTROL_IP(string value );
         public IEnumerable<RecursosDTO> GetAllByGRE_ID(string value );
-        public IEnumerable<RecursosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RecursosDTO> GetAllByTenantID(int value );
         public IEnumerable<RecursosDTO> GetAllByDeleted(bool value );
         public IEnumerable<RecursosDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RecursosDTO> GetAllByUserId(int value );
+        public IEnumerable<RecursosDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

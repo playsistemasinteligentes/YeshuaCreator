@@ -26,11 +26,11 @@ namespace IRepository.Write
         void UpdateTMP_TIPO_CARGA(int id, string value);
         void UpdateTMP_TEMPO_MEDIO_UNITARIO(int id, Decimal value);
         void UpdateCLI_ID(int id, string value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

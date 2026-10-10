@@ -32,11 +32,11 @@ namespace IRepository.Read
         public bool ExistsByTURM_ID(string value );
         public bool ExistsByUSE_ATIVO(int value );
         public bool ExistsByUSE_CODERP(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public UsuarioDTO FirstByUSE_ID(int value );
         public UsuarioDTO FirstByUSE_NOME(string value );
         public UsuarioDTO FirstByUSE_EMAIL(string value );
@@ -44,11 +44,11 @@ namespace IRepository.Read
         public UsuarioDTO FirstByTURM_ID(string value );
         public UsuarioDTO FirstByUSE_ATIVO(int value );
         public UsuarioDTO FirstByUSE_CODERP(string value );
-        public UsuarioDTO FirstByOperationalEntityId(string value );
         public UsuarioDTO FirstByTenantID(int value );
         public UsuarioDTO FirstByDeleted(bool value );
         public UsuarioDTO FirstByChanged(DateTime value );
         public UsuarioDTO FirstByUserId(int value );
+        public UsuarioDTO FirstByOperationalEntityId(string value );
         public IEnumerable<UsuarioDTO> GetAllByUSE_ID(int value );
         public IEnumerable<UsuarioDTO> GetAllByUSE_NOME(string value );
         public IEnumerable<UsuarioDTO> GetAllByUSE_EMAIL(string value );
@@ -56,11 +56,11 @@ namespace IRepository.Read
         public IEnumerable<UsuarioDTO> GetAllByTURM_ID(string value );
         public IEnumerable<UsuarioDTO> GetAllByUSE_ATIVO(int value );
         public IEnumerable<UsuarioDTO> GetAllByUSE_CODERP(string value );
-        public IEnumerable<UsuarioDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<UsuarioDTO> GetAllByTenantID(int value );
         public IEnumerable<UsuarioDTO> GetAllByDeleted(bool value );
         public IEnumerable<UsuarioDTO> GetAllByChanged(DateTime value );
         public IEnumerable<UsuarioDTO> GetAllByUserId(int value );
+        public IEnumerable<UsuarioDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

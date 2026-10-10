@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItensOrcamentoQuery(IItensOrcamentoEntity ItensOrcamento)
         {
-            this.Query = $@" INSERT INTO [ItensOrcamento] ([ITO_ID], [ORC_ID], [TIP_ID], [PRO_ID], [ITO_OBS], [ITO_QUANTIDADE], [ITO_CUSTO], [ITO_MARGEM], [ITO_VALOR_UNITARIO], [ITO_VERSSAO_CUSTO], [ITO_STATUS], [ITO_ERP_CUSTOS_FIXOS], [ITO_ERP_CUSTOS_VARIAVEIS], [ITO_ERP_DESPESAS_VAR_VENDA], [ITO_ERP_IMPOSTOS], [GRP_ID_COMPOSICAO], [ITO_LARGURA], [ITO_COMPRIMENTO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ITO_ID, @ORC_ID, @TIP_ID, @PRO_ID, @ITO_OBS, @ITO_QUANTIDADE, @ITO_CUSTO, @ITO_MARGEM, @ITO_VALOR_UNITARIO, @ITO_VERSSAO_CUSTO, @ITO_STATUS, @ITO_ERP_CUSTOS_FIXOS, @ITO_ERP_CUSTOS_VARIAVEIS, @ITO_ERP_DESPESAS_VAR_VENDA, @ITO_ERP_IMPOSTOS, @GRP_ID_COMPOSICAO, @ITO_LARGURA, @ITO_COMPRIMENTO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItensOrcamento] ([ITO_ID], [ORC_ID], [TIP_ID], [PRO_ID], [ITO_OBS], [ITO_QUANTIDADE], [ITO_CUSTO], [ITO_MARGEM], [ITO_VALOR_UNITARIO], [ITO_VERSSAO_CUSTO], [ITO_STATUS], [ITO_ERP_CUSTOS_FIXOS], [ITO_ERP_CUSTOS_VARIAVEIS], [ITO_ERP_DESPESAS_VAR_VENDA], [ITO_ERP_IMPOSTOS], [GRP_ID_COMPOSICAO], [ITO_LARGURA], [ITO_COMPRIMENTO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@ITO_ID, @ORC_ID, @TIP_ID, @PRO_ID, @ITO_OBS, @ITO_QUANTIDADE, @ITO_CUSTO, @ITO_MARGEM, @ITO_VALOR_UNITARIO, @ITO_VERSSAO_CUSTO, @ITO_STATUS, @ITO_ERP_CUSTOS_FIXOS, @ITO_ERP_CUSTOS_VARIAVEIS, @ITO_ERP_DESPESAS_VAR_VENDA, @ITO_ERP_IMPOSTOS, @GRP_ID_COMPOSICAO, @ITO_LARGURA, @ITO_COMPRIMENTO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 ITO_ID = ItensOrcamento.ITO_ID,
@@ -51,11 +51,11 @@ namespace Query.Write
                 GRP_ID_COMPOSICAO = ItensOrcamento.GRP_ID_COMPOSICAO,
                 ITO_LARGURA = ItensOrcamento.ITO_LARGURA,
                 ITO_COMPRIMENTO = ItensOrcamento.ITO_COMPRIMENTO,
-                OperationalEntityId = ItensOrcamento.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = ItensOrcamento.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -268,16 +268,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [ItensOrcamento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [ItensOrcamento] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -314,6 +304,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ItensOrcamento] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -86,11 +86,6 @@ namespace Input.Repository.Mensagem
             var query = _query.UpdateMEN_DATE_TRY_SEND(men_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string men_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(men_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string men_id, int value)
         {
             var query = _query.UpdateTenantID(men_id, value);
@@ -109,6 +104,11 @@ namespace Input.Repository.Mensagem
         public void UpdateUserId(string men_id, int value)
         {
             var query = _query.UpdateUserId(men_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string men_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(men_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

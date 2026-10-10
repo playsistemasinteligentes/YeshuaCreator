@@ -29,11 +29,11 @@
     public DateTime? PublicadoEmUtc { get; set; }
     public string? UltimoErro { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeSaidaMDFeEntity(int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string? outboxmessageid, DateTime? publicadoemutc, string? ultimoerro, int status ){
  Id = id; 
@@ -45,9 +45,9 @@
  PublicadoEmUtc = publicadoemutc.HasValue && publicadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : publicadoemutc; 
  UltimoErro = ultimoerro; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

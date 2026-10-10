@@ -32,11 +32,11 @@ namespace IRepository.Read
         public bool ExistsByValidoDe(DateTime value );
         public bool ExistsByValidoAte(DateTime value );
         public bool ExistsByAtivo(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsBySenhaStorageKey(string value );
         public CertificadoDigitalDTO FirstById(int value );
         public CertificadoDigitalDTO FirstByApelido(string value );
@@ -46,11 +46,11 @@ namespace IRepository.Read
         public CertificadoDigitalDTO FirstByValidoDe(DateTime value );
         public CertificadoDigitalDTO FirstByValidoAte(DateTime value );
         public CertificadoDigitalDTO FirstByAtivo(int value );
-        public CertificadoDigitalDTO FirstByOperationalEntityId(string value );
         public CertificadoDigitalDTO FirstByTenantID(int value );
         public CertificadoDigitalDTO FirstByDeleted(bool value );
         public CertificadoDigitalDTO FirstByChanged(DateTime value );
         public CertificadoDigitalDTO FirstByUserId(int value );
+        public CertificadoDigitalDTO FirstByOperationalEntityId(string value );
         public CertificadoDigitalDTO FirstBySenhaStorageKey(string value );
         public IEnumerable<CertificadoDigitalDTO> GetAllById(int value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByApelido(string value );
@@ -60,11 +60,11 @@ namespace IRepository.Read
         public IEnumerable<CertificadoDigitalDTO> GetAllByValidoDe(DateTime value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByValidoAte(DateTime value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByAtivo(int value );
-        public IEnumerable<CertificadoDigitalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByTenantID(int value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByDeleted(bool value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CertificadoDigitalDTO> GetAllByUserId(int value );
+        public IEnumerable<CertificadoDigitalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CertificadoDigitalDTO> GetAllBySenhaStorageKey(string value );
     }
 }

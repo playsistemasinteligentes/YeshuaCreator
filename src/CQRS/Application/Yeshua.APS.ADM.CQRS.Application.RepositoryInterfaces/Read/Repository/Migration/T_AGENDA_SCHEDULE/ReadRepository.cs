@@ -41,11 +41,11 @@ namespace IRepository.Read
         public bool ExistsByAGE_PARAMETROS(string value );
         public bool ExistsByAGE_EXCECAO(string value );
         public bool ExistsByAGE_DESCRICAO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_AGENDA_SCHEDULEDTO FirstById(int value );
         public T_AGENDA_SCHEDULEDTO FirstByAGE_ID(int value );
         public T_AGENDA_SCHEDULEDTO FirstByAGE_DATA_ESPECIFICA(DateTime value );
@@ -63,11 +63,11 @@ namespace IRepository.Read
         public T_AGENDA_SCHEDULEDTO FirstByAGE_PARAMETROS(string value );
         public T_AGENDA_SCHEDULEDTO FirstByAGE_EXCECAO(string value );
         public T_AGENDA_SCHEDULEDTO FirstByAGE_DESCRICAO(string value );
-        public T_AGENDA_SCHEDULEDTO FirstByOperationalEntityId(string value );
         public T_AGENDA_SCHEDULEDTO FirstByTenantID(int value );
         public T_AGENDA_SCHEDULEDTO FirstByDeleted(bool value );
         public T_AGENDA_SCHEDULEDTO FirstByChanged(DateTime value );
         public T_AGENDA_SCHEDULEDTO FirstByUserId(int value );
+        public T_AGENDA_SCHEDULEDTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllById(int value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByAGE_ID(int value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByAGE_DATA_ESPECIFICA(DateTime value );
@@ -85,11 +85,11 @@ namespace IRepository.Read
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByAGE_PARAMETROS(string value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByAGE_EXCECAO(string value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByAGE_DESCRICAO(string value );
-        public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByTenantID(int value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByUserId(int value );
+        public IEnumerable<T_AGENDA_SCHEDULEDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

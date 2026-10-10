@@ -76,11 +76,6 @@ namespace Input.Repository.TempoSetupOnduladeira
             var query = _query.UpdateTEM_TEMPO(tem_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int tem_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(tem_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int tem_id, int value)
         {
             var query = _query.UpdateTenantID(tem_id, value);
@@ -99,6 +94,11 @@ namespace Input.Repository.TempoSetupOnduladeira
         public void UpdateUserId(int tem_id, int value)
         {
             var query = _query.UpdateUserId(tem_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int tem_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(tem_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

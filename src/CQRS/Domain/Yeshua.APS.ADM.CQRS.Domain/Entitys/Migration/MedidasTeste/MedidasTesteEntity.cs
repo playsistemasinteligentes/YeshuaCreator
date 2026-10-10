@@ -26,11 +26,11 @@
     public Decimal? MDT_VALOR_ESPERADO { get; set; }
     public Decimal? MDT_ENCONTRADO { get; set; }
     public string? UNI_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MedidasTesteEntity(int? id, int mdt_id, string? mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string? uni_id ){
  Id = id; 
@@ -39,9 +39,9 @@
  MDT_VALOR_ESPERADO = mdt_valor_esperado; 
  MDT_ENCONTRADO = mdt_encontrado; 
  UNI_ID = uni_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.FotoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteFoto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteFotoReceiver), commandName: "Command.Write.FotoCrudCommand");
-                 var foto = new FotoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.StorageKey, c.NomeOriginal, c.ContentType, c.HashArquivo, c.CapturadaEmUtc, c.Largura, c.Altura, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Foto", "DeleteFoto", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.FotoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteFoto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteFotoReceiver), commandName: "Command.Write.FotoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var foto = new FotoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.StorageKey, c.NomeOriginal, c.ContentType, c.HashArquivo, c.CapturadaEmUtc, c.Largura, c.Altura, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", foto.OperationalEntityId);
                  var domainResult = FotoDomainBehavior.Apply(foto, context);
                  if (!domainResult.IsValid)

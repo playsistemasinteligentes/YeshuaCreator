@@ -40,11 +40,11 @@
     public DateTime? AtualizadoEmUtc { get; set; }
     public DateTime? ConcluidoEmUtc { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ContingenciaFiscalEntity(int? id, int? emissaofiscaltransporteid, int? entradafiscalcontingenciaid, string correlationid, string cargaid, int tiposolicitante, int ambiente, string? emitentedocumento, string? tomadordocumento, string? transportadordocumento, int? quantidadedocumentos, int? quantidadecte, int? quantidademdfe, Decimal? valorcarga, Decimal? pesobruto, string? ultimamensagem, DateTime criadoemutc, DateTime? atualizadoemutc, DateTime? concluidoemutc, int status ){
  Id = id; 
@@ -67,9 +67,9 @@
  AtualizadoEmUtc = atualizadoemutc.HasValue && atualizadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : atualizadoemutc; 
  ConcluidoEmUtc = concluidoemutc.HasValue && concluidoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : concluidoemutc; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -20,11 +20,11 @@ namespace IQuery.Write
         QueryModel UpdateCOR_PERCENTUAL_INI(string cor_id, Decimal value);
         QueryModel UpdateCOR_PERCENTUAL_FIM(string cor_id, Decimal value);
         QueryModel UpdateCOR_DESCRICAO(string cor_id, string value);
-        QueryModel UpdateOperationalEntityId(string cor_id, string value);
         QueryModel UpdateTenantID(string cor_id, int value);
         QueryModel UpdateDeleted(string cor_id, bool value);
         QueryModel UpdateChanged(string cor_id, DateTime value);
         QueryModel UpdateUserId(string cor_id, int value);
+        QueryModel UpdateOperationalEntityId(string cor_id, string value);
         public QueryModel DeleteCorConfiguracaoGraficoQuery(ICorConfiguracaoGraficoEntity CorConfiguracaoGrafico);
     }
 }

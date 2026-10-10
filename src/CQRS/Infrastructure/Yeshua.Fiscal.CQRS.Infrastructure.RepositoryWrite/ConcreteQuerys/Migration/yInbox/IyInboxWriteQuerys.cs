@@ -29,17 +29,17 @@ namespace IQuery.Write
         QueryModel UpdateLastError(int id, string value);
         QueryModel UpdateProcessingAt(int id, DateTime value);
         QueryModel UpdateNextAttemptAt(int id, DateTime value);
-        QueryModel UpdateSagaId(int id, int value);
-        QueryModel UpdateSagaStepId(int id, int value);
-        QueryModel UpdateTenantID(int id, int value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
-        QueryModel UpdateDeleted(int id, bool value);
-        QueryModel UpdateChanged(int id, DateTime value);
-        QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateRootOperationId(int id, string value);
         QueryModel UpdateOperationId(int id, string value);
         QueryModel UpdateExecutionId(int id, string value);
         QueryModel UpdateCausationId(int id, string value);
+        QueryModel UpdateSagaId(int id, int value);
+        QueryModel UpdateSagaStepId(int id, int value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteyInboxQuery(IyInboxEntity yInbox);
     }
 }

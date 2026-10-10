@@ -18,11 +18,11 @@ namespace Command.Read
         public string? PTO_CHAVE { get; set; }
         public string? MAQ_ID { get; set; }
         public string? PTO_COMANDO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "ProtocoloOnduladeira";
  public string? OperationalRecordId => OperationalEntityId;

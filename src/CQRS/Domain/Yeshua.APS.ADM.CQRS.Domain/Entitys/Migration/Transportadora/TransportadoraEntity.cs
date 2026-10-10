@@ -31,11 +31,11 @@
     public string? TRA_FONE { get; set; }
     public string? TRA_ID_INTEGRACAO { get; set; }
     public string? TRA_ID_INTEGRACAO_ERP { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TransportadoraEntity(int? id, string tra_id, string? tra_nome, string? tra_cnpj, string? tra_inscricao_estadual, string? tra_rntrc, string? tra_email, string? tra_responsavel, string? tra_fone, string? tra_id_integracao, string? tra_id_integracao_erp ){
  Id = id; 
@@ -49,9 +49,9 @@
  TRA_FONE = tra_fone; 
  TRA_ID_INTEGRACAO = tra_id_integracao; 
  TRA_ID_INTEGRACAO_ERP = tra_id_integracao_erp; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

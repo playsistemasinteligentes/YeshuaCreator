@@ -27,11 +27,11 @@ namespace Command.Write
         public DateTime LOGS_DATE { get; set; }
         public int USE_ID { get; set; }
         public string? LOGS_ORIGEM { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "LogsDatabase";
  public string? OperationalRecordId => OperationalEntityId;
     }

@@ -86,11 +86,6 @@ namespace Input.Repository.Mapa
             var query = _query.UpdateMAP_ALTURA_ROD(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -109,6 +104,11 @@ namespace Input.Repository.Mapa
         public void UpdateUserId(int id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

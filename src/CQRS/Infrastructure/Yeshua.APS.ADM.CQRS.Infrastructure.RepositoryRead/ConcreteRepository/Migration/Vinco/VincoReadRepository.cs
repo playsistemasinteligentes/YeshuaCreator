@@ -124,14 +124,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public VincoDTO FirstByVIN_ID(int value )
         {
             var query = _query.FirstByVIN_IDQuery(value );
@@ -183,14 +183,6 @@ namespace Read.Repository
         public VincoDTO FirstByVIN_ID_DESLOCAMENTO(string value )
         {
             var query = _query.FirstByVIN_ID_DESLOCAMENTOQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<VincoDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public VincoDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<VincoDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public VincoDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<VincoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<VincoDTO> GetAllByVIN_ID(int value )
         {
             var query = _query.FirstByVIN_IDQuery(value );
@@ -247,14 +247,6 @@ namespace Read.Repository
         public IEnumerable<VincoDTO> GetAllByVIN_ID_DESLOCAMENTO(string value )
         {
             var query = _query.FirstByVIN_ID_DESLOCAMENTOQuery(value );
-
-                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<VincoDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -287,6 +279,14 @@ namespace Read.Repository
         public IEnumerable<VincoDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<VincoDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters).ToList();
                 return result;

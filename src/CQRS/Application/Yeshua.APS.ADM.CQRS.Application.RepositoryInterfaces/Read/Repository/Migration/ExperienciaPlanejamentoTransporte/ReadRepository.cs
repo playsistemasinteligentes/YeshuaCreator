@@ -37,11 +37,11 @@ namespace IRepository.Read
         public bool ExistsByObservacao(string value );
         public bool ExistsByCriadoEm(DateTime value );
         public bool ExistsByCriadoPor(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ExperienciaPlanejamentoTransporteDTO FirstById(int value );
         public ExperienciaPlanejamentoTransporteDTO FirstByTipo(int value );
         public ExperienciaPlanejamentoTransporteDTO FirstByReferencia(string value );
@@ -55,11 +55,11 @@ namespace IRepository.Read
         public ExperienciaPlanejamentoTransporteDTO FirstByObservacao(string value );
         public ExperienciaPlanejamentoTransporteDTO FirstByCriadoEm(DateTime value );
         public ExperienciaPlanejamentoTransporteDTO FirstByCriadoPor(string value );
-        public ExperienciaPlanejamentoTransporteDTO FirstByOperationalEntityId(string value );
         public ExperienciaPlanejamentoTransporteDTO FirstByTenantID(int value );
         public ExperienciaPlanejamentoTransporteDTO FirstByDeleted(bool value );
         public ExperienciaPlanejamentoTransporteDTO FirstByChanged(DateTime value );
         public ExperienciaPlanejamentoTransporteDTO FirstByUserId(int value );
+        public ExperienciaPlanejamentoTransporteDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllById(int value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByTipo(int value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByReferencia(string value );
@@ -73,11 +73,11 @@ namespace IRepository.Read
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByObservacao(string value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByCriadoEm(DateTime value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByCriadoPor(string value );
-        public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByTenantID(int value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByDeleted(bool value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByUserId(int value );
+        public IEnumerable<ExperienciaPlanejamentoTransporteDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

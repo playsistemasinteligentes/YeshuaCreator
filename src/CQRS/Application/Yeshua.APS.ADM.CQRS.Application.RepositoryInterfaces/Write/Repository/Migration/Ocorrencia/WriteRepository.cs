@@ -29,11 +29,11 @@ namespace IRepository.Write
         void UpdateSPR(string oco_id, int value);
         void UpdateOCO_SUB_TIPO(string oco_id, string value);
         void UpdateSUB_ID(string oco_id, string value);
-        void UpdateOperationalEntityId(string oco_id, string value);
         void UpdateTenantID(string oco_id, int value);
         void UpdateDeleted(string oco_id, bool value);
         void UpdateChanged(string oco_id, DateTime value);
         void UpdateUserId(string oco_id, int value);
+        void UpdateOperationalEntityId(string oco_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

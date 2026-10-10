@@ -19,11 +19,11 @@ namespace Command.Write
         public string? LOG_CONTEUDO { get; set; }
         public int LOG_ID { get; set; }
         public DateTime? LOG_EMISSAO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Logs";
  public string? OperationalRecordId => OperationalEntityId;
     }

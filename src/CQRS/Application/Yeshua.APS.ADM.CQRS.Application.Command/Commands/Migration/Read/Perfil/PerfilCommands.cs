@@ -15,11 +15,11 @@ namespace Command.Read
     {
         public int? PER_ID { get; set; }
         public string? PER_NOME { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Perfil";
  public string? OperationalRecordId => OperationalEntityId;

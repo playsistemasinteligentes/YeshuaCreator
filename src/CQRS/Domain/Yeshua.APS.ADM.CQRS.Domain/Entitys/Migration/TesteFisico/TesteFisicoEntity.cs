@@ -36,11 +36,11 @@
     public string? MAQ_ID { get; set; }
     public int? FPR_SEQ_REPETICAO { get; set; }
     public int? FPR_SEQ_TRANFORMACAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TesteFisicoEntity(int? id, int tes_id, int? ite_id, int? usr_id, string? tes_nome_tecnico, int? tes_amostra, string? tes_op, Decimal? tes_valor_numerico, DateTime? tes_valor_data, string? tes_valor_texto, DateTime? tes_emissao, string? ord_id, string? pro_id, string? maq_id, int? fpr_seq_repeticao, int? fpr_seq_tranformacao ){
  Id = id; 
@@ -59,9 +59,9 @@
  MAQ_ID = maq_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  FPR_SEQ_TRANFORMACAO = fpr_seq_tranformacao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

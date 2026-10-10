@@ -33,11 +33,11 @@ namespace IRepository.Read
         public bool ExistsBySPR(int value );
         public bool ExistsByOCO_SUB_TIPO(string value );
         public bool ExistsBySUB_ID(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public OcorrenciaDTO FirstByOCO_ID(string value );
         public OcorrenciaDTO FirstByOCO_DESCRICAO(string value );
         public OcorrenciaDTO FirstByTIP_ID(int value );
@@ -46,11 +46,11 @@ namespace IRepository.Read
         public OcorrenciaDTO FirstBySPR(int value );
         public OcorrenciaDTO FirstByOCO_SUB_TIPO(string value );
         public OcorrenciaDTO FirstBySUB_ID(string value );
-        public OcorrenciaDTO FirstByOperationalEntityId(string value );
         public OcorrenciaDTO FirstByTenantID(int value );
         public OcorrenciaDTO FirstByDeleted(bool value );
         public OcorrenciaDTO FirstByChanged(DateTime value );
         public OcorrenciaDTO FirstByUserId(int value );
+        public OcorrenciaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<OcorrenciaDTO> GetAllByOCO_ID(string value );
         public IEnumerable<OcorrenciaDTO> GetAllByOCO_DESCRICAO(string value );
         public IEnumerable<OcorrenciaDTO> GetAllByTIP_ID(int value );
@@ -59,11 +59,11 @@ namespace IRepository.Read
         public IEnumerable<OcorrenciaDTO> GetAllBySPR(int value );
         public IEnumerable<OcorrenciaDTO> GetAllByOCO_SUB_TIPO(string value );
         public IEnumerable<OcorrenciaDTO> GetAllBySUB_ID(string value );
-        public IEnumerable<OcorrenciaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<OcorrenciaDTO> GetAllByTenantID(int value );
         public IEnumerable<OcorrenciaDTO> GetAllByDeleted(bool value );
         public IEnumerable<OcorrenciaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<OcorrenciaDTO> GetAllByUserId(int value );
+        public IEnumerable<OcorrenciaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

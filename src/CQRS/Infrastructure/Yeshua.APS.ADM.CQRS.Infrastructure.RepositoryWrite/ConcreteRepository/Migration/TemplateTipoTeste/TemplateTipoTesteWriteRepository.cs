@@ -61,11 +61,6 @@ namespace Input.Repository.TemplateTipoTeste
             var query = _query.UpdateTEM_ID(ttt_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int ttt_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(ttt_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int ttt_id, int value)
         {
             var query = _query.UpdateTenantID(ttt_id, value);
@@ -84,6 +79,11 @@ namespace Input.Repository.TemplateTipoTeste
         public void UpdateUserId(int ttt_id, int value)
         {
             var query = _query.UpdateUserId(ttt_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int ttt_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ttt_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

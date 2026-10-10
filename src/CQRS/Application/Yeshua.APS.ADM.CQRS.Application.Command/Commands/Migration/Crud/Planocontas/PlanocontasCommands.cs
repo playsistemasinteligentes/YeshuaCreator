@@ -18,11 +18,11 @@ namespace Command.Write
         public string PLA_DESCRICAO { get; set; }
         public int PLA_TIPO { get; set; }
         public string? PLA_NATUREZA { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Planocontas";
  public string? OperationalRecordId => OperationalEntityId;
     }

@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByPTO_CHAVE(string value );
         public bool ExistsByMAQ_ID(string value );
         public bool ExistsByPTO_COMANDO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ProtocoloOnduladeiraDTO FirstById(int value );
         public ProtocoloOnduladeiraDTO FirstByPTO_ID(string value );
         public ProtocoloOnduladeiraDTO FirstByPTO_CHAVE(string value );
         public ProtocoloOnduladeiraDTO FirstByMAQ_ID(string value );
         public ProtocoloOnduladeiraDTO FirstByPTO_COMANDO(string value );
-        public ProtocoloOnduladeiraDTO FirstByOperationalEntityId(string value );
         public ProtocoloOnduladeiraDTO FirstByTenantID(int value );
         public ProtocoloOnduladeiraDTO FirstByDeleted(bool value );
         public ProtocoloOnduladeiraDTO FirstByChanged(DateTime value );
         public ProtocoloOnduladeiraDTO FirstByUserId(int value );
+        public ProtocoloOnduladeiraDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllById(int value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByPTO_ID(string value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByPTO_CHAVE(string value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByMAQ_ID(string value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByPTO_COMANDO(string value );
-        public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByUserId(int value );
+        public IEnumerable<ProtocoloOnduladeiraDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

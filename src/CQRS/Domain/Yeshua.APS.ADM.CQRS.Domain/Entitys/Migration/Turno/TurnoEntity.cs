@@ -37,11 +37,11 @@
     public DateTime? TURN_HORA_FIM_DIA6 { get; set; }
     public DateTime? TURN_HORA_INI_DIA7 { get; set; }
     public DateTime? TURN_HORA_FIM_DIA7 { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal TurnoEntity(string id, string descricao, int turn_prioridade, DateTime? turn_hora_ini_dia1, DateTime? turn_hora_fim_dia1, DateTime? turn_hora_ini_dia2, DateTime? turn_hora_fim_dia2, DateTime? turn_hora_ini_dia3, DateTime? turn_hora_fim_dia3, DateTime? turn_hora_ini_dia4, DateTime? turn_hora_fim_dia4, DateTime? turn_hora_ini_dia5, DateTime? turn_hora_fim_dia5, DateTime? turn_hora_ini_dia6, DateTime? turn_hora_fim_dia6, DateTime? turn_hora_ini_dia7, DateTime? turn_hora_fim_dia7 ){
  Id = id; 
@@ -61,9 +61,9 @@
  TURN_HORA_FIM_DIA6 = turn_hora_fim_dia6.HasValue && turn_hora_fim_dia6.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia6; 
  TURN_HORA_INI_DIA7 = turn_hora_ini_dia7.HasValue && turn_hora_ini_dia7.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_ini_dia7; 
  TURN_HORA_FIM_DIA7 = turn_hora_fim_dia7.HasValue && turn_hora_fim_dia7.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : turn_hora_fim_dia7; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

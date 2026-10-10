@@ -44,11 +44,11 @@
             public const ulong BOL_CUSTO_RESINA_PROGRAMADOS = 1UL << 21;
             public const ulong BOL_REFILE_OBRIGATORIO = 1UL << 22;
             public const ulong BOL_OBS = 1UL << 23;
-            public const ulong OperationalEntityId = 1UL << 24;
-            public const ulong TenantID = 1UL << 25;
-            public const ulong Deleted = 1UL << 26;
-            public const ulong Changed = 1UL << 27;
-            public const ulong UserId = 1UL << 28;
+            public const ulong TenantID = 1UL << 24;
+            public const ulong Deleted = 1UL << 25;
+            public const ulong Changed = 1UL << 26;
+            public const ulong UserId = 1UL << 27;
+            public const ulong OperationalEntityId = 1UL << 28;
         }
 
         public static class BoletimOperationalFields
@@ -77,11 +77,11 @@
             public const Dominio.Operational.OperationalDataClassification BOL_CUSTO_RESINA_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification BOL_REFILE_OBRIGATORIO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification BOL_OBS = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class BoletimDecorator : IBoletimEntity
@@ -454,7 +454,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -511,6 +510,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

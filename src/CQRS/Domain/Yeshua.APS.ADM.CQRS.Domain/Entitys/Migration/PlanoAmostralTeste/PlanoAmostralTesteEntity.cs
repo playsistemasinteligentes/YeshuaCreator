@@ -21,11 +21,11 @@
                     public partial class PlanoAmostralTesteEntity : IPlanoAmostralTesteEntity
 {
     public Decimal? GRP_TIPO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public int PAT_ID { get; set; }
     public int? PAT_QTD_CAIXAS_DE { get; set; }
     public int? PAT_QTD_CAIXAS_ATE { get; set; }
@@ -39,9 +39,9 @@
  PAT_QTD_CAIXAS_ATE = pat_qtd_caixas_ate; 
  PAT_N_AMOSTRAGEM = pat_n_amostragem; 
  PAT_PERCENT_ESPECIF = pat_percent_especif; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

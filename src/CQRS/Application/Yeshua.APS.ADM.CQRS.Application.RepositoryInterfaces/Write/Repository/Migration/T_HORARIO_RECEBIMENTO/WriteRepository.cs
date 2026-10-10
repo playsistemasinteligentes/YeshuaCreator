@@ -26,11 +26,11 @@ namespace IRepository.Write
         void UpdateHRE_HORA_INICIAL(int hre_id, DateTime value);
         void UpdateHRE_HORA_FINAL(int hre_id, DateTime value);
         void UpdateCLI_ID(int hre_id, string value);
-        void UpdateOperationalEntityId(int hre_id, string value);
         void UpdateTenantID(int hre_id, int value);
         void UpdateDeleted(int hre_id, bool value);
         void UpdateChanged(int hre_id, DateTime value);
         void UpdateUserId(int hre_id, int value);
+        void UpdateOperationalEntityId(int hre_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

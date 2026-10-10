@@ -27,11 +27,11 @@
     public Decimal? Tara { get; set; }
     public Decimal? CapacidadeKg { get; set; }
     public Decimal? CapacidadeM3 { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MDFeVeiculoEntity(int? id, int mdfesolicitacaofiscalid, string placa, string? renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 ){
  Id = id; 
@@ -41,9 +41,9 @@
  Tara = tara; 
  CapacidadeKg = capacidadekg; 
  CapacidadeM3 = capacidadem3; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

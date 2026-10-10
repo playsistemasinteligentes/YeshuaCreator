@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByTMP_TIPO_CARGA(string value );
         public bool ExistsByTMP_TEMPO_MEDIO_UNITARIO(Decimal value );
         public bool ExistsByCLI_ID(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TemposLogisticosDTO FirstById(int value );
         public TemposLogisticosDTO FirstByTMP_TIPO_TEMPO(string value );
         public TemposLogisticosDTO FirstByTMP_TIPO_CARGA(string value );
         public TemposLogisticosDTO FirstByTMP_TEMPO_MEDIO_UNITARIO(Decimal value );
         public TemposLogisticosDTO FirstByCLI_ID(string value );
-        public TemposLogisticosDTO FirstByOperationalEntityId(string value );
         public TemposLogisticosDTO FirstByTenantID(int value );
         public TemposLogisticosDTO FirstByDeleted(bool value );
         public TemposLogisticosDTO FirstByChanged(DateTime value );
         public TemposLogisticosDTO FirstByUserId(int value );
+        public TemposLogisticosDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TemposLogisticosDTO> GetAllById(int value );
         public IEnumerable<TemposLogisticosDTO> GetAllByTMP_TIPO_TEMPO(string value );
         public IEnumerable<TemposLogisticosDTO> GetAllByTMP_TIPO_CARGA(string value );
         public IEnumerable<TemposLogisticosDTO> GetAllByTMP_TEMPO_MEDIO_UNITARIO(Decimal value );
         public IEnumerable<TemposLogisticosDTO> GetAllByCLI_ID(string value );
-        public IEnumerable<TemposLogisticosDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TemposLogisticosDTO> GetAllByTenantID(int value );
         public IEnumerable<TemposLogisticosDTO> GetAllByDeleted(bool value );
         public IEnumerable<TemposLogisticosDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TemposLogisticosDTO> GetAllByUserId(int value );
+        public IEnumerable<TemposLogisticosDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

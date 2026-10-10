@@ -52,11 +52,11 @@ namespace IRepository.Read
         public bool ExistsByCLI_INTEGRACAO_ERP(string value );
         public bool ExistsByCLI_LATITUDE_ENTREGA(Decimal value );
         public bool ExistsByCLI_LONGITUDE_ENTREGA(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ClienteDTO FirstByCLI_ID(string value );
         public ClienteDTO FirstByCLI_NOME(string value );
         public ClienteDTO FirstByCLI_FONE(string value );
@@ -84,11 +84,11 @@ namespace IRepository.Read
         public ClienteDTO FirstByCLI_INTEGRACAO_ERP(string value );
         public ClienteDTO FirstByCLI_LATITUDE_ENTREGA(Decimal value );
         public ClienteDTO FirstByCLI_LONGITUDE_ENTREGA(Decimal value );
-        public ClienteDTO FirstByOperationalEntityId(string value );
         public ClienteDTO FirstByTenantID(int value );
         public ClienteDTO FirstByDeleted(bool value );
         public ClienteDTO FirstByChanged(DateTime value );
         public ClienteDTO FirstByUserId(int value );
+        public ClienteDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ClienteDTO> GetAllByCLI_ID(string value );
         public IEnumerable<ClienteDTO> GetAllByCLI_NOME(string value );
         public IEnumerable<ClienteDTO> GetAllByCLI_FONE(string value );
@@ -116,11 +116,11 @@ namespace IRepository.Read
         public IEnumerable<ClienteDTO> GetAllByCLI_INTEGRACAO_ERP(string value );
         public IEnumerable<ClienteDTO> GetAllByCLI_LATITUDE_ENTREGA(Decimal value );
         public IEnumerable<ClienteDTO> GetAllByCLI_LONGITUDE_ENTREGA(Decimal value );
-        public IEnumerable<ClienteDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ClienteDTO> GetAllByTenantID(int value );
         public IEnumerable<ClienteDTO> GetAllByDeleted(bool value );
         public IEnumerable<ClienteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ClienteDTO> GetAllByUserId(int value );
+        public IEnumerable<ClienteDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

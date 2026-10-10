@@ -22,22 +22,22 @@
         {
             public const ulong Id = 1UL << 0;
             public const ulong IES_CUSTOM_FONT_SIZE = 1UL << 1;
-            public const ulong OperationalEntityId = 1UL << 2;
-            public const ulong TenantID = 1UL << 3;
-            public const ulong Deleted = 1UL << 4;
-            public const ulong Changed = 1UL << 5;
-            public const ulong UserId = 1UL << 6;
+            public const ulong TenantID = 1UL << 2;
+            public const ulong Deleted = 1UL << 3;
+            public const ulong Changed = 1UL << 4;
+            public const ulong UserId = 1UL << 5;
+            public const ulong OperationalEntityId = 1UL << 6;
         }
 
         public static class ItensEstruturaImpressaoOperationalFields
         {
             public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification IES_CUSTOM_FONT_SIZE = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ItensEstruturaImpressaoDecorator : IItensEstruturaImpressaoEntity
@@ -102,7 +102,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -159,6 +158,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

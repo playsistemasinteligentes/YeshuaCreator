@@ -32,11 +32,11 @@ namespace Command.Write
         public int? COMPACTA { get; set; }
         public string? BOL_ID { get; set; }
         public int? COR_SEQUENCIA { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "ClpMedicoes";
  public string? OperationalRecordId => OperationalEntityId;
     }

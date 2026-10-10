@@ -28,11 +28,11 @@
             public const ulong MAP_CUSTO_PEDAGIO_POR_EIXO = 1UL << 5;
             public const ulong ROD_ID = 1UL << 6;
             public const ulong MAP_ALTURA_ROD = 1UL << 7;
-            public const ulong OperationalEntityId = 1UL << 8;
-            public const ulong TenantID = 1UL << 9;
-            public const ulong Deleted = 1UL << 10;
-            public const ulong Changed = 1UL << 11;
-            public const ulong UserId = 1UL << 12;
+            public const ulong TenantID = 1UL << 8;
+            public const ulong Deleted = 1UL << 9;
+            public const ulong Changed = 1UL << 10;
+            public const ulong UserId = 1UL << 11;
+            public const ulong OperationalEntityId = 1UL << 12;
         }
 
         public static class MapaOperationalFields
@@ -45,11 +45,11 @@
             public const Dominio.Operational.OperationalDataClassification MAP_CUSTO_PEDAGIO_POR_EIXO = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification ROD_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification MAP_ALTURA_ROD = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class MapaDecorator : IMapaEntity
@@ -198,7 +198,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -255,6 +254,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

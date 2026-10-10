@@ -26,25 +26,25 @@ namespace IRepository.Read
         public IEnumerable<yPerfilUserIdDTO> getyPerfilReadFKUserId(object command );
         public bool ExistsById(int value );
         public bool ExistsByDescription(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public yPerfilDTO FirstById(int value );
         public yPerfilDTO FirstByDescription(string value );
-        public yPerfilDTO FirstByOperationalEntityId(string value );
         public yPerfilDTO FirstByTenantID(int value );
         public yPerfilDTO FirstByDeleted(bool value );
         public yPerfilDTO FirstByChanged(DateTime value );
         public yPerfilDTO FirstByUserId(int value );
+        public yPerfilDTO FirstByOperationalEntityId(string value );
         public IEnumerable<yPerfilDTO> GetAllById(int value );
         public IEnumerable<yPerfilDTO> GetAllByDescription(string value );
-        public IEnumerable<yPerfilDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yPerfilDTO> GetAllByTenantID(int value );
         public IEnumerable<yPerfilDTO> GetAllByDeleted(bool value );
         public IEnumerable<yPerfilDTO> GetAllByChanged(DateTime value );
         public IEnumerable<yPerfilDTO> GetAllByUserId(int value );
+        public IEnumerable<yPerfilDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

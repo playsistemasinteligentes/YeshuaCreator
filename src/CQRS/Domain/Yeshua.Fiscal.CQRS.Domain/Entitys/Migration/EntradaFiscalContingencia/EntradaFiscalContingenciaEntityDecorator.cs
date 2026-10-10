@@ -53,11 +53,11 @@
             public const ulong CriadoEmUtc = 1UL << 30;
             public const ulong AtualizadoEmUtc = 1UL << 31;
             public const ulong Status = 1UL << 32;
-            public const ulong OperationalEntityId = 1UL << 33;
-            public const ulong TenantID = 1UL << 34;
-            public const ulong Deleted = 1UL << 35;
-            public const ulong Changed = 1UL << 36;
-            public const ulong UserId = 1UL << 37;
+            public const ulong TenantID = 1UL << 33;
+            public const ulong Deleted = 1UL << 34;
+            public const ulong Changed = 1UL << 35;
+            public const ulong UserId = 1UL << 36;
+            public const ulong OperationalEntityId = 1UL << 37;
             public const ulong CertificadoDigitalId = 1UL << 38;
         }
 
@@ -96,11 +96,11 @@
             public const Dominio.Operational.OperationalDataClassification CriadoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification AtualizadoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CertificadoDigitalId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
@@ -600,7 +600,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -657,6 +656,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? CertificadoDigitalId
                                     {

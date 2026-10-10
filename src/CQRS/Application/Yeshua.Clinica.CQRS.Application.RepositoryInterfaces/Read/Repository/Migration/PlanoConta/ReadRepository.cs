@@ -28,29 +28,29 @@ namespace IRepository.Read
         public bool ExistsByCodigo(string value );
         public bool ExistsByNome(string value );
         public bool ExistsByTipo(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public PlanoContaDTO FirstById(int value );
         public PlanoContaDTO FirstByCodigo(string value );
         public PlanoContaDTO FirstByNome(string value );
         public PlanoContaDTO FirstByTipo(int value );
-        public PlanoContaDTO FirstByOperationalEntityId(string value );
         public PlanoContaDTO FirstByTenantID(int value );
         public PlanoContaDTO FirstByDeleted(bool value );
         public PlanoContaDTO FirstByChanged(DateTime value );
         public PlanoContaDTO FirstByUserId(int value );
+        public PlanoContaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<PlanoContaDTO> GetAllById(int value );
         public IEnumerable<PlanoContaDTO> GetAllByCodigo(string value );
         public IEnumerable<PlanoContaDTO> GetAllByNome(string value );
         public IEnumerable<PlanoContaDTO> GetAllByTipo(int value );
-        public IEnumerable<PlanoContaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PlanoContaDTO> GetAllByTenantID(int value );
         public IEnumerable<PlanoContaDTO> GetAllByDeleted(bool value );
         public IEnumerable<PlanoContaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PlanoContaDTO> GetAllByUserId(int value );
+        public IEnumerable<PlanoContaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

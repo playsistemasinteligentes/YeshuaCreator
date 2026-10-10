@@ -31,11 +31,11 @@
     public string PayloadHash { get; set; }
     public string? PayloadStorageKey { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeEntradaOficialEntity(int? id, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string? payloadstoragekey, int status ){
  Id = id; 
@@ -49,9 +49,9 @@
  PayloadHash = payloadhash; 
  PayloadStorageKey = payloadstoragekey; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

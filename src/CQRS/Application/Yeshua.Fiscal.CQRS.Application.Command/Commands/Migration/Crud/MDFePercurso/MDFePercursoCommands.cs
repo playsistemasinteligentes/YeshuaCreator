@@ -17,11 +17,11 @@ namespace Command.Write
         public int MDFeSolicitacaoFiscalId { get; set; }
         public string UF { get; set; }
         public int Ordem { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "MDFePercurso";
  public string? OperationalRecordId => OperationalEntityId;
     }

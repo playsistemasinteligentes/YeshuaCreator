@@ -29,11 +29,11 @@ namespace Repositorio.Outputs
     public string nomeresponsavel { get; set; } = string.Empty;
     public string telefoneresponsavel { get; set; } = string.Empty;
     public string observacao { get; set; } = string.Empty;
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByPLA_DESCRICAO(string value );
         public bool ExistsByPLA_TIPO(int value );
         public bool ExistsByPLA_NATUREZA(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public PlanocontasDTO FirstByPLA_ID(int value );
         public PlanocontasDTO FirstByPLA_CODIGO(string value );
         public PlanocontasDTO FirstByPLA_DESCRICAO(string value );
         public PlanocontasDTO FirstByPLA_TIPO(int value );
         public PlanocontasDTO FirstByPLA_NATUREZA(string value );
-        public PlanocontasDTO FirstByOperationalEntityId(string value );
         public PlanocontasDTO FirstByTenantID(int value );
         public PlanocontasDTO FirstByDeleted(bool value );
         public PlanocontasDTO FirstByChanged(DateTime value );
         public PlanocontasDTO FirstByUserId(int value );
+        public PlanocontasDTO FirstByOperationalEntityId(string value );
         public IEnumerable<PlanocontasDTO> GetAllByPLA_ID(int value );
         public IEnumerable<PlanocontasDTO> GetAllByPLA_CODIGO(string value );
         public IEnumerable<PlanocontasDTO> GetAllByPLA_DESCRICAO(string value );
         public IEnumerable<PlanocontasDTO> GetAllByPLA_TIPO(int value );
         public IEnumerable<PlanocontasDTO> GetAllByPLA_NATUREZA(string value );
-        public IEnumerable<PlanocontasDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PlanocontasDTO> GetAllByTenantID(int value );
         public IEnumerable<PlanocontasDTO> GetAllByDeleted(bool value );
         public IEnumerable<PlanocontasDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PlanocontasDTO> GetAllByUserId(int value );
+        public IEnumerable<PlanocontasDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

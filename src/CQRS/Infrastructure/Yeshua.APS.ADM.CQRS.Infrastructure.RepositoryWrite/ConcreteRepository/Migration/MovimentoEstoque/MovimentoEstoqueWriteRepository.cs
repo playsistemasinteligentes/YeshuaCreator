@@ -286,11 +286,6 @@ namespace Input.Repository.MovimentoEstoque
             var query = _query.UpdateCLI_ID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -309,6 +304,11 @@ namespace Input.Repository.MovimentoEstoque
         public void UpdateUserId(int id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

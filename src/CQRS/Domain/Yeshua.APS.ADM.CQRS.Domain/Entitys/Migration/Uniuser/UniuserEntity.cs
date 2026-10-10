@@ -23,19 +23,19 @@
     public int USERGRU_ID { get; set; }
     public int UNI_ID { get; set; }
     public int USE_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal UniuserEntity(int usergru_id, int uni_id, int use_id ){
  USERGRU_ID = usergru_id; 
  UNI_ID = uni_id; 
  USE_ID = use_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

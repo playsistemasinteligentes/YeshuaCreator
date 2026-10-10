@@ -34,11 +34,11 @@ namespace IRepository.Read
         public bool ExistsByROT_ORDEM_ROTEIRO(int value );
         public bool ExistsByROT_TIPO(string value );
         public bool ExistsByROT_DISTANCIA(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public RotaPontosMapaDTO FirstById(int value );
         public RotaPontosMapaDTO FirstByROT_ID(string value );
         public RotaPontosMapaDTO FirstByPON_ID_DESTINO(string value );
@@ -48,11 +48,11 @@ namespace IRepository.Read
         public RotaPontosMapaDTO FirstByROT_ORDEM_ROTEIRO(int value );
         public RotaPontosMapaDTO FirstByROT_TIPO(string value );
         public RotaPontosMapaDTO FirstByROT_DISTANCIA(Decimal value );
-        public RotaPontosMapaDTO FirstByOperationalEntityId(string value );
         public RotaPontosMapaDTO FirstByTenantID(int value );
         public RotaPontosMapaDTO FirstByDeleted(bool value );
         public RotaPontosMapaDTO FirstByChanged(DateTime value );
         public RotaPontosMapaDTO FirstByUserId(int value );
+        public RotaPontosMapaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<RotaPontosMapaDTO> GetAllById(int value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByROT_ID(string value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByPON_ID_DESTINO(string value );
@@ -62,11 +62,11 @@ namespace IRepository.Read
         public IEnumerable<RotaPontosMapaDTO> GetAllByROT_ORDEM_ROTEIRO(int value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByROT_TIPO(string value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByROT_DISTANCIA(Decimal value );
-        public IEnumerable<RotaPontosMapaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByTenantID(int value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByDeleted(bool value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RotaPontosMapaDTO> GetAllByUserId(int value );
+        public IEnumerable<RotaPontosMapaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

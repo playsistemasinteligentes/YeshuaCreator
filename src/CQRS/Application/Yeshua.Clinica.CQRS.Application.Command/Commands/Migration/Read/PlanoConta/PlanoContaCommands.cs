@@ -17,11 +17,11 @@ namespace Command.Read
         public string? Codigo { get; set; }
         public string? Nome { get; set; }
         public int? Tipo { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "PlanoConta";
  public string? OperationalRecordId => OperationalEntityId;

@@ -26,11 +26,11 @@
     public Decimal? LOT_LARGURA { get; set; }
     public Decimal? LOT_COMPRIMENTO { get; set; }
     public Decimal? LOT_DIAMETRO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal LotesEntity(int? id, string mov_lote, string mov_sub_lote, Decimal? lot_largura, Decimal? lot_comprimento, Decimal? lot_diametro ){
  Id = id; 
@@ -39,9 +39,9 @@
  LOT_LARGURA = lot_largura; 
  LOT_COMPRIMENTO = lot_comprimento; 
  LOT_DIAMETRO = lot_diametro; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

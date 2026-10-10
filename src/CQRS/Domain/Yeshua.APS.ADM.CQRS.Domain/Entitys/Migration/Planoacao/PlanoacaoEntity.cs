@@ -31,11 +31,11 @@
     public string? PLA_VLRACUMULADO { get; set; }
     public string? PLA_REFERENCIA { get; set; }
     public int USE_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PlanoacaoEntity(int pla_id, string pla_descricao, int? met_id, string? pla_status, DateTime? pla_data, string? pla_metaperiodo, string? pla_vlrperiodo, string? pla_metaculado, string? pla_vlracumulado, string? pla_referencia, int use_id ){
  PLA_ID = pla_id; 
@@ -49,9 +49,9 @@
  PLA_VLRACUMULADO = pla_vlracumulado; 
  PLA_REFERENCIA = pla_referencia; 
  USE_ID = use_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -37,11 +37,11 @@ namespace IRepository.Read
         public bool ExistsByEncerradoEm(DateTime value );
         public bool ExistsByCanceladoEm(DateTime value );
         public bool ExistsBySituacao(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MDFeDTO FirstById(int value );
         public MDFeDTO FirstByChaveAcesso(string value );
         public MDFeDTO FirstBySerie(int value );
@@ -55,11 +55,11 @@ namespace IRepository.Read
         public MDFeDTO FirstByEncerradoEm(DateTime value );
         public MDFeDTO FirstByCanceladoEm(DateTime value );
         public MDFeDTO FirstBySituacao(int value );
-        public MDFeDTO FirstByOperationalEntityId(string value );
         public MDFeDTO FirstByTenantID(int value );
         public MDFeDTO FirstByDeleted(bool value );
         public MDFeDTO FirstByChanged(DateTime value );
         public MDFeDTO FirstByUserId(int value );
+        public MDFeDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MDFeDTO> GetAllById(int value );
         public IEnumerable<MDFeDTO> GetAllByChaveAcesso(string value );
         public IEnumerable<MDFeDTO> GetAllBySerie(int value );
@@ -73,11 +73,11 @@ namespace IRepository.Read
         public IEnumerable<MDFeDTO> GetAllByEncerradoEm(DateTime value );
         public IEnumerable<MDFeDTO> GetAllByCanceladoEm(DateTime value );
         public IEnumerable<MDFeDTO> GetAllBySituacao(int value );
-        public IEnumerable<MDFeDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MDFeDTO> GetAllByTenantID(int value );
         public IEnumerable<MDFeDTO> GetAllByDeleted(bool value );
         public IEnumerable<MDFeDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MDFeDTO> GetAllByUserId(int value );
+        public IEnumerable<MDFeDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -20,11 +20,11 @@ namespace Command.Read
         public string? PEN_PROTOCOLO_IN { get; set; }
         public string? PEN_ID_PROTOCOLO_IN { get; set; }
         public DateTime? DATA_ENTRADA { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
         public int? PEN_ID { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "PendenciasInterface";

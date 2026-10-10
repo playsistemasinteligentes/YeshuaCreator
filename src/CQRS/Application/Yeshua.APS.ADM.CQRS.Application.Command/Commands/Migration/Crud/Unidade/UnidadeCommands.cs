@@ -16,11 +16,11 @@ namespace Command.Write
         public int UNI_ID { get; set; }
         public string DEESCRICAO { get; set; }
         public string UN { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Unidade";
  public string? OperationalRecordId => OperationalEntityId;
     }

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirInspecaoVisualQuery(IInspecaoVisualEntity InspecaoVisual)
         {
-            this.Query = $@" INSERT INTO [InspecaoVisual] ([IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IPV_ID] VALUES(@IPV_VALOR, @IPV_ID_OPERADOR, @IPV_ID_LIBERACAO, @IPV_OBS, @IPV_DATA_COLETA, @IPV_DATA_AVAL, @TIV_ID, @TURN_ID, @TURM_ID, @ORD_ID, @ROT_PRO_ID, @ROT_MAQ_ID, @ROT_SEQ_TRANSFORMACAO, @FPR_SEQ_REPETICAO, @IPV_STATUS_LIBERACAO, @IPV_VALOR_MEDIDA, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [InspecaoVisual] ([IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[IPV_ID] VALUES(@IPV_VALOR, @IPV_ID_OPERADOR, @IPV_ID_LIBERACAO, @IPV_OBS, @IPV_DATA_COLETA, @IPV_DATA_AVAL, @TIV_ID, @TURN_ID, @TURM_ID, @ORD_ID, @ROT_PRO_ID, @ROT_MAQ_ID, @ROT_SEQ_TRANSFORMACAO, @FPR_SEQ_REPETICAO, @IPV_STATUS_LIBERACAO, @IPV_VALOR_MEDIDA, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 IPV_VALOR = InspecaoVisual.IPV_VALOR,
@@ -49,11 +49,11 @@ namespace Query.Write
                 FPR_SEQ_REPETICAO = InspecaoVisual.FPR_SEQ_REPETICAO,
                 IPV_STATUS_LIBERACAO = InspecaoVisual.IPV_STATUS_LIBERACAO,
                 IPV_VALOR_MEDIDA = InspecaoVisual.IPV_VALOR_MEDIDA,
-                OperationalEntityId = InspecaoVisual.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = InspecaoVisual.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -244,16 +244,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int ipv_id, string value)
-        {
-            this.Query = $@" UPDATE [InspecaoVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [IPV_ID] = @IPV_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                IPV_ID = ipv_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int ipv_id, int value)
         {
             this.Query = $@" UPDATE [InspecaoVisual] SET [TenantID] = @TenantID WHERE [IPV_ID] = @IPV_ID ";
@@ -290,6 +280,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                IPV_ID = ipv_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int ipv_id, string value)
+        {
+            this.Query = $@" UPDATE [InspecaoVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [IPV_ID] = @IPV_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 IPV_ID = ipv_id,
             };
             return new QueryModel(this.Query, this.Parameters);

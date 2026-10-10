@@ -29,11 +29,11 @@ namespace IRepository.Write
         void UpdatePEN_PROTOCOLO_IN(int pen_id, string value);
         void UpdatePEN_ID_PROTOCOLO_IN(int pen_id, string value);
         void UpdateDATA_ENTRADA(int pen_id, DateTime value);
-        void UpdateOperationalEntityId(int pen_id, string value);
         void UpdateTenantID(int pen_id, int value);
         void UpdateDeleted(int pen_id, bool value);
         void UpdateChanged(int pen_id, DateTime value);
         void UpdateUserId(int pen_id, int value);
+        void UpdateOperationalEntityId(int pen_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -19,11 +19,11 @@ namespace IQuery.Write
         public QueryModel UpdateMaquinaQuery(IMaquinaEntity Maquina);
         QueryModel UpdateDescricao(string id, string value);
         QueryModel UpdateStatus(string id, string value);
-        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdateTenantID(string id, int value);
         QueryModel UpdateDeleted(string id, bool value);
         QueryModel UpdateChanged(string id, DateTime value);
         QueryModel UpdateUserId(string id, int value);
+        QueryModel UpdateOperationalEntityId(string id, string value);
         QueryModel UpdateCAL_ID(string id, int value);
         QueryModel UpdateMAQ_CONTROL_IP(string id, string value);
         QueryModel UpdateGMA_ID(string id, string value);

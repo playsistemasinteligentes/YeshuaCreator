@@ -22,11 +22,11 @@ namespace IQuery.Write
         QueryModel UpdateCOL_EMAIL(string col_cpf, string value);
         QueryModel UpdateCOL_MATRICULA(string col_cpf, string value);
         QueryModel UpdateTURM_id(string col_cpf, string value);
-        QueryModel UpdateOperationalEntityId(string col_cpf, string value);
         QueryModel UpdateTenantID(string col_cpf, int value);
         QueryModel UpdateDeleted(string col_cpf, bool value);
         QueryModel UpdateChanged(string col_cpf, DateTime value);
         QueryModel UpdateUserId(string col_cpf, int value);
+        QueryModel UpdateOperationalEntityId(string col_cpf, string value);
         public QueryModel DeleteColaboradorQuery(IColaboradorEntity Colaborador);
     }
 }

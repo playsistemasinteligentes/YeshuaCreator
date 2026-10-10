@@ -94,11 +94,11 @@
     public DateTime? ORD_DATA_ESTATISTICA { get; set; }
     public string? OCO_ID_MOTIVO_ATRASO { get; set; }
     public int? OTK_VERSSAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal OrderEntity(string ord_id, string? ord_id_reserva, string ord_id_conjunto, string pro_id, string pro_id_conjunto, string cli_id, Decimal? ord_preco_unitario, Decimal ord_quantidade, DateTime ord_data_entrega_de, DateTime ord_data_entrega_ate, int? ord_tipo, Decimal? ord_tolerancia_mais, Decimal? ord_tolerancia_menos, string? hash_key, DateTime? ord_inicio_janela_embarque, DateTime? ord_fim_janela_embarque, DateTime? ord_embarque_alvo, DateTime? ord_inicio_grupo_produtivo, DateTime? ord_fim_grupo_produtivo, Decimal? ord_peso_unitario, Decimal? ord_peso_unitario_bruto, Decimal? ord_m2_unitario, string? ord_mit, string? car_tipo_carregamento, string? ord_status, string ord_tipo_frete, string? ord_endereco_entrega, string? ord_bairro_entrega, string? uf_id_entrega, string? ord_cep_entrega, string? mun_id_entrega, string ord_regiao_entrega, Decimal? ord_largura, Decimal? ord_comprimento, Decimal? ord_gramatura, string? grp_id, string? ord_id_integracao, string? ord_observacao_otimizador, string? ord_cor_fila, string? ord_ped_cli, string? ord_op_integracao, string? ord_lote_piloto, int? ord_prioridade, DateTime? ord_emissao, string? rep_id, string? ord_resina, string? ord_endurecedor_miolo, string? pro_id_integracao_erp, string? ord_vincos_onduladeira, Decimal? ord_erp_custos_fixos, Decimal? ord_erp_custos_variaveis, Decimal? ord_erp_despesas_var_venda, Decimal? ord_erp_impostos, string? ord_status_planejamento, int? ord_tolerancia_dimensao_chapa_de, int? ord_tolerancia_dimensao_chapa_ate, Decimal? ord_promove_de, Decimal? ord_promove_ate, string? ord_trava_composicao, string ord_trava_resina, string? ord_promove_resina, Decimal? ord_latitude_entrega, Decimal? ord_longitude_entrega, string? oco_id_cancelamento, string? tmp_tipo_carga, string? pro_id_palete, string? pro_id_tampo, int? ord_pilhas_por_palete, int? ord_chapas_por_pilha, DateTime? ord_data_cancelamento, string? ord_status_estatistica, DateTime? ord_data_estatistica, string? oco_id_motivo_atraso, int? otk_verssao ){
  ORD_ID = ord_id; 
@@ -175,9 +175,9 @@
  ORD_DATA_ESTATISTICA = ord_data_estatistica.HasValue && ord_data_estatistica.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ord_data_estatistica; 
  OCO_ID_MOTIVO_ATRASO = oco_id_motivo_atraso; 
  OTK_VERSSAO = otk_verssao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

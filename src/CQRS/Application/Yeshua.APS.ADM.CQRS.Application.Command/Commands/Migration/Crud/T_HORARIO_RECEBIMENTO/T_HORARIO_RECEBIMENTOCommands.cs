@@ -18,11 +18,11 @@ namespace Command.Write
         public DateTime HRE_HORA_FINAL { get; set; }
         public string CLI_ID { get; set; }
         public int HRE_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "T_HORARIO_RECEBIMENTO";
  public string? OperationalRecordId => OperationalEntityId;
     }

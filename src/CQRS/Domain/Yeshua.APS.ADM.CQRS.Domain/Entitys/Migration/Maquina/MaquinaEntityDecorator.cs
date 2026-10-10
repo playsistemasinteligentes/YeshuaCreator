@@ -23,11 +23,11 @@
             public const ulong Id = 1UL << 0;
             public const ulong Descricao = 1UL << 1;
             public const ulong Status = 1UL << 2;
-            public const ulong OperationalEntityId = 1UL << 3;
-            public const ulong TenantID = 1UL << 4;
-            public const ulong Deleted = 1UL << 5;
-            public const ulong Changed = 1UL << 6;
-            public const ulong UserId = 1UL << 7;
+            public const ulong TenantID = 1UL << 3;
+            public const ulong Deleted = 1UL << 4;
+            public const ulong Changed = 1UL << 5;
+            public const ulong UserId = 1UL << 6;
+            public const ulong OperationalEntityId = 1UL << 7;
             public const ulong CAL_ID = 1UL << 8;
             public const ulong MAQ_CONTROL_IP = 1UL << 9;
             public const ulong GMA_ID = 1UL << 10;
@@ -91,11 +91,11 @@
             public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Descricao = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CAL_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification MAQ_CONTROL_IP = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification GMA_ID = Dominio.Operational.OperationalDataClassification.Internal;
@@ -230,7 +230,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -287,6 +286,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? CAL_ID
                                     {

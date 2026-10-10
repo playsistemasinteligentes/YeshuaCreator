@@ -30,11 +30,11 @@ namespace Command.Write
         public DateTime? TURN_HORA_FIM_DIA6 { get; set; }
         public DateTime? TURN_HORA_INI_DIA7 { get; set; }
         public DateTime? TURN_HORA_FIM_DIA7 { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Turno";
  public string? OperationalRecordId => OperationalEntityId;
     }

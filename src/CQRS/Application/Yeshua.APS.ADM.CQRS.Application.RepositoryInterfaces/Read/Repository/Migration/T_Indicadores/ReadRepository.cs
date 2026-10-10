@@ -40,11 +40,11 @@ namespace IRepository.Read
         public bool ExistsByDIM_ID(string value );
         public bool ExistsByDOM_EMPRESA(string value );
         public bool ExistsByDOM_FILIAL(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_IndicadoresDTO FirstByIND_ID(int value );
         public T_IndicadoresDTO FirstByIND_DESCRICAO(string value );
         public T_IndicadoresDTO FirstByNEG_ID(int value );
@@ -60,11 +60,11 @@ namespace IRepository.Read
         public T_IndicadoresDTO FirstByDIM_ID(string value );
         public T_IndicadoresDTO FirstByDOM_EMPRESA(string value );
         public T_IndicadoresDTO FirstByDOM_FILIAL(string value );
-        public T_IndicadoresDTO FirstByOperationalEntityId(string value );
         public T_IndicadoresDTO FirstByTenantID(int value );
         public T_IndicadoresDTO FirstByDeleted(bool value );
         public T_IndicadoresDTO FirstByChanged(DateTime value );
         public T_IndicadoresDTO FirstByUserId(int value );
+        public T_IndicadoresDTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_IndicadoresDTO> GetAllByIND_ID(int value );
         public IEnumerable<T_IndicadoresDTO> GetAllByIND_DESCRICAO(string value );
         public IEnumerable<T_IndicadoresDTO> GetAllByNEG_ID(int value );
@@ -80,11 +80,11 @@ namespace IRepository.Read
         public IEnumerable<T_IndicadoresDTO> GetAllByDIM_ID(string value );
         public IEnumerable<T_IndicadoresDTO> GetAllByDOM_EMPRESA(string value );
         public IEnumerable<T_IndicadoresDTO> GetAllByDOM_FILIAL(string value );
-        public IEnumerable<T_IndicadoresDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_IndicadoresDTO> GetAllByTenantID(int value );
         public IEnumerable<T_IndicadoresDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_IndicadoresDTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_IndicadoresDTO> GetAllByUserId(int value );
+        public IEnumerable<T_IndicadoresDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

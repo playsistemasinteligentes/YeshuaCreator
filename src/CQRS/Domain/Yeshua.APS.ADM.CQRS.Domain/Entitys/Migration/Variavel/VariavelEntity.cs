@@ -25,11 +25,11 @@
     public string VAR_DESCRICAO { get; set; }
     public int? CON_ID { get; set; }
     public int VAR_MODO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal VariavelEntity(int? id, int var_id, string var_descricao, int? con_id, int var_modo ){
  Id = id; 
@@ -37,9 +37,9 @@
  VAR_DESCRICAO = var_descricao; 
  CON_ID = con_id; 
  VAR_MODO = var_modo; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

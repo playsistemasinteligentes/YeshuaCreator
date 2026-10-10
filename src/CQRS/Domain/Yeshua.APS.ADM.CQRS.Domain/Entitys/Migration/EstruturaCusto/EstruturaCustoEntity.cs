@@ -36,11 +36,11 @@
     public Decimal EST_BASE_PRODUCAO { get; set; }
     public Decimal? EST_NIVEL { get; set; }
     public int? FPR_SEQ_REPETICAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal EstruturaCustoEntity(int est_id, int? ito_id, string? ord_id, string pro_id, string pro_id_produto, string pro_id_componente, string pro_tipo_custo, string pro_grupo_contabil, int est_ordem, string est_grupo, Decimal est_quant, Decimal est_valor_total, string est_data_base, Decimal est_base_producao, Decimal? est_nivel, int? fpr_seq_repeticao ){
  EST_ID = est_id; 
@@ -59,9 +59,9 @@
  EST_BASE_PRODUCAO = est_base_producao; 
  EST_NIVEL = est_nivel; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

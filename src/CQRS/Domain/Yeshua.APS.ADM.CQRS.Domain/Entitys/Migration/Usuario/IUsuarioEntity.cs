@@ -27,11 +27,11 @@
     string? TURM_ID { get; set; }
     int USE_ATIVO { get; set; }
     string? USE_CODERP { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

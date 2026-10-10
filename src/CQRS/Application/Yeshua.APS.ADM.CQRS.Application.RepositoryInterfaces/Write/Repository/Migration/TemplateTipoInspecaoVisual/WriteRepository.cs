@@ -24,11 +24,11 @@ namespace IRepository.Write
         void Delete(ITemplateTipoInspecaoVisualEntity templatetipoinspecaovisual);
         void UpdateTIV_ID(int tti_id, int value);
         void UpdateTEM_ID(int tti_id, int value);
-        void UpdateOperationalEntityId(int tti_id, string value);
         void UpdateTenantID(int tti_id, int value);
         void UpdateDeleted(int tti_id, bool value);
         void UpdateChanged(int tti_id, DateTime value);
         void UpdateUserId(int tti_id, int value);
+        void UpdateOperationalEntityId(int tti_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

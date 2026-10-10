@@ -32,11 +32,11 @@ namespace IQuery.Read
         public QueryModel ExistsByVEI_EMISSAOQuery(DateTime value );
         public QueryModel ExistsByVEI_VENCIMENTOQuery(DateTime value );
         public QueryModel ExistsByVEI_STATUSQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByVEI_PLACAQuery(string value );
         public QueryModel FirstByVEI_UFQuery(string value );
@@ -53,11 +53,11 @@ namespace IQuery.Read
         public QueryModel FirstByVEI_EMISSAOQuery(DateTime value );
         public QueryModel FirstByVEI_VENCIMENTOQuery(DateTime value );
         public QueryModel FirstByVEI_STATUSQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

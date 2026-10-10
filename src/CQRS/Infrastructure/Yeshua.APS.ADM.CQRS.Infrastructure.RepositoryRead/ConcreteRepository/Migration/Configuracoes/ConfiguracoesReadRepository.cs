@@ -108,14 +108,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -148,17 +140,17 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public ConfiguracoesDTO FirstByCON_ID(int value )
         {
             var query = _query.FirstByCON_IDQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<ConfiguracoesDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ConfiguracoesDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<ConfiguracoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -196,17 +188,17 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<ConfiguracoesDTO> GetAllByCON_ID(int value )
+        public ConfiguracoesDTO FirstByOperationalEntityId(string value )
         {
-            var query = _query.FirstByCON_IDQuery(value );
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
-                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
+                var result = _unitOfWork.QueryFirstOrDefault<ConfiguracoesDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public IEnumerable<ConfiguracoesDTO> GetAllByOperationalEntityId(string value )
+        public IEnumerable<ConfiguracoesDTO> GetAllByCON_ID(int value )
         {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
+            var query = _query.FirstByCON_IDQuery(value );
 
                 var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -239,6 +231,14 @@ namespace Read.Repository
         public IEnumerable<ConfiguracoesDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ConfiguracoesDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters).ToList();
                 return result;

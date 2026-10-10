@@ -27,11 +27,11 @@
     public DateTime DataMovimento { get; set; }
     public DateTime? DataVencimento { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MovimentoFinanceiroEntity(int? id, string idorigem, int contadebitoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status ){
  Id = id; 
@@ -41,9 +41,9 @@
  DataMovimento = (datamovimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datamovimento; 
  DataVencimento = datavencimento.HasValue && datavencimento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : datavencimento; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -30,17 +30,17 @@ namespace Query.Write
         }
         public QueryModel InserirGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina)
         {
-            this.Query = $@" INSERT INTO [GrupoMaquina] ([Id], [Descricao], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO]) VALUES(@Id, @Descricao, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId, @GMA_TIPO_PLANEJAMENTO) ";
+            this.Query = $@" INSERT INTO [GrupoMaquina] ([Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [GMA_TIPO_PLANEJAMENTO]) VALUES(@Id, @Descricao, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @GMA_TIPO_PLANEJAMENTO) ";
             this.Parameters = new
             {
                 Id = GrupoMaquina.Id,
                 Descricao = GrupoMaquina.Descricao,
                 Status = GrupoMaquina.Status,
-                OperationalEntityId = GrupoMaquina.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = GrupoMaquina.OperationalEntityId,
                 GMA_TIPO_PLANEJAMENTO = GrupoMaquina.GMA_TIPO_PLANEJAMENTO,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -75,16 +75,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 Status = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(string id, string value)
-        {
-            this.Query = $@" UPDATE [GrupoMaquina] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -125,6 +115,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string id, string value)
+        {
+            this.Query = $@" UPDATE [GrupoMaquina] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

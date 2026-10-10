@@ -44,11 +44,11 @@ namespace IRepository.Read
         public bool ExistsByMensagemRetorno(string value );
         public bool ExistsByCriadoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public EmissaoFiscalTransporteDocumentoDTO FirstById(int value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByEmissaoFiscalTransporteId(int value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByDocumentoFiscalId(int value );
@@ -65,11 +65,11 @@ namespace IRepository.Read
         public EmissaoFiscalTransporteDocumentoDTO FirstByMensagemRetorno(string value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByCriadoEmUtc(DateTime value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByStatus(int value );
-        public EmissaoFiscalTransporteDocumentoDTO FirstByOperationalEntityId(string value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByTenantID(int value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByDeleted(bool value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByChanged(DateTime value );
         public EmissaoFiscalTransporteDocumentoDTO FirstByUserId(int value );
+        public EmissaoFiscalTransporteDocumentoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllById(int value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByEmissaoFiscalTransporteId(int value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByDocumentoFiscalId(int value );
@@ -86,11 +86,11 @@ namespace IRepository.Read
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByMensagemRetorno(string value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByCriadoEmUtc(DateTime value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByStatus(int value );
-        public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByTenantID(int value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByUserId(int value );
+        public IEnumerable<EmissaoFiscalTransporteDocumentoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

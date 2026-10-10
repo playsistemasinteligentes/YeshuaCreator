@@ -19,11 +19,11 @@ namespace Command.Write
         public Decimal? PON_LATITUDE { get; set; }
         public Decimal? PON_LONGITUDE { get; set; }
         public Decimal? PON_DISTANCIA_KM { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
         public string? MUN_ID { get; set; }
  public string OperationalEntity => "PontosMapa";
  public string? OperationalRecordId => OperationalEntityId;

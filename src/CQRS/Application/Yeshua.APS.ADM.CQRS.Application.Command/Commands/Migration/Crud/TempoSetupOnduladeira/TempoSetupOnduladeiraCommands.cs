@@ -19,11 +19,11 @@ namespace Command.Write
         public string? TEM_RESINA_DE { get; set; }
         public string? TEM_RESINA_PARA { get; set; }
         public int? TEM_TEMPO { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "TempoSetupOnduladeira";
  public string? OperationalRecordId => OperationalEntityId;
     }

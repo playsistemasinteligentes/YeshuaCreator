@@ -38,11 +38,11 @@
     public int? COMPACTA { get; set; }
     public string? BOL_ID { get; set; }
     public int? COR_SEQUENCIA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ClpMedicoesHEntity(int id, string maquina_id, DateTime data_ini, DateTime data_fim, DateTime? clp_emissao, Decimal qtd, Decimal? grupo, int? status, string? urn_id, string? urm_id, int id_lote_clp, string? oco_id, int? fase, string? clp_origem, int? clp_lote, int? compacta, string? bol_id, int? cor_sequencia ){
  ID = id; 
@@ -63,9 +63,9 @@
  COMPACTA = compacta; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

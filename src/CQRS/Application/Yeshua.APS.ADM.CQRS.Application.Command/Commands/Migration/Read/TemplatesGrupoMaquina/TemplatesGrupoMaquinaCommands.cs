@@ -16,11 +16,11 @@ namespace Command.Read
         public int? Id { get; set; }
         public int? TEM_ID { get; set; }
         public string? GMA_ID { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "TemplatesGrupoMaquina";
  public string? OperationalRecordId => OperationalEntityId;

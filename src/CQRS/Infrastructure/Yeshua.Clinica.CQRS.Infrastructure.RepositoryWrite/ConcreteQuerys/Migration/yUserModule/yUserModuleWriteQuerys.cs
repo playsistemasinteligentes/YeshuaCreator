@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InseriryUserModuleQuery(IyUserModuleEntity yUserModule)
         {
-            this.Query = $@" INSERT INTO [yUserModule] ([ModuleId], [UserId], [ValidUntil], [OperationalEntityId], [TenantID], [Deleted], [Changed]) OUTPUT INSERTED.[Id] VALUES(@ModuleId, @UserId, @ValidUntil, @OperationalEntityId, @TenantID, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO [yUserModule] ([ModuleId], [UserId], [ValidUntil], [TenantID], [Deleted], [Changed], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@ModuleId, @UserId, @ValidUntil, @TenantID, @Deleted, @Changed, @OperationalEntityId) ";
             this.Parameters = new
             {
                 ModuleId = yUserModule.ModuleId,
                 UserId = yUserModule.UserId,
                 ValidUntil = yUserModule.ValidUntil,
-                OperationalEntityId = yUserModule.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
+                OperationalEntityId = yUserModule.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -86,16 +86,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yUserModule] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [yUserModule] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -122,6 +112,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 Changed = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yUserModule] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

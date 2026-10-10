@@ -29,17 +29,17 @@ namespace Command.Read
         public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
-        public int? SagaId { get; set; }
-        public int? SagaStepId { get; set; }
-        public int? TenantID { get; set; }
-        public string? OperationalEntityId { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
         public string? RootOperationId { get; set; }
         public string? OperationId { get; set; }
         public string? ExecutionId { get; set; }
         public string? CausationId { get; set; }
+        public int? SagaId { get; set; }
+        public int? SagaStepId { get; set; }
+        public int? TenantID { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "yOutbox";
  public string? OperationalRecordId => OperationalEntityId;

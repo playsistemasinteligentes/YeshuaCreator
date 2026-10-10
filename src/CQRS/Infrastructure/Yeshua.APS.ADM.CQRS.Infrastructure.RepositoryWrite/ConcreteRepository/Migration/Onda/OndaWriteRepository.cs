@@ -86,11 +86,6 @@ namespace Input.Repository.Onda
             var query = _query.UpdateVIN_ID(ond_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string ond_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(ond_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string ond_id, int value)
         {
             var query = _query.UpdateTenantID(ond_id, value);
@@ -109,6 +104,11 @@ namespace Input.Repository.Onda
         public void UpdateUserId(string ond_id, int value)
         {
             var query = _query.UpdateUserId(ond_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string ond_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(ond_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

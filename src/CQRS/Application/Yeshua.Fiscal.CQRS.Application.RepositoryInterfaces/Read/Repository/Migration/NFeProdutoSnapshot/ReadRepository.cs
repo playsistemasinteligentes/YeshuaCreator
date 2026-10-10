@@ -43,11 +43,11 @@ namespace IRepository.Read
         public bool ExistsByXmlStorageKey(string value );
         public bool ExistsBySnapshotJson(string value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public NFeProdutoSnapshotDTO FirstById(int value );
         public NFeProdutoSnapshotDTO FirstByDocumentoFiscalOriginarioId(int value );
         public NFeProdutoSnapshotDTO FirstByCorrelationId(string value );
@@ -66,11 +66,11 @@ namespace IRepository.Read
         public NFeProdutoSnapshotDTO FirstByXmlStorageKey(string value );
         public NFeProdutoSnapshotDTO FirstBySnapshotJson(string value );
         public NFeProdutoSnapshotDTO FirstByStatus(int value );
-        public NFeProdutoSnapshotDTO FirstByOperationalEntityId(string value );
         public NFeProdutoSnapshotDTO FirstByTenantID(int value );
         public NFeProdutoSnapshotDTO FirstByDeleted(bool value );
         public NFeProdutoSnapshotDTO FirstByChanged(DateTime value );
         public NFeProdutoSnapshotDTO FirstByUserId(int value );
+        public NFeProdutoSnapshotDTO FirstByOperationalEntityId(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllById(int value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByDocumentoFiscalOriginarioId(int value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByCorrelationId(string value );
@@ -89,11 +89,11 @@ namespace IRepository.Read
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByXmlStorageKey(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllBySnapshotJson(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByStatus(int value );
-        public IEnumerable<NFeProdutoSnapshotDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByTenantID(int value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByDeleted(bool value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByChanged(DateTime value );
         public IEnumerable<NFeProdutoSnapshotDTO> GetAllByUserId(int value );
+        public IEnumerable<NFeProdutoSnapshotDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

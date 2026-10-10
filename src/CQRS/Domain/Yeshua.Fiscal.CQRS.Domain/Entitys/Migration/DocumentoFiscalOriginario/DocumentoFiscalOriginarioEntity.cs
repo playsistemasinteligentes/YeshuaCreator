@@ -37,11 +37,11 @@
     public Decimal? Volume { get; set; }
     public string? SnapshotJson { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal DocumentoFiscalOriginarioEntity(int? id, int? documentofiscalid, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? snapshotjson, int status ){
  Id = id; 
@@ -61,9 +61,9 @@
  Volume = volume; 
  SnapshotJson = snapshotjson; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

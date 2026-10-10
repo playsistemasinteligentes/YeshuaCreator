@@ -30,29 +30,29 @@ namespace IRepository.Read
         public bool ExistsByVIS_PLANID(int value );
         public bool ExistsByVIS_FORMULA(string value );
         public bool ExistsByCAB_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public VisoesDTO FirstByVIS_ID(int value );
         public VisoesDTO FirstByVIS_PLANID(int value );
         public VisoesDTO FirstByVIS_FORMULA(string value );
         public VisoesDTO FirstByCAB_ID(int value );
-        public VisoesDTO FirstByOperationalEntityId(string value );
         public VisoesDTO FirstByTenantID(int value );
         public VisoesDTO FirstByDeleted(bool value );
         public VisoesDTO FirstByChanged(DateTime value );
         public VisoesDTO FirstByUserId(int value );
+        public VisoesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<VisoesDTO> GetAllByVIS_ID(int value );
         public IEnumerable<VisoesDTO> GetAllByVIS_PLANID(int value );
         public IEnumerable<VisoesDTO> GetAllByVIS_FORMULA(string value );
         public IEnumerable<VisoesDTO> GetAllByCAB_ID(int value );
-        public IEnumerable<VisoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<VisoesDTO> GetAllByTenantID(int value );
         public IEnumerable<VisoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<VisoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<VisoesDTO> GetAllByUserId(int value );
+        public IEnumerable<VisoesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

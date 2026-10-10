@@ -83,11 +83,11 @@ namespace IRepository.Write
         void UpdateOCO_ID(int id, string value);
         void UpdateFPR_PESO_UNITARIO(int id, string value);
         void UpdateFPR_M2_UNITARIO(int id, string value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

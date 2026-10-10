@@ -61,11 +61,11 @@
     public DateTime? CAR_DATA_AGENCIAMENTO { get; set; }
     public string? TURN_ID { get; set; }
     public string? TURM_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CargaEntity(int? id, string car_id, DateTime? car_previsao_materia_prima, DateTime? car_data_inicio_previsto, DateTime? car_data_inicio_realizado, DateTime? car_data_fim_previsto, DateTime? car_data_fim_realizado, DateTime? car_inicio_janela_embarque, DateTime? car_fim_janela_embarque, DateTime? car_embarque_alvo, Decimal? car_status, Decimal? car_peso_teorico, Decimal? car_volume_teorico, Decimal? car_peso_real, Decimal? car_volume_real, Decimal? car_peso_embalagem, Decimal? car_peso_entrada, Decimal? car_peso_saida, string? car_id_doca, string? vei_placa, int? tip_id, string? tra_id, Decimal? car_grupo_produtivo, string? rot_id, string? car_observacao_de_transporte, string? car_justificativa_de_carregamento, string? oco_id, string? car_id_juntada, string? car_observacao_otimizador, string? car_id_integracao_balanca, string? car_pesagem_liberada, string? car_obs_lieracao, string? oco_id_lieracao, DateTime? car_data_entrada_veiculo, DateTime? car_data_saida_veiculo, DateTime? car_data_romaneio_consolidado, string? car_dia_turma_romaneio_consolidado, Decimal? car_diferenca_pesagem, DateTime? car_data_agenciamento, string? turn_id, string? turm_id ){
  Id = id; 
@@ -109,9 +109,9 @@
  CAR_DATA_AGENCIAMENTO = car_data_agenciamento.HasValue && car_data_agenciamento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : car_data_agenciamento; 
  TURN_ID = turn_id; 
  TURM_ID = turm_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

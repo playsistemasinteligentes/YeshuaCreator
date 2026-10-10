@@ -23,19 +23,19 @@
     public int INDDEP_ID { get; set; }
     public int DEP_ID { get; set; }
     public int IND_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal IndicadoresDepartamentosEntity(int inddep_id, int dep_id, int ind_id ){
  INDDEP_ID = inddep_id; 
  DEP_ID = dep_id; 
  IND_ID = ind_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

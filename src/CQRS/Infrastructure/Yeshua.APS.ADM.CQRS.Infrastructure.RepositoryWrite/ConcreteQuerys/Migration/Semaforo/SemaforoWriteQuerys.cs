@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSemaforoQuery(ISemaforoEntity Semaforo)
         {
-            this.Query = $@" INSERT INTO [Semaforo] ([SEM_ID], [SEM_STATUS], [SEM_ORIGEM], [SEM_EMISSAO], [SEM_ID_CONEXAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SEM_ID, @SEM_STATUS, @SEM_ORIGEM, @SEM_EMISSAO, @SEM_ID_CONEXAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Semaforo] ([SEM_ID], [SEM_STATUS], [SEM_ORIGEM], [SEM_EMISSAO], [SEM_ID_CONEXAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@SEM_ID, @SEM_STATUS, @SEM_ORIGEM, @SEM_EMISSAO, @SEM_ID_CONEXAO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 SEM_ID = Semaforo.SEM_ID,
@@ -38,11 +38,11 @@ namespace Query.Write
                 SEM_ORIGEM = Semaforo.SEM_ORIGEM,
                 SEM_EMISSAO = Semaforo.SEM_EMISSAO,
                 SEM_ID_CONEXAO = Semaforo.SEM_ID_CONEXAO,
-                OperationalEntityId = Semaforo.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Semaforo.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -112,16 +112,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [Semaforo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [Semaforo] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -158,6 +148,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Semaforo] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

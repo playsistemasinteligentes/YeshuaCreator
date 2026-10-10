@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InserirTemplateTipoInspecaoVisualQuery(ITemplateTipoInspecaoVisualEntity TemplateTipoInspecaoVisual)
         {
-            this.Query = $@" INSERT INTO [TemplateTipoInspecaoVisual] ([TIV_ID], [TEM_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TTI_ID] VALUES(@TIV_ID, @TEM_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TemplateTipoInspecaoVisual] ([TIV_ID], [TEM_ID], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[TTI_ID] VALUES(@TIV_ID, @TEM_ID, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 TIV_ID = TemplateTipoInspecaoVisual.TIV_ID,
                 TEM_ID = TemplateTipoInspecaoVisual.TEM_ID,
-                OperationalEntityId = TemplateTipoInspecaoVisual.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = TemplateTipoInspecaoVisual.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -72,16 +72,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 TEM_ID = value,
-                TTI_ID = tti_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int tti_id, string value)
-        {
-            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [TTI_ID] = @TTI_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 TTI_ID = tti_id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -122,6 +112,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                TTI_ID = tti_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int tti_id, string value)
+        {
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [OperationalEntityId] = @OperationalEntityId WHERE [TTI_ID] = @TTI_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 TTI_ID = tti_id,
             };
             return new QueryModel(this.Query, this.Parameters);

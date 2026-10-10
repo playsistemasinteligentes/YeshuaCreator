@@ -25,11 +25,11 @@
     public int? IPV_ID { get; set; }
     public int? ITI_ID { get; set; }
     public string? RIV_STATUS { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RespInspVisualEntity(int? id, int riv_id, int? ipv_id, int? iti_id, string? riv_status ){
  Id = id; 
@@ -37,9 +37,9 @@
  IPV_ID = ipv_id; 
  ITI_ID = iti_id; 
  RIV_STATUS = riv_status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

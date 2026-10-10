@@ -24,11 +24,11 @@ namespace IQuery.Read
         public QueryModel ExistsByRES_VELOCIDADE_HORA_RUSHQuery(Decimal value );
         public QueryModel ExistsByTVE_IDQuery(int value );
         public QueryModel ExistsByMAP_IDQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByRES_IDQuery(int value );
         public QueryModel FirstByRES_TIPOQuery(string value );
@@ -37,11 +37,11 @@ namespace IQuery.Read
         public QueryModel FirstByRES_VELOCIDADE_HORA_RUSHQuery(Decimal value );
         public QueryModel FirstByTVE_IDQuery(int value );
         public QueryModel FirstByMAP_IDQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

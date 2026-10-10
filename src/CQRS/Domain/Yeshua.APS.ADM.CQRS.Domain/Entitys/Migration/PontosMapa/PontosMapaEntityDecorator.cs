@@ -26,11 +26,11 @@
             public const ulong PON_LATITUDE = 1UL << 3;
             public const ulong PON_LONGITUDE = 1UL << 4;
             public const ulong PON_DISTANCIA_KM = 1UL << 5;
-            public const ulong OperationalEntityId = 1UL << 6;
-            public const ulong TenantID = 1UL << 7;
-            public const ulong Deleted = 1UL << 8;
-            public const ulong Changed = 1UL << 9;
-            public const ulong UserId = 1UL << 10;
+            public const ulong TenantID = 1UL << 6;
+            public const ulong Deleted = 1UL << 7;
+            public const ulong Changed = 1UL << 8;
+            public const ulong UserId = 1UL << 9;
+            public const ulong OperationalEntityId = 1UL << 10;
             public const ulong MUN_ID = 1UL << 11;
         }
 
@@ -42,11 +42,11 @@
             public const Dominio.Operational.OperationalDataClassification PON_LATITUDE = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PON_LONGITUDE = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PON_DISTANCIA_KM = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification MUN_ID = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
@@ -168,7 +168,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -225,6 +224,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public string? MUN_ID
                                     {

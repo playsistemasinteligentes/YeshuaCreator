@@ -21,11 +21,11 @@
                     public static class PlanoAmostralTesteTrackingFields
         {
             public const ulong GRP_TIPO = 1UL << 0;
-            public const ulong OperationalEntityId = 1UL << 1;
-            public const ulong TenantID = 1UL << 2;
-            public const ulong Deleted = 1UL << 3;
-            public const ulong Changed = 1UL << 4;
-            public const ulong UserId = 1UL << 5;
+            public const ulong TenantID = 1UL << 1;
+            public const ulong Deleted = 1UL << 2;
+            public const ulong Changed = 1UL << 3;
+            public const ulong UserId = 1UL << 4;
+            public const ulong OperationalEntityId = 1UL << 5;
             public const ulong PAT_ID = 1UL << 6;
             public const ulong PAT_QTD_CAIXAS_DE = 1UL << 7;
             public const ulong PAT_QTD_CAIXAS_ATE = 1UL << 8;
@@ -36,11 +36,11 @@
         public static class PlanoAmostralTesteOperationalFields
         {
             public const Dominio.Operational.OperationalDataClassification GRP_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PAT_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PAT_QTD_CAIXAS_DE = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PAT_QTD_CAIXAS_ATE = Dominio.Operational.OperationalDataClassification.Internal;
@@ -96,7 +96,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -153,6 +152,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int PAT_ID
                                     {

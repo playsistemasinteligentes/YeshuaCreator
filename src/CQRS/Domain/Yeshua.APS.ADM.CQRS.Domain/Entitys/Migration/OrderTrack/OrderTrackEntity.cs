@@ -31,11 +31,11 @@
     public DateTime? OTK_DATA_PREVISTA { get; set; }
     public DateTime? OTK_DATA_REALIZADA { get; set; }
     public int? FPR_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal OrderTrackEntity(int? id, int otk_id, Decimal otk_sequencia, int otk_verssao, string ord_id, string otk_evento, DateTime? otk_data_necessidade_de, DateTime? otk_data_necessidade_ate, DateTime? otk_data_prevista, DateTime? otk_data_realizada, int? fpr_id ){
  Id = id; 
@@ -49,9 +49,9 @@
  OTK_DATA_PREVISTA = otk_data_prevista.HasValue && otk_data_prevista.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_prevista; 
  OTK_DATA_REALIZADA = otk_data_realizada.HasValue && otk_data_realizada.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : otk_data_realizada; 
  FPR_ID = fpr_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

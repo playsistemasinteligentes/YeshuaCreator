@@ -41,11 +41,11 @@ namespace IRepository.Read
         public bool ExistsByCargaSnapshotJson(string value );
         public bool ExistsByPreferenciasFiscaisJson(string value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CTeRomaneioConsolidadoDTO FirstById(int value );
         public CTeRomaneioConsolidadoDTO FirstByEntradaOficialId(int value );
         public CTeRomaneioConsolidadoDTO FirstByCorrelationId(string value );
@@ -62,11 +62,11 @@ namespace IRepository.Read
         public CTeRomaneioConsolidadoDTO FirstByCargaSnapshotJson(string value );
         public CTeRomaneioConsolidadoDTO FirstByPreferenciasFiscaisJson(string value );
         public CTeRomaneioConsolidadoDTO FirstByStatus(int value );
-        public CTeRomaneioConsolidadoDTO FirstByOperationalEntityId(string value );
         public CTeRomaneioConsolidadoDTO FirstByTenantID(int value );
         public CTeRomaneioConsolidadoDTO FirstByDeleted(bool value );
         public CTeRomaneioConsolidadoDTO FirstByChanged(DateTime value );
         public CTeRomaneioConsolidadoDTO FirstByUserId(int value );
+        public CTeRomaneioConsolidadoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllById(int value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByEntradaOficialId(int value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByCorrelationId(string value );
@@ -83,11 +83,11 @@ namespace IRepository.Read
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByCargaSnapshotJson(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByPreferenciasFiscaisJson(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByStatus(int value );
-        public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByUserId(int value );
+        public IEnumerable<CTeRomaneioConsolidadoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

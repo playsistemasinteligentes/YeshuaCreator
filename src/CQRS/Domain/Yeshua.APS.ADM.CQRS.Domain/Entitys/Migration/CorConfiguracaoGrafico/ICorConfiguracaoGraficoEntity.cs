@@ -24,11 +24,11 @@
     Decimal COR_PERCENTUAL_INI { get; set; }
     Decimal COR_PERCENTUAL_FIM { get; set; }
     string COR_DESCRICAO { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

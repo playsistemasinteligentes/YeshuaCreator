@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByIPV_ID(int value );
         public bool ExistsByITI_ID(int value );
         public bool ExistsByRIV_STATUS(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public RespInspVisualDTO FirstById(int value );
         public RespInspVisualDTO FirstByRIV_ID(int value );
         public RespInspVisualDTO FirstByIPV_ID(int value );
         public RespInspVisualDTO FirstByITI_ID(int value );
         public RespInspVisualDTO FirstByRIV_STATUS(string value );
-        public RespInspVisualDTO FirstByOperationalEntityId(string value );
         public RespInspVisualDTO FirstByTenantID(int value );
         public RespInspVisualDTO FirstByDeleted(bool value );
         public RespInspVisualDTO FirstByChanged(DateTime value );
         public RespInspVisualDTO FirstByUserId(int value );
+        public RespInspVisualDTO FirstByOperationalEntityId(string value );
         public IEnumerable<RespInspVisualDTO> GetAllById(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByRIV_ID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByIPV_ID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByITI_ID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByRIV_STATUS(string value );
-        public IEnumerable<RespInspVisualDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RespInspVisualDTO> GetAllByTenantID(int value );
         public IEnumerable<RespInspVisualDTO> GetAllByDeleted(bool value );
         public IEnumerable<RespInspVisualDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RespInspVisualDTO> GetAllByUserId(int value );
+        public IEnumerable<RespInspVisualDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -21,11 +21,11 @@ namespace IQuery.Write
         QueryModel UpdateEQU_ID(int id, string value);
         QueryModel UpdateCAL_ID(int id, int value);
         QueryModel UpdateCLI_ID(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteT_MAQUINAS_EQUIPESQuery(IT_MAQUINAS_EQUIPESEntity T_MAQUINAS_EQUIPES);
     }
 }

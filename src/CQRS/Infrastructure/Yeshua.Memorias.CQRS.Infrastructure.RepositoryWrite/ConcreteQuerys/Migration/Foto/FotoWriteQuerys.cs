@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirFotoQuery(IFotoEntity Foto)
         {
-            this.Query = $@" INSERT INTO [Foto] ([StorageKey], [NomeOriginal], [ContentType], [HashArquivo], [CapturadaEmUtc], [Largura], [Altura], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@StorageKey, @NomeOriginal, @ContentType, @HashArquivo, @CapturadaEmUtc, @Largura, @Altura, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Foto] ([StorageKey], [NomeOriginal], [ContentType], [HashArquivo], [CapturadaEmUtc], [Largura], [Altura], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@StorageKey, @NomeOriginal, @ContentType, @HashArquivo, @CapturadaEmUtc, @Largura, @Altura, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 StorageKey = Foto.StorageKey,
@@ -41,11 +41,11 @@ namespace Query.Write
                 Largura = Foto.Largura,
                 Altura = Foto.Altura,
                 Status = Foto.Status,
-                OperationalEntityId = Foto.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Foto.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -148,16 +148,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [Foto] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [Foto] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -194,6 +184,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Foto] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

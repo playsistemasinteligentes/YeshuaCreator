@@ -31,11 +31,11 @@ namespace IRepository.Read
         public bool ExistsByCOT_VALOR(Decimal value );
         public bool ExistsByCOT_OCUPADO(Decimal value );
         public bool ExistsByREP_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CotasDTO FirstById(int value );
         public CotasDTO FirstByCOT_ID(int value );
         public CotasDTO FirstByCOT_DATA_DE(DateTime value );
@@ -43,11 +43,11 @@ namespace IRepository.Read
         public CotasDTO FirstByCOT_VALOR(Decimal value );
         public CotasDTO FirstByCOT_OCUPADO(Decimal value );
         public CotasDTO FirstByREP_ID(int value );
-        public CotasDTO FirstByOperationalEntityId(string value );
         public CotasDTO FirstByTenantID(int value );
         public CotasDTO FirstByDeleted(bool value );
         public CotasDTO FirstByChanged(DateTime value );
         public CotasDTO FirstByUserId(int value );
+        public CotasDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CotasDTO> GetAllById(int value );
         public IEnumerable<CotasDTO> GetAllByCOT_ID(int value );
         public IEnumerable<CotasDTO> GetAllByCOT_DATA_DE(DateTime value );
@@ -55,11 +55,11 @@ namespace IRepository.Read
         public IEnumerable<CotasDTO> GetAllByCOT_VALOR(Decimal value );
         public IEnumerable<CotasDTO> GetAllByCOT_OCUPADO(Decimal value );
         public IEnumerable<CotasDTO> GetAllByREP_ID(int value );
-        public IEnumerable<CotasDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CotasDTO> GetAllByTenantID(int value );
         public IEnumerable<CotasDTO> GetAllByDeleted(bool value );
         public IEnumerable<CotasDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CotasDTO> GetAllByUserId(int value );
+        public IEnumerable<CotasDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

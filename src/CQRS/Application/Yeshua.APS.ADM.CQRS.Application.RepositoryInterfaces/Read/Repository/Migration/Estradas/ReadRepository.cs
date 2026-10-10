@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByEST_DESCRICAO(string value );
         public bool ExistsByEST_ID_LIGACAO_PONTO_A(int value );
         public bool ExistsByEST_ID_LIGACAO_PONTO_B(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public EstradasDTO FirstById(int value );
         public EstradasDTO FirstByEST_ID(int value );
         public EstradasDTO FirstByEST_DESCRICAO(string value );
         public EstradasDTO FirstByEST_ID_LIGACAO_PONTO_A(int value );
         public EstradasDTO FirstByEST_ID_LIGACAO_PONTO_B(int value );
-        public EstradasDTO FirstByOperationalEntityId(string value );
         public EstradasDTO FirstByTenantID(int value );
         public EstradasDTO FirstByDeleted(bool value );
         public EstradasDTO FirstByChanged(DateTime value );
         public EstradasDTO FirstByUserId(int value );
+        public EstradasDTO FirstByOperationalEntityId(string value );
         public IEnumerable<EstradasDTO> GetAllById(int value );
         public IEnumerable<EstradasDTO> GetAllByEST_ID(int value );
         public IEnumerable<EstradasDTO> GetAllByEST_DESCRICAO(string value );
         public IEnumerable<EstradasDTO> GetAllByEST_ID_LIGACAO_PONTO_A(int value );
         public IEnumerable<EstradasDTO> GetAllByEST_ID_LIGACAO_PONTO_B(int value );
-        public IEnumerable<EstradasDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<EstradasDTO> GetAllByTenantID(int value );
         public IEnumerable<EstradasDTO> GetAllByDeleted(bool value );
         public IEnumerable<EstradasDTO> GetAllByChanged(DateTime value );
         public IEnumerable<EstradasDTO> GetAllByUserId(int value );
+        public IEnumerable<EstradasDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -56,11 +56,6 @@ namespace Input.Repository.T_Departamentos
             var query = _query.UpdateDEP_NOME(dep_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int dep_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(dep_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int dep_id, int value)
         {
             var query = _query.UpdateTenantID(dep_id, value);
@@ -79,6 +74,11 @@ namespace Input.Repository.T_Departamentos
         public void UpdateUserId(int dep_id, int value)
         {
             var query = _query.UpdateUserId(dep_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int dep_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(dep_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

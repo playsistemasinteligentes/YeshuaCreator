@@ -28,11 +28,11 @@
     public DateTime? ValidoDe { get; set; }
     public DateTime? ValidoAte { get; set; }
     public int Ativo { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     public string? SenhaStorageKey { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CertificadoDigitalEntity(int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo, string? senhastoragekey ){
@@ -45,9 +45,9 @@
  ValidoAte = validoate.HasValue && validoate.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validoate; 
  Ativo = ativo; 
  SenhaStorageKey = senhastoragekey; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

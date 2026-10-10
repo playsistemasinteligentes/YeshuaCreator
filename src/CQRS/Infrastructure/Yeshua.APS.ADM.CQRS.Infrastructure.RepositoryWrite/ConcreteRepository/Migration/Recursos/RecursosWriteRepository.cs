@@ -71,11 +71,6 @@ namespace Input.Repository.Recursos
             var query = _query.UpdateGRE_ID(rec_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string rec_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(rec_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string rec_id, int value)
         {
             var query = _query.UpdateTenantID(rec_id, value);
@@ -94,6 +89,11 @@ namespace Input.Repository.Recursos
         public void UpdateUserId(string rec_id, int value)
         {
             var query = _query.UpdateUserId(rec_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string rec_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(rec_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

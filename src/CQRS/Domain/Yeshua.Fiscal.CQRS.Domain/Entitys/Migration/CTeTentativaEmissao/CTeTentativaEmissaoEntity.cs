@@ -35,11 +35,11 @@
     public DateTime? EnviadoEmUtc { get; set; }
     public DateTime? AutorizadoEmUtc { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeTentativaEmissaoEntity(int? id, int ctesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status ){
  Id = id; 
@@ -57,9 +57,9 @@
  EnviadoEmUtc = enviadoemutc.HasValue && enviadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : enviadoemutc; 
  AutorizadoEmUtc = autorizadoemutc.HasValue && autorizadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : autorizadoemutc; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

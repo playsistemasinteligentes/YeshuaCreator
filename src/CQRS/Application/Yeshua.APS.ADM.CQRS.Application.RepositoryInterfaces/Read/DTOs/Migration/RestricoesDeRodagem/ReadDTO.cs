@@ -26,11 +26,11 @@ namespace Repositorio.Outputs
     public Decimal res_velocidade_hora_rush { get; set; }
     public int tve_id { get; set; }
     public int map_id { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -196,17 +196,41 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByTenantID(int value , bool TakeOffTenantID = false)
+        public bool ExistsByRootOperationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByRootOperationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        public bool ExistsByOperationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByOperationalEntityIdQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByOperationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByExecutionId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByExecutionIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByCausationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByCausationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTenantID(int value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -236,33 +260,9 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByRootOperationId(string value , bool TakeOffTenantID = false)
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByRootOperationIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByOperationId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.ExistsByOperationIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByExecutionId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.ExistsByExecutionIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByCausationId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.ExistsByCausationIdQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByOperationalEntityIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -364,17 +364,41 @@ namespace Read.Repository
                 return result;
         }
 
-        public ySagaDTO FirstByTenantID(int value , bool TakeOffTenantID = false)
+        public ySagaDTO FirstByRootOperationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
+            var query = _query.FirstByRootOperationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public ySagaDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        public ySagaDTO FirstByOperationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
+            var query = _query.FirstByOperationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaDTO FirstByExecutionId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByExecutionIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaDTO FirstByCausationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByCausationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaDTO FirstByTenantID(int value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
                 return result;
@@ -404,33 +428,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public ySagaDTO FirstByRootOperationId(string value , bool TakeOffTenantID = false)
+        public ySagaDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByRootOperationIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ySagaDTO FirstByOperationId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByOperationIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ySagaDTO FirstByExecutionId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByExecutionIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ySagaDTO FirstByCausationId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByCausationIdQuery(value , TakeOffTenantID);
+            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
                 return result;
@@ -532,17 +532,41 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<ySagaDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false)
+        public IEnumerable<ySagaDTO> GetAllByRootOperationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
+            var query = _query.FirstByRootOperationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
-        public IEnumerable<ySagaDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false)
+        public IEnumerable<ySagaDTO> GetAllByOperationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
+            var query = _query.FirstByOperationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaDTO> GetAllByExecutionId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByExecutionIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaDTO> GetAllByCausationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByCausationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -572,33 +596,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<ySagaDTO> GetAllByRootOperationId(string value , bool TakeOffTenantID = false)
+        public IEnumerable<ySagaDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByRootOperationIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<ySagaDTO> GetAllByOperationId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByOperationIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<ySagaDTO> GetAllByExecutionId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByExecutionIdQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<ySagaDTO> GetAllByCausationId(string value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByCausationIdQuery(value , TakeOffTenantID);
+            var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;

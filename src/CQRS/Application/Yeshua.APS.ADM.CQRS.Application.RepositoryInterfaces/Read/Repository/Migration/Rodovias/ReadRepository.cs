@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByROD_ID(int value );
         public bool ExistsByROD_DESCRICAO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public RodoviasDTO FirstById(int value );
         public RodoviasDTO FirstByROD_ID(int value );
         public RodoviasDTO FirstByROD_DESCRICAO(string value );
-        public RodoviasDTO FirstByOperationalEntityId(string value );
         public RodoviasDTO FirstByTenantID(int value );
         public RodoviasDTO FirstByDeleted(bool value );
         public RodoviasDTO FirstByChanged(DateTime value );
         public RodoviasDTO FirstByUserId(int value );
+        public RodoviasDTO FirstByOperationalEntityId(string value );
         public IEnumerable<RodoviasDTO> GetAllById(int value );
         public IEnumerable<RodoviasDTO> GetAllByROD_ID(int value );
         public IEnumerable<RodoviasDTO> GetAllByROD_DESCRICAO(string value );
-        public IEnumerable<RodoviasDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RodoviasDTO> GetAllByTenantID(int value );
         public IEnumerable<RodoviasDTO> GetAllByDeleted(bool value );
         public IEnumerable<RodoviasDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RodoviasDTO> GetAllByUserId(int value );
+        public IEnumerable<RodoviasDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

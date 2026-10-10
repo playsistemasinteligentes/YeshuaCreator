@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InserirMesesQuery(IMesesEntity Meses)
         {
-            this.Query = $@" INSERT INTO [Meses] ([MES], [fator], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MES, @fator, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Meses] ([MES], [fator], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@MES, @fator, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 MES = Meses.MES,
                 fator = Meses.fator,
-                OperationalEntityId = Meses.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Meses.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -61,16 +61,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 fator = value,
-                MES = mes,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(string mes, string value)
-        {
-            this.Query = $@" UPDATE [Meses] SET [OperationalEntityId] = @OperationalEntityId WHERE [MES] = @MES ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 MES = mes,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -111,6 +101,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                MES = mes,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string mes, string value)
+        {
+            this.Query = $@" UPDATE [Meses] SET [OperationalEntityId] = @OperationalEntityId WHERE [MES] = @MES ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 MES = mes,
             };
             return new QueryModel(this.Query, this.Parameters);

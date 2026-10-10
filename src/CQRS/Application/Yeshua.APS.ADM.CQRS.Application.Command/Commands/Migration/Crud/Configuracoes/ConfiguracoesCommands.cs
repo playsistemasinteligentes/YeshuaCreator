@@ -14,11 +14,11 @@ namespace Command.Write
     public struct ConfiguracoesCrudCommand : ICommand, IOperationalTelemetryCommand
     {
         public int CON_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Configuracoes";
  public string? OperationalRecordId => OperationalEntityId;
     }

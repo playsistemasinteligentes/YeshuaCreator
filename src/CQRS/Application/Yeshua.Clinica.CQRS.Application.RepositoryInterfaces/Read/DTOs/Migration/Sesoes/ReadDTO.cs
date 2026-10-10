@@ -46,11 +46,11 @@ namespace Repositorio.Outputs
     public int servicoid { get; set; }
     public int movimentacaofinanceiraid { get; set; }
     public int profissionalid { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

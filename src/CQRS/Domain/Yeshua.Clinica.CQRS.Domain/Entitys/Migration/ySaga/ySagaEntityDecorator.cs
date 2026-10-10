@@ -32,16 +32,16 @@
             public const ulong NextExecutionAt = 1UL << 9;
             public const ulong LockedAt = 1UL << 10;
             public const ulong LockedBy = 1UL << 11;
-            public const ulong ProcessingScope = 1UL << 12;
-            public const ulong TenantID = 1UL << 13;
-            public const ulong OperationalEntityId = 1UL << 14;
-            public const ulong Deleted = 1UL << 15;
-            public const ulong Changed = 1UL << 16;
-            public const ulong UserId = 1UL << 17;
-            public const ulong RootOperationId = 1UL << 18;
-            public const ulong OperationId = 1UL << 19;
-            public const ulong ExecutionId = 1UL << 20;
-            public const ulong CausationId = 1UL << 21;
+            public const ulong RootOperationId = 1UL << 12;
+            public const ulong OperationId = 1UL << 13;
+            public const ulong ExecutionId = 1UL << 14;
+            public const ulong CausationId = 1UL << 15;
+            public const ulong ProcessingScope = 1UL << 16;
+            public const ulong TenantID = 1UL << 17;
+            public const ulong Deleted = 1UL << 18;
+            public const ulong Changed = 1UL << 19;
+            public const ulong UserId = 1UL << 20;
+            public const ulong OperationalEntityId = 1UL << 21;
         }
 
         public static class ySagaOperationalFields
@@ -58,16 +58,16 @@
             public const Dominio.Operational.OperationalDataClassification NextExecutionAt = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification LockedAt = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification LockedBy = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification ProcessingScope = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification RootOperationId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification ExecutionId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CausationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProcessingScope = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ySagaDecorator : IySagaEntity
@@ -272,64 +272,6 @@
                                             }
                                         }
                                     }
-    public string ProcessingScope => _inner.ProcessingScope;
-
-                                    public int? TenantID
-                                    {
-                                        get => _inner.TenantID;
-                                        set
-                                        {
-                                            if (_inner.TenantID != value)
-                                            {
-                                                _inner.TenantID = value;
-                                                if ((_trackingMask & ySagaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.TenantID, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-    public string OperationalEntityId => _inner.OperationalEntityId;
-
-                                    public bool? Deleted
-                                    {
-                                        get => _inner.Deleted;
-                                        set
-                                        {
-                                            if (_inner.Deleted != value)
-                                            {
-                                                _inner.Deleted = value;
-                                                if ((_trackingMask & ySagaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Deleted, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-
-                                    public DateTime? Changed
-                                    {
-                                        get => _inner.Changed;
-                                        set
-                                        {
-                                            if (_inner.Changed != value)
-                                            {
-                                                _inner.Changed = value;
-                                                if ((_trackingMask & ySagaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Changed, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
-
-                                    public int? UserId
-                                    {
-                                        get => _inner.UserId;
-                                        set
-                                        {
-                                            if (_inner.UserId != value)
-                                            {
-                                                _inner.UserId = value;
-                                                if ((_trackingMask & ySagaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.UserId, _trackingExecutionIdentity);
-                                            }
-                                        }
-                                    }
 
                                     public string? RootOperationId
                                     {
@@ -386,6 +328,64 @@
                                             }
                                         }
                                     }
+    public string ProcessingScope => _inner.ProcessingScope;
+
+                                    public int? TenantID
+                                    {
+                                        get => _inner.TenantID;
+                                        set
+                                        {
+                                            if (_inner.TenantID != value)
+                                            {
+                                                _inner.TenantID = value;
+                                                if ((_trackingMask & ySagaTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.TenantID, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public bool? Deleted
+                                    {
+                                        get => _inner.Deleted;
+                                        set
+                                        {
+                                            if (_inner.Deleted != value)
+                                            {
+                                                _inner.Deleted = value;
+                                                if ((_trackingMask & ySagaTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Deleted, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? Changed
+                                    {
+                                        get => _inner.Changed;
+                                        set
+                                        {
+                                            if (_inner.Changed != value)
+                                            {
+                                                _inner.Changed = value;
+                                                if ((_trackingMask & ySagaTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Changed, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? UserId
+                                    {
+                                        get => _inner.UserId;
+                                        set
+                                        {
+                                            if (_inner.UserId != value)
+                                            {
+                                                _inner.UserId = value;
+                                                if ((_trackingMask & ySagaTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.UserId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

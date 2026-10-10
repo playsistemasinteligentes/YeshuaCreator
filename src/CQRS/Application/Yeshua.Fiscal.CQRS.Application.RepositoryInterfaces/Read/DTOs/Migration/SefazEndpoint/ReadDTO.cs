@@ -26,11 +26,11 @@ namespace Repositorio.Outputs
     public string versao { get; set; } = string.Empty;
     public string url { get; set; } = string.Empty;
     public int ativo { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

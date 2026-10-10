@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPlotagemQuery(IPlotagemEntity Plotagem)
         {
-            this.Query = $@" INSERT INTO [Plotagem] ([PLO_ID], [PLO_NOME], [PLO_DIMENSAO], [PLO_X], [PLO_Y], [PLO_Z], [PLO_GRAFICO], [CON_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PLO_ID, @PLO_NOME, @PLO_DIMENSAO, @PLO_X, @PLO_Y, @PLO_Z, @PLO_GRAFICO, @CON_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Plotagem] ([PLO_ID], [PLO_NOME], [PLO_DIMENSAO], [PLO_X], [PLO_Y], [PLO_Z], [PLO_GRAFICO], [CON_ID], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@PLO_ID, @PLO_NOME, @PLO_DIMENSAO, @PLO_X, @PLO_Y, @PLO_Z, @PLO_GRAFICO, @CON_ID, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 PLO_ID = Plotagem.PLO_ID,
@@ -41,11 +41,11 @@ namespace Query.Write
                 PLO_Z = Plotagem.PLO_Z,
                 PLO_GRAFICO = Plotagem.PLO_GRAFICO,
                 CON_ID = Plotagem.CON_ID,
-                OperationalEntityId = Plotagem.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Plotagem.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -148,16 +148,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [Plotagem] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [Plotagem] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -194,6 +184,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Plotagem] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

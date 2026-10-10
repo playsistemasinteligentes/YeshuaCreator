@@ -30,33 +30,33 @@ namespace IRepository.Read
         public bool ExistsByPOL_PROMOCAO(int value );
         public bool ExistsByPOL_DIAS_ANTECIPACAO(int value );
         public bool ExistsByPOL_METROS_LINEARES(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public PoliticaOnduladeiraDTO FirstById(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_ID(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_NIVEL(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_PROMOCAO(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_DIAS_ANTECIPACAO(int value );
         public PoliticaOnduladeiraDTO FirstByPOL_METROS_LINEARES(int value );
-        public PoliticaOnduladeiraDTO FirstByOperationalEntityId(string value );
         public PoliticaOnduladeiraDTO FirstByTenantID(int value );
         public PoliticaOnduladeiraDTO FirstByDeleted(bool value );
         public PoliticaOnduladeiraDTO FirstByChanged(DateTime value );
         public PoliticaOnduladeiraDTO FirstByUserId(int value );
+        public PoliticaOnduladeiraDTO FirstByOperationalEntityId(string value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllById(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_ID(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_NIVEL(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_PROMOCAO(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_DIAS_ANTECIPACAO(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByPOL_METROS_LINEARES(int value );
-        public IEnumerable<PoliticaOnduladeiraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByTenantID(int value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByDeleted(bool value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PoliticaOnduladeiraDTO> GetAllByUserId(int value );
+        public IEnumerable<PoliticaOnduladeiraDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -26,11 +26,11 @@ namespace IRepository.Write
         void UpdateROT_DATA_HORA(int rot_id, DateTime value);
         void UpdateROT_LAT(int rot_id, Decimal value);
         void UpdateROT_LONG(int rot_id, Decimal value);
-        void UpdateOperationalEntityId(int rot_id, string value);
         void UpdateTenantID(int rot_id, int value);
         void UpdateDeleted(int rot_id, bool value);
         void UpdateChanged(int rot_id, DateTime value);
         void UpdateUserId(int rot_id, int value);
+        void UpdateOperationalEntityId(int rot_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

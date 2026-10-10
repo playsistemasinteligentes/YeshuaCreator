@@ -21,11 +21,11 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public string equ_id { get; set; } = string.Empty;
     public Decimal equ_hierarquia_seq_transformacao { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

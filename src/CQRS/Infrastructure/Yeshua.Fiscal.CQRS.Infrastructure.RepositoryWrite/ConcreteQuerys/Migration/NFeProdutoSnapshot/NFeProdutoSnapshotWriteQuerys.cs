@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirNFeProdutoSnapshotQuery(INFeProdutoSnapshotEntity NFeProdutoSnapshot)
         {
-            this.Query = $@" INSERT INTO [NFeProdutoSnapshot] ([DocumentoFiscalOriginarioId], [CorrelationId], [CargaId], [PedidoId], [ChaveAcesso], [EmitenteDocumento], [DestinatarioDocumento], [UFOrigem], [UFDestino], [MunicipioOrigemCodigoIbge], [MunicipioDestinoCodigoIbge], [ValorDocumento], [PesoBruto], [Volume], [XmlStorageKey], [SnapshotJson], [Status], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@DocumentoFiscalOriginarioId, @CorrelationId, @CargaId, @PedidoId, @ChaveAcesso, @EmitenteDocumento, @DestinatarioDocumento, @UFOrigem, @UFDestino, @MunicipioOrigemCodigoIbge, @MunicipioDestinoCodigoIbge, @ValorDocumento, @PesoBruto, @Volume, @XmlStorageKey, @SnapshotJson, @Status, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [NFeProdutoSnapshot] ([DocumentoFiscalOriginarioId], [CorrelationId], [CargaId], [PedidoId], [ChaveAcesso], [EmitenteDocumento], [DestinatarioDocumento], [UFOrigem], [UFDestino], [MunicipioOrigemCodigoIbge], [MunicipioDestinoCodigoIbge], [ValorDocumento], [PesoBruto], [Volume], [XmlStorageKey], [SnapshotJson], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@DocumentoFiscalOriginarioId, @CorrelationId, @CargaId, @PedidoId, @ChaveAcesso, @EmitenteDocumento, @DestinatarioDocumento, @UFOrigem, @UFDestino, @MunicipioOrigemCodigoIbge, @MunicipioDestinoCodigoIbge, @ValorDocumento, @PesoBruto, @Volume, @XmlStorageKey, @SnapshotJson, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 DocumentoFiscalOriginarioId = NFeProdutoSnapshot.DocumentoFiscalOriginarioId,
@@ -50,11 +50,11 @@ namespace Query.Write
                 XmlStorageKey = NFeProdutoSnapshot.XmlStorageKey,
                 SnapshotJson = NFeProdutoSnapshot.SnapshotJson,
                 Status = NFeProdutoSnapshot.Status,
-                OperationalEntityId = NFeProdutoSnapshot.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = NFeProdutoSnapshot.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -256,16 +256,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [NFeProdutoSnapshot] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [NFeProdutoSnapshot] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -302,6 +292,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [NFeProdutoSnapshot] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

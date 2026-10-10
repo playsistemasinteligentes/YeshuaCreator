@@ -28,11 +28,11 @@
     public string? PRO_ID { get; set; }
     public int? ROT_SEQ_TRANFORMACAO { get; set; }
     public string? OBS_INTEGRACAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ObservacoesEntity(int obs_id, string? obs_tipo, string? obs_descricao, string? cli_id, string? maq_id, string? pro_id, int? rot_seq_tranformacao, string? obs_integracao ){
  OBS_ID = obs_id; 
@@ -43,9 +43,9 @@
  PRO_ID = pro_id; 
  ROT_SEQ_TRANFORMACAO = rot_seq_tranformacao; 
  OBS_INTEGRACAO = obs_integracao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

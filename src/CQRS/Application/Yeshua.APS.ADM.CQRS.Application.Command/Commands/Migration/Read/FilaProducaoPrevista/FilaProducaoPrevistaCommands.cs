@@ -75,11 +75,11 @@ namespace Command.Read
         public string? OCO_ID { get; set; }
         public string? FPR_PESO_UNITARIO { get; set; }
         public string? FPR_M2_UNITARIO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "FilaProducaoPrevista";
  public string? OperationalRecordId => OperationalEntityId;

@@ -42,11 +42,11 @@
             public const ulong DOM_EMPRESA = 1UL << 19;
             public const ulong DOM_FILIAL = 1UL << 20;
             public const ulong MED_VALOR_DISPER = 1UL << 21;
-            public const ulong OperationalEntityId = 1UL << 22;
-            public const ulong TenantID = 1UL << 23;
-            public const ulong Deleted = 1UL << 24;
-            public const ulong Changed = 1UL << 25;
-            public const ulong UserId = 1UL << 26;
+            public const ulong TenantID = 1UL << 22;
+            public const ulong Deleted = 1UL << 23;
+            public const ulong Changed = 1UL << 24;
+            public const ulong UserId = 1UL << 25;
+            public const ulong OperationalEntityId = 1UL << 26;
         }
 
         public static class T_MedicoesOperationalFields
@@ -73,11 +73,11 @@
             public const Dominio.Operational.OperationalDataClassification DOM_EMPRESA = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification DOM_FILIAL = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification MED_VALOR_DISPER = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class T_MedicoesDecorator : IT_MedicoesEntity
@@ -422,7 +422,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -479,6 +478,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

@@ -22,10 +22,10 @@ namespace IQuery.Write
         QueryModel UpdateEmailPort(int id, int value);
         QueryModel UpdateEmailUserName(int id, string value);
         QueryModel UpdateEmailPassword(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification);
     }
 }

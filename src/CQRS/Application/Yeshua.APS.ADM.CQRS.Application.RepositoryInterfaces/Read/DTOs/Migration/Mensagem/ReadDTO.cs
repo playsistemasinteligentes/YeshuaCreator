@@ -26,11 +26,11 @@ namespace Repositorio.Outputs
     public string men_type { get; set; } = string.Empty;
     public Decimal men_qtd_try_send { get; set; }
     public DateTime men_date_try_send { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

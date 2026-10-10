@@ -148,14 +148,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByDeleted(bool value )
         {
             var query = _query.ExistsByDeletedQuery(value );
@@ -175,6 +167,14 @@ namespace Read.Repository
         public bool ExistsByUserId(int value )
         {
             var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -228,14 +228,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public yConfigNotificationDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public yConfigNotificationDTO FirstByDeleted(bool value )
         {
             var query = _query.FirstByDeletedQuery(value );
@@ -255,6 +247,14 @@ namespace Read.Repository
         public yConfigNotificationDTO FirstByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
@@ -308,14 +308,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
         public IEnumerable<yConfigNotificationDTO> GetAllByDeleted(bool value )
         {
             var query = _query.FirstByDeletedQuery(value );
@@ -335,6 +327,14 @@ namespace Read.Repository
         public IEnumerable<yConfigNotificationDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;

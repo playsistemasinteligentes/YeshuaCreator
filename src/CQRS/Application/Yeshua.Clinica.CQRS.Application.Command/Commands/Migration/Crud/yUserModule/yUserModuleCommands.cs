@@ -17,10 +17,10 @@ namespace Command.Write
         public string? ModuleId { get; set; }
         public int? UserId { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "yUserModule";
  public string? OperationalRecordId => OperationalEntityId;
     }

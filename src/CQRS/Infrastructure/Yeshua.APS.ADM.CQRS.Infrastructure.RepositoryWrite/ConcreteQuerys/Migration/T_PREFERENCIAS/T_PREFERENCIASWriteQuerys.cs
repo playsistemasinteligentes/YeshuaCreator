@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_PREFERENCIASQuery(IT_PREFERENCIASEntity T_PREFERENCIAS)
         {
-            this.Query = $@" INSERT INTO [T_PREFERENCIAS] ([PRE_ID], [PRE_DESCRICAO], [PRE_NAMESPACE], [PRE_TIPO], [PRE_VALOR], [USE_ID], [PER_ID], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PRE_ID, @PRE_DESCRICAO, @PRE_NAMESPACE, @PRE_TIPO, @PRE_VALOR, @USE_ID, @PER_ID, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_PREFERENCIAS] ([PRE_ID], [PRE_DESCRICAO], [PRE_NAMESPACE], [PRE_TIPO], [PRE_VALOR], [USE_ID], [PER_ID], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@PRE_ID, @PRE_DESCRICAO, @PRE_NAMESPACE, @PRE_TIPO, @PRE_VALOR, @USE_ID, @PER_ID, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 PRE_ID = T_PREFERENCIAS.PRE_ID,
@@ -40,11 +40,11 @@ namespace Query.Write
                 PRE_VALOR = T_PREFERENCIAS.PRE_VALOR,
                 USE_ID = T_PREFERENCIAS.USE_ID,
                 PER_ID = T_PREFERENCIAS.PER_ID,
-                OperationalEntityId = T_PREFERENCIAS.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = T_PREFERENCIAS.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -136,16 +136,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE [T_PREFERENCIAS] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
@@ -182,6 +172,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int id, string value)
+        {
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -18,11 +18,11 @@ namespace Command.Write
         public string TMP_TIPO_CARGA { get; set; }
         public Decimal TMP_TEMPO_MEDIO_UNITARIO { get; set; }
         public string CLI_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "TemposLogisticos";
  public string? OperationalRecordId => OperationalEntityId;
     }

@@ -24,11 +24,11 @@ namespace Command.Write
         public string? PLA_VLRACUMULADO { get; set; }
         public string? PLA_REFERENCIA { get; set; }
         public int USE_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Planoacao";
  public string? OperationalRecordId => OperationalEntityId;
     }

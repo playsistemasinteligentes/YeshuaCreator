@@ -21,6 +21,7 @@
                     public interface IyUserEntity
 {
     int Id { get; }
+    string OperationalEntityId { get; }
     string Nome { get; set; }
     string Email { get; set; }
     string? Senha { get; set; }

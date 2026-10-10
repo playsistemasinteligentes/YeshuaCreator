@@ -29,27 +29,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByGRU_ID(int value );
         public bool ExistsByID_USUARIO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_USER_GRUPODTO FirstById(int value );
         public T_USER_GRUPODTO FirstByGRU_ID(int value );
         public T_USER_GRUPODTO FirstByID_USUARIO(int value );
-        public T_USER_GRUPODTO FirstByOperationalEntityId(string value );
         public T_USER_GRUPODTO FirstByTenantID(int value );
         public T_USER_GRUPODTO FirstByDeleted(bool value );
         public T_USER_GRUPODTO FirstByChanged(DateTime value );
         public T_USER_GRUPODTO FirstByUserId(int value );
+        public T_USER_GRUPODTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_USER_GRUPODTO> GetAllById(int value );
         public IEnumerable<T_USER_GRUPODTO> GetAllByGRU_ID(int value );
         public IEnumerable<T_USER_GRUPODTO> GetAllByID_USUARIO(int value );
-        public IEnumerable<T_USER_GRUPODTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_USER_GRUPODTO> GetAllByTenantID(int value );
         public IEnumerable<T_USER_GRUPODTO> GetAllByDeleted(bool value );
         public IEnumerable<T_USER_GRUPODTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_USER_GRUPODTO> GetAllByUserId(int value );
+        public IEnumerable<T_USER_GRUPODTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

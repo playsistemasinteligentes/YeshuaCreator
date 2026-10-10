@@ -29,11 +29,11 @@
     public int? ROT_ORDEM_ROTEIRO { get; set; }
     public string? ROT_TIPO { get; set; }
     public Decimal? ROT_DISTANCIA { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RotaPontosMapaEntity(int? id, string rot_id, string pon_id_destino, string pon_id_origem, Decimal? rot_custo_total, string pon_id_roteiro, int? rot_ordem_roteiro, string? rot_tipo, Decimal? rot_distancia ){
  Id = id; 
@@ -45,9 +45,9 @@
  ROT_ORDEM_ROTEIRO = rot_ordem_roteiro; 
  ROT_TIPO = rot_tipo; 
  ROT_DISTANCIA = rot_distancia; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

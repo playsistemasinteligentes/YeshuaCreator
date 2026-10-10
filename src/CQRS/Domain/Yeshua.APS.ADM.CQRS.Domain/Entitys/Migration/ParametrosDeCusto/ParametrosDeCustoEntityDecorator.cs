@@ -25,11 +25,11 @@
             public const ulong PRO_ID = 1UL << 2;
             public const ulong CUS_ID = 1UL << 3;
             public const ulong PAR_VALOR = 1UL << 4;
-            public const ulong OperationalEntityId = 1UL << 5;
-            public const ulong TenantID = 1UL << 6;
-            public const ulong Deleted = 1UL << 7;
-            public const ulong Changed = 1UL << 8;
-            public const ulong UserId = 1UL << 9;
+            public const ulong TenantID = 1UL << 5;
+            public const ulong Deleted = 1UL << 6;
+            public const ulong Changed = 1UL << 7;
+            public const ulong UserId = 1UL << 8;
+            public const ulong OperationalEntityId = 1UL << 9;
         }
 
         public static class ParametrosDeCustoOperationalFields
@@ -39,11 +39,11 @@
             public const Dominio.Operational.OperationalDataClassification PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CUS_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PAR_VALOR = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ParametrosDeCustoDecorator : IParametrosDeCustoEntity
@@ -150,7 +150,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -207,6 +206,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

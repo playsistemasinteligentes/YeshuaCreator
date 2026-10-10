@@ -26,11 +26,11 @@ namespace IQuery.Write
         QueryModel UpdateMUN_CODIGO_SIAFI(string mun_id, string value);
         QueryModel UpdateMUN_CODIGO_CNPJ(string mun_id, string value);
         QueryModel UpdateMUN_DISTANCIA_KM(string mun_id, Decimal value);
-        QueryModel UpdateOperationalEntityId(string mun_id, string value);
         QueryModel UpdateTenantID(string mun_id, int value);
         QueryModel UpdateDeleted(string mun_id, bool value);
         QueryModel UpdateChanged(string mun_id, DateTime value);
         QueryModel UpdateUserId(string mun_id, int value);
+        QueryModel UpdateOperationalEntityId(string mun_id, string value);
         public QueryModel DeleteMunicipioQuery(IMunicipioEntity Municipio);
     }
 }

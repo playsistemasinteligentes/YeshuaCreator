@@ -24,11 +24,11 @@ namespace Repositorio.Outputs
     public int pol_promocao { get; set; }
     public int pol_dias_antecipacao { get; set; }
     public int pol_metros_lineares { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

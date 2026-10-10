@@ -41,11 +41,11 @@
     public string? PRO_ID_PALETE { get; set; }
     public string? COR_STATUS_PALETE { get; set; }
     public Decimal? COR_GRUPO_PRODUTIVO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CorridasOnduladeiraEstudoEntity(int? id, string? bol_id, string? bol_id_origem, Decimal? pro_largura_peca, Decimal? pro_largura_peca_programado, Decimal? pro_comprimento_peca, Decimal? pro_comprimento_peca_programado, Decimal? pro_utilizou_refile_obrigatorio, string? pro_vincos_recalculados, string? cor_solver, Decimal? cor_gramatura_papeis_programados, Decimal? cor_custo_papeis_programados, Decimal? cor_gramatura_resina_programados, Decimal? cor_custo_resina_programados, Decimal? cor_tolerancia_menos, Decimal? cor_tolerancia_mais, int? cor_pilhas_por_palete, Decimal? cor_m_linear_realizado, string? pro_id_palete, string? cor_status_palete, Decimal? cor_grupo_produtivo ){
  Id = id; 
@@ -69,9 +69,9 @@
  PRO_ID_PALETE = pro_id_palete; 
  COR_STATUS_PALETE = cor_status_palete; 
  COR_GRUPO_PRODUTIVO = cor_grupo_produtivo; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

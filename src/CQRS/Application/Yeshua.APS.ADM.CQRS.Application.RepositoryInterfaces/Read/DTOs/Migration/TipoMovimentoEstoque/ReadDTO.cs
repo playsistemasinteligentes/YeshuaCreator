@@ -22,11 +22,11 @@ namespace Repositorio.Outputs
     public string tip_descricao { get; set; } = string.Empty;
     public int tip_type { get; set; }
     public int spr { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

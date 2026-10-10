@@ -21,11 +21,11 @@ namespace IQuery.Write
         QueryModel UpdatePAR_VALOR_S(string par_id, string value);
         QueryModel UpdatePAR_VALOR_N(string par_id, Decimal value);
         QueryModel UpdatePAR_VALOR_D(string par_id, DateTime value);
-        QueryModel UpdateOperationalEntityId(string par_id, string value);
         QueryModel UpdateTenantID(string par_id, int value);
         QueryModel UpdateDeleted(string par_id, bool value);
         QueryModel UpdateChanged(string par_id, DateTime value);
         QueryModel UpdateUserId(string par_id, int value);
+        QueryModel UpdateOperationalEntityId(string par_id, string value);
         public QueryModel DeleteParamQuery(IParamEntity Param);
     }
 }

@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByREP_ID(int value );
         public bool ExistsByREP_NOME(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public RepresentantesDTO FirstById(int value );
         public RepresentantesDTO FirstByREP_ID(int value );
         public RepresentantesDTO FirstByREP_NOME(string value );
-        public RepresentantesDTO FirstByOperationalEntityId(string value );
         public RepresentantesDTO FirstByTenantID(int value );
         public RepresentantesDTO FirstByDeleted(bool value );
         public RepresentantesDTO FirstByChanged(DateTime value );
         public RepresentantesDTO FirstByUserId(int value );
+        public RepresentantesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<RepresentantesDTO> GetAllById(int value );
         public IEnumerable<RepresentantesDTO> GetAllByREP_ID(int value );
         public IEnumerable<RepresentantesDTO> GetAllByREP_NOME(string value );
-        public IEnumerable<RepresentantesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<RepresentantesDTO> GetAllByTenantID(int value );
         public IEnumerable<RepresentantesDTO> GetAllByDeleted(bool value );
         public IEnumerable<RepresentantesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RepresentantesDTO> GetAllByUserId(int value );
+        public IEnumerable<RepresentantesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

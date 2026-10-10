@@ -30,30 +30,30 @@ namespace IRepository.Read
         public bool ExistsByEmailPort(int value );
         public bool ExistsByEmailUserName(string value );
         public bool ExistsByEmailPassword(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public yConfigNotificationDTO FirstById(int value );
         public yConfigNotificationDTO FirstByTenantID(int value );
         public yConfigNotificationDTO FirstByEmailSmtpClient(string value );
         public yConfigNotificationDTO FirstByEmailPort(int value );
         public yConfigNotificationDTO FirstByEmailUserName(string value );
         public yConfigNotificationDTO FirstByEmailPassword(string value );
-        public yConfigNotificationDTO FirstByOperationalEntityId(string value );
         public yConfigNotificationDTO FirstByDeleted(bool value );
         public yConfigNotificationDTO FirstByChanged(DateTime value );
         public yConfigNotificationDTO FirstByUserId(int value );
+        public yConfigNotificationDTO FirstByOperationalEntityId(string value );
         public IEnumerable<yConfigNotificationDTO> GetAllById(int value );
         public IEnumerable<yConfigNotificationDTO> GetAllByTenantID(int value );
         public IEnumerable<yConfigNotificationDTO> GetAllByEmailSmtpClient(string value );
         public IEnumerable<yConfigNotificationDTO> GetAllByEmailPort(int value );
         public IEnumerable<yConfigNotificationDTO> GetAllByEmailUserName(string value );
         public IEnumerable<yConfigNotificationDTO> GetAllByEmailPassword(string value );
-        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<yConfigNotificationDTO> GetAllByDeleted(bool value );
         public IEnumerable<yConfigNotificationDTO> GetAllByChanged(DateTime value );
         public IEnumerable<yConfigNotificationDTO> GetAllByUserId(int value );
+        public IEnumerable<yConfigNotificationDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

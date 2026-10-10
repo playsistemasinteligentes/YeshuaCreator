@@ -18,11 +18,11 @@ namespace Command.Read
         public DateTime? ROT_DATA_HORA { get; set; }
         public Decimal? ROT_LAT { get; set; }
         public Decimal? ROT_LONG { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "RotaRealizada";
  public string? OperationalRecordId => OperationalEntityId;

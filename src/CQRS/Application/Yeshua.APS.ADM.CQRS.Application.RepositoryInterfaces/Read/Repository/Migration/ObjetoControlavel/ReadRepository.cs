@@ -29,31 +29,31 @@ namespace IRepository.Read
         public bool ExistsByOBJ_DESCRICAO(string value );
         public bool ExistsByOBJ_TIPO(string value );
         public bool ExistsByOBJ_GRUPO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ObjetoControlavelDTO FirstById(int value );
         public ObjetoControlavelDTO FirstByOBJ_ID(string value );
         public ObjetoControlavelDTO FirstByOBJ_DESCRICAO(string value );
         public ObjetoControlavelDTO FirstByOBJ_TIPO(string value );
         public ObjetoControlavelDTO FirstByOBJ_GRUPO(string value );
-        public ObjetoControlavelDTO FirstByOperationalEntityId(string value );
         public ObjetoControlavelDTO FirstByTenantID(int value );
         public ObjetoControlavelDTO FirstByDeleted(bool value );
         public ObjetoControlavelDTO FirstByChanged(DateTime value );
         public ObjetoControlavelDTO FirstByUserId(int value );
+        public ObjetoControlavelDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ObjetoControlavelDTO> GetAllById(int value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByOBJ_ID(string value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByOBJ_DESCRICAO(string value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByOBJ_TIPO(string value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByOBJ_GRUPO(string value );
-        public IEnumerable<ObjetoControlavelDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByTenantID(int value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByDeleted(bool value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ObjetoControlavelDTO> GetAllByUserId(int value );
+        public IEnumerable<ObjetoControlavelDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -20,11 +20,11 @@ namespace Command.Write
         public int? REL_POS_X { get; set; }
         public int? REL_POS_Y { get; set; }
         public int? REL_TAMANHO_FONTE { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Relatorios";
  public string? OperationalRecordId => OperationalEntityId;
     }

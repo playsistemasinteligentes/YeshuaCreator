@@ -33,11 +33,11 @@ namespace IQuery.Write
         QueryModel UpdateAGE_PARAMETROS(int id, string value);
         QueryModel UpdateAGE_EXCECAO(int id, string value);
         QueryModel UpdateAGE_DESCRICAO(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteT_AGENDA_SCHEDULEQuery(IT_AGENDA_SCHEDULEEntity T_AGENDA_SCHEDULE);
     }
 }

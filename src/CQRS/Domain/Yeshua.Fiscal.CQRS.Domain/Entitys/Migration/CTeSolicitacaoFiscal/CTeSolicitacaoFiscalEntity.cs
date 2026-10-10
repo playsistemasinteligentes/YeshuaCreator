@@ -40,11 +40,11 @@
     public Decimal? ValorCarga { get; set; }
     public string? PreferenciasManifestoJson { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeSolicitacaoFiscalEntity(int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string? preferenciasmanifestojson, int status ){
  Id = id; 
@@ -67,9 +67,9 @@
  ValorCarga = valorcarga; 
  PreferenciasManifestoJson = preferenciasmanifestojson; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

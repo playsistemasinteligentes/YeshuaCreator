@@ -30,18 +30,18 @@ namespace Query.Write
         }
         public QueryModel InserirCorConfiguracaoGraficoQuery(ICorConfiguracaoGraficoEntity CorConfiguracaoGrafico)
         {
-            this.Query = $@" INSERT INTO [CorConfiguracaoGrafico] ([COR_ID], [COR_PERCENTUAL_INI], [COR_PERCENTUAL_FIM], [COR_DESCRICAO], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@COR_ID, @COR_PERCENTUAL_INI, @COR_PERCENTUAL_FIM, @COR_DESCRICAO, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CorConfiguracaoGrafico] ([COR_ID], [COR_PERCENTUAL_INI], [COR_PERCENTUAL_FIM], [COR_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@COR_ID, @COR_PERCENTUAL_INI, @COR_PERCENTUAL_FIM, @COR_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 COR_ID = CorConfiguracaoGrafico.COR_ID,
                 COR_PERCENTUAL_INI = CorConfiguracaoGrafico.COR_PERCENTUAL_INI,
                 COR_PERCENTUAL_FIM = CorConfiguracaoGrafico.COR_PERCENTUAL_FIM,
                 COR_DESCRICAO = CorConfiguracaoGrafico.COR_DESCRICAO,
-                OperationalEntityId = CorConfiguracaoGrafico.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = CorConfiguracaoGrafico.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -89,16 +89,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(string cor_id, string value)
-        {
-            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [OperationalEntityId] = @OperationalEntityId WHERE [COR_ID] = @COR_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                COR_ID = cor_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(string cor_id, int value)
         {
             this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [TenantID] = @TenantID WHERE [COR_ID] = @COR_ID ";
@@ -135,6 +125,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                COR_ID = cor_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string cor_id, string value)
+        {
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [OperationalEntityId] = @OperationalEntityId WHERE [COR_ID] = @COR_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 COR_ID = cor_id,
             };
             return new QueryModel(this.Query, this.Parameters);

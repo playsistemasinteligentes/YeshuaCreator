@@ -31,11 +31,11 @@
     public string? ORD_HASH_KEY { get; set; }
     public string? NOT_ID { get; set; }
     public DateTime? NOT_EMISSAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ItenCargaEntity(int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string? ord_hash_key, string? not_id, DateTime? not_emissao ){
  Id = id; 
@@ -49,9 +49,9 @@
  ORD_HASH_KEY = ord_hash_key; 
  NOT_ID = not_id; 
  NOT_EMISSAO = not_emissao.HasValue && not_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : not_emissao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

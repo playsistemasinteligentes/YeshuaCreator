@@ -23,11 +23,11 @@ namespace IQuery.Write
         QueryModel UpdateREL_POS_X(int rel_id, int value);
         QueryModel UpdateREL_POS_Y(int rel_id, int value);
         QueryModel UpdateREL_TAMANHO_FONTE(int rel_id, int value);
-        QueryModel UpdateOperationalEntityId(int rel_id, string value);
         QueryModel UpdateTenantID(int rel_id, int value);
         QueryModel UpdateDeleted(int rel_id, bool value);
         QueryModel UpdateChanged(int rel_id, DateTime value);
         QueryModel UpdateUserId(int rel_id, int value);
+        QueryModel UpdateOperationalEntityId(int rel_id, string value);
         public QueryModel DeleteRelatoriosQuery(IRelatoriosEntity Relatorios);
     }
 }

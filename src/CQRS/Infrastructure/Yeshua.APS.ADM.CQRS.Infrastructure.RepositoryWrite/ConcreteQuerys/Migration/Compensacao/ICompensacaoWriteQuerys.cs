@@ -40,11 +40,11 @@ namespace IQuery.Write
         QueryModel UpdateCOM_VINCO8_CONVERSAO(int id, int value);
         QueryModel UpdateCOM_VINCO9_CONVERSAO(int id, int value);
         QueryModel UpdateCOM_VINCO10_CONVERSAO(int id, int value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteCompensacaoQuery(ICompensacaoEntity Compensacao);
     }
 }

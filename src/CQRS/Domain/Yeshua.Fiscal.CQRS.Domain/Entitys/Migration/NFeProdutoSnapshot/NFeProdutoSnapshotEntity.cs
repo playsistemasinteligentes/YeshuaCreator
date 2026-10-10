@@ -38,11 +38,11 @@
     public string? XmlStorageKey { get; set; }
     public string? SnapshotJson { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal NFeProdutoSnapshotEntity(int? id, int? documentofiscaloriginarioid, string correlationid, string? cargaid, string? pedidoid, string chaveacesso, string? emitentedocumento, string? destinatariodocumento, string? uforigem, string? ufdestino, string? municipioorigemcodigoibge, string? municipiodestinocodigoibge, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? xmlstoragekey, string? snapshotjson, int status ){
  Id = id; 
@@ -63,9 +63,9 @@
  XmlStorageKey = xmlstoragekey; 
  SnapshotJson = snapshotjson; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

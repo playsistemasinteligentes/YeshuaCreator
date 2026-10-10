@@ -24,20 +24,20 @@
     public string MAQ_ID { get; set; }
     public int IMP_ID { get; set; }
     public int MAI_FACAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal MaquinaImpressoraEntity(int maq_imp_id, string maq_id, int imp_id, int mai_facao ){
  MAQ_IMP_ID = maq_imp_id; 
  MAQ_ID = maq_id; 
  IMP_ID = imp_id; 
  MAI_FACAO = mai_facao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

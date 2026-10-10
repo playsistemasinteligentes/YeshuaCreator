@@ -37,11 +37,11 @@
     DateTime? TURN_HORA_FIM_DIA6 { get; set; }
     DateTime? TURN_HORA_INI_DIA7 { get; set; }
     DateTime? TURN_HORA_FIM_DIA7 { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

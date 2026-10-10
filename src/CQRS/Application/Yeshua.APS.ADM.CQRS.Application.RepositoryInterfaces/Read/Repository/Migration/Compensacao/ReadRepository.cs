@@ -50,11 +50,11 @@ namespace IRepository.Read
         public bool ExistsByCOM_VINCO8_CONVERSAO(int value );
         public bool ExistsByCOM_VINCO9_CONVERSAO(int value );
         public bool ExistsByCOM_VINCO10_CONVERSAO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CompensacaoDTO FirstById(int value );
         public CompensacaoDTO FirstByCOM_ID(int value );
         public CompensacaoDTO FirstByGRP_ID(string value );
@@ -79,11 +79,11 @@ namespace IRepository.Read
         public CompensacaoDTO FirstByCOM_VINCO8_CONVERSAO(int value );
         public CompensacaoDTO FirstByCOM_VINCO9_CONVERSAO(int value );
         public CompensacaoDTO FirstByCOM_VINCO10_CONVERSAO(int value );
-        public CompensacaoDTO FirstByOperationalEntityId(string value );
         public CompensacaoDTO FirstByTenantID(int value );
         public CompensacaoDTO FirstByDeleted(bool value );
         public CompensacaoDTO FirstByChanged(DateTime value );
         public CompensacaoDTO FirstByUserId(int value );
+        public CompensacaoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CompensacaoDTO> GetAllById(int value );
         public IEnumerable<CompensacaoDTO> GetAllByCOM_ID(int value );
         public IEnumerable<CompensacaoDTO> GetAllByGRP_ID(string value );
@@ -108,11 +108,11 @@ namespace IRepository.Read
         public IEnumerable<CompensacaoDTO> GetAllByCOM_VINCO8_CONVERSAO(int value );
         public IEnumerable<CompensacaoDTO> GetAllByCOM_VINCO9_CONVERSAO(int value );
         public IEnumerable<CompensacaoDTO> GetAllByCOM_VINCO10_CONVERSAO(int value );
-        public IEnumerable<CompensacaoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CompensacaoDTO> GetAllByTenantID(int value );
         public IEnumerable<CompensacaoDTO> GetAllByDeleted(bool value );
         public IEnumerable<CompensacaoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CompensacaoDTO> GetAllByUserId(int value );
+        public IEnumerable<CompensacaoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

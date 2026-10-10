@@ -26,11 +26,11 @@
     public string? LOG_CONTEUDO { get; set; }
     public int LOG_ID { get; set; }
     public DateTime? LOG_EMISSAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal LogsEntity(int? id, string? log_chave, string? log_contexto, string? log_conteudo, int log_id, DateTime? log_emissao ){
  Id = id; 
@@ -39,9 +39,9 @@
  LOG_CONTEUDO = log_conteudo; 
  LOG_ID = log_id; 
  LOG_EMISSAO = log_emissao.HasValue && log_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : log_emissao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

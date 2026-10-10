@@ -44,11 +44,11 @@ namespace IRepository.Read
         public bool ExistsByGRP_ID_COMPOSICAO(string value );
         public bool ExistsByITO_LARGURA(Decimal value );
         public bool ExistsByITO_COMPRIMENTO(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ItensOrcamentoDTO FirstById(int value );
         public ItensOrcamentoDTO FirstByITO_ID(int value );
         public ItensOrcamentoDTO FirstByORC_ID(int value );
@@ -68,11 +68,11 @@ namespace IRepository.Read
         public ItensOrcamentoDTO FirstByGRP_ID_COMPOSICAO(string value );
         public ItensOrcamentoDTO FirstByITO_LARGURA(Decimal value );
         public ItensOrcamentoDTO FirstByITO_COMPRIMENTO(Decimal value );
-        public ItensOrcamentoDTO FirstByOperationalEntityId(string value );
         public ItensOrcamentoDTO FirstByTenantID(int value );
         public ItensOrcamentoDTO FirstByDeleted(bool value );
         public ItensOrcamentoDTO FirstByChanged(DateTime value );
         public ItensOrcamentoDTO FirstByUserId(int value );
+        public ItensOrcamentoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ItensOrcamentoDTO> GetAllById(int value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByITO_ID(int value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByORC_ID(int value );
@@ -92,11 +92,11 @@ namespace IRepository.Read
         public IEnumerable<ItensOrcamentoDTO> GetAllByGRP_ID_COMPOSICAO(string value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByITO_LARGURA(Decimal value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByITO_COMPRIMENTO(Decimal value );
-        public IEnumerable<ItensOrcamentoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByTenantID(int value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ItensOrcamentoDTO> GetAllByUserId(int value );
+        public IEnumerable<ItensOrcamentoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

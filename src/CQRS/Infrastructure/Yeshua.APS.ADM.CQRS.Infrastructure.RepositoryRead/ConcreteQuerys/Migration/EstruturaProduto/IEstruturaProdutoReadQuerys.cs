@@ -25,11 +25,11 @@ namespace IQuery.Read
         public QueryModel ExistsByEST_BASE_PRODUCAOQuery(Decimal value );
         public QueryModel ExistsByEST_TIPO_REQUISICAOQuery(string value );
         public QueryModel ExistsByEST_CODIGO_DE_EXCECAOQuery(string value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByEST_DATA_VALIDADEQuery(DateTime value );
         public QueryModel FirstByPRO_ID_PRODUTOQuery(string value );
@@ -39,11 +39,11 @@ namespace IQuery.Read
         public QueryModel FirstByEST_BASE_PRODUCAOQuery(Decimal value );
         public QueryModel FirstByEST_TIPO_REQUISICAOQuery(string value );
         public QueryModel FirstByEST_CODIGO_DE_EXCECAOQuery(string value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

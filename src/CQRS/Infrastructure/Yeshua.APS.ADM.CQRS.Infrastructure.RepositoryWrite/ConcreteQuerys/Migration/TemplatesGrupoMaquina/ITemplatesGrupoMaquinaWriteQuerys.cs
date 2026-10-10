@@ -19,11 +19,11 @@ namespace IQuery.Write
         public QueryModel UpdateTemplatesGrupoMaquinaQuery(ITemplatesGrupoMaquinaEntity TemplatesGrupoMaquina);
         QueryModel UpdateTEM_ID(int id, int value);
         QueryModel UpdateGMA_ID(int id, string value);
-        QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
         public QueryModel DeleteTemplatesGrupoMaquinaQuery(ITemplatesGrupoMaquinaEntity TemplatesGrupoMaquina);
     }
 }

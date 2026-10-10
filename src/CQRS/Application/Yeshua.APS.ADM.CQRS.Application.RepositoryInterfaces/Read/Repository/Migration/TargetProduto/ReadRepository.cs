@@ -88,11 +88,11 @@ namespace IRepository.Read
         public bool ExistsByTAR_DATA_FINAL(DateTime value );
         public bool ExistsByTAR_APROVADO(string value );
         public bool ExistsByTAR_TEMPO_PRODUZINDO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TargetProdutoDTO FirstByTAR_ID(int value );
         public TargetProdutoDTO FirstByMOV_ID(int value );
         public TargetProdutoDTO FirstByORD_ID(string value );
@@ -150,11 +150,11 @@ namespace IRepository.Read
         public TargetProdutoDTO FirstByTAR_DATA_FINAL(DateTime value );
         public TargetProdutoDTO FirstByTAR_APROVADO(string value );
         public TargetProdutoDTO FirstByTAR_TEMPO_PRODUZINDO(int value );
-        public TargetProdutoDTO FirstByOperationalEntityId(string value );
         public TargetProdutoDTO FirstByTenantID(int value );
         public TargetProdutoDTO FirstByDeleted(bool value );
         public TargetProdutoDTO FirstByChanged(DateTime value );
         public TargetProdutoDTO FirstByUserId(int value );
+        public TargetProdutoDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TargetProdutoDTO> GetAllByTAR_ID(int value );
         public IEnumerable<TargetProdutoDTO> GetAllByMOV_ID(int value );
         public IEnumerable<TargetProdutoDTO> GetAllByORD_ID(string value );
@@ -212,11 +212,11 @@ namespace IRepository.Read
         public IEnumerable<TargetProdutoDTO> GetAllByTAR_DATA_FINAL(DateTime value );
         public IEnumerable<TargetProdutoDTO> GetAllByTAR_APROVADO(string value );
         public IEnumerable<TargetProdutoDTO> GetAllByTAR_TEMPO_PRODUZINDO(int value );
-        public IEnumerable<TargetProdutoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TargetProdutoDTO> GetAllByTenantID(int value );
         public IEnumerable<TargetProdutoDTO> GetAllByDeleted(bool value );
         public IEnumerable<TargetProdutoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TargetProdutoDTO> GetAllByUserId(int value );
+        public IEnumerable<TargetProdutoDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

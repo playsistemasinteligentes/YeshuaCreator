@@ -30,16 +30,16 @@ namespace Query.Write
         }
         public QueryModel InserirImpressoraQuery(IImpressoraEntity Impressora)
         {
-            this.Query = $@" INSERT INTO [Impressora] ([IMP_IP], [IMP_NOME], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IMP_ID] VALUES(@IMP_IP, @IMP_NOME, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Impressora] ([IMP_IP], [IMP_NOME], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[IMP_ID] VALUES(@IMP_IP, @IMP_NOME, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 IMP_IP = Impressora.IMP_IP,
                 IMP_NOME = Impressora.IMP_NOME,
-                OperationalEntityId = Impressora.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Impressora.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -72,16 +72,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 IMP_NOME = value,
-                IMP_ID = imp_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int imp_id, string value)
-        {
-            this.Query = $@" UPDATE [Impressora] SET [OperationalEntityId] = @OperationalEntityId WHERE [IMP_ID] = @IMP_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 IMP_ID = imp_id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -122,6 +112,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                IMP_ID = imp_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int imp_id, string value)
+        {
+            this.Query = $@" UPDATE [Impressora] SET [OperationalEntityId] = @OperationalEntityId WHERE [IMP_ID] = @IMP_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 IMP_ID = imp_id,
             };
             return new QueryModel(this.Query, this.Parameters);

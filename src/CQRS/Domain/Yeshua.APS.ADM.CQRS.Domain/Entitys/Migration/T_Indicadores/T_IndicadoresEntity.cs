@@ -35,11 +35,11 @@
     public string? DIM_ID { get; set; }
     public string? DOM_EMPRESA { get; set; }
     public string? DOM_FILIAL { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal T_IndicadoresEntity(int ind_id, string ind_descricao, int neg_id, string? desc_calculo, int ind_tipocomparador, int? ind_grafico, string? ind_conexao, DateTime? ind_dtcriacao, string? resposavelind, string? resposavelcarga, string? procextracao, string? per_id, string? dim_id, string? dom_empresa, string? dom_filial ){
  IND_ID = ind_id; 
@@ -57,9 +57,9 @@
  DIM_ID = dim_id; 
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

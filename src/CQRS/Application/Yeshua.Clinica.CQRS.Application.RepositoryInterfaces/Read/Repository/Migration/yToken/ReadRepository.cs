@@ -34,9 +34,9 @@ namespace IRepository.Read
         public bool ExistsByLastUsedAt(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
-        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yTokenDTO FirstById(int value , bool TakeOffTenantID = false);
         public yTokenDTO FirstByTokenHash(string value , bool TakeOffTenantID = false);
         public yTokenDTO FirstByDescription(string value , bool TakeOffTenantID = false);
@@ -47,9 +47,9 @@ namespace IRepository.Read
         public yTokenDTO FirstByLastUsedAt(DateTime value , bool TakeOffTenantID = false);
         public yTokenDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
         public yTokenDTO FirstByUserId(int value , bool TakeOffTenantID = false);
-        public yTokenDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yTokenDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public yTokenDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
+        public yTokenDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllById(int value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllByTokenHash(string value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllByDescription(string value , bool TakeOffTenantID = false);
@@ -60,9 +60,9 @@ namespace IRepository.Read
         public IEnumerable<yTokenDTO> GetAllByLastUsedAt(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
-        public IEnumerable<yTokenDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<yTokenDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<yTokenDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -29,11 +29,29 @@
             public const ulong CanUpdate = 1UL << 6;
             public const ulong CanDelete = 1UL << 7;
             public const ulong ValidUntil = 1UL << 8;
-            public const ulong OperationalEntityId = 1UL << 9;
-            public const ulong TenantID = 1UL << 10;
-            public const ulong Deleted = 1UL << 11;
-            public const ulong Changed = 1UL << 12;
-            public const ulong UserId = 1UL << 13;
+            public const ulong TenantID = 1UL << 9;
+            public const ulong Deleted = 1UL << 10;
+            public const ulong Changed = 1UL << 11;
+            public const ulong UserId = 1UL << 12;
+            public const ulong OperationalEntityId = 1UL << 13;
+        }
+
+        public static class yPerfilGrantOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PerfilId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GrantId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanGrant = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanCreate = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanRead = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanUpdate = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanDelete = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ValidUntil = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class yPerfilGrantDecorator : IyPerfilGrantEntity
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yPerfilGrantDecorator(IyPerfilGrantEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.PerfilId = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.PerfilId) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "PerfilId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "PerfilId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.PerfilId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.GrantId = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.GrantId) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "GrantId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "GrantId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.GrantId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.CanGrant = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.CanGrant) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "CanGrant", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "CanGrant", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.CanGrant, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.CanCreate = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.CanCreate) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "CanCreate", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "CanCreate", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.CanCreate, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.CanRead = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.CanRead) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "CanRead", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "CanRead", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.CanRead, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.CanUpdate = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.CanUpdate) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "CanUpdate", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "CanUpdate", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.CanUpdate, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.CanDelete = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.CanDelete) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "CanDelete", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "CanDelete", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.CanDelete, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,11 +210,10 @@
                                             {
                                                 _inner.ValidUntil = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.ValidUntil) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "ValidUntil", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "ValidUntil", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.ValidUntil, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -199,7 +224,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +238,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +252,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,10 +266,11 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & yPerfilGrantTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("yPerfilGrant", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yPerfilGrant", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yPerfilGrantOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

@@ -46,11 +46,11 @@ namespace IRepository.Read
         public bool ExistsByAtualizadoEmUtc(DateTime value );
         public bool ExistsByConcluidoEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public ContingenciaFiscalDTO FirstById(int value );
         public ContingenciaFiscalDTO FirstByEmissaoFiscalTransporteId(int value );
         public ContingenciaFiscalDTO FirstByEntradaFiscalContingenciaId(int value );
@@ -71,11 +71,11 @@ namespace IRepository.Read
         public ContingenciaFiscalDTO FirstByAtualizadoEmUtc(DateTime value );
         public ContingenciaFiscalDTO FirstByConcluidoEmUtc(DateTime value );
         public ContingenciaFiscalDTO FirstByStatus(int value );
-        public ContingenciaFiscalDTO FirstByOperationalEntityId(string value );
         public ContingenciaFiscalDTO FirstByTenantID(int value );
         public ContingenciaFiscalDTO FirstByDeleted(bool value );
         public ContingenciaFiscalDTO FirstByChanged(DateTime value );
         public ContingenciaFiscalDTO FirstByUserId(int value );
+        public ContingenciaFiscalDTO FirstByOperationalEntityId(string value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllById(int value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByEmissaoFiscalTransporteId(int value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByEntradaFiscalContingenciaId(int value );
@@ -96,11 +96,11 @@ namespace IRepository.Read
         public IEnumerable<ContingenciaFiscalDTO> GetAllByAtualizadoEmUtc(DateTime value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByConcluidoEmUtc(DateTime value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByStatus(int value );
-        public IEnumerable<ContingenciaFiscalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByTenantID(int value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByDeleted(bool value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ContingenciaFiscalDTO> GetAllByUserId(int value );
+        public IEnumerable<ContingenciaFiscalDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

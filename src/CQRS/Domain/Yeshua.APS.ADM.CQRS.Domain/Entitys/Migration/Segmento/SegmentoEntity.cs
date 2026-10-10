@@ -26,11 +26,11 @@
     public string? SEG_ID_SEGUIMENTO_PAI { get; set; }
     public string? GRS_ID { get; set; }
     public string? SEG_INTEGRACAO_ERP { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal SegmentoEntity(int? id, string seg_id, string seg_descricao, string? seg_id_seguimento_pai, string? grs_id, string? seg_integracao_erp ){
  Id = id; 
@@ -39,9 +39,9 @@
  SEG_ID_SEGUIMENTO_PAI = seg_id_seguimento_pai; 
  GRS_ID = grs_id; 
  SEG_INTEGRACAO_ERP = seg_integracao_erp; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

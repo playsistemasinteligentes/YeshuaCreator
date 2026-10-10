@@ -36,11 +36,11 @@
     public DateTime? VEI_EMISSAO { get; set; }
     public DateTime? VEI_VENCIMENTO { get; set; }
     public string? VEI_STATUS { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal VeiculoEntity(int? id, string vei_placa, string? vei_uf, int tip_id, Decimal? vei_capacidade_m3, Decimal? vei_capacidade_largura, Decimal? vei_capacidade_comprimento, Decimal? vei_capacidade_altura, string? vei_modelo, string? vei_nome_motorista, string? vei_dados_contato, string? vei_cpf_motorista, string? tca_id, DateTime? vei_emissao, DateTime? vei_vencimento, string? vei_status ){
  Id = id; 
@@ -59,9 +59,9 @@
  VEI_EMISSAO = vei_emissao.HasValue && vei_emissao.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : vei_emissao; 
  VEI_VENCIMENTO = vei_vencimento.HasValue && vei_vencimento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : vei_vencimento; 
  VEI_STATUS = vei_status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

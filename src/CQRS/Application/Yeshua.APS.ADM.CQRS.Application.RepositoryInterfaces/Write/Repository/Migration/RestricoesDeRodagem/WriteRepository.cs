@@ -29,11 +29,11 @@ namespace IRepository.Write
         void UpdateRES_VELOCIDADE_HORA_RUSH(int id, Decimal value);
         void UpdateTVE_ID(int id, int value);
         void UpdateMAP_ID(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

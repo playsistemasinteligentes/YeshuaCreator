@@ -124,14 +124,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -164,6 +156,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public TemplatesMaquinasDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -183,14 +183,6 @@ namespace Read.Repository
         public TemplatesMaquinasDTO FirstByMAQ_ID(string value )
         {
             var query = _query.FirstByMAQ_IDQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<TemplatesMaquinasDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public TemplatesMaquinasDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<TemplatesMaquinasDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,6 +220,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TemplatesMaquinasDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TemplatesMaquinasDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<TemplatesMaquinasDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -247,14 +247,6 @@ namespace Read.Repository
         public IEnumerable<TemplatesMaquinasDTO> GetAllByMAQ_ID(string value )
         {
             var query = _query.FirstByMAQ_IDQuery(value );
-
-                var result = _unitOfWork.Query<TemplatesMaquinasDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<TemplatesMaquinasDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TemplatesMaquinasDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -287,6 +279,14 @@ namespace Read.Repository
         public IEnumerable<TemplatesMaquinasDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<TemplatesMaquinasDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<TemplatesMaquinasDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<TemplatesMaquinasDTO>(query.Query,query.Parameters).ToList();
                 return result;

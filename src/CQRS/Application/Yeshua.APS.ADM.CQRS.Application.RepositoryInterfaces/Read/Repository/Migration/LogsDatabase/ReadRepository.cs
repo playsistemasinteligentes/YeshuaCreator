@@ -39,11 +39,11 @@ namespace IRepository.Read
         public bool ExistsByLOGS_DATE(DateTime value );
         public bool ExistsByUSE_ID(int value );
         public bool ExistsByLOGS_ORIGEM(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public LogsDatabaseDTO FirstByLOGS_ID(int value );
         public LogsDatabaseDTO FirstByLOGS_TABLE(string value );
         public LogsDatabaseDTO FirstByLOGS_KEY(string value );
@@ -58,11 +58,11 @@ namespace IRepository.Read
         public LogsDatabaseDTO FirstByLOGS_DATE(DateTime value );
         public LogsDatabaseDTO FirstByUSE_ID(int value );
         public LogsDatabaseDTO FirstByLOGS_ORIGEM(string value );
-        public LogsDatabaseDTO FirstByOperationalEntityId(string value );
         public LogsDatabaseDTO FirstByTenantID(int value );
         public LogsDatabaseDTO FirstByDeleted(bool value );
         public LogsDatabaseDTO FirstByChanged(DateTime value );
         public LogsDatabaseDTO FirstByUserId(int value );
+        public LogsDatabaseDTO FirstByOperationalEntityId(string value );
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_ID(int value );
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_TABLE(string value );
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_KEY(string value );
@@ -77,11 +77,11 @@ namespace IRepository.Read
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_DATE(DateTime value );
         public IEnumerable<LogsDatabaseDTO> GetAllByUSE_ID(int value );
         public IEnumerable<LogsDatabaseDTO> GetAllByLOGS_ORIGEM(string value );
-        public IEnumerable<LogsDatabaseDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LogsDatabaseDTO> GetAllByTenantID(int value );
         public IEnumerable<LogsDatabaseDTO> GetAllByDeleted(bool value );
         public IEnumerable<LogsDatabaseDTO> GetAllByChanged(DateTime value );
         public IEnumerable<LogsDatabaseDTO> GetAllByUserId(int value );
+        public IEnumerable<LogsDatabaseDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

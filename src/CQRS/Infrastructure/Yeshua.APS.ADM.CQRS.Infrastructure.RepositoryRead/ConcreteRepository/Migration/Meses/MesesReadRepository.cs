@@ -116,14 +116,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -156,6 +148,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public MesesDTO FirstByMES(string value )
         {
             var query = _query.FirstByMESQuery(value );
@@ -167,14 +167,6 @@ namespace Read.Repository
         public MesesDTO FirstByfator(int value )
         {
             var query = _query.FirstByfatorQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<MesesDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public MesesDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<MesesDTO>(query.Query, query.Parameters);
                 return result;
@@ -212,6 +204,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public MesesDTO FirstByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<MesesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<MesesDTO> GetAllByMES(string value )
         {
             var query = _query.FirstByMESQuery(value );
@@ -223,14 +223,6 @@ namespace Read.Repository
         public IEnumerable<MesesDTO> GetAllByfator(int value )
         {
             var query = _query.FirstByfatorQuery(value );
-
-                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
-                return result;
-        }
-
-        public IEnumerable<MesesDTO> GetAllByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -263,6 +255,14 @@ namespace Read.Repository
         public IEnumerable<MesesDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<MesesDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters).ToList();
                 return result;

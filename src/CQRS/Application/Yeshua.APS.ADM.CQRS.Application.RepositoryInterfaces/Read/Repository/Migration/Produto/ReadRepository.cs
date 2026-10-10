@@ -30,11 +30,11 @@ namespace IRepository.Read
         public bool ExistsById(string value );
         public bool ExistsByDescricao(string value );
         public bool ExistsByStatus(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByPRO_ESTOQUE_ATUAL(Decimal value );
         public bool ExistsByUNI_ID(string value );
         public bool ExistsByPRO_FARDOS_POR_CAMADA(Decimal value );
@@ -170,11 +170,11 @@ namespace IRepository.Read
         public ProdutoDTO FirstById(string value );
         public ProdutoDTO FirstByDescricao(string value );
         public ProdutoDTO FirstByStatus(string value );
-        public ProdutoDTO FirstByOperationalEntityId(string value );
         public ProdutoDTO FirstByTenantID(int value );
         public ProdutoDTO FirstByDeleted(bool value );
         public ProdutoDTO FirstByChanged(DateTime value );
         public ProdutoDTO FirstByUserId(int value );
+        public ProdutoDTO FirstByOperationalEntityId(string value );
         public ProdutoDTO FirstByPRO_ESTOQUE_ATUAL(Decimal value );
         public ProdutoDTO FirstByUNI_ID(string value );
         public ProdutoDTO FirstByPRO_FARDOS_POR_CAMADA(Decimal value );
@@ -310,11 +310,11 @@ namespace IRepository.Read
         public IEnumerable<ProdutoDTO> GetAllById(string value );
         public IEnumerable<ProdutoDTO> GetAllByDescricao(string value );
         public IEnumerable<ProdutoDTO> GetAllByStatus(string value );
-        public IEnumerable<ProdutoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProdutoDTO> GetAllByTenantID(int value );
         public IEnumerable<ProdutoDTO> GetAllByDeleted(bool value );
         public IEnumerable<ProdutoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ProdutoDTO> GetAllByUserId(int value );
+        public IEnumerable<ProdutoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProdutoDTO> GetAllByPRO_ESTOQUE_ATUAL(Decimal value );
         public IEnumerable<ProdutoDTO> GetAllByUNI_ID(string value );
         public IEnumerable<ProdutoDTO> GetAllByPRO_FARDOS_POR_CAMADA(Decimal value );

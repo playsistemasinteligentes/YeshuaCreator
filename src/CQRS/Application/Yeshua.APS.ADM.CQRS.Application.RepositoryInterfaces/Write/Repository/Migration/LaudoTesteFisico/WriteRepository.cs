@@ -31,11 +31,11 @@ namespace IRepository.Write
         void UpdateROT_PRO_ID(int id, string value);
         void UpdateFPR_SEQ_REPETICAO(int id, int value);
         void UpdateUSE_ID(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

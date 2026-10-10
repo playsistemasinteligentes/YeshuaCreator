@@ -54,8 +54,8 @@ namespace Command.Receivers.UseCase
             OpenApplicationSessionInputCommand comand,
             CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(comand.TenantIdentity)
-                || string.IsNullOrWhiteSpace(comand.UserIdentity)
+            if (comand.TenantId <= 0
+                || comand.UserId <= 0
                 || string.IsNullOrWhiteSpace(comand.Email))
                 throw new ReceiverException<OpenApplicationSessionOutputCommand>(
                     Error("Identidades da Central sao obrigatorias.", default));
@@ -64,35 +64,26 @@ namespace Command.Receivers.UseCase
             {
                 _unitOfWork.BeginTran();
 
-                var tenant = _repReadYTenant.FirstByOperationalEntityId(comand.TenantIdentity, true);
-                var tenantId = tenant?.id ?? 0;
-                if (tenantId == 0)
+                var tenantId = comand.TenantId;
+                var tenant = _repReadYTenant.FirstById(tenantId, true);
+                if (tenant is null)
                 {
                     var tenantEntity = new yTenantFactory(_logger, _domainTrackingPolicy)
-                        .Create(comand.TenantDocument, comand.TenantName, null);
+                        .Create(tenantId, comand.TenantDocument, comand.TenantName, null);
                     _repWriteYTenant.Insert(tenantEntity);
-                    if (!tenantEntity.Id.HasValue)
-                        throw new ReceiverException<OpenApplicationSessionOutputCommand>(
-                            Error("Tenant local nao foi criado.", default));
-
-                    tenantId = tenantEntity.Id.Value;
-                    _repWriteYTenant.UpdateOperationalEntityId(tenantId, comand.TenantIdentity);
                 }
 
                 _executionContext.SetTenantId(tenantId);
-                var user = _repReadYUser.FirstByOperationalEntityId(comand.UserIdentity, true);
-                var userId = user?.id ?? 0;
-                if (userId == 0)
+                var userId = comand.UserId;
+                var user = _repReadYUser.FirstById(userId, true);
+                if (user is not null && user.tenantid != tenantId)
+                    throw new ReceiverException<OpenApplicationSessionOutputCommand>(
+                        Error("UserId global pertence a outro tenant.", default));
+                if (user is null)
                 {
                     var userEntity = new yUserFactory(_logger, _domainTrackingPolicy)
-                        .Create(null, comand.UserName, comand.Email, null);
+                        .Create(userId, comand.UserName, comand.Email, null);
                     _repWriteYUser.Insert(userEntity);
-                    if (!userEntity.Id.HasValue)
-                        throw new ReceiverException<OpenApplicationSessionOutputCommand>(
-                            Error("Usuario local nao foi criado.", default));
-
-                    userId = userEntity.Id.Value;
-                    _repWriteYUser.UpdateOperationalEntityId(userId, comand.UserIdentity);
                 }
 
                 _executionContext.SetUserId(userId);

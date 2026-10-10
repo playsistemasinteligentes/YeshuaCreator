@@ -31,11 +31,11 @@
     public DateTime SolicitadaEmUtc { get; set; }
     public DateTime? PublicadaEmUtc { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal PublicacaoAlbumEntity(int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status ){
  Id = id; 
@@ -49,9 +49,9 @@
  SolicitadaEmUtc = (solicitadaemutc < (new DateTime(1800, 1, 1))) ? DateTime.Now : solicitadaemutc; 
  PublicadaEmUtc = publicadaemutc.HasValue && publicadaemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : publicadaemutc; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

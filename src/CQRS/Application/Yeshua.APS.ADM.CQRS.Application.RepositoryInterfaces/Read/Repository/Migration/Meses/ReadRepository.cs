@@ -26,25 +26,25 @@ namespace IRepository.Read
         public IEnumerable<MesesUserIdDTO> getMesesReadFKUserId(object command );
         public bool ExistsByMES(string value );
         public bool ExistsByfator(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MesesDTO FirstByMES(string value );
         public MesesDTO FirstByfator(int value );
-        public MesesDTO FirstByOperationalEntityId(string value );
         public MesesDTO FirstByTenantID(int value );
         public MesesDTO FirstByDeleted(bool value );
         public MesesDTO FirstByChanged(DateTime value );
         public MesesDTO FirstByUserId(int value );
+        public MesesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MesesDTO> GetAllByMES(string value );
         public IEnumerable<MesesDTO> GetAllByfator(int value );
-        public IEnumerable<MesesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MesesDTO> GetAllByTenantID(int value );
         public IEnumerable<MesesDTO> GetAllByDeleted(bool value );
         public IEnumerable<MesesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MesesDTO> GetAllByUserId(int value );
+        public IEnumerable<MesesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

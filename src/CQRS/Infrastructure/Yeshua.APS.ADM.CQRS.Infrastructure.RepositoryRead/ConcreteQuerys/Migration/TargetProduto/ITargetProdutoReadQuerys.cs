@@ -80,11 +80,11 @@ namespace IQuery.Read
         public QueryModel ExistsByTAR_DATA_FINALQuery(DateTime value );
         public QueryModel ExistsByTAR_APROVADOQuery(string value );
         public QueryModel ExistsByTAR_TEMPO_PRODUZINDOQuery(int value );
-        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTAR_IDQuery(int value );
         public QueryModel FirstByMOV_IDQuery(int value );
         public QueryModel FirstByORD_IDQuery(string value );
@@ -142,11 +142,11 @@ namespace IQuery.Read
         public QueryModel FirstByTAR_DATA_FINALQuery(DateTime value );
         public QueryModel FirstByTAR_APROVADOQuery(string value );
         public QueryModel FirstByTAR_TEMPO_PRODUZINDOQuery(int value );
-        public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByOperationalEntityIdQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

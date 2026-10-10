@@ -38,11 +38,11 @@
             public const ulong XmlStorageKey = 1UL << 15;
             public const ulong SnapshotJson = 1UL << 16;
             public const ulong Status = 1UL << 17;
-            public const ulong OperationalEntityId = 1UL << 18;
-            public const ulong TenantID = 1UL << 19;
-            public const ulong Deleted = 1UL << 20;
-            public const ulong Changed = 1UL << 21;
-            public const ulong UserId = 1UL << 22;
+            public const ulong TenantID = 1UL << 18;
+            public const ulong Deleted = 1UL << 19;
+            public const ulong Changed = 1UL << 20;
+            public const ulong UserId = 1UL << 21;
+            public const ulong OperationalEntityId = 1UL << 22;
         }
 
         public static class NFeProdutoSnapshotOperationalFields
@@ -65,11 +65,11 @@
             public const Dominio.Operational.OperationalDataClassification XmlStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification SnapshotJson = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class NFeProdutoSnapshotDecorator : INFeProdutoSnapshotEntity
@@ -358,7 +358,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -415,6 +414,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

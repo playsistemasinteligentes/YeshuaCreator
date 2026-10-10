@@ -29,11 +29,11 @@ namespace IRepository.Write
         void UpdateValidoDe(int id, DateTime value);
         void UpdateValidoAte(int id, DateTime value);
         void UpdateAtivo(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateOperationalEntityId(int id, string value);
         void UpdateSenhaStorageKey(int id, string value);
     }
 }

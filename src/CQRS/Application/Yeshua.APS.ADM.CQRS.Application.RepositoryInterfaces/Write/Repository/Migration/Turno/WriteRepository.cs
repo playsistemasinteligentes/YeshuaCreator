@@ -38,11 +38,11 @@ namespace IRepository.Write
         void UpdateTURN_HORA_FIM_DIA6(string id, DateTime value);
         void UpdateTURN_HORA_INI_DIA7(string id, DateTime value);
         void UpdateTURN_HORA_FIM_DIA7(string id, DateTime value);
-        void UpdateOperationalEntityId(string id, string value);
         void UpdateTenantID(string id, int value);
         void UpdateDeleted(string id, bool value);
         void UpdateChanged(string id, DateTime value);
         void UpdateUserId(string id, int value);
+        void UpdateOperationalEntityId(string id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

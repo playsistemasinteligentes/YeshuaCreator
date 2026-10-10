@@ -30,31 +30,31 @@ namespace IRepository.Read
         public bool ExistsByIND_ID(int value );
         public bool ExistsByDIM_ID(int value );
         public bool ExistsByFAT_DESCRICAO(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public IndicadoresFatosDimencoesDTO FirstById(int value );
         public IndicadoresFatosDimencoesDTO FirstByFAT_ID(string value );
         public IndicadoresFatosDimencoesDTO FirstByIND_ID(int value );
         public IndicadoresFatosDimencoesDTO FirstByDIM_ID(int value );
         public IndicadoresFatosDimencoesDTO FirstByFAT_DESCRICAO(string value );
-        public IndicadoresFatosDimencoesDTO FirstByOperationalEntityId(string value );
         public IndicadoresFatosDimencoesDTO FirstByTenantID(int value );
         public IndicadoresFatosDimencoesDTO FirstByDeleted(bool value );
         public IndicadoresFatosDimencoesDTO FirstByChanged(DateTime value );
         public IndicadoresFatosDimencoesDTO FirstByUserId(int value );
+        public IndicadoresFatosDimencoesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllById(int value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByFAT_ID(string value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByIND_ID(int value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByDIM_ID(int value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByFAT_DESCRICAO(string value );
-        public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByTenantID(int value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByUserId(int value );
+        public IEnumerable<IndicadoresFatosDimencoesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

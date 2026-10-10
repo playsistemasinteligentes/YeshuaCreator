@@ -18,11 +18,11 @@ namespace IQuery.Write
         public QueryModel InserirPerfilQuery(IPerfilEntity Perfil);
         public QueryModel UpdatePerfilQuery(IPerfilEntity Perfil);
         QueryModel UpdatePER_NOME(int per_id, string value);
-        QueryModel UpdateOperationalEntityId(int per_id, string value);
         QueryModel UpdateTenantID(int per_id, int value);
         QueryModel UpdateDeleted(int per_id, bool value);
         QueryModel UpdateChanged(int per_id, DateTime value);
         QueryModel UpdateUserId(int per_id, int value);
+        QueryModel UpdateOperationalEntityId(int per_id, string value);
         public QueryModel DeletePerfilQuery(IPerfilEntity Perfil);
     }
 }

@@ -126,11 +126,6 @@ namespace Input.Repository.Turma
             var query = _query.UpdateTURM_HORA_FIM_DIA7(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(string id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(string id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -149,6 +144,11 @@ namespace Input.Repository.Turma
         public void UpdateUserId(string id, int value)
         {
             var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(string id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

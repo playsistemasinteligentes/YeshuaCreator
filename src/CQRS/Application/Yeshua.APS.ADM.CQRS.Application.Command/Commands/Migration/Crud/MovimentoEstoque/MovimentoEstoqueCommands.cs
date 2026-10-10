@@ -61,11 +61,11 @@ namespace Command.Write
         public string? MOV_GRUPO_CONTABIL { get; set; }
         public string? FOR_ID { get; set; }
         public string? CLI_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "MovimentoEstoque";
  public string? OperationalRecordId => OperationalEntityId;
     }

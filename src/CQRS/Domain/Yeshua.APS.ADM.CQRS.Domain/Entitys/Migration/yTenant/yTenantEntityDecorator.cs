@@ -21,16 +21,18 @@
                     public static class yTenantTrackingFields
         {
             public const ulong Id = 1UL << 0;
-            public const ulong CnpjCpf = 1UL << 1;
-            public const ulong Nome = 1UL << 2;
-            public const ulong UserId = 1UL << 3;
-            public const ulong Deleted = 1UL << 4;
-            public const ulong Changed = 1UL << 5;
+            public const ulong OperationalEntityId = 1UL << 1;
+            public const ulong CnpjCpf = 1UL << 2;
+            public const ulong Nome = 1UL << 3;
+            public const ulong UserId = 1UL << 4;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
         }
 
         public static class yTenantOperationalFields
         {
             public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CnpjCpf = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification Nome = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
@@ -73,6 +75,7 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }    public int Id => _inner.Id;
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public string CnpjCpf
                                     {

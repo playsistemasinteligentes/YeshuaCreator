@@ -28,29 +28,29 @@ namespace IRepository.Read
         public bool ExistsByTII_ID(int value );
         public bool ExistsByTIV_ID(int value );
         public bool ExistsByITI_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public TipoInspecaoItensDTO FirstById(int value );
         public TipoInspecaoItensDTO FirstByTII_ID(int value );
         public TipoInspecaoItensDTO FirstByTIV_ID(int value );
         public TipoInspecaoItensDTO FirstByITI_ID(int value );
-        public TipoInspecaoItensDTO FirstByOperationalEntityId(string value );
         public TipoInspecaoItensDTO FirstByTenantID(int value );
         public TipoInspecaoItensDTO FirstByDeleted(bool value );
         public TipoInspecaoItensDTO FirstByChanged(DateTime value );
         public TipoInspecaoItensDTO FirstByUserId(int value );
+        public TipoInspecaoItensDTO FirstByOperationalEntityId(string value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllById(int value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByTII_ID(int value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByTIV_ID(int value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByITI_ID(int value );
-        public IEnumerable<TipoInspecaoItensDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByTenantID(int value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByDeleted(bool value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TipoInspecaoItensDTO> GetAllByUserId(int value );
+        public IEnumerable<TipoInspecaoItensDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

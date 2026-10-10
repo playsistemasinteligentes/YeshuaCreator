@@ -83,11 +83,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ValidoDe", title = "Valido de", classification = "Internal" },
                     new { name = "ValidoAte", title = "Valido ate", classification = "Internal" },
                     new { name = "Ativo", title = "Ativo", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "SenhaStorageKey", title = "Senha no Storage", classification = "NeverCapture" },
                 }
             },
@@ -117,11 +117,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "AtualizadoEmUtc", title = "Atualizado em UTC", classification = "Internal" },
                     new { name = "ConcluidoEmUtc", title = "Concluido em UTC", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -142,11 +142,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ValorDocumento", title = "Valor Documento", classification = "Confidential" },
                     new { name = "PesoBruto", title = "Peso Bruto", classification = "Internal" },
                     new { name = "SnapshotJson", title = "Snapshot", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -166,11 +166,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PayloadHash", title = "Hash do Payload", classification = "Internal" },
                     new { name = "PayloadStorageKey", title = "Storage do Payload", classification = "Internal" },
                     new { name = "Status", title = "Status da Entrada", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -188,11 +188,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "UF", title = "UF", classification = "Internal" },
                     new { name = "MunicipioCodigoIbge", title = "Municipio IBGE", classification = "Internal" },
                     new { name = "EnderecoJson", title = "Endereco", classification = "Confidential" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -217,11 +217,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CargaSnapshotJson", title = "Snapshot da Carga", classification = "Internal" },
                     new { name = "PreferenciasFiscaisJson", title = "Preferencias Fiscais", classification = "Internal" },
                     new { name = "Status", title = "Status do Romaneio", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -239,11 +239,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "PublicadoEmUtc", title = "Publicado em UTC", classification = "Internal" },
                     new { name = "UltimoErro", title = "Ultimo Erro", classification = "Internal" },
                     new { name = "Status", title = "Status da Saida", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -272,11 +272,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ValorCarga", title = "Valor Carga", classification = "Internal" },
                     new { name = "PreferenciasManifestoJson", title = "Preferencias Manifesto", classification = "Internal" },
                     new { name = "Status", title = "Status da Solicitacao", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -300,11 +300,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EnviadoEmUtc", title = "Enviado em UTC", classification = "Internal" },
                     new { name = "AutorizadoEmUtc", title = "Autorizado em UTC", classification = "Internal" },
                     new { name = "Status", title = "Status da Emissao", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -329,11 +329,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CodigoRetorno", title = "cStat", classification = "Internal" },
                     new { name = "MensagemRetorno", title = "xMotivo", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -359,11 +359,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Volume", title = "Volume", classification = "Internal" },
                     new { name = "SnapshotJson", title = "Snapshot", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -396,11 +396,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "AtualizadoEmUtc", title = "Atualizado em UTC", classification = "Internal" },
                     new { name = "ConcluidoEmUtc", title = "Concluido em UTC", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -425,11 +425,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MensagemRetorno", title = "xMotivo", classification = "Internal" },
                     new { name = "CriadoEmUtc", title = "Criado em UTC", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -471,11 +471,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CriadoEmUtc", title = "Criado em UTC", classification = "Internal" },
                     new { name = "AtualizadoEmUtc", title = "Atualizado em UTC", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "CertificadoDigitalId", title = "Certificado Digital", classification = "Internal" },
                 }
             },
@@ -498,11 +498,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EncerradoEm", title = "Encerrado em", classification = "Internal" },
                     new { name = "CanceladoEm", title = "Cancelado em", classification = "Internal" },
                     new { name = "Situacao", title = "Situacao do MDF-e", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -515,11 +515,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e", classification = "Internal" },
                     new { name = "Nome", title = "Nome", classification = "Confidential" },
                     new { name = "Documento", title = "Documento", classification = "Confidential" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -534,11 +534,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "TipoDocumento", title = "Tipo Documento", classification = "Confidential" },
                     new { name = "ChaveAcesso", title = "Chave de Acesso", classification = "Internal" },
                     new { name = "SnapshotJson", title = "Snapshot", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -558,11 +558,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Protocolo", title = "Protocolo SEFAZ", classification = "Internal" },
                     new { name = "CodigoRetorno", title = "Codigo de Retorno", classification = "Internal" },
                     new { name = "MensagemRetorno", title = "Mensagem de Retorno", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -575,11 +575,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "MDFeSolicitacaoFiscalId", title = "Solicitacao MDF-e", classification = "Internal" },
                     new { name = "UF", title = "UF", classification = "Internal" },
                     new { name = "Ordem", title = "Ordem", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -599,11 +599,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "DocumentosOriginariosJson", title = "Documentos Originarios", classification = "Confidential" },
                     new { name = "TransporteSnapshotJson", title = "Snapshot Transporte", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -627,11 +627,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EnviadoEmUtc", title = "Enviado em UTC", classification = "Internal" },
                     new { name = "AutorizadoEmUtc", title = "Autorizado em UTC", classification = "Internal" },
                     new { name = "Status", title = "Status da Emissao", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -647,11 +647,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Tara", title = "Tara", classification = "Internal" },
                     new { name = "CapacidadeKg", title = "Capacidade KG", classification = "Internal" },
                     new { name = "CapacidadeM3", title = "Capacidade M3", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -678,11 +678,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "XmlStorageKey", title = "XML", classification = "Internal" },
                     new { name = "SnapshotJson", title = "Snapshot", classification = "Internal" },
                     new { name = "Status", title = "Status", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -699,11 +699,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Versao", title = "Versao", classification = "Internal" },
                     new { name = "Url", title = "URL", classification = "Internal" },
                     new { name = "Ativo", title = "Ativo", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -715,11 +715,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "ID", classification = "Internal" },
                     new { name = "AuditTrackerActived", title = "AuditTrackerActived", classification = "Internal" },
                     new { name = "AuditCRUDActived", title = "AuditCRUDActived", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -734,10 +734,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "EmailPort", title = "EmailPort", classification = "Confidential" },
                     new { name = "EmailUserName", title = "EmailUserName", classification = "Confidential" },
                     new { name = "EmailPassword", title = "EmailPassword", classification = "NeverCapture" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -756,10 +756,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CreatedAt", title = "Criado em", classification = "Internal" },
                     new { name = "CompletedAt", title = "Finalizado em", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -770,11 +770,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "ID", classification = "Internal" },
                     new { name = "Description", title = "Descrição", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -796,18 +796,18 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LastError", title = "Último Erro", classification = "Internal" },
                     new { name = "ProcessingAt", title = "Processando em", classification = "Internal" },
                     new { name = "NextAttemptAt", title = "Próxima tentativa", classification = "Internal" },
-                    new { name = "SagaId", title = "SagaId", classification = "Internal" },
-                    new { name = "SagaStepId", title = "SagaStepId", classification = "Internal" },
-                    new { name = "ProcessingScope", title = "Escopo de processamento", classification = "Internal" },
-                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
-                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
-                    new { name = "Changed", title = "Changed", classification = "Internal" },
-                    new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "RootOperationId", title = "Operacao raiz", classification = "Internal" },
                     new { name = "OperationId", title = "Operacao logica", classification = "Internal" },
                     new { name = "ExecutionId", title = "Tentativa de execucao", classification = "Internal" },
                     new { name = "CausationId", title = "Execucao causadora", classification = "Internal" },
+                    new { name = "SagaId", title = "SagaId", classification = "Internal" },
+                    new { name = "SagaStepId", title = "SagaStepId", classification = "Internal" },
+                    new { name = "ProcessingScope", title = "Escopo de processamento", classification = "Internal" },
+                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
+                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
+                    new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -842,18 +842,18 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LastError", title = "Último Erro", classification = "Internal" },
                     new { name = "ProcessingAt", title = "Processando em", classification = "Internal" },
                     new { name = "NextAttemptAt", title = "Próxima tentativa", classification = "Internal" },
-                    new { name = "SagaId", title = "SagaId", classification = "Internal" },
-                    new { name = "SagaStepId", title = "SagaStepId", classification = "Internal" },
-                    new { name = "ProcessingScope", title = "Escopo de processamento", classification = "Internal" },
-                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
-                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
-                    new { name = "Changed", title = "Changed", classification = "Internal" },
-                    new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "RootOperationId", title = "Operacao raiz", classification = "Internal" },
                     new { name = "OperationId", title = "Operacao logica", classification = "Internal" },
                     new { name = "ExecutionId", title = "Tentativa de execucao", classification = "Internal" },
                     new { name = "CausationId", title = "Execucao causadora", classification = "Internal" },
+                    new { name = "SagaId", title = "SagaId", classification = "Internal" },
+                    new { name = "SagaStepId", title = "SagaStepId", classification = "Internal" },
+                    new { name = "ProcessingScope", title = "Escopo de processamento", classification = "Internal" },
+                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
+                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
+                    new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -864,11 +864,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 {
                     new { name = "Id", title = "ID", classification = "Internal" },
                     new { name = "Description", title = "Descrição", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -886,11 +886,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CanUpdate", title = "Permite Atualizar", classification = "Internal" },
                     new { name = "CanDelete", title = "Permite Deletar", classification = "Internal" },
                     new { name = "ValidUntil", title = "Valido ate", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -911,16 +911,16 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "NextExecutionAt", title = "Proxima execucao", classification = "Internal" },
                     new { name = "LockedAt", title = "LockedAt", classification = "Internal" },
                     new { name = "LockedBy", title = "LockedBy", classification = "Internal" },
-                    new { name = "ProcessingScope", title = "Escopo de processamento", classification = "Internal" },
-                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
-                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
-                    new { name = "Changed", title = "Changed", classification = "Internal" },
-                    new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "RootOperationId", title = "Operacao raiz", classification = "Internal" },
                     new { name = "OperationId", title = "Operacao logica", classification = "Internal" },
                     new { name = "ExecutionId", title = "Tentativa de execucao", classification = "Internal" },
                     new { name = "CausationId", title = "Execucao causadora", classification = "Internal" },
+                    new { name = "ProcessingScope", title = "Escopo de processamento", classification = "Internal" },
+                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
+                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
+                    new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -941,15 +941,15 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ErrorMessage", title = "Erro", classification = "Internal" },
                     new { name = "Payload", title = "Payload", classification = "Internal" },
                     new { name = "RetryCount", title = "Tentativas", classification = "Internal" },
-                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
-                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
-                    new { name = "Changed", title = "Changed", classification = "Internal" },
-                    new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "RootOperationId", title = "Operacao raiz", classification = "Internal" },
                     new { name = "OperationId", title = "Operacao logica", classification = "Internal" },
                     new { name = "ExecutionId", title = "Tentativa de execucao", classification = "Internal" },
                     new { name = "CausationId", title = "Execucao causadora", classification = "Internal" },
+                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
+                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
+                    new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -959,6 +959,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 fields = new[]
                 {
                     new { name = "Id", title = "ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "CnpjCpf", title = "Cnpj/Cpf", classification = "Confidential" },
                     new { name = "Nome", title = "Nome", classification = "Confidential" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
@@ -976,10 +977,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ApplicationKey", title = "Aplicativo", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "ValidUntil", title = "Valido ate", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -992,10 +993,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ModuleId", title = "ID Modulo", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "ValidUntil", title = "Valido ate", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -1014,9 +1015,9 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "LastUsedAt", title = "Ultimo uso", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -1026,6 +1027,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                 fields = new[]
                 {
                     new { name = "Id", title = "ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "Nome", title = "Nome Usuario", classification = "Confidential" },
                     new { name = "Email", title = "Email", classification = "Confidential" },
                     new { name = "Senha", title = "Senha", classification = "NeverCapture" },
@@ -1049,11 +1051,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "CanUpdate", title = "Permite Atualizar", classification = "Internal" },
                     new { name = "CanDelete", title = "Permite Deletar", classification = "Internal" },
                     new { name = "ValidUntil", title = "Valido ate", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -1066,10 +1068,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ModuleId", title = "ID Modulo", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "ValidUntil", title = "Valido ate", classification = "Internal" },
-                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
         }

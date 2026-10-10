@@ -19,11 +19,11 @@ namespace Command.Write
         public int MOV_PLAID { get; set; }
         public int MOV_UNID { get; set; }
         public int? Tr_Unidade_UNI_ID { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Movimentos";
  public string? OperationalRecordId => OperationalEntityId;
     }

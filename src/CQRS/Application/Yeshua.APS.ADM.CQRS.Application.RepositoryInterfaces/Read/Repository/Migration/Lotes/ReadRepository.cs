@@ -30,33 +30,33 @@ namespace IRepository.Read
         public bool ExistsByLOT_LARGURA(Decimal value );
         public bool ExistsByLOT_COMPRIMENTO(Decimal value );
         public bool ExistsByLOT_DIAMETRO(Decimal value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public LotesDTO FirstById(int value );
         public LotesDTO FirstByMOV_LOTE(string value );
         public LotesDTO FirstByMOV_SUB_LOTE(string value );
         public LotesDTO FirstByLOT_LARGURA(Decimal value );
         public LotesDTO FirstByLOT_COMPRIMENTO(Decimal value );
         public LotesDTO FirstByLOT_DIAMETRO(Decimal value );
-        public LotesDTO FirstByOperationalEntityId(string value );
         public LotesDTO FirstByTenantID(int value );
         public LotesDTO FirstByDeleted(bool value );
         public LotesDTO FirstByChanged(DateTime value );
         public LotesDTO FirstByUserId(int value );
+        public LotesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<LotesDTO> GetAllById(int value );
         public IEnumerable<LotesDTO> GetAllByMOV_LOTE(string value );
         public IEnumerable<LotesDTO> GetAllByMOV_SUB_LOTE(string value );
         public IEnumerable<LotesDTO> GetAllByLOT_LARGURA(Decimal value );
         public IEnumerable<LotesDTO> GetAllByLOT_COMPRIMENTO(Decimal value );
         public IEnumerable<LotesDTO> GetAllByLOT_DIAMETRO(Decimal value );
-        public IEnumerable<LotesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<LotesDTO> GetAllByTenantID(int value );
         public IEnumerable<LotesDTO> GetAllByDeleted(bool value );
         public IEnumerable<LotesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<LotesDTO> GetAllByUserId(int value );
+        public IEnumerable<LotesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

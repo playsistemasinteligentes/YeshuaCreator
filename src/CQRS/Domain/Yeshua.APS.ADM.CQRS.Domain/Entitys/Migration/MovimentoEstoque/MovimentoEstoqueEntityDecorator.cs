@@ -68,11 +68,11 @@
             public const ulong MOV_GRUPO_CONTABIL = 1UL << 45;
             public const ulong FOR_ID = 1UL << 46;
             public const ulong CLI_ID = 1UL << 47;
-            public const ulong OperationalEntityId = 1UL << 48;
-            public const ulong TenantID = 1UL << 49;
-            public const ulong Deleted = 1UL << 50;
-            public const ulong Changed = 1UL << 51;
-            public const ulong UserId = 1UL << 52;
+            public const ulong TenantID = 1UL << 48;
+            public const ulong Deleted = 1UL << 49;
+            public const ulong Changed = 1UL << 50;
+            public const ulong UserId = 1UL << 51;
+            public const ulong OperationalEntityId = 1UL << 52;
         }
 
         public static class MovimentoEstoqueOperationalFields
@@ -125,11 +125,11 @@
             public const Dominio.Operational.OperationalDataClassification MOV_GRUPO_CONTABIL = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification FOR_ID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CLI_ID = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class MovimentoEstoqueDecorator : IMovimentoEstoqueEntity
@@ -838,7 +838,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -895,6 +894,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

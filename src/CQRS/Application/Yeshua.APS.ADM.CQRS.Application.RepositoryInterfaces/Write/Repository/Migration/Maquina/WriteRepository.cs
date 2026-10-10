@@ -24,11 +24,11 @@ namespace IRepository.Write
         void Delete(IMaquinaEntity maquina);
         void UpdateDescricao(string id, string value);
         void UpdateStatus(string id, string value);
-        void UpdateOperationalEntityId(string id, string value);
         void UpdateTenantID(string id, int value);
         void UpdateDeleted(string id, bool value);
         void UpdateChanged(string id, DateTime value);
         void UpdateUserId(string id, int value);
+        void UpdateOperationalEntityId(string id, string value);
         void UpdateCAL_ID(string id, int value);
         void UpdateMAQ_CONTROL_IP(string id, string value);
         void UpdateGMA_ID(string id, string value);

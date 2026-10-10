@@ -28,11 +28,11 @@
     DateTime? ValidoDe { get; set; }
     DateTime? ValidoAte { get; set; }
     int Ativo { get; set; }
-    string OperationalEntityId { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string OperationalEntityId { get; }
     string? SenhaStorageKey { get; set; }
     
                     bool isValidInsert();

@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [InspecaoVisual] ";
+            this.Query = $@" select [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [InspecaoVisual] ";
 if (Command.IPV_ID.HasValue) dict["IPV_ID"] = Command.IPV_ID.Value;
 if (Command.IPV_ID.HasValue) whereClauses.Add($"[IPV_ID] = @IPV_ID");
 if (!string.IsNullOrEmpty(Command.IPV_VALOR)) dict["IPV_VALOR"] = $"%{Command.IPV_VALOR}%";
@@ -63,14 +63,14 @@ if (Command.FPR_SEQ_REPETICAO.HasValue) dict["FPR_SEQ_REPETICAO"] = Command.FPR_
 if (Command.FPR_SEQ_REPETICAO.HasValue) whereClauses.Add($"[FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO");
 if (!string.IsNullOrEmpty(Command.IPV_STATUS_LIBERACAO)) dict["IPV_STATUS_LIBERACAO"] = $"%{Command.IPV_STATUS_LIBERACAO}%";
 if (!string.IsNullOrEmpty(Command.IPV_STATUS_LIBERACAO)) whereClauses.Add($"[IPV_STATUS_LIBERACAO] like @IPV_STATUS_LIBERACAO");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -491,23 +491,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [InspecaoVisual] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -576,12 +559,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [InspecaoVisual] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIPV_IDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -598,7 +598,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -615,7 +615,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -632,7 +632,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -649,7 +649,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -666,7 +666,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -683,7 +683,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -700,7 +700,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -717,7 +717,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -734,7 +734,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -751,7 +751,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -768,7 +768,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -785,7 +785,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -802,7 +802,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -819,7 +819,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -836,7 +836,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -853,7 +853,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -865,29 +865,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -904,7 +887,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -921,7 +904,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -938,13 +921,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [InspecaoVisual] ";
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [IPV_ID], [IPV_VALOR], [IPV_ID_OPERADOR], [IPV_ID_LIBERACAO], [IPV_OBS], [IPV_DATA_COLETA], [IPV_DATA_AVAL], [TIV_ID], [TURN_ID], [TURM_ID], [ORD_ID], [ROT_PRO_ID], [ROT_MAQ_ID], [ROT_SEQ_TRANSFORMACAO], [FPR_SEQ_REPETICAO], [IPV_STATUS_LIBERACAO], [IPV_VALOR_MEDIDA], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [InspecaoVisual] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

@@ -24,11 +24,11 @@ namespace IRepository.Write
         void Delete(IProdutoEntity produto);
         void UpdateDescricao(string id, string value);
         void UpdateStatus(string id, string value);
-        void UpdateOperationalEntityId(string id, string value);
         void UpdateTenantID(string id, int value);
         void UpdateDeleted(string id, bool value);
         void UpdateChanged(string id, DateTime value);
         void UpdateUserId(string id, int value);
+        void UpdateOperationalEntityId(string id, string value);
         void UpdatePRO_ESTOQUE_ATUAL(string id, Decimal value);
         void UpdateUNI_ID(string id, string value);
         void UpdatePRO_FARDOS_POR_CAMADA(string id, Decimal value);

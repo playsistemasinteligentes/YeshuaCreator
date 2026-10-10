@@ -83,7 +83,7 @@
             public const ulong FPR_TOLERANCIA_MENOS = 1UL << 60;
             public const ulong FPR_TOLERANCIA_MAIS = 1UL << 61;
             public const ulong FPR_DATA_ENCERRAMENTO = 1UL << 62;
-            public const ulong OperationalEntityId = 1UL << 63;
+            public const ulong TenantID = 1UL << 63;
         }
 
         public static class FilaProducaoOperationalFields
@@ -151,7 +151,7 @@
             public const Dominio.Operational.OperationalDataClassification FPR_TOLERANCIA_MENOS = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification FPR_TOLERANCIA_MAIS = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification FPR_DATA_ENCERRAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class FilaProducaoDecorator : IFilaProducaoEntity
@@ -1070,7 +1070,6 @@
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public int? TenantID
                                     {
@@ -1080,7 +1079,8 @@
                                             if (_inner.TenantID != value)
                                             {
                                                 _inner.TenantID = value;
-
+                                                if ((_trackingMask & FilaProducaoTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("FilaProducao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -1123,6 +1123,7 @@
                                             }
                                         }
                                     }
+    public string OperationalEntityId => _inner.OperationalEntityId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

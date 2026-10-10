@@ -38,11 +38,11 @@ namespace IRepository.Read
         public bool ExistsByValorDocumento(Decimal value );
         public bool ExistsByPesoBruto(Decimal value );
         public bool ExistsBySnapshotJson(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CTeDocumentoOriginarioDTO FirstById(int value );
         public CTeDocumentoOriginarioDTO FirstByCTeSolicitacaoFiscalId(int value );
         public CTeDocumentoOriginarioDTO FirstByDocumentoFiscalOriginarioId(int value );
@@ -55,11 +55,11 @@ namespace IRepository.Read
         public CTeDocumentoOriginarioDTO FirstByValorDocumento(Decimal value );
         public CTeDocumentoOriginarioDTO FirstByPesoBruto(Decimal value );
         public CTeDocumentoOriginarioDTO FirstBySnapshotJson(string value );
-        public CTeDocumentoOriginarioDTO FirstByOperationalEntityId(string value );
         public CTeDocumentoOriginarioDTO FirstByTenantID(int value );
         public CTeDocumentoOriginarioDTO FirstByDeleted(bool value );
         public CTeDocumentoOriginarioDTO FirstByChanged(DateTime value );
         public CTeDocumentoOriginarioDTO FirstByUserId(int value );
+        public CTeDocumentoOriginarioDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllById(int value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByCTeSolicitacaoFiscalId(int value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByDocumentoFiscalOriginarioId(int value );
@@ -72,11 +72,11 @@ namespace IRepository.Read
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByValorDocumento(Decimal value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByPesoBruto(Decimal value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllBySnapshotJson(string value );
-        public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByUserId(int value );
+        public IEnumerable<CTeDocumentoOriginarioDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirColaboradorQuery(IColaboradorEntity Colaborador)
         {
-            this.Query = $@" INSERT INTO [Colaborador] ([COL_CPF], [COL_NOME], [COL_NASCIMENTO], [COL_EMAIL], [COL_MATRICULA], [TURM_id], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@COL_CPF, @COL_NOME, @COL_NASCIMENTO, @COL_EMAIL, @COL_MATRICULA, @TURM_id, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Colaborador] ([COL_CPF], [COL_NOME], [COL_NASCIMENTO], [COL_EMAIL], [COL_MATRICULA], [TURM_id], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@COL_CPF, @COL_NOME, @COL_NASCIMENTO, @COL_EMAIL, @COL_MATRICULA, @TURM_id, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 COL_CPF = Colaborador.COL_CPF,
@@ -39,11 +39,11 @@ namespace Query.Write
                 COL_EMAIL = Colaborador.COL_EMAIL,
                 COL_MATRICULA = Colaborador.COL_MATRICULA,
                 TURM_id = Colaborador.TURM_id,
-                OperationalEntityId = Colaborador.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = Colaborador.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -113,16 +113,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(string col_cpf, string value)
-        {
-            this.Query = $@" UPDATE [Colaborador] SET [OperationalEntityId] = @OperationalEntityId WHERE [COL_CPF] = @COL_CPF ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                COL_CPF = col_cpf,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(string col_cpf, int value)
         {
             this.Query = $@" UPDATE [Colaborador] SET [TenantID] = @TenantID WHERE [COL_CPF] = @COL_CPF ";
@@ -159,6 +149,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                COL_CPF = col_cpf,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string col_cpf, string value)
+        {
+            this.Query = $@" UPDATE [Colaborador] SET [OperationalEntityId] = @OperationalEntityId WHERE [COL_CPF] = @COL_CPF ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 COL_CPF = col_cpf,
             };
             return new QueryModel(this.Query, this.Parameters);

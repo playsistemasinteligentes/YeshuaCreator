@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_IndicadoresQuery(IT_IndicadoresEntity T_Indicadores)
         {
-            this.Query = $@" INSERT INTO [T_Indicadores] ([IND_DESCRICAO], [NEG_ID], [DESC_CALCULO], [IND_TIPOCOMPARADOR], [IND_GRAFICO], [IND_CONEXAO], [IND_DTCRIACAO], [RESPOSAVELIND], [RESPOSAVELCARGA], [PROCEXTRACAO], [PER_ID], [DIM_ID], [DOM_EMPRESA], [DOM_FILIAL], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IND_ID] VALUES(@IND_DESCRICAO, @NEG_ID, @DESC_CALCULO, @IND_TIPOCOMPARADOR, @IND_GRAFICO, @IND_CONEXAO, @IND_DTCRIACAO, @RESPOSAVELIND, @RESPOSAVELCARGA, @PROCEXTRACAO, @PER_ID, @DIM_ID, @DOM_EMPRESA, @DOM_FILIAL, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Indicadores] ([IND_DESCRICAO], [NEG_ID], [DESC_CALCULO], [IND_TIPOCOMPARADOR], [IND_GRAFICO], [IND_CONEXAO], [IND_DTCRIACAO], [RESPOSAVELIND], [RESPOSAVELCARGA], [PROCEXTRACAO], [PER_ID], [DIM_ID], [DOM_EMPRESA], [DOM_FILIAL], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[IND_ID] VALUES(@IND_DESCRICAO, @NEG_ID, @DESC_CALCULO, @IND_TIPOCOMPARADOR, @IND_GRAFICO, @IND_CONEXAO, @IND_DTCRIACAO, @RESPOSAVELIND, @RESPOSAVELCARGA, @PROCEXTRACAO, @PER_ID, @DIM_ID, @DOM_EMPRESA, @DOM_FILIAL, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 IND_DESCRICAO = T_Indicadores.IND_DESCRICAO,
@@ -47,11 +47,11 @@ namespace Query.Write
                 DIM_ID = T_Indicadores.DIM_ID,
                 DOM_EMPRESA = T_Indicadores.DOM_EMPRESA,
                 DOM_FILIAL = T_Indicadores.DOM_FILIAL,
-                OperationalEntityId = T_Indicadores.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = T_Indicadores.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -220,16 +220,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(int ind_id, string value)
-        {
-            this.Query = $@" UPDATE [T_Indicadores] SET [OperationalEntityId] = @OperationalEntityId WHERE [IND_ID] = @IND_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                IND_ID = ind_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(int ind_id, int value)
         {
             this.Query = $@" UPDATE [T_Indicadores] SET [TenantID] = @TenantID WHERE [IND_ID] = @IND_ID ";
@@ -266,6 +256,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                IND_ID = ind_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(int ind_id, string value)
+        {
+            this.Query = $@" UPDATE [T_Indicadores] SET [OperationalEntityId] = @OperationalEntityId WHERE [IND_ID] = @IND_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 IND_ID = ind_id,
             };
             return new QueryModel(this.Query, this.Parameters);

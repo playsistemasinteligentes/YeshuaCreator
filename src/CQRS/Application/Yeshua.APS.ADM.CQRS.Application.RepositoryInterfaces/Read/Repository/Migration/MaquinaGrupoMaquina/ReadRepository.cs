@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByGMA_ID(string value );
         public bool ExistsByMAQ_ID(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MaquinaGrupoMaquinaDTO FirstById(int value );
         public MaquinaGrupoMaquinaDTO FirstByGMA_ID(string value );
         public MaquinaGrupoMaquinaDTO FirstByMAQ_ID(string value );
-        public MaquinaGrupoMaquinaDTO FirstByOperationalEntityId(string value );
         public MaquinaGrupoMaquinaDTO FirstByTenantID(int value );
         public MaquinaGrupoMaquinaDTO FirstByDeleted(bool value );
         public MaquinaGrupoMaquinaDTO FirstByChanged(DateTime value );
         public MaquinaGrupoMaquinaDTO FirstByUserId(int value );
+        public MaquinaGrupoMaquinaDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllById(int value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByGMA_ID(string value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByMAQ_ID(string value );
-        public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByTenantID(int value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByDeleted(bool value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByUserId(int value );
+        public IEnumerable<MaquinaGrupoMaquinaDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

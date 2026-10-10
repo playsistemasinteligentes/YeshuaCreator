@@ -26,11 +26,11 @@
     public string DIM_DESCRICAO { get; set; }
     public string? DIM_SQL { get; set; }
     public string? DIM_CONEXAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal IndicadoresDimencoesEntity(int? id, int dim_id, int ind_id, string dim_descricao, string? dim_sql, string? dim_conexao ){
  Id = id; 
@@ -39,9 +39,9 @@
  DIM_DESCRICAO = dim_descricao; 
  DIM_SQL = dim_sql; 
  DIM_CONEXAO = dim_conexao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

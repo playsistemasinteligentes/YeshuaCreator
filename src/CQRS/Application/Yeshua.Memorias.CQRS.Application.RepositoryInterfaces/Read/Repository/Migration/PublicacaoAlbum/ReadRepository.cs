@@ -36,11 +36,11 @@ namespace IRepository.Read
         public bool ExistsBySolicitadaEmUtc(DateTime value );
         public bool ExistsByPublicadaEmUtc(DateTime value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public PublicacaoAlbumDTO FirstById(int value );
         public PublicacaoAlbumDTO FirstByAlbumId(int value );
         public PublicacaoAlbumDTO FirstByCorrelationId(string value );
@@ -52,11 +52,11 @@ namespace IRepository.Read
         public PublicacaoAlbumDTO FirstBySolicitadaEmUtc(DateTime value );
         public PublicacaoAlbumDTO FirstByPublicadaEmUtc(DateTime value );
         public PublicacaoAlbumDTO FirstByStatus(int value );
-        public PublicacaoAlbumDTO FirstByOperationalEntityId(string value );
         public PublicacaoAlbumDTO FirstByTenantID(int value );
         public PublicacaoAlbumDTO FirstByDeleted(bool value );
         public PublicacaoAlbumDTO FirstByChanged(DateTime value );
         public PublicacaoAlbumDTO FirstByUserId(int value );
+        public PublicacaoAlbumDTO FirstByOperationalEntityId(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllById(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByAlbumId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByCorrelationId(string value );
@@ -68,11 +68,11 @@ namespace IRepository.Read
         public IEnumerable<PublicacaoAlbumDTO> GetAllBySolicitadaEmUtc(DateTime value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByPublicadaEmUtc(DateTime value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByStatus(int value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByTenantID(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByDeleted(bool value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByUserId(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

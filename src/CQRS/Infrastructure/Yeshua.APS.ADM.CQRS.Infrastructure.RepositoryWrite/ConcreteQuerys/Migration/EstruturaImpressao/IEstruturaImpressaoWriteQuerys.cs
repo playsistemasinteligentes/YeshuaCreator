@@ -20,11 +20,11 @@ namespace IQuery.Write
         QueryModel UpdateHTML_ESTRUTURA(int est_id, string value);
         QueryModel UpdateCLI_ID(int est_id, string value);
         QueryModel UpdateEST_DESCRICAO(int est_id, string value);
-        QueryModel UpdateOperationalEntityId(int est_id, string value);
         QueryModel UpdateTenantID(int est_id, int value);
         QueryModel UpdateDeleted(int est_id, bool value);
         QueryModel UpdateChanged(int est_id, DateTime value);
         QueryModel UpdateUserId(int est_id, int value);
+        QueryModel UpdateOperationalEntityId(int est_id, string value);
         public QueryModel DeleteEstruturaImpressaoQuery(IEstruturaImpressaoEntity EstruturaImpressao);
     }
 }

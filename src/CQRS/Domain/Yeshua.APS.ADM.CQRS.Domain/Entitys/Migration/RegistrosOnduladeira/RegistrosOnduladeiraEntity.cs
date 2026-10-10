@@ -25,11 +25,11 @@
     public string REG_RESPOSTA { get; set; }
     public string REG_STATUS { get; set; }
     public DateTime REG_DATA_INICIO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RegistrosOnduladeiraEntity(int? id, int reg_id, string reg_resposta, string reg_status, DateTime reg_data_inicio ){
  Id = id; 
@@ -37,9 +37,9 @@
  REG_RESPOSTA = reg_resposta; 
  REG_STATUS = reg_status; 
  REG_DATA_INICIO = (reg_data_inicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : reg_data_inicio; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

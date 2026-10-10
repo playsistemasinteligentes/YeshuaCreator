@@ -30,18 +30,18 @@ namespace Query.Write
         }
         public QueryModel InserirTipoMovimentoEstoqueQuery(ITipoMovimentoEstoqueEntity TipoMovimentoEstoque)
         {
-            this.Query = $@" INSERT INTO [TipoMovimentoEstoque] ([TIP_ID], [TIP_DESCRICAO], [TIP_TYPE], [SPR], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@TIP_ID, @TIP_DESCRICAO, @TIP_TYPE, @SPR, @OperationalEntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoMovimentoEstoque] ([TIP_ID], [TIP_DESCRICAO], [TIP_TYPE], [SPR], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) VALUES(@TIP_ID, @TIP_DESCRICAO, @TIP_TYPE, @SPR, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
             this.Parameters = new
             {
                 TIP_ID = TipoMovimentoEstoque.TIP_ID,
                 TIP_DESCRICAO = TipoMovimentoEstoque.TIP_DESCRICAO,
                 TIP_TYPE = TipoMovimentoEstoque.TIP_TYPE,
                 SPR = TipoMovimentoEstoque.SPR,
-                OperationalEntityId = TipoMovimentoEstoque.OperationalEntityId,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                OperationalEntityId = TipoMovimentoEstoque.OperationalEntityId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -89,16 +89,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOperationalEntityId(string tip_id, string value)
-        {
-            this.Query = $@" UPDATE [TipoMovimentoEstoque] SET [OperationalEntityId] = @OperationalEntityId WHERE [TIP_ID] = @TIP_ID ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
-                TIP_ID = tip_id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateTenantID(string tip_id, int value)
         {
             this.Query = $@" UPDATE [TipoMovimentoEstoque] SET [TenantID] = @TenantID WHERE [TIP_ID] = @TIP_ID ";
@@ -135,6 +125,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                TIP_ID = tip_id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationalEntityId(string tip_id, string value)
+        {
+            this.Query = $@" UPDATE [TipoMovimentoEstoque] SET [OperationalEntityId] = @OperationalEntityId WHERE [TIP_ID] = @TIP_ID ";
+            this.Parameters = new
+            {
+                OperationalEntityId = value,
                 TIP_ID = tip_id,
             };
             return new QueryModel(this.Query, this.Parameters);

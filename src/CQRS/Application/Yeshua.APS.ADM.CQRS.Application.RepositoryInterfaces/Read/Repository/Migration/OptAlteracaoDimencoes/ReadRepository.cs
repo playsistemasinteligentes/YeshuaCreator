@@ -26,25 +26,25 @@ namespace IRepository.Read
         public IEnumerable<OptAlteracaoDimencoesUserIdDTO> getOptAlteracaoDimencoesReadFKUserId(object command );
         public bool ExistsById(int value );
         public bool ExistsByOAD_ID(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public OptAlteracaoDimencoesDTO FirstById(int value );
         public OptAlteracaoDimencoesDTO FirstByOAD_ID(int value );
-        public OptAlteracaoDimencoesDTO FirstByOperationalEntityId(string value );
         public OptAlteracaoDimencoesDTO FirstByTenantID(int value );
         public OptAlteracaoDimencoesDTO FirstByDeleted(bool value );
         public OptAlteracaoDimencoesDTO FirstByChanged(DateTime value );
         public OptAlteracaoDimencoesDTO FirstByUserId(int value );
+        public OptAlteracaoDimencoesDTO FirstByOperationalEntityId(string value );
         public IEnumerable<OptAlteracaoDimencoesDTO> GetAllById(int value );
         public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByOAD_ID(int value );
-        public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByTenantID(int value );
         public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByUserId(int value );
+        public IEnumerable<OptAlteracaoDimencoesDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

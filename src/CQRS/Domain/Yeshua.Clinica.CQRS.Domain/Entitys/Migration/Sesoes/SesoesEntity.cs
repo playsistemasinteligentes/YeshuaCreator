@@ -48,11 +48,11 @@
     public int? ServicoId { get; set; }
     public int? MovimentacaoFinanceiraId { get; set; }
     public int? ProfissionalId { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal SesoesEntity(int? pacienteid, DateTime datainicio, DateTime datafim, int? statusagendamento, int? statusprontuario, string? prontuario, string? queixaprincipal, string? registrodocumental, string? sintomasrelatados, int? mudancasdesdeultimasessaao, string? comportamentoobservado, string? estadoemocionalgeral, string? discursopensamentos, string? usomedicacao, string? tecnicasutilizadas, string? questionamentosreflexoesabordadas, string? exerciciostarefassugeridas, string? diagnoosticohipotesediagnoostica, string? objetivoscurtoprazo, string? objetivoslongoprazo, string? frequenciasugeridasessooes, string? encaminhamentooutrosprofissionais, string? informacoesrelevantesfuturasconsultas, string? feedbackpacientesobreprocessoterapeeutico, int? id, int? servicoid, int? movimentacaofinanceiraid, int? profissionalid ){
  PacienteId = pacienteid; 
@@ -83,9 +83,9 @@
  ServicoId = servicoid; 
  MovimentacaoFinanceiraId = movimentacaofinanceiraid; 
  ProfissionalId = profissionalid; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

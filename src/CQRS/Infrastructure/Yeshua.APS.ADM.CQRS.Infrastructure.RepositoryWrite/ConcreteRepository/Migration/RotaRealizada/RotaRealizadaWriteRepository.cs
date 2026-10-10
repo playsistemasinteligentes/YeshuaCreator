@@ -71,11 +71,6 @@ namespace Input.Repository.RotaRealizada
             var query = _query.UpdateROT_LONG(rot_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int rot_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(rot_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int rot_id, int value)
         {
             var query = _query.UpdateTenantID(rot_id, value);
@@ -94,6 +89,11 @@ namespace Input.Repository.RotaRealizada
         public void UpdateUserId(int rot_id, int value)
         {
             var query = _query.UpdateUserId(rot_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int rot_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(rot_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

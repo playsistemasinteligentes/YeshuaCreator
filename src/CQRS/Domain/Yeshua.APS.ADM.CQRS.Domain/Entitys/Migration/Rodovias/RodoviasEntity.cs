@@ -23,19 +23,19 @@
     public int? Id { get; set; }
     public int ROD_ID { get; set; }
     public string? ROD_DESCRICAO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal RodoviasEntity(int? id, int rod_id, string? rod_descricao ){
  Id = id; 
  ROD_ID = rod_id; 
  ROD_DESCRICAO = rod_descricao; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -19,11 +19,11 @@ namespace Command.Write
         public string ROTINA { get; set; }
         public string? HISTORICO { get; set; }
         public string? CHAVE { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string OperationalEntityId { get; set; }
  public string OperationalEntity => "Auditoria";
  public string? OperationalRecordId => OperationalEntityId;
     }

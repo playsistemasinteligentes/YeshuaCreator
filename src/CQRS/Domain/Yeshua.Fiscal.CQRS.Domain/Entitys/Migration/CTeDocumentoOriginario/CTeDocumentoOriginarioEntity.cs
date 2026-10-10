@@ -32,11 +32,11 @@
     public Decimal? ValorDocumento { get; set; }
     public Decimal? PesoBruto { get; set; }
     public string? SnapshotJson { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeDocumentoOriginarioEntity(int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string? snapshotjson ){
  Id = id; 
@@ -51,9 +51,9 @@
  ValorDocumento = valordocumento; 
  PesoBruto = pesobruto; 
  SnapshotJson = snapshotjson; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

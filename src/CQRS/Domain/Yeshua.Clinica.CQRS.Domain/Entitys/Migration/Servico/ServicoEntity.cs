@@ -24,20 +24,20 @@
     public int? GrupoServicoId { get; set; }
     public string Nome { get; set; }
     public Decimal Valor { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal valor ){
  Id = id; 
  GrupoServicoId = gruposervicoid; 
  Nome = nome; 
  Valor = valor; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

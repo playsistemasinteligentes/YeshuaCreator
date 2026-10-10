@@ -108,14 +108,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByOperationalEntityId(string value )
-        {
-            var query = _query.ExistsByOperationalEntityIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -148,17 +140,17 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByOperationalEntityId(string value )
+        {
+            var query = _query.ExistsByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public MedicoesOnduladeiraDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
-
-                var result = _unitOfWork.QueryFirstOrDefault<MedicoesOnduladeiraDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public MedicoesOnduladeiraDTO FirstByOperationalEntityId(string value )
-        {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<MedicoesOnduladeiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -196,17 +188,17 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<MedicoesOnduladeiraDTO> GetAllById(int value )
+        public MedicoesOnduladeiraDTO FirstByOperationalEntityId(string value )
         {
-            var query = _query.FirstByIdQuery(value );
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
-                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
+                var result = _unitOfWork.QueryFirstOrDefault<MedicoesOnduladeiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public IEnumerable<MedicoesOnduladeiraDTO> GetAllByOperationalEntityId(string value )
+        public IEnumerable<MedicoesOnduladeiraDTO> GetAllById(int value )
         {
-            var query = _query.FirstByOperationalEntityIdQuery(value );
+            var query = _query.FirstByIdQuery(value );
 
                 var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
@@ -239,6 +231,14 @@ namespace Read.Repository
         public IEnumerable<MedicoesOnduladeiraDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<MedicoesOnduladeiraDTO> GetAllByOperationalEntityId(string value )
+        {
+            var query = _query.FirstByOperationalEntityIdQuery(value );
 
                 var result = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters).ToList();
                 return result;

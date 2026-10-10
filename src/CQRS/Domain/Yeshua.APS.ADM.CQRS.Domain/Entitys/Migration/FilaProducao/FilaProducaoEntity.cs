@@ -83,11 +83,11 @@
     public Decimal? FPR_TOLERANCIA_MENOS { get; set; }
     public Decimal? FPR_TOLERANCIA_MAIS { get; set; }
     public DateTime? FPR_DATA_ENCERRAMENTO { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal FilaProducaoEntity(int? id, string ord_id, string rot_pro_id, Decimal fpr_quantidade_prevista, string rot_maq_id, DateTime fpr_data_inicio_prevista, DateTime fpr_data_fim_prevista, DateTime fpr_data_fim_maxima, int rot_seq_tranformacao, int fpr_seq_repeticao, string? fpr_obs_producao, string? fpr_status, Decimal? fpr_tempo_decorrido_setup, Decimal? fpr_tempo_decorrido_setupa, Decimal? fpr_tempo_decorrido_performanc, Decimal? fpr_tempo_deco_pequena_parada, Decimal? fpr_qtd_performance, Decimal? fpr_qtd_setup, Decimal? fpr_qtd_produzida, Decimal? fpr_tempo_teorico_performance, Decimal? fpr_tempo_restante_performanc, Decimal? fpr_velocidade_p_atingir_meta, Decimal? fpr_qtd_restante, Decimal? fpr_velo_atu_pc_segundo, Decimal? fpr_performance_projetada, Decimal? fpr_tempo_restante_total, DateTime? fpr_fim_previsto_atual, int? fpr_produzindo, Decimal? fpr_ordem_na_fila, string? fpr_id_integracao, string? fpr_truncado, DateTime? fpr_data_trunc_ini, DateTime? fpr_data_trunc_fim, int fpr_id, string? fpr_cor_fila, string? maq_id_manual, string? maq_id_restringida, DateTime fpr_previsao_materia_prima, DateTime? fpr_data_necessidade_inicio_producao, DateTime? fpr_data_necessidade_fim_producao, Decimal? fpr_grupo_produtivo, DateTime? fpr_inicio_grupo_produtivo, DateTime? fpr_fim_grupo_produtivo, string? fpr_cor_bico1, string? fpr_cor_bico2, string? fpr_cor_bico3, string? fpr_cor_bico4, string? fpr_cor_bico5, Decimal? fpr_meta_setup, string? fpr_ord_id_reprogramado, int? fpr_prioridade, int? fpr_seq_inclusao_fila, int? fpr_hierarquia_seq_transformacao, int? fpr_id_origem, DateTime? fpr_data_entrega, string? equ_id, Decimal? fpr_grupo_produtivo_manual, DateTime? fpr_emissao, string? fpr_motivo_pula_fila, string? oco_id, Decimal? fpr_tolerancia_menos, Decimal? fpr_tolerancia_mais, DateTime? fpr_data_encerramento ){
  Id = id; 
@@ -153,9 +153,9 @@
  FPR_TOLERANCIA_MENOS = fpr_tolerancia_menos; 
  FPR_TOLERANCIA_MAIS = fpr_tolerancia_mais; 
  FPR_DATA_ENCERRAMENTO = fpr_data_encerramento.HasValue && fpr_data_encerramento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : fpr_data_encerramento; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

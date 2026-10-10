@@ -37,11 +37,11 @@ namespace Repositorio.Outputs
     public string grp_id_composicao { get; set; } = string.Empty;
     public Decimal ito_largura { get; set; }
     public Decimal ito_comprimento { get; set; }
-    public string operationalentityid { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

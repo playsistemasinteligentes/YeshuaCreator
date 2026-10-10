@@ -22,18 +22,18 @@
 {
     public int? Id { get; set; }
     public int IES_CUSTOM_FONT_SIZE { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ItensEstruturaImpressaoEntity(int? id, int ies_custom_font_size ){
  Id = id; 
  IES_CUSTOM_FONT_SIZE = ies_custom_font_size; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

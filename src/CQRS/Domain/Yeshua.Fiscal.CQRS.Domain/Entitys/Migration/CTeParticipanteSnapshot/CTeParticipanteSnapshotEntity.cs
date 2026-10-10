@@ -29,11 +29,11 @@
     public string? UF { get; set; }
     public string? MunicipioCodigoIbge { get; set; }
     public string? EnderecoJson { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeParticipanteSnapshotEntity(int? id, int ctesolicitacaofiscalid, string papel, string documento, string? nome, string? inscricaoestadual, string? uf, string? municipiocodigoibge, string? enderecojson ){
  Id = id; 
@@ -45,9 +45,9 @@
  UF = uf; 
  MunicipioCodigoIbge = municipiocodigoibge; 
  EnderecoJson = enderecojson; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

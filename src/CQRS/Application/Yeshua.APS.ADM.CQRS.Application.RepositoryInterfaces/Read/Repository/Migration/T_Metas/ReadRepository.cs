@@ -40,11 +40,11 @@ namespace IRepository.Read
         public bool ExistsByPER_ID(string value );
         public bool ExistsByDOM_EMPRESA(string value );
         public bool ExistsByDOM_FILIAL(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public T_MetasDTO FirstByMET_ID(int value );
         public T_MetasDTO FirstByMET_DTINICIO(string value );
         public T_MetasDTO FirstByMET_DTFIM(string value );
@@ -60,11 +60,11 @@ namespace IRepository.Read
         public T_MetasDTO FirstByPER_ID(string value );
         public T_MetasDTO FirstByDOM_EMPRESA(string value );
         public T_MetasDTO FirstByDOM_FILIAL(string value );
-        public T_MetasDTO FirstByOperationalEntityId(string value );
         public T_MetasDTO FirstByTenantID(int value );
         public T_MetasDTO FirstByDeleted(bool value );
         public T_MetasDTO FirstByChanged(DateTime value );
         public T_MetasDTO FirstByUserId(int value );
+        public T_MetasDTO FirstByOperationalEntityId(string value );
         public IEnumerable<T_MetasDTO> GetAllByMET_ID(int value );
         public IEnumerable<T_MetasDTO> GetAllByMET_DTINICIO(string value );
         public IEnumerable<T_MetasDTO> GetAllByMET_DTFIM(string value );
@@ -80,11 +80,11 @@ namespace IRepository.Read
         public IEnumerable<T_MetasDTO> GetAllByPER_ID(string value );
         public IEnumerable<T_MetasDTO> GetAllByDOM_EMPRESA(string value );
         public IEnumerable<T_MetasDTO> GetAllByDOM_FILIAL(string value );
-        public IEnumerable<T_MetasDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<T_MetasDTO> GetAllByTenantID(int value );
         public IEnumerable<T_MetasDTO> GetAllByDeleted(bool value );
         public IEnumerable<T_MetasDTO> GetAllByChanged(DateTime value );
         public IEnumerable<T_MetasDTO> GetAllByUserId(int value );
+        public IEnumerable<T_MetasDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

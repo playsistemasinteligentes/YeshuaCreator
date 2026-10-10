@@ -46,11 +46,11 @@ namespace IRepository.Read
         public bool ExistsByValorCarga(Decimal value );
         public bool ExistsByPreferenciasManifestoJson(string value );
         public bool ExistsByStatus(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public CTeSolicitacaoFiscalDTO FirstById(int value );
         public CTeSolicitacaoFiscalDTO FirstByEntradaOficialId(int value );
         public CTeSolicitacaoFiscalDTO FirstByRomaneioConsolidadoId(int value );
@@ -71,11 +71,11 @@ namespace IRepository.Read
         public CTeSolicitacaoFiscalDTO FirstByValorCarga(Decimal value );
         public CTeSolicitacaoFiscalDTO FirstByPreferenciasManifestoJson(string value );
         public CTeSolicitacaoFiscalDTO FirstByStatus(int value );
-        public CTeSolicitacaoFiscalDTO FirstByOperationalEntityId(string value );
         public CTeSolicitacaoFiscalDTO FirstByTenantID(int value );
         public CTeSolicitacaoFiscalDTO FirstByDeleted(bool value );
         public CTeSolicitacaoFiscalDTO FirstByChanged(DateTime value );
         public CTeSolicitacaoFiscalDTO FirstByUserId(int value );
+        public CTeSolicitacaoFiscalDTO FirstByOperationalEntityId(string value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllById(int value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByEntradaOficialId(int value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByRomaneioConsolidadoId(int value );
@@ -96,11 +96,11 @@ namespace IRepository.Read
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByValorCarga(Decimal value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByPreferenciasManifestoJson(string value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByStatus(int value );
-        public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByTenantID(int value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByDeleted(bool value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByChanged(DateTime value );
         public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByUserId(int value );
+        public IEnumerable<CTeSolicitacaoFiscalDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

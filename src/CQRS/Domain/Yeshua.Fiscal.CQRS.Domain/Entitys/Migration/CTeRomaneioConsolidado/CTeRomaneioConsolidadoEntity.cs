@@ -36,11 +36,11 @@
     public string? CargaSnapshotJson { get; set; }
     public string? PreferenciasFiscaisJson { get; set; }
     public int Status { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CTeRomaneioConsolidadoEntity(int? id, int entradaoficialid, string correlationid, string romaneioid, string? cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? emitentedocumento, string? tomadordocumento, string? rotasnapshotjson, string? cargasnapshotjson, string? preferenciasfiscaisjson, int status ){
  Id = id; 
@@ -59,9 +59,9 @@
  CargaSnapshotJson = cargasnapshotjson; 
  PreferenciasFiscaisJson = preferenciasfiscaisjson; 
  Status = status; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] from [LogsDatabase] ";
+            this.Query = $@" select [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [LogsDatabase] ";
 if (Command.LOGS_ID.HasValue) dict["LOGS_ID"] = Command.LOGS_ID.Value;
 if (Command.LOGS_ID.HasValue) whereClauses.Add($"[LOGS_ID] = @LOGS_ID");
 if (!string.IsNullOrEmpty(Command.LOGS_TABLE)) dict["LOGS_TABLE"] = $"%{Command.LOGS_TABLE}%";
@@ -61,14 +61,14 @@ if (Command.USE_ID.HasValue) dict["USE_ID"] = Command.USE_ID.Value;
 if (Command.USE_ID.HasValue) whereClauses.Add($"[USE_ID] = @USE_ID");
 if (!string.IsNullOrEmpty(Command.LOGS_ORIGEM)) dict["LOGS_ORIGEM"] = $"%{Command.LOGS_ORIGEM}%";
 if (!string.IsNullOrEmpty(Command.LOGS_ORIGEM)) whereClauses.Add($"[LOGS_ORIGEM] like @LOGS_ORIGEM");
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
-if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
+if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -406,23 +406,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM [LogsDatabase] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //04
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
@@ -491,12 +474,29 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [LogsDatabase] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //04
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByLOGS_IDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -513,7 +513,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -530,7 +530,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -547,7 +547,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -564,7 +564,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -581,7 +581,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -598,7 +598,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -615,7 +615,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -632,7 +632,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -649,7 +649,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -666,7 +666,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -683,7 +683,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -700,7 +700,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -717,7 +717,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -729,29 +729,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOperationalEntityIdQuery(string value )
-        {
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
- dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"[TenantID] = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"[Deleted] = @Deleted");
-                      dict["OperationalEntityId"] = value; //06
-                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTenantIDQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -768,7 +751,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -785,7 +768,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -802,13 +785,30 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [OperationalEntityId], [TenantID], [Deleted], [Changed], [UserId] FROM [LogsDatabase] ";
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByOperationalEntityIdQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [LOGS_ID], [LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [LogsDatabase] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["OperationalEntityId"] = value; //06
+                      whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

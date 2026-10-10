@@ -30,11 +30,11 @@
     public string? ROT_PRO_ID { get; set; }
     public int? FPR_SEQ_REPETICAO { get; set; }
     public int? USE_ID { get; set; }
-    public string OperationalEntityId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal LaudoTesteFisicoEntity(int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string? ltf_obs, string? ltf_status, string? ord_id, string? rot_pro_id, int? fpr_seq_repeticao, int? use_id ){
  Id = id; 
@@ -47,9 +47,9 @@
  ROT_PRO_ID = rot_pro_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  USE_ID = use_id; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {

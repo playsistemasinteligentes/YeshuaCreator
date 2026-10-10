@@ -27,27 +27,27 @@ namespace IRepository.Read
         public bool ExistsByUNI_ID(int value );
         public bool ExistsByDEESCRICAO(string value );
         public bool ExistsByUN(string value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public UnidadeDTO FirstByUNI_ID(int value );
         public UnidadeDTO FirstByDEESCRICAO(string value );
         public UnidadeDTO FirstByUN(string value );
-        public UnidadeDTO FirstByOperationalEntityId(string value );
         public UnidadeDTO FirstByTenantID(int value );
         public UnidadeDTO FirstByDeleted(bool value );
         public UnidadeDTO FirstByChanged(DateTime value );
         public UnidadeDTO FirstByUserId(int value );
+        public UnidadeDTO FirstByOperationalEntityId(string value );
         public IEnumerable<UnidadeDTO> GetAllByUNI_ID(int value );
         public IEnumerable<UnidadeDTO> GetAllByDEESCRICAO(string value );
         public IEnumerable<UnidadeDTO> GetAllByUN(string value );
-        public IEnumerable<UnidadeDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<UnidadeDTO> GetAllByTenantID(int value );
         public IEnumerable<UnidadeDTO> GetAllByDeleted(bool value );
         public IEnumerable<UnidadeDTO> GetAllByChanged(DateTime value );
         public IEnumerable<UnidadeDTO> GetAllByUserId(int value );
+        public IEnumerable<UnidadeDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

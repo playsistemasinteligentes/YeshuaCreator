@@ -29,29 +29,29 @@ namespace IRepository.Read
         public bool ExistsByMAQ_ID(string value );
         public bool ExistsByIMP_ID(int value );
         public bool ExistsByMAI_FACAO(int value );
-        public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByOperationalEntityId(string value );
         public MaquinaImpressoraDTO FirstByMAQ_IMP_ID(int value );
         public MaquinaImpressoraDTO FirstByMAQ_ID(string value );
         public MaquinaImpressoraDTO FirstByIMP_ID(int value );
         public MaquinaImpressoraDTO FirstByMAI_FACAO(int value );
-        public MaquinaImpressoraDTO FirstByOperationalEntityId(string value );
         public MaquinaImpressoraDTO FirstByTenantID(int value );
         public MaquinaImpressoraDTO FirstByDeleted(bool value );
         public MaquinaImpressoraDTO FirstByChanged(DateTime value );
         public MaquinaImpressoraDTO FirstByUserId(int value );
+        public MaquinaImpressoraDTO FirstByOperationalEntityId(string value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByMAQ_IMP_ID(int value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByMAQ_ID(string value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByIMP_ID(int value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByMAI_FACAO(int value );
-        public IEnumerable<MaquinaImpressoraDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByTenantID(int value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByDeleted(bool value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MaquinaImpressoraDTO> GetAllByUserId(int value );
+        public IEnumerable<MaquinaImpressoraDTO> GetAllByOperationalEntityId(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

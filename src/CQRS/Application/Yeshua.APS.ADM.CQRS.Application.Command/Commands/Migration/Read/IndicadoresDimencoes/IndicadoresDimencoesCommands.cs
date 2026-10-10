@@ -19,11 +19,11 @@ namespace Command.Read
         public string? DIM_DESCRICAO { get; set; }
         public string? DIM_SQL { get; set; }
         public string? DIM_CONEXAO { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "IndicadoresDimencoes";
  public string? OperationalRecordId => OperationalEntityId;

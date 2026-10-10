@@ -81,11 +81,6 @@ namespace Input.Repository.Usuario
             var query = _query.UpdateUSE_CODERP(use_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperationalEntityId(int use_id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(use_id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateTenantID(int use_id, int value)
         {
             var query = _query.UpdateTenantID(use_id, value);
@@ -104,6 +99,11 @@ namespace Input.Repository.Usuario
         public void UpdateUserId(int use_id, int value)
         {
             var query = _query.UpdateUserId(use_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationalEntityId(int use_id, string value)
+        {
+            var query = _query.UpdateOperationalEntityId(use_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

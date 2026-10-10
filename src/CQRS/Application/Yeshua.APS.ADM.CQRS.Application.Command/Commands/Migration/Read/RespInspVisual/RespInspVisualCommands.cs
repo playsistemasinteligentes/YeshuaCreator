@@ -18,11 +18,11 @@ namespace Command.Read
         public int? IPV_ID { get; set; }
         public int? ITI_ID { get; set; }
         public string? RIV_STATUS { get; set; }
-        public string? OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? OperationalEntityId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "RespInspVisual";
  public string? OperationalRecordId => OperationalEntityId;
