@@ -12,9 +12,11 @@ Clinica. A operacao normal deve usar `deploy.sh`.
 
 Somente `playsis-central/central-front` e publicado. Clinica, APS.ADM, Fiscal e
 Memorias publicam API, Worker e Migration; Memorias tambem publica seu worker
-Python de midia. O fluxo continua conceitualmente igual ao deploy historico da
-Clinica: limpa e atualiza a copia local do repositorio, constroi as imagens,
-executa as migrations, sobe os servicos e reconcilia o Nginx por ultimo.
+Python de midia. O Shared publica a Operational Intelligence API, o pacote de
+telemetria e o Operational Intelligence Agent de diagnostico/build. O fluxo
+continua conceitualmente igual ao deploy historico da Clinica: limpa e atualiza
+a copia local do repositorio, constroi as imagens, executa as migrations, sobe
+os servicos e reconcilia o Nginx por ultimo.
 
 O deploy normal nao possui migracao automatica de layout nem varredura com
 `docker rm -f`. O Nginx somente e validado e recarregado depois que todos os

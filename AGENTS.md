@@ -904,7 +904,8 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Uma infraestrutura representa um servidor fisico e pode hospedar N aplicativos.
 - O servidor e composto por um projeto Compose Shared e um projeto Compose independente para cada aplicativo.
 - Projetos Compose usam nomes explicitos e se conectam por uma rede externa de nome estavel.
-- SQL Server, Redis, RabbitMQ, nginx, certificados e a rede pertencem ao Shared do servidor atual.
+- SQL Server, Redis, RabbitMQ, nginx, certificados, inteligencia operacional,
+  agente operacional e a rede pertencem ao Shared do servidor atual.
 - Os catalogos `CLINICA` e `MDFE` compartilham a instancia SQL, mas permanecem separados.
 - Cada Studio cria seu proprio catalogo por meio de `UnitOfWork(connection, true)` antes de executar suas migrations.
 - Containers de Migration executam o Studio com `--database-only`; geracao de codigo nunca acontece durante o deploy.
@@ -984,6 +985,18 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   Shared. Os aplicativos a consultam pelo nome do servico na rede Docker
   compartilhada. A rota nginx `/operational/` permanece temporariamente publica
   e deve receber autenticacao e autorizacao na etapa de seguranca.
+- O `operational-intelligence-agent` pertence ao Compose Shared, nao a um
+  Studio. Ele e um container interno de apoio tecnico com SDK .NET, Git,
+  Node/Python, Codex CLI e Claude Code para diagnostico, leitura de codigo,
+  compilacao e testes em workspace proprio.
+- A primeira versao do agente operacional e observadora/build-only: nao monta
+  `/var/run/docker.sock`, nao reinicia containers, nao executa migration, nao
+  publica deploy e nao altera banco. Acoes operacionais destrutivas ou de
+  escrita continuam exigindo comando humano explicito.
+- O agente operacional deve consumir a Operational Intelligence API, MCP local,
+  telemetria e uma copia de trabalho do repositorio para autoconhecimento do
+  servidor. Credenciais de agentes devem entrar somente por ambiente/segredo do
+  servidor, nunca gravadas na imagem.
 - Politicas operacionais sao identificadas por `Application + Environment`,
   permitindo configuracoes independentes para producao e homologacao.
 - Cada host gerado mantem snapshot local e sincroniza a politica por polling. O
