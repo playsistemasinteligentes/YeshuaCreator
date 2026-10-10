@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RecursosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRecursos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRecursosReceiver), commandName: "Command.Write.RecursosCrudCommand");
-                 var recursos = new RecursosFactory(_logger, _domainTrackingPolicy).Create(context, c.REC_ID, c.REC_DESCRICAO, c.CAL_ID, c.REC_CONTROL_IP, c.GRE_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Recursos", "InsertRecursos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RecursosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRecursos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRecursosReceiver), commandName: "Command.Write.RecursosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var recursos = new RecursosFactory(_logger, _domainTrackingPolicy).Create(context, c.REC_ID, c.REC_DESCRICAO, c.CAL_ID, c.REC_CONTROL_IP, c.GRE_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", recursos.OperationalEntityId);
                  var domainResult = RecursosDomainBehavior.Apply(recursos, context);
                  if (!domainResult.IsValid)

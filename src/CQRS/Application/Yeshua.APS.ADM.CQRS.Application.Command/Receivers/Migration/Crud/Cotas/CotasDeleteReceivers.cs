@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CotasCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCotas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCotasReceiver), commandName: "Command.Write.CotasCrudCommand");
-                 var cotas = new CotasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.COT_ID, c.COT_DATA_DE, c.COT_DATA_ATE, c.COT_VALOR, c.COT_OCUPADO, c.REP_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Cotas", "DeleteCotas", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CotasCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCotas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCotasReceiver), commandName: "Command.Write.CotasCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cotas = new CotasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.COT_ID, c.COT_DATA_DE, c.COT_DATA_ATE, c.COT_VALOR, c.COT_OCUPADO, c.REP_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cotas.OperationalEntityId);
                  var domainResult = CotasDomainBehavior.Apply(cotas, context);
                  if (!domainResult.IsValid)

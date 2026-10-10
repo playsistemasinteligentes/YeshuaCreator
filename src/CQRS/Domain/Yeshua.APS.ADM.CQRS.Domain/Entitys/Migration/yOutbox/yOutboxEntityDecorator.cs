@@ -44,6 +44,42 @@
             public const ulong Deleted = 1UL << 21;
             public const ulong Changed = 1UL << 22;
             public const ulong UserId = 1UL << 23;
+            public const ulong RootOperationId = 1UL << 24;
+            public const ulong OperationId = 1UL << 25;
+            public const ulong ExecutionId = 1UL << 26;
+            public const ulong CausationId = 1UL << 27;
+        }
+
+        public static class yOutboxOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MessageId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Type = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntityType = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CorrelationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Payload = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TransportType = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TransportData = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CreatedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SentAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RetryCount = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LastError = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProcessingAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NextAttemptAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SagaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SagaStepId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProcessingScope = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RootOperationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ExecutionId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CausationId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class yOutboxDecorator : IyOutboxEntity
@@ -53,6 +89,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yOutboxDecorator(IyOutboxEntity inner, Dominio.Interfaces.ILogger logger)
@@ -70,6 +107,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -82,7 +126,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +140,7 @@
                                             {
                                                 _inner.MessageId = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.MessageId) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "MessageId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "MessageId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.MessageId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +154,7 @@
                                             {
                                                 _inner.Type = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.Type) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.Type, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +168,7 @@
                                             {
                                                 _inner.EntityType = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.EntityType) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.EntityType, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +182,7 @@
                                             {
                                                 _inner.EntityId = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.EntityId) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.EntityId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +196,7 @@
                                             {
                                                 _inner.CorrelationId = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.CorrelationId) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.CorrelationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +210,7 @@
                                             {
                                                 _inner.Payload = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.Payload) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "Payload", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "Payload", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.Payload, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -180,7 +224,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -194,7 +238,7 @@
                                             {
                                                 _inner.TransportType = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.TransportType) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "TransportType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "TransportType", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.TransportType, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -208,7 +252,7 @@
                                             {
                                                 _inner.TransportData = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.TransportData) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "TransportData", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "TransportData", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.TransportData, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -222,7 +266,7 @@
                                             {
                                                 _inner.CreatedAt = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.CreatedAt) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.CreatedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -236,7 +280,7 @@
                                             {
                                                 _inner.SentAt = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.SentAt) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "SentAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "SentAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.SentAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -250,7 +294,7 @@
                                             {
                                                 _inner.RetryCount = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.RetryCount) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "RetryCount", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "RetryCount", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.RetryCount, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -264,7 +308,7 @@
                                             {
                                                 _inner.LastError = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.LastError) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "LastError", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "LastError", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.LastError, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -278,7 +322,7 @@
                                             {
                                                 _inner.ProcessingAt = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.ProcessingAt) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "ProcessingAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "ProcessingAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.ProcessingAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -292,7 +336,7 @@
                                             {
                                                 _inner.NextAttemptAt = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.NextAttemptAt) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "NextAttemptAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "NextAttemptAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.NextAttemptAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -306,7 +350,7 @@
                                             {
                                                 _inner.SagaId = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.SagaId) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "SagaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "SagaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.SagaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -320,7 +364,7 @@
                                             {
                                                 _inner.SagaStepId = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.SagaStepId) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "SagaStepId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "SagaStepId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.SagaStepId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -335,7 +379,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -350,7 +394,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -364,7 +408,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -378,7 +422,63 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & yOutboxTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("yOutbox", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yOutbox", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.UserId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? RootOperationId
+                                    {
+                                        get => _inner.RootOperationId;
+                                        set
+                                        {
+                                            if (_inner.RootOperationId != value)
+                                            {
+                                                _inner.RootOperationId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.RootOperationId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "RootOperationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.RootOperationId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? OperationId
+                                    {
+                                        get => _inner.OperationId;
+                                        set
+                                        {
+                                            if (_inner.OperationId != value)
+                                            {
+                                                _inner.OperationId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.OperationId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "OperationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.OperationId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? ExecutionId
+                                    {
+                                        get => _inner.ExecutionId;
+                                        set
+                                        {
+                                            if (_inner.ExecutionId != value)
+                                            {
+                                                _inner.ExecutionId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.ExecutionId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "ExecutionId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.ExecutionId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? CausationId
+                                    {
+                                        get => _inner.CausationId;
+                                        set
+                                        {
+                                            if (_inner.CausationId != value)
+                                            {
+                                                _inner.CausationId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.CausationId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "CausationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yOutboxOperationalFields.CausationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

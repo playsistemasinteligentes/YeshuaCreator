@@ -75,6 +75,7 @@ public partial class yUserCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["Id"] = ApiTestData.IntKey(),
             ["Nome"] = ApiTestData.Text("yUser Nome", 80),
             ["Email"] = ApiTestData.Text("yUser Email", 60),
             ["Senha"] = ApiTestData.Text("yUser Senha", 60),

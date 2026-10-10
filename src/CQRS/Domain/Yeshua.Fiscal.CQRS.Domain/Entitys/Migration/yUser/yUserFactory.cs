@@ -28,19 +28,20 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyUserEntity Create(int? id, string nome, string email, string? senha )
+                                    } public IyUserEntity Create(int id, string nome, string email, string? senha )
                             {
                                 return Create(null, id, nome, email, senha);
                             }
 
                             public IyUserEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string email, string? senha )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string nome, string email, string? senha, ulong? trackingMask = null )
                             {
                             var entity = new yUserEntity(id, nome, email, senha );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yUser", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yUserDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yUser", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yUserDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

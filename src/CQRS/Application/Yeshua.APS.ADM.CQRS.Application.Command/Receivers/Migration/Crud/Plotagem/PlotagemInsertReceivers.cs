@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PlotagemCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlotagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlotagemReceiver), commandName: "Command.Write.PlotagemCrudCommand");
-                 var plotagem = new PlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PLO_ID, c.PLO_NOME, c.PLO_DIMENSAO, c.PLO_X, c.PLO_Y, c.PLO_Z, c.PLO_GRAFICO, c.CON_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Plotagem", "InsertPlotagem", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PlotagemCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlotagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlotagemReceiver), commandName: "Command.Write.PlotagemCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var plotagem = new PlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PLO_ID, c.PLO_NOME, c.PLO_DIMENSAO, c.PLO_X, c.PLO_Y, c.PLO_Z, c.PLO_GRAFICO, c.CON_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", plotagem.OperationalEntityId);
                  var domainResult = PlotagemDomainBehavior.Apply(plotagem, context);
                  if (!domainResult.IsValid)

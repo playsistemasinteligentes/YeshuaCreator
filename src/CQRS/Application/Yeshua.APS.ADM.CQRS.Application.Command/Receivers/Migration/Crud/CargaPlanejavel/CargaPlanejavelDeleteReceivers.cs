@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CargaPlanejavelCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCargaPlanejavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCargaPlanejavelReceiver), commandName: "Command.Write.CargaPlanejavelCrudCommand");
-                 var cargaplanejavel = new CargaPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.CargaId, c.Status, c.TransportadoraId, c.VeiculoId, c.TipoVeiculoId, c.PesoTeorico, c.VolumeTeorico, c.InicioJanelaEmbarque, c.FimJanelaEmbarque, c.EmbarqueAlvo, c.QuantidadePedidos, c.AlertasResumo);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CargaPlanejavel", "DeleteCargaPlanejavel", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CargaPlanejavelCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCargaPlanejavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCargaPlanejavelReceiver), commandName: "Command.Write.CargaPlanejavelCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cargaplanejavel = new CargaPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.CargaId, c.Status, c.TransportadoraId, c.VeiculoId, c.TipoVeiculoId, c.PesoTeorico, c.VolumeTeorico, c.InicioJanelaEmbarque, c.FimJanelaEmbarque, c.EmbarqueAlvo, c.QuantidadePedidos, c.AlertasResumo, trackingMask: trackingMask);
                  var domainResult = CargaPlanejavelDomainBehavior.Apply(cargaplanejavel, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -38,6 +38,26 @@
             public const ulong TIV_TOL_MENOS = 1UL << 15;
         }
 
+        public static class TipoInspecaoVisualOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_NOME = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TIV_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_FECHAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_AMOSTRA_ALEATORIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_N_AMOSTRAS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_MEDIDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_ESPECIFICACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_TOL_MAIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_TOL_MENOS = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TipoInspecaoVisualDecorator : ITipoInspecaoVisualEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TipoInspecaoVisualDecorator(ITipoInspecaoVisualEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.TIV_ID = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -103,7 +131,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -117,7 +145,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -131,7 +159,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -145,7 +173,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -159,7 +187,7 @@
                                             {
                                                 _inner.TIV_NOME = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_NOME) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_NOME, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -173,7 +201,7 @@
                                             {
                                                 _inner.TIV_DESCRICAO = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -187,7 +215,7 @@
                                             {
                                                 _inner.TIV_FECHAMENTO = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_FECHAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_FECHAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_FECHAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_FECHAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -201,7 +229,7 @@
                                             {
                                                 _inner.TIV_AMOSTRA_ALEATORIA = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_AMOSTRA_ALEATORIA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_AMOSTRA_ALEATORIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_AMOSTRA_ALEATORIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_AMOSTRA_ALEATORIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -215,7 +243,7 @@
                                             {
                                                 _inner.TIV_N_AMOSTRAS = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_N_AMOSTRAS) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_N_AMOSTRAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_N_AMOSTRAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_N_AMOSTRAS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -229,7 +257,7 @@
                                             {
                                                 _inner.TIV_MEDIDA = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_MEDIDA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_MEDIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_MEDIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_MEDIDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +271,7 @@
                                             {
                                                 _inner.TIV_ESPECIFICACAO = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_ESPECIFICACAO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_ESPECIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_ESPECIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_ESPECIFICACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +285,7 @@
                                             {
                                                 _inner.TIV_TOL_MAIS = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_TOL_MAIS) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_TOL_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_TOL_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_TOL_MAIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,7 +299,7 @@
                                             {
                                                 _inner.TIV_TOL_MENOS = value;
                                                 if ((_trackingMask & TipoInspecaoVisualTrackingFields.TIV_TOL_MENOS) != 0UL)
-                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_TOL_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoInspecaoVisual", "TIV_TOL_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoInspecaoVisualOperationalFields.TIV_TOL_MENOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -23,7 +23,23 @@ public static class OperationalActivity
         }
     }
 
-    public static void RecordException(Activity? activity, Exception exception)
+    public static void SetIdentity(
+        Activity? activity,
+        OperationalExecutionIdentity identity)
+    {
+        if (activity is null)
+            return;
+
+        activity.SetTag("yeshua.root_operation_id", identity.RootOperationId);
+        activity.SetTag("yeshua.operation_id", identity.OperationId);
+        activity.SetTag("yeshua.execution_id", identity.ExecutionId);
+        activity.SetTag("yeshua.causation_id", identity.CausationId);
+    }
+
+    public static void RecordException(
+        Activity? activity,
+        Exception exception,
+        OperationalDepth depth = OperationalDepth.D0)
     {
         if (activity is null)
             return;
@@ -33,8 +49,8 @@ public static class OperationalActivity
             tags: new ActivityTagsCollection
             {
                 { "exception.type", exception.GetType().FullName },
-                { "exception.message", exception.Message },
-                { "exception.stacktrace", exception.StackTrace }
+                { "yeshua.depth", depth.ToString() },
+                { "yeshua.exception.detail_omitted", true }
             }));
     }
 }

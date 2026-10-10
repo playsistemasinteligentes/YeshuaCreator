@@ -8,7 +8,7 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
 // </yeshua>
 
-// Escopo: Abre a sessao local do aplicativo a partir de identidades globais autenticadas pela Central.
+// Escopo: Abre a sessao local do aplicativo usando TenantId e UserId globais atribuidos pela Central.
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;

@@ -34,13 +34,14 @@
                             }
 
                             public IRoteiroPedidoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string statuscadastro, string? tipoplanejamento, int calendarioid, Decimal? hierarquiasequenciatransformacao, int? proximasequenciatransformacao, Decimal? performance, Decimal? temposetup, Decimal? temposetupajuste, Decimal? pecasporpulso, Decimal? prioridadeinformada, string? status, string operacoes, string excecaooperacoes, string linhadireta, int? avaliacusto, Decimal? percentualiniciopassoanterior, Decimal? maquinalargurautil, Decimal? grupotipo, Decimal grupoperformancemetrolinear )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string statuscadastro, string? tipoplanejamento, int calendarioid, Decimal? hierarquiasequenciatransformacao, int? proximasequenciatransformacao, Decimal? performance, Decimal? temposetup, Decimal? temposetupajuste, Decimal? pecasporpulso, Decimal? prioridadeinformada, string? status, string operacoes, string excecaooperacoes, string linhadireta, int? avaliacusto, Decimal? percentualiniciopassoanterior, Decimal? maquinalargurautil, Decimal? grupotipo, Decimal grupoperformancemetrolinear, ulong? trackingMask = null )
                             {
                             var entity = new RoteiroPedidoEntity(pedidoid, maquinaid, produtoid, sequenciatransformacao, statuscadastro, tipoplanejamento, calendarioid, hierarquiasequenciatransformacao, proximasequenciatransformacao, performance, temposetup, temposetupajuste, pecasporpulso, prioridadeinformada, status, operacoes, excecaooperacoes, linhadireta, avaliacusto, percentualiniciopassoanterior, maquinalargurautil, grupotipo, grupoperformancemetrolinear );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("RoteiroPedido", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RoteiroPedidoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("RoteiroPedido", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RoteiroPedidoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

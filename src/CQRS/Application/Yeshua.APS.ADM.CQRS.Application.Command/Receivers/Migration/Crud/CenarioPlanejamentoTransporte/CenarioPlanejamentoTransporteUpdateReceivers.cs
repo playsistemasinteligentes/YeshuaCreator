@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CenarioPlanejamentoTransporteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCenarioPlanejamentoTransporte", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCenarioPlanejamentoTransporteReceiver), commandName: "Command.Write.CenarioPlanejamentoTransporteCrudCommand");
-                 var cenarioplanejamentotransporte = new CenarioPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.CenarioId, c.Descricao, c.Objetivo, c.QuantidadeCargas, c.QuantidadePedidosNaoAtendidos, c.CustoTotal, c.AderenciaCubagem, c.AtrasoPrevisto, c.AlertasResumo);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CenarioPlanejamentoTransporte", "UpdateCenarioPlanejamentoTransporte", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CenarioPlanejamentoTransporteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCenarioPlanejamentoTransporte", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCenarioPlanejamentoTransporteReceiver), commandName: "Command.Write.CenarioPlanejamentoTransporteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cenarioplanejamentotransporte = new CenarioPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.CenarioId, c.Descricao, c.Objetivo, c.QuantidadeCargas, c.QuantidadePedidosNaoAtendidos, c.CustoTotal, c.AderenciaCubagem, c.AtrasoPrevisto, c.AlertasResumo, trackingMask: trackingMask);
                  var domainResult = CenarioPlanejamentoTransporteDomainBehavior.Apply(cenarioplanejamentotransporte, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

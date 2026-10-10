@@ -34,13 +34,14 @@
                             }
 
                             public IGrupoMaquinaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? descricao, string? status, string? gma_tipo_planejamento )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? descricao, string? status, string? gma_tipo_planejamento, ulong? trackingMask = null )
                             {
                             var entity = new GrupoMaquinaEntity(id, descricao, status, gma_tipo_planejamento );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("GrupoMaquina", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new GrupoMaquinaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("GrupoMaquina", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new GrupoMaquinaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class ConsultasOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CON_CASAS_DECIMAIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CON_CONEXAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ConsultasDecorator : IConsultasEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ConsultasDecorator(IConsultasEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.CON_CASAS_DECIMAIS = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.CON_CASAS_DECIMAIS) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "CON_CASAS_DECIMAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "CON_CASAS_DECIMAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.CON_CASAS_DECIMAIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.CON_CONEXAO = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.CON_CONEXAO) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "CON_CONEXAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "CON_CONEXAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.CON_CONEXAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ConsultasTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Consultas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Consultas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultasOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

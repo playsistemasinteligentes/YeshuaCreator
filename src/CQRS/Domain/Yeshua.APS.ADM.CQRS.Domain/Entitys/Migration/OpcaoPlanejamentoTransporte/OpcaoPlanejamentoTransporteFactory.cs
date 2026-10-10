@@ -34,13 +34,14 @@
                             }
 
                             public IOpcaoPlanejamentoTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string? riscoresumo, string? pedidosresumo, string? opcoesconflitantesresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string opcaoid, string grupodecisaoid, Decimal? peso, Decimal? volume, Decimal? custoestimado, Decimal? aderenciacubagem, Decimal? aderenciajanelaentrega, string? riscoresumo, string? pedidosresumo, string? opcoesconflitantesresumo, ulong? trackingMask = null )
                             {
                             var entity = new OpcaoPlanejamentoTransporteEntity(opcaoid, grupodecisaoid, peso, volume, custoestimado, aderenciacubagem, aderenciajanelaentrega, riscoresumo, pedidosresumo, opcoesconflitantesresumo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("OpcaoPlanejamentoTransporte", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new OpcaoPlanejamentoTransporteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("OpcaoPlanejamentoTransporte", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new OpcaoPlanejamentoTransporteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

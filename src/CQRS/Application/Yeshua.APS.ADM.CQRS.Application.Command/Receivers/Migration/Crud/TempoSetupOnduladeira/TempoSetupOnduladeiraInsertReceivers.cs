@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TempoSetupOnduladeiraCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTempoSetupOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTempoSetupOnduladeiraReceiver), commandName: "Command.Write.TempoSetupOnduladeiraCrudCommand");
-                 var temposetuponduladeira = new TempoSetupOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.TEM_ID, c.OND_ID_DE, c.OND_ID_PARA, c.TEM_RESINA_DE, c.TEM_RESINA_PARA, c.TEM_TEMPO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TempoSetupOnduladeira", "InsertTempoSetupOnduladeira", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TempoSetupOnduladeiraCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTempoSetupOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTempoSetupOnduladeiraReceiver), commandName: "Command.Write.TempoSetupOnduladeiraCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var temposetuponduladeira = new TempoSetupOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.TEM_ID, c.OND_ID_DE, c.OND_ID_PARA, c.TEM_RESINA_DE, c.TEM_RESINA_PARA, c.TEM_TEMPO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", temposetuponduladeira.OperationalEntityId);
                  var domainResult = TempoSetupOnduladeiraDomainBehavior.Apply(temposetuponduladeira, context);
                  if (!domainResult.IsValid)

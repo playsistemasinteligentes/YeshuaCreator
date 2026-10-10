@@ -34,13 +34,14 @@
                             }
 
                             public IEntradaFiscalContingenciaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string cargaid, int tiposolicitante, int ambiente, string sourceapplication, string? sourcemodule, string sourcemessageid, string? emitentefiscaldocumento, string? tomadordocumento, string? transportadordocumento, string? remetentedocumento, string? destinatariodocumento, string? ufinicio, string? uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? rntrc, string? placaveiculo, string? ufveiculo, string? condutordocumento, string? condutornome, int? quantidadedocumentos, Decimal? valorcarga, Decimal? pesobruto, Decimal? volume, string? pendenciasjson, string? snapshotjson, string? emissaofiscalcorrelationid, int? emissaofiscalsagaid, DateTime criadoemutc, DateTime? atualizadoemutc, int status, int? certificadodigitalid )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string cargaid, int tiposolicitante, int ambiente, string sourceapplication, string? sourcemodule, string sourcemessageid, string? emitentefiscaldocumento, string? tomadordocumento, string? transportadordocumento, string? remetentedocumento, string? destinatariodocumento, string? ufinicio, string? uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? rntrc, string? placaveiculo, string? ufveiculo, string? condutordocumento, string? condutornome, int? quantidadedocumentos, Decimal? valorcarga, Decimal? pesobruto, Decimal? volume, string? pendenciasjson, string? snapshotjson, string? emissaofiscalcorrelationid, int? emissaofiscalsagaid, DateTime criadoemutc, DateTime? atualizadoemutc, int status, int? certificadodigitalid, ulong? trackingMask = null )
                             {
                             var entity = new EntradaFiscalContingenciaEntity(id, correlationid, cargaid, tiposolicitante, ambiente, sourceapplication, sourcemodule, sourcemessageid, emitentefiscaldocumento, tomadordocumento, transportadordocumento, remetentedocumento, destinatariodocumento, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, rntrc, placaveiculo, ufveiculo, condutordocumento, condutornome, quantidadedocumentos, valorcarga, pesobruto, volume, pendenciasjson, snapshotjson, emissaofiscalcorrelationid, emissaofiscalsagaid, criadoemutc, atualizadoemutc, status, certificadodigitalid );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("EntradaFiscalContingencia", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EntradaFiscalContingenciaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("EntradaFiscalContingencia", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EntradaFiscalContingenciaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

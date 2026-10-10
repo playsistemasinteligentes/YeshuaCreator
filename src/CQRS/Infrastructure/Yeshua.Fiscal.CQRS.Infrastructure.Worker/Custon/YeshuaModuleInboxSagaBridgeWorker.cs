@@ -1,5 +1,6 @@
 using Aplication.Interfaces.Services;
 using Command.Patterns.Command;
+using Dominio.Operational;
 using Dominio.Patterns.Saga;
 using Dominio.Saga;
 using IRepository.Read;
@@ -28,6 +29,7 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
     private readonly IyInboxReadRepository _inboxReadRepository;
     private readonly IyInboxWriteRepository _inboxWriteRepository;
     private readonly IExecutionContext _executionContext;
+    private readonly Dominio.Interfaces.ILogger _logger;
 
     public YeshuaModuleInboxSagaBridgeWorker(
         IUnitOfWork unitOfWork,
@@ -45,6 +47,7 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
         _inboxReadRepository = inboxReadRepository;
         _inboxWriteRepository = inboxWriteRepository;
         _executionContext = context;
+        _logger = logger;
     }
 
     protected override Task<State<YeshuaModuleInboxSagaBridgeOutputCommand>> ActionAsync(
@@ -58,10 +61,25 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
         foreach (var inbox in claimed)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            var parentIdentity = ReadIdentity(inbox);
+            var telemetry = _logger.Evaluate(
+                "Worker",
+                "Inbox.SagaBridge",
+                "yInbox",
+                inbox.operationalentityid);
+            using var executionScope = !telemetry.Enabled ||
+                string.IsNullOrWhiteSpace(parentIdentity.RootOperationId)
+                ? null
+                : _executionContext.BeginOperationalExecution(
+                    parentIdentity,
+                    "Inbox.SagaBridge");
+            OperationalExecutionIdentity? bridgeIdentity = executionScope is null
+                ? null
+                : _executionContext.OperationalIdentity;
 
             try
             {
-                StartSagaFromInbox(inbox);
+                StartSagaFromInbox(inbox, bridgeIdentity);
                 processed++;
             }
             catch (Exception ex)
@@ -89,7 +107,9 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
             DateTime.UtcNow);
     }
 
-    private void StartSagaFromInbox(yInboxDTO inbox)
+    private void StartSagaFromInbox(
+        yInboxDTO inbox,
+        OperationalExecutionIdentity? bridgeIdentity)
     {
         var correlationId = ExtractSagaCorrelationId(inbox.payload);
         _executionContext.SetTenantId(inbox.tenantid);
@@ -124,6 +144,20 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
             step.SetPayload(inbox.payload);
             step.SetPendingApply();
 
+            if (bridgeIdentity is { } identity)
+            {
+                saga.SetOperationalIdentity(
+                    identity.RootOperationId,
+                    identity.OperationId,
+                    identity.ExecutionId,
+                    identity.CausationId);
+                step.SetOperationalIdentity(
+                    identity.RootOperationId,
+                    identity.OperationId,
+                    identity.ExecutionId,
+                    identity.CausationId);
+            }
+
             _sagaWriteRepository.Save(saga);
             MarkApplied(inbox.id, saga.Id, step.Id);
             _unitOfWork.Commit();
@@ -134,6 +168,16 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
             throw;
         }
     }
+
+    private static OperationalExecutionIdentity ReadIdentity(yInboxDTO inbox) =>
+        new(
+            EmptyToNull(inbox.rootoperationid),
+            EmptyToNull(inbox.operationid),
+            EmptyToNull(inbox.executionid),
+            EmptyToNull(inbox.causationid));
+
+    private static string? EmptyToNull(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value;
 
     private bool FiscalSagaAlreadyStarted(string correlationId)
     {

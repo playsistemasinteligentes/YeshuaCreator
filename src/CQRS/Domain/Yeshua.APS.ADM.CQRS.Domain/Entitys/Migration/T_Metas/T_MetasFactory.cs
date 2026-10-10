@@ -34,13 +34,14 @@
                             }
 
                             public IT_MetasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int met_id, string met_dtinicio, string met_dtfim, string met_alvo, int met_tipoalvo, int ind_id, Decimal? met_range01, Decimal? met_range02, Decimal? met_range03, int? dim_id, string? fat_id, string? dim_subdimensao_id, string? per_id, string? dom_empresa, string? dom_filial )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int met_id, string met_dtinicio, string met_dtfim, string met_alvo, int met_tipoalvo, int ind_id, Decimal? met_range01, Decimal? met_range02, Decimal? met_range03, int? dim_id, string? fat_id, string? dim_subdimensao_id, string? per_id, string? dom_empresa, string? dom_filial, ulong? trackingMask = null )
                             {
                             var entity = new T_MetasEntity(met_id, met_dtinicio, met_dtfim, met_alvo, met_tipoalvo, ind_id, met_range01, met_range02, met_range03, dim_id, fat_id, dim_subdimensao_id, per_id, dom_empresa, dom_filial );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_Metas", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_MetasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_Metas", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_MetasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

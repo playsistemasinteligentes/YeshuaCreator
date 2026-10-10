@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MDFeVeiculoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeVeiculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeVeiculoReceiver), commandName: "Command.Write.MDFeVeiculoCrudCommand");
-                 var mdfeveiculo = new MDFeVeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.Placa, c.Renavam, c.Tara, c.CapacidadeKg, c.CapacidadeM3);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MDFeVeiculo", "InsertMDFeVeiculo", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MDFeVeiculoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeVeiculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeVeiculoReceiver), commandName: "Command.Write.MDFeVeiculoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var mdfeveiculo = new MDFeVeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.Placa, c.Renavam, c.Tara, c.CapacidadeKg, c.CapacidadeM3, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfeveiculo.OperationalEntityId);
                  var domainResult = MDFeVeiculoDomainBehavior.Apply(mdfeveiculo, context);
                  if (!domainResult.IsValid)

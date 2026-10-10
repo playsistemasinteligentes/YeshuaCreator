@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TabelaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTabela", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTabelaReceiver), commandName: "Command.Write.TabelaCrudCommand");
-                 var tabela = new TabelaFactory(_logger, _domainTrackingPolicy).Create(context, c.ID_TABELA, c.CODIGO, c.NOME);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Tabela", "UpdateTabela", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TabelaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTabela", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTabelaReceiver), commandName: "Command.Write.TabelaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tabela = new TabelaFactory(_logger, _domainTrackingPolicy).Create(context, c.ID_TABELA, c.CODIGO, c.NOME, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tabela.OperationalEntityId);
                  var domainResult = TabelaDomainBehavior.Apply(tabela, context);
                  if (!domainResult.IsValid)

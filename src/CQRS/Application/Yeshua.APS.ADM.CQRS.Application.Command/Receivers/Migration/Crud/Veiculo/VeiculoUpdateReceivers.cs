@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.VeiculoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateVeiculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateVeiculoReceiver), commandName: "Command.Write.VeiculoCrudCommand");
-                 var veiculo = new VeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VEI_PLACA, c.VEI_UF, c.TIP_ID, c.VEI_CAPACIDADE_M3, c.VEI_CAPACIDADE_LARGURA, c.VEI_CAPACIDADE_COMPRIMENTO, c.VEI_CAPACIDADE_ALTURA, c.VEI_MODELO, c.VEI_NOME_MOTORISTA, c.VEI_DADOS_CONTATO, c.VEI_CPF_MOTORISTA, c.TCA_ID, c.VEI_EMISSAO, c.VEI_VENCIMENTO, c.VEI_STATUS);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Veiculo", "UpdateVeiculo", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.VeiculoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateVeiculo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateVeiculoReceiver), commandName: "Command.Write.VeiculoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var veiculo = new VeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VEI_PLACA, c.VEI_UF, c.TIP_ID, c.VEI_CAPACIDADE_M3, c.VEI_CAPACIDADE_LARGURA, c.VEI_CAPACIDADE_COMPRIMENTO, c.VEI_CAPACIDADE_ALTURA, c.VEI_MODELO, c.VEI_NOME_MOTORISTA, c.VEI_DADOS_CONTATO, c.VEI_CPF_MOTORISTA, c.TCA_ID, c.VEI_EMISSAO, c.VEI_VENCIMENTO, c.VEI_STATUS, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", veiculo.OperationalEntityId);
                  var domainResult = VeiculoDomainBehavior.Apply(veiculo, context);
                  if (!domainResult.IsValid)

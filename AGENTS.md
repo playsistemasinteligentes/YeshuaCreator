@@ -107,6 +107,10 @@ Miolos que IA/dev devem preencher:
   `/yapi/{Modulo}/Inbox/YeshuaModuleEvent`. Essa borda deve gravar o minimo
   necessario em `yInbox` e responder rapido; processamento pesado, SEFAZ,
   normalizacao e continuacao de saga pertencem a worker/receiver posterior.
+- A Engine gera essa borda somente quando a DSL declara
+  `StartsFromYeshuaModuleEvent`. O endpoint aceita apenas contratos declarados,
+  restaura a identidade causal, persiste pelo caminho padrao de Inbox e exige
+  autenticacao; nao criar nova rota manual por aplicativo.
 - Automacoes particulares de um tenant nao devem ser incorporadas aos binarios
   do aplicativo. A saga publica fatos de negocio versionados por Outbox para
   uma automacao externa; a automacao reage chamando Commands publicos normais,
@@ -277,9 +281,16 @@ Miolos que IA/dev devem preencher:
 - Todo campo gerado e potencialmente rastreavel sem engordar a DSL; a Engine
   gera constantes/masks por entidade/campo e a politica operacional decide em
   runtime o que fica ligado.
+- A classificacao operacional de dados nasce como descritor estatico gerado
+  pela Engine. Convencoes seguras classificam os campos por metadata e nome, e
+  a DSL pode complementar casos especificos com `ClassifyOperationalData`.
+  `NeverCapture` nunca pode ser habilitado pela tela nem atravessar o publisher
+  ou os exportadores.
 - O controle operacional usa `Component`, `Operation`, `Entity`, `RecordId`,
-  `Field`, `Level` e `Depth`; o tracker de dominio usa o componente
-  `DomainTracker` para nao herdar detalhamento generico por acidente.
+  `Field`, `Level`, `Depth` e `Mode`; o tracker de dominio usa o componente
+  `DomainTracker` para nao herdar detalhamento generico por acidente. O modo
+  usa o mesmo snapshot de politica, com valor padrao ou especifico por alvo, e
+  e sincronizado da API para o Worker pelo mecanismo operacional existente.
 - Quando desligado, o caminho quente deve pagar somente verificacoes baratas
   de politica/mascara: sem reflection, sem StackTrace, sem serializacao, sem
   interpolacao de strings e sem montagem de payload.
@@ -314,6 +325,29 @@ Miolos que IA/dev devem preencher:
 - A decisao de ligar ou desligar observabilidade deve acontecer antes de criar
   `Activity`, `Stopwatch`, tags, payloads ou serializacoes. Com a politica
   desligada, nenhuma dessas estruturas pode ser criada para a operacao.
+- No nivel `Basic`, todo Command selecionado emite `Command.Started` e
+  `Command.Completed`; em `Off`, o retorno deve ocorrer antes de escopo,
+  cronometro, `Activity` ou publicacao operacional.
+- A identidade imutavel de runtime deve ser resolvida uma unica vez pela
+  injecao de dependencia e entregue ao logger/publicador, nunca reconstruida
+  por evento no caminho quente.
+- Erros D0 usam somente resumo sanitizado. Mensagem original e stack trace sao
+  `Restricted` e somente podem aparecer quando a profundidade e a politica as
+  autorizarem.
+- Falha do sink ou provider de telemetria nunca pode alterar retorno, rejeicao
+  ou excecao da operacao principal.
+- Transicoes D1 entre componentes usam `OperationalEvidenceTransition` e o
+  mesmo logger/publicador dos demais eventos. Nao criar pipeline paralelo para
+  Saga, Inbox, Outbox, Worker ou dependencia externa.
+- A narrativa de Inbox/Outbox registra identidade, mensagem, correlacao,
+  duracao, outcomes e mudanca de fase, mas nunca inclui payload. Em `Off`, a
+  decisao deve anteceder cronometro e montagem de evidencia.
+- Repository D1 identifica a dependencia como `SQL` e usa `QueryId`; SQL bruto
+  e parametros nunca fazem parte do evento operacional.
+- Chamadas HTTP instrumentadas usam o handler compartilhado no cliente
+  registrado. O baseline registra somente operacao, host, status, duracao,
+  outcome e identidade causal; URL completa, query string, corpo, token e
+  headers de autenticacao nao podem entrar na evidencia.
 - O Yeshua usa `System.Diagnostics.ActivitySource` como API de instrumentacao e
   o SDK oficial do OpenTelemetry para processar/exportar spans. Nao usar
   reflection nem instrumentacao automatica no caminho quente enquanto ela nao
@@ -333,6 +367,32 @@ Miolos que IA/dev devem preencher:
   mais ampla, como saga ou carga. `OperationalEntityId`, `RootOperationId` e
   `TraceId` devem permanecer conceitos separados e aparecer como atributos dos
   spans quando estiverem disponiveis.
+- A identidade operacional de execucao possui quatro papeis distintos:
+  `RootOperationId` identifica o fluxo completo, `OperationId` identifica a
+  operacao logica, `ExecutionId` identifica uma tentativa e `CausationId`
+  aponta para a execucao que causou a atual.
+- A Engine gera essa identidade e sua propagacao nas bordas comuns; ela nao e
+  declarada na DSL de dominio nem implementada manualmente em cada aplicativo.
+- Na borda HTTP, os nomes padrao sao `X-Yeshua-Root-Operation-Id`,
+  `X-Yeshua-Operation-Id`, `X-Yeshua-Execution-Id` e
+  `X-Yeshua-Causation-Id`. Identificadores externos devem ser validados antes
+  de entrar no contexto.
+- A migration standard da Engine adiciona os quatro identificadores, como
+  campos opcionais, em `ySaga`, `ySagaStep`, `yOutbox` e `yInbox`. Esses campos
+  pertencem a infraestrutura assincrona e nao ampliam a DSL de dominio.
+- Ao produzir Outbox ou Inbox, a borda captura a identidade ativa somente
+  quando ela ja existe. Ao consumir, preserva raiz e operacao, cria um novo
+  `ExecutionId` e usa a execucao anterior como `CausationId`.
+- Tentativas de transporte e retries de Worker devem persistir a identidade
+  mais recente. A tentativa seguinte nasce dela, sem trocar a operacao logica
+  nem perder a cadeia causal.
+- `QueueMessage` transporta a mesma identidade no envelope serializado. Cada
+  adaptador concreto de fila deve iniciar a execucao do registro a partir
+  desse envelope; o lote de polling continua fora da cadeia do registro.
+- O estado da identidade deve ser inicializado de forma tardia. Consultar se ha
+  uma execucao ativa nao pode criar GUID, `AsyncLocal`, scope ou payload; a
+  criacao ocorre somente depois que a politica habilitar uma evidencia que
+  precise da cadeia.
 - Valores derivados de tipos, nomes, identificadores e queries devem ser
   gerados ou calculados uma unica vez, nunca repetidamente por chamada.
 - Detalhamento de logs deve ser decidido antes de construir payloads ou
@@ -443,22 +503,39 @@ Regra resumida:
   Studios.
 - O Front mantem somente um token ativo em `localStorage.token`. Nao guarda em
   paralelo token da Central e tokens de cada aplicativo.
-- Todo token da plataforma preserva a identidade global do tenant e do usuario,
-  os IDs originais da Central e a lista completa de catalogos autorizados. O
+- Todo token da plataforma preserva o `TenantId` numerico global, a identidade
+  operacional global do usuario e a lista completa de catalogos autorizados. O
   token tambem informa `tokenOrigin` e `application`, deixando explicito quem o
   emitiu e para qual aplicativo ele esta escopado.
 - A entrada em um aplicativo acontece pelo `GET /getMenu`, que ja representa a
   abertura do modulo. Quando o token atual pertence a outro escopo, essa borda
-  valida o catalogo, cria ou localiza `yTenant` e `yUser` locais e devolve em
+  valida o catalogo, cria ou localiza `yTenant` com o mesmo `TenantId` da
+  Central, cria ou localiza o `yUser` local e devolve em
   `X-Yeshua-Application-Token` um novo token escopado ao aplicativo. O Front
   substitui o token atual e segue usando o fluxo existente.
 - APIs de negocio aceitam somente o token escopado ao proprio aplicativo. Um
   token de outro aplicativo pode ser usado apenas na politica de entrada do
   modulo, nunca diretamente nos endpoints internos.
-- IDs numericos de tenant e usuario continuam locais a cada banco. A correlacao
-  entre Central e aplicativos usa `OperationalEntityId`, evitando replicacao
-  sincrona, igualdade artificial de identities e consulta de existencia em cada
-  requisicao.
+- `yTenant.Id` e uma identidade numerica global: somente a Central reserva o
+  valor por `yTenantIdGlobalSequence`, e os demais aplicativos persistem o mesmo
+  numero sem `IDENTITY`, sem nova alocacao e sem tabela de de/para. A DSL marca
+  essa propriedade com `GlobalIdentity("Central")`; geradores e schema so
+  expoem o alocador no aplicativo declarado como autoridade.
+- `yUser.Id` tambem e uma identidade numerica global reservada exclusivamente
+  pela Central. Ao abrir um aplicativo, o token leva o mesmo `UserId` e a
+  aplicacao materializa `yUser` com esse valor explicito, sem identity local,
+  `centralUserId`, `userIdentity`, `OperationalEntityId` ou tabela de de/para.
+  Isso faz o `UserId` dos campos standard, logs e auditorias ter o mesmo
+  significado em todos os modulos.
+- Usuarios tecnicos entre modulos seguem a mesma identidade global, mas devem
+  ser provisionados explicitamente no aplicativo de destino. A recepcao de um
+  evento rejeita configuracao ausente e usuario tecnico ainda nao provisionado;
+  nunca cria usuario silenciosamente a partir de uma chamada de infraestrutura.
+- Eventos entre modulos carregam obrigatoriamente o `TenantId` global. O
+  transporte HTTP assina metodo, caminho, modulo de origem, timestamp,
+  `MessageId` e corpo com HMAC SHA-256; a API de destino valida assinatura,
+  janela de tempo, contrato, tenant previamente provisionado e configura um
+  usuario tecnico local antes de gravar o `yInbox`.
 - A renovacao futura pertence a Central: ela podera reemitir o token a partir
   das identidades globais preservadas em qualquer token Yeshua. Ate essa borda
   ser implementada, expiracao exige novo login e nao justifica armazenar dois

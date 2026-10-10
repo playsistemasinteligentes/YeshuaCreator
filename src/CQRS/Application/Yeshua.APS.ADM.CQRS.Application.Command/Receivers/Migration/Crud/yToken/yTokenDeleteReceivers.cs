@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yTokenCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyToken", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyTokenReceiver), commandName: "Command.Write.yTokenCrudCommand");
-                 var ytoken = new yTokenFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TokenHash, c.Description, c.ConnectorKey, c.ValidUntil, c.LastUsedAt);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yToken", "DeleteyToken", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yTokenCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyToken", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyTokenReceiver), commandName: "Command.Write.yTokenCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ytoken = new yTokenFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TokenHash, c.Description, c.ConnectorKey, c.ValidUntil, c.LastUsedAt, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ytoken.OperationalEntityId);
                  var domainResult = yTokenDomainBehavior.Apply(ytoken, context);
                  if (!domainResult.IsValid)

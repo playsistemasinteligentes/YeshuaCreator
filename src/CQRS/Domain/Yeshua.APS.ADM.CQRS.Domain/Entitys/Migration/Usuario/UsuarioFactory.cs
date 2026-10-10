@@ -34,13 +34,14 @@
                             }
 
                             public IUsuarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int use_id, string use_nome, string use_email, string use_senha, string? turm_id, int use_ativo, string? use_coderp )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int use_id, string use_nome, string use_email, string use_senha, string? turm_id, int use_ativo, string? use_coderp, ulong? trackingMask = null )
                             {
                             var entity = new UsuarioEntity(use_id, use_nome, use_email, use_senha, turm_id, use_ativo, use_coderp );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Usuario", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new UsuarioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Usuario", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new UsuarioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

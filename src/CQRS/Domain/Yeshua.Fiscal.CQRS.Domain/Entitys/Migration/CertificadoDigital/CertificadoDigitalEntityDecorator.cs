@@ -36,6 +36,24 @@
             public const ulong SenhaStorageKey = 1UL << 13;
         }
 
+        public static class CertificadoDigitalOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Apelido = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DocumentoTitular = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification StorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Thumbprint = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ValidoDe = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ValidoAte = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Ativo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SenhaStorageKey = Dominio.Operational.OperationalDataClassification.NeverCapture;
+        }
+
         public partial class CertificadoDigitalDecorator : ICertificadoDigitalEntity
 {
 
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CertificadoDigitalDecorator(ICertificadoDigitalEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.Apelido = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.Apelido) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "Apelido", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "Apelido", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.Apelido, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.DocumentoTitular = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.DocumentoTitular) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "DocumentoTitular", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "DocumentoTitular", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.DocumentoTitular, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.StorageKey = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.StorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "StorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "StorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.StorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.Thumbprint = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.Thumbprint) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "Thumbprint", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "Thumbprint", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.Thumbprint, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.ValidoDe = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.ValidoDe) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "ValidoDe", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "ValidoDe", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.ValidoDe, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.ValidoAte = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.ValidoAte) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "ValidoAte", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "ValidoAte", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.ValidoAte, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.Ativo = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.Ativo) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "Ativo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "Ativo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.Ativo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -185,7 +211,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -199,7 +225,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +239,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +253,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,7 +267,7 @@
                                             {
                                                 _inner.SenhaStorageKey = value;
                                                 if ((_trackingMask & CertificadoDigitalTrackingFields.SenhaStorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("CertificadoDigital", "SenhaStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CertificadoDigital", "SenhaStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CertificadoDigitalOperationalFields.SenhaStorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

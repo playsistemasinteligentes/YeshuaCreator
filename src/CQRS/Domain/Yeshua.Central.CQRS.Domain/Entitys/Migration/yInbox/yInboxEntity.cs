@@ -35,11 +35,16 @@
     public DateTime? NextAttemptAt { get; set; }
     public int? SagaId { get; set; }
     public int? SagaStepId { get; set; }
+    public string ProcessingScope { get; set; }
     public int? TenantID { get; set; }
     public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string? RootOperationId { get; set; }
+    public string? OperationId { get; set; }
+    public string? ExecutionId { get; set; }
+    public string? CausationId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal yInboxEntity(int? id, string? messageid, string type, string? entitytype, string? entityid, string? correlationid, string payload, int status, DateTime createdat, int retrycount, string? lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid ){
  Id = id; 
@@ -60,6 +65,10 @@
  OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ RootOperationId = null; 
+ OperationId = null; 
+ ExecutionId = null; 
+ CausationId = null; 
 }
 public bool isValidData()
 {

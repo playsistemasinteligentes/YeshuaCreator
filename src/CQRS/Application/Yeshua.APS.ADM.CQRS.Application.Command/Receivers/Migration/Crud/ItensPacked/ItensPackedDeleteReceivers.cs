@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItensPackedCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItensPacked", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItensPackedReceiver), commandName: "Command.Write.ItensPackedCrudCommand");
-                 var itenspacked = new ItensPackedFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IPA_ID, c.CAR_ID, c.PRO_ID, c.ORD_ID, c.IPA_COORDC, c.IPA_COORDL, c.IPA_COORDA, c.IPA_DIMC, c.IPA_DIML, c.IPA_DIMA, c.IPA_QTD_POR_PALETE);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItensPacked", "DeleteItensPacked", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItensPackedCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItensPacked", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItensPackedReceiver), commandName: "Command.Write.ItensPackedCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var itenspacked = new ItensPackedFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IPA_ID, c.CAR_ID, c.PRO_ID, c.ORD_ID, c.IPA_COORDC, c.IPA_COORDL, c.IPA_COORDA, c.IPA_DIMC, c.IPA_DIML, c.IPA_DIMA, c.IPA_QTD_POR_PALETE, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itenspacked.OperationalEntityId);
                  var domainResult = ItensPackedDomainBehavior.Apply(itenspacked, context);
                  if (!domainResult.IsValid)

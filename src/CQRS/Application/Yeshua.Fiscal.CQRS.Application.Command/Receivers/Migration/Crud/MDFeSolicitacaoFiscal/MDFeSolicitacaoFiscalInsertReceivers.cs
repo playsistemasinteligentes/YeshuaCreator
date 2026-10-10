@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MDFeSolicitacaoFiscalCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeSolicitacaoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeSolicitacaoFiscalReceiver), commandName: "Command.Write.MDFeSolicitacaoFiscalCrudCommand");
-                 var mdfesolicitacaofiscal = new MDFeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.CargaId, c.Ambiente, c.UFCarregamento, c.UFDescarregamento, c.PlacaVeiculo, c.CondutorDocumento, c.DocumentosOriginariosJson, c.TransporteSnapshotJson, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MDFeSolicitacaoFiscal", "InsertMDFeSolicitacaoFiscal", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MDFeSolicitacaoFiscalCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeSolicitacaoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeSolicitacaoFiscalReceiver), commandName: "Command.Write.MDFeSolicitacaoFiscalCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var mdfesolicitacaofiscal = new MDFeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.CargaId, c.Ambiente, c.UFCarregamento, c.UFDescarregamento, c.PlacaVeiculo, c.CondutorDocumento, c.DocumentosOriginariosJson, c.TransporteSnapshotJson, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfesolicitacaofiscal.OperationalEntityId);
                  var domainResult = MDFeSolicitacaoFiscalDomainBehavior.Apply(mdfesolicitacaofiscal, context);
                  if (!domainResult.IsValid)

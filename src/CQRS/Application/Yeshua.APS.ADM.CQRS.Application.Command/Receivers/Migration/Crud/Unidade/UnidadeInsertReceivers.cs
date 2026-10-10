@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.UnidadeCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUnidade", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUnidadeReceiver), commandName: "Command.Write.UnidadeCrudCommand");
-                 var unidade = new UnidadeFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.DEESCRICAO, c.UN);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Unidade", "InsertUnidade", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.UnidadeCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUnidade", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUnidadeReceiver), commandName: "Command.Write.UnidadeCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var unidade = new UnidadeFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.DEESCRICAO, c.UN, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", unidade.OperationalEntityId);
                  var domainResult = UnidadeDomainBehavior.Apply(unidade, context);
                  if (!domainResult.IsValid)

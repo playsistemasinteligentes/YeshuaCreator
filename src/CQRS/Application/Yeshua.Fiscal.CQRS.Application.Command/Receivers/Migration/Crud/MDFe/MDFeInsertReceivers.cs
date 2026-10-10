@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MDFeCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFe", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeReceiver), commandName: "Command.Write.MDFeCrudCommand");
-                 var mdfe = new MDFeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ChaveAcesso, c.Serie, c.Numero, c.UfCarregamento, c.UfDescarregamento, c.PlacaVeiculo, c.EmitidoEm, c.AutorizadoEm, c.IniciadoEm, c.EncerradoEm, c.CanceladoEm, c.Situacao);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MDFe", "InsertMDFe", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MDFeCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFe", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeReceiver), commandName: "Command.Write.MDFeCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var mdfe = new MDFeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ChaveAcesso, c.Serie, c.Numero, c.UfCarregamento, c.UfDescarregamento, c.PlacaVeiculo, c.EmitidoEm, c.AutorizadoEm, c.IniciadoEm, c.EncerradoEm, c.CanceladoEm, c.Situacao, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfe.OperationalEntityId);
                  var domainResult = MDFeDomainBehavior.Apply(mdfe, context);
                  if (!domainResult.IsValid)

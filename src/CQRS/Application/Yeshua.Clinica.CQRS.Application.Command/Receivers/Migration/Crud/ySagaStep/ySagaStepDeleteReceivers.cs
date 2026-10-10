@@ -48,8 +48,17 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ySagaStepCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteySagaStep", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteySagaStepReceiver), commandName: "Command.Write.ySagaStepCrudCommand");
-                 var ysagastep = new ySagaStepFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SagaId, c.StepKey, c.IndexOrder, c.CorrelationId, c.Status, c.ExecutionCount, c.LastExecutionAt, c.CompletedAt, c.ErrorMessage, c.Payload, c.RetryCount);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ySagaStep", "DeleteySagaStep", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ySagaStepCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteySagaStep", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteySagaStepReceiver), commandName: "Command.Write.ySagaStepCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ysagastep = new ySagaStepFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SagaId, c.StepKey, c.IndexOrder, c.CorrelationId, c.Status, c.ExecutionCount, c.LastExecutionAt, c.CompletedAt, c.ErrorMessage, c.Payload, c.RetryCount, trackingMask: trackingMask);
+                 ysagastep.RootOperationId = hasExecutionIdentity ? executionIdentity.RootOperationId : c.RootOperationId;
+                 ysagastep.OperationId = hasExecutionIdentity ? executionIdentity.OperationId : c.OperationId;
+                 ysagastep.ExecutionId = hasExecutionIdentity ? executionIdentity.ExecutionId : c.ExecutionId;
+                 ysagastep.CausationId = hasExecutionIdentity ? executionIdentity.CausationId : c.CausationId;
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ysagastep.OperationalEntityId);
                  var domainResult = ySagaStepDomainBehavior.Apply(ysagastep, context);
                  if (!domainResult.IsValid)

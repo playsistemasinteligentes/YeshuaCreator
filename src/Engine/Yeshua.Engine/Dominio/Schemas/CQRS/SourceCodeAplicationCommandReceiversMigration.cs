@@ -120,8 +120,22 @@ namespace Dominio.Schemas.CQRS
                 var factoryCallArguments = string.IsNullOrWhiteSpace(factoryArguments)
                     ? "context"
                     : $"context, {factoryArguments}";
-                sb.AppendLine($"                 var context = DomainOperationContext.Create({domainOperation}, DomainEntryPoint.Crud, \"{action}{_entity.EntityName}\", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof({receiverName}), commandName: \"{commandName}\");");
-                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger, _domainTrackingPolicy).Create({factoryCallArguments});");
+                sb.AppendLine($"                 var trackingMask = _domainTrackingPolicy.GetMask(\"{_entity.EntityName}\", \"{action}{_entity.EntityName}\", null);");
+                sb.AppendLine("                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);");
+                sb.AppendLine($"                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution(\"{commandName}\") : null;");
+                sb.AppendLine("                 if (!hasExecutionIdentity && trackingMask != 0UL)");
+                sb.AppendLine("                     executionIdentity = _executionContext.OperationalIdentity;");
+                sb.AppendLine($"                 var context = DomainOperationContext.Create({domainOperation}, DomainEntryPoint.Crud, \"{action}{_entity.EntityName}\", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof({receiverName}), commandName: \"{commandName}\", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);");
+                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger, _domainTrackingPolicy).Create({factoryCallArguments}, trackingMask: trackingMask);");
+                foreach (var column in _entity.AddColumns.Where(column =>
+                    column.IsValueDefault &&
+                    string.Equals(column.ValueDefault, "#null", StringComparison.Ordinal)))
+                {
+                    var value = column.Name is "RootOperationId" or "OperationId" or "ExecutionId" or "CausationId"
+                        ? $"hasExecutionIdentity ? executionIdentity.{column.Name} : c.{column.Name}"
+                        : $"c.{column.Name}";
+                    sb.AppendLine($"                 {_entity.EntityName.ToLower()}.{column.Name} = {value};");
+                }
                 if (_entity.AddColumns.Any(column => column.Name == "OperationalEntityId"))
                     sb.AppendLine($"                 System.Diagnostics.Activity.Current?.SetTag(\"yeshua.operational_entity_id\", {_entity.EntityName.ToLower()}.OperationalEntityId);");
                 sb.AppendLine($"                 var domainResult = {_entity.EntityName}DomainBehavior.Apply({_entity.EntityName.ToLower()}, context);");

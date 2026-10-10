@@ -35,6 +35,23 @@
             public const ulong Changed = 1UL << 12;
         }
 
+        public static class yTokenOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TokenHash = Dominio.Operational.OperationalDataClassification.NeverCapture;
+            public const Dominio.Operational.OperationalDataClassification Description = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ConnectorKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Active = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ValidUntil = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CreatedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LastUsedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class yTokenDecorator : IyTokenEntity
 {
 
@@ -42,6 +59,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yTokenDecorator(IyTokenEntity inner, Dominio.Interfaces.ILogger logger)
@@ -59,6 +77,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -71,7 +96,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yTokenTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -85,7 +110,7 @@
                                             {
                                                 _inner.TokenHash = value;
                                                 if ((_trackingMask & yTokenTrackingFields.TokenHash) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "TokenHash", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "TokenHash", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.TokenHash, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -99,7 +124,7 @@
                                             {
                                                 _inner.Description = value;
                                                 if ((_trackingMask & yTokenTrackingFields.Description) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.Description, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -113,7 +138,7 @@
                                             {
                                                 _inner.ConnectorKey = value;
                                                 if ((_trackingMask & yTokenTrackingFields.ConnectorKey) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "ConnectorKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "ConnectorKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.ConnectorKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -127,7 +152,7 @@
                                             {
                                                 _inner.Active = value;
                                                 if ((_trackingMask & yTokenTrackingFields.Active) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "Active", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "Active", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.Active, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -141,7 +166,7 @@
                                             {
                                                 _inner.ValidUntil = value;
                                                 if ((_trackingMask & yTokenTrackingFields.ValidUntil) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "ValidUntil", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "ValidUntil", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.ValidUntil, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -155,7 +180,7 @@
                                             {
                                                 _inner.CreatedAt = value;
                                                 if ((_trackingMask & yTokenTrackingFields.CreatedAt) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.CreatedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +194,7 @@
                                             {
                                                 _inner.LastUsedAt = value;
                                                 if ((_trackingMask & yTokenTrackingFields.LastUsedAt) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "LastUsedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "LastUsedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.LastUsedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -183,7 +208,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yTokenTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -197,7 +222,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & yTokenTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -212,7 +237,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yTokenTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -226,7 +251,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yTokenTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yToken", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yToken", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yTokenOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

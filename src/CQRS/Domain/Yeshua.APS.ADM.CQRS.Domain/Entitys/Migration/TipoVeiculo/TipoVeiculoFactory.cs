@@ -34,13 +34,14 @@
                             }
 
                             public ITipoVeiculoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tip_id, string? tip_descricao, int? tip_qtd_disponivel, Decimal? tip_valor_km, Decimal? tip_valor_diaria, Decimal? tip_valor_ajudante, Decimal? tip_qtd_eixos, Decimal? tip_velocidade_media, Decimal? tip_capacidade_altura, Decimal? tip_capacidade_comprimento, Decimal? tip_capacidade_largura, Decimal? tip_capacidade_altura_pescoco_e, Decimal? tip_capacidade_comprimento_pescoco_e, Decimal? tip_capacidade_largura_pescoco_e, Decimal? tip_capacidade_altura_pescoco_d, Decimal? tip_capacidade_comprimento_pescoco_d, Decimal? tip_capacidade_largura_pescoco_d, Decimal? tip_capacidade_m3 )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tip_id, string? tip_descricao, int? tip_qtd_disponivel, Decimal? tip_valor_km, Decimal? tip_valor_diaria, Decimal? tip_valor_ajudante, Decimal? tip_qtd_eixos, Decimal? tip_velocidade_media, Decimal? tip_capacidade_altura, Decimal? tip_capacidade_comprimento, Decimal? tip_capacidade_largura, Decimal? tip_capacidade_altura_pescoco_e, Decimal? tip_capacidade_comprimento_pescoco_e, Decimal? tip_capacidade_largura_pescoco_e, Decimal? tip_capacidade_altura_pescoco_d, Decimal? tip_capacidade_comprimento_pescoco_d, Decimal? tip_capacidade_largura_pescoco_d, Decimal? tip_capacidade_m3, ulong? trackingMask = null )
                             {
                             var entity = new TipoVeiculoEntity(id, tip_id, tip_descricao, tip_qtd_disponivel, tip_valor_km, tip_valor_diaria, tip_valor_ajudante, tip_qtd_eixos, tip_velocidade_media, tip_capacidade_altura, tip_capacidade_comprimento, tip_capacidade_largura, tip_capacidade_altura_pescoco_e, tip_capacidade_comprimento_pescoco_e, tip_capacidade_largura_pescoco_e, tip_capacidade_altura_pescoco_d, tip_capacidade_comprimento_pescoco_d, tip_capacidade_largura_pescoco_d, tip_capacidade_m3 );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoVeiculo", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoVeiculoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoVeiculo", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoVeiculoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

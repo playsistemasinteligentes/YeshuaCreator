@@ -34,13 +34,14 @@
                             }
 
                             public ICenarioPlanejamentoTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string? alertasresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string cenarioid, string descricao, string objetivo, int? quantidadecargas, int? quantidadepedidosnaoatendidos, Decimal? custototal, Decimal? aderenciacubagem, Decimal? atrasoprevisto, string? alertasresumo, ulong? trackingMask = null )
                             {
                             var entity = new CenarioPlanejamentoTransporteEntity(cenarioid, descricao, objetivo, quantidadecargas, quantidadepedidosnaoatendidos, custototal, aderenciacubagem, atrasoprevisto, alertasresumo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CenarioPlanejamentoTransporte", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CenarioPlanejamentoTransporteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CenarioPlanejamentoTransporte", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CenarioPlanejamentoTransporteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

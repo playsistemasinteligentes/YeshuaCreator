@@ -34,13 +34,14 @@
                             }
 
                             public IOptAlteracaoDimencoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int oad_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int oad_id, ulong? trackingMask = null )
                             {
                             var entity = new OptAlteracaoDimencoesEntity(id, oad_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("OptAlteracaoDimencoes", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new OptAlteracaoDimencoesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("OptAlteracaoDimencoes", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new OptAlteracaoDimencoesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

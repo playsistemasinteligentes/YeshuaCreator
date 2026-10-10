@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ImpressoraCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateImpressora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateImpressoraReceiver), commandName: "Command.Write.ImpressoraCrudCommand");
-                 var impressora = new ImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.IMP_ID, c.IMP_IP, c.IMP_NOME);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Impressora", "UpdateImpressora", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ImpressoraCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateImpressora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateImpressoraReceiver), commandName: "Command.Write.ImpressoraCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var impressora = new ImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.IMP_ID, c.IMP_IP, c.IMP_NOME, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", impressora.OperationalEntityId);
                  var domainResult = ImpressoraDomainBehavior.Apply(impressora, context);
                  if (!domainResult.IsValid)

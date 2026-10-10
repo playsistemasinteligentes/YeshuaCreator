@@ -34,13 +34,14 @@
                             }
 
                             public IyConfigNotificationEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? emailsmtpclient, int? emailport, string? emailusername, string? emailpassword )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? emailsmtpclient, int? emailport, string? emailusername, string? emailpassword, ulong? trackingMask = null )
                             {
                             var entity = new yConfigNotificationEntity(id, emailsmtpclient, emailport, emailusername, emailpassword );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yConfigNotification", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yConfigNotificationDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yConfigNotification", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yConfigNotificationDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

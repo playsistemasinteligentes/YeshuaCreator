@@ -7,11 +7,13 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeAplicationRepositoryInterfacesWriteMigration : SourceCodeBase
     {
         private readonly Entity _entity;
+        private readonly string _applicationName;
 
-        public SourceCodeAplicationRepositoryInterfacesWriteMigration(Entity entity)
+        public SourceCodeAplicationRepositoryInterfacesWriteMigration(Entity entity, string applicationName)
             : base()
         {
             _entity = entity;
+            _applicationName = applicationName;
         }
 
         protected override StringBuilder GenerateCode()
@@ -35,6 +37,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        void Insert(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void Update(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void Delete(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
+
+            var globalIdentity = _entity.AddColumns.FirstOrDefault(
+                x => x.IsGlobalIdentityAuthority(_applicationName));
+            if (globalIdentity != null)
+                sb.AppendLine($"        {globalIdentity.getCsharpType()} NextGlobalId();");
 
 
             var keys = _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).ToList();

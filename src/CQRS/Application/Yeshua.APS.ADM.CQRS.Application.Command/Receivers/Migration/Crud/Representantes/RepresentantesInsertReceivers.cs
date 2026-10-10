@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RepresentantesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRepresentantes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRepresentantesReceiver), commandName: "Command.Write.RepresentantesCrudCommand");
-                 var representantes = new RepresentantesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REP_ID, c.REP_NOME);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Representantes", "InsertRepresentantes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RepresentantesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRepresentantes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRepresentantesReceiver), commandName: "Command.Write.RepresentantesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var representantes = new RepresentantesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REP_ID, c.REP_NOME, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", representantes.OperationalEntityId);
                  var domainResult = RepresentantesDomainBehavior.Apply(representantes, context);
                  if (!domainResult.IsValid)

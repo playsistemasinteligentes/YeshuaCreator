@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ConsultaPedidoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateConsultaPedido", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateConsultaPedidoReceiver), commandName: "Command.Write.ConsultaPedidoCrudCommand");
-                 var consultapedido = new ConsultaPedidoFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.ClienteId, c.ClienteNome, c.RazaoSocial, c.ProdutoId, c.ProdutoDescricao, c.Status, c.Estagio, c.DataEntregaDe, c.DataEntregaAte, c.EmbarqueAlvo, c.Quantidade, c.SaldoAProduzir, c.SaldoAExpedir, c.CorFila, c.PedidoCliente);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ConsultaPedido", "UpdateConsultaPedido", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ConsultaPedidoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateConsultaPedido", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateConsultaPedidoReceiver), commandName: "Command.Write.ConsultaPedidoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var consultapedido = new ConsultaPedidoFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.ClienteId, c.ClienteNome, c.RazaoSocial, c.ProdutoId, c.ProdutoDescricao, c.Status, c.Estagio, c.DataEntregaDe, c.DataEntregaAte, c.EmbarqueAlvo, c.Quantidade, c.SaldoAProduzir, c.SaldoAExpedir, c.CorFila, c.PedidoCliente, trackingMask: trackingMask);
                  var domainResult = ConsultaPedidoDomainBehavior.Apply(consultapedido, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

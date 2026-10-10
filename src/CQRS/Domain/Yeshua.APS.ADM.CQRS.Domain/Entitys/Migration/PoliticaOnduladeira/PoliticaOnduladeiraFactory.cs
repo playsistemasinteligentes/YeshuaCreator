@@ -34,13 +34,14 @@
                             }
 
                             public IPoliticaOnduladeiraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int pol_id, int? pol_nivel, int? pol_promocao, int? pol_dias_antecipacao, int? pol_metros_lineares )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int pol_id, int? pol_nivel, int? pol_promocao, int? pol_dias_antecipacao, int? pol_metros_lineares, ulong? trackingMask = null )
                             {
                             var entity = new PoliticaOnduladeiraEntity(id, pol_id, pol_nivel, pol_promocao, pol_dias_antecipacao, pol_metros_lineares );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PoliticaOnduladeira", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PoliticaOnduladeiraDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PoliticaOnduladeira", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PoliticaOnduladeiraDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

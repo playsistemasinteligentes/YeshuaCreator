@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.EtiquetaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEtiqueta", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEtiquetaReceiver), commandName: "Command.Write.EtiquetaCrudCommand");
-                 var etiqueta = new EtiquetaFactory(_logger, _domainTrackingPolicy).Create(context, c.ETI_ID, c.ETI_EMISSAO, c.ETI_CODIGO_BARRAS, c.ETI_SEQUENCIA, c.ETI_NUMERO_COPIAS, c.ETI_STATUS, c.ETI_DATA_FABRICACAO, c.ETI_COD_BARRAS_ORIGINAL, c.ETI_OP_ORIGINAL, c.MAQ_ID, c.IMP_ID, c.USE_ID, c.ORD_ID, c.ROT_PRO_ID, c.ROT_SEQ_TRANFORMACAO, c.FPR_SEQ_REPETICAO, c.ETI_QUANTIDADE_PALETE, c.ETI_LOTE, c.ETI_SUB_LOTE, c.ETI_IMPRIMIR_DE, c.ETI_IMPRIMIR_ATE, c.BOL_ID, c.COR_SEQUENCIA);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Etiqueta", "DeleteEtiqueta", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.EtiquetaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEtiqueta", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEtiquetaReceiver), commandName: "Command.Write.EtiquetaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var etiqueta = new EtiquetaFactory(_logger, _domainTrackingPolicy).Create(context, c.ETI_ID, c.ETI_EMISSAO, c.ETI_CODIGO_BARRAS, c.ETI_SEQUENCIA, c.ETI_NUMERO_COPIAS, c.ETI_STATUS, c.ETI_DATA_FABRICACAO, c.ETI_COD_BARRAS_ORIGINAL, c.ETI_OP_ORIGINAL, c.MAQ_ID, c.IMP_ID, c.USE_ID, c.ORD_ID, c.ROT_PRO_ID, c.ROT_SEQ_TRANFORMACAO, c.FPR_SEQ_REPETICAO, c.ETI_QUANTIDADE_PALETE, c.ETI_LOTE, c.ETI_SUB_LOTE, c.ETI_IMPRIMIR_DE, c.ETI_IMPRIMIR_ATE, c.BOL_ID, c.COR_SEQUENCIA, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", etiqueta.OperationalEntityId);
                  var domainResult = EtiquetaDomainBehavior.Apply(etiqueta, context);
                  if (!domainResult.IsValid)

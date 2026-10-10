@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TemplatesGrupoMaquinaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplatesGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplatesGrupoMaquinaReceiver), commandName: "Command.Write.TemplatesGrupoMaquinaCrudCommand");
-                 var templatesgrupomaquina = new TemplatesGrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TEM_ID, c.GMA_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TemplatesGrupoMaquina", "DeleteTemplatesGrupoMaquina", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TemplatesGrupoMaquinaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplatesGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplatesGrupoMaquinaReceiver), commandName: "Command.Write.TemplatesGrupoMaquinaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var templatesgrupomaquina = new TemplatesGrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TEM_ID, c.GMA_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatesgrupomaquina.OperationalEntityId);
                  var domainResult = TemplatesGrupoMaquinaDomainBehavior.Apply(templatesgrupomaquina, context);
                  if (!domainResult.IsValid)

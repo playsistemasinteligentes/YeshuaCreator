@@ -34,13 +34,14 @@
                             }
 
                             public IT_FeedbackMovEstoqueEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int feedbackid, int movimentoestoqueid )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int feedbackid, int movimentoestoqueid, ulong? trackingMask = null )
                             {
                             var entity = new T_FeedbackMovEstoqueEntity(id, feedbackid, movimentoestoqueid );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_FeedbackMovEstoque", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_FeedbackMovEstoqueDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_FeedbackMovEstoque", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_FeedbackMovEstoqueDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

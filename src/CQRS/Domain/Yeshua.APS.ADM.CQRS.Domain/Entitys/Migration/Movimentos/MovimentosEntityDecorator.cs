@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class MovimentosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification MOV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MOV_DATA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MOV_VALOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MOV_PLAID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MOV_UNID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Tr_Unidade_UNI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MovimentosDecorator : IMovimentosEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MovimentosDecorator(IMovimentosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.MOV_ID = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.MOV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "MOV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "MOV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.MOV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.MOV_DATA = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.MOV_DATA) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "MOV_DATA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "MOV_DATA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.MOV_DATA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.MOV_VALOR = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.MOV_VALOR) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "MOV_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "MOV_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.MOV_VALOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.MOV_PLAID = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.MOV_PLAID) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "MOV_PLAID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "MOV_PLAID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.MOV_PLAID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.MOV_UNID = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.MOV_UNID) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "MOV_UNID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "MOV_UNID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.MOV_UNID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.Tr_Unidade_UNI_ID = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.Tr_Unidade_UNI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "Tr_Unidade_UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "Tr_Unidade_UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.Tr_Unidade_UNI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MovimentosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Movimentos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Movimentos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -28,7 +28,6 @@ namespace IRepository.Read
         public bool ExistsByEmail(string value , bool TakeOffTenantID = false);
         public bool ExistsBySenha(string value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
-        public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public yUserDTO FirstById(int value , bool TakeOffTenantID = false);
@@ -36,7 +35,6 @@ namespace IRepository.Read
         public yUserDTO FirstByEmail(string value , bool TakeOffTenantID = false);
         public yUserDTO FirstBySenha(string value , bool TakeOffTenantID = false);
         public yUserDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
-        public yUserDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public yUserDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public yUserDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yUserDTO> GetAllById(int value , bool TakeOffTenantID = false);
@@ -44,7 +42,6 @@ namespace IRepository.Read
         public IEnumerable<yUserDTO> GetAllByEmail(string value , bool TakeOffTenantID = false);
         public IEnumerable<yUserDTO> GetAllBySenha(string value , bool TakeOffTenantID = false);
         public IEnumerable<yUserDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
-        public IEnumerable<yUserDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yUserDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<yUserDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
     }

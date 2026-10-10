@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_PREFERENCIASCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_PREFERENCIAS", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_PREFERENCIASReceiver), commandName: "Command.Write.T_PREFERENCIASCrudCommand");
-                 var t_preferencias = new T_PREFERENCIASFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PRE_ID, c.PRE_DESCRICAO, c.PRE_NAMESPACE, c.PRE_TIPO, c.PRE_VALOR, c.USE_ID, c.PER_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_PREFERENCIAS", "DeleteT_PREFERENCIAS", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_PREFERENCIASCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_PREFERENCIAS", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_PREFERENCIASReceiver), commandName: "Command.Write.T_PREFERENCIASCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_preferencias = new T_PREFERENCIASFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PRE_ID, c.PRE_DESCRICAO, c.PRE_NAMESPACE, c.PRE_TIPO, c.PRE_VALOR, c.USE_ID, c.PER_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_preferencias.OperationalEntityId);
                  var domainResult = T_PREFERENCIASDomainBehavior.Apply(t_preferencias, context);
                  if (!domainResult.IsValid)

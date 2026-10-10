@@ -48,8 +48,17 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ySagaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteySaga", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteySagaReceiver), commandName: "Command.Write.ySagaCrudCommand");
-                 var ysaga = new ySagaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.Type, c.Status, c.KeyCurrentStep, c.CreatedAt, c.CompletedAt, c.EntityType, c.EntityId, c.NextExecutionAt, c.LockedAt, c.LockedBy);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ySaga", "DeleteySaga", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ySagaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteySaga", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteySagaReceiver), commandName: "Command.Write.ySagaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ysaga = new ySagaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.Type, c.Status, c.KeyCurrentStep, c.CreatedAt, c.CompletedAt, c.EntityType, c.EntityId, c.NextExecutionAt, c.LockedAt, c.LockedBy, trackingMask: trackingMask);
+                 ysaga.RootOperationId = hasExecutionIdentity ? executionIdentity.RootOperationId : c.RootOperationId;
+                 ysaga.OperationId = hasExecutionIdentity ? executionIdentity.OperationId : c.OperationId;
+                 ysaga.ExecutionId = hasExecutionIdentity ? executionIdentity.ExecutionId : c.ExecutionId;
+                 ysaga.CausationId = hasExecutionIdentity ? executionIdentity.CausationId : c.CausationId;
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ysaga.OperationalEntityId);
                  var domainResult = ySagaDomainBehavior.Apply(ysaga, context);
                  if (!domainResult.IsValid)

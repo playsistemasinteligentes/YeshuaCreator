@@ -34,13 +34,14 @@
                             }
 
                             public IPlanoacaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_descricao, int? met_id, string? pla_status, DateTime? pla_data, string? pla_metaperiodo, string? pla_vlrperiodo, string? pla_metaculado, string? pla_vlracumulado, string? pla_referencia, int use_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_descricao, int? met_id, string? pla_status, DateTime? pla_data, string? pla_metaperiodo, string? pla_vlrperiodo, string? pla_metaculado, string? pla_vlracumulado, string? pla_referencia, int use_id, ulong? trackingMask = null )
                             {
                             var entity = new PlanoacaoEntity(pla_id, pla_descricao, met_id, pla_status, pla_data, pla_metaperiodo, pla_vlrperiodo, pla_metaculado, pla_vlracumulado, pla_referencia, use_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Planoacao", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PlanoacaoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Planoacao", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PlanoacaoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class ProtocoloOnduladeiraOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PTO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PTO_CHAVE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PTO_COMANDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ProtocoloOnduladeiraDecorator : IProtocoloOnduladeiraEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ProtocoloOnduladeiraDecorator(IProtocoloOnduladeiraEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.PTO_ID = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.PTO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "PTO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "PTO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.PTO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.PTO_CHAVE = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.PTO_CHAVE) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "PTO_CHAVE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "PTO_CHAVE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.PTO_CHAVE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.MAQ_ID = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.MAQ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.MAQ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.PTO_COMANDO = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.PTO_COMANDO) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "PTO_COMANDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "PTO_COMANDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.PTO_COMANDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ProtocoloOnduladeiraTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ProtocoloOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProtocoloOnduladeiraOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

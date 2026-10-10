@@ -34,13 +34,14 @@
                             }
 
                             public IyConfigArctetureEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? audittrackeractived, int? auditcrudactived )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? audittrackeractived, int? auditcrudactived, ulong? trackingMask = null )
                             {
                             var entity = new yConfigArctetureEntity(id, audittrackeractived, auditcrudactived );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yConfigArcteture", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yConfigArctetureDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yConfigArcteture", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yConfigArctetureDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

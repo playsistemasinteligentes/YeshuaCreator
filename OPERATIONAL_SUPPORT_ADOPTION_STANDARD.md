@@ -1,4 +1,4 @@
-# Padrao Yeshua De Observabilidade Minima Para Suporte SRE E Inteligencia Operacional
+# Padrao Yeshua De Observabilidade E Inteligencia Operacional Para Agentizacao Da Fabricacao, Evolucao E Manutencao De Software
 
 > Aviso de propriedade intelectual: este conteudo e protegido em partes e em
 > sua totalidade. Reproducao, adaptacao, distribuicao, publicacao, exploracao
@@ -7,23 +7,85 @@
 
 ## 1. Finalidade
 
-Este documento define os requisitos de observabilidade, diagnostico e
-suportabilidade que um fabricante de software deve atender para utilizar o
-servico de suporte SRE da Play Sistemas Inteligentes.
+Este documento define os requisitos de observabilidade, diagnostico,
+suportabilidade e inteligencia operacional necessarios para agentizar, de
+forma segura, rastreavel e progressiva, os processos de fabricacao, evolucao e
+manutencao de software. Esses requisitos tambem estabelecem a base de
+evidencias necessaria para atividades de investigacao, validacao e suporte
+tecnico e operacional.
 
 O documento nao obriga o fabricante a adotar uma linguagem, framework,
 provider de observabilidade ou arquitetura especifica. Cada fabricante pode
 implementar os requisitos da forma mais adequada ao seu produto, desde que
 entregue evidencias equivalentes e comprove os criterios de homologacao.
 
-O suporte e homologado por um conjunto fechado de operacoes de negocio. A
-aprovacao de parte do sistema nao implica cobertura automatica dos demais
-fluxos.
+A conformidade com o padrao e homologada por um escopo delimitado de
+operacoes, capacidades e etapas do ciclo de vida. A aprovacao de parte do
+sistema nao implica cobertura automatica dos demais fluxos.
 
-## 2. Objetivo Do Servico SRE
+### 1.1 Ciclo De Vida Da Fabricacao E Evolucao De Software
 
-O servico deve permitir que uma equipe que nao escreveu o sistema consiga:
+Este padrao considera um ciclo continuo, no qual cada etapa produz evidencias
+que podem orientar, validar ou iniciar as etapas seguintes:
 
+1. necessidade do cliente;
+2. concepcao da solucao;
+3. planejamento;
+4. fabricacao;
+5. validacao;
+6. entrega;
+7. implantacao;
+8. adocao e uso;
+9. operacao e suporte;
+10. manutencao e evolucao.
+
+O ciclo nao e obrigatoriamente linear. Uso, incidentes, resultados, mudancas
+de contexto e novas necessidades retroalimentam concepcao, planejamento e
+fabricacao. Um software legado pode ingressar em qualquer etapa; nesse caso, a
+engenharia reversa recupera primeiro o funcionamento, as evidencias e as
+relacoes existentes, sem exigir documentacao previa completa.
+
+Codigo, configuracao, testes, artefatos, telemetria e resultados de execucao
+descrevem como o software existe e funciona. As motivacoes e os requisitos
+relacionados explicam por que suas funcionalidades existem e orientam sua
+evolucao.
+
+### 1.2 Atores E Agentes
+
+Ator e uma responsabilidade reconhecivel dentro do ciclo de vida. Um ator pode
+ser exercido por uma pessoa, equipe, organizacao ou sistema autorizado. Entre
+os atores considerados estao cliente, usuario, produto, planejamento,
+fabricacao, qualidade, implantacao, operacao, suporte, manutencao, evolucao e
+governanca.
+
+Agente e uma capacidade de IA autorizada a observar, analisar, recomendar,
+executar ou validar atividades em nome de um ator. Agente nao substitui a
+responsabilidade do ator nem se torna fonte da verdade; suas conclusoes e
+acoes devem permanecer ligadas as evidencias, permissoes e limites aplicaveis.
+
+A relacao entre atores e agentes nao e obrigatoriamente um para um:
+
+- um ator pode utilizar uma equipe de agentes especializados;
+- um agente pode auxiliar mais de um ator quando seus escopos, dados e
+  responsabilidades estiverem explicitamente separados;
+- agentes podem cooperar ou delegar tarefas, preservando identidade,
+  causalidade e auditoria;
+- toda decisao ou acao permanece atribuida ao ator responsavel e ao agente que
+  a produziu ou executou.
+
+O padrao nao determina quantidade, tecnologia ou topologia de agentes. Ele
+define as evidencias e os controles necessarios para que cada agente opere com
+finalidade, escopo, autonomia, autorizacao, limites, validacao e possibilidade
+de interrupcao compativeis com o risco da atividade.
+
+## 2. Objetivos
+
+### 2.1 Objetivos Especificos Do Padrao
+
+A aplicacao do padrao deve permitir:
+
+- promover o autoconhecimento de atores e agentes sobre seu papel, contexto,
+  responsabilidades, capacidades, limites e relacoes dentro do ciclo de vida;
 - identificar uma operacao real;
 - reconstruir suas etapas sincronas e assincronas;
 - localizar a versao efetivamente executada;
@@ -31,17 +93,26 @@ O servico deve permitir que uma equipe que nao escreveu o sistema consiga:
 - encontrar as evidencias e os fontes relevantes;
 - explicar a causa com fatos verificaveis;
 - orientar uma correcao com impacto e risco conhecidos;
-- transformar incidentes relevantes em prevencao ou regressao.
+- transformar incidentes relevantes em prevencao ou regressao;
+- relacionar cada funcionalidade com as motivacoes e os requisitos que
+  justificaram sua existencia.
 
 Observabilidade produz fatos. Inteligencia operacional correlaciona fatos,
 codigo, versao e contexto para apoiar uma conclusao.
 
-### 2.1 Objetivos Gerais Para A Industria De Software
+### 2.2 Objetivos Gerais Para A Industria De Software
 
-A adocao deste padrao nao deve ser entendida apenas como uma exigencia de
-suporte SRE. Ela representa uma forma de organizacao industrial do software, na
-qual produto, codigo, operacao, suporte, qualidade e evolucao passam a ser
-tratados como partes rastreaveis do mesmo sistema.
+> PENDENCIA: condensar e reescrever esta secao como uma narrativa executiva de
+> alto impacto, capaz de comunicar o ciclo completo de agentizacao: descoberta
+> e autovenda, autoimplantacao e adocao, uso continuo, deteccao de problemas,
+> autocorrecao, identificacao de novas necessidades, autoimplementacao e nova
+> entrega. O resultado deve ser conciso, visualmente compreensivel e provocar
+> admiracao pela capacidade de o software apoiar sua propria venda, adocao,
+> manutencao e evolucao.
+
+A adocao deste padrao representa uma forma de organizacao industrial do
+software, na qual produto, codigo, operacao, suporte, qualidade e evolucao
+passam a ser tratados como partes rastreaveis do mesmo sistema.
 
 Para empresarios, fabricantes e gestores de produto, os principais beneficios
 esperados sao:
@@ -637,7 +708,7 @@ Estados permitidos: Pendente, Nao conforme, Conforme com ressalva e Conforme.
 - responder a indisponibilidade das evidencias;
 - preservar auditoria.
 
-### Suporte SRE
+### Governanca E Suporte Operacional
 
 - manter o padrao;
 - avaliar G1 a G7;

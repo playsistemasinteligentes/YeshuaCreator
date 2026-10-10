@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.EstruturaCustoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEstruturaCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEstruturaCustoReceiver), commandName: "Command.Write.EstruturaCustoCrudCommand");
-                 var estruturacusto = new EstruturaCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.ITO_ID, c.ORD_ID, c.PRO_ID, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.PRO_TIPO_CUSTO, c.PRO_GRUPO_CONTABIL, c.EST_ORDEM, c.EST_GRUPO, c.EST_QUANT, c.EST_VALOR_TOTAL, c.EST_DATA_BASE, c.EST_BASE_PRODUCAO, c.EST_NIVEL, c.FPR_SEQ_REPETICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("EstruturaCusto", "DeleteEstruturaCusto", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.EstruturaCustoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEstruturaCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEstruturaCustoReceiver), commandName: "Command.Write.EstruturaCustoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var estruturacusto = new EstruturaCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.ITO_ID, c.ORD_ID, c.PRO_ID, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.PRO_TIPO_CUSTO, c.PRO_GRUPO_CONTABIL, c.EST_ORDEM, c.EST_GRUPO, c.EST_QUANT, c.EST_VALOR_TOTAL, c.EST_DATA_BASE, c.EST_BASE_PRODUCAO, c.EST_NIVEL, c.FPR_SEQ_REPETICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", estruturacusto.OperationalEntityId);
                  var domainResult = EstruturaCustoDomainBehavior.Apply(estruturacusto, context);
                  if (!domainResult.IsValid)

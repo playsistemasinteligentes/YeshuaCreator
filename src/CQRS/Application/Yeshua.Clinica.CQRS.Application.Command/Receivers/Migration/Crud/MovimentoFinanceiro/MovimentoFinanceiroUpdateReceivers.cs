@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MovimentoFinanceiroCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMovimentoFinanceiro", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMovimentoFinanceiroReceiver), commandName: "Command.Write.MovimentoFinanceiroCrudCommand");
-                 var movimentofinanceiro = new MovimentoFinanceiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IdOrigem, c.ContaDebitoId, c.Valor, c.DataMovimento, c.DataVencimento, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MovimentoFinanceiro", "UpdateMovimentoFinanceiro", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MovimentoFinanceiroCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMovimentoFinanceiro", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMovimentoFinanceiroReceiver), commandName: "Command.Write.MovimentoFinanceiroCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var movimentofinanceiro = new MovimentoFinanceiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IdOrigem, c.ContaDebitoId, c.Valor, c.DataMovimento, c.DataVencimento, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", movimentofinanceiro.OperationalEntityId);
                  var domainResult = MovimentoFinanceiroDomainBehavior.Apply(movimentofinanceiro, context);
                  if (!domainResult.IsValid)

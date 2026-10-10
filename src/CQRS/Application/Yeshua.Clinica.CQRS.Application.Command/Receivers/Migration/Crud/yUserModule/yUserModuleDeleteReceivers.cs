@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yUserModuleCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyUserModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyUserModuleReceiver), commandName: "Command.Write.yUserModuleCrudCommand");
-                 var yusermodule = new yUserModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ModuleId, c.UserId, c.ValidUntil);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yUserModule", "DeleteyUserModule", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yUserModuleCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyUserModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyUserModuleReceiver), commandName: "Command.Write.yUserModuleCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var yusermodule = new yUserModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ModuleId, c.UserId, c.ValidUntil, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yusermodule.OperationalEntityId);
                  var domainResult = yUserModuleDomainBehavior.Apply(yusermodule, context);
                  if (!domainResult.IsValid)

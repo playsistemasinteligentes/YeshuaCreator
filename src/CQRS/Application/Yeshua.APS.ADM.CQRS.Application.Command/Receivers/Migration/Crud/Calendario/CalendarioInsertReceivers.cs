@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CalendarioCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCalendario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCalendarioReceiver), commandName: "Command.Write.CalendarioCrudCommand");
-                 var calendario = new CalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.CAL_ID, c.CAL_DESCRICAO, c.CAL_DIVIDE_DIA_EM);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Calendario", "InsertCalendario", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CalendarioCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCalendario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCalendarioReceiver), commandName: "Command.Write.CalendarioCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var calendario = new CalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.CAL_ID, c.CAL_DESCRICAO, c.CAL_DIVIDE_DIA_EM, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", calendario.OperationalEntityId);
                  var domainResult = CalendarioDomainBehavior.Apply(calendario, context);
                  if (!domainResult.IsValid)

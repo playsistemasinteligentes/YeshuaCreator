@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeSolicitacaoFiscalCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeSolicitacaoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeSolicitacaoFiscalReceiver), commandName: "Command.Write.CTeSolicitacaoFiscalCrudCommand");
-                 var ctesolicitacaofiscal = new CTeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.RomaneioConsolidadoId, c.CorrelationId, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.ProdutoFiscal, c.TipoCTe, c.TipoServico, c.Modal, c.Globalizado, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.ValorServico, c.ValorCarga, c.PreferenciasManifestoJson, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeSolicitacaoFiscal", "DeleteCTeSolicitacaoFiscal", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeSolicitacaoFiscalCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeSolicitacaoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeSolicitacaoFiscalReceiver), commandName: "Command.Write.CTeSolicitacaoFiscalCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ctesolicitacaofiscal = new CTeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.RomaneioConsolidadoId, c.CorrelationId, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.ProdutoFiscal, c.TipoCTe, c.TipoServico, c.Modal, c.Globalizado, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.ValorServico, c.ValorCarga, c.PreferenciasManifestoJson, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ctesolicitacaofiscal.OperationalEntityId);
                  var domainResult = CTeSolicitacaoFiscalDomainBehavior.Apply(ctesolicitacaofiscal, context);
                  if (!domainResult.IsValid)

@@ -34,6 +34,22 @@
             public const ulong UserId = 1UL << 11;
         }
 
+        public static class MovimentoFinanceiroOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IdOrigem = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ContaDebitoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Valor = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataMovimento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataVencimento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MovimentoFinanceiroDecorator : IMovimentoFinanceiroEntity
 {
 
@@ -41,6 +57,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MovimentoFinanceiroDecorator(IMovimentoFinanceiroEntity inner, Dominio.Interfaces.ILogger logger)
@@ -58,6 +75,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -70,7 +94,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +108,7 @@
                                             {
                                                 _inner.IdOrigem = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.IdOrigem) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "IdOrigem", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "IdOrigem", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.IdOrigem, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +122,7 @@
                                             {
                                                 _inner.ContaDebitoId = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.ContaDebitoId) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "ContaDebitoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "ContaDebitoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.ContaDebitoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +136,7 @@
                                             {
                                                 _inner.Valor = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.Valor) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Valor", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Valor", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.Valor, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +150,7 @@
                                             {
                                                 _inner.DataMovimento = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.DataMovimento) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "DataMovimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "DataMovimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.DataMovimento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +164,7 @@
                                             {
                                                 _inner.DataVencimento = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.DataVencimento) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "DataVencimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "DataVencimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.DataVencimento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +178,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +193,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -183,7 +207,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -197,7 +221,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -211,7 +235,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MovimentoFinanceiroTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MovimentoFinanceiroOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

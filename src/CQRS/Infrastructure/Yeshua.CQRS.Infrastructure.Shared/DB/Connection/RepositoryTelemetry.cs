@@ -10,8 +10,13 @@ namespace Shered.DB.Connection
 {
     public readonly record struct RepositoryTelemetrySelection(
         bool CaptureCounters,
-        bool EmitEvents)
+        OperationalTelemetryDecision EventDecision)
     {
+        public bool EmitEvents => EventDecision.Enabled &&
+            (EventDecision.Level.Equals("Trace", StringComparison.OrdinalIgnoreCase) ||
+             EventDecision.Level.Equals("Debug", StringComparison.OrdinalIgnoreCase) ||
+             !EventDecision.Depth.Equals("D0", StringComparison.OrdinalIgnoreCase));
+
         public bool Enabled => CaptureCounters || EmitEvents;
     }
 
@@ -34,12 +39,7 @@ namespace Shered.DB.Connection
                 .Evaluate("RepositoryCounters", operation)
                 .Enabled;
             var eventDecision = _logger.Evaluate("RepositoryEvents", operation);
-            var emitEvents = eventDecision.Enabled &&
-                (eventDecision.Level.Equals("Trace", StringComparison.OrdinalIgnoreCase) ||
-                 eventDecision.Level.Equals("Debug", StringComparison.OrdinalIgnoreCase) ||
-                 !eventDecision.Depth.Equals("D0", StringComparison.OrdinalIgnoreCase));
-
-            return new RepositoryTelemetrySelection(captureCounters, emitEvents);
+            return new RepositoryTelemetrySelection(captureCounters, eventDecision);
         }
 
         public string GetQueryId(string sql)
@@ -62,6 +62,9 @@ namespace Shered.DB.Connection
             activity?.SetTag("db.operation.name", operation);
             activity?.SetTag("yeshua.query_id", queryId);
             activity?.SetTag("yeshua.trace_id", _context.TraceId);
+            activity?.SetTag("yeshua.depth", selection.EventDecision.DiagnosticDepth.ToString());
+            activity?.SetTag("yeshua.mode", selection.EventDecision.ExecutionMode.ToString());
+            OperationalActivity.SetIdentity(activity, _context.OperationalIdentity);
             return activity;
         }
 
@@ -91,13 +94,18 @@ namespace Shered.DB.Connection
                 durationMs,
                 selection.CaptureCounters,
                 selection.EmitEvents,
-                exception);
+                selection.EventDecision,
+                exception,
+                _context.OperationalIdentity);
 
             activity?.SetStatus(
                 succeeded ? ActivityStatusCode.Ok : ActivityStatusCode.Error,
                 exception?.Message);
             if (exception is not null)
-                OperationalActivity.RecordException(activity, exception);
+                OperationalActivity.RecordException(
+                    activity,
+                    exception,
+                    selection.EventDecision.DiagnosticDepth);
         }
 
         private static string CreateQueryId(string sql)

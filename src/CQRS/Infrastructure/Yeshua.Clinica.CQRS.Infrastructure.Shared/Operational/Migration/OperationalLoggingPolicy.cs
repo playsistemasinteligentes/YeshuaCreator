@@ -21,12 +21,18 @@ public sealed record OperationalLoggingPolicy(
     string DefaultDepth,
     IReadOnlyList<DiagnosticTarget> Targets,
     DateTimeOffset UpdatedAtUtc,
-    string Source);
+    string Source)
+{
+    public string DefaultMode { get; init; } = "Live";
+}
 
 public sealed record OperationalLoggingPolicyUpdate(
     string DefaultLevel,
     string DefaultDepth,
-    IReadOnlyList<DiagnosticTarget>? Targets);
+    IReadOnlyList<DiagnosticTarget>? Targets)
+{
+    public string? DefaultMode { get; init; }
+}
 
 public sealed record DiagnosticTarget(
     string? Component,
@@ -38,6 +44,7 @@ public sealed record DiagnosticTarget(
     DateTimeOffset? ExpiresAtUtc)
 {
     public string? Field { get; init; }
+    public string? Mode { get; init; }
 }
 
 public readonly record struct OperationalLoggingContext(
@@ -53,6 +60,7 @@ public readonly record struct OperationalLoggingDecision(
     bool Enabled,
     string Level,
     string Depth,
+    string Mode,
     DiagnosticTarget? MatchedTarget);
 
 public interface IOperationalLoggingPolicyAccessor
@@ -98,6 +106,13 @@ public sealed class OperationalLoggingPolicyState :
                 $"Policy for '{policy.Application}/{policy.Environment}' cannot replace policy for '{Current.Application}/{Current.Environment}'.");
         }
 
+        policy = policy with
+        {
+            DefaultMode = NormalizeMode(policy.DefaultMode, "Live")
+        };
+        foreach (var target in policy.Targets)
+            _ = NormalizeMode(target.Mode, policy.DefaultMode);
+
         Interlocked.Exchange(ref _current, policy);
     }
 
@@ -113,6 +128,7 @@ public sealed class OperationalLoggingPolicyState :
             DefaultDepth = string.IsNullOrWhiteSpace(update.DefaultDepth)
                 ? current.DefaultDepth
                 : update.DefaultDepth,
+            DefaultMode = NormalizeMode(update.DefaultMode, current.DefaultMode),
             Targets = update.Targets ?? [],
             UpdatedAtUtc = DateTimeOffset.UtcNow,
             Source = "LocalRuntime"
@@ -183,15 +199,18 @@ private OperationalLoggingDecision Evaluate(
                 false,
                 "None",
                 "D0",
+                policy.DefaultMode,
                 null);
         }
 
         var level = target?.Level ?? policy.DefaultLevel;
         var depth = target?.Depth ?? policy.DefaultDepth;
+        var mode = NormalizeMode(target?.Mode, policy.DefaultMode);
         return new OperationalLoggingDecision(
             !level.Equals("None", StringComparison.OrdinalIgnoreCase),
             level,
             depth,
+            mode,
             target);
     }
 
@@ -209,7 +228,8 @@ private OperationalLoggingDecision Evaluate(
         return new OperationalTelemetryDecision(
             decision.Enabled,
             decision.Level,
-            decision.Depth);
+            decision.Depth,
+            decision.Mode);
     }
 
     OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -228,7 +248,8 @@ private OperationalLoggingDecision Evaluate(
         return new OperationalTelemetryDecision(
             decision.Enabled,
             decision.Level,
-            decision.Depth);
+            decision.Depth,
+            decision.Mode);
     }
 
                 public ulong GetMask(
@@ -717,6 +738,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "ySaga", operation, recordId, "UserId"))
                         mask |= ySagaTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "RootOperationId"))
+                        mask |= ySagaTrackingFields.RootOperationId;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "OperationId"))
+                        mask |= ySagaTrackingFields.OperationId;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "ExecutionId"))
+                        mask |= ySagaTrackingFields.ExecutionId;
+                    if (DomainFieldTracked(policy, "ySaga", operation, recordId, "CausationId"))
+                        mask |= ySagaTrackingFields.CausationId;
                     return mask;
                 }
 
@@ -760,6 +789,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaStepTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "UserId"))
                         mask |= ySagaStepTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "RootOperationId"))
+                        mask |= ySagaStepTrackingFields.RootOperationId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "OperationId"))
+                        mask |= ySagaStepTrackingFields.OperationId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "ExecutionId"))
+                        mask |= ySagaStepTrackingFields.ExecutionId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "CausationId"))
+                        mask |= ySagaStepTrackingFields.CausationId;
                     return mask;
                 }
 
@@ -817,6 +854,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yOutboxTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "UserId"))
                         mask |= yOutboxTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "RootOperationId"))
+                        mask |= yOutboxTrackingFields.RootOperationId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "OperationId"))
+                        mask |= yOutboxTrackingFields.OperationId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "ExecutionId"))
+                        mask |= yOutboxTrackingFields.ExecutionId;
+                    if (DomainFieldTracked(policy, "yOutbox", operation, recordId, "CausationId"))
+                        mask |= yOutboxTrackingFields.CausationId;
                     return mask;
                 }
 
@@ -868,6 +913,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yInboxTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "UserId"))
                         mask |= yInboxTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "RootOperationId"))
+                        mask |= yInboxTrackingFields.RootOperationId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "OperationId"))
+                        mask |= yInboxTrackingFields.OperationId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "ExecutionId"))
+                        mask |= yInboxTrackingFields.ExecutionId;
+                    if (DomainFieldTracked(policy, "yInbox", operation, recordId, "CausationId"))
+                        mask |= yInboxTrackingFields.CausationId;
                     return mask;
                 }
 
@@ -945,8 +998,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yTenantTrackingFields.Nome;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "UserId"))
                         mask |= yTenantTrackingFields.UserId;
-                    if (DomainFieldTracked(policy, "yTenant", operation, recordId, "OperationalEntityId"))
-                        mask |= yTenantTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "Deleted"))
                         mask |= yTenantTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yTenant", operation, recordId, "Changed"))
@@ -970,8 +1021,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yUserTrackingFields.Senha;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "TenantID"))
                         mask |= yUserTrackingFields.TenantID;
-                    if (DomainFieldTracked(policy, "yUser", operation, recordId, "OperationalEntityId"))
-                        mask |= yUserTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Deleted"))
                         mask |= yUserTrackingFields.Deleted;
                     if (DomainFieldTracked(policy, "yUser", operation, recordId, "Changed"))
@@ -1274,5 +1323,18 @@ private OperationalLoggingDecision Evaluate(
         if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 8;
         if (!string.IsNullOrWhiteSpace(target.Field)) score += 16;
         return score;
+    }
+
+    private static string NormalizeMode(string? mode, string fallback)
+    {
+        var candidate = string.IsNullOrWhiteSpace(mode) ? fallback : mode;
+        return candidate.ToUpperInvariant() switch
+        {
+            "LIVE" => "Live",
+            "REPLAY" => "Replay",
+            "SIMULATION" => "Simulation",
+            "REGRESSION" => "Regression",
+            _ => throw new ArgumentException($"Invalid operational execution mode '{candidate}'.")
+        };
     }
 }//Dominio.Schemas.CQRS.SourceCodeInfrastructureOperationalControlStateMigration

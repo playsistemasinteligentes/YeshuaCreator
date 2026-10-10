@@ -38,7 +38,13 @@ namespace Input.Repository.yUser
         public void Insert(IyUserEntity yUser)
         {
             var query = _query.InseriryUserQuery(yUser);
-        yUser.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+
+        public int NextGlobalId()
+        {
+            var query = _query.NextGlobalIdQuery();
+            return _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IyUserEntity yUser)
@@ -69,11 +75,6 @@ namespace Input.Repository.yUser
         public void UpdateTenantID(int id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(int id, bool value)

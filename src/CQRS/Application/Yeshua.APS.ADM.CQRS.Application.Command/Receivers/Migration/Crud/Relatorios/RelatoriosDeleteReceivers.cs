@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RelatoriosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRelatorios", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRelatoriosReceiver), commandName: "Command.Write.RelatoriosCrudCommand");
-                 var relatorios = new RelatoriosFactory(_logger, _domainTrackingPolicy).Create(context, c.REL_ID, c.REL_NOME_RELATORIO, c.REL_NOME_CAMPO, c.REL_TIPO_CAMPO, c.REL_POS_X, c.REL_POS_Y, c.REL_TAMANHO_FONTE);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Relatorios", "DeleteRelatorios", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RelatoriosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteRelatorios", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteRelatoriosReceiver), commandName: "Command.Write.RelatoriosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var relatorios = new RelatoriosFactory(_logger, _domainTrackingPolicy).Create(context, c.REL_ID, c.REL_NOME_RELATORIO, c.REL_NOME_CAMPO, c.REL_TIPO_CAMPO, c.REL_POS_X, c.REL_POS_Y, c.REL_TAMANHO_FONTE, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", relatorios.OperationalEntityId);
                  var domainResult = RelatoriosDomainBehavior.Apply(relatorios, context);
                  if (!domainResult.IsValid)

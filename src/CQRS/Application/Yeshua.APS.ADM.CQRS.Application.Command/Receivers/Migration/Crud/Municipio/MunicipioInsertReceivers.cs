@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MunicipioCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMunicipio", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMunicipioReceiver), commandName: "Command.Write.MunicipioCrudCommand");
-                 var municipio = new MunicipioFactory(_logger, _domainTrackingPolicy).Create(context, c.MUN_ID, c.MUN_NOME, c.UF_COD, c.MUN_CODIGO_IBGE, c.MUN_LATITUDE, c.MUN_LONGITUDE, c.MUN_ID_INTEGRACAO_ERP, c.MUN_CODIGO_SIAFI, c.MUN_CODIGO_CNPJ, c.MUN_DISTANCIA_KM);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Municipio", "InsertMunicipio", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MunicipioCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMunicipio", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMunicipioReceiver), commandName: "Command.Write.MunicipioCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var municipio = new MunicipioFactory(_logger, _domainTrackingPolicy).Create(context, c.MUN_ID, c.MUN_NOME, c.UF_COD, c.MUN_CODIGO_IBGE, c.MUN_LATITUDE, c.MUN_LONGITUDE, c.MUN_ID_INTEGRACAO_ERP, c.MUN_CODIGO_SIAFI, c.MUN_CODIGO_CNPJ, c.MUN_DISTANCIA_KM, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", municipio.OperationalEntityId);
                  var domainResult = MunicipioDomainBehavior.Apply(municipio, context);
                  if (!domainResult.IsValid)

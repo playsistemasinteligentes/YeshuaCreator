@@ -128,12 +128,10 @@ intencao e a rastreabilidade; somente a evidencia executada comprova o gate.
 
 ### 2.3 Capacidades Nao Implementadas
 
-- Modelo runtime completo dos tres eixos independentes.
 - `RootOperationId`, `OperationId`, `ExecutionId` e `CausationId` como contrato
   universal.
-- Resultados tecnico e de negocio registrados separadamente.
 - Politica D2 direcionada, temporaria e auditada.
-- Classificacao e sanitizacao automatica de dados observaveis.
+- Retencao por profundidade e homologacao integrada contra vazamento de dados.
 - Provider central de eventos operacionais consultavel por `OperationId`.
 - Coletores de runtime na Inteligencia Operacional.
 - Replay, Simulation e Regression baseados em capturas.
@@ -367,12 +365,14 @@ todas as etapas pela mesma raiz e cadeia causal.
 **Entrega externa:** baseline consultavel de inicio, fim, resultado, etapas,
 dependencias, duracao, retry e erro.
 
-**Yeshua hoje: PARCIAL**
+**Yeshua hoje: PARCIAL AVANCADO**
 
-- `ReciverBase` mede duracao e registra inicio, conclusao/falha e excecao.
-- Workers registram inicio e falhas.
-- Os eventos nao carregam ainda versao, ambiente, tres eixos, resultados
-  separados, dependencia ou classificacao de dados.
+- `ReciverBase` produz D0 com inicio, conclusao, falha, duracao, identidade
+  runtime e operacional e resultados tecnico e de negocio separados.
+- Saga, armazenamento de Inbox/Outbox, SQL e transporte HTTP ja produzem D1
+  pelo envelope compartilhado, respeitando a politica operacional.
+- Classificacao por profundidade e `NeverCapture` protegem o publicador; ainda
+  faltam consumo efetivo, dependencias SEFAZ e demonstracao ponta a ponta.
 
 **Implementacao Yeshua:** a Engine deve envolver Commands, endpoints, Workers,
 filas, repositorios e integracoes com emissores padronizados. IA/dev informa o
@@ -425,7 +425,12 @@ bundle e aponta os fontes relevantes sem usar o disco atual como substituto.
 
 **Entrega externa:** diagnostico profundo com alvo, prazo, limite e auditoria.
 
-**Yeshua hoje: NAO IMPLEMENTADO**
+**Yeshua hoje: PARCIAL AVANCADO**
+
+A Engine gera classificacao estatica por campo sem reflection, aplica
+convencoes seguras, permite complemento explicito na DSL e impede a passagem de
+`NeverCapture` pelo publicador e pelos exportadores. Ainda faltam retencao por
+profundidade e homologacao integrada de vazamento.
 
 **Implementacao Yeshua:** criar `DiagnosticPolicy`, repositorio de politicas e
 avaliador leve nos pontos gerados. A politica pode mirar aplicativo, operacao,
@@ -646,7 +651,7 @@ Nenhum degrau autoriza sozinho uma alteracao de producao.
 | --- | --- | --- | --- |
 | Y0 | Fonte versionada e pesquisavel | snapshot, indice, API e bundle | IMPLEMENTADO |
 | Y1 | Build verificavel | health pos-build e versao runtime ligada ao snapshot | PARCIAL |
-| Y2 | Operacao observavel | D0/D1, identidades e propagacao ponta a ponta | NAO IMPLEMENTADO |
+| Y2 | Operacao observavel | D0/D1, identidades e propagacao ponta a ponta | PARCIAL |
 | Y3 | Diagnostico dirigido | D2, protecao de dados e coletores runtime | NAO IMPLEMENTADO |
 | Y4 | Reproducao segura | D3/D4, Replay, Simulation e Regression | NAO IMPLEMENTADO |
 | Y5 | Operacao assistida | agentes investigadores, validadores e de melhoria | CONCEITO |
@@ -777,11 +782,44 @@ depois disso D3, D4, replay e agentes entram no planejamento ativo.
 
 #### 10.1.2 Primeira Mudanca De Codigo Recomendada
 
-A proxima mudanca deve iniciar por F-EXP-00 e pelo Bloco A no aplicativo
-Fiscal. Ela nao deve incluir provider central, replay, dashboard ou agente.
-Propagacao assincrona somente entra no experimento F-EXP-03, depois de o custo
-desligado e os contratos seguros estarem aprovados. Isso permite validar custo,
-controle e protecao antes de espalhar evidencias pelo ecossistema.
+O Bloco A deve continuar no aplicativo Fiscal. A medicao quantitativa de
+F-EXP-00 permanece obrigatoria para a homologacao, mas foi adiada enquanto as
+bordas comuns ainda evoluem. Ela nao bloqueia a criacao dos contratos seguros,
+desde que nenhuma conclusao de custo seja registrada sem benchmark.
+
+Esta etapa nao inclui provider central, replay, dashboard ou agente.
+Propagacao assincrona somente entra depois de os contratos seguros estarem
+aprovados. Isso permite validar controle e protecao antes de espalhar
+evidencias pelo ecossistema.
+
+#### 10.1.3 Avanco Do Piloto De Agentizacao
+
+Primeiro incremento executado na worktree
+`codex/agentic-software-lifecycle-pilot`:
+
+- contrato tipado para severidade, profundidade e modo;
+- resultados tecnico e de negocio separados no mesmo envelope;
+- classificacoes `Public`, `Internal`, `Confidential`, `Restricted` e
+  `NeverCapture`;
+- publicador unico para as evidencias de Command, Repository, Saga e
+  DomainTracker;
+- protecao por profundidade antes do sink;
+- remocao de tags proibidas antes dos exportadores de trace JSONL e OTLP;
+- preservacao dos campos `Level`, `Category` e `Data` usados nas consultas
+  atuais do Loki;
+- descritores de classificacao gerados por entidade e campo, com convencao
+  segura e possibilidade de complemento explicito na DSL;
+- modo `Live`, `Replay`, `Simulation` ou `Regression` no snapshot da politica,
+  com selecao padrao ou por alvo e sincronizacao da API para o Worker;
+- testes comprovando independencia dos eixos, rejeicao de negocio sem falha
+  tecnica, protecao por profundidade, `NeverCapture` e isolamento de falha do
+  sink.
+
+Estado honesto: R07 esta parcial avancado e R08 esta implementado em codigo e
+validado localmente. Ainda faltam retencao por profundidade e demonstracao
+integrada em homologacao. Esses dados passam a ser produzidos em formato
+adequado para consumo futuro por agentes ao longo do ciclo de fabricacao, sem
+introduzir agente ou automacao de mudanca nesta etapa.
 
 ### 10.2 R01 - Escopo Piloto E Responsaveis
 
@@ -968,6 +1006,11 @@ apontam para o mesmo aplicativo e versao.
 
 **Correlacao:** Passo 10, Gate G4, aplicavel a D0-D4, fundamento de Y2.
 
+**Estado:** parcial avancado. Descritores estaticos por campo, convencoes,
+complemento pela DSL, sanitizacao e `NeverCapture` estao implementados e
+testados localmente. Retencao por profundidade e homologacao integrada
+permanecem pendentes.
+
 1. Criar os tipos de classificacao de dados.
 2. Definir `SafeMetadata`, `OperationalData`, `Sensitive` e `NeverCapture`.
 3. Criar mascaramento e sanitizacao antes do provider.
@@ -983,6 +1026,10 @@ borda de observabilidade.
 ### 10.9 R08 - Contrato Dos Tres Eixos E Resultados
 
 **Correlacao:** Passo 4, Gate G4, profundidades D0/D1, nivel Y2.
+
+**Estado:** implementado em codigo e validado localmente. O modo e resolvido
+pelo snapshot da politica, com valor padrao ou especifico por alvo, e se
+propaga da API para o Worker pelo mecanismo operacional existente.
 
 1. Criar os tipos de severidade, profundidade e modo de execucao.
 2. Criar resultados tecnico e de negocio independentes.
@@ -1012,9 +1059,34 @@ rejeicao de negocio nao vira falha tecnica automaticamente.
 **Criterio de saida:** nenhuma operacao do piloto termina sem identidade, e as
 etapas preservam raiz e operacao.
 
+**Estado:** implementado em codigo e validado localmente no piloto Fiscal.
+
+- `IExecutionContext` expoe a identidade operacional e scopes de execucao sem
+  remover o `TraceId` de compatibilidade.
+- A Engine gera a entrada HTTP, valida os identificadores recebidos e publica
+  a identidade resultante nos headers de resposta.
+- `ReciverBase`, `RepositoryTelemetry`, os contextos de dominio e os
+  decorators gerados compartilham `RootOperationId`, `OperationId`,
+  `ExecutionId` e `CausationId` na mesma execucao sincrona.
+- Operacoes filhas preservam a raiz e usam a execucao pai como causa.
+- A inicializacao e tardia: com as politicas desligadas, a verificacao de
+  identidade nao cria uma execucao nem gera identificadores.
+- A implementacao pertence ao Shared e aos templates da Engine; a DSL nao
+  recebeu conceitos tecnicos novos.
+
+**Evidencia da rodada:** geracao do Fiscal executada; API e Worker compilados
+sem erros; quatro testes de identidade sincrona, quatro testes do gerador e
+sete testes de protecao/publicacao operacional aprovados. A homologacao contra
+um ambiente publicado permanece para a rodada integrada.
+
 ### 10.11 R10 - Propagacao Assincrona E Causalidade
 
 **Correlacao:** Passo 5, Gate G3, profundidade D1, nivel Y2.
+
+**Estado:** implementado em codigo e validado localmente no transporte HTTP do
+piloto Fiscal. O contrato comum de fila carrega a mesma identidade; a
+homologacao de um consumidor RabbitMQ real depende de um fluxo piloto que use
+esse transporte e nao foi simulada artificialmente nesta rodada.
 
 1. Incluir o contexto no envelope de mensagens.
 2. Propagar por Outbox, fila, Inbox, Saga e Worker.
@@ -1027,6 +1099,25 @@ etapas preservam raiz e operacao.
 
 **Criterio de saida:** uma mensagem do piloto pode ser rastreada da entrada ao
 consumidor, inclusive em retry.
+
+- A Engine gera campos opcionais de identidade em Saga, SagaStep, Outbox e
+  Inbox, sem aumentar a DSL e sem quebrar as assinaturas existentes das
+  factories.
+- Outbox captura a execucao produtora; cada entrega HTTP cria e persiste uma
+  tentativa propria, envia os quatro headers e inclui os mesmos valores no
+  envelope.
+- A entrada HTTP cria a tentativa consumidora quando a telemetria esta ativa;
+  o Inbox persiste essa identidade e a ponte inicia a Saga a partir dela.
+- Saga Worker preserva raiz e operacao, cria uma execucao por registro e usa a
+  execucao persistida como causa da tentativa seguinte, inclusive em retry.
+- `QueueMessage` possui o mesmo envelope de identidade e sua serializacao foi
+  validada; nenhum lote e usado como pai dos registros individuais.
+
+**Evidencia da rodada:** geracao do Fiscal executada; API e Worker compilados
+sem erros; testes de identidade, cadeia HTTP ate Worker, retry, envelope de
+fila, geracao e protecao operacional aprovados. A homologacao contra um
+ambiente publicado e de um consumidor RabbitMQ concreto permanece integrada
+as rodadas de demonstracao.
 
 ### 10.12 R11 - Eventos Operacionais Essenciais
 
@@ -1044,6 +1135,24 @@ consumidor, inclusive em retry.
 **Criterio de saida:** cada operacao produz evidencia essencial completa em
 qualquer resultado.
 
+**Situacao no piloto:** concluida em 10/10/2026 para Commands do Fiscal.
+
+- `ReciverBase` decide a politica antes de criar escopo, cronometro ou
+  `Activity` e, quando habilitado, emite `Command.Started` e
+  `Command.Completed`.
+- O envelope inclui identidade imutavel do runtime, identidade operacional,
+  `OperationalEntityId` quando disponivel, duracao e resultados tecnico e de
+  negocio.
+- Falhas D0 carregam somente resumo sanitizado. Mensagem original e stack
+  permanecem classificadas como `Restricted` e fora do baseline.
+- Falha do sink ou provider fica isolada e nao altera retorno, rejeicao nem
+  excecao da operacao principal.
+- Testes locais aprovados: 9 do Shared, 34 da Application e 9 testes
+  direcionados da Engine. API e Worker do Fiscal compilaram sem erros.
+
+Chamadas externas, dependencias SEFAZ, etapas e transicoes de Saga, Inbox e
+Outbox permanecem no escopo de R12.
+
 ### 10.13 R12 - Narrativa Operacional
 
 **Correlacao:** Passo 6, Gate G4, profundidade D1, nivel Y2.
@@ -1058,6 +1167,37 @@ qualquer resultado.
 
 **Criterio de saida:** uma pessoa que nao escreveu o fluxo consegue ordenar as
 etapas e identificar onde houve degradacao.
+
+**Situacao no piloto:** parcial em 10/10/2026.
+
+- O executor compartilhado de Saga emite inicio, espera, retomada, conclusao,
+  retry e falha com duracao, tentativa, outcomes e cadeia causal.
+- Retry deixou de aparecer como sucesso tecnico e informa a proxima tentativa
+  sem publicar a mensagem original da excecao.
+- O contrato compartilhado de transicao operacional registra mudancas entre
+  componentes usando o mesmo envelope e provider.
+- A Engine passou a gerar `Outbox.Stored`, `Outbox.StoreFailed`,
+  `Inbox.Stored` e `Inbox.StoreFailed`, sem payload, SQL ou parametros.
+- Eventos selecionados de repository identificam a dependencia `SQL`,
+  `QueryId`, duracao, resultado e resumo de erro sanitizado.
+- O cliente HTTP do transporte entre modulos passou a emitir
+  `ExternalDependency.Completed`, `ExternalDependency.Failed` ou
+  `ExternalDependency.TimedOut`, com host, status, duracao e cadeia causal.
+  URL completa, query string, headers de autenticacao e corpo nao sao lidos
+  nem publicados.
+- A Engine gera a borda `/yapi/{Modulo}/Inbox/YeshuaModuleEvent` somente para
+  modulos com contratos `StartsFromYeshuaModuleEvent`, rejeita tipos nao
+  declarados, restaura a causalidade, grava pelo `OutboxService` e exige
+  autenticacao. A substituicao do endpoint manual do Fiscal aguarda a definicao
+  da credencial entre modulos para nao quebrar o piloto atual.
+- O piloto Fiscal foi alinhado ao template e compilado sem erros. Foram
+  aprovados 34 testes da Application, 13 do Shared e 9 testes direcionados da
+  Engine.
+
+Ainda faltam as transicoes de estado da entrega e do consumo efetivo, ativar e
+homologar a borda gerada de entrada com autenticacao entre modulos, chamadas
+externas SEFAZ, a definicao explicita dos fluxos que permanecem apenas em D0 e
+uma demonstracao integrada da narrativa completa.
 
 ### 10.14 R13 - Provider, Consulta E Coletor Runtime
 

@@ -34,13 +34,14 @@
                             }
 
                             public IConsultaPedidoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string clienteid, string clientenome, string? razaosocial, string produtoid, string produtodescricao, string? status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string? corfila, string? pedidocliente )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string clienteid, string clientenome, string? razaosocial, string produtoid, string produtodescricao, string? status, string estagio, DateTime dataentregade, DateTime dataentregaate, DateTime? embarquealvo, Decimal quantidade, Decimal saldoaproduzir, Decimal? saldoaexpedir, string? corfila, string? pedidocliente, ulong? trackingMask = null )
                             {
                             var entity = new ConsultaPedidoEntity(pedidoid, clienteid, clientenome, razaosocial, produtoid, produtodescricao, status, estagio, dataentregade, dataentregaate, embarquealvo, quantidade, saldoaproduzir, saldoaexpedir, corfila, pedidocliente );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ConsultaPedido", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ConsultaPedidoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ConsultaPedido", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ConsultaPedidoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yConfigNotificationCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyConfigNotification", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyConfigNotificationReceiver), commandName: "Command.Write.yConfigNotificationCrudCommand");
-                 var yconfignotification = new yConfigNotificationFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yConfigNotification", "UpdateyConfigNotification", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yConfigNotificationCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyConfigNotification", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyConfigNotificationReceiver), commandName: "Command.Write.yConfigNotificationCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var yconfignotification = new yConfigNotificationFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yconfignotification.OperationalEntityId);
                  var domainResult = yConfigNotificationDomainBehavior.Apply(yconfignotification, context);
                  if (!domainResult.IsValid)

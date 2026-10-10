@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_FeedbackMovEstoqueCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_FeedbackMovEstoque", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_FeedbackMovEstoqueReceiver), commandName: "Command.Write.T_FeedbackMovEstoqueCrudCommand");
-                 var t_feedbackmovestoque = new T_FeedbackMovEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FeedbackId, c.MovimentoEstoqueId);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_FeedbackMovEstoque", "UpdateT_FeedbackMovEstoque", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_FeedbackMovEstoqueCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_FeedbackMovEstoque", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_FeedbackMovEstoqueReceiver), commandName: "Command.Write.T_FeedbackMovEstoqueCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_feedbackmovestoque = new T_FeedbackMovEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FeedbackId, c.MovimentoEstoqueId, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_feedbackmovestoque.OperationalEntityId);
                  var domainResult = T_FeedbackMovEstoqueDomainBehavior.Apply(t_feedbackmovestoque, context);
                  if (!domainResult.IsValid)

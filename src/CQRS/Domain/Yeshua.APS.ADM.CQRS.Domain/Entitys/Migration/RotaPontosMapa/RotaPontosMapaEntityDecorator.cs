@@ -36,6 +36,24 @@
             public const ulong UserId = 1UL << 13;
         }
 
+        public static class RotaPontosMapaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_ID_DESTINO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_ID_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_CUSTO_TOTAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_ID_ROTEIRO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_ORDEM_ROTEIRO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_DISTANCIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class RotaPontosMapaDecorator : IRotaPontosMapaEntity
 {
 
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public RotaPontosMapaDecorator(IRotaPontosMapaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.ROT_ID = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.ROT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.ROT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.PON_ID_DESTINO = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.PON_ID_DESTINO) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "PON_ID_DESTINO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "PON_ID_DESTINO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.PON_ID_DESTINO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.PON_ID_ORIGEM = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.PON_ID_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "PON_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "PON_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.PON_ID_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.ROT_CUSTO_TOTAL = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.ROT_CUSTO_TOTAL) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_CUSTO_TOTAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_CUSTO_TOTAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.ROT_CUSTO_TOTAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.PON_ID_ROTEIRO = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.PON_ID_ROTEIRO) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "PON_ID_ROTEIRO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "PON_ID_ROTEIRO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.PON_ID_ROTEIRO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.ROT_ORDEM_ROTEIRO = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.ROT_ORDEM_ROTEIRO) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_ORDEM_ROTEIRO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_ORDEM_ROTEIRO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.ROT_ORDEM_ROTEIRO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.ROT_TIPO = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.ROT_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.ROT_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +210,7 @@
                                             {
                                                 _inner.ROT_DISTANCIA = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.ROT_DISTANCIA) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_DISTANCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "ROT_DISTANCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.ROT_DISTANCIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -199,7 +225,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +239,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +253,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,7 +267,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & RotaPontosMapaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("RotaPontosMapa", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RotaPontosMapa", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RotaPontosMapaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

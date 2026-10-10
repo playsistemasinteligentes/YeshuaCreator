@@ -36,6 +36,24 @@
             public const ulong UserId = 1UL << 13;
         }
 
+        public static class PlotagemOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_NOME = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification PLO_DIMENSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_X = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_Y = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_Z = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_GRAFICO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CON_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PlotagemDecorator : IPlotagemEntity
 {
 
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PlotagemDecorator(IPlotagemEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.PLO_ID = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.PLO_NOME = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_NOME) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_NOME, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.PLO_DIMENSAO = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_DIMENSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_DIMENSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_DIMENSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_DIMENSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.PLO_X = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_X) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_X", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_X", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_X, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.PLO_Y = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_Y) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_Y", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_Y", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_Y, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.PLO_Z = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_Z) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_Z", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_Z", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_Z, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.PLO_GRAFICO = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.PLO_GRAFICO) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "PLO_GRAFICO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "PLO_GRAFICO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.PLO_GRAFICO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +210,7 @@
                                             {
                                                 _inner.CON_ID = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.CON_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "CON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "CON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.CON_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -199,7 +225,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +239,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +253,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,7 +267,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PlotagemTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Plotagem", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Plotagem", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlotagemOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

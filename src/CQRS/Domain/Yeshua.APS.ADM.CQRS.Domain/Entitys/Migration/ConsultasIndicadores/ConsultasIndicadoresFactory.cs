@@ -34,13 +34,14 @@
                             }
 
                             public IConsultasIndicadoresEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? con_id, int? ind_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? con_id, int? ind_id, ulong? trackingMask = null )
                             {
                             var entity = new ConsultasIndicadoresEntity(id, con_id, ind_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ConsultasIndicadores", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ConsultasIndicadoresDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ConsultasIndicadores", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ConsultasIndicadoresDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.UnidadeMedidaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateUnidadeMedida", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateUnidadeMedidaReceiver), commandName: "Command.Write.UnidadeMedidaCrudCommand");
-                 var unidademedida = new UnidadeMedidaFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.UNI_DESCRICAO, c.UNI_ESCALA_TEMPO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("UnidadeMedida", "UpdateUnidadeMedida", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.UnidadeMedidaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateUnidadeMedida", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateUnidadeMedidaReceiver), commandName: "Command.Write.UnidadeMedidaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var unidademedida = new UnidadeMedidaFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.UNI_DESCRICAO, c.UNI_ESCALA_TEMPO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", unidademedida.OperationalEntityId);
                  var domainResult = UnidadeMedidaDomainBehavior.Apply(unidademedida, context);
                  if (!domainResult.IsValid)

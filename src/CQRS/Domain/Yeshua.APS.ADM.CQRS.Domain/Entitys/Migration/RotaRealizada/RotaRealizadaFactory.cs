@@ -34,13 +34,14 @@
                             }
 
                             public IRotaRealizadaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int rot_id, string car_id, DateTime? rot_data_hora, Decimal? rot_lat, Decimal? rot_long )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int rot_id, string car_id, DateTime? rot_data_hora, Decimal? rot_lat, Decimal? rot_long, ulong? trackingMask = null )
                             {
                             var entity = new RotaRealizadaEntity(rot_id, car_id, rot_data_hora, rot_lat, rot_long );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("RotaRealizada", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RotaRealizadaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("RotaRealizada", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RotaRealizadaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

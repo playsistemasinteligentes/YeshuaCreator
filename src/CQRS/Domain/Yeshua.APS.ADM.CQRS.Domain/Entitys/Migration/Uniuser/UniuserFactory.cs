@@ -34,13 +34,14 @@
                             }
 
                             public IUniuserEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int usergru_id, int uni_id, int use_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int usergru_id, int uni_id, int use_id, ulong? trackingMask = null )
                             {
                             var entity = new UniuserEntity(usergru_id, uni_id, use_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Uniuser", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new UniuserDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Uniuser", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new UniuserDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

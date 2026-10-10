@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" INSERT INTO [yInbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [CreatedAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yInbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [CreatedAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [ProcessingScope], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId], [RootOperationId], [OperationId], [ExecutionId], [CausationId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @ProcessingScope, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId, @RootOperationId, @OperationId, @ExecutionId, @CausationId) ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
@@ -47,17 +47,22 @@ namespace Query.Write
                 NextAttemptAt = yInbox.NextAttemptAt,
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
+                ProcessingScope = _executionContext.ProcessingScope,
                 TenantID = _executionContext.TenantID,
                 OperationalEntityId = yInbox.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                RootOperationId = yInbox.RootOperationId,
+                OperationId = yInbox.OperationId,
+                ExecutionId = yInbox.ExecutionId,
+                CausationId = yInbox.CausationId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateyInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" UPDATE [yInbox] SET [MessageId] = @MessageId, [Type] = @Type, [EntityType] = @EntityType, [EntityId] = @EntityId, [CorrelationId] = @CorrelationId, [Payload] = @Payload, [Status] = @Status, [CreatedAt] = @CreatedAt, [RetryCount] = @RetryCount, [LastError] = @LastError, [ProcessingAt] = @ProcessingAt, [NextAttemptAt] = @NextAttemptAt, [SagaId] = @SagaId, [SagaStepId] = @SagaStepId, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [yInbox] SET [MessageId] = @MessageId, [Type] = @Type, [EntityType] = @EntityType, [EntityId] = @EntityId, [CorrelationId] = @CorrelationId, [Payload] = @Payload, [Status] = @Status, [CreatedAt] = @CreatedAt, [RetryCount] = @RetryCount, [LastError] = @LastError, [ProcessingAt] = @ProcessingAt, [NextAttemptAt] = @NextAttemptAt, [SagaId] = @SagaId, [SagaStepId] = @SagaStepId, [Changed] = @Changed, [UserId] = @UserId, [RootOperationId] = @RootOperationId, [OperationId] = @OperationId, [ExecutionId] = @ExecutionId, [CausationId] = @CausationId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
@@ -76,6 +81,10 @@ namespace Query.Write
                 SagaStepId = yInbox.SagaStepId,
                 Changed = yInbox.Changed,
                 UserId = _executionContext.UserId,
+                RootOperationId = yInbox.RootOperationId,
+                OperationId = yInbox.OperationId,
+                ExecutionId = yInbox.ExecutionId,
+                CausationId = yInbox.CausationId,
                 Id = yInbox.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -266,6 +275,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateRootOperationId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yInbox] SET [RootOperationId] = @RootOperationId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                RootOperationId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yInbox] SET [OperationId] = @OperationId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateExecutionId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yInbox] SET [ExecutionId] = @ExecutionId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                ExecutionId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCausationId(int id, string value)
+        {
+            this.Query = $@" UPDATE [yInbox] SET [CausationId] = @CausationId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CausationId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

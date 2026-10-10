@@ -270,6 +270,14 @@ namespace Dominio
                 return this.AlterColumns.Last().NeedBeWhere();
         }
 
+        public Entity NeedBeWhere(string defaultValue)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().NeedBeWhere(defaultValue);
+            else
+                return this.AlterColumns.Last().NeedBeWhere(defaultValue);
+        }
+
 
 
         public Entity Incremento()
@@ -342,6 +350,21 @@ namespace Dominio
                 return this.AddColumns.Last().UserEncryptedField();
             else
                 return this.AlterColumns.Last().UserEncryptedField();
+        }
+        public Entity GlobalIdentity(string authority)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().GlobalIdentity(authority);
+            else
+                return this.AlterColumns.Last().GlobalIdentity(authority);
+        }
+
+        public Entity ClassifyOperationalData(OperationalDataClassification classification)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().ClassifyOperationalData(classification);
+            else
+                return this.AlterColumns.Last().ClassifyOperationalData(classification);
         }
 
         internal Entity NotEntity(string entidade)

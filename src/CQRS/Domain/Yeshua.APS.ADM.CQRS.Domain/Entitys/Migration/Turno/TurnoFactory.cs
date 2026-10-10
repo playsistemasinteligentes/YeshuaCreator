@@ -34,13 +34,14 @@
                             }
 
                             public ITurnoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string id, string descricao, int turn_prioridade, DateTime? turn_hora_ini_dia1, DateTime? turn_hora_fim_dia1, DateTime? turn_hora_ini_dia2, DateTime? turn_hora_fim_dia2, DateTime? turn_hora_ini_dia3, DateTime? turn_hora_fim_dia3, DateTime? turn_hora_ini_dia4, DateTime? turn_hora_fim_dia4, DateTime? turn_hora_ini_dia5, DateTime? turn_hora_fim_dia5, DateTime? turn_hora_ini_dia6, DateTime? turn_hora_fim_dia6, DateTime? turn_hora_ini_dia7, DateTime? turn_hora_fim_dia7 )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string id, string descricao, int turn_prioridade, DateTime? turn_hora_ini_dia1, DateTime? turn_hora_fim_dia1, DateTime? turn_hora_ini_dia2, DateTime? turn_hora_fim_dia2, DateTime? turn_hora_ini_dia3, DateTime? turn_hora_fim_dia3, DateTime? turn_hora_ini_dia4, DateTime? turn_hora_fim_dia4, DateTime? turn_hora_ini_dia5, DateTime? turn_hora_fim_dia5, DateTime? turn_hora_ini_dia6, DateTime? turn_hora_fim_dia6, DateTime? turn_hora_ini_dia7, DateTime? turn_hora_fim_dia7, ulong? trackingMask = null )
                             {
                             var entity = new TurnoEntity(id, descricao, turn_prioridade, turn_hora_ini_dia1, turn_hora_fim_dia1, turn_hora_ini_dia2, turn_hora_fim_dia2, turn_hora_ini_dia3, turn_hora_fim_dia3, turn_hora_ini_dia4, turn_hora_fim_dia4, turn_hora_ini_dia5, turn_hora_fim_dia5, turn_hora_ini_dia6, turn_hora_fim_dia6, turn_hora_ini_dia7, turn_hora_fim_dia7 );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Turno", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TurnoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Turno", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TurnoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

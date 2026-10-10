@@ -35,6 +35,23 @@
             public const ulong UserId = 1UL << 12;
         }
 
+        public static class CanhotosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NOT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAN_DATA_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAN_IMG = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAN_LAT_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAN_LONG_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CanhotosDecorator : ICanhotosEntity
 {
 
@@ -42,6 +59,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CanhotosDecorator(ICanhotosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -59,6 +77,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -71,7 +96,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -85,7 +110,7 @@
                                             {
                                                 _inner.CAR_ID = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.CAR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "CAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "CAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.CAR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -99,7 +124,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -113,7 +138,7 @@
                                             {
                                                 _inner.NOT_ID = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.NOT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "NOT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "NOT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.NOT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -127,7 +152,7 @@
                                             {
                                                 _inner.CAN_DATA_ENTREGA = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.CAN_DATA_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "CAN_DATA_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "CAN_DATA_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.CAN_DATA_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -141,7 +166,7 @@
                                             {
                                                 _inner.CAN_IMG = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.CAN_IMG) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "CAN_IMG", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "CAN_IMG", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.CAN_IMG, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -155,7 +180,7 @@
                                             {
                                                 _inner.CAN_LAT_ENTREGA = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.CAN_LAT_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "CAN_LAT_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "CAN_LAT_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.CAN_LAT_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +194,7 @@
                                             {
                                                 _inner.CAN_LONG_ENTREGA = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.CAN_LONG_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "CAN_LONG_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "CAN_LONG_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.CAN_LONG_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +209,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -198,7 +223,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -212,7 +237,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -226,7 +251,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CanhotosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Canhotos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Canhotos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CanhotosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

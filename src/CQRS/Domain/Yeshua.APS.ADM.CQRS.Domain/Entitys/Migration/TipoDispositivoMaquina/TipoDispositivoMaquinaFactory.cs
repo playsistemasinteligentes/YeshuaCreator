@@ -34,13 +34,14 @@
                             }
 
                             public ITipoDispositivoMaquinaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tdi_id, string maq_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tdi_id, string maq_id, ulong? trackingMask = null )
                             {
                             var entity = new TipoDispositivoMaquinaEntity(id, tdi_id, maq_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoDispositivoMaquina", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoDispositivoMaquinaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoDispositivoMaquina", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoDispositivoMaquinaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

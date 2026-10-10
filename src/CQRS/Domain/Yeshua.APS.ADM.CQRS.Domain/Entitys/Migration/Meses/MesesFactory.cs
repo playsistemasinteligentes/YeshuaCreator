@@ -34,13 +34,14 @@
                             }
 
                             public IMesesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string mes, int fator )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string mes, int fator, ulong? trackingMask = null )
                             {
                             var entity = new MesesEntity(mes, fator );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Meses", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MesesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Meses", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MesesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

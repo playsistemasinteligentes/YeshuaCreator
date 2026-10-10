@@ -34,13 +34,14 @@
                             }
 
                             public ITipoABNTEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string abn_id, string? abn_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string abn_id, string? abn_descricao, ulong? trackingMask = null )
                             {
                             var entity = new TipoABNTEntity(id, abn_id, abn_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoABNT", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoABNTDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoABNT", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoABNTDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -18,7 +18,11 @@ public static class EndpointsCuston
         string CorrelationId,
         string Payload,
         string Source,
-        string Transport);
+        string Transport,
+        string? RootOperationId,
+        string? OperationId,
+        string? ExecutionId,
+        string? CausationId);
 
     public static void MapEndpoints(this WebApplication app)
     {
@@ -83,7 +87,11 @@ public static class EndpointsCuston
                 ProcessingAt = null,
                 NextAttemptAt = null,
                 SagaId = null,
-                SagaStepId = null
+                SagaStepId = null,
+                RootOperationId = envelope.RootOperationId,
+                OperationId = envelope.OperationId,
+                ExecutionId = envelope.ExecutionId,
+                CausationId = envelope.CausationId
             };
 
             var result = await receiver.ExecuteAsync(command);

@@ -34,13 +34,14 @@
                             }
 
                             public IPontosMapaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string? mun_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string? mun_id, ulong? trackingMask = null )
                             {
                             var entity = new PontosMapaEntity(pon_id, pon_descricao, pon_tipo, pon_latitude, pon_longitude, pon_distancia_km, mun_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PontosMapa", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PontosMapaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PontosMapa", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PontosMapaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

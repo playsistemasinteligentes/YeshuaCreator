@@ -38,6 +38,10 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string? RootOperationId { get; set; }
+    public string? OperationId { get; set; }
+    public string? ExecutionId { get; set; }
+    public string? CausationId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ySagaEntity(int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby ){
  Id = id; 
@@ -55,6 +59,10 @@
  OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ RootOperationId = null; 
+ OperationId = null; 
+ ExecutionId = null; 
+ CausationId = null; 
 }
 public bool isValidData()
 {

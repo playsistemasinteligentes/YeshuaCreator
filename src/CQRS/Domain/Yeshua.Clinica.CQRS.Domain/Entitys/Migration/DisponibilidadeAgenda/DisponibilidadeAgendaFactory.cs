@@ -34,13 +34,14 @@
                             }
 
                             public IDisponibilidadeAgendaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? profissionalid, DateTime datahora )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? profissionalid, DateTime datahora, ulong? trackingMask = null )
                             {
                             var entity = new DisponibilidadeAgendaEntity(id, profissionalid, datahora );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("DisponibilidadeAgenda", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new DisponibilidadeAgendaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("DisponibilidadeAgenda", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new DisponibilidadeAgendaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

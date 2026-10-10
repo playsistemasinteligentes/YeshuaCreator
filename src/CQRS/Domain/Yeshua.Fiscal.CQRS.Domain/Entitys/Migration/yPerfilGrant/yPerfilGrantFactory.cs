@@ -34,13 +34,14 @@
                             }
 
                             public IyPerfilGrantEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? perfilid, string? grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? perfilid, string? grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil, ulong? trackingMask = null )
                             {
                             var entity = new yPerfilGrantEntity(id, perfilid, grantid, cangrant, cancreate, canread, canupdate, candelete, validuntil );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yPerfilGrant", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yPerfilGrantDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yPerfilGrant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yPerfilGrantDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

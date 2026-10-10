@@ -35,6 +35,23 @@
             public const ulong PEN_ID = 1UL << 12;
         }
 
+        public static class PendenciasInterfaceOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PEN_STATUS_OUT = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEN_PROTOCOLO_OUT = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEN_ID_PROTOCOLO_OUT = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEN_STATUS_IN = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEN_PROTOCOLO_IN = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEN_ID_PROTOCOLO_IN = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DATA_ENTRADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEN_ID = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PendenciasInterfaceDecorator : IPendenciasInterfaceEntity
 {
 
@@ -42,6 +59,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PendenciasInterfaceDecorator(IPendenciasInterfaceEntity inner, Dominio.Interfaces.ILogger logger)
@@ -59,6 +77,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -71,7 +96,7 @@
                                             {
                                                 _inner.PEN_STATUS_OUT = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_STATUS_OUT) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_STATUS_OUT", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_STATUS_OUT", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_STATUS_OUT, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -85,7 +110,7 @@
                                             {
                                                 _inner.PEN_PROTOCOLO_OUT = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_PROTOCOLO_OUT) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_PROTOCOLO_OUT", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_PROTOCOLO_OUT", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_PROTOCOLO_OUT, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -99,7 +124,7 @@
                                             {
                                                 _inner.PEN_ID_PROTOCOLO_OUT = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_ID_PROTOCOLO_OUT) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_ID_PROTOCOLO_OUT", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_ID_PROTOCOLO_OUT", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_ID_PROTOCOLO_OUT, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -113,7 +138,7 @@
                                             {
                                                 _inner.PEN_STATUS_IN = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_STATUS_IN) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_STATUS_IN", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_STATUS_IN", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_STATUS_IN, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -127,7 +152,7 @@
                                             {
                                                 _inner.PEN_PROTOCOLO_IN = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_PROTOCOLO_IN) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_PROTOCOLO_IN", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_PROTOCOLO_IN", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_PROTOCOLO_IN, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -141,7 +166,7 @@
                                             {
                                                 _inner.PEN_ID_PROTOCOLO_IN = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_ID_PROTOCOLO_IN) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_ID_PROTOCOLO_IN", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_ID_PROTOCOLO_IN", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_ID_PROTOCOLO_IN, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -155,7 +180,7 @@
                                             {
                                                 _inner.DATA_ENTRADA = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.DATA_ENTRADA) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "DATA_ENTRADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "DATA_ENTRADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.DATA_ENTRADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +195,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +209,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -198,7 +223,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -212,7 +237,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -226,7 +251,7 @@
                                             {
                                                 _inner.PEN_ID = value;
                                                 if ((_trackingMask & PendenciasInterfaceTrackingFields.PEN_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PendenciasInterface", "PEN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PendenciasInterfaceOperationalFields.PEN_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

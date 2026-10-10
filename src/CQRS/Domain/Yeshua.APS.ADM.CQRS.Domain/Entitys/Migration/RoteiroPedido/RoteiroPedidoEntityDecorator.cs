@@ -45,6 +45,33 @@
             public const ulong GrupoPerformanceMetroLinear = 1UL << 22;
         }
 
+        public static class RoteiroPedidoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PedidoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MaquinaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProdutoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SequenciaTransformacao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification StatusCadastro = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TipoPlanejamento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CalendarioId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HierarquiaSequenciaTransformacao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProximaSequenciaTransformacao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Performance = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TempoSetup = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TempoSetupAjuste = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PecasPorPulso = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PrioridadeInformada = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Operacoes = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ExcecaoOperacoes = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LinhaDireta = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AvaliaCusto = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PercentualInicioPassoAnterior = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MaquinaLarguraUtil = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GrupoTipo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GrupoPerformanceMetroLinear = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class RoteiroPedidoDecorator : IRoteiroPedidoEntity
 {
 
@@ -52,6 +79,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public RoteiroPedidoDecorator(IRoteiroPedidoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -69,6 +97,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -81,7 +116,7 @@
                                             {
                                                 _inner.PedidoId = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.PedidoId) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.PedidoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +130,7 @@
                                             {
                                                 _inner.MaquinaId = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.MaquinaId) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "MaquinaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "MaquinaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.MaquinaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +144,7 @@
                                             {
                                                 _inner.ProdutoId = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.ProdutoId) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "ProdutoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "ProdutoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.ProdutoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +158,7 @@
                                             {
                                                 _inner.SequenciaTransformacao = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.SequenciaTransformacao) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "SequenciaTransformacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "SequenciaTransformacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.SequenciaTransformacao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +172,7 @@
                                             {
                                                 _inner.StatusCadastro = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.StatusCadastro) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "StatusCadastro", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "StatusCadastro", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.StatusCadastro, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +186,7 @@
                                             {
                                                 _inner.TipoPlanejamento = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.TipoPlanejamento) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "TipoPlanejamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "TipoPlanejamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.TipoPlanejamento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -165,7 +200,7 @@
                                             {
                                                 _inner.CalendarioId = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.CalendarioId) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "CalendarioId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "CalendarioId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.CalendarioId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -179,7 +214,7 @@
                                             {
                                                 _inner.HierarquiaSequenciaTransformacao = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.HierarquiaSequenciaTransformacao) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "HierarquiaSequenciaTransformacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "HierarquiaSequenciaTransformacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.HierarquiaSequenciaTransformacao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -193,7 +228,7 @@
                                             {
                                                 _inner.ProximaSequenciaTransformacao = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.ProximaSequenciaTransformacao) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "ProximaSequenciaTransformacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "ProximaSequenciaTransformacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.ProximaSequenciaTransformacao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -207,7 +242,7 @@
                                             {
                                                 _inner.Performance = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.Performance) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "Performance", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "Performance", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.Performance, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -221,7 +256,7 @@
                                             {
                                                 _inner.TempoSetup = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.TempoSetup) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "TempoSetup", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "TempoSetup", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.TempoSetup, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -235,7 +270,7 @@
                                             {
                                                 _inner.TempoSetupAjuste = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.TempoSetupAjuste) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "TempoSetupAjuste", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "TempoSetupAjuste", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.TempoSetupAjuste, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -249,7 +284,7 @@
                                             {
                                                 _inner.PecasPorPulso = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.PecasPorPulso) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "PecasPorPulso", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "PecasPorPulso", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.PecasPorPulso, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -263,7 +298,7 @@
                                             {
                                                 _inner.PrioridadeInformada = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.PrioridadeInformada) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "PrioridadeInformada", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "PrioridadeInformada", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.PrioridadeInformada, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -277,7 +312,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -291,7 +326,7 @@
                                             {
                                                 _inner.Operacoes = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.Operacoes) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "Operacoes", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "Operacoes", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.Operacoes, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -305,7 +340,7 @@
                                             {
                                                 _inner.ExcecaoOperacoes = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.ExcecaoOperacoes) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "ExcecaoOperacoes", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "ExcecaoOperacoes", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.ExcecaoOperacoes, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +354,7 @@
                                             {
                                                 _inner.LinhaDireta = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.LinhaDireta) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "LinhaDireta", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "LinhaDireta", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.LinhaDireta, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -333,7 +368,7 @@
                                             {
                                                 _inner.AvaliaCusto = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.AvaliaCusto) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "AvaliaCusto", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "AvaliaCusto", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.AvaliaCusto, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -347,7 +382,7 @@
                                             {
                                                 _inner.PercentualInicioPassoAnterior = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.PercentualInicioPassoAnterior) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "PercentualInicioPassoAnterior", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "PercentualInicioPassoAnterior", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.PercentualInicioPassoAnterior, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -361,7 +396,7 @@
                                             {
                                                 _inner.MaquinaLarguraUtil = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.MaquinaLarguraUtil) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "MaquinaLarguraUtil", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "MaquinaLarguraUtil", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.MaquinaLarguraUtil, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -375,7 +410,7 @@
                                             {
                                                 _inner.GrupoTipo = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.GrupoTipo) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "GrupoTipo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "GrupoTipo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.GrupoTipo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -389,7 +424,7 @@
                                             {
                                                 _inner.GrupoPerformanceMetroLinear = value;
                                                 if ((_trackingMask & RoteiroPedidoTrackingFields.GrupoPerformanceMetroLinear) != 0UL)
-                                                    _logger.DomainValueChanged("RoteiroPedido", "GrupoPerformanceMetroLinear", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RoteiroPedido", "GrupoPerformanceMetroLinear", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RoteiroPedidoOperationalFields.GrupoPerformanceMetroLinear, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

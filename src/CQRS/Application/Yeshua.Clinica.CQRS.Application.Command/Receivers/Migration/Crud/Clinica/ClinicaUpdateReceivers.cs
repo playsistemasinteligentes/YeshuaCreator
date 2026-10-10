@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ClinicaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateClinica", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateClinicaReceiver), commandName: "Command.Write.ClinicaCrudCommand");
-                 var clinica = new ClinicaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Endereco, c.Telefone);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Clinica", "UpdateClinica", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ClinicaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateClinica", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateClinicaReceiver), commandName: "Command.Write.ClinicaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var clinica = new ClinicaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Endereco, c.Telefone, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", clinica.OperationalEntityId);
                  var domainResult = ClinicaDomainBehavior.Apply(clinica, context);
                  if (!domainResult.IsValid)

@@ -1,5 +1,6 @@
 using Aplication.Interfaces.Services;
 using Command.Patterns.Command;
+using Dominio.Operational;
 using IRepository.Read;
 using IRepository.Write;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,8 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
     private readonly IUnitOfWork _unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly IExecutionContext _executionContext;
+    private readonly Dominio.Interfaces.ILogger _logger;
 
     public YeshuaModuleHttpOutboxTransportWorker(
         IyOutboxReadRepository outboxReadRepository,
@@ -44,6 +47,8 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
         _unitOfWork = unitOfWork;
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
+        _executionContext = context;
+        _logger = logger;
     }
 
     protected override async Task<State<YeshuaModuleHttpOutboxTransportOutputCommand>> ActionAsync(
@@ -61,10 +66,28 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
 
         foreach (var item in pending)
         {
+            var parentIdentity = ReadIdentity(item);
+            var telemetry = _logger.Evaluate(
+                "Worker",
+                "Outbox.YeshuaApi.Deliver",
+                "yOutbox",
+                item.operationalentityid);
+            using var executionScope = !telemetry.Enabled ||
+                string.IsNullOrWhiteSpace(parentIdentity.RootOperationId)
+                ? null
+                : _executionContext.BeginOperationalExecution(
+                    parentIdentity,
+                    "Outbox.YeshuaApi.Deliver");
+            var deliveryIdentity = executionScope is null
+                ? parentIdentity
+                : _executionContext.OperationalIdentity;
+
             try
             {
+                if (executionScope is not null)
+                    PersistDeliveryIdentity(item, deliveryIdentity);
                 MarkProcessing(item.id);
-                await DeliverAsync(item, cancellationToken);
+                await DeliverAsync(item, deliveryIdentity, cancellationToken);
                 MarkDelivered(item.id);
                 processed++;
             }
@@ -83,7 +106,10 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
         });
     }
 
-    private async Task DeliverAsync(yOutboxDTO item, CancellationToken cancellationToken)
+    private async Task DeliverAsync(
+        yOutboxDTO item,
+        OperationalExecutionIdentity identity,
+        CancellationToken cancellationToken)
     {
         var transport = YeshuaModuleApiTransportData.Parse(item.transportdata);
         var baseUrl = ResolveBaseUrl(transport);
@@ -94,6 +120,7 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
         var uri = new Uri(new Uri(baseUrl.TrimEnd('/') + "/"), endpoint.TrimStart('/'));
         var envelope = JsonSerializer.Serialize(new
         {
+            tenantId = item.tenantid,
             messageId = item.messageid,
             type = item.type,
             entityType = item.entitytype,
@@ -101,12 +128,23 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
             correlationId = item.correlationid,
             payload = item.payload,
             source = "yOutbox",
-            transport = "YeshuaApi"
+            transport = "YeshuaApi",
+            rootOperationId = identity.RootOperationId,
+            operationId = identity.OperationId,
+            executionId = identity.ExecutionId,
+            causationId = identity.CausationId
         });
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
         request.Content = new StringContent(envelope, Encoding.UTF8, "application/json");
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Headers.TryAddWithoutValidation(
+            Shared.ModuleTransport.YeshuaModuleAuthenticationHeaders.MessageId,
+            item.messageid);
+        AddOperationalHeader(request, OperationalExecutionHeaders.RootOperationId, identity.RootOperationId);
+        AddOperationalHeader(request, OperationalExecutionHeaders.OperationId, identity.OperationId);
+        AddOperationalHeader(request, OperationalExecutionHeaders.ExecutionId, identity.ExecutionId);
+        AddOperationalHeader(request, OperationalExecutionHeaders.CausationId, identity.CausationId);
 
         var response = await _httpClientFactory.CreateClient("YeshuaModuleApiTransport")
             .SendAsync(request, cancellationToken);
@@ -117,6 +155,44 @@ public sealed class YeshuaModuleHttpOutboxTransportWorker
             throw new InvalidOperationException("HTTP " + (int)response.StatusCode + " ao entregar outbox " + item.id + ": " + body);
         }
     }
+
+    private void PersistDeliveryIdentity(
+        yOutboxDTO item,
+        OperationalExecutionIdentity identity)
+    {
+        if (string.IsNullOrWhiteSpace(identity.RootOperationId))
+            return;
+
+        _outboxWriteRepository.UpdateRootOperationId(item.id, identity.RootOperationId);
+        _outboxWriteRepository.UpdateOperationId(item.id, identity.OperationId!);
+        _outboxWriteRepository.UpdateExecutionId(item.id, identity.ExecutionId!);
+        if (!string.IsNullOrWhiteSpace(identity.CausationId))
+            _outboxWriteRepository.UpdateCausationId(item.id, identity.CausationId);
+
+        item.rootoperationid = identity.RootOperationId;
+        item.operationid = identity.OperationId ?? string.Empty;
+        item.executionid = identity.ExecutionId ?? string.Empty;
+        item.causationid = identity.CausationId ?? string.Empty;
+    }
+
+    private static OperationalExecutionIdentity ReadIdentity(yOutboxDTO item) =>
+        new(
+            EmptyToNull(item.rootoperationid),
+            EmptyToNull(item.operationid),
+            EmptyToNull(item.executionid),
+            EmptyToNull(item.causationid));
+
+    private static void AddOperationalHeader(
+        HttpRequestMessage request,
+        string name,
+        string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+            request.Headers.TryAddWithoutValidation(name, value);
+    }
+
+    private static string? EmptyToNull(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value;
 
     private string ResolveBaseUrl(YeshuaModuleApiTransportData transport)
     {

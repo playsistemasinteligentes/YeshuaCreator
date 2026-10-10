@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.UsuarioCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUsuario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUsuarioReceiver), commandName: "Command.Write.UsuarioCrudCommand");
-                 var usuario = new UsuarioFactory(_logger, _domainTrackingPolicy).Create(context, c.USE_ID, c.USE_NOME, c.USE_EMAIL, c.USE_SENHA, c.TURM_ID, c.USE_ATIVO, c.USE_CODERP);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Usuario", "InsertUsuario", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.UsuarioCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUsuario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUsuarioReceiver), commandName: "Command.Write.UsuarioCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var usuario = new UsuarioFactory(_logger, _domainTrackingPolicy).Create(context, c.USE_ID, c.USE_NOME, c.USE_EMAIL, c.USE_SENHA, c.TURM_ID, c.USE_ATIVO, c.USE_CODERP, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", usuario.OperationalEntityId);
                  var domainResult = UsuarioDomainBehavior.Apply(usuario, context);
                  if (!domainResult.IsValid)

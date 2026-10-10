@@ -31,6 +31,10 @@ namespace Dominio.Patterns.Saga
         public DateTime NextExecutionAt { get; set; }
         public DateTime LockedAt { get; set; }
         public string LockedBy { get; set; }
+        public string? RootOperationId { get; private set; }
+        public string? OperationId { get; private set; }
+        public string? ExecutionId { get; private set; }
+        public string? CausationId { get; private set; }
 
         protected readonly List<SagaStepBase> _steps = new();
         public IReadOnlyCollection<SagaStepBase> Steps => _steps;
@@ -44,6 +48,29 @@ namespace Dominio.Patterns.Saga
         public void SetStatus(int status)
         {
             this.Status = (SagaStatus)(status);
+        }
+        public void SetOperationalIdentity(
+            string? rootOperationId,
+            string? operationId,
+            string? executionId,
+            string? causationId)
+        {
+            RootOperationId = rootOperationId;
+            OperationId = operationId;
+            ExecutionId = executionId;
+            CausationId = causationId;
+            MarkDirty();
+        }
+        public void HydrateOperationalIdentity(
+            string? rootOperationId,
+            string? operationId,
+            string? executionId,
+            string? causationId)
+        {
+            RootOperationId = rootOperationId;
+            OperationId = operationId;
+            ExecutionId = executionId;
+            CausationId = causationId;
         }
         protected void MarkDirty()
         {

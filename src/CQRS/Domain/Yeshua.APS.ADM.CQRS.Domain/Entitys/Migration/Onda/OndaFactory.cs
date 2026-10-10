@@ -34,13 +34,14 @@
                             }
 
                             public IOndaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string ond_id, Decimal ond_espessura, Decimal? ond_peso_cola, Decimal? ond_rendimento_onda_1, Decimal? ond_rendimento_onda_2, int? ond_profundidade_vinco, string ond_id_integracao, int vin_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string ond_id, Decimal ond_espessura, Decimal? ond_peso_cola, Decimal? ond_rendimento_onda_1, Decimal? ond_rendimento_onda_2, int? ond_profundidade_vinco, string ond_id_integracao, int vin_id, ulong? trackingMask = null )
                             {
                             var entity = new OndaEntity(ond_id, ond_espessura, ond_peso_cola, ond_rendimento_onda_1, ond_rendimento_onda_2, ond_profundidade_vinco, ond_id_integracao, vin_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Onda", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new OndaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Onda", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new OndaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

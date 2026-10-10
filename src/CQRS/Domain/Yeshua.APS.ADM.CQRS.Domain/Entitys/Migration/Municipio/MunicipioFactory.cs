@@ -34,13 +34,14 @@
                             }
 
                             public IMunicipioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string mun_id, string? mun_nome, string? uf_cod, string? mun_codigo_ibge, Decimal? mun_latitude, Decimal? mun_longitude, string? mun_id_integracao_erp, string? mun_codigo_siafi, string? mun_codigo_cnpj, Decimal? mun_distancia_km )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string mun_id, string? mun_nome, string? uf_cod, string? mun_codigo_ibge, Decimal? mun_latitude, Decimal? mun_longitude, string? mun_id_integracao_erp, string? mun_codigo_siafi, string? mun_codigo_cnpj, Decimal? mun_distancia_km, ulong? trackingMask = null )
                             {
                             var entity = new MunicipioEntity(mun_id, mun_nome, uf_cod, mun_codigo_ibge, mun_latitude, mun_longitude, mun_id_integracao_erp, mun_codigo_siafi, mun_codigo_cnpj, mun_distancia_km );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Municipio", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MunicipioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Municipio", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MunicipioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

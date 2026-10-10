@@ -43,7 +43,7 @@ if (!args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
     {
         using IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, connectionString).SqlConnection();
         using IUnitOfWork unitOfWork = new UnitOfWork(connection, true);
-        migration.ADDSchema(new SqlServerSchema(unitOfWork));
+        migration.ADDSchema(new SqlServerSchema(unitOfWork, GS.I.MYC.Project));
 
         var centralConnectionString = GS.I.MYC.CentralAuthorizationConectionString;
         if (string.IsNullOrWhiteSpace(centralConnectionString)

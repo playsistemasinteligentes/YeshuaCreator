@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MapaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMapaReceiver), commandName: "Command.Write.MapaCrudCommand");
-                 var mapa = new MapaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MAP_ID, c.PON_ID, c.PON_ID_VIZINHO, c.MAP_DISTANCIA, c.MAP_CUSTO_PEDAGIO_POR_EIXO, c.ROD_ID, c.MAP_ALTURA_ROD);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Mapa", "DeleteMapa", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MapaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMapaReceiver), commandName: "Command.Write.MapaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var mapa = new MapaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MAP_ID, c.PON_ID, c.PON_ID_VIZINHO, c.MAP_DISTANCIA, c.MAP_CUSTO_PEDAGIO_POR_EIXO, c.ROD_ID, c.MAP_ALTURA_ROD, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mapa.OperationalEntityId);
                  var domainResult = MapaDomainBehavior.Apply(mapa, context);
                  if (!domainResult.IsValid)

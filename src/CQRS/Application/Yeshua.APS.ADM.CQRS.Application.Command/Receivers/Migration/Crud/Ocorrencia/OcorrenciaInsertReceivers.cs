@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OcorrenciaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertOcorrencia", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertOcorrenciaReceiver), commandName: "Command.Write.OcorrenciaCrudCommand");
-                 var ocorrencia = new OcorrenciaFactory(_logger, _domainTrackingPolicy).Create(context, c.OCO_ID, c.OCO_DESCRICAO, c.TIP_ID, c.GMA_ID, c.MAQ_ID, c.SPR, c.OCO_SUB_TIPO, c.SUB_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Ocorrencia", "InsertOcorrencia", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OcorrenciaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertOcorrencia", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertOcorrenciaReceiver), commandName: "Command.Write.OcorrenciaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ocorrencia = new OcorrenciaFactory(_logger, _domainTrackingPolicy).Create(context, c.OCO_ID, c.OCO_DESCRICAO, c.TIP_ID, c.GMA_ID, c.MAQ_ID, c.SPR, c.OCO_SUB_TIPO, c.SUB_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ocorrencia.OperationalEntityId);
                  var domainResult = OcorrenciaDomainBehavior.Apply(ocorrencia, context);
                  if (!domainResult.IsValid)

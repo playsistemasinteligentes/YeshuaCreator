@@ -34,13 +34,14 @@
                             }
 
                             public IPlanoContaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string codigo, string nome, int tipo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string codigo, string nome, int tipo, ulong? trackingMask = null )
                             {
                             var entity = new PlanoContaEntity(id, codigo, nome, tipo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PlanoConta", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PlanoContaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PlanoConta", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PlanoContaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

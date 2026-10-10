@@ -17,7 +17,9 @@ namespace Migration.Dominio.Migration
                 .Immutable()
                 .EditFront(false)
                 .VisivelFront(false)
-                .NotEntity("yModule");
+                .NotEntity("yModule")
+                .NotEntity("yTenant")
+                .NotEntity("yUser");
         }
     }
 }

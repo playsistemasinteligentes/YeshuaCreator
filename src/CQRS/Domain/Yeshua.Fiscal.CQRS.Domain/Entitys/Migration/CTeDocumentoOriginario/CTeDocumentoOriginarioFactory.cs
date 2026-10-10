@@ -34,13 +34,14 @@
                             }
 
                             public ICTeDocumentoOriginarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string? snapshotjson )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string? snapshotjson, ulong? trackingMask = null )
                             {
                             var entity = new CTeDocumentoOriginarioEntity(id, ctesolicitacaofiscalid, documentofiscaloriginarioid, tipodocumento, chaveacesso, numero, serie, emitentedocumento, destinatariodocumento, valordocumento, pesobruto, snapshotjson );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeDocumentoOriginario", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeDocumentoOriginarioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeDocumentoOriginario", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeDocumentoOriginarioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

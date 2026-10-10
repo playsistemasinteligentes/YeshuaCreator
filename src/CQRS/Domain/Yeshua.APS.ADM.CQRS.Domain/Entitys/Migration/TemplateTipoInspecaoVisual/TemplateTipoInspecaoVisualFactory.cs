@@ -34,13 +34,14 @@
                             }
 
                             public ITemplateTipoInspecaoVisualEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int tti_id, int? tiv_id, int? tem_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int tti_id, int? tiv_id, int? tem_id, ulong? trackingMask = null )
                             {
                             var entity = new TemplateTipoInspecaoVisualEntity(tti_id, tiv_id, tem_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TemplateTipoInspecaoVisual", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TemplateTipoInspecaoVisualDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TemplateTipoInspecaoVisual", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TemplateTipoInspecaoVisualDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

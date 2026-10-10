@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OrcamentoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOrcamento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOrcamentoReceiver), commandName: "Command.Write.OrcamentoCrudCommand");
-                 var orcamento = new OrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ORC_ID, c.REP_ID, c.CON_ID, c.ORC_TIPO_FRETE, c.ORC_EMISSAO, c.CLI_ID, c.VER_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Orcamento", "UpdateOrcamento", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OrcamentoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOrcamento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOrcamentoReceiver), commandName: "Command.Write.OrcamentoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var orcamento = new OrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ORC_ID, c.REP_ID, c.CON_ID, c.ORC_TIPO_FRETE, c.ORC_EMISSAO, c.CLI_ID, c.VER_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", orcamento.OperationalEntityId);
                  var domainResult = OrcamentoDomainBehavior.Apply(orcamento, context);
                  if (!domainResult.IsValid)

@@ -1,4 +1,5 @@
 using Aplication.Interfaces.Services;
+using Dominio.Operational;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
@@ -11,6 +12,7 @@ public sealed class WorkerExecutionContext : IExecutionContext
     private string _traceId = Guid.NewGuid().ToString("N");
     private ExecutionOrigin _origin = ExecutionOrigin.Worker;
     private readonly string _processingScope;
+    private readonly OperationalExecutionIdentityState _operationalIdentity = new();
 
     public WorkerExecutionContext(IConfiguration configuration)
     {
@@ -25,6 +27,27 @@ public sealed class WorkerExecutionContext : IExecutionContext
     public string ProcessingScope => _processingScope;
     public ExecutionOrigin Origem => _origin;
     public IEnumerable<Claim> Claims => Enumerable.Empty<Claim>();
+    public OperationalExecutionIdentity OperationalIdentity => _operationalIdentity.Current;
+
+    public bool TryGetOperationalIdentity(out OperationalExecutionIdentity identity) =>
+        _operationalIdentity.TryGetCurrent(out identity);
+
+    public IDisposable BeginOperationalExecution(
+        string operation,
+        string? operationId = null,
+        string? causationId = null) =>
+        _operationalIdentity.Begin(operation, operationId, causationId);
+
+    public IDisposable BeginOperationalExecution(
+        OperationalExecutionIdentity parentIdentity,
+        string operation,
+        bool continueOperation = true) =>
+        _operationalIdentity.BeginFrom(parentIdentity, operation, continueOperation);
+
+    public void SetOperationalIdentity(
+        string rootOperationId,
+        string? causationId = null) =>
+        _operationalIdentity.Set(rootOperationId, causationId);
 
     public void SetTenantId(int id) => _tenantId = id;
     public void SetUserId(int id) => _userId = id;

@@ -26,7 +26,6 @@ namespace IRepository.Write
         void UpdateEmail(int id, string value);
         void UpdateSenha(int id, string value);
         void UpdateTenantID(int id, int value);
-        void UpdateOperationalEntityId(int id, string value);
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
     }

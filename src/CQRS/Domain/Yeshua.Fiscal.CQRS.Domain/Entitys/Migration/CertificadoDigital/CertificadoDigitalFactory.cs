@@ -34,13 +34,14 @@
                             }
 
                             public ICertificadoDigitalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo, string? senhastoragekey )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo, string? senhastoragekey, ulong? trackingMask = null )
                             {
                             var entity = new CertificadoDigitalEntity(id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo, senhastoragekey );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CertificadoDigital", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CertificadoDigitalDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CertificadoDigital", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CertificadoDigitalDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

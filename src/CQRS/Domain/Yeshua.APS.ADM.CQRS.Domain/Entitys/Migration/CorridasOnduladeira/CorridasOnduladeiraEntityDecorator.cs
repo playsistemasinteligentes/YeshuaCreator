@@ -66,6 +66,54 @@
             public const ulong COR_PECAS_LARGURA = 1UL << 43;
         }
 
+        public static class CorridasOnduladeiraOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification BOL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_ID_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_LARGURA_PECA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_LARGURA_PECA_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COMPRIMENTO_PECA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COMPRIMENTO_PECA_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_UTILIZOU_REFILE_OBRIGATORIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_VINCOS_RECALCULADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_SOLVER = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_GRAMATURA_PAPEIS_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_CUSTO_PAPEIS_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_GRAMATURA_RESINA_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_CUSTO_RESINA_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_TOLERANCIA_MENOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_TOLERANCIA_MAIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_PILHAS_POR_PALETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_COR_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_M_LINEAR_REALIZADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID_PALETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_STATUS_PALETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_GRUPO_PRODUTIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_STATUS_INTERFACE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_ID_INTERFACE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_SEQUENCIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_SEQUENCIA_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_SEQ_REPETICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_SEQ_TRANFORMACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_FACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_FORMATO_BOBINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_INICIO_PREVISTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_FIM_PREVISTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_QTD_PLANEJADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_QTD_PACAS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_PECAS_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CorridasOnduladeiraDecorator : ICorridasOnduladeiraEntity
 {
 
@@ -73,6 +121,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CorridasOnduladeiraDecorator(ICorridasOnduladeiraEntity inner, Dominio.Interfaces.ILogger logger)
@@ -90,6 +139,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -102,7 +158,7 @@
                                             {
                                                 _inner.BOL_ID = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.BOL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "BOL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "BOL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.BOL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +172,7 @@
                                             {
                                                 _inner.BOL_ID_ORIGEM = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.BOL_ID_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "BOL_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "BOL_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.BOL_ID_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +186,7 @@
                                             {
                                                 _inner.PRO_LARGURA_PECA = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_LARGURA_PECA) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_LARGURA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_LARGURA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_LARGURA_PECA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +200,7 @@
                                             {
                                                 _inner.PRO_LARGURA_PECA_PROGRAMADO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_LARGURA_PECA_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_LARGURA_PECA_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_LARGURA_PECA_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_LARGURA_PECA_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +214,7 @@
                                             {
                                                 _inner.PRO_COMPRIMENTO_PECA = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_COMPRIMENTO_PECA) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_COMPRIMENTO_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_COMPRIMENTO_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_COMPRIMENTO_PECA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +228,7 @@
                                             {
                                                 _inner.PRO_COMPRIMENTO_PECA_PROGRAMADO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_COMPRIMENTO_PECA_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_COMPRIMENTO_PECA_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_COMPRIMENTO_PECA_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_COMPRIMENTO_PECA_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +242,7 @@
                                             {
                                                 _inner.PRO_UTILIZOU_REFILE_OBRIGATORIO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_UTILIZOU_REFILE_OBRIGATORIO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_UTILIZOU_REFILE_OBRIGATORIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_UTILIZOU_REFILE_OBRIGATORIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_UTILIZOU_REFILE_OBRIGATORIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +256,7 @@
                                             {
                                                 _inner.PRO_VINCOS_RECALCULADOS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_VINCOS_RECALCULADOS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_VINCOS_RECALCULADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_VINCOS_RECALCULADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_VINCOS_RECALCULADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +270,7 @@
                                             {
                                                 _inner.COR_SOLVER = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_SOLVER) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_SOLVER", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_SOLVER", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_SOLVER, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -228,7 +284,7 @@
                                             {
                                                 _inner.COR_GRAMATURA_PAPEIS_PROGRAMADOS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_GRAMATURA_PAPEIS_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_GRAMATURA_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_GRAMATURA_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_GRAMATURA_PAPEIS_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -242,7 +298,7 @@
                                             {
                                                 _inner.COR_CUSTO_PAPEIS_PROGRAMADOS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_CUSTO_PAPEIS_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_CUSTO_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_CUSTO_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_CUSTO_PAPEIS_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -256,7 +312,7 @@
                                             {
                                                 _inner.COR_GRAMATURA_RESINA_PROGRAMADOS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_GRAMATURA_RESINA_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_GRAMATURA_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_GRAMATURA_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_GRAMATURA_RESINA_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -270,7 +326,7 @@
                                             {
                                                 _inner.COR_CUSTO_RESINA_PROGRAMADOS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_CUSTO_RESINA_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_CUSTO_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_CUSTO_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_CUSTO_RESINA_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -284,7 +340,7 @@
                                             {
                                                 _inner.COR_TOLERANCIA_MENOS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_TOLERANCIA_MENOS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_TOLERANCIA_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_TOLERANCIA_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_TOLERANCIA_MENOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -298,7 +354,7 @@
                                             {
                                                 _inner.COR_TOLERANCIA_MAIS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_TOLERANCIA_MAIS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_TOLERANCIA_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_TOLERANCIA_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_TOLERANCIA_MAIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -312,7 +368,7 @@
                                             {
                                                 _inner.COR_PILHAS_POR_PALETE = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_PILHAS_POR_PALETE) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_PILHAS_POR_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_PILHAS_POR_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_PILHAS_POR_PALETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -326,7 +382,7 @@
                                             {
                                                 _inner.COR_COR_FILA = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_COR_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_COR_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_COR_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_COR_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -340,7 +396,7 @@
                                             {
                                                 _inner.COR_M_LINEAR_REALIZADO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_M_LINEAR_REALIZADO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_M_LINEAR_REALIZADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_M_LINEAR_REALIZADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_M_LINEAR_REALIZADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -354,7 +410,7 @@
                                             {
                                                 _inner.PRO_ID_PALETE = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_ID_PALETE) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_ID_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_ID_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_ID_PALETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -368,7 +424,7 @@
                                             {
                                                 _inner.COR_STATUS_PALETE = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_STATUS_PALETE) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_STATUS_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_STATUS_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_STATUS_PALETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -382,7 +438,7 @@
                                             {
                                                 _inner.COR_GRUPO_PRODUTIVO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_GRUPO_PRODUTIVO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_GRUPO_PRODUTIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -397,7 +453,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -411,7 +467,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -425,7 +481,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -439,7 +495,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -453,7 +509,7 @@
                                             {
                                                 _inner.COR_ID = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -467,7 +523,7 @@
                                             {
                                                 _inner.COR_STATUS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -481,7 +537,7 @@
                                             {
                                                 _inner.COR_STATUS_INTERFACE = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_STATUS_INTERFACE) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_STATUS_INTERFACE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_STATUS_INTERFACE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_STATUS_INTERFACE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -495,7 +551,7 @@
                                             {
                                                 _inner.MAQ_ID = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.MAQ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.MAQ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -509,7 +565,7 @@
                                             {
                                                 _inner.COR_ID_INTERFACE = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_ID_INTERFACE) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_ID_INTERFACE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_ID_INTERFACE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_ID_INTERFACE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -523,7 +579,7 @@
                                             {
                                                 _inner.COR_SEQUENCIA = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_SEQUENCIA) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_SEQUENCIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -537,7 +593,7 @@
                                             {
                                                 _inner.COR_SEQUENCIA_ORIGEM = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_SEQUENCIA_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_SEQUENCIA_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_SEQUENCIA_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_SEQUENCIA_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -551,7 +607,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -565,7 +621,7 @@
                                             {
                                                 _inner.FPR_SEQ_REPETICAO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.FPR_SEQ_REPETICAO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.FPR_SEQ_REPETICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -579,7 +635,7 @@
                                             {
                                                 _inner.ROT_SEQ_TRANFORMACAO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.ROT_SEQ_TRANFORMACAO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "ROT_SEQ_TRANFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "ROT_SEQ_TRANFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.ROT_SEQ_TRANFORMACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -593,7 +649,7 @@
                                             {
                                                 _inner.COR_FACAO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_FACAO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_FACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_FACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_FACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -607,7 +663,7 @@
                                             {
                                                 _inner.COR_FORMATO_BOBINA = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_FORMATO_BOBINA) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_FORMATO_BOBINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_FORMATO_BOBINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_FORMATO_BOBINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -621,7 +677,7 @@
                                             {
                                                 _inner.COR_INICIO_PREVISTO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_INICIO_PREVISTO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_INICIO_PREVISTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_INICIO_PREVISTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_INICIO_PREVISTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -635,7 +691,7 @@
                                             {
                                                 _inner.COR_FIM_PREVISTO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_FIM_PREVISTO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_FIM_PREVISTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_FIM_PREVISTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_FIM_PREVISTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -649,7 +705,7 @@
                                             {
                                                 _inner.PRO_ID = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -663,7 +719,7 @@
                                             {
                                                 _inner.COR_QTD_PLANEJADO = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_QTD_PLANEJADO) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_QTD_PLANEJADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_QTD_PLANEJADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_QTD_PLANEJADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -677,7 +733,7 @@
                                             {
                                                 _inner.PRO_QTD_PACAS = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.PRO_QTD_PACAS) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_QTD_PACAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "PRO_QTD_PACAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.PRO_QTD_PACAS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -691,7 +747,7 @@
                                             {
                                                 _inner.COR_PECAS_LARGURA = value;
                                                 if ((_trackingMask & CorridasOnduladeiraTrackingFields.COR_PECAS_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_PECAS_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CorridasOnduladeira", "COR_PECAS_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CorridasOnduladeiraOperationalFields.COR_PECAS_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

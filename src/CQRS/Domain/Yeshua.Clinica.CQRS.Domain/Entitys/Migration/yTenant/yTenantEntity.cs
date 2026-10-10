@@ -20,19 +20,18 @@
                 {
                     public partial class yTenantEntity : IyTenantEntity
 {
-    public int? Id { get; set; }
+    public int Id { get; set; }
     public string CnpjCpf { get; set; }
     public string Nome { get; set; }
     public int? UserId { get; set; }
-    public string OperationalEntityId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal yTenantEntity(string cnpjcpf, string nome, int? userid ){
+ internal yTenantEntity(int id, string cnpjcpf, string nome, int? userid ){
+ Id = id; 
  CnpjCpf = cnpjcpf; 
  Nome = nome; 
  UserId = userid; 
- OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

@@ -24,6 +24,12 @@
             public const ulong Description = 1UL << 1;
         }
 
+        public static class yModuleOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Description = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class yModuleDecorator : IyModuleEntity
 {
 
@@ -31,6 +37,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yModuleDecorator(IyModuleEntity inner, Dominio.Interfaces.ILogger logger)
@@ -48,6 +55,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -60,7 +74,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yModuleTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yModule", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yModule", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yModuleOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -74,7 +88,7 @@
                                             {
                                                 _inner.Description = value;
                                                 if ((_trackingMask & yModuleTrackingFields.Description) != 0UL)
-                                                    _logger.DomainValueChanged("yModule", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yModule", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yModuleOperationalFields.Description, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

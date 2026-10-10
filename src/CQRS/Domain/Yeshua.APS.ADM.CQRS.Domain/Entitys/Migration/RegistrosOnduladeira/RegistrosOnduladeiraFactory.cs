@@ -34,13 +34,14 @@
                             }
 
                             public IRegistrosOnduladeiraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int reg_id, string reg_resposta, string reg_status, DateTime reg_data_inicio )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int reg_id, string reg_resposta, string reg_status, DateTime reg_data_inicio, ulong? trackingMask = null )
                             {
                             var entity = new RegistrosOnduladeiraEntity(id, reg_id, reg_resposta, reg_status, reg_data_inicio );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("RegistrosOnduladeira", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RegistrosOnduladeiraDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("RegistrosOnduladeira", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RegistrosOnduladeiraDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

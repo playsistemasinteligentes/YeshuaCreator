@@ -41,6 +41,29 @@
             public const ulong UserId = 1UL << 18;
         }
 
+        public static class LogsDatabaseOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification LOGS_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_TABLE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_KEY = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_KEY1 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_KEY2 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_KEY3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_KEY4 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_COLUMN = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_BEFORE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_AFTER = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_ACTION = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_DATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification USE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOGS_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class LogsDatabaseDecorator : ILogsDatabaseEntity
 {
 
@@ -48,6 +71,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public LogsDatabaseDecorator(ILogsDatabaseEntity inner, Dominio.Interfaces.ILogger logger)
@@ -65,6 +89,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -77,7 +108,7 @@
                                             {
                                                 _inner.LOGS_ID = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_ID) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -91,7 +122,7 @@
                                             {
                                                 _inner.LOGS_TABLE = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_TABLE) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_TABLE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_TABLE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_TABLE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -105,7 +136,7 @@
                                             {
                                                 _inner.LOGS_KEY = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_KEY) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_KEY, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -119,7 +150,7 @@
                                             {
                                                 _inner.LOGS_KEY1 = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_KEY1) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY1", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY1", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_KEY1, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -133,7 +164,7 @@
                                             {
                                                 _inner.LOGS_KEY2 = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_KEY2) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY2", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY2", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_KEY2, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -147,7 +178,7 @@
                                             {
                                                 _inner.LOGS_KEY3 = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_KEY3) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_KEY3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -161,7 +192,7 @@
                                             {
                                                 _inner.LOGS_KEY4 = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_KEY4) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY4", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_KEY4", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_KEY4, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -175,7 +206,7 @@
                                             {
                                                 _inner.LOGS_COLUMN = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_COLUMN) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_COLUMN", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_COLUMN", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_COLUMN, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -189,7 +220,7 @@
                                             {
                                                 _inner.LOGS_BEFORE = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_BEFORE) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_BEFORE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_BEFORE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_BEFORE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -203,7 +234,7 @@
                                             {
                                                 _inner.LOGS_AFTER = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_AFTER) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_AFTER", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_AFTER", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_AFTER, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -217,7 +248,7 @@
                                             {
                                                 _inner.LOGS_ACTION = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_ACTION) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_ACTION", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_ACTION", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_ACTION, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -231,7 +262,7 @@
                                             {
                                                 _inner.LOGS_DATE = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_DATE) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_DATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_DATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_DATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -245,7 +276,7 @@
                                             {
                                                 _inner.USE_ID = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.USE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.USE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -259,7 +290,7 @@
                                             {
                                                 _inner.LOGS_ORIGEM = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.LOGS_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "LOGS_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.LOGS_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -274,7 +305,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -288,7 +319,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -302,7 +333,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -316,7 +347,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & LogsDatabaseTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("LogsDatabase", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LogsDatabase", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LogsDatabaseOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

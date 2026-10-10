@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.Unidade_UnidadeCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUnidade_Unidade", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUnidade_UnidadeReceiver), commandName: "Command.Write.Unidade_UnidadeCrudCommand");
-                 var unidade_unidade = new Unidade_UnidadeFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.UNI_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Unidade_Unidade", "DeleteUnidade_Unidade", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.Unidade_UnidadeCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUnidade_Unidade", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUnidade_UnidadeReceiver), commandName: "Command.Write.Unidade_UnidadeCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var unidade_unidade = new Unidade_UnidadeFactory(_logger, _domainTrackingPolicy).Create(context, c.UNI_ID, c.UNI_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", unidade_unidade.OperationalEntityId);
                  var domainResult = Unidade_UnidadeDomainBehavior.Apply(unidade_unidade, context);
                  if (!domainResult.IsValid)

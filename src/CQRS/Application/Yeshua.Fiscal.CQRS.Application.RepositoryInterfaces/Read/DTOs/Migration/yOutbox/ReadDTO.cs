@@ -42,6 +42,10 @@ namespace Repositorio.Outputs
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
+    public string rootoperationid { get; set; } = string.Empty;
+    public string operationid { get; set; } = string.Empty;
+    public string executionid { get; set; } = string.Empty;
+    public string causationid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

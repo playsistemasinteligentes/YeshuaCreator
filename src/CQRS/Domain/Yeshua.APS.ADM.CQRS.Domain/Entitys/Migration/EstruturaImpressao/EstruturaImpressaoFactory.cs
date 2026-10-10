@@ -34,13 +34,14 @@
                             }
 
                             public IEstruturaImpressaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int est_id, string? html_estrutura, string? cli_id, string? est_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int est_id, string? html_estrutura, string? cli_id, string? est_descricao, ulong? trackingMask = null )
                             {
                             var entity = new EstruturaImpressaoEntity(est_id, html_estrutura, cli_id, est_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("EstruturaImpressao", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EstruturaImpressaoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("EstruturaImpressao", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EstruturaImpressaoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ContingenciaFiscalCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteContingenciaFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteContingenciaFiscalReceiver), commandName: "Command.Write.ContingenciaFiscalCrudCommand");
-                 var contingenciafiscal = new ContingenciaFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmissaoFiscalTransporteId, c.EntradaFiscalContingenciaId, c.CorrelationId, c.CargaId, c.TipoSolicitante, c.Ambiente, c.EmitenteDocumento, c.TomadorDocumento, c.TransportadorDocumento, c.QuantidadeDocumentos, c.QuantidadeCTe, c.QuantidadeMDFe, c.ValorCarga, c.PesoBruto, c.UltimaMensagem, c.CriadoEmUtc, c.AtualizadoEmUtc, c.ConcluidoEmUtc, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ContingenciaFiscal", "DeleteContingenciaFiscal", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ContingenciaFiscalCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteContingenciaFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteContingenciaFiscalReceiver), commandName: "Command.Write.ContingenciaFiscalCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var contingenciafiscal = new ContingenciaFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmissaoFiscalTransporteId, c.EntradaFiscalContingenciaId, c.CorrelationId, c.CargaId, c.TipoSolicitante, c.Ambiente, c.EmitenteDocumento, c.TomadorDocumento, c.TransportadorDocumento, c.QuantidadeDocumentos, c.QuantidadeCTe, c.QuantidadeMDFe, c.ValorCarga, c.PesoBruto, c.UltimaMensagem, c.CriadoEmUtc, c.AtualizadoEmUtc, c.ConcluidoEmUtc, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", contingenciafiscal.OperationalEntityId);
                  var domainResult = ContingenciaFiscalDomainBehavior.Apply(contingenciafiscal, context);
                  if (!domainResult.IsValid)

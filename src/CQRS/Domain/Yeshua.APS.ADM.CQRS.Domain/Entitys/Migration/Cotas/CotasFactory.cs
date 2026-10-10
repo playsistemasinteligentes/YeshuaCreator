@@ -34,13 +34,14 @@
                             }
 
                             public ICotasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int cot_id, DateTime? cot_data_de, DateTime? cot_data_ate, Decimal? cot_valor, Decimal? cot_ocupado, int rep_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int cot_id, DateTime? cot_data_de, DateTime? cot_data_ate, Decimal? cot_valor, Decimal? cot_ocupado, int rep_id, ulong? trackingMask = null )
                             {
                             var entity = new CotasEntity(id, cot_id, cot_data_de, cot_data_ate, cot_valor, cot_ocupado, rep_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Cotas", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CotasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Cotas", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CotasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

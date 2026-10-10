@@ -34,13 +34,14 @@
                             }
 
                             public IEmissaoFiscalTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, int origemfluxo, string? cargaid, string? romaneioid, int ambiente, string? emitentedocumento, string? tomadordocumento, string? transportadordocumento, string? ufinicio, string? uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, int? quantidadenfe, int? quantidadecte, int? quantidademdfe, Decimal? valorcarga, Decimal? pesobruto, Decimal? volume, string? ultimamensagem, DateTime criadoemutc, DateTime? atualizadoemutc, DateTime? concluidoemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, int origemfluxo, string? cargaid, string? romaneioid, int ambiente, string? emitentedocumento, string? tomadordocumento, string? transportadordocumento, string? ufinicio, string? uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, int? quantidadenfe, int? quantidadecte, int? quantidademdfe, Decimal? valorcarga, Decimal? pesobruto, Decimal? volume, string? ultimamensagem, DateTime criadoemutc, DateTime? atualizadoemutc, DateTime? concluidoemutc, int status, ulong? trackingMask = null )
                             {
                             var entity = new EmissaoFiscalTransporteEntity(id, correlationid, origemfluxo, cargaid, romaneioid, ambiente, emitentedocumento, tomadordocumento, transportadordocumento, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, quantidadenfe, quantidadecte, quantidademdfe, valorcarga, pesobruto, volume, ultimamensagem, criadoemutc, atualizadoemutc, concluidoemutc, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("EmissaoFiscalTransporte", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EmissaoFiscalTransporteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("EmissaoFiscalTransporte", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EmissaoFiscalTransporteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

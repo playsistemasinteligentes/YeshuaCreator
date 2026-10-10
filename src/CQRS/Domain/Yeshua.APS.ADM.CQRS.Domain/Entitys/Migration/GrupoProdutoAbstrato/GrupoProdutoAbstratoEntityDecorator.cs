@@ -73,6 +73,61 @@
             public const ulong UserId = 1UL << 50;
         }
 
+        public static class GrupoProdutoAbstratoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification GRP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TEM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAP_ONDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAP_GRAMATURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAP_ALTURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAP_NOME_COMERCIAL = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification GRP_ATIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_DT_CRIACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL1 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL2 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL4 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL5 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TYPE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PERFORMANCE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_RESINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ENDURECEDOR_MIOLO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VIN_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_COLUNA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_COLUNA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_CRUSH = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID_FAMILIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_REFILE_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_REFILE_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TIPO_LAP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_LAP_PROLONGADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TAMANHO_LAP_OND_SIMPLES = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TAMANHO_LAP_OND_DUPLA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_FEFCO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TOLERANCIA_DIMENCAO_CHAPA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PREFIXO_ID_PRODUTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_COLUNA_CAIXA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_COLUNA_CHAPA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_MULLEN = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_TENDENCIA_TOLERANCIA_PEDIDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PERCENTUAL_PERDA_MEDIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_FILTRA_SEQ_TRANS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_IMG_CAIXA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class GrupoProdutoAbstratoDecorator : IGrupoProdutoAbstratoEntity
 {
 
@@ -80,6 +135,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public GrupoProdutoAbstratoDecorator(IGrupoProdutoAbstratoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -97,6 +153,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -109,7 +172,7 @@
                                             {
                                                 _inner.GRP_ID = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +186,7 @@
                                             {
                                                 _inner.GRP_DESCRICAO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +200,7 @@
                                             {
                                                 _inner.TEM_ID = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.TEM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.TEM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +214,7 @@
                                             {
                                                 _inner.GRP_TIPO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -165,7 +228,7 @@
                                             {
                                                 _inner.GRP_PAP_ONDA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAP_ONDA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_ONDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_ONDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAP_ONDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -179,7 +242,7 @@
                                             {
                                                 _inner.GRP_PAP_GRAMATURA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAP_GRAMATURA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_GRAMATURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_GRAMATURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAP_GRAMATURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -193,7 +256,7 @@
                                             {
                                                 _inner.GRP_PAP_ALTURA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAP_ALTURA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAP_ALTURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -207,7 +270,7 @@
                                             {
                                                 _inner.GRP_PAP_NOME_COMERCIAL = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAP_NOME_COMERCIAL) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_NOME_COMERCIAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAP_NOME_COMERCIAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAP_NOME_COMERCIAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -221,7 +284,7 @@
                                             {
                                                 _inner.GRP_ATIVO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_ATIVO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ATIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ATIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_ATIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -235,7 +298,7 @@
                                             {
                                                 _inner.GRP_DT_CRIACAO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_DT_CRIACAO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_DT_CRIACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_DT_CRIACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_DT_CRIACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -249,7 +312,7 @@
                                             {
                                                 _inner.GRP_PAPEL1 = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAPEL1) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL1", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL1", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAPEL1, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -263,7 +326,7 @@
                                             {
                                                 _inner.GRP_PAPEL2 = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAPEL2) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL2", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL2", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAPEL2, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -277,7 +340,7 @@
                                             {
                                                 _inner.GRP_PAPEL3 = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAPEL3) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAPEL3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -291,7 +354,7 @@
                                             {
                                                 _inner.GRP_PAPEL4 = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAPEL4) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL4", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL4", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAPEL4, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -305,7 +368,7 @@
                                             {
                                                 _inner.GRP_PAPEL5 = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PAPEL5) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL5", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PAPEL5", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PAPEL5, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +382,7 @@
                                             {
                                                 _inner.GRP_ID_INTEGRACAO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_ID_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_ID_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -333,7 +396,7 @@
                                             {
                                                 _inner.GRP_ID_INTEGRACAO_ERP = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_ID_INTEGRACAO_ERP) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_ID_INTEGRACAO_ERP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -347,7 +410,7 @@
                                             {
                                                 _inner.GRP_TYPE = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TYPE) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TYPE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TYPE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TYPE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -361,7 +424,7 @@
                                             {
                                                 _inner.GRP_PERFORMANCE = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PERFORMANCE) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PERFORMANCE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PERFORMANCE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PERFORMANCE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -375,7 +438,7 @@
                                             {
                                                 _inner.GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -389,7 +452,7 @@
                                             {
                                                 _inner.GRP_RESINA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_RESINA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_RESINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -403,7 +466,7 @@
                                             {
                                                 _inner.GRP_ENDURECEDOR_MIOLO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_ENDURECEDOR_MIOLO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ENDURECEDOR_MIOLO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ENDURECEDOR_MIOLO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_ENDURECEDOR_MIOLO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -417,7 +480,7 @@
                                             {
                                                 _inner.VIN_ID = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.VIN_ID) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "VIN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "VIN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.VIN_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -431,7 +494,7 @@
                                             {
                                                 _inner.GRP_COLUNA_DE = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_COLUNA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_COLUNA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -445,7 +508,7 @@
                                             {
                                                 _inner.GRP_COLUNA_ATE = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_COLUNA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_COLUNA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -459,7 +522,7 @@
                                             {
                                                 _inner.GRP_CRUSH = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_CRUSH) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_CRUSH", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_CRUSH", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_CRUSH, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -473,7 +536,7 @@
                                             {
                                                 _inner.GRP_ID_FAMILIA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_ID_FAMILIA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID_FAMILIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_ID_FAMILIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_ID_FAMILIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -487,7 +550,7 @@
                                             {
                                                 _inner.GRP_REFILE_LARGURA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_REFILE_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_REFILE_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_REFILE_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_REFILE_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -501,7 +564,7 @@
                                             {
                                                 _inner.GRP_REFILE_COMPRIMENTO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_REFILE_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_REFILE_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_REFILE_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_REFILE_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -515,7 +578,7 @@
                                             {
                                                 _inner.GRP_TIPO_LAP = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TIPO_LAP) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TIPO_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TIPO_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TIPO_LAP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -529,7 +592,7 @@
                                             {
                                                 _inner.GRP_LAP_PROLONGADO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_LAP_PROLONGADO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_LAP_PROLONGADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_LAP_PROLONGADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_LAP_PROLONGADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -543,7 +606,7 @@
                                             {
                                                 _inner.GRP_TAMANHO_LAP_OND_SIMPLES = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TAMANHO_LAP_OND_SIMPLES) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_OND_SIMPLES", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_OND_SIMPLES", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TAMANHO_LAP_OND_SIMPLES, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -557,7 +620,7 @@
                                             {
                                                 _inner.GRP_TAMANHO_LAP_OND_DUPLA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TAMANHO_LAP_OND_DUPLA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_OND_DUPLA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_OND_DUPLA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TAMANHO_LAP_OND_DUPLA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -571,7 +634,7 @@
                                             {
                                                 _inner.GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TAMANHO_LAP_PROLONGADO_OND_SIMPLES, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -585,7 +648,7 @@
                                             {
                                                 _inner.GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TAMANHO_LAP_PROLONGADO_OND_DUPLA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -599,7 +662,7 @@
                                             {
                                                 _inner.GRP_FEFCO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_FEFCO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_FEFCO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_FEFCO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_FEFCO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -613,7 +676,7 @@
                                             {
                                                 _inner.GRP_TOLERANCIA_DIMENCAO_CHAPA_DE = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TOLERANCIA_DIMENCAO_CHAPA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TOLERANCIA_DIMENCAO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TOLERANCIA_DIMENCAO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TOLERANCIA_DIMENCAO_CHAPA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -627,7 +690,7 @@
                                             {
                                                 _inner.GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TOLERANCIA_DIMENCAO_CHAPA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -641,7 +704,7 @@
                                             {
                                                 _inner.GRP_PREFIXO_ID_PRODUTO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PREFIXO_ID_PRODUTO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PREFIXO_ID_PRODUTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PREFIXO_ID_PRODUTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PREFIXO_ID_PRODUTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -655,7 +718,7 @@
                                             {
                                                 _inner.GRP_COLUNA_CAIXA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_COLUNA_CAIXA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_CAIXA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_CAIXA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_COLUNA_CAIXA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -669,7 +732,7 @@
                                             {
                                                 _inner.GRP_COLUNA_CHAPA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_COLUNA_CHAPA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_CHAPA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_COLUNA_CHAPA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_COLUNA_CHAPA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -683,7 +746,7 @@
                                             {
                                                 _inner.GRP_MULLEN = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_MULLEN) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_MULLEN", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_MULLEN", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_MULLEN, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -697,7 +760,7 @@
                                             {
                                                 _inner.GRP_TENDENCIA_TOLERANCIA_PEDIDO = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_TENDENCIA_TOLERANCIA_PEDIDO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TENDENCIA_TOLERANCIA_PEDIDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_TENDENCIA_TOLERANCIA_PEDIDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_TENDENCIA_TOLERANCIA_PEDIDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -711,7 +774,7 @@
                                             {
                                                 _inner.GRP_PERCENTUAL_PERDA_MEDIA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_PERCENTUAL_PERDA_MEDIA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PERCENTUAL_PERDA_MEDIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_PERCENTUAL_PERDA_MEDIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_PERCENTUAL_PERDA_MEDIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -725,7 +788,7 @@
                                             {
                                                 _inner.GRP_FILTRA_SEQ_TRANS = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_FILTRA_SEQ_TRANS) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_FILTRA_SEQ_TRANS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_FILTRA_SEQ_TRANS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_FILTRA_SEQ_TRANS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -739,7 +802,7 @@
                                             {
                                                 _inner.GRP_IMG_CAIXA = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.GRP_IMG_CAIXA) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_IMG_CAIXA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "GRP_IMG_CAIXA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.GRP_IMG_CAIXA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -754,7 +817,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -768,7 +831,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -782,7 +845,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -796,7 +859,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & GrupoProdutoAbstratoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoProdutoAbstrato", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoProdutoAbstratoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

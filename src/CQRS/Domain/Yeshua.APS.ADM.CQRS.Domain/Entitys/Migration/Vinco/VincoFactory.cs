@@ -34,13 +34,14 @@
                             }
 
                             public IVincoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int vin_id, string vin_descricao, string vin_id_deslocamento )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int vin_id, string vin_descricao, string vin_id_deslocamento, ulong? trackingMask = null )
                             {
                             var entity = new VincoEntity(vin_id, vin_descricao, vin_id_deslocamento );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Vinco", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new VincoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Vinco", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new VincoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

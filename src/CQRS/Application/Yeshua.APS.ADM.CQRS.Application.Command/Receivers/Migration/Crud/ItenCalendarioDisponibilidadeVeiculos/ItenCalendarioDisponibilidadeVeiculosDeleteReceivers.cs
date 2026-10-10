@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItenCalendarioDisponibilidadeVeiculosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItenCalendarioDisponibilidadeVeiculos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItenCalendarioDisponibilidadeVeiculosReceiver), commandName: "Command.Write.ItenCalendarioDisponibilidadeVeiculosCrudCommand");
-                 var itencalendariodisponibilidadeveiculos = new ItenCalendarioDisponibilidadeVeiculosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CDV_ID, c.TIP_ID, c.IDV_QTD);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItenCalendarioDisponibilidadeVeiculos", "DeleteItenCalendarioDisponibilidadeVeiculos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItenCalendarioDisponibilidadeVeiculosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItenCalendarioDisponibilidadeVeiculos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItenCalendarioDisponibilidadeVeiculosReceiver), commandName: "Command.Write.ItenCalendarioDisponibilidadeVeiculosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var itencalendariodisponibilidadeveiculos = new ItenCalendarioDisponibilidadeVeiculosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CDV_ID, c.TIP_ID, c.IDV_QTD, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itencalendariodisponibilidadeveiculos.OperationalEntityId);
                  var domainResult = ItenCalendarioDisponibilidadeVeiculosDomainBehavior.Apply(itencalendariodisponibilidadeveiculos, context);
                  if (!domainResult.IsValid)

@@ -34,13 +34,14 @@
                             }
 
                             public IItensPackedEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ipa_id, string car_id, string? pro_id, string? ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ipa_id, string car_id, string? pro_id, string? ord_id, Decimal? ipa_coordc, Decimal? ipa_coordl, Decimal? ipa_coorda, Decimal? ipa_dimc, Decimal? ipa_diml, Decimal? ipa_dima, Decimal? ipa_qtd_por_palete, ulong? trackingMask = null )
                             {
                             var entity = new ItensPackedEntity(id, ipa_id, car_id, pro_id, ord_id, ipa_coordc, ipa_coordl, ipa_coorda, ipa_dimc, ipa_diml, ipa_dima, ipa_qtd_por_palete );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ItensPacked", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ItensPackedDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ItensPacked", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ItensPackedDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IPerfilEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int per_id, string per_nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int per_id, string per_nome, ulong? trackingMask = null )
                             {
                             var entity = new PerfilEntity(per_id, per_nome );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Perfil", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PerfilDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Perfil", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PerfilDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -43,6 +43,31 @@
             public const ulong UserId = 1UL << 20;
         }
 
+        public static class TurmaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Descricao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA1 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA1 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA2 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA2 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA4 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA4 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA5 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA5 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA6 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA6 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_INI_DIA7 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_HORA_FIM_DIA7 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TurmaDecorator : ITurmaEntity
 {
 
@@ -50,6 +75,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TurmaDecorator(ITurmaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -67,6 +93,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -79,7 +112,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & TurmaTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -93,7 +126,7 @@
                                             {
                                                 _inner.Descricao = value;
                                                 if ((_trackingMask & TurmaTrackingFields.Descricao) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.Descricao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -107,7 +140,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA1 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA1) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA1", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA1", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA1, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -121,7 +154,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA1 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA1) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA1", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA1", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA1, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -135,7 +168,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA2 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA2) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA2", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA2", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA2, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -149,7 +182,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA2 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA2) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA2", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA2", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA2, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -163,7 +196,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA3 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA3) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -177,7 +210,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA3 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA3) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -191,7 +224,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA4 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA4) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA4", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA4", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA4, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -205,7 +238,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA4 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA4) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA4", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA4", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA4, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -219,7 +252,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA5 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA5) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA5", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA5", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA5, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -233,7 +266,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA5 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA5) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA5", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA5", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA5, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -247,7 +280,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA6 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA6) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA6", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA6", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA6, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -261,7 +294,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA6 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA6) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA6", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA6", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA6, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -275,7 +308,7 @@
                                             {
                                                 _inner.TURM_HORA_INI_DIA7 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_INI_DIA7) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA7", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_INI_DIA7", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_INI_DIA7, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -289,7 +322,7 @@
                                             {
                                                 _inner.TURM_HORA_FIM_DIA7 = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TURM_HORA_FIM_DIA7) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA7", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TURM_HORA_FIM_DIA7", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TURM_HORA_FIM_DIA7, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -304,7 +337,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TurmaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -318,7 +351,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TurmaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -332,7 +365,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TurmaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -346,7 +379,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TurmaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Turma", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Turma", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TurmaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.LoockCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateLoock", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateLoockReceiver), commandName: "Command.Write.LoockCrudCommand");
-                 var loock = new LoockFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LOO_ID, c.LOO_DESCRICAO, c.LOO_CONTEUDO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Loock", "UpdateLoock", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.LoockCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateLoock", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateLoockReceiver), commandName: "Command.Write.LoockCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var loock = new LoockFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LOO_ID, c.LOO_DESCRICAO, c.LOO_CONTEUDO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", loock.OperationalEntityId);
                  var domainResult = LoockDomainBehavior.Apply(loock, context);
                  if (!domainResult.IsValid)

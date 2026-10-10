@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class TempoSetupOnduladeiraOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification TEM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OND_ID_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OND_ID_PARA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TEM_RESINA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TEM_RESINA_PARA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TEM_TEMPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TempoSetupOnduladeiraDecorator : ITempoSetupOnduladeiraEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TempoSetupOnduladeiraDecorator(ITempoSetupOnduladeiraEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.TEM_ID = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.TEM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.TEM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.OND_ID_DE = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.OND_ID_DE) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "OND_ID_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "OND_ID_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.OND_ID_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.OND_ID_PARA = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.OND_ID_PARA) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "OND_ID_PARA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "OND_ID_PARA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.OND_ID_PARA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.TEM_RESINA_DE = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.TEM_RESINA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_RESINA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_RESINA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.TEM_RESINA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.TEM_RESINA_PARA = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.TEM_RESINA_PARA) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_RESINA_PARA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_RESINA_PARA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.TEM_RESINA_PARA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.TEM_TEMPO = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.TEM_TEMPO) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_TEMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TEM_TEMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.TEM_TEMPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TempoSetupOnduladeiraTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TempoSetupOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TempoSetupOnduladeiraOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

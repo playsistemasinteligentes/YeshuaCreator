@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MaquinaImpressoraCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMaquinaImpressora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMaquinaImpressoraReceiver), commandName: "Command.Write.MaquinaImpressoraCrudCommand");
-                 var maquinaimpressora = new MaquinaImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.MAQ_IMP_ID, c.MAQ_ID, c.IMP_ID, c.MAI_FACAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MaquinaImpressora", "DeleteMaquinaImpressora", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MaquinaImpressoraCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMaquinaImpressora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMaquinaImpressoraReceiver), commandName: "Command.Write.MaquinaImpressoraCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var maquinaimpressora = new MaquinaImpressoraFactory(_logger, _domainTrackingPolicy).Create(context, c.MAQ_IMP_ID, c.MAQ_ID, c.IMP_ID, c.MAI_FACAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", maquinaimpressora.OperationalEntityId);
                  var domainResult = MaquinaImpressoraDomainBehavior.Apply(maquinaimpressora, context);
                  if (!domainResult.IsValid)

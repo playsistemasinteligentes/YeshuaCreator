@@ -16,6 +16,10 @@ namespace Dominio.Patterns.Domain
             string? receiverName,
             string? commandName,
             string? recordId,
+            string? rootOperationId,
+            string? operationId,
+            string? executionId,
+            string? causationId,
             DateTime occurredAt)
         {
             Operation = operation;
@@ -29,6 +33,10 @@ namespace Dominio.Patterns.Domain
             ReceiverName = receiverName;
             CommandName = commandName;
             RecordId = recordId;
+            RootOperationId = rootOperationId;
+            OperationId = operationId;
+            ExecutionId = executionId;
+            CausationId = causationId;
             OccurredAt = occurredAt;
         }
 
@@ -43,6 +51,10 @@ namespace Dominio.Patterns.Domain
         public string? ReceiverName { get; }
         public string? CommandName { get; }
         public string? RecordId { get; }
+        public string? RootOperationId { get; }
+        public string? OperationId { get; }
+        public string? ExecutionId { get; }
+        public string? CausationId { get; }
         public DateTime OccurredAt { get; }
 
         public static DomainOperationContext Create(
@@ -56,7 +68,11 @@ namespace Dominio.Patterns.Domain
             string? traceId = null,
             string? receiverName = null,
             string? commandName = null,
-            string? recordId = null)
+            string? recordId = null,
+            string? rootOperationId = null,
+            string? operationId = null,
+            string? executionId = null,
+            string? causationId = null)
         {
             return new DomainOperationContext(
                 operation,
@@ -70,6 +86,10 @@ namespace Dominio.Patterns.Domain
                 receiverName,
                 commandName,
                 recordId,
+                rootOperationId,
+                operationId,
+                executionId,
+                causationId,
                 DateTime.UtcNow);
         }
     }

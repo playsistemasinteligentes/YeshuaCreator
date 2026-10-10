@@ -36,6 +36,10 @@ namespace Command.Read
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string? RootOperationId { get; set; }
+        public string? OperationId { get; set; }
+        public string? ExecutionId { get; set; }
+        public string? CausationId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "yOutbox";
  public string? OperationalRecordId => OperationalEntityId;

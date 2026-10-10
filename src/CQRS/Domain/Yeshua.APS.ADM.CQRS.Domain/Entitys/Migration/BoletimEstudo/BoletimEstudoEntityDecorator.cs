@@ -50,6 +50,38 @@
             public const ulong UserId = 1UL << 27;
         }
 
+        public static class BoletimEstudoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_ID_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_SOLVER = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_SEQUENCIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAP_GRAMATURA_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL1_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL2_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL3_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL4_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_PAPEL5_PROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_STATUS_INTERFACE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_FORMATO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_GRAMATURA_PAPEIS_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_GRAMATURA_PAPEIS_REALIZADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_CUSTO_PAPEIS_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_CUSTO_PAPEIS_REALIZADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_GRAMATURA_RESINA_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_CUSTO_RESINA_PROGRAMADOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_REFILE_OBRIGATORIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class BoletimEstudoDecorator : IBoletimEstudoEntity
 {
 
@@ -57,6 +89,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public BoletimEstudoDecorator(IBoletimEstudoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -74,6 +107,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -86,7 +126,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +140,7 @@
                                             {
                                                 _inner.BOL_ID = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +154,7 @@
                                             {
                                                 _inner.BOL_ID_ORIGEM = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_ID_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_ID_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +168,7 @@
                                             {
                                                 _inner.BOL_SOLVER = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_SOLVER) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_SOLVER", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_SOLVER", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_SOLVER, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +182,7 @@
                                             {
                                                 _inner.BOL_INTEGRACAO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +196,7 @@
                                             {
                                                 _inner.BOL_SEQUENCIA = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_SEQUENCIA) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_SEQUENCIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +210,7 @@
                                             {
                                                 _inner.GRP_PAP_GRAMATURA_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_PAP_GRAMATURA_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAP_GRAMATURA_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAP_GRAMATURA_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_PAP_GRAMATURA_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +224,7 @@
                                             {
                                                 _inner.GRP_ID_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_ID_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_ID_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_ID_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_ID_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -198,7 +238,7 @@
                                             {
                                                 _inner.GRP_PAPEL1_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_PAPEL1_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL1_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL1_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_PAPEL1_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -212,7 +252,7 @@
                                             {
                                                 _inner.GRP_PAPEL2_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_PAPEL2_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL2_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL2_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_PAPEL2_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -226,7 +266,7 @@
                                             {
                                                 _inner.GRP_PAPEL3_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_PAPEL3_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL3_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL3_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_PAPEL3_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -240,7 +280,7 @@
                                             {
                                                 _inner.GRP_PAPEL4_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_PAPEL4_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL4_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL4_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_PAPEL4_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -254,7 +294,7 @@
                                             {
                                                 _inner.GRP_PAPEL5_PROGRAMADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.GRP_PAPEL5_PROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL5_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "GRP_PAPEL5_PROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.GRP_PAPEL5_PROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -268,7 +308,7 @@
                                             {
                                                 _inner.BOL_STATUS_INTERFACE = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_STATUS_INTERFACE) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_STATUS_INTERFACE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_STATUS_INTERFACE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_STATUS_INTERFACE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -282,7 +322,7 @@
                                             {
                                                 _inner.BOL_TIPO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -296,7 +336,7 @@
                                             {
                                                 _inner.BOL_FORMATO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_FORMATO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_FORMATO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_FORMATO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_FORMATO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -310,7 +350,7 @@
                                             {
                                                 _inner.BOL_GRAMATURA_PAPEIS_PROGRAMADOS = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_GRAMATURA_PAPEIS_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_GRAMATURA_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_GRAMATURA_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_GRAMATURA_PAPEIS_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -324,7 +364,7 @@
                                             {
                                                 _inner.BOL_GRAMATURA_PAPEIS_REALIZADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_GRAMATURA_PAPEIS_REALIZADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_GRAMATURA_PAPEIS_REALIZADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_GRAMATURA_PAPEIS_REALIZADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_GRAMATURA_PAPEIS_REALIZADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -338,7 +378,7 @@
                                             {
                                                 _inner.BOL_CUSTO_PAPEIS_PROGRAMADOS = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_CUSTO_PAPEIS_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_CUSTO_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_CUSTO_PAPEIS_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_CUSTO_PAPEIS_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -352,7 +392,7 @@
                                             {
                                                 _inner.BOL_CUSTO_PAPEIS_REALIZADO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_CUSTO_PAPEIS_REALIZADO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_CUSTO_PAPEIS_REALIZADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_CUSTO_PAPEIS_REALIZADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_CUSTO_PAPEIS_REALIZADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -366,7 +406,7 @@
                                             {
                                                 _inner.BOL_GRAMATURA_RESINA_PROGRAMADOS = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_GRAMATURA_RESINA_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_GRAMATURA_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_GRAMATURA_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_GRAMATURA_RESINA_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -380,7 +420,7 @@
                                             {
                                                 _inner.BOL_CUSTO_RESINA_PROGRAMADOS = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_CUSTO_RESINA_PROGRAMADOS) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_CUSTO_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_CUSTO_RESINA_PROGRAMADOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_CUSTO_RESINA_PROGRAMADOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -394,7 +434,7 @@
                                             {
                                                 _inner.BOL_REFILE_OBRIGATORIO = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.BOL_REFILE_OBRIGATORIO) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_REFILE_OBRIGATORIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "BOL_REFILE_OBRIGATORIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.BOL_REFILE_OBRIGATORIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -409,7 +449,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -423,7 +463,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -437,7 +477,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -451,7 +491,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & BoletimEstudoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("BoletimEstudo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("BoletimEstudo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, BoletimEstudoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

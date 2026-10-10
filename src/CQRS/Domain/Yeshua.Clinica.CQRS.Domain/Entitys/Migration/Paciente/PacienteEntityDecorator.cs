@@ -38,6 +38,26 @@
             public const ulong UserId = 1UL << 15;
         }
 
+        public static class PacienteOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Nome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Telefone = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification DataNascimento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Genero = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Escolaridade = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Profissao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Endereco = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification NomeResponsavel = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TelefoneResponsavel = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Observacao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PacienteDecorator : IPacienteEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PacienteDecorator(IPacienteEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.Nome = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Nome) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Nome, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.Telefone = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Telefone) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Telefone", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Telefone", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Telefone, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.DataNascimento = value;
                                                 if ((_trackingMask & PacienteTrackingFields.DataNascimento) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "DataNascimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "DataNascimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.DataNascimento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.Genero = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Genero) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Genero", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Genero", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Genero, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.Escolaridade = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Escolaridade) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Escolaridade", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Escolaridade", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Escolaridade, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.Profissao = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Profissao) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Profissao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Profissao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Profissao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.Endereco = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Endereco) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Endereco", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Endereco", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Endereco, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.NomeResponsavel = value;
                                                 if ((_trackingMask & PacienteTrackingFields.NomeResponsavel) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "NomeResponsavel", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "NomeResponsavel", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.NomeResponsavel, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.TelefoneResponsavel = value;
                                                 if ((_trackingMask & PacienteTrackingFields.TelefoneResponsavel) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "TelefoneResponsavel", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "TelefoneResponsavel", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.TelefoneResponsavel, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +242,7 @@
                                             {
                                                 _inner.Observacao = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Observacao) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Observacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Observacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Observacao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -229,7 +257,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PacienteTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +271,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +285,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PacienteTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,7 +299,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PacienteTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Paciente", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Paciente", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PacienteOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

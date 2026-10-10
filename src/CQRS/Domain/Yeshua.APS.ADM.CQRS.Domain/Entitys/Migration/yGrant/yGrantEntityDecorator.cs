@@ -29,6 +29,17 @@
             public const ulong UserId = 1UL << 6;
         }
 
+        public static class yGrantOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Description = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class yGrantDecorator : IyGrantEntity
 {
 
@@ -36,6 +47,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yGrantDecorator(IyGrantEntity inner, Dominio.Interfaces.ILogger logger)
@@ -53,6 +65,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -65,7 +84,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yGrantTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yGrant", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yGrant", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yGrantOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -79,7 +98,7 @@
                                             {
                                                 _inner.Description = value;
                                                 if ((_trackingMask & yGrantTrackingFields.Description) != 0UL)
-                                                    _logger.DomainValueChanged("yGrant", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yGrant", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yGrantOperationalFields.Description, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +113,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yGrantTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yGrant", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yGrant", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yGrantOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -108,7 +127,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yGrantTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yGrant", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yGrant", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yGrantOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -122,7 +141,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yGrantTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yGrant", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yGrant", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yGrantOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +155,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & yGrantTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("yGrant", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yGrant", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yGrantOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

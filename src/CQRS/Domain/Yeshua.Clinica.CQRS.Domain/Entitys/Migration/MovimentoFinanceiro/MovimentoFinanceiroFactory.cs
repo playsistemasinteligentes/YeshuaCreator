@@ -34,13 +34,14 @@
                             }
 
                             public IMovimentoFinanceiroEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string idorigem, int contadebitoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string idorigem, int contadebitoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status, ulong? trackingMask = null )
                             {
                             var entity = new MovimentoFinanceiroEntity(id, idorigem, contadebitoid, valor, datamovimento, datavencimento, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MovimentoFinanceiro", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MovimentoFinanceiroDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MovimentoFinanceiro", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MovimentoFinanceiroDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IEtiquetaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int eti_id, DateTime? eti_emissao, string? eti_codigo_barras, int? eti_sequencia, int? eti_numero_copias, string? eti_status, DateTime? eti_data_fabricacao, string? eti_cod_barras_original, string? eti_op_original, string? maq_id, int? imp_id, int? use_id, string? ord_id, string? rot_pro_id, int? rot_seq_tranformacao, int? fpr_seq_repeticao, Decimal? eti_quantidade_palete, string? eti_lote, string? eti_sub_lote, int? eti_imprimir_de, int? eti_imprimir_ate, string? bol_id, int? cor_sequencia )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int eti_id, DateTime? eti_emissao, string? eti_codigo_barras, int? eti_sequencia, int? eti_numero_copias, string? eti_status, DateTime? eti_data_fabricacao, string? eti_cod_barras_original, string? eti_op_original, string? maq_id, int? imp_id, int? use_id, string? ord_id, string? rot_pro_id, int? rot_seq_tranformacao, int? fpr_seq_repeticao, Decimal? eti_quantidade_palete, string? eti_lote, string? eti_sub_lote, int? eti_imprimir_de, int? eti_imprimir_ate, string? bol_id, int? cor_sequencia, ulong? trackingMask = null )
                             {
                             var entity = new EtiquetaEntity(eti_id, eti_emissao, eti_codigo_barras, eti_sequencia, eti_numero_copias, eti_status, eti_data_fabricacao, eti_cod_barras_original, eti_op_original, maq_id, imp_id, use_id, ord_id, rot_pro_id, rot_seq_tranformacao, fpr_seq_repeticao, eti_quantidade_palete, eti_lote, eti_sub_lote, eti_imprimir_de, eti_imprimir_ate, bol_id, cor_sequencia );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Etiqueta", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EtiquetaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Etiqueta", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EtiquetaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

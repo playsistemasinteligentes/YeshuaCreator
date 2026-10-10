@@ -34,13 +34,14 @@
                             }
 
                             public ITemplatesMaquinasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tem_id, string maq_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tem_id, string maq_id, ulong? trackingMask = null )
                             {
                             var entity = new TemplatesMaquinasEntity(id, tem_id, maq_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TemplatesMaquinas", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TemplatesMaquinasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TemplatesMaquinas", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TemplatesMaquinasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

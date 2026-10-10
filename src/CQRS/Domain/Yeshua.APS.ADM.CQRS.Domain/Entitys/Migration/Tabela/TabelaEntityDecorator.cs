@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class TabelaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification ID_TABELA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CODIGO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NOME = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TabelaDecorator : ITabelaEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TabelaDecorator(ITabelaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.ID_TABELA = value;
                                                 if ((_trackingMask & TabelaTrackingFields.ID_TABELA) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "ID_TABELA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "ID_TABELA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.ID_TABELA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.CODIGO = value;
                                                 if ((_trackingMask & TabelaTrackingFields.CODIGO) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "CODIGO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "CODIGO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.CODIGO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.NOME = value;
                                                 if ((_trackingMask & TabelaTrackingFields.NOME) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.NOME, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TabelaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TabelaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TabelaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TabelaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Tabela", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Tabela", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TabelaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

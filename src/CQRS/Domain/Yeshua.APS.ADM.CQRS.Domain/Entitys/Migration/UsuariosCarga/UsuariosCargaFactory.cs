@@ -34,13 +34,14 @@
                             }
 
                             public IUsuariosCargaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int use_id, string car_id, string rgo_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int use_id, string car_id, string rgo_id, ulong? trackingMask = null )
                             {
                             var entity = new UsuariosCargaEntity(id, use_id, car_id, rgo_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("UsuariosCarga", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new UsuariosCargaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("UsuariosCarga", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new UsuariosCargaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

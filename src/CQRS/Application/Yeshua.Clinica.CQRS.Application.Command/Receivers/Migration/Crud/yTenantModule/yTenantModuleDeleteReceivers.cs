@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yTenantModuleCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyTenantModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyTenantModuleReceiver), commandName: "Command.Write.yTenantModuleCrudCommand");
-                 var ytenantmodule = new yTenantModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ModuleId, c.ValidUntil);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yTenantModule", "DeleteyTenantModule", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yTenantModuleCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyTenantModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyTenantModuleReceiver), commandName: "Command.Write.yTenantModuleCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ytenantmodule = new yTenantModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ModuleId, c.ValidUntil, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ytenantmodule.OperationalEntityId);
                  var domainResult = yTenantModuleDomainBehavior.Apply(ytenantmodule, context);
                  if (!domainResult.IsValid)

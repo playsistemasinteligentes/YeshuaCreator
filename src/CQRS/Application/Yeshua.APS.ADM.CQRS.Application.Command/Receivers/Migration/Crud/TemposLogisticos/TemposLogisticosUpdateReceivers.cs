@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TemposLogisticosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTemposLogisticos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTemposLogisticosReceiver), commandName: "Command.Write.TemposLogisticosCrudCommand");
-                 var temposlogisticos = new TemposLogisticosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TMP_TIPO_TEMPO, c.TMP_TIPO_CARGA, c.TMP_TEMPO_MEDIO_UNITARIO, c.CLI_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TemposLogisticos", "UpdateTemposLogisticos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TemposLogisticosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTemposLogisticos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTemposLogisticosReceiver), commandName: "Command.Write.TemposLogisticosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var temposlogisticos = new TemposLogisticosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TMP_TIPO_TEMPO, c.TMP_TIPO_CARGA, c.TMP_TEMPO_MEDIO_UNITARIO, c.CLI_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", temposlogisticos.OperationalEntityId);
                  var domainResult = TemposLogisticosDomainBehavior.Apply(temposlogisticos, context);
                  if (!domainResult.IsValid)

@@ -34,13 +34,14 @@
                             }
 
                             public ILoockEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? loo_id, string? loo_descricao, string? loo_conteudo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? loo_id, string? loo_descricao, string? loo_conteudo, ulong? trackingMask = null )
                             {
                             var entity = new LoockEntity(id, loo_id, loo_descricao, loo_conteudo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Loock", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new LoockDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Loock", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new LoockDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

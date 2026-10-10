@@ -1,8 +1,7 @@
 using Dominio.Interfaces;
+using Dominio.Operational;
 using Shared.Operational;
-using System.Buffers;
 using System.Collections.Concurrent;
-using System.Text.Json;
 
 namespace Shered.Logger
 {
@@ -13,28 +12,31 @@ namespace Shered.Logger
         private readonly ConcurrentQueue<SagaTelemetryEventSnapshot> _sagas = new();
         private readonly ConcurrentDictionary<string, OperationalMetricSnapshot> _metrics = new();
         private readonly IOperationalTelemetryPolicy? _policy;
-        private readonly IOperationalLogSink _logSink;
+        private readonly OperationalEvidencePublisher _evidencePublisher;
         private readonly bool _localDetailEnabled = string.Equals(
             Environment.GetEnvironmentVariable("YESHUA_TELEMETRY_DETAIL"),
             "true",
             StringComparison.OrdinalIgnoreCase);
 
         public Logger()
-            : this(null, ConsoleJsonlOperationalLogSink.Instance)
+            : this(null, ConsoleJsonlOperationalLogSink.Instance, null)
         {
         }
 
         public Logger(IOperationalTelemetryPolicy policy)
-            : this(policy, ConsoleJsonlOperationalLogSink.Instance)
+            : this(policy, ConsoleJsonlOperationalLogSink.Instance, null)
         {
         }
 
         public Logger(
             IOperationalTelemetryPolicy? policy,
-            IOperationalLogSink logSink)
+            IOperationalLogSink logSink,
+            IRuntimeIdentityProvider? runtimeIdentityProvider = null)
         {
             _policy = policy;
-            _logSink = logSink;
+            _evidencePublisher = new OperationalEvidencePublisher(
+                logSink,
+                runtimeIdentityProvider?.Current);
         }
 
         public OperationalTelemetryDecision Evaluate(
@@ -63,8 +65,9 @@ namespace Shered.Logger
 
         public void Info(string message)
         {
-            if (DetailEnabled("Application", "Info"))
-                WriteApplication(message);
+            var telemetry = Evaluate("Application", "Info");
+            if (DetailEnabled(telemetry))
+                WriteApplication(message, telemetry);
         }
 
         public void CommandStarted(string commandName)
@@ -79,13 +82,47 @@ namespace Shered.Logger
             }
         }
 
+        public void CommandStarted(
+            string commandName,
+            string traceId,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity = default,
+            string? operationalEntityId = null)
+        {
+            CommandStarted(commandName);
+            var envelope = new OperationalEvidenceEnvelope(
+                "Command",
+                commandName,
+                telemetry.Severity,
+                telemetry.DiagnosticDepth,
+                telemetry.ExecutionMode,
+                OperationalTechnicalOutcome.NotEvaluated,
+                OperationalBusinessOutcome.NotEvaluated,
+                TraceId: traceId,
+                RootOperationId: executionIdentity.RootOperationId,
+                OperationId: executionIdentity.OperationId,
+                ExecutionId: executionIdentity.ExecutionId,
+                CausationId: executionIdentity.CausationId,
+                OperationalEntityId: operationalEntityId);
+            OperationalEvidenceField[] fields =
+            [
+                new("EventName", "Command.Started"),
+                new("Command", commandName),
+                new("Phase", "started")
+            ];
+            _evidencePublisher.Publish(envelope, fields);
+        }
+
         public void CommandFinished(
             string commandName,
             string traceId,
             bool succeeded,
             long durationMs,
             int statusCode,
-            WorkerCycleTelemetry? workerCycle = null)
+            WorkerCycleTelemetry? workerCycle,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity = default,
+            string? operationalEntityId = null)
         {
             var now = DateTimeOffset.UtcNow;
             var state = _commands.GetOrAdd(
@@ -117,25 +154,27 @@ namespace Shered.Logger
                 }
             }
 
-            if (failed || DetailEnabled("Command", commandName))
-            {
-                WriteCommand(
-                    failed ? "Error" : "Information",
-                    commandName,
-                    traceId,
-                    succeeded ? "concluido" : "falhou",
-                    durationMs,
-                    statusCode,
-                    workerCycle,
-                    null);
-            }
+            WriteCommand(
+                commandName,
+                traceId,
+                "completed",
+                durationMs,
+                statusCode,
+                workerCycle,
+                null,
+                telemetry,
+                executionIdentity,
+                operationalEntityId);
         }
 
         public void CommandFailed(
             string commandName,
             string traceId,
             Exception ex,
-            long durationMs)
+            long durationMs,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity = default,
+            string? operationalEntityId = null)
         {
             var now = DateTimeOffset.UtcNow;
             var state = _commands.GetOrAdd(
@@ -154,14 +193,16 @@ namespace Shered.Logger
             }
 
             WriteCommand(
-                "Error",
                 commandName,
                 traceId,
                 "exception",
                 durationMs,
                 500,
                 null,
-                ex);
+                ex,
+                telemetry,
+                executionIdentity,
+                operationalEntityId);
         }
 
         public void Repository(
@@ -172,7 +213,9 @@ namespace Shered.Logger
             long durationMs,
             bool captureCounter,
             bool emitEvent,
-            Exception? exception = null)
+            OperationalTelemetryDecision eventDecision,
+            Exception? exception = null,
+            OperationalExecutionIdentity executionIdentity = default)
         {
             if (captureCounter)
             {
@@ -200,13 +243,14 @@ namespace Shered.Logger
             if (emitEvent)
             {
                 WriteRepository(
-                    succeeded ? "Information" : "Error",
                     operation,
                     queryId,
                     traceId,
                     succeeded,
                     durationMs,
-                exception);
+                    exception,
+                    eventDecision,
+                    executionIdentity);
             }
         }
 
@@ -216,9 +260,18 @@ namespace Shered.Logger
             string traceId,
             string? operation,
             string? recordId,
-            object? value)
+            object? value,
+            OperationalDataClassification classification = OperationalDataClassification.Restricted,
+            OperationalExecutionIdentity executionIdentity = default)
         {
-            if (!Evaluate("DomainTracker", operation, entity, recordId).Enabled)
+            var telemetry = _policy?.Evaluate(
+                    "DomainTracker",
+                    operation,
+                    entity,
+                    recordId,
+                    field)
+                ?? Evaluate("DomainTracker", operation, entity, recordId);
+            if (!telemetry.Enabled)
                 return;
 
             WriteDomainValueChanged(
@@ -227,7 +280,10 @@ namespace Shered.Logger
                 traceId,
                 operation,
                 recordId,
-                value);
+                value,
+                classification,
+                telemetry,
+                executionIdentity);
         }
 
         public void Metric(string component, string metric, long value)
@@ -254,24 +310,134 @@ namespace Shered.Logger
         {
             try
             {
-                var snapshot = new SagaTelemetryEventSnapshot(
+                var telemetry = Evaluate("Saga", saga, step, correlationId);
+                if (!telemetry.Enabled)
+                    return;
+
+                Saga(new SagaOperationalTransition(
                     saga,
                     step,
                     correlationId,
                     phase,
                     attempt,
-                    executionId ?? string.Empty,
-                    causationId,
-                    DateTimeOffset.UtcNow);
-                _sagas.Enqueue(snapshot);
-                while (_sagas.Count > 512)
-                    _sagas.TryDequeue(out _);
-
-                WriteSaga(snapshot);
+                    0,
+                    phase.Contains("fail", StringComparison.OrdinalIgnoreCase)
+                        ? OperationalTechnicalOutcome.Failed
+                        : OperationalTechnicalOutcome.Succeeded,
+                    OperationalBusinessOutcome.NotEvaluated,
+                    telemetry,
+                    new OperationalExecutionIdentity(
+                        correlationId,
+                        saga,
+                        executionId,
+                        causationId),
+                    correlationId,
+                    ErrorCode: phase.Contains("fail", StringComparison.OrdinalIgnoreCase)
+                        ? phase
+                        : null));
             }
             catch
             {
                 // A telemetria nunca interrompe a saga.
+            }
+        }
+
+        public void Saga(SagaOperationalTransition transition)
+        {
+            try
+            {
+                if (!transition.Telemetry.Enabled)
+                    return;
+
+                var snapshot = new SagaTelemetryEventSnapshot(
+                    transition.Saga,
+                    transition.Step,
+                    transition.CorrelationId,
+                    transition.Phase,
+                    transition.Attempt,
+                    transition.ExecutionIdentity.ExecutionId ?? string.Empty,
+                    transition.ExecutionIdentity.CausationId,
+                    DateTimeOffset.UtcNow,
+                    transition.DurationMs,
+                    transition.ExecutionIdentity.RootOperationId,
+                    transition.ExecutionIdentity.OperationId,
+                    transition.OperationalEntityId,
+                    transition.TechnicalOutcome,
+                    transition.BusinessOutcome,
+                    transition.Dependency,
+                    transition.ErrorCode,
+                    transition.ErrorSummary,
+                    transition.NextExecutionAtUtc);
+                _sagas.Enqueue(snapshot);
+                while (_sagas.Count > 512)
+                    _sagas.TryDequeue(out _);
+
+                WriteSaga(snapshot, transition.Telemetry);
+            }
+            catch
+            {
+                // A telemetria nunca interrompe a saga.
+            }
+        }
+
+        public void Transition(
+            OperationalEvidenceTransition transition,
+            OperationalTelemetryDecision telemetry)
+        {
+            try
+            {
+                if (!telemetry.Enabled)
+                    return;
+
+                var failed = transition.TechnicalOutcome is OperationalTechnicalOutcome.Failed
+                    or OperationalTechnicalOutcome.TimedOut
+                    or OperationalTechnicalOutcome.Unavailable;
+                var severity = failed
+                    ? OperationalSeverity.Error
+                    : transition.BusinessOutcome == OperationalBusinessOutcome.Rejected
+                        ? OperationalSeverity.Warning
+                        : telemetry.Severity;
+                var envelope = new OperationalEvidenceEnvelope(
+                    transition.Component,
+                    transition.Operation,
+                    severity,
+                    telemetry.DiagnosticDepth,
+                    telemetry.ExecutionMode,
+                    transition.TechnicalOutcome,
+                    transition.BusinessOutcome,
+                    RootOperationId: transition.ExecutionIdentity.RootOperationId,
+                    OperationId: transition.ExecutionIdentity.OperationId,
+                    ExecutionId: transition.ExecutionIdentity.ExecutionId,
+                    CausationId: transition.ExecutionIdentity.CausationId,
+                    OperationalEntityId: transition.OperationalEntityId,
+                    ErrorCode: transition.ErrorCode);
+                var fields = new List<OperationalEvidenceField>(12)
+                {
+                    new("EventName", $"{transition.Component}.{transition.Phase}"),
+                    new("Phase", transition.Phase),
+                    new("DurationMs", transition.DurationMs, OperationalDataClassification.Public),
+                    new("Attempt", transition.Attempt, OperationalDataClassification.Public)
+                };
+
+                AddOptional(fields, "Entity", transition.Entity);
+                AddOptional(fields, "RecordId", transition.RecordId);
+                AddOptional(fields, "CorrelationId", transition.CorrelationId);
+                AddOptional(fields, "MessageId", transition.MessageId);
+                AddOptional(fields, "Dependency", transition.Dependency);
+                AddOptional(fields, "ErrorSummary", transition.ErrorSummary);
+                if (transition.StatusCode.HasValue)
+                {
+                    fields.Add(new OperationalEvidenceField(
+                        "StatusCode",
+                        transition.StatusCode.Value,
+                        OperationalDataClassification.Public));
+                }
+
+                _evidencePublisher.Publish(envelope, fields.ToArray());
+            }
+            catch
+            {
+                // A telemetria nunca interrompe a transicao operacional.
             }
         }
 
@@ -303,123 +469,218 @@ namespace Shered.Logger
                 DateTimeOffset.UtcNow);
         }
 
-        private void WriteApplication(string message)
+        private void WriteApplication(
+            string message,
+            OperationalTelemetryDecision telemetry)
         {
-            try
-            {
-                var buffer = new ArrayBufferWriter<byte>(256);
-                using var writer = new Utf8JsonWriter(buffer);
-                WriteHeader(writer, "Information", "Application");
-                writer.WriteString("Message", message);
-                WriteFooter(writer, buffer, "Information", "Application");
-            }
-            catch
-            {
-                // A escrita de log nunca interrompe o fluxo de negocio.
-            }
+            var envelope = new OperationalEvidenceEnvelope(
+                "Application",
+                "Info",
+                telemetry.Severity,
+                telemetry.DiagnosticDepth,
+                telemetry.ExecutionMode,
+                OperationalTechnicalOutcome.NotEvaluated,
+                OperationalBusinessOutcome.NotEvaluated);
+            OperationalEvidenceField[] fields =
+            [
+                new("Message", message, OperationalDataClassification.Confidential)
+            ];
+            _evidencePublisher.Publish(envelope, fields);
         }
 
         private void WriteCommand(
-            string level,
             string commandName,
             string traceId,
             string phase,
             long durationMs,
             int statusCode,
             WorkerCycleTelemetry? workerCycle,
-            Exception? exception)
+            Exception? exception,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity,
+            string? operationalEntityId)
         {
-            try
+            var technicalOutcome = exception is not null || statusCode >= 500
+                ? OperationalTechnicalOutcome.Failed
+                : OperationalTechnicalOutcome.Succeeded;
+            var businessOutcome = statusCode switch
             {
-                var buffer = new ArrayBufferWriter<byte>(512);
-                using var writer = new Utf8JsonWriter(buffer);
-                WriteHeader(writer, level, "Command");
-                writer.WriteString("Command", commandName);
-                writer.WriteString("TraceId", traceId);
-                writer.WriteString("Phase", phase);
-                writer.WriteNumber("DurationMs", durationMs);
-                writer.WriteNumber("StatusCode", statusCode);
-                if (workerCycle is { } cycle)
-                {
-                    writer.WritePropertyName("WorkerCycle");
-                    writer.WriteStartObject();
-                    writer.WriteNumber("BatchLimit", cycle.BatchLimit);
-                    writer.WriteNumber("Claimed", cycle.Claimed);
-                    writer.WriteNumber("Processed", cycle.Processed);
-                    writer.WriteNumber("Failed", cycle.Failed);
-                    writer.WriteEndObject();
-                }
+                >= 200 and < 400 => OperationalBusinessOutcome.Accepted,
+                >= 400 and < 500 => OperationalBusinessOutcome.Rejected,
+                _ => OperationalBusinessOutcome.NotEvaluated
+            };
+            var severity = technicalOutcome == OperationalTechnicalOutcome.Failed
+                ? OperationalSeverity.Error
+                : businessOutcome == OperationalBusinessOutcome.Rejected
+                    ? OperationalSeverity.Warning
+                    : telemetry.Severity;
+            var envelope = new OperationalEvidenceEnvelope(
+                "Command",
+                commandName,
+                severity,
+                telemetry.DiagnosticDepth,
+                telemetry.ExecutionMode,
+                technicalOutcome,
+                businessOutcome,
+                TraceId: traceId,
+                RootOperationId: executionIdentity.RootOperationId,
+                OperationId: executionIdentity.OperationId,
+                ExecutionId: executionIdentity.ExecutionId,
+                CausationId: executionIdentity.CausationId,
+                OperationalEntityId: operationalEntityId,
+                ErrorCode: exception?.GetType().Name ?? (statusCode >= 400 ? statusCode.ToString() : null));
 
-                if (exception is not null)
-                {
-                    writer.WriteString("ExceptionType", exception.GetType().FullName);
-                    writer.WriteString("ExceptionMessage", exception.Message);
-                    writer.WriteString("StackTrace", exception.StackTrace);
-                }
-
-                WriteFooter(writer, buffer, level, "Command");
-            }
-            catch
+            var fields = new List<OperationalEvidenceField>(12)
             {
-                // A escrita de log nunca interrompe o fluxo de negocio.
+                new("EventName", "Command.Completed"),
+                new("Command", commandName),
+                new("Phase", phase),
+                new("DurationMs", durationMs, OperationalDataClassification.Public),
+                new("StatusCode", statusCode, OperationalDataClassification.Public)
+            };
+
+            if (workerCycle is { } cycle)
+            {
+                fields.Add(new("BatchLimit", cycle.BatchLimit));
+                fields.Add(new("Claimed", cycle.Claimed));
+                fields.Add(new("Processed", cycle.Processed));
+                fields.Add(new("Failed", cycle.Failed));
             }
+
+            if (exception is not null)
+            {
+                fields.Add(new("ExceptionType", exception.GetType().FullName));
+                fields.Add(new(
+                    "ExceptionMessage",
+                    exception.Message,
+                    OperationalDataClassification.Restricted));
+                fields.Add(new(
+                    "StackTrace",
+                    exception.StackTrace,
+                    OperationalDataClassification.Restricted));
+            }
+
+            if (exception is not null || statusCode >= 400)
+            {
+                fields.Add(new(
+                    "ErrorSummary",
+                    SanitizedErrorSummary(exception, statusCode)));
+            }
+
+            _evidencePublisher.Publish(envelope, fields.ToArray());
+        }
+
+        private static string SanitizedErrorSummary(Exception? exception, int statusCode)
+        {
+            if (exception is not null)
+                return $"Operation failed with {exception.GetType().Name}.";
+
+            return statusCode >= 500
+                ? "Operation returned a technical failure."
+                : "Operation was rejected by business validation.";
+        }
+
+        private static void AddOptional(
+            List<OperationalEvidenceField> fields,
+            string name,
+            string? value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+                fields.Add(new OperationalEvidenceField(name, value));
         }
 
         private void WriteRepository(
-            string level,
             string operation,
             string queryId,
             string traceId,
             bool succeeded,
             long durationMs,
-            Exception? exception)
+            Exception? exception,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity)
         {
-            try
+            var technicalOutcome = succeeded
+                ? OperationalTechnicalOutcome.Succeeded
+                : OperationalTechnicalOutcome.Failed;
+            var envelope = new OperationalEvidenceEnvelope(
+                "Repository",
+                operation,
+                succeeded ? telemetry.Severity : OperationalSeverity.Error,
+                telemetry.DiagnosticDepth,
+                telemetry.ExecutionMode,
+                technicalOutcome,
+                OperationalBusinessOutcome.NotEvaluated,
+                TraceId: traceId,
+                RootOperationId: executionIdentity.RootOperationId,
+                OperationId: executionIdentity.OperationId,
+                ExecutionId: executionIdentity.ExecutionId,
+                CausationId: executionIdentity.CausationId,
+                ErrorCode: exception?.GetType().Name);
+            var fields = new List<OperationalEvidenceField>(6)
             {
-                var buffer = new ArrayBufferWriter<byte>(384);
-                using var writer = new Utf8JsonWriter(buffer);
-                WriteHeader(writer, level, "Repository");
-                writer.WriteString("Operation", operation);
-                writer.WriteString("QueryId", queryId);
-                writer.WriteString("TraceId", traceId);
-                writer.WriteBoolean("Succeeded", succeeded);
-                writer.WriteNumber("DurationMs", durationMs);
-                if (exception is not null)
-                {
-                    writer.WriteString("ExceptionType", exception.GetType().FullName);
-                    writer.WriteString("ExceptionMessage", exception.Message);
-                }
+                new("EventName", "Repository.Completed"),
+                new("Dependency", "SQL"),
+                new("QueryId", queryId),
+                new("Succeeded", succeeded, OperationalDataClassification.Public),
+                new("DurationMs", durationMs, OperationalDataClassification.Public)
+            };
+            if (exception is not null)
+            {
+                fields.Add(new("ExceptionType", exception.GetType().FullName));
+                fields.Add(new(
+                    "ExceptionMessage",
+                    exception.Message,
+                    OperationalDataClassification.Restricted));
+                fields.Add(new(
+                    "ErrorSummary",
+                    $"Repository operation failed with {exception.GetType().Name}."));
+            }
 
-                WriteFooter(writer, buffer, level, "Repository");
-            }
-            catch
-            {
-                // A escrita de log nunca interrompe o fluxo de negocio.
-            }
+            _evidencePublisher.Publish(envelope, fields.ToArray());
         }
 
-        private void WriteSaga(SagaTelemetryEventSnapshot snapshot)
+        private void WriteSaga(
+            SagaTelemetryEventSnapshot snapshot,
+            OperationalTelemetryDecision telemetry)
         {
-            try
+            var failed = snapshot.TechnicalOutcome is OperationalTechnicalOutcome.Failed
+                or OperationalTechnicalOutcome.TimedOut
+                or OperationalTechnicalOutcome.Unavailable;
+            var envelope = new OperationalEvidenceEnvelope(
+                "Saga",
+                snapshot.Saga,
+                failed ? OperationalSeverity.Error : telemetry.Severity,
+                telemetry.DiagnosticDepth,
+                telemetry.ExecutionMode,
+                snapshot.TechnicalOutcome,
+                snapshot.BusinessOutcome,
+                RootOperationId: snapshot.RootOperationId,
+                OperationId: snapshot.OperationId,
+                ExecutionId: snapshot.ExecutionId,
+                CausationId: snapshot.CausationId,
+                OperationalEntityId: snapshot.OperationalEntityId,
+                ErrorCode: snapshot.ErrorCode);
+            var fields = new List<OperationalEvidenceField>(12)
             {
-                var buffer = new ArrayBufferWriter<byte>(384);
-                using var writer = new Utf8JsonWriter(buffer);
-                WriteHeader(writer, "Information", "Saga");
-                writer.WriteString("Saga", snapshot.Saga);
-                writer.WriteString("Step", snapshot.Step);
-                writer.WriteString("CorrelationId", snapshot.CorrelationId);
-                writer.WriteString("Phase", snapshot.Phase);
-                writer.WriteNumber("Attempt", snapshot.Attempt);
-                if (!string.IsNullOrWhiteSpace(snapshot.ExecutionId))
-                    writer.WriteString("ExecutionId", snapshot.ExecutionId);
-                if (!string.IsNullOrWhiteSpace(snapshot.CausationId))
-                    writer.WriteString("CausationId", snapshot.CausationId);
-                WriteFooter(writer, buffer, "Information", "Saga");
-            }
-            catch
-            {
-                // A escrita de log nunca interrompe o fluxo de negocio.
-            }
+                new("EventName", $"Saga.{snapshot.Phase}"),
+                new("Saga", snapshot.Saga),
+                new("Step", snapshot.Step),
+                new("CorrelationId", snapshot.CorrelationId),
+                new("Phase", snapshot.Phase),
+                new("Attempt", snapshot.Attempt, OperationalDataClassification.Public),
+                new("DurationMs", snapshot.DurationMs, OperationalDataClassification.Public)
+            };
+
+            if (!string.IsNullOrWhiteSpace(snapshot.Dependency))
+                fields.Add(new("Dependency", snapshot.Dependency));
+
+            if (!string.IsNullOrWhiteSpace(snapshot.ErrorSummary))
+                fields.Add(new("ErrorSummary", snapshot.ErrorSummary));
+
+            if (snapshot.NextExecutionAtUtc is { } nextExecutionAtUtc)
+                fields.Add(new("NextExecutionAtUtc", nextExecutionAtUtc));
+
+            _evidencePublisher.Publish(envelope, fields.ToArray());
         }
 
         private void WriteDomainValueChanged(
@@ -428,111 +689,46 @@ namespace Shered.Logger
             string traceId,
             string? operation,
             string? recordId,
-            object? value)
+            object? value,
+            OperationalDataClassification classification,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity)
         {
-            try
-            {
-                var buffer = new ArrayBufferWriter<byte>(384);
-                using var writer = new Utf8JsonWriter(buffer);
-                WriteHeader(writer, "Information", "DomainTracker");
-                writer.WriteString("Entity", entity);
-                writer.WriteString("Field", field);
-                writer.WriteString("TraceId", traceId);
-                if (!string.IsNullOrWhiteSpace(operation))
-                    writer.WriteString("Operation", operation);
-                if (!string.IsNullOrWhiteSpace(recordId))
-                    writer.WriteString("RecordId", recordId);
-                WriteTelemetryValue(writer, "Value", value);
-                WriteFooter(writer, buffer, "Information", "DomainTracker");
-            }
-            catch
-            {
-                // A escrita de log nunca interrompe o fluxo de negocio.
-            }
+            var envelope = new OperationalEvidenceEnvelope(
+                "DomainTracker",
+                operation ?? "ValueChanged",
+                telemetry.Severity,
+                telemetry.DiagnosticDepth,
+                telemetry.ExecutionMode,
+                OperationalTechnicalOutcome.Succeeded,
+                OperationalBusinessOutcome.NotEvaluated,
+                TraceId: traceId,
+                RootOperationId: executionIdentity.RootOperationId,
+                OperationId: executionIdentity.OperationId,
+                ExecutionId: executionIdentity.ExecutionId,
+                CausationId: executionIdentity.CausationId,
+                OperationalEntityId: recordId);
+            var valueClassification = OperationalEvidenceProtection.IsForbiddenName(field)
+                ? OperationalDataClassification.NeverCapture
+                : classification;
+            OperationalEvidenceField[] fields =
+            [
+                new("Entity", entity),
+                new("Field", field),
+                new("Value", value, valueClassification)
+            ];
+            _evidencePublisher.Publish(envelope, fields);
         }
 
-        private static void WriteHeader(Utf8JsonWriter writer, string level, string category)
-        {
-            writer.WriteStartObject();
-            writer.WriteString("TimestampUtc", DateTimeOffset.UtcNow);
-            writer.WriteString("Level", level);
-            writer.WriteString("Category", category);
-            writer.WritePropertyName("Data");
-            writer.WriteStartObject();
-        }
-
-        private void WriteFooter(
-            Utf8JsonWriter writer,
-            ArrayBufferWriter<byte> buffer,
-            string level,
-            string category)
-        {
-            writer.WriteEndObject();
-            writer.WriteEndObject();
-            writer.Flush();
-            _logSink.Write(level, category, buffer.WrittenSpan);
-        }
-
-        private static void WriteTelemetryValue(
-            Utf8JsonWriter writer,
-            string propertyName,
-            object? value)
-        {
-            switch (value)
-            {
-                case null:
-                    writer.WriteNull(propertyName);
-                    break;
-                case string stringValue:
-                    writer.WriteString(propertyName, stringValue);
-                    break;
-                case bool boolValue:
-                    writer.WriteBoolean(propertyName, boolValue);
-                    break;
-                case int intValue:
-                    writer.WriteNumber(propertyName, intValue);
-                    break;
-                case long longValue:
-                    writer.WriteNumber(propertyName, longValue);
-                    break;
-                case decimal decimalValue:
-                    writer.WriteNumber(propertyName, decimalValue);
-                    break;
-                case double doubleValue:
-                    writer.WriteNumber(propertyName, doubleValue);
-                    break;
-                case float floatValue:
-                    writer.WriteNumber(propertyName, floatValue);
-                    break;
-                case DateTime dateTimeValue:
-                    writer.WriteString(propertyName, dateTimeValue);
-                    break;
-                case DateTimeOffset dateTimeOffsetValue:
-                    writer.WriteString(propertyName, dateTimeOffsetValue);
-                    break;
-                default:
-                    writer.WriteString(propertyName, value.ToString());
-                    break;
-            }
-        }
-
-        private bool DetailEnabled(string component, string operation)
+        private bool DetailEnabled(OperationalTelemetryDecision decision)
         {
             if (_policy is null)
                 return _localDetailEnabled;
 
-            try
-            {
-                var decision = _policy.Evaluate(component, operation);
-                return decision.Enabled &&
-                       (decision.Level.Equals("Trace", StringComparison.OrdinalIgnoreCase) ||
-                        decision.Level.Equals("Debug", StringComparison.OrdinalIgnoreCase) ||
-                        !decision.Depth.Equals("D0", StringComparison.OrdinalIgnoreCase));
-            }
-            catch
-            {
-                return false;
-            }
+            return decision.Enabled &&
+                   (decision.Level.Equals("Trace", StringComparison.OrdinalIgnoreCase) ||
+                    decision.Level.Equals("Debug", StringComparison.OrdinalIgnoreCase) ||
+                    !decision.Depth.Equals("D0", StringComparison.OrdinalIgnoreCase));
         }
 
         private sealed class CommandState

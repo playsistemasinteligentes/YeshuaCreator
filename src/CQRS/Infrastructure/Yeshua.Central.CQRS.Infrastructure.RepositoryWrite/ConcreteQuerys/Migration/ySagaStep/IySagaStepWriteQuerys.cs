@@ -33,6 +33,10 @@ namespace IQuery.Write
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateRootOperationId(int id, string value);
+        QueryModel UpdateOperationId(int id, string value);
+        QueryModel UpdateExecutionId(int id, string value);
+        QueryModel UpdateCausationId(int id, string value);
         public QueryModel DeleteySagaStepQuery(IySagaStepEntity ySagaStep);
     }
 }

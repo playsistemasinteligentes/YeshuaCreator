@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItenCargaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertItenCarga", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertItenCargaReceiver), commandName: "Command.Write.ItenCargaCrudCommand");
-                 var itencarga = new ItenCargaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.ITC_ENTREGA_PLANEJADA, c.ITC_ENTREGA_REALIZADA, c.ITC_ORDEM_ENTREGA, c.ITC_QTD_PLANEJADA, c.ITC_QTD_REALIZADA, c.ORD_HASH_KEY, c.NOT_ID, c.NOT_EMISSAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItenCarga", "InsertItenCarga", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItenCargaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertItenCarga", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertItenCargaReceiver), commandName: "Command.Write.ItenCargaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var itencarga = new ItenCargaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CAR_ID, c.ORD_ID, c.ITC_ENTREGA_PLANEJADA, c.ITC_ENTREGA_REALIZADA, c.ITC_ORDEM_ENTREGA, c.ITC_QTD_PLANEJADA, c.ITC_QTD_REALIZADA, c.ORD_HASH_KEY, c.NOT_ID, c.NOT_EMISSAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itencarga.OperationalEntityId);
                  var domainResult = ItenCargaDomainBehavior.Apply(itencarga, context);
                  if (!domainResult.IsValid)

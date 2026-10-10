@@ -34,13 +34,14 @@
                             }
 
                             public IPlanocontasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string? pla_natureza )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int pla_id, string pla_codigo, string pla_descricao, int pla_tipo, string? pla_natureza, ulong? trackingMask = null )
                             {
                             var entity = new PlanocontasEntity(pla_id, pla_codigo, pla_descricao, pla_tipo, pla_natureza );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Planocontas", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PlanocontasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Planocontas", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PlanocontasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

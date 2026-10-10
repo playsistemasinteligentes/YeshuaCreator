@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.VerssaoCustoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVerssaoCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVerssaoCustoReceiver), commandName: "Command.Write.VerssaoCustoCrudCommand");
-                 var verssaocusto = new VerssaoCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VER_ID, c.VER_STATUS, c.VER_DATA_VERSSAO_CUSTO, c.VER_OBS);
+                 var trackingMask = _domainTrackingPolicy.GetMask("VerssaoCusto", "DeleteVerssaoCusto", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.VerssaoCustoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVerssaoCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVerssaoCustoReceiver), commandName: "Command.Write.VerssaoCustoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var verssaocusto = new VerssaoCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VER_ID, c.VER_STATUS, c.VER_DATA_VERSSAO_CUSTO, c.VER_OBS, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", verssaocusto.OperationalEntityId);
                  var domainResult = VerssaoCustoDomainBehavior.Apply(verssaocusto, context);
                  if (!domainResult.IsValid)

@@ -34,13 +34,14 @@
                             }
 
                             public ITipoCarroceriaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tca_id, string? tca_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tca_id, string? tca_descricao, ulong? trackingMask = null )
                             {
                             var entity = new TipoCarroceriaEntity(id, tca_id, tca_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoCarroceria", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoCarroceriaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoCarroceria", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoCarroceriaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

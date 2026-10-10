@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.FechamentoTesteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertFechamentoTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertFechamentoTesteReceiver), commandName: "Command.Write.FechamentoTesteCrudCommand");
-                 var fechamentoteste = new FechamentoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FEC_ID, c.FEC_QTD, c.GRP_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("FechamentoTeste", "InsertFechamentoTeste", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.FechamentoTesteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertFechamentoTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertFechamentoTesteReceiver), commandName: "Command.Write.FechamentoTesteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var fechamentoteste = new FechamentoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FEC_ID, c.FEC_QTD, c.GRP_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", fechamentoteste.OperationalEntityId);
                  var domainResult = FechamentoTesteDomainBehavior.Apply(fechamentoteste, context);
                  if (!domainResult.IsValid)

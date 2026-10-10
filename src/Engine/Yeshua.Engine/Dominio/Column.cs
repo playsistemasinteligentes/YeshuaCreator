@@ -46,9 +46,18 @@ namespace Dominio
         public bool required { get; internal set; }
         public bool IsUserEncryptedField { get; private set; }
         public bool IsPassword { get; private set; }
+        public OperationalDataClassification? OperationalClassification { get; private set; }
         public bool IsValueDefault { get; set; } = false;
         public string ValueDefault { get; internal set; }
         public bool IsImmutable { get; private set; }
+        public string GlobalIdentityAuthority { get; private set; } = string.Empty;
+        public bool IsGlobalIdentity => !string.IsNullOrWhiteSpace(GlobalIdentityAuthority);
+        public bool IsGlobalIdentityAuthority(string applicationName) =>
+            IsGlobalIdentity &&
+            string.Equals(
+                GlobalIdentityAuthority,
+                applicationName,
+                StringComparison.OrdinalIgnoreCase);
         public bool IsExecutionContextBound =>
             IsValueDefault &&
             ValueDefault?.StartsWith("#_executionContext.", StringComparison.Ordinal) == true;
@@ -60,6 +69,7 @@ namespace Dominio
         public bool WhereCanTakeOff { get; set; } = false;
         public bool IsBackEndField { get; set; } = false;
         public bool WhereNeedBe { get; set; } = false;
+        public string WhereValueDefault { get; private set; } = string.Empty;
         public string DisplayGroup { get; set; } = "Geral";
         public string LegacyColumnName { get; private set; } = string.Empty;
         public string LegacyColumnType { get; private set; } = string.Empty;
@@ -252,6 +262,12 @@ namespace Dominio
             return this.Entity;
         }
 
+        internal Entity ClassifyOperationalData(OperationalDataClassification classification)
+        {
+            OperationalClassification = classification;
+            return Entity;
+        }
+
         public Entity Boolean()
         {
             Type = "bool";
@@ -267,6 +283,19 @@ namespace Dominio
         public Entity Immutable()
         {
             IsImmutable = true;
+            return Entity;
+        }
+        public Entity GlobalIdentity(string authority)
+        {
+            if (string.IsNullOrWhiteSpace(authority))
+                throw new ArgumentException("A autoridade da identidade global deve ser informada.", nameof(authority));
+
+            GlobalIdentityAuthority = authority.Trim();
+            IsImmutable = true;
+            IsNotNull = true;
+            AutoIncremento = false;
+            FrontEdit = false;
+            FrontVisibol = false;
             return Entity;
         }
         public Entity EditFront(bool value)
@@ -289,11 +318,14 @@ namespace Dominio
                 required = this.required,
                 IsBackEndField = this.IsBackEndField,
                 WhereNeedBe = this.WhereNeedBe,
+                WhereValueDefault = this.WhereValueDefault,
                 IsUserEncryptedField = this.IsUserEncryptedField,
                 IsPassword = this.IsPassword,
+                OperationalClassification = this.OperationalClassification,
                 IsValueDefault = this.IsValueDefault,
                 ValueDefault = this.ValueDefault,
                 IsImmutable = this.IsImmutable,
+                GlobalIdentityAuthority = this.GlobalIdentityAuthority,
                 IsFK = this.IsFK,
                 IsKey = this.IsKey,
                 ColumnReference = this.ColumnReference,
@@ -337,6 +369,16 @@ namespace Dominio
         internal Entity NeedBeWhere()
         {
             this.WhereNeedBe = true;
+            return this.Entity;
+        }
+
+        internal Entity NeedBeWhere(string defaultValue)
+        {
+            if (string.IsNullOrWhiteSpace(defaultValue))
+                throw new ArgumentException("O valor padrao do filtro obrigatorio deve ser informado.", nameof(defaultValue));
+
+            this.WhereNeedBe = true;
+            this.WhereValueDefault = defaultValue;
             return this.Entity;
         }
 

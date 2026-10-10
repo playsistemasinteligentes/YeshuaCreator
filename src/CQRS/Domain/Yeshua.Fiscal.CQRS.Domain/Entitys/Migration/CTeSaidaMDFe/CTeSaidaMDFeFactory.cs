@@ -34,13 +34,14 @@
                             }
 
                             public ICTeSaidaMDFeEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string? outboxmessageid, DateTime? publicadoemutc, string? ultimoerro, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string? outboxmessageid, DateTime? publicadoemutc, string? ultimoerro, int status, ulong? trackingMask = null )
                             {
                             var entity = new CTeSaidaMDFeEntity(id, ctetentativaemissaoid, correlationid, chaveacessocte, snapshothash, outboxmessageid, publicadoemutc, ultimoerro, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeSaidaMDFe", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeSaidaMDFeDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeSaidaMDFe", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeSaidaMDFeDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

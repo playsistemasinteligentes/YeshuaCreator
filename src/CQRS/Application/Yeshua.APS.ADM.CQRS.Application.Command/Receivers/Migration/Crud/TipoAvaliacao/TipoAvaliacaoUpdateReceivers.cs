@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TipoAvaliacaoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoAvaliacao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoAvaliacaoReceiver), commandName: "Command.Write.TipoAvaliacaoCrudCommand");
-                 var tipoavaliacao = new TipoAvaliacaoFactory(_logger, _domainTrackingPolicy).Create(context, c.TA_ID, c.TA_DESC);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TipoAvaliacao", "UpdateTipoAvaliacao", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TipoAvaliacaoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoAvaliacao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoAvaliacaoReceiver), commandName: "Command.Write.TipoAvaliacaoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tipoavaliacao = new TipoAvaliacaoFactory(_logger, _domainTrackingPolicy).Create(context, c.TA_ID, c.TA_DESC, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoavaliacao.OperationalEntityId);
                  var domainResult = TipoAvaliacaoDomainBehavior.Apply(tipoavaliacao, context);
                  if (!domainResult.IsValid)

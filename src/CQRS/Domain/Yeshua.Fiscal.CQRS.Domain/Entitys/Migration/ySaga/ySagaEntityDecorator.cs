@@ -38,6 +38,36 @@
             public const ulong Deleted = 1UL << 15;
             public const ulong Changed = 1UL << 16;
             public const ulong UserId = 1UL << 17;
+            public const ulong RootOperationId = 1UL << 18;
+            public const ulong OperationId = 1UL << 19;
+            public const ulong ExecutionId = 1UL << 20;
+            public const ulong CausationId = 1UL << 21;
+        }
+
+        public static class ySagaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CorrelationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Type = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification KeyCurrentStep = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CreatedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CompletedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntityType = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NextExecutionAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LockedAt = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LockedBy = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProcessingScope = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RootOperationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ExecutionId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CausationId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ySagaDecorator : IySagaEntity
@@ -47,6 +77,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ySagaDecorator(IySagaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -64,6 +95,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -76,7 +114,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ySagaTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -90,7 +128,7 @@
                                             {
                                                 _inner.CorrelationId = value;
                                                 if ((_trackingMask & ySagaTrackingFields.CorrelationId) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.CorrelationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -104,7 +142,7 @@
                                             {
                                                 _inner.Type = value;
                                                 if ((_trackingMask & ySagaTrackingFields.Type) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Type, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -118,7 +156,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & ySagaTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -132,7 +170,7 @@
                                             {
                                                 _inner.KeyCurrentStep = value;
                                                 if ((_trackingMask & ySagaTrackingFields.KeyCurrentStep) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "KeyCurrentStep", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "KeyCurrentStep", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.KeyCurrentStep, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -146,7 +184,7 @@
                                             {
                                                 _inner.CreatedAt = value;
                                                 if ((_trackingMask & ySagaTrackingFields.CreatedAt) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.CreatedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -160,7 +198,7 @@
                                             {
                                                 _inner.CompletedAt = value;
                                                 if ((_trackingMask & ySagaTrackingFields.CompletedAt) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "CompletedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "CompletedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.CompletedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -174,7 +212,7 @@
                                             {
                                                 _inner.EntityType = value;
                                                 if ((_trackingMask & ySagaTrackingFields.EntityType) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.EntityType, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -188,7 +226,7 @@
                                             {
                                                 _inner.EntityId = value;
                                                 if ((_trackingMask & ySagaTrackingFields.EntityId) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.EntityId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -202,7 +240,7 @@
                                             {
                                                 _inner.NextExecutionAt = value;
                                                 if ((_trackingMask & ySagaTrackingFields.NextExecutionAt) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "NextExecutionAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "NextExecutionAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.NextExecutionAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -216,7 +254,7 @@
                                             {
                                                 _inner.LockedAt = value;
                                                 if ((_trackingMask & ySagaTrackingFields.LockedAt) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "LockedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "LockedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.LockedAt, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -230,7 +268,7 @@
                                             {
                                                 _inner.LockedBy = value;
                                                 if ((_trackingMask & ySagaTrackingFields.LockedBy) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "LockedBy", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "LockedBy", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.LockedBy, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -245,7 +283,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ySagaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -260,7 +298,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ySagaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -274,7 +312,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ySagaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -288,7 +326,63 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ySagaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ySaga", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ySaga", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.UserId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? RootOperationId
+                                    {
+                                        get => _inner.RootOperationId;
+                                        set
+                                        {
+                                            if (_inner.RootOperationId != value)
+                                            {
+                                                _inner.RootOperationId = value;
+                                                if ((_trackingMask & ySagaTrackingFields.RootOperationId) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "RootOperationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.RootOperationId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? OperationId
+                                    {
+                                        get => _inner.OperationId;
+                                        set
+                                        {
+                                            if (_inner.OperationId != value)
+                                            {
+                                                _inner.OperationId = value;
+                                                if ((_trackingMask & ySagaTrackingFields.OperationId) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "OperationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.OperationId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? ExecutionId
+                                    {
+                                        get => _inner.ExecutionId;
+                                        set
+                                        {
+                                            if (_inner.ExecutionId != value)
+                                            {
+                                                _inner.ExecutionId = value;
+                                                if ((_trackingMask & ySagaTrackingFields.ExecutionId) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "ExecutionId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.ExecutionId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? CausationId
+                                    {
+                                        get => _inner.CausationId;
+                                        set
+                                        {
+                                            if (_inner.CausationId != value)
+                                            {
+                                                _inner.CausationId = value;
+                                                if ((_trackingMask & ySagaTrackingFields.CausationId) != 0UL)
+                                                    _logger.DomainValueChanged("ySaga", "CausationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaOperationalFields.CausationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

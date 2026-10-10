@@ -34,13 +34,14 @@
                             }
 
                             public IItenCargaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string? ord_hash_key, string? not_id, DateTime? not_emissao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, DateTime itc_entrega_planejada, DateTime itc_entrega_realizada, int itc_ordem_entrega, Decimal itc_qtd_planejada, Decimal itc_qtd_realizada, string? ord_hash_key, string? not_id, DateTime? not_emissao, ulong? trackingMask = null )
                             {
                             var entity = new ItenCargaEntity(id, car_id, ord_id, itc_entrega_planejada, itc_entrega_realizada, itc_ordem_entrega, itc_qtd_planejada, itc_qtd_realizada, ord_hash_key, not_id, not_emissao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ItenCarga", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ItenCargaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ItenCarga", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ItenCargaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

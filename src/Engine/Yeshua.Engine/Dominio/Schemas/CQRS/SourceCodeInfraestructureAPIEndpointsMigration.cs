@@ -42,11 +42,15 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using System.IO;");
             sb.AppendLine("using System.Xml.Linq;");
             sb.AppendLine("using System.Text.RegularExpressions;");
+            sb.AppendLine("using System.Text.Json;");
+            sb.AppendLine("using System.Text;");
             sb.AppendLine("using Shared.Operational;");
+            sb.AppendLine("using Shared.ModuleTransport;");
             sb.AppendLine("namespace API.Migrations");
             sb.AppendLine("{");
             sb.AppendLine("public static class Endpoints");
             sb.AppendLine("{");
+            AppendYeshuaModuleIngressDeclarations(sb);
             sb.AppendLine("public static void MapEndpoints(this WebApplication app)");
             sb.AppendLine("{");
 
@@ -96,6 +100,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
 
             AppendExternalConnectorEndpoints(sb);
+            AppendYeshuaModuleIngressEndpoint(sb);
 
             #region Insert 
             foreach (var entity in _migration.Entitys)
@@ -182,34 +187,27 @@ namespace Dominio.Schemas.CQRS
                             if (!hasCatalogAccess)
                                 return Results.Unauthorized();
 
-                            var tenantIdentity = context.User.FindFirst(""tenantIdentity"")?.Value;
-                            var userIdentity = context.User.FindFirst(""userIdentity"")?.Value;
+                            var tenantIdClaim = context.User.FindFirst(""tenantId"")?.Value;
+                            var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                             var email = context.User.FindFirst(ClaimTypes.Email)?.Value;
-                            if (string.IsNullOrWhiteSpace(tenantIdentity)
-                                || string.IsNullOrWhiteSpace(userIdentity)
+                            if (!int.TryParse(tenantIdClaim, out var tenantId)
+                                || tenantId <= 0
+                                || !int.TryParse(userIdClaim, out var userId)
+                                || userId <= 0
                                 || string.IsNullOrWhiteSpace(email))
                                 return Results.Unauthorized();
 
-                            var centralTenantIdClaim = context.User.FindFirst(""centralTenantId"")?.Value;
-                            var centralUserIdClaim = context.User.FindFirst(""centralUserId"")?.Value;
-                            var localTenantId = 0;
-                            var localUserId = 0;
+                            var localUserId = userId;
 
-                            if (isCentralApplication)
-                            {
-                                if (!int.TryParse(centralTenantIdClaim, out localTenantId)
-                                    || !int.TryParse(centralUserIdClaim, out localUserId))
-                                    return Results.Unauthorized();
-                            }
-                            else
+                            if (!isCentralApplication)
                             {
                                 var session = await sessionHandler.ExecuteAsync(
                                     new Command.UseCase.OpenApplicationSessionInputCommand
                                     {
-                                        TenantIdentity = tenantIdentity,
+                                        TenantId = tenantId,
                                         TenantDocument = context.User.FindFirst(""tenantDocument"")?.Value ?? string.Empty,
                                         TenantName = context.User.FindFirst(""tenantName"")?.Value ?? string.Empty,
-                                        UserIdentity = userIdentity,
+                                        UserId = userId,
                                         UserName = context.User.FindFirst(""userName"")?.Value ?? email,
                                         Email = email
                                     },
@@ -218,7 +216,6 @@ namespace Dominio.Schemas.CQRS
                                 if (session.StatusCode is < 200 or >= 300 || session.Data is null)
                                     return Results.BadRequest(session);
 
-                                localTenantId = session.Data.TenantId;
                                 localUserId = session.Data.UserId;
                             }
 
@@ -227,18 +224,14 @@ namespace Dominio.Schemas.CQRS
                                 new(ClaimTypes.NameIdentifier, localUserId.ToString()),
                                 new(ClaimTypes.Email, email),
                                 new(ClaimTypes.Role, context.User.FindFirst(ClaimTypes.Role)?.Value ?? ""Admin""),
-                                new(""tenantId"", localTenantId.ToString()),
+                                new(""tenantId"", tenantId.ToString()),
                                 new(""userModules"", string.Empty),
                                 new(""userCatalogs"", catalogsClaim ?? string.Empty),
                                 new(""tokenOrigin"", isCentralApplication ? ""Central"" : ""Application""),
                                 new(""application"", applicationName),
-                                new(""tenantIdentity"", tenantIdentity),
                                 new(""tenantDocument"", context.User.FindFirst(""tenantDocument"")?.Value ?? string.Empty),
                                 new(""tenantName"", context.User.FindFirst(""tenantName"")?.Value ?? string.Empty),
-                                new(""userIdentity"", userIdentity),
-                                new(""userName"", context.User.FindFirst(""userName"")?.Value ?? email),
-                                new(""centralTenantId"", centralTenantIdClaim ?? localTenantId.ToString()),
-                                new(""centralUserId"", centralUserIdClaim ?? localUserId.ToString())
+                                new(""userName"", context.User.FindFirst(""userName"")?.Value ?? email)
                             };
                             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
                             {
@@ -564,6 +557,165 @@ namespace Dominio.Schemas.CQRS
         {
             return new StringBuilder();
         }
+
+        private void AppendYeshuaModuleIngressDeclarations(StringBuilder sb)
+        {
+            var contracts = GetYeshuaModuleIngressContracts();
+            if (contracts.Count == 0)
+                return;
+
+            sb.AppendLine("private static readonly HashSet<string> YeshuaModuleIngressTypes = new(StringComparer.Ordinal)");
+            sb.AppendLine("{");
+            foreach (var contract in contracts)
+            {
+                sb.AppendLine($"    \"{EscapeLiteral(contract.Contract)}.v{contract.ContractVersion}\",");
+            }
+            sb.AppendLine("};");
+            sb.AppendLine("");
+            sb.AppendLine("public sealed record YeshuaModuleEventIngress(");
+            sb.AppendLine("    int TenantId,");
+            sb.AppendLine("    string MessageId,");
+            sb.AppendLine("    string Type,");
+            sb.AppendLine("    string EntityType,");
+            sb.AppendLine("    string EntityId,");
+            sb.AppendLine("    string CorrelationId,");
+            sb.AppendLine("    string Payload,");
+            sb.AppendLine("    string Source,");
+            sb.AppendLine("    string Transport,");
+            sb.AppendLine("    string? RootOperationId,");
+            sb.AppendLine("    string? OperationId,");
+            sb.AppendLine("    string? ExecutionId,");
+            sb.AppendLine("    string? CausationId);");
+            sb.AppendLine("");
+        }
+
+        private void AppendYeshuaModuleIngressEndpoint(StringBuilder sb)
+        {
+            if (GetYeshuaModuleIngressContracts().Count == 0)
+                return;
+
+            var applicationName = EscapeLiteral(_applicationName);
+            sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{applicationName}/Inbox/YeshuaModuleEvent\", async (");
+            sb.AppendLine("    HttpContext httpContext,");
+            sb.AppendLine("    [FromServices] Shared.ModuleTransport.IYeshuaModuleRequestAuthenticator authenticator,");
+            sb.AppendLine("    [FromServices] IRepository.Read.IyTenantReadRepository tenantRepository,");
+            sb.AppendLine("    [FromServices] IRepository.Read.IyUserReadRepository userRepository,");
+            sb.AppendLine("    [FromServices] Command.Patterns.OutBox.OutboxService outboxService,");
+            sb.AppendLine("    [FromServices] RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork unitOfWork,");
+            sb.AppendLine("    [FromServices] Aplication.Interfaces.Services.IExecutionContext executionContext) =>");
+            sb.AppendLine("{");
+            sb.AppendLine("    using var reader = new StreamReader(httpContext.Request.Body, Encoding.UTF8, false, leaveOpen: true);");
+            sb.AppendLine("    var requestBody = await reader.ReadToEndAsync(httpContext.RequestAborted);");
+            sb.AppendLine("    var sourceModule = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.SourceModule].ToString();");
+            sb.AppendLine("    var headerMessageId = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.MessageId].ToString();");
+            sb.AppendLine("    var timestamp = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.Timestamp].ToString();");
+            sb.AppendLine("    var signature = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.Signature].ToString();");
+            sb.AppendLine("    var pathAndQuery = $\"{httpContext.Request.PathBase}{httpContext.Request.Path}{httpContext.Request.QueryString}\";");
+            sb.AppendLine("    var authentication = authenticator.Authenticate(");
+            sb.AppendLine("        httpContext.Request.Method,");
+            sb.AppendLine("        pathAndQuery,");
+            sb.AppendLine("        sourceModule,");
+            sb.AppendLine("        headerMessageId,");
+            sb.AppendLine("        timestamp,");
+            sb.AppendLine("        signature,");
+            sb.AppendLine("        requestBody);");
+            sb.AppendLine("    if (!authentication.Succeeded)");
+            sb.AppendLine("        return authentication.ErrorCode == \"ModuleAuthenticationNotConfigured\"");
+            sb.AppendLine("            ? Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: authentication.ErrorCode)");
+            sb.AppendLine("            : Results.Unauthorized();");
+            sb.AppendLine("");
+            sb.AppendLine("    YeshuaModuleEventIngress? envelope;");
+            sb.AppendLine("    try");
+            sb.AppendLine("    {");
+            sb.AppendLine("        envelope = JsonSerializer.Deserialize<YeshuaModuleEventIngress>(");
+            sb.AppendLine("            requestBody,");
+            sb.AppendLine("            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });");
+            sb.AppendLine("    }");
+            sb.AppendLine("    catch (JsonException)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        return Results.BadRequest(new { Error = \"YeshuaModuleEvent envelope must be valid JSON.\" });");
+            sb.AppendLine("    }");
+            sb.AppendLine("");
+            sb.AppendLine("    if (envelope is null || envelope.TenantId <= 0 || string.IsNullOrWhiteSpace(envelope.MessageId))");
+            sb.AppendLine("        return Results.BadRequest(new { Error = \"TenantId and MessageId are required.\" });");
+            sb.AppendLine("    if (!string.Equals(headerMessageId, envelope.MessageId, StringComparison.Ordinal))");
+            sb.AppendLine("        return Results.Unauthorized();");
+            sb.AppendLine("    if (string.IsNullOrWhiteSpace(envelope.Type) || !YeshuaModuleIngressTypes.Contains(envelope.Type))");
+            sb.AppendLine("        return Results.BadRequest(new { Error = \"YeshuaModuleEvent contract is not declared by the target module.\" });");
+            sb.AppendLine("");
+            sb.AppendLine("    if (!tenantRepository.ExistsById(envelope.TenantId, true))");
+            sb.AppendLine("        return Results.Conflict(new { Error = \"TenantNotProvisioned\", envelope.TenantId });");
+            sb.AppendLine("    if (authenticator.TechnicalUserId <= 0)");
+            sb.AppendLine("        return Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: \"ModuleTechnicalUserNotConfigured\");");
+            sb.AppendLine("    if (!userRepository.ExistsById(authenticator.TechnicalUserId, true))");
+            sb.AppendLine("        return Results.Conflict(new { Error = \"ModuleTechnicalUserNotProvisioned\", UserId = authenticator.TechnicalUserId });");
+            sb.AppendLine("");
+            sb.AppendLine("    executionContext.SetTenantId(envelope.TenantId);");
+            sb.AppendLine("    executionContext.SetUserId(authenticator.TechnicalUserId);");
+            sb.AppendLine("    var parentIdentity = new Dominio.Operational.OperationalExecutionIdentity(");
+            sb.AppendLine("        envelope.RootOperationId,");
+            sb.AppendLine("        envelope.OperationId,");
+            sb.AppendLine("        envelope.ExecutionId,");
+            sb.AppendLine("        envelope.CausationId);");
+            sb.AppendLine("    using var executionScope = string.IsNullOrWhiteSpace(parentIdentity.RootOperationId)");
+            sb.AppendLine("        ? executionContext.BeginOperationalExecution(\"Inbox.YeshuaModuleEvent\")");
+            sb.AppendLine("        : executionContext.BeginOperationalExecution(parentIdentity, \"Inbox.YeshuaModuleEvent\");");
+            sb.AppendLine("");
+            sb.AppendLine("    JsonElement payload;");
+            sb.AppendLine("    try");
+            sb.AppendLine("    {");
+            sb.AppendLine("        using var payloadDocument = JsonDocument.Parse(envelope.Payload);");
+            sb.AppendLine("        payload = payloadDocument.RootElement.Clone();");
+            sb.AppendLine("    }");
+            sb.AppendLine("    catch (JsonException)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        return Results.BadRequest(new { Error = \"YeshuaModuleEvent payload must be valid JSON.\" });");
+            sb.AppendLine("    }");
+            sb.AppendLine("");
+            sb.AppendLine("    var messageId = envelope.MessageId;");
+            sb.AppendLine("    unitOfWork.BeginTran();");
+            sb.AppendLine("    try");
+            sb.AppendLine("    {");
+            sb.AppendLine("        outboxService.AddInboxEvent(");
+            sb.AppendLine("            envelope.Type,");
+            sb.AppendLine("            payload,");
+            sb.AppendLine("            envelope.EntityType,");
+            sb.AppendLine("            envelope.EntityId,");
+            sb.AppendLine("            messageId,");
+            sb.AppendLine("            envelope.CorrelationId);");
+            sb.AppendLine("        unitOfWork.Commit();");
+            sb.AppendLine("    }");
+            sb.AppendLine("    catch");
+            sb.AppendLine("    {");
+            sb.AppendLine("        unitOfWork.Rollback();");
+            sb.AppendLine("        throw;");
+            sb.AppendLine("    }");
+            sb.AppendLine("");
+            sb.AppendLine($"    return Results.Accepted(\"{getPrefixo()}/{applicationName}/Inbox/YeshuaModuleEvent/\" + messageId, new");
+            sb.AppendLine("    {");
+            sb.AppendLine("        MessageId = messageId,");
+            sb.AppendLine("        envelope.Type,");
+            sb.AppendLine("        Accepted = true");
+            sb.AppendLine("    });");
+            sb.AppendLine("}).AllowAnonymous();");
+            sb.AppendLine("");
+        }
+
+        private List<Dominio.YeshuaModuleContinuation> GetYeshuaModuleIngressContracts() =>
+            _migration.UseCaseGroup
+                .SelectMany(group => group.UseCaseSubGroup)
+                .SelectMany(subGroup => subGroup.Saga)
+                .SelectMany(saga => saga.YeshuaModuleContinuations)
+                .Where(continuation => continuation.Direction == "StartsFrom")
+                .GroupBy(continuation => new
+                {
+                    continuation.Contract,
+                    continuation.ContractVersion
+                })
+                .Select(group => group.First())
+                .OrderBy(continuation => continuation.Contract, StringComparer.Ordinal)
+                .ThenBy(continuation => continuation.ContractVersion)
+                .ToList();
 
         private void AppendExternalConnectorEndpoints(StringBuilder sb)
         {
@@ -1061,7 +1213,8 @@ namespace Dominio.Schemas.CQRS
                     var columnTitle = string.IsNullOrWhiteSpace(column.Description)
                         ? column.Name
                         : column.Description;
-                    sb.AppendLine($"                    new {{ name = \"{EscapeLiteral(column.Name)}\", title = \"{EscapeLiteral(columnTitle)}\" }},");
+                    var classification = OperationalDataClassificationConvention.Classify(column);
+                    sb.AppendLine($"                    new {{ name = \"{EscapeLiteral(column.Name)}\", title = \"{EscapeLiteral(columnTitle)}\", classification = \"{classification}\" }},");
                 }
                 sb.AppendLine("                }");
                 sb.AppendLine("            },");

@@ -45,6 +45,33 @@
             public const ulong UserId = 1UL << 22;
         }
 
+        public static class NFeProdutoSnapshotOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DocumentoFiscalOriginarioId = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification CorrelationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CargaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PedidoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ChaveAcesso = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmitenteDocumento = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification DestinatarioDocumento = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification UFOrigem = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UFDestino = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MunicipioOrigemCodigoIbge = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MunicipioDestinoCodigoIbge = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ValorDocumento = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification PesoBruto = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Volume = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification XmlStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SnapshotJson = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class NFeProdutoSnapshotDecorator : INFeProdutoSnapshotEntity
 {
 
@@ -52,6 +79,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public NFeProdutoSnapshotDecorator(INFeProdutoSnapshotEntity inner, Dominio.Interfaces.ILogger logger)
@@ -69,6 +97,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -81,7 +116,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +130,7 @@
                                             {
                                                 _inner.DocumentoFiscalOriginarioId = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.DocumentoFiscalOriginarioId) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "DocumentoFiscalOriginarioId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "DocumentoFiscalOriginarioId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.DocumentoFiscalOriginarioId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +144,7 @@
                                             {
                                                 _inner.CorrelationId = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.CorrelationId) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.CorrelationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +158,7 @@
                                             {
                                                 _inner.CargaId = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.CargaId) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "CargaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "CargaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.CargaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +172,7 @@
                                             {
                                                 _inner.PedidoId = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.PedidoId) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.PedidoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +186,7 @@
                                             {
                                                 _inner.ChaveAcesso = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.ChaveAcesso) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "ChaveAcesso", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "ChaveAcesso", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.ChaveAcesso, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -165,7 +200,7 @@
                                             {
                                                 _inner.EmitenteDocumento = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.EmitenteDocumento) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "EmitenteDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "EmitenteDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.EmitenteDocumento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -179,7 +214,7 @@
                                             {
                                                 _inner.DestinatarioDocumento = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.DestinatarioDocumento) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "DestinatarioDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "DestinatarioDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.DestinatarioDocumento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -193,7 +228,7 @@
                                             {
                                                 _inner.UFOrigem = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.UFOrigem) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "UFOrigem", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "UFOrigem", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.UFOrigem, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -207,7 +242,7 @@
                                             {
                                                 _inner.UFDestino = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.UFDestino) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "UFDestino", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "UFDestino", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.UFDestino, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -221,7 +256,7 @@
                                             {
                                                 _inner.MunicipioOrigemCodigoIbge = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.MunicipioOrigemCodigoIbge) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "MunicipioOrigemCodigoIbge", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "MunicipioOrigemCodigoIbge", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.MunicipioOrigemCodigoIbge, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -235,7 +270,7 @@
                                             {
                                                 _inner.MunicipioDestinoCodigoIbge = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.MunicipioDestinoCodigoIbge) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "MunicipioDestinoCodigoIbge", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "MunicipioDestinoCodigoIbge", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.MunicipioDestinoCodigoIbge, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -249,7 +284,7 @@
                                             {
                                                 _inner.ValorDocumento = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.ValorDocumento) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "ValorDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "ValorDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.ValorDocumento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -263,7 +298,7 @@
                                             {
                                                 _inner.PesoBruto = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.PesoBruto) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "PesoBruto", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "PesoBruto", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.PesoBruto, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -277,7 +312,7 @@
                                             {
                                                 _inner.Volume = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.Volume) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Volume", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Volume", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.Volume, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -291,7 +326,7 @@
                                             {
                                                 _inner.XmlStorageKey = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.XmlStorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "XmlStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "XmlStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.XmlStorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -305,7 +340,7 @@
                                             {
                                                 _inner.SnapshotJson = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.SnapshotJson) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "SnapshotJson", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "SnapshotJson", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.SnapshotJson, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +354,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -334,7 +369,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -348,7 +383,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -362,7 +397,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -376,7 +411,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & NFeProdutoSnapshotTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("NFeProdutoSnapshot", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, NFeProdutoSnapshotOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

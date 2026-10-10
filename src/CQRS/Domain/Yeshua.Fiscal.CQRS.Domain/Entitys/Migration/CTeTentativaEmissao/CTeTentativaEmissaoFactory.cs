@@ -34,13 +34,14 @@
                             }
 
                             public ICTeTentativaEmissaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status, ulong? trackingMask = null )
                             {
                             var entity = new CTeTentativaEmissaoEntity(id, ctesolicitacaofiscalid, chaveacesso, numero, serie, tentativa, xmlassinadostoragekey, xmlprocstoragekey, xmlhash, codigoretorno, mensagemretorno, protocoloautorizacao, enviadoemutc, autorizadoemutc, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeTentativaEmissao", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeTentativaEmissaoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeTentativaEmissao", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeTentativaEmissaoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

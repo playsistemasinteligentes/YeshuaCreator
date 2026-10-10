@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_GrupoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_Grupo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_GrupoReceiver), commandName: "Command.Write.T_GrupoCrudCommand");
-                 var t_grupo = new T_GrupoFactory(_logger, _domainTrackingPolicy).Create(context, c.GRU_ID, c.NOME, c.EXIBELISTA, c.GRU_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_Grupo", "UpdateT_Grupo", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_GrupoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_Grupo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_GrupoReceiver), commandName: "Command.Write.T_GrupoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_grupo = new T_GrupoFactory(_logger, _domainTrackingPolicy).Create(context, c.GRU_ID, c.NOME, c.EXIBELISTA, c.GRU_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_grupo.OperationalEntityId);
                  var domainResult = T_GrupoDomainBehavior.Apply(t_grupo, context);
                  if (!domainResult.IsValid)

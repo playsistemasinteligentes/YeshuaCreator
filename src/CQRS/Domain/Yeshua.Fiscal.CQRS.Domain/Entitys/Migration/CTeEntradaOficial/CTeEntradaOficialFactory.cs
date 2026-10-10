@@ -34,13 +34,14 @@
                             }
 
                             public ICTeEntradaOficialEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string? payloadstoragekey, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string? payloadstoragekey, int status, ulong? trackingMask = null )
                             {
                             var entity = new CTeEntradaOficialEntity(id, correlationid, sourceapplication, sourcemodule, sourcemessageid, messagetype, messageversion, receivedatutc, payloadhash, payloadstoragekey, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeEntradaOficial", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeEntradaOficialDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeEntradaOficial", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeEntradaOficialDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

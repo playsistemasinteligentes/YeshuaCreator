@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class EstruturaImpressaoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification EST_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HTML_ESTRUTURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EST_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class EstruturaImpressaoDecorator : IEstruturaImpressaoEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public EstruturaImpressaoDecorator(IEstruturaImpressaoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.EST_ID = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.EST_ID) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "EST_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "EST_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.EST_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.HTML_ESTRUTURA = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.HTML_ESTRUTURA) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "HTML_ESTRUTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "HTML_ESTRUTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.HTML_ESTRUTURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.CLI_ID = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.CLI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.CLI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.EST_DESCRICAO = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.EST_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "EST_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "EST_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.EST_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & EstruturaImpressaoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("EstruturaImpressao", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("EstruturaImpressao", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EstruturaImpressaoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

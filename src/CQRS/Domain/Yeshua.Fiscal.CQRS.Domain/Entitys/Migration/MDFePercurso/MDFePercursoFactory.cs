@@ -34,13 +34,14 @@
                             }
 
                             public IMDFePercursoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string uf, int ordem )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string uf, int ordem, ulong? trackingMask = null )
                             {
                             var entity = new MDFePercursoEntity(id, mdfesolicitacaofiscalid, uf, ordem );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MDFePercurso", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MDFePercursoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MDFePercurso", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MDFePercursoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

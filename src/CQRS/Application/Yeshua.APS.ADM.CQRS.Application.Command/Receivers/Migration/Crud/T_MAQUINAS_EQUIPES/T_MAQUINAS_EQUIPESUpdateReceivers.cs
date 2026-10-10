@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_MAQUINAS_EQUIPESCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_MAQUINAS_EQUIPES", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_MAQUINAS_EQUIPESReceiver), commandName: "Command.Write.T_MAQUINAS_EQUIPESCrudCommand");
-                 var t_maquinas_equipes = new T_MAQUINAS_EQUIPESFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MAQ_ID, c.EQU_ID, c.CAL_ID, c.CLI_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_MAQUINAS_EQUIPES", "UpdateT_MAQUINAS_EQUIPES", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_MAQUINAS_EQUIPESCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_MAQUINAS_EQUIPES", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_MAQUINAS_EQUIPESReceiver), commandName: "Command.Write.T_MAQUINAS_EQUIPESCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_maquinas_equipes = new T_MAQUINAS_EQUIPESFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MAQ_ID, c.EQU_ID, c.CAL_ID, c.CLI_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_maquinas_equipes.OperationalEntityId);
                  var domainResult = T_MAQUINAS_EQUIPESDomainBehavior.Apply(t_maquinas_equipes, context);
                  if (!domainResult.IsValid)

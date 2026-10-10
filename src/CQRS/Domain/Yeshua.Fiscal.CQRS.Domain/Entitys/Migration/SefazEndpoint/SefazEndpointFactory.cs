@@ -34,13 +34,14 @@
                             }
 
                             public ISefazEndpointEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int produtofiscal, string uf, int ambiente, string servico, string versao, string url, int ativo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int produtofiscal, string uf, int ambiente, string servico, string versao, string url, int ativo, ulong? trackingMask = null )
                             {
                             var entity = new SefazEndpointEntity(id, produtofiscal, uf, ambiente, servico, versao, url, ativo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("SefazEndpoint", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new SefazEndpointDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("SefazEndpoint", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new SefazEndpointDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

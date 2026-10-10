@@ -86,6 +86,74 @@
             public const ulong OperationalEntityId = 1UL << 63;
         }
 
+        public static class FilaProducaoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_QUANTIDADE_PREVISTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_MAQ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_INICIO_PREVISTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_FIM_PREVISTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_FIM_MAXIMA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_SEQ_TRANFORMACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_SEQ_REPETICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_OBS_PRODUCAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_DECORRIDO_SETUP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_DECORRIDO_SETUPA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_DECORRIDO_PERFORMANC = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_DECO_PEQUENA_PARADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_QTD_PERFORMANCE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_QTD_SETUP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_QTD_PRODUZIDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_TEORICO_PERFORMANCE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_RESTANTE_PERFORMANC = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_VELOCIDADE_P_ATINGIR_META = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_QTD_RESTANTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_VELO_ATU_PC_SEGUNDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_PERFORMANCE_PROJETADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TEMPO_RESTANTE_TOTAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_FIM_PREVISTO_ATUAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_PRODUZINDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ORDEM_NA_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TRUNCADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_TRUNC_INI = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_TRUNC_FIM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_COR_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID_MANUAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID_RESTRINGIDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_PREVISAO_MATERIA_PRIMA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_NECESSIDADE_INICIO_PRODUCAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_NECESSIDADE_FIM_PRODUCAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_GRUPO_PRODUTIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_INICIO_GRUPO_PRODUTIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_FIM_GRUPO_PRODUTIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_COR_BICO1 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_COR_BICO2 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_COR_BICO3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_COR_BICO4 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_COR_BICO5 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_META_SETUP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ORD_ID_REPROGRAMADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_PRIORIDADE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_SEQ_INCLUSAO_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_HIERARQUIA_SEQ_TRANSFORMACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ID_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EQU_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_GRUPO_PRODUTIVO_MANUAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_MOTIVO_PULA_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OCO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TOLERANCIA_MENOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_TOLERANCIA_MAIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_DATA_ENCERRAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class FilaProducaoDecorator : IFilaProducaoEntity
 {
 
@@ -93,6 +161,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public FilaProducaoDecorator(IFilaProducaoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -110,6 +179,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -122,7 +198,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +212,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -150,7 +226,7 @@
                                             {
                                                 _inner.ROT_PRO_ID = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.ROT_PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "ROT_PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "ROT_PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.ROT_PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -164,7 +240,7 @@
                                             {
                                                 _inner.FPR_QUANTIDADE_PREVISTA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_QUANTIDADE_PREVISTA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QUANTIDADE_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QUANTIDADE_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_QUANTIDADE_PREVISTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -178,7 +254,7 @@
                                             {
                                                 _inner.ROT_MAQ_ID = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.ROT_MAQ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "ROT_MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "ROT_MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.ROT_MAQ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -192,7 +268,7 @@
                                             {
                                                 _inner.FPR_DATA_INICIO_PREVISTA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_INICIO_PREVISTA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_INICIO_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_INICIO_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_INICIO_PREVISTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -206,7 +282,7 @@
                                             {
                                                 _inner.FPR_DATA_FIM_PREVISTA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_FIM_PREVISTA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_FIM_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_FIM_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_FIM_PREVISTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -220,7 +296,7 @@
                                             {
                                                 _inner.FPR_DATA_FIM_MAXIMA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_FIM_MAXIMA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_FIM_MAXIMA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_FIM_MAXIMA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_FIM_MAXIMA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -234,7 +310,7 @@
                                             {
                                                 _inner.ROT_SEQ_TRANFORMACAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.ROT_SEQ_TRANFORMACAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "ROT_SEQ_TRANFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "ROT_SEQ_TRANFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.ROT_SEQ_TRANFORMACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -248,7 +324,7 @@
                                             {
                                                 _inner.FPR_SEQ_REPETICAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_SEQ_REPETICAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_SEQ_REPETICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -262,7 +338,7 @@
                                             {
                                                 _inner.FPR_OBS_PRODUCAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_OBS_PRODUCAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_OBS_PRODUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_OBS_PRODUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_OBS_PRODUCAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -276,7 +352,7 @@
                                             {
                                                 _inner.FPR_STATUS = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -290,7 +366,7 @@
                                             {
                                                 _inner.FPR_TEMPO_DECORRIDO_SETUP = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_DECORRIDO_SETUP) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECORRIDO_SETUP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECORRIDO_SETUP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_DECORRIDO_SETUP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -304,7 +380,7 @@
                                             {
                                                 _inner.FPR_TEMPO_DECORRIDO_SETUPA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_DECORRIDO_SETUPA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECORRIDO_SETUPA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECORRIDO_SETUPA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_DECORRIDO_SETUPA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -318,7 +394,7 @@
                                             {
                                                 _inner.FPR_TEMPO_DECORRIDO_PERFORMANC = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_DECORRIDO_PERFORMANC) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECORRIDO_PERFORMANC", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECORRIDO_PERFORMANC", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_DECORRIDO_PERFORMANC, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -332,7 +408,7 @@
                                             {
                                                 _inner.FPR_TEMPO_DECO_PEQUENA_PARADA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_DECO_PEQUENA_PARADA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECO_PEQUENA_PARADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_DECO_PEQUENA_PARADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_DECO_PEQUENA_PARADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -346,7 +422,7 @@
                                             {
                                                 _inner.FPR_QTD_PERFORMANCE = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_QTD_PERFORMANCE) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_PERFORMANCE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_PERFORMANCE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_QTD_PERFORMANCE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -360,7 +436,7 @@
                                             {
                                                 _inner.FPR_QTD_SETUP = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_QTD_SETUP) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_SETUP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_SETUP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_QTD_SETUP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -374,7 +450,7 @@
                                             {
                                                 _inner.FPR_QTD_PRODUZIDA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_QTD_PRODUZIDA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_PRODUZIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_PRODUZIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_QTD_PRODUZIDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -388,7 +464,7 @@
                                             {
                                                 _inner.FPR_TEMPO_TEORICO_PERFORMANCE = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_TEORICO_PERFORMANCE) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_TEORICO_PERFORMANCE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_TEORICO_PERFORMANCE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_TEORICO_PERFORMANCE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -402,7 +478,7 @@
                                             {
                                                 _inner.FPR_TEMPO_RESTANTE_PERFORMANC = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_RESTANTE_PERFORMANC) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_RESTANTE_PERFORMANC", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_RESTANTE_PERFORMANC", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_RESTANTE_PERFORMANC, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -416,7 +492,7 @@
                                             {
                                                 _inner.FPR_VELOCIDADE_P_ATINGIR_META = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_VELOCIDADE_P_ATINGIR_META) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_VELOCIDADE_P_ATINGIR_META", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_VELOCIDADE_P_ATINGIR_META", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_VELOCIDADE_P_ATINGIR_META, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -430,7 +506,7 @@
                                             {
                                                 _inner.FPR_QTD_RESTANTE = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_QTD_RESTANTE) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_RESTANTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_QTD_RESTANTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_QTD_RESTANTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -444,7 +520,7 @@
                                             {
                                                 _inner.FPR_VELO_ATU_PC_SEGUNDO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_VELO_ATU_PC_SEGUNDO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_VELO_ATU_PC_SEGUNDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_VELO_ATU_PC_SEGUNDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_VELO_ATU_PC_SEGUNDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -458,7 +534,7 @@
                                             {
                                                 _inner.FPR_PERFORMANCE_PROJETADA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_PERFORMANCE_PROJETADA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PERFORMANCE_PROJETADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PERFORMANCE_PROJETADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_PERFORMANCE_PROJETADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -472,7 +548,7 @@
                                             {
                                                 _inner.FPR_TEMPO_RESTANTE_TOTAL = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TEMPO_RESTANTE_TOTAL) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_RESTANTE_TOTAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TEMPO_RESTANTE_TOTAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TEMPO_RESTANTE_TOTAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -486,7 +562,7 @@
                                             {
                                                 _inner.FPR_FIM_PREVISTO_ATUAL = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_FIM_PREVISTO_ATUAL) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_FIM_PREVISTO_ATUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_FIM_PREVISTO_ATUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_FIM_PREVISTO_ATUAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -500,7 +576,7 @@
                                             {
                                                 _inner.FPR_PRODUZINDO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_PRODUZINDO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PRODUZINDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PRODUZINDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_PRODUZINDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -514,7 +590,7 @@
                                             {
                                                 _inner.FPR_ORDEM_NA_FILA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_ORDEM_NA_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ORDEM_NA_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ORDEM_NA_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_ORDEM_NA_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -528,7 +604,7 @@
                                             {
                                                 _inner.FPR_ID_INTEGRACAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_ID_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_ID_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -542,7 +618,7 @@
                                             {
                                                 _inner.FPR_TRUNCADO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TRUNCADO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TRUNCADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TRUNCADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TRUNCADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -556,7 +632,7 @@
                                             {
                                                 _inner.FPR_DATA_TRUNC_INI = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_TRUNC_INI) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_TRUNC_INI", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_TRUNC_INI", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_TRUNC_INI, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -570,7 +646,7 @@
                                             {
                                                 _inner.FPR_DATA_TRUNC_FIM = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_TRUNC_FIM) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_TRUNC_FIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_TRUNC_FIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_TRUNC_FIM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -584,7 +660,7 @@
                                             {
                                                 _inner.FPR_ID = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -598,7 +674,7 @@
                                             {
                                                 _inner.FPR_COR_FILA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_COR_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_COR_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -612,7 +688,7 @@
                                             {
                                                 _inner.MAQ_ID_MANUAL = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.MAQ_ID_MANUAL) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "MAQ_ID_MANUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "MAQ_ID_MANUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.MAQ_ID_MANUAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -626,7 +702,7 @@
                                             {
                                                 _inner.MAQ_ID_RESTRINGIDA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.MAQ_ID_RESTRINGIDA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "MAQ_ID_RESTRINGIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "MAQ_ID_RESTRINGIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.MAQ_ID_RESTRINGIDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -640,7 +716,7 @@
                                             {
                                                 _inner.FPR_PREVISAO_MATERIA_PRIMA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_PREVISAO_MATERIA_PRIMA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PREVISAO_MATERIA_PRIMA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PREVISAO_MATERIA_PRIMA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_PREVISAO_MATERIA_PRIMA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -654,7 +730,7 @@
                                             {
                                                 _inner.FPR_DATA_NECESSIDADE_INICIO_PRODUCAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_NECESSIDADE_INICIO_PRODUCAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_NECESSIDADE_INICIO_PRODUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_NECESSIDADE_INICIO_PRODUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_NECESSIDADE_INICIO_PRODUCAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -668,7 +744,7 @@
                                             {
                                                 _inner.FPR_DATA_NECESSIDADE_FIM_PRODUCAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_NECESSIDADE_FIM_PRODUCAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_NECESSIDADE_FIM_PRODUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_NECESSIDADE_FIM_PRODUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_NECESSIDADE_FIM_PRODUCAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -682,7 +758,7 @@
                                             {
                                                 _inner.FPR_GRUPO_PRODUTIVO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_GRUPO_PRODUTIVO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_GRUPO_PRODUTIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -696,7 +772,7 @@
                                             {
                                                 _inner.FPR_INICIO_GRUPO_PRODUTIVO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_INICIO_GRUPO_PRODUTIVO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_INICIO_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_INICIO_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_INICIO_GRUPO_PRODUTIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -710,7 +786,7 @@
                                             {
                                                 _inner.FPR_FIM_GRUPO_PRODUTIVO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_FIM_GRUPO_PRODUTIVO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_FIM_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_FIM_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_FIM_GRUPO_PRODUTIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -724,7 +800,7 @@
                                             {
                                                 _inner.FPR_COR_BICO1 = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_COR_BICO1) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO1", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO1", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_COR_BICO1, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -738,7 +814,7 @@
                                             {
                                                 _inner.FPR_COR_BICO2 = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_COR_BICO2) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO2", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO2", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_COR_BICO2, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -752,7 +828,7 @@
                                             {
                                                 _inner.FPR_COR_BICO3 = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_COR_BICO3) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_COR_BICO3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -766,7 +842,7 @@
                                             {
                                                 _inner.FPR_COR_BICO4 = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_COR_BICO4) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO4", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO4", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_COR_BICO4, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -780,7 +856,7 @@
                                             {
                                                 _inner.FPR_COR_BICO5 = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_COR_BICO5) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO5", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_COR_BICO5", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_COR_BICO5, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -794,7 +870,7 @@
                                             {
                                                 _inner.FPR_META_SETUP = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_META_SETUP) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_META_SETUP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_META_SETUP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_META_SETUP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -808,7 +884,7 @@
                                             {
                                                 _inner.FPR_ORD_ID_REPROGRAMADO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_ORD_ID_REPROGRAMADO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ORD_ID_REPROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ORD_ID_REPROGRAMADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_ORD_ID_REPROGRAMADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -822,7 +898,7 @@
                                             {
                                                 _inner.FPR_PRIORIDADE = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_PRIORIDADE) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PRIORIDADE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_PRIORIDADE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_PRIORIDADE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -836,7 +912,7 @@
                                             {
                                                 _inner.FPR_SEQ_INCLUSAO_FILA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_SEQ_INCLUSAO_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_SEQ_INCLUSAO_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_SEQ_INCLUSAO_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_SEQ_INCLUSAO_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -850,7 +926,7 @@
                                             {
                                                 _inner.FPR_HIERARQUIA_SEQ_TRANSFORMACAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_HIERARQUIA_SEQ_TRANSFORMACAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_HIERARQUIA_SEQ_TRANSFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_HIERARQUIA_SEQ_TRANSFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_HIERARQUIA_SEQ_TRANSFORMACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -864,7 +940,7 @@
                                             {
                                                 _inner.FPR_ID_ORIGEM = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_ID_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_ID_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_ID_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -878,7 +954,7 @@
                                             {
                                                 _inner.FPR_DATA_ENTREGA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -892,7 +968,7 @@
                                             {
                                                 _inner.EQU_ID = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.EQU_ID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "EQU_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "EQU_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.EQU_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -906,7 +982,7 @@
                                             {
                                                 _inner.FPR_GRUPO_PRODUTIVO_MANUAL = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_GRUPO_PRODUTIVO_MANUAL) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_GRUPO_PRODUTIVO_MANUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_GRUPO_PRODUTIVO_MANUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_GRUPO_PRODUTIVO_MANUAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -920,7 +996,7 @@
                                             {
                                                 _inner.FPR_EMISSAO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -934,7 +1010,7 @@
                                             {
                                                 _inner.FPR_MOTIVO_PULA_FILA = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_MOTIVO_PULA_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_MOTIVO_PULA_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_MOTIVO_PULA_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_MOTIVO_PULA_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -948,7 +1024,7 @@
                                             {
                                                 _inner.OCO_ID = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.OCO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "OCO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "OCO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.OCO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -962,7 +1038,7 @@
                                             {
                                                 _inner.FPR_TOLERANCIA_MENOS = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TOLERANCIA_MENOS) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TOLERANCIA_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TOLERANCIA_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TOLERANCIA_MENOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -976,7 +1052,7 @@
                                             {
                                                 _inner.FPR_TOLERANCIA_MAIS = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_TOLERANCIA_MAIS) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TOLERANCIA_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_TOLERANCIA_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_TOLERANCIA_MAIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -990,7 +1066,7 @@
                                             {
                                                 _inner.FPR_DATA_ENCERRAMENTO = value;
                                                 if ((_trackingMask & FilaProducaoTrackingFields.FPR_DATA_ENCERRAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_ENCERRAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("FilaProducao", "FPR_DATA_ENCERRAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, FilaProducaoOperationalFields.FPR_DATA_ENCERRAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

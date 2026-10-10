@@ -34,13 +34,14 @@
                             }
 
                             public IT_IndicadoresEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int ind_id, string ind_descricao, int neg_id, string? desc_calculo, int ind_tipocomparador, int? ind_grafico, string? ind_conexao, DateTime? ind_dtcriacao, string? resposavelind, string? resposavelcarga, string? procextracao, string? per_id, string? dim_id, string? dom_empresa, string? dom_filial )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int ind_id, string ind_descricao, int neg_id, string? desc_calculo, int ind_tipocomparador, int? ind_grafico, string? ind_conexao, DateTime? ind_dtcriacao, string? resposavelind, string? resposavelcarga, string? procextracao, string? per_id, string? dim_id, string? dom_empresa, string? dom_filial, ulong? trackingMask = null )
                             {
                             var entity = new T_IndicadoresEntity(ind_id, ind_descricao, neg_id, desc_calculo, ind_tipocomparador, ind_grafico, ind_conexao, ind_dtcriacao, resposavelind, resposavelcarga, procextracao, per_id, dim_id, dom_empresa, dom_filial );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_Indicadores", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_IndicadoresDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_Indicadores", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_IndicadoresDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

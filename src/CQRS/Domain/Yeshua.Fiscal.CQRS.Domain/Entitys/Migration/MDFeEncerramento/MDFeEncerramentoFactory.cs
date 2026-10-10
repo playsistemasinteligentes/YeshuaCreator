@@ -34,13 +34,14 @@
                             }
 
                             public IMDFeEncerramentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfeid, string chaveacesso, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime solicitadoem, DateTime? autorizadoem, string? protocolo, string? codigoretorno, string? mensagemretorno )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfeid, string chaveacesso, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime solicitadoem, DateTime? autorizadoem, string? protocolo, string? codigoretorno, string? mensagemretorno, ulong? trackingMask = null )
                             {
                             var entity = new MDFeEncerramentoEntity(id, mdfeid, chaveacesso, ufcarregamento, ufdescarregamento, placaveiculo, solicitadoem, autorizadoem, protocolo, codigoretorno, mensagemretorno );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MDFeEncerramento", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MDFeEncerramentoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MDFeEncerramento", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MDFeEncerramentoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

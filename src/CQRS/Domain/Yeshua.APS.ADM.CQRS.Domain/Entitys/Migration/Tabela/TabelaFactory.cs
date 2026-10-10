@@ -34,13 +34,14 @@
                             }
 
                             public ITabelaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int id_tabela, string codigo, string nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id_tabela, string codigo, string nome, ulong? trackingMask = null )
                             {
                             var entity = new TabelaEntity(id_tabela, codigo, nome );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Tabela", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TabelaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Tabela", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TabelaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IDocumentoFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, int produtofiscal, string? chaveacesso, int? serie, int? numero, int ambiente, string? ufemitente, string? emitentedocumento, string? destinatariodocumento, string? xmlstoragekey, string? xmlhash, string? protocoloautorizacao, string? codigoretorno, string? mensagemretorno, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, int produtofiscal, string? chaveacesso, int? serie, int? numero, int ambiente, string? ufemitente, string? emitentedocumento, string? destinatariodocumento, string? xmlstoragekey, string? xmlhash, string? protocoloautorizacao, string? codigoretorno, string? mensagemretorno, int status, ulong? trackingMask = null )
                             {
                             var entity = new DocumentoFiscalEntity(id, correlationid, produtofiscal, chaveacesso, serie, numero, ambiente, ufemitente, emitentedocumento, destinatariodocumento, xmlstoragekey, xmlhash, protocoloautorizacao, codigoretorno, mensagemretorno, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("DocumentoFiscal", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new DocumentoFiscalDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("DocumentoFiscal", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new DocumentoFiscalDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

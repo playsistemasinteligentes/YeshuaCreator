@@ -34,13 +34,14 @@
                             }
 
                             public ICabvisaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int cab_id, string cab_desc, int cab_status, int use_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int cab_id, string cab_desc, int cab_status, int use_id, ulong? trackingMask = null )
                             {
                             var entity = new CabvisaoEntity(cab_id, cab_desc, cab_status, use_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Cabvisao", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CabvisaoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Cabvisao", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CabvisaoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IMDFeSolicitacaoFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string? cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string? placaveiculo, string? condutordocumento, string? documentosoriginariosjson, string? transportesnapshotjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string? cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string? placaveiculo, string? condutordocumento, string? documentosoriginariosjson, string? transportesnapshotjson, int status, ulong? trackingMask = null )
                             {
                             var entity = new MDFeSolicitacaoFiscalEntity(id, correlationid, cargaid, ambiente, ufcarregamento, ufdescarregamento, placaveiculo, condutordocumento, documentosoriginariosjson, transportesnapshotjson, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MDFeSolicitacaoFiscal", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MDFeSolicitacaoFiscalDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MDFeSolicitacaoFiscal", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MDFeSolicitacaoFiscalDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -98,7 +98,7 @@ namespace Command.Receivers
                             type: "audio.transcribe",
                             payload: payload,
                             entityType: nameof(yFileUploadDTO),
-                            entityID: upload.id.ToString(),
+                            entityId: upload.id.ToString(),
                             messageId: Guid.NewGuid().ToString(),
                             correlationId:step.CorrelationId,
                             transportType: 1, // Queue
@@ -110,7 +110,7 @@ namespace Command.Receivers
                                 TaskName = "app.tasks.transcribe_audio"
                             },
                             sagaId: saga.Id,
-                            sagaStepID: step.Id
+                            sagaStepId: step.Id
                         );
 
                 step.SetPendingApply();

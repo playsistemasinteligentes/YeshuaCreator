@@ -34,13 +34,14 @@
                             }
 
                             public IResultMedidaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rsm_id, int? rl_id, int? mdt_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rsm_id, int? rl_id, int? mdt_id, ulong? trackingMask = null )
                             {
                             var entity = new ResultMedidaEntity(id, rsm_id, rl_id, mdt_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ResultMedida", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ResultMedidaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ResultMedida", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ResultMedidaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

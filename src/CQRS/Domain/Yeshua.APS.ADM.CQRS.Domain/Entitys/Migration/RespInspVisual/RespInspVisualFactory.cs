@@ -34,13 +34,14 @@
                             }
 
                             public IRespInspVisualEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int riv_id, int? ipv_id, int? iti_id, string? riv_status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int riv_id, int? ipv_id, int? iti_id, string? riv_status, ulong? trackingMask = null )
                             {
                             var entity = new RespInspVisualEntity(id, riv_id, ipv_id, iti_id, riv_status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("RespInspVisual", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RespInspVisualDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("RespInspVisual", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RespInspVisualDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

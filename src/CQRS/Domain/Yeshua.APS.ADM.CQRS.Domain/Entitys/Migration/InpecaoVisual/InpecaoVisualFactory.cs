@@ -34,13 +34,14 @@
                             }
 
                             public IInpecaoVisualEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ipv_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ipv_id, ulong? trackingMask = null )
                             {
                             var entity = new InpecaoVisualEntity(id, ipv_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("InpecaoVisual", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new InpecaoVisualDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("InpecaoVisual", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new InpecaoVisualDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

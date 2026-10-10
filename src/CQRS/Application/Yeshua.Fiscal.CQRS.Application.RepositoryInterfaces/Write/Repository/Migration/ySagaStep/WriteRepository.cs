@@ -38,6 +38,10 @@ namespace IRepository.Write
         void UpdateDeleted(int id, bool value);
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
+        void UpdateRootOperationId(int id, string value);
+        void UpdateOperationId(int id, string value);
+        void UpdateExecutionId(int id, string value);
+        void UpdateCausationId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

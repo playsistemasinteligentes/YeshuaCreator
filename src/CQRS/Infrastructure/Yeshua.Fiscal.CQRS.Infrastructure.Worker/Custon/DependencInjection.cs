@@ -7,7 +7,9 @@ public static class CustonDependenceInjection
         builder.Services.AddHttpClient("YeshuaModuleApiTransport", client =>
         {
             client.Timeout = TimeSpan.FromSeconds(10);
-        });
+        })
+        .AddHttpMessageHandler<Shared.ModuleTransport.YeshuaModuleAuthenticationHandler>()
+        .AddHttpMessageHandler<Shared.Operational.OperationalHttpTelemetryHandler>();
 
         builder.Services.AddTransient<YeshuaModuleHttpOutboxTransportWorker>();
         builder.Services.AddHostedService(sp =>

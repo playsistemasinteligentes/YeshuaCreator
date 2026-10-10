@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PedidoPlanejavelCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePedidoPlanejavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePedidoPlanejavelReceiver), commandName: "Command.Write.PedidoPlanejavelCrudCommand");
-                 var pedidoplanejavel = new PedidoPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.ClienteId, c.ClienteNome, c.Estado, c.Municipio, c.Regiao, c.Bairro, c.RotaId, c.EmbarqueAlvo, c.DataEntregaDe, c.DataEntregaAte, c.Peso, c.Volume, c.SaldoAExpedir, c.Status, c.CargaAtualId, c.VersaoPlanejamento, c.AlertasResumo);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PedidoPlanejavel", "UpdatePedidoPlanejavel", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PedidoPlanejavelCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePedidoPlanejavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePedidoPlanejavelReceiver), commandName: "Command.Write.PedidoPlanejavelCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var pedidoplanejavel = new PedidoPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.ClienteId, c.ClienteNome, c.Estado, c.Municipio, c.Regiao, c.Bairro, c.RotaId, c.EmbarqueAlvo, c.DataEntregaDe, c.DataEntregaAte, c.Peso, c.Volume, c.SaldoAExpedir, c.Status, c.CargaAtualId, c.VersaoPlanejamento, c.AlertasResumo, trackingMask: trackingMask);
                  var domainResult = PedidoPlanejavelDomainBehavior.Apply(pedidoplanejavel, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

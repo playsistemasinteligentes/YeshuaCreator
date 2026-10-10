@@ -34,13 +34,14 @@
                             }
 
                             public IUnidadeMedidaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string uni_id, string uni_descricao, string? uni_escala_tempo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string uni_id, string uni_descricao, string? uni_escala_tempo, ulong? trackingMask = null )
                             {
                             var entity = new UnidadeMedidaEntity(uni_id, uni_descricao, uni_escala_tempo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("UnidadeMedida", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new UnidadeMedidaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("UnidadeMedida", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new UnidadeMedidaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

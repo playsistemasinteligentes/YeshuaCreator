@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class PeriodicidadeTesteOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PER_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PER_QTD = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UNI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PeriodicidadeTesteDecorator : IPeriodicidadeTesteEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PeriodicidadeTesteDecorator(IPeriodicidadeTesteEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.PER_ID = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.PER_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "PER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "PER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.PER_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.PER_QTD = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.PER_QTD) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "PER_QTD", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "PER_QTD", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.PER_QTD, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.UNI_ID = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.UNI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.UNI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.GRP_ID = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.GRP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.GRP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PeriodicidadeTesteTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PeriodicidadeTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PeriodicidadeTesteOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

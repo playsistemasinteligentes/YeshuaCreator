@@ -43,6 +43,31 @@
             public const ulong UserId = 1UL << 20;
         }
 
+        public static class VeiculoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_PLACA = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification VEI_UF = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_CAPACIDADE_M3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_CAPACIDADE_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_CAPACIDADE_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_CAPACIDADE_ALTURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_MODELO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_NOME_MOTORISTA = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification VEI_DADOS_CONTATO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_CPF_MOTORISTA = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TCA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_VENCIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VEI_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class VeiculoDecorator : IVeiculoEntity
 {
 
@@ -50,6 +75,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public VeiculoDecorator(IVeiculoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -67,6 +93,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -79,7 +112,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -93,7 +126,7 @@
                                             {
                                                 _inner.VEI_PLACA = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_PLACA) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_PLACA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_PLACA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_PLACA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -107,7 +140,7 @@
                                             {
                                                 _inner.VEI_UF = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_UF) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_UF", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_UF", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_UF, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -121,7 +154,7 @@
                                             {
                                                 _inner.TIP_ID = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.TIP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "TIP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "TIP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.TIP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -135,7 +168,7 @@
                                             {
                                                 _inner.VEI_CAPACIDADE_M3 = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_CAPACIDADE_M3) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_M3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_M3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_CAPACIDADE_M3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -149,7 +182,7 @@
                                             {
                                                 _inner.VEI_CAPACIDADE_LARGURA = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_CAPACIDADE_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_CAPACIDADE_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -163,7 +196,7 @@
                                             {
                                                 _inner.VEI_CAPACIDADE_COMPRIMENTO = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_CAPACIDADE_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_CAPACIDADE_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -177,7 +210,7 @@
                                             {
                                                 _inner.VEI_CAPACIDADE_ALTURA = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_CAPACIDADE_ALTURA) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_CAPACIDADE_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_CAPACIDADE_ALTURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -191,7 +224,7 @@
                                             {
                                                 _inner.VEI_MODELO = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_MODELO) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_MODELO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_MODELO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_MODELO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -205,7 +238,7 @@
                                             {
                                                 _inner.VEI_NOME_MOTORISTA = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_NOME_MOTORISTA) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_NOME_MOTORISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_NOME_MOTORISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_NOME_MOTORISTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -219,7 +252,7 @@
                                             {
                                                 _inner.VEI_DADOS_CONTATO = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_DADOS_CONTATO) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_DADOS_CONTATO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_DADOS_CONTATO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_DADOS_CONTATO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -233,7 +266,7 @@
                                             {
                                                 _inner.VEI_CPF_MOTORISTA = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_CPF_MOTORISTA) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_CPF_MOTORISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_CPF_MOTORISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_CPF_MOTORISTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -247,7 +280,7 @@
                                             {
                                                 _inner.TCA_ID = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.TCA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "TCA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "TCA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.TCA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -261,7 +294,7 @@
                                             {
                                                 _inner.VEI_EMISSAO = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -275,7 +308,7 @@
                                             {
                                                 _inner.VEI_VENCIMENTO = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_VENCIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_VENCIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_VENCIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_VENCIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -289,7 +322,7 @@
                                             {
                                                 _inner.VEI_STATUS = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "VEI_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.VEI_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -304,7 +337,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -318,7 +351,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -332,7 +365,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -346,7 +379,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Veiculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Veiculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VeiculoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

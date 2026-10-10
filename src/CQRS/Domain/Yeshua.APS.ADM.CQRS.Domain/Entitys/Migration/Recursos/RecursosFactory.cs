@@ -34,13 +34,14 @@
                             }
 
                             public IRecursosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string rec_id, string rec_descricao, int? cal_id, string? rec_control_ip, string? gre_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string rec_id, string rec_descricao, int? cal_id, string? rec_control_ip, string? gre_id, ulong? trackingMask = null )
                             {
                             var entity = new RecursosEntity(rec_id, rec_descricao, cal_id, rec_control_ip, gre_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Recursos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RecursosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Recursos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RecursosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IVariavelPlotagemEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int var_id, int plo_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int var_id, int plo_id, ulong? trackingMask = null )
                             {
                             var entity = new VariavelPlotagemEntity(id, var_id, plo_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("VariavelPlotagem", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new VariavelPlotagemDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("VariavelPlotagem", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new VariavelPlotagemDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ConsultasCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertConsultas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertConsultasReceiver), commandName: "Command.Write.ConsultasCrudCommand");
-                 var consultas = new ConsultasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_CASAS_DECIMAIS, c.CON_CONEXAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Consultas", "InsertConsultas", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ConsultasCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertConsultas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertConsultasReceiver), commandName: "Command.Write.ConsultasCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var consultas = new ConsultasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_CASAS_DECIMAIS, c.CON_CONEXAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", consultas.OperationalEntityId);
                  var domainResult = ConsultasDomainBehavior.Apply(consultas, context);
                  if (!domainResult.IsValid)

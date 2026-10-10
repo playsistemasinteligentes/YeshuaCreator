@@ -34,13 +34,14 @@
                             }
 
                             public IPedidoPlanejavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string clienteid, string clientenome, string estado, string municipio, string? regiao, string? bairro, string? rotaid, DateTime? embarquealvo, DateTime? dataentregade, DateTime? dataentregaate, Decimal? peso, Decimal? volume, Decimal? saldoaexpedir, string? status, string? cargaatualid, string? versaoplanejamento, string? alertasresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string pedidoid, string clienteid, string clientenome, string estado, string municipio, string? regiao, string? bairro, string? rotaid, DateTime? embarquealvo, DateTime? dataentregade, DateTime? dataentregaate, Decimal? peso, Decimal? volume, Decimal? saldoaexpedir, string? status, string? cargaatualid, string? versaoplanejamento, string? alertasresumo, ulong? trackingMask = null )
                             {
                             var entity = new PedidoPlanejavelEntity(pedidoid, clienteid, clientenome, estado, municipio, regiao, bairro, rotaid, embarquealvo, dataentregade, dataentregaate, peso, volume, saldoaexpedir, status, cargaatualid, versaoplanejamento, alertasresumo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PedidoPlanejavel", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PedidoPlanejavelDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PedidoPlanejavel", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PedidoPlanejavelDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

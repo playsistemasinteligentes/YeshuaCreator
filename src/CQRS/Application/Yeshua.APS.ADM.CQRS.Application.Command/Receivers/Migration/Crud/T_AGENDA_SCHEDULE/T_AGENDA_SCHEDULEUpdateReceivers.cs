@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_AGENDA_SCHEDULECrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_AGENDA_SCHEDULE", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_AGENDA_SCHEDULEReceiver), commandName: "Command.Write.T_AGENDA_SCHEDULECrudCommand");
-                 var t_agenda_schedule = new T_AGENDA_SCHEDULEFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AGE_ID, c.AGE_DATA_ESPECIFICA, c.AGE_HORARIO_INICIO, c.AGE_HORARIO_FIM, c.AGE_SEGUNDA, c.AGE_TERCA, c.AGE_QUARTA, c.AGE_QUINTA, c.AGE_SEXTA, c.AGE_SABADO, c.AGE_DOMINGO, c.AGE_INTERVALO, c.AGE_ORDEM_EXECUCAO, c.AGE_PARAMETROS, c.AGE_EXCECAO, c.AGE_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_AGENDA_SCHEDULE", "UpdateT_AGENDA_SCHEDULE", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_AGENDA_SCHEDULECrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateT_AGENDA_SCHEDULE", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateT_AGENDA_SCHEDULEReceiver), commandName: "Command.Write.T_AGENDA_SCHEDULECrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_agenda_schedule = new T_AGENDA_SCHEDULEFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AGE_ID, c.AGE_DATA_ESPECIFICA, c.AGE_HORARIO_INICIO, c.AGE_HORARIO_FIM, c.AGE_SEGUNDA, c.AGE_TERCA, c.AGE_QUARTA, c.AGE_QUINTA, c.AGE_SEXTA, c.AGE_SABADO, c.AGE_DOMINGO, c.AGE_INTERVALO, c.AGE_ORDEM_EXECUCAO, c.AGE_PARAMETROS, c.AGE_EXCECAO, c.AGE_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_agenda_schedule.OperationalEntityId);
                  var domainResult = T_AGENDA_SCHEDULEDomainBehavior.Apply(t_agenda_schedule, context);
                  if (!domainResult.IsValid)

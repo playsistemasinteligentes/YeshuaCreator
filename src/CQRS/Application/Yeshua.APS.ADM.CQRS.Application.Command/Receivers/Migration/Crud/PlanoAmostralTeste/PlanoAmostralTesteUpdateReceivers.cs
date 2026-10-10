@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PlanoAmostralTesteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePlanoAmostralTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePlanoAmostralTesteReceiver), commandName: "Command.Write.PlanoAmostralTesteCrudCommand");
-                 var planoamostralteste = new PlanoAmostralTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.GRP_TIPO, c.PAT_ID, c.PAT_QTD_CAIXAS_DE, c.PAT_QTD_CAIXAS_ATE, c.PAT_N_AMOSTRAGEM, c.PAT_PERCENT_ESPECIF);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PlanoAmostralTeste", "UpdatePlanoAmostralTeste", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PlanoAmostralTesteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePlanoAmostralTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePlanoAmostralTesteReceiver), commandName: "Command.Write.PlanoAmostralTesteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var planoamostralteste = new PlanoAmostralTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.GRP_TIPO, c.PAT_ID, c.PAT_QTD_CAIXAS_DE, c.PAT_QTD_CAIXAS_ATE, c.PAT_N_AMOSTRAGEM, c.PAT_PERCENT_ESPECIF, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", planoamostralteste.OperationalEntityId);
                  var domainResult = PlanoAmostralTesteDomainBehavior.Apply(planoamostralteste, context);
                  if (!domainResult.IsValid)

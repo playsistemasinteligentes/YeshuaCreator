@@ -38,6 +38,26 @@
             public const ulong UserId = 1UL << 15;
         }
 
+        public static class TransportadoraOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TRA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TRA_NOME = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TRA_CNPJ = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TRA_INSCRICAO_ESTADUAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TRA_RNTRC = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TRA_EMAIL = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TRA_RESPONSAVEL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TRA_FONE = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TRA_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TRA_ID_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TransportadoraDecorator : ITransportadoraEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TransportadoraDecorator(ITransportadoraEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.TRA_ID = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.TRA_NOME = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_NOME) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_NOME, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.TRA_CNPJ = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_CNPJ) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_CNPJ", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_CNPJ", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_CNPJ, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.TRA_INSCRICAO_ESTADUAL = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_INSCRICAO_ESTADUAL) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_INSCRICAO_ESTADUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_INSCRICAO_ESTADUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_INSCRICAO_ESTADUAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.TRA_RNTRC = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_RNTRC) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_RNTRC", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_RNTRC", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_RNTRC, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.TRA_EMAIL = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_EMAIL) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_EMAIL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_EMAIL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_EMAIL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.TRA_RESPONSAVEL = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_RESPONSAVEL) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_RESPONSAVEL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_RESPONSAVEL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_RESPONSAVEL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.TRA_FONE = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_FONE) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_FONE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_FONE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_FONE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.TRA_ID_INTEGRACAO = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_ID_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_ID_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +242,7 @@
                                             {
                                                 _inner.TRA_ID_INTEGRACAO_ERP = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_ID_INTEGRACAO_ERP) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TRA_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TRA_ID_INTEGRACAO_ERP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -229,7 +257,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +271,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +285,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,7 +299,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Transportadora", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Transportadora", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TransportadoraOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

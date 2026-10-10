@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.InformacoesComplementaresCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertInformacoesComplementares", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertInformacoesComplementaresReceiver), commandName: "Command.Write.InformacoesComplementaresCrudCommand");
-                 var informacoescomplementares = new InformacoesComplementaresFactory(_logger, _domainTrackingPolicy).Create(context, c.INF_ID, c.INF_DESCRICAO, c.INF_VALOR, c.MET_ID, c.INF_DATA);
+                 var trackingMask = _domainTrackingPolicy.GetMask("InformacoesComplementares", "InsertInformacoesComplementares", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.InformacoesComplementaresCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertInformacoesComplementares", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertInformacoesComplementaresReceiver), commandName: "Command.Write.InformacoesComplementaresCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var informacoescomplementares = new InformacoesComplementaresFactory(_logger, _domainTrackingPolicy).Create(context, c.INF_ID, c.INF_DESCRICAO, c.INF_VALOR, c.MET_ID, c.INF_DATA, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", informacoescomplementares.OperationalEntityId);
                  var domainResult = InformacoesComplementaresDomainBehavior.Apply(informacoescomplementares, context);
                  if (!domainResult.IsValid)

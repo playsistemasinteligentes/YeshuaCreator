@@ -34,13 +34,14 @@
                             }
 
                             public ISegmentosProdutosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string grs_id, string pro_id, string seg_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string grs_id, string pro_id, string seg_id, ulong? trackingMask = null )
                             {
                             var entity = new SegmentosProdutosEntity(id, grs_id, pro_id, seg_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("SegmentosProdutos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new SegmentosProdutosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("SegmentosProdutos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new SegmentosProdutosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IMDFeCondutorEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string nome, string documento )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string nome, string documento, ulong? trackingMask = null )
                             {
                             var entity = new MDFeCondutorEntity(id, mdfesolicitacaofiscalid, nome, documento );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MDFeCondutor", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MDFeCondutorDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MDFeCondutor", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MDFeCondutorDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

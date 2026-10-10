@@ -35,6 +35,23 @@
             public const ulong UserId = 1UL << 12;
         }
 
+        public static class SefazEndpointOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProdutoFiscal = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UF = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Ambiente = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Servico = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Versao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Url = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Ativo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class SefazEndpointDecorator : ISefazEndpointEntity
 {
 
@@ -42,6 +59,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public SefazEndpointDecorator(ISefazEndpointEntity inner, Dominio.Interfaces.ILogger logger)
@@ -59,6 +77,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -71,7 +96,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -85,7 +110,7 @@
                                             {
                                                 _inner.ProdutoFiscal = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.ProdutoFiscal) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "ProdutoFiscal", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "ProdutoFiscal", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.ProdutoFiscal, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -99,7 +124,7 @@
                                             {
                                                 _inner.UF = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.UF) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "UF", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "UF", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.UF, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -113,7 +138,7 @@
                                             {
                                                 _inner.Ambiente = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Ambiente) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Ambiente", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Ambiente", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Ambiente, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -127,7 +152,7 @@
                                             {
                                                 _inner.Servico = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Servico) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Servico", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Servico", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Servico, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -141,7 +166,7 @@
                                             {
                                                 _inner.Versao = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Versao) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Versao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Versao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Versao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -155,7 +180,7 @@
                                             {
                                                 _inner.Url = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Url) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Url", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Url", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Url, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +194,7 @@
                                             {
                                                 _inner.Ativo = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Ativo) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Ativo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Ativo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Ativo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +209,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -198,7 +223,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -212,7 +237,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -226,7 +251,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & SefazEndpointTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("SefazEndpoint", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SefazEndpoint", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SefazEndpointOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

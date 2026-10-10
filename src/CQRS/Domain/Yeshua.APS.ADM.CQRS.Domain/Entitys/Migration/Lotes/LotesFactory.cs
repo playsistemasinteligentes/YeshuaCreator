@@ -34,13 +34,14 @@
                             }
 
                             public ILotesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string mov_lote, string mov_sub_lote, Decimal? lot_largura, Decimal? lot_comprimento, Decimal? lot_diametro )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string mov_lote, string mov_sub_lote, Decimal? lot_largura, Decimal? lot_comprimento, Decimal? lot_diametro, ulong? trackingMask = null )
                             {
                             var entity = new LotesEntity(id, mov_lote, mov_sub_lote, lot_largura, lot_comprimento, lot_diametro );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Lotes", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new LotesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Lotes", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new LotesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

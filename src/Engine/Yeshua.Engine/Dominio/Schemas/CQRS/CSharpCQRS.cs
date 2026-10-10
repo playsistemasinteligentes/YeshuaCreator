@@ -284,6 +284,20 @@ namespace Dominio.Schemas.CQRS
                 .SelectMany(sg => sg.Saga)
                 .ToList();
 
+            var outboxServicePath = Path.Combine(
+                GetPathAppAplicationCommand(),
+                "Patterns",
+                "OutBox",
+                "OutboxService.cs");
+            var outboxServiceCustonPath = Path.Combine(
+                GetPathAppAplicationCommand(),
+                "Patterns",
+                "OutBox",
+                "Custon",
+                "OutboxService.cs");
+            new SourceCodeApplicationOutboxService()
+                .WriteCode(null, outboxServicePath, outboxServiceCustonPath);
+
             if (sagas.Count() > 0)
             {
                 var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"SagaResolverRegistry.cs");
@@ -544,7 +558,9 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Migration\\{entity.EntityName}\\WriteRepository.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Custon\\{entity.EntityName}\\WriteRepository.cs");
-                var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesWriteMigration(entity);
+                var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesWriteMigration(
+                    entity,
+                    GetApplicationName());
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
         }
@@ -1775,7 +1791,9 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(AppInfraestructureWriteConcreteRepository(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteRepository.cs");
                 var filePathCuston = Path.Combine(AppInfraestructureWriteConcreteRepository(), $"Custon\\{entity.EntityName}\\{entity.EntityName}WriteRepository.cs");
-                var sourceCodeMigration = new SourceCodeInfraestructureWriteConcreteRepositoryMigration(entity);
+                var sourceCodeMigration = new SourceCodeInfraestructureWriteConcreteRepositoryMigration(
+                    entity,
+                    GetApplicationName());
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
         }
@@ -1796,13 +1814,19 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteQuerys.cs");
                 var filePathCuston = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteQuerys.cs");
-                var sourceCodeMigration = new SourceCodeInfraestructureQueryWriteMigration(entity, false);
+                var sourceCodeMigration = new SourceCodeInfraestructureQueryWriteMigration(
+                    entity,
+                    false,
+                    GetApplicationName());
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
 
                 filePath = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\I{entity.EntityName}WriteQuerys.cs");
                 filePathCuston = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\I{entity.EntityName}WriteQuerys.cs");
-                sourceCodeMigration = new SourceCodeInfraestructureQueryWriteMigration(entity, true);
+                sourceCodeMigration = new SourceCodeInfraestructureQueryWriteMigration(
+                    entity,
+                    true,
+                    GetApplicationName());
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
 
@@ -2432,6 +2456,7 @@ public static class StateResults
             WriteTextIfMissing(
                 Path.Combine(projectDirectory, "Services", "CurrentUserHttp.cs"),
                 @"using Aplication.Interfaces.Services;
+using Dominio.Operational;
 using System.Security.Claims;
 
 namespace Shered.Services;
@@ -2440,6 +2465,7 @@ public sealed class executionContextHttp : IExecutionContext
 {
     private readonly IHttpContextAccessor _http;
     private readonly string _processingScope;
+    private OperationalExecutionIdentityState? _operationalIdentity;
     private readonly string _fallbackTraceId = Guid.NewGuid().ToString(""N"");
     private int? _manualTenantId;
     private int? _manualUserId;
@@ -2456,6 +2482,18 @@ public sealed class executionContextHttp : IExecutionContext
     public int UserId => _manualUserId ?? GetUserId();
     public IEnumerable<Claim> Claims => _http.HttpContext?.User?.Claims ?? Enumerable.Empty<Claim>();
     public string TraceId => _manualTraceId ?? _http.HttpContext?.TraceIdentifier ?? _fallbackTraceId;
+    public OperationalExecutionIdentity OperationalIdentity => GetOperationalIdentityState().Current;
+    public bool TryGetOperationalIdentity(out OperationalExecutionIdentity identity)
+    {
+        var state = System.Threading.Volatile.Read(ref _operationalIdentity);
+        if (state is null)
+        {
+            identity = default;
+            return false;
+        }
+
+        return state.TryGetCurrent(out identity);
+    }
     public string ProcessingScope => _processingScope;
     public ExecutionOrigin Origem =>
         _manualOrigin ?? (_http.HttpContext is null ? ExecutionOrigin.Worker : ExecutionOrigin.Http);
@@ -2464,9 +2502,66 @@ public sealed class executionContextHttp : IExecutionContext
     public void SetUserId(int id) => _manualUserId = id;
     public void SetTraceId(string traceId) => _manualTraceId = traceId;
     public void SetOrigem(ExecutionOrigin origem) => _manualOrigin = origem;
+    public IDisposable BeginOperationalExecution(
+        string operation,
+        string? operationId = null,
+        string? causationId = null)
+    {
+        var scope = GetOperationalIdentityState().Begin(operation, operationId, causationId);
+        PublishOperationalIdentity();
+        return scope;
+    }
+    public IDisposable BeginOperationalExecution(
+        OperationalExecutionIdentity parentIdentity,
+        string operation,
+        bool continueOperation = true)
+    {
+        var scope = GetOperationalIdentityState().BeginFrom(
+            parentIdentity,
+            operation,
+            continueOperation);
+        PublishOperationalIdentity();
+        return scope;
+    }
+
+    public void SetOperationalIdentity(
+        string rootOperationId,
+        string? causationId = null) =>
+        GetOperationalIdentityState().Set(rootOperationId, causationId);
+
+    private OperationalExecutionIdentityState GetOperationalIdentityState()
+    {
+        var current = System.Threading.Volatile.Read(ref _operationalIdentity);
+        if (current is not null)
+            return current;
+
+        var created = new OperationalExecutionIdentityState(
+            _http.HttpContext?.Request.Headers[OperationalExecutionHeaders.RootOperationId].ToString(),
+            _http.HttpContext?.Request.Headers[OperationalExecutionHeaders.CausationId].ToString(),
+            _http.HttpContext?.Request.Headers[OperationalExecutionHeaders.OperationId].ToString(),
+            _http.HttpContext?.Request.Headers[OperationalExecutionHeaders.ExecutionId].ToString());
+        return System.Threading.Interlocked.CompareExchange(
+            ref _operationalIdentity,
+            created,
+            null) ?? created;
+    }
 
     private int GetTenantId() => GetIntClaim(""tenantId"");
     private int GetUserId() => GetIntClaim(ClaimTypes.NameIdentifier);
+
+    private void PublishOperationalIdentity()
+    {
+        var response = _http.HttpContext?.Response;
+        if (response is null || response.HasStarted)
+            return;
+
+        var identity = OperationalIdentity;
+        response.Headers[OperationalExecutionHeaders.RootOperationId] = identity.RootOperationId;
+        response.Headers[OperationalExecutionHeaders.OperationId] = identity.OperationId;
+        response.Headers[OperationalExecutionHeaders.ExecutionId] = identity.ExecutionId;
+        if (!string.IsNullOrWhiteSpace(identity.CausationId))
+            response.Headers[OperationalExecutionHeaders.CausationId] = identity.CausationId;
+    }
 
     private int GetIntClaim(string claimType)
     {
@@ -2783,6 +2878,7 @@ public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : Backgr
             WriteTextIfMissing(
                 Path.Combine(projectDirectory, "Migration", "WorkerExecutionContext.cs"),
                 @"using Aplication.Interfaces.Services;
+using Dominio.Operational;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
@@ -2795,6 +2891,7 @@ public sealed class WorkerExecutionContext : IExecutionContext
     private string _traceId = Guid.NewGuid().ToString(""N"");
     private ExecutionOrigin _origin = ExecutionOrigin.Worker;
     private readonly string _processingScope;
+    private readonly OperationalExecutionIdentityState _operationalIdentity = new();
 
     public WorkerExecutionContext(IConfiguration configuration)
     {
@@ -2809,6 +2906,27 @@ public sealed class WorkerExecutionContext : IExecutionContext
     public string ProcessingScope => _processingScope;
     public ExecutionOrigin Origem => _origin;
     public IEnumerable<Claim> Claims => Enumerable.Empty<Claim>();
+    public OperationalExecutionIdentity OperationalIdentity => _operationalIdentity.Current;
+
+    public bool TryGetOperationalIdentity(out OperationalExecutionIdentity identity) =>
+        _operationalIdentity.TryGetCurrent(out identity);
+
+    public IDisposable BeginOperationalExecution(
+        string operation,
+        string? operationId = null,
+        string? causationId = null) =>
+        _operationalIdentity.Begin(operation, operationId, causationId);
+
+    public IDisposable BeginOperationalExecution(
+        OperationalExecutionIdentity parentIdentity,
+        string operation,
+        bool continueOperation = true) =>
+        _operationalIdentity.BeginFrom(parentIdentity, operation, continueOperation);
+
+    public void SetOperationalIdentity(
+        string rootOperationId,
+        string? causationId = null) =>
+        _operationalIdentity.Set(rootOperationId, causationId);
 
     public void SetTenantId(int id) => _tenantId = id;
     public void SetUserId(int id) => _userId = id;

@@ -18,6 +18,7 @@ using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using Aplication.Interfaces.Services;
 using Shared.Operational;
+using Shared.ModuleTransport;
 using Yeshua.Generated.Operational;
 using Yeshua.Generated.OperationalControl;
 using Migrations.Operational;
@@ -33,6 +34,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     var runtimeIdentityProvider = new RuntimeIdentityProvider(builder.Environment.EnvironmentName);
                     builder.Services.AddSingleton<IRuntimeIdentityProvider>(runtimeIdentityProvider);
                     builder.Services.AddYeshuaOperationalTelemetry(builder.Configuration, runtimeIdentityProvider.Current);
+                    builder.Services.AddYeshuaModuleAuthentication(builder.Configuration);
                     builder.Services.AddSingleton<OperationalLoggingPolicyState>(sp =>
                         new OperationalLoggingPolicyState(
                             sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Application,
@@ -61,7 +63,8 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<Shered.Logger.Logger>(sp =>
                         new Shered.Logger.Logger(
                             sp.GetRequiredService<Dominio.Interfaces.IOperationalTelemetryPolicy>(),
-                            sp.GetRequiredService<IOperationalLogSink>()));
+                            sp.GetRequiredService<IOperationalLogSink>(),
+                            sp.GetRequiredService<IRuntimeIdentityProvider>()));
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();

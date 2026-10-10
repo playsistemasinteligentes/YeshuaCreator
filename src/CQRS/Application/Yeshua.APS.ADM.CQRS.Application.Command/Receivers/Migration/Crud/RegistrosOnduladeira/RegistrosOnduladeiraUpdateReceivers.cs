@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RegistrosOnduladeiraCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRegistrosOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRegistrosOnduladeiraReceiver), commandName: "Command.Write.RegistrosOnduladeiraCrudCommand");
-                 var registrosonduladeira = new RegistrosOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REG_ID, c.REG_RESPOSTA, c.REG_STATUS, c.REG_DATA_INICIO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("RegistrosOnduladeira", "UpdateRegistrosOnduladeira", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RegistrosOnduladeiraCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRegistrosOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRegistrosOnduladeiraReceiver), commandName: "Command.Write.RegistrosOnduladeiraCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var registrosonduladeira = new RegistrosOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.REG_ID, c.REG_RESPOSTA, c.REG_STATUS, c.REG_DATA_INICIO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", registrosonduladeira.OperationalEntityId);
                  var domainResult = RegistrosOnduladeiraDomainBehavior.Apply(registrosonduladeira, context);
                  if (!domainResult.IsValid)

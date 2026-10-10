@@ -34,13 +34,14 @@
                             }
 
                             public IClinicaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string endereco, string telefone )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string endereco, string telefone, ulong? trackingMask = null )
                             {
                             var entity = new ClinicaEntity(id, nome, endereco, telefone );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Clinica", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ClinicaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Clinica", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ClinicaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

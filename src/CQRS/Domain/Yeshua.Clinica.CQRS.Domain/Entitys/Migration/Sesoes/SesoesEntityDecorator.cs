@@ -55,6 +55,43 @@
             public const ulong UserId = 1UL << 32;
         }
 
+        public static class SesoesOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PacienteId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataInicio = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataFim = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification StatusAgendamento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification StatusProntuario = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Prontuario = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QueixaPrincipal = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RegistroDocumental = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SintomasRelatados = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MudancasDesdeUltimaSessaao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ComportamentoObservado = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EstadoEmocionalGeral = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DiscursoPensamentos = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UsoMedicacao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TecnicasUtilizadas = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QuestionamentosReflexoesAbordadas = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ExerciciosTarefasSugeridas = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DiagnoosticoHipoteseDiagnoostica = Dominio.Operational.OperationalDataClassification.NeverCapture;
+            public const Dominio.Operational.OperationalDataClassification ObjetivosCurtoPrazo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ObjetivosLongoPrazo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FrequenciaSugeridaSessooes = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EncaminhamentoOutrosProfissionais = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification InformacoesRelevantesFuturasConsultas = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FeedbackPacienteSobreProcessoTerapeeutico = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ServicoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MovimentacaoFinanceiraId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProfissionalId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class SesoesDecorator : ISesoesEntity
 {
 
@@ -62,6 +99,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public SesoesDecorator(ISesoesEntity inner, Dominio.Interfaces.ILogger logger)
@@ -79,6 +117,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -91,7 +136,7 @@
                                             {
                                                 _inner.PacienteId = value;
                                                 if ((_trackingMask & SesoesTrackingFields.PacienteId) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "PacienteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "PacienteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.PacienteId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -105,7 +150,7 @@
                                             {
                                                 _inner.DataInicio = value;
                                                 if ((_trackingMask & SesoesTrackingFields.DataInicio) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "DataInicio", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "DataInicio", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.DataInicio, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -119,7 +164,7 @@
                                             {
                                                 _inner.DataFim = value;
                                                 if ((_trackingMask & SesoesTrackingFields.DataFim) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "DataFim", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "DataFim", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.DataFim, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -133,7 +178,7 @@
                                             {
                                                 _inner.StatusAgendamento = value;
                                                 if ((_trackingMask & SesoesTrackingFields.StatusAgendamento) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "StatusAgendamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "StatusAgendamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.StatusAgendamento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -147,7 +192,7 @@
                                             {
                                                 _inner.StatusProntuario = value;
                                                 if ((_trackingMask & SesoesTrackingFields.StatusProntuario) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "StatusProntuario", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "StatusProntuario", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.StatusProntuario, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -161,7 +206,7 @@
                                             {
                                                 _inner.Prontuario = value;
                                                 if ((_trackingMask & SesoesTrackingFields.Prontuario) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "Prontuario", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "Prontuario", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.Prontuario, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -175,7 +220,7 @@
                                             {
                                                 _inner.QueixaPrincipal = value;
                                                 if ((_trackingMask & SesoesTrackingFields.QueixaPrincipal) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "QueixaPrincipal", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "QueixaPrincipal", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.QueixaPrincipal, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -189,7 +234,7 @@
                                             {
                                                 _inner.RegistroDocumental = value;
                                                 if ((_trackingMask & SesoesTrackingFields.RegistroDocumental) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "RegistroDocumental", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "RegistroDocumental", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.RegistroDocumental, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -203,7 +248,7 @@
                                             {
                                                 _inner.SintomasRelatados = value;
                                                 if ((_trackingMask & SesoesTrackingFields.SintomasRelatados) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "SintomasRelatados", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "SintomasRelatados", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.SintomasRelatados, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -217,7 +262,7 @@
                                             {
                                                 _inner.MudancasDesdeUltimaSessaao = value;
                                                 if ((_trackingMask & SesoesTrackingFields.MudancasDesdeUltimaSessaao) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "MudancasDesdeUltimaSessaao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "MudancasDesdeUltimaSessaao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.MudancasDesdeUltimaSessaao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -231,7 +276,7 @@
                                             {
                                                 _inner.ComportamentoObservado = value;
                                                 if ((_trackingMask & SesoesTrackingFields.ComportamentoObservado) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "ComportamentoObservado", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "ComportamentoObservado", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.ComportamentoObservado, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -245,7 +290,7 @@
                                             {
                                                 _inner.EstadoEmocionalGeral = value;
                                                 if ((_trackingMask & SesoesTrackingFields.EstadoEmocionalGeral) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "EstadoEmocionalGeral", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "EstadoEmocionalGeral", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.EstadoEmocionalGeral, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -259,7 +304,7 @@
                                             {
                                                 _inner.DiscursoPensamentos = value;
                                                 if ((_trackingMask & SesoesTrackingFields.DiscursoPensamentos) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "DiscursoPensamentos", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "DiscursoPensamentos", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.DiscursoPensamentos, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -273,7 +318,7 @@
                                             {
                                                 _inner.UsoMedicacao = value;
                                                 if ((_trackingMask & SesoesTrackingFields.UsoMedicacao) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "UsoMedicacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "UsoMedicacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.UsoMedicacao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -287,7 +332,7 @@
                                             {
                                                 _inner.TecnicasUtilizadas = value;
                                                 if ((_trackingMask & SesoesTrackingFields.TecnicasUtilizadas) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "TecnicasUtilizadas", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "TecnicasUtilizadas", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.TecnicasUtilizadas, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -301,7 +346,7 @@
                                             {
                                                 _inner.QuestionamentosReflexoesAbordadas = value;
                                                 if ((_trackingMask & SesoesTrackingFields.QuestionamentosReflexoesAbordadas) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "QuestionamentosReflexoesAbordadas", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "QuestionamentosReflexoesAbordadas", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.QuestionamentosReflexoesAbordadas, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -315,7 +360,7 @@
                                             {
                                                 _inner.ExerciciosTarefasSugeridas = value;
                                                 if ((_trackingMask & SesoesTrackingFields.ExerciciosTarefasSugeridas) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "ExerciciosTarefasSugeridas", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "ExerciciosTarefasSugeridas", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.ExerciciosTarefasSugeridas, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -329,7 +374,7 @@
                                             {
                                                 _inner.DiagnoosticoHipoteseDiagnoostica = value;
                                                 if ((_trackingMask & SesoesTrackingFields.DiagnoosticoHipoteseDiagnoostica) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "DiagnoosticoHipoteseDiagnoostica", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "DiagnoosticoHipoteseDiagnoostica", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.DiagnoosticoHipoteseDiagnoostica, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -343,7 +388,7 @@
                                             {
                                                 _inner.ObjetivosCurtoPrazo = value;
                                                 if ((_trackingMask & SesoesTrackingFields.ObjetivosCurtoPrazo) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "ObjetivosCurtoPrazo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "ObjetivosCurtoPrazo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.ObjetivosCurtoPrazo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -357,7 +402,7 @@
                                             {
                                                 _inner.ObjetivosLongoPrazo = value;
                                                 if ((_trackingMask & SesoesTrackingFields.ObjetivosLongoPrazo) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "ObjetivosLongoPrazo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "ObjetivosLongoPrazo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.ObjetivosLongoPrazo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -371,7 +416,7 @@
                                             {
                                                 _inner.FrequenciaSugeridaSessooes = value;
                                                 if ((_trackingMask & SesoesTrackingFields.FrequenciaSugeridaSessooes) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "FrequenciaSugeridaSessooes", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "FrequenciaSugeridaSessooes", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.FrequenciaSugeridaSessooes, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -385,7 +430,7 @@
                                             {
                                                 _inner.EncaminhamentoOutrosProfissionais = value;
                                                 if ((_trackingMask & SesoesTrackingFields.EncaminhamentoOutrosProfissionais) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "EncaminhamentoOutrosProfissionais", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "EncaminhamentoOutrosProfissionais", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.EncaminhamentoOutrosProfissionais, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -399,7 +444,7 @@
                                             {
                                                 _inner.InformacoesRelevantesFuturasConsultas = value;
                                                 if ((_trackingMask & SesoesTrackingFields.InformacoesRelevantesFuturasConsultas) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "InformacoesRelevantesFuturasConsultas", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "InformacoesRelevantesFuturasConsultas", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.InformacoesRelevantesFuturasConsultas, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -413,7 +458,7 @@
                                             {
                                                 _inner.FeedbackPacienteSobreProcessoTerapeeutico = value;
                                                 if ((_trackingMask & SesoesTrackingFields.FeedbackPacienteSobreProcessoTerapeeutico) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "FeedbackPacienteSobreProcessoTerapeeutico", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "FeedbackPacienteSobreProcessoTerapeeutico", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.FeedbackPacienteSobreProcessoTerapeeutico, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -427,7 +472,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & SesoesTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -441,7 +486,7 @@
                                             {
                                                 _inner.ServicoId = value;
                                                 if ((_trackingMask & SesoesTrackingFields.ServicoId) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "ServicoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "ServicoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.ServicoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -455,7 +500,7 @@
                                             {
                                                 _inner.MovimentacaoFinanceiraId = value;
                                                 if ((_trackingMask & SesoesTrackingFields.MovimentacaoFinanceiraId) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "MovimentacaoFinanceiraId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "MovimentacaoFinanceiraId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.MovimentacaoFinanceiraId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -469,7 +514,7 @@
                                             {
                                                 _inner.ProfissionalId = value;
                                                 if ((_trackingMask & SesoesTrackingFields.ProfissionalId) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "ProfissionalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "ProfissionalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.ProfissionalId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -484,7 +529,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & SesoesTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -498,7 +543,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & SesoesTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -512,7 +557,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & SesoesTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -526,7 +571,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & SesoesTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Sesoes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Sesoes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

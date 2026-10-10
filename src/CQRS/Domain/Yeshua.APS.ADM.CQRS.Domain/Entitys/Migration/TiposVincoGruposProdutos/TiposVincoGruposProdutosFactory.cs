@@ -34,13 +34,14 @@
                             }
 
                             public ITiposVincoGruposProdutosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int id2 )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int id2, ulong? trackingMask = null )
                             {
                             var entity = new TiposVincoGruposProdutosEntity(id, id2 );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TiposVincoGruposProdutos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TiposVincoGruposProdutosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TiposVincoGruposProdutos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TiposVincoGruposProdutosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

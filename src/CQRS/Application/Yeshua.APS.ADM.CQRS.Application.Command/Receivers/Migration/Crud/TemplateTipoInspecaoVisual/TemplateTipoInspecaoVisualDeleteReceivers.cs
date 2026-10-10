@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TemplateTipoInspecaoVisualCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateTipoInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateTipoInspecaoVisualReceiver), commandName: "Command.Write.TemplateTipoInspecaoVisualCrudCommand");
-                 var templatetipoinspecaovisual = new TemplateTipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.TTI_ID, c.TIV_ID, c.TEM_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TemplateTipoInspecaoVisual", "DeleteTemplateTipoInspecaoVisual", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TemplateTipoInspecaoVisualCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateTipoInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateTipoInspecaoVisualReceiver), commandName: "Command.Write.TemplateTipoInspecaoVisualCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var templatetipoinspecaovisual = new TemplateTipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.TTI_ID, c.TIV_ID, c.TEM_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatetipoinspecaovisual.OperationalEntityId);
                  var domainResult = TemplateTipoInspecaoVisualDomainBehavior.Apply(templatetipoinspecaovisual, context);
                  if (!domainResult.IsValid)

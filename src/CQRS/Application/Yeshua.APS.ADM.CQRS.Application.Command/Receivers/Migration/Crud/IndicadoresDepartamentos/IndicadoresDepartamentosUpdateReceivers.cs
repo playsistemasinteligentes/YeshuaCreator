@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.IndicadoresDepartamentosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateIndicadoresDepartamentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateIndicadoresDepartamentosReceiver), commandName: "Command.Write.IndicadoresDepartamentosCrudCommand");
-                 var indicadoresdepartamentos = new IndicadoresDepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.INDDEP_ID, c.DEP_ID, c.IND_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("IndicadoresDepartamentos", "UpdateIndicadoresDepartamentos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.IndicadoresDepartamentosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateIndicadoresDepartamentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateIndicadoresDepartamentosReceiver), commandName: "Command.Write.IndicadoresDepartamentosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var indicadoresdepartamentos = new IndicadoresDepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.INDDEP_ID, c.DEP_ID, c.IND_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", indicadoresdepartamentos.OperationalEntityId);
                  var domainResult = IndicadoresDepartamentosDomainBehavior.Apply(indicadoresdepartamentos, context);
                  if (!domainResult.IsValid)

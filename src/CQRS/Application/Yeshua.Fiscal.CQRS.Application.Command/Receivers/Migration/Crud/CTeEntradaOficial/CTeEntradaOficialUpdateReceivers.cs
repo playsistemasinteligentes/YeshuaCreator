@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeEntradaOficialCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeEntradaOficial", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeEntradaOficialReceiver), commandName: "Command.Write.CTeEntradaOficialCrudCommand");
-                 var cteentradaoficial = new CTeEntradaOficialFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.SourceApplication, c.SourceModule, c.SourceMessageId, c.MessageType, c.MessageVersion, c.ReceivedAtUtc, c.PayloadHash, c.PayloadStorageKey, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeEntradaOficial", "UpdateCTeEntradaOficial", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeEntradaOficialCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeEntradaOficial", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeEntradaOficialReceiver), commandName: "Command.Write.CTeEntradaOficialCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cteentradaoficial = new CTeEntradaOficialFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.SourceApplication, c.SourceModule, c.SourceMessageId, c.MessageType, c.MessageVersion, c.ReceivedAtUtc, c.PayloadHash, c.PayloadStorageKey, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cteentradaoficial.OperationalEntityId);
                  var domainResult = CTeEntradaOficialDomainBehavior.Apply(cteentradaoficial, context);
                  if (!domainResult.IsValid)

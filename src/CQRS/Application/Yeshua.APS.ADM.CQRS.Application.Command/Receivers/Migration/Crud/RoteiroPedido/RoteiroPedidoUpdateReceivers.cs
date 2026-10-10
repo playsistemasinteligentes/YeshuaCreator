@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RoteiroPedidoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRoteiroPedido", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRoteiroPedidoReceiver), commandName: "Command.Write.RoteiroPedidoCrudCommand");
-                 var roteiropedido = new RoteiroPedidoFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.StatusCadastro, c.TipoPlanejamento, c.CalendarioId, c.HierarquiaSequenciaTransformacao, c.ProximaSequenciaTransformacao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.PecasPorPulso, c.PrioridadeInformada, c.Status, c.Operacoes, c.ExcecaoOperacoes, c.LinhaDireta, c.AvaliaCusto, c.PercentualInicioPassoAnterior, c.MaquinaLarguraUtil, c.GrupoTipo, c.GrupoPerformanceMetroLinear);
+                 var trackingMask = _domainTrackingPolicy.GetMask("RoteiroPedido", "UpdateRoteiroPedido", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RoteiroPedidoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRoteiroPedido", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRoteiroPedidoReceiver), commandName: "Command.Write.RoteiroPedidoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var roteiropedido = new RoteiroPedidoFactory(_logger, _domainTrackingPolicy).Create(context, c.PedidoId, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.StatusCadastro, c.TipoPlanejamento, c.CalendarioId, c.HierarquiaSequenciaTransformacao, c.ProximaSequenciaTransformacao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.PecasPorPulso, c.PrioridadeInformada, c.Status, c.Operacoes, c.ExcecaoOperacoes, c.LinhaDireta, c.AvaliaCusto, c.PercentualInicioPassoAnterior, c.MaquinaLarguraUtil, c.GrupoTipo, c.GrupoPerformanceMetroLinear, trackingMask: trackingMask);
                  var domainResult = RoteiroPedidoDomainBehavior.Apply(roteiropedido, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.NFeProdutoSnapshotCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteNFeProdutoSnapshot", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteNFeProdutoSnapshotReceiver), commandName: "Command.Write.NFeProdutoSnapshotCrudCommand");
-                 var nfeprodutosnapshot = new NFeProdutoSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DocumentoFiscalOriginarioId, c.CorrelationId, c.CargaId, c.PedidoId, c.ChaveAcesso, c.EmitenteDocumento, c.DestinatarioDocumento, c.UFOrigem, c.UFDestino, c.MunicipioOrigemCodigoIbge, c.MunicipioDestinoCodigoIbge, c.ValorDocumento, c.PesoBruto, c.Volume, c.XmlStorageKey, c.SnapshotJson, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("NFeProdutoSnapshot", "DeleteNFeProdutoSnapshot", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.NFeProdutoSnapshotCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteNFeProdutoSnapshot", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteNFeProdutoSnapshotReceiver), commandName: "Command.Write.NFeProdutoSnapshotCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var nfeprodutosnapshot = new NFeProdutoSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DocumentoFiscalOriginarioId, c.CorrelationId, c.CargaId, c.PedidoId, c.ChaveAcesso, c.EmitenteDocumento, c.DestinatarioDocumento, c.UFOrigem, c.UFDestino, c.MunicipioOrigemCodigoIbge, c.MunicipioDestinoCodigoIbge, c.ValorDocumento, c.PesoBruto, c.Volume, c.XmlStorageKey, c.SnapshotJson, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", nfeprodutosnapshot.OperationalEntityId);
                  var domainResult = NFeProdutoSnapshotDomainBehavior.Apply(nfeprodutosnapshot, context);
                  if (!domainResult.IsValid)

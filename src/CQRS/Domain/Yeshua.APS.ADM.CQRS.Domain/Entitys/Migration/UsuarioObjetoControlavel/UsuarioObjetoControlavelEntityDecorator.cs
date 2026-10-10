@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class UsuarioObjetoControlavelOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification USE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OBJ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification USU_OBJETO_ACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class UsuarioObjetoControlavelDecorator : IUsuarioObjetoControlavelEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public UsuarioObjetoControlavelDecorator(IUsuarioObjetoControlavelEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.USE_ID = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.USE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.USE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.OBJ_ID = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.OBJ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "OBJ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "OBJ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.OBJ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.USU_OBJETO_ACAO = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.USU_OBJETO_ACAO) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "USU_OBJETO_ACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "USU_OBJETO_ACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.USU_OBJETO_ACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & UsuarioObjetoControlavelTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("UsuarioObjetoControlavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, UsuarioObjetoControlavelOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

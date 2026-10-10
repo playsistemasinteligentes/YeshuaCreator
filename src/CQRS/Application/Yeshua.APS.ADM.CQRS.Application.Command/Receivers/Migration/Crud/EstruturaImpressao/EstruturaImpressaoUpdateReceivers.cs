@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.EstruturaImpressaoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateEstruturaImpressao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateEstruturaImpressaoReceiver), commandName: "Command.Write.EstruturaImpressaoCrudCommand");
-                 var estruturaimpressao = new EstruturaImpressaoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.HTML_ESTRUTURA, c.CLI_ID, c.EST_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("EstruturaImpressao", "UpdateEstruturaImpressao", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.EstruturaImpressaoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateEstruturaImpressao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateEstruturaImpressaoReceiver), commandName: "Command.Write.EstruturaImpressaoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var estruturaimpressao = new EstruturaImpressaoFactory(_logger, _domainTrackingPolicy).Create(context, c.EST_ID, c.HTML_ESTRUTURA, c.CLI_ID, c.EST_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", estruturaimpressao.OperationalEntityId);
                  var domainResult = EstruturaImpressaoDomainBehavior.Apply(estruturaimpressao, context);
                  if (!domainResult.IsValid)

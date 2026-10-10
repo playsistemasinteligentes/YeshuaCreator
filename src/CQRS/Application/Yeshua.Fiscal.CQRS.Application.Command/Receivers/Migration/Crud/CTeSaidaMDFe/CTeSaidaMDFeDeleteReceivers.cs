@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeSaidaMDFeCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeSaidaMDFe", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeSaidaMDFeReceiver), commandName: "Command.Write.CTeSaidaMDFeCrudCommand");
-                 var ctesaidamdfe = new CTeSaidaMDFeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeTentativaEmissaoId, c.CorrelationId, c.ChaveAcessoCTe, c.SnapshotHash, c.OutboxMessageId, c.PublicadoEmUtc, c.UltimoErro, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeSaidaMDFe", "DeleteCTeSaidaMDFe", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeSaidaMDFeCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeSaidaMDFe", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeSaidaMDFeReceiver), commandName: "Command.Write.CTeSaidaMDFeCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ctesaidamdfe = new CTeSaidaMDFeFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeTentativaEmissaoId, c.CorrelationId, c.ChaveAcessoCTe, c.SnapshotHash, c.OutboxMessageId, c.PublicadoEmUtc, c.UltimoErro, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ctesaidamdfe.OperationalEntityId);
                  var domainResult = CTeSaidaMDFeDomainBehavior.Apply(ctesaidamdfe, context);
                  if (!domainResult.IsValid)

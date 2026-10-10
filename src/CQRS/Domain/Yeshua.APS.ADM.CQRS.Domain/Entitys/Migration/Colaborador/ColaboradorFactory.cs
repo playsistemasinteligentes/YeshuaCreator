@@ -34,13 +34,14 @@
                             }
 
                             public IColaboradorEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string col_cpf, string col_nome, DateTime col_nascimento, string col_email, string col_matricula, string turm_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string col_cpf, string col_nome, DateTime col_nascimento, string col_email, string col_matricula, string turm_id, ulong? trackingMask = null )
                             {
                             var entity = new ColaboradorEntity(col_cpf, col_nome, col_nascimento, col_email, col_matricula, turm_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Colaborador", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ColaboradorDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Colaborador", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ColaboradorDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

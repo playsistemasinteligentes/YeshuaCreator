@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ObjetoControlavelCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteObjetoControlavelReceiver), commandName: "Command.Write.ObjetoControlavelCrudCommand");
-                 var objetocontrolavel = new ObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OBJ_ID, c.OBJ_DESCRICAO, c.OBJ_TIPO, c.OBJ_GRUPO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ObjetoControlavel", "DeleteObjetoControlavel", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ObjetoControlavelCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteObjetoControlavelReceiver), commandName: "Command.Write.ObjetoControlavelCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var objetocontrolavel = new ObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OBJ_ID, c.OBJ_DESCRICAO, c.OBJ_TIPO, c.OBJ_GRUPO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", objetocontrolavel.OperationalEntityId);
                  var domainResult = ObjetoControlavelDomainBehavior.Apply(objetocontrolavel, context);
                  if (!domainResult.IsValid)

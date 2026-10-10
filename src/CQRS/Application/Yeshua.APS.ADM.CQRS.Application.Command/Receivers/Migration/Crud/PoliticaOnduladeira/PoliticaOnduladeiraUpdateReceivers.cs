@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PoliticaOnduladeiraCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePoliticaOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePoliticaOnduladeiraReceiver), commandName: "Command.Write.PoliticaOnduladeiraCrudCommand");
-                 var politicaonduladeira = new PoliticaOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.POL_ID, c.POL_NIVEL, c.POL_PROMOCAO, c.POL_DIAS_ANTECIPACAO, c.POL_METROS_LINEARES);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PoliticaOnduladeira", "UpdatePoliticaOnduladeira", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PoliticaOnduladeiraCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePoliticaOnduladeira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePoliticaOnduladeiraReceiver), commandName: "Command.Write.PoliticaOnduladeiraCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var politicaonduladeira = new PoliticaOnduladeiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.POL_ID, c.POL_NIVEL, c.POL_PROMOCAO, c.POL_DIAS_ANTECIPACAO, c.POL_METROS_LINEARES, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", politicaonduladeira.OperationalEntityId);
                  var domainResult = PoliticaOnduladeiraDomainBehavior.Apply(politicaonduladeira, context);
                  if (!domainResult.IsValid)

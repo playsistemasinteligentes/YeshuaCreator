@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RestricoesDeRodagemCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRestricoesDeRodagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRestricoesDeRodagemReceiver), commandName: "Command.Write.RestricoesDeRodagemCrudCommand");
-                 var restricoesderodagem = new RestricoesDeRodagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RES_ID, c.RES_TIPO, c.RES_HORA_INI, c.RES_HORA_FIM, c.RES_VELOCIDADE_HORA_RUSH, c.TVE_ID, c.MAP_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("RestricoesDeRodagem", "InsertRestricoesDeRodagem", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RestricoesDeRodagemCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRestricoesDeRodagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRestricoesDeRodagemReceiver), commandName: "Command.Write.RestricoesDeRodagemCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var restricoesderodagem = new RestricoesDeRodagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RES_ID, c.RES_TIPO, c.RES_HORA_INI, c.RES_HORA_FIM, c.RES_VELOCIDADE_HORA_RUSH, c.TVE_ID, c.MAP_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", restricoesderodagem.OperationalEntityId);
                  var domainResult = RestricoesDeRodagemDomainBehavior.Apply(restricoesderodagem, context);
                  if (!domainResult.IsValid)

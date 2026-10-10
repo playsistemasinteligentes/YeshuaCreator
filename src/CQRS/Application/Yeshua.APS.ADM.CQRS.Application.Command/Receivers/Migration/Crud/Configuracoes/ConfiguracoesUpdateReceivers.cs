@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ConfiguracoesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateConfiguracoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateConfiguracoesReceiver), commandName: "Command.Write.ConfiguracoesCrudCommand");
-                 var configuracoes = new ConfiguracoesFactory(_logger, _domainTrackingPolicy).Create(context, c.CON_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Configuracoes", "UpdateConfiguracoes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ConfiguracoesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateConfiguracoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateConfiguracoesReceiver), commandName: "Command.Write.ConfiguracoesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var configuracoes = new ConfiguracoesFactory(_logger, _domainTrackingPolicy).Create(context, c.CON_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", configuracoes.OperationalEntityId);
                  var domainResult = ConfiguracoesDomainBehavior.Apply(configuracoes, context);
                  if (!domainResult.IsValid)

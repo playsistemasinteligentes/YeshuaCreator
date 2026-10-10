@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PontosMapaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePontosMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePontosMapaReceiver), commandName: "Command.Write.PontosMapaCrudCommand");
-                 var pontosmapa = new PontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.PON_ID, c.PON_DESCRICAO, c.PON_TIPO, c.PON_LATITUDE, c.PON_LONGITUDE, c.PON_DISTANCIA_KM, c.MUN_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PontosMapa", "DeletePontosMapa", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PontosMapaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePontosMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePontosMapaReceiver), commandName: "Command.Write.PontosMapaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var pontosmapa = new PontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.PON_ID, c.PON_DESCRICAO, c.PON_TIPO, c.PON_LATITUDE, c.PON_LONGITUDE, c.PON_DISTANCIA_KM, c.MUN_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", pontosmapa.OperationalEntityId);
                  var domainResult = PontosMapaDomainBehavior.Apply(pontosmapa, context);
                  if (!domainResult.IsValid)

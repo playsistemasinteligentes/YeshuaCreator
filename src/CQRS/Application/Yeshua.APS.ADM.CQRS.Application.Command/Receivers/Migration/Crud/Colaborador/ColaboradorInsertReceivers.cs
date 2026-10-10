@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ColaboradorCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertColaborador", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertColaboradorReceiver), commandName: "Command.Write.ColaboradorCrudCommand");
-                 var colaborador = new ColaboradorFactory(_logger, _domainTrackingPolicy).Create(context, c.COL_CPF, c.COL_NOME, c.COL_NASCIMENTO, c.COL_EMAIL, c.COL_MATRICULA, c.TURM_id);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Colaborador", "InsertColaborador", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ColaboradorCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertColaborador", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertColaboradorReceiver), commandName: "Command.Write.ColaboradorCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var colaborador = new ColaboradorFactory(_logger, _domainTrackingPolicy).Create(context, c.COL_CPF, c.COL_NOME, c.COL_NASCIMENTO, c.COL_EMAIL, c.COL_MATRICULA, c.TURM_id, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", colaborador.OperationalEntityId);
                  var domainResult = ColaboradorDomainBehavior.Apply(colaborador, context);
                  if (!domainResult.IsValid)

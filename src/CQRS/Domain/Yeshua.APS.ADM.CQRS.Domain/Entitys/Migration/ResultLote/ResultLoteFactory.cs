@@ -34,13 +34,14 @@
                             }
 
                             public IResultLoteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, ulong? trackingMask = null )
                             {
                             var entity = new ResultLoteEntity(id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ResultLote", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ResultLoteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ResultLote", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ResultLoteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

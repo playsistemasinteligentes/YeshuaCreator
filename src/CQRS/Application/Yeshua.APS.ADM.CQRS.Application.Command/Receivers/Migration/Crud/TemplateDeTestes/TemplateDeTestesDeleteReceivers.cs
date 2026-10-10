@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TemplateDeTestesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateDeTestes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateDeTestesReceiver), commandName: "Command.Write.TemplateDeTestesCrudCommand");
-                 var templatedetestes = new TemplateDeTestesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Observacao);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TemplateDeTestes", "DeleteTemplateDeTestes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TemplateDeTestesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateDeTestes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateDeTestesReceiver), commandName: "Command.Write.TemplateDeTestesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var templatedetestes = new TemplateDeTestesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Observacao, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatedetestes.OperationalEntityId);
                  var domainResult = TemplateDeTestesDomainBehavior.Apply(templatedetestes, context);
                  if (!domainResult.IsValid)

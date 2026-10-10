@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.GrupoServicoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteGrupoServico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteGrupoServicoReceiver), commandName: "Command.Write.GrupoServicoCrudCommand");
-                 var gruposervico = new GrupoServicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao);
+                 var trackingMask = _domainTrackingPolicy.GetMask("GrupoServico", "DeleteGrupoServico", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.GrupoServicoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteGrupoServico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteGrupoServicoReceiver), commandName: "Command.Write.GrupoServicoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var gruposervico = new GrupoServicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", gruposervico.OperationalEntityId);
                  var domainResult = GrupoServicoDomainBehavior.Apply(gruposervico, context);
                  if (!domainResult.IsValid)

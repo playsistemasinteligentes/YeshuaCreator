@@ -30,18 +30,23 @@ namespace Query.Write
         }
         public QueryModel InseriryUserQuery(IyUserEntity yUser)
         {
-            this.Query = $@" INSERT INTO [yUser] ([Nome], [Email], [Senha], [TenantID], [OperationalEntityId], [Deleted], [Changed]) OUTPUT INSERTED.[Id] VALUES(@Nome, @Email, @Senha, @TenantID, @OperationalEntityId, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO [yUser] ([Id], [Nome], [Email], [Senha], [TenantID], [Deleted], [Changed]) VALUES(@Id, @Nome, @Email, @Senha, @TenantID, @Deleted, @Changed) ";
             this.Parameters = new
             {
+                Id = yUser.Id,
                 Nome = yUser.Nome,
                 Email = yUser.Email,
                 Senha = yUser.Senha,
                 TenantID = _executionContext.TenantID,
-                OperationalEntityId = yUser.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
             };
             return new QueryModel(this.Query, this.Parameters);
+        }
+
+        public QueryModel NextGlobalIdQuery()
+        {
+            return new QueryModel("SELECT NEXT VALUE FOR [yUserIdGlobalSequence];", null);
         }
         public QueryModel UpdateyUserQuery(IyUserEntity yUser)
         {
@@ -92,16 +97,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 TenantID = value,
-                Id = id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateOperationalEntityId(int id, string value)
-        {
-            this.Query = $@" UPDATE [yUser] SET [OperationalEntityId] = @OperationalEntityId WHERE [Id] = @Id ";
-            this.Parameters = new
-            {
-                OperationalEntityId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

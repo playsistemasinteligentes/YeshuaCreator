@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_USER_GRUPOCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_USER_GRUPO", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_USER_GRUPOReceiver), commandName: "Command.Write.T_USER_GRUPOCrudCommand");
-                 var t_user_grupo = new T_USER_GRUPOFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRU_ID, c.ID_USUARIO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_USER_GRUPO", "DeleteT_USER_GRUPO", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_USER_GRUPOCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_USER_GRUPO", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_USER_GRUPOReceiver), commandName: "Command.Write.T_USER_GRUPOCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_user_grupo = new T_USER_GRUPOFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRU_ID, c.ID_USUARIO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_user_grupo.OperationalEntityId);
                  var domainResult = T_USER_GRUPODomainBehavior.Apply(t_user_grupo, context);
                  if (!domainResult.IsValid)

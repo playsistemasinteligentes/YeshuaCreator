@@ -48,8 +48,17 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yInboxCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyInbox", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyInboxReceiver), commandName: "Command.Write.yInboxCrudCommand");
-                 var yinbox = new yInboxFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.CreatedAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yInbox", "InsertyInbox", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yInboxCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyInbox", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyInboxReceiver), commandName: "Command.Write.yInboxCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var yinbox = new yInboxFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.CreatedAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId, trackingMask: trackingMask);
+                 yinbox.RootOperationId = hasExecutionIdentity ? executionIdentity.RootOperationId : c.RootOperationId;
+                 yinbox.OperationId = hasExecutionIdentity ? executionIdentity.OperationId : c.OperationId;
+                 yinbox.ExecutionId = hasExecutionIdentity ? executionIdentity.ExecutionId : c.ExecutionId;
+                 yinbox.CausationId = hasExecutionIdentity ? executionIdentity.CausationId : c.CausationId;
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yinbox.OperationalEntityId);
                  var domainResult = yInboxDomainBehavior.Apply(yinbox, context);
                  if (!domainResult.IsValid)

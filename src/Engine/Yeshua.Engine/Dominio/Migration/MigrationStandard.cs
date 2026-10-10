@@ -42,13 +42,13 @@ Polling
             AddModule("ADM", "Administrativo");
 
             AddEntity("yTenant").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_executionContext.TenantID").NeedBeWhere().CanTakeOffWhere()
+            .AddColumn("Id", "ID").Int().Key().GlobalIdentity("Central").NeedBeWhere("#_executionContext.TenantID").CanTakeOffWhere()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Varchar(14).NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull()
             .AddColumn("UserId", "User ID").Int();
 
             AddEntity("yUser").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("Id", "ID").Int().Key().GlobalIdentity("Central")
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
@@ -188,10 +188,10 @@ Polling
     public class S000007 : MigrationBase
     {
         public record OpenApplicationSessionInput(
-            string TenantIdentity,
+            int TenantId,
             string TenantDocument,
             string TenantName,
-            string UserIdentity,
+            int UserId,
             string UserName,
             string Email);
 
@@ -203,11 +203,11 @@ Polling
                 .AddUseCaseSubGrup("Contas")
                 .AddCommand(
                     "OpenApplicationSession",
-                    new OpenApplicationSessionInput("", "", "", "", "", ""),
+                    new OpenApplicationSessionInput(0, "", "", 0, "", ""),
                     new OpenApplicationSessionOutput(0, 0, ""))
                 .AddEntity("yTenant")
                 .AddEntity("yUser")
-                .AddScope("Abre a sessao local do aplicativo a partir de identidades globais autenticadas pela Central.");
+                .AddScope("Abre a sessao local do aplicativo usando TenantId e UserId globais atribuidos pela Central.");
         }
     }
 

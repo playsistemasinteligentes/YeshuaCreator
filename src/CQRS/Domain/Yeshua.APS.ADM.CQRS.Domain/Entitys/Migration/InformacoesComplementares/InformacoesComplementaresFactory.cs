@@ -34,13 +34,14 @@
                             }
 
                             public IInformacoesComplementaresEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int inf_id, string inf_descricao, Decimal inf_valor, int met_id, string inf_data )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int inf_id, string inf_descricao, Decimal inf_valor, int met_id, string inf_data, ulong? trackingMask = null )
                             {
                             var entity = new InformacoesComplementaresEntity(inf_id, inf_descricao, inf_valor, met_id, inf_data );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("InformacoesComplementares", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new InformacoesComplementaresDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("InformacoesComplementares", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new InformacoesComplementaresDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public ICTeParticipanteSnapshotEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string papel, string documento, string? nome, string? inscricaoestadual, string? uf, string? municipiocodigoibge, string? enderecojson )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string papel, string documento, string? nome, string? inscricaoestadual, string? uf, string? municipiocodigoibge, string? enderecojson, ulong? trackingMask = null )
                             {
                             var entity = new CTeParticipanteSnapshotEntity(id, ctesolicitacaofiscalid, papel, documento, nome, inscricaoestadual, uf, municipiocodigoibge, enderecojson );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeParticipanteSnapshot", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeParticipanteSnapshotDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeParticipanteSnapshot", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeParticipanteSnapshotDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

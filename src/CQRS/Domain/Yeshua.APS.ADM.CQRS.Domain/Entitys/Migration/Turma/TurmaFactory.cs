@@ -34,13 +34,14 @@
                             }
 
                             public ITurmaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string id, string descricao, DateTime? turm_hora_ini_dia1, DateTime? turm_hora_fim_dia1, DateTime? turm_hora_ini_dia2, DateTime? turm_hora_fim_dia2, DateTime? turm_hora_ini_dia3, DateTime? turm_hora_fim_dia3, DateTime? turm_hora_ini_dia4, DateTime? turm_hora_fim_dia4, DateTime? turm_hora_ini_dia5, DateTime? turm_hora_fim_dia5, DateTime? turm_hora_ini_dia6, DateTime? turm_hora_fim_dia6, DateTime? turm_hora_ini_dia7, DateTime? turm_hora_fim_dia7 )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string id, string descricao, DateTime? turm_hora_ini_dia1, DateTime? turm_hora_fim_dia1, DateTime? turm_hora_ini_dia2, DateTime? turm_hora_fim_dia2, DateTime? turm_hora_ini_dia3, DateTime? turm_hora_fim_dia3, DateTime? turm_hora_ini_dia4, DateTime? turm_hora_fim_dia4, DateTime? turm_hora_ini_dia5, DateTime? turm_hora_fim_dia5, DateTime? turm_hora_ini_dia6, DateTime? turm_hora_fim_dia6, DateTime? turm_hora_ini_dia7, DateTime? turm_hora_fim_dia7, ulong? trackingMask = null )
                             {
                             var entity = new TurmaEntity(id, descricao, turm_hora_ini_dia1, turm_hora_fim_dia1, turm_hora_ini_dia2, turm_hora_fim_dia2, turm_hora_ini_dia3, turm_hora_fim_dia3, turm_hora_ini_dia4, turm_hora_fim_dia4, turm_hora_ini_dia5, turm_hora_fim_dia5, turm_hora_ini_dia6, turm_hora_fim_dia6, turm_hora_ini_dia7, turm_hora_fim_dia7 );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Turma", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TurmaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Turma", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TurmaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

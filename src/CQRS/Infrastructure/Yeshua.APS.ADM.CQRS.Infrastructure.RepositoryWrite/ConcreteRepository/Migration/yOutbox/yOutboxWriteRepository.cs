@@ -161,6 +161,26 @@ namespace Input.Repository.yOutbox
             var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateRootOperationId(int id, string value)
+        {
+            var query = _query.UpdateRootOperationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateOperationId(int id, string value)
+        {
+            var query = _query.UpdateOperationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateExecutionId(int id, string value)
+        {
+            var query = _query.UpdateExecutionId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCausationId(int id, string value)
+        {
+            var query = _query.UpdateCausationId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

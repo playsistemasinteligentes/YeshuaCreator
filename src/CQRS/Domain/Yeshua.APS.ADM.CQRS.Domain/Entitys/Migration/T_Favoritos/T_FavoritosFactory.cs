@@ -34,13 +34,14 @@
                             }
 
                             public IT_FavoritosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int idfavorito, int use_id, int id_indicador )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int idfavorito, int use_id, int id_indicador, ulong? trackingMask = null )
                             {
                             var entity = new T_FavoritosEntity(idfavorito, use_id, id_indicador );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_Favoritos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_FavoritosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_Favoritos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_FavoritosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IVariavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int var_id, string var_descricao, int? con_id, int var_modo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int var_id, string var_descricao, int? con_id, int var_modo, ulong? trackingMask = null )
                             {
                             var entity = new VariavelEntity(id, var_id, var_descricao, con_id, var_modo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Variavel", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new VariavelDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Variavel", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new VariavelDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

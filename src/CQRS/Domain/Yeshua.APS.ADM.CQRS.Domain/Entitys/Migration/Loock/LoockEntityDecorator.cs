@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class LoockOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOO_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOO_CONTEUDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class LoockDecorator : ILoockEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public LoockDecorator(ILoockEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & LoockTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.LOO_ID = value;
                                                 if ((_trackingMask & LoockTrackingFields.LOO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "LOO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "LOO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.LOO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.LOO_DESCRICAO = value;
                                                 if ((_trackingMask & LoockTrackingFields.LOO_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "LOO_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "LOO_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.LOO_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.LOO_CONTEUDO = value;
                                                 if ((_trackingMask & LoockTrackingFields.LOO_CONTEUDO) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "LOO_CONTEUDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "LOO_CONTEUDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.LOO_CONTEUDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & LoockTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & LoockTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & LoockTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & LoockTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Loock", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Loock", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LoockOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

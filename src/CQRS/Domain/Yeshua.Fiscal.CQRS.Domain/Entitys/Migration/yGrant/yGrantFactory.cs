@@ -34,13 +34,14 @@
                             }
 
                             public IyGrantEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? description )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? description, ulong? trackingMask = null )
                             {
                             var entity = new yGrantEntity(id, description );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yGrant", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yGrantDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yGrant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yGrantDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

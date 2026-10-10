@@ -34,13 +34,14 @@
                             }
 
                             public ILogsEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? log_chave, string? log_contexto, string? log_conteudo, int log_id, DateTime? log_emissao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? log_chave, string? log_contexto, string? log_conteudo, int log_id, DateTime? log_emissao, ulong? trackingMask = null )
                             {
                             var entity = new LogsEntity(id, log_chave, log_contexto, log_conteudo, log_id, log_emissao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Logs", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new LogsDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Logs", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new LogsDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

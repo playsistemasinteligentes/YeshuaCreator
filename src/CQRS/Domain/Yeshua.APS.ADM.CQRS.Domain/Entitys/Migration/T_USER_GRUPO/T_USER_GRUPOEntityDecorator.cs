@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class T_USER_GRUPOOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRU_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ID_USUARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class T_USER_GRUPODecorator : IT_USER_GRUPOEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public T_USER_GRUPODecorator(IT_USER_GRUPOEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.GRU_ID = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.GRU_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "GRU_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "GRU_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.GRU_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.ID_USUARIO = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.ID_USUARIO) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "ID_USUARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "ID_USUARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.ID_USUARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & T_USER_GRUPOTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("T_USER_GRUPO", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_USER_GRUPO", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_USER_GRUPOOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

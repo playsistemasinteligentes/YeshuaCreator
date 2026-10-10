@@ -34,13 +34,14 @@
                             }
 
                             public IExperienciaPlanejamentoTransporteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tipo, string? referencia, string? pedidoid, string? clienteid, string? municipio, string? regiao, string? rotaid, Decimal? peso, Decimal? volume, string? observacao, DateTime criadoem, string criadopor )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tipo, string? referencia, string? pedidoid, string? clienteid, string? municipio, string? regiao, string? rotaid, Decimal? peso, Decimal? volume, string? observacao, DateTime criadoem, string criadopor, ulong? trackingMask = null )
                             {
                             var entity = new ExperienciaPlanejamentoTransporteEntity(id, tipo, referencia, pedidoid, clienteid, municipio, regiao, rotaid, peso, volume, observacao, criadoem, criadopor );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ExperienciaPlanejamentoTransporte", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ExperienciaPlanejamentoTransporteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ExperienciaPlanejamentoTransporte", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ExperienciaPlanejamentoTransporteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

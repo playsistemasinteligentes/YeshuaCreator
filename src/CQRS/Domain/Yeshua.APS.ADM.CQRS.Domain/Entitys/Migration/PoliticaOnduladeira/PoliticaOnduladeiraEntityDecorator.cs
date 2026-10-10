@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class PoliticaOnduladeiraOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification POL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification POL_NIVEL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification POL_PROMOCAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification POL_DIAS_ANTECIPACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification POL_METROS_LINEARES = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PoliticaOnduladeiraDecorator : IPoliticaOnduladeiraEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PoliticaOnduladeiraDecorator(IPoliticaOnduladeiraEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.POL_ID = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.POL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.POL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.POL_NIVEL = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.POL_NIVEL) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_NIVEL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_NIVEL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.POL_NIVEL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.POL_PROMOCAO = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.POL_PROMOCAO) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_PROMOCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_PROMOCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.POL_PROMOCAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.POL_DIAS_ANTECIPACAO = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.POL_DIAS_ANTECIPACAO) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_DIAS_ANTECIPACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_DIAS_ANTECIPACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.POL_DIAS_ANTECIPACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.POL_METROS_LINEARES = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.POL_METROS_LINEARES) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_METROS_LINEARES", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "POL_METROS_LINEARES", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.POL_METROS_LINEARES, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PoliticaOnduladeiraTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PoliticaOnduladeira", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PoliticaOnduladeiraOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

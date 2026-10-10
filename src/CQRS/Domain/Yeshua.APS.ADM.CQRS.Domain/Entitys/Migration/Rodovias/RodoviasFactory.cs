@@ -34,13 +34,14 @@
                             }
 
                             public IRodoviasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rod_id, string? rod_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rod_id, string? rod_descricao, ulong? trackingMask = null )
                             {
                             var entity = new RodoviasEntity(id, rod_id, rod_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Rodovias", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RodoviasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Rodovias", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RodoviasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

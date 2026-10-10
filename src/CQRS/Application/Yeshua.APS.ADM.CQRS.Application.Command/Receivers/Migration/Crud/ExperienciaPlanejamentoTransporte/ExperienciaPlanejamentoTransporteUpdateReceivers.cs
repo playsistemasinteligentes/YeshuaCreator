@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ExperienciaPlanejamentoTransporteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateExperienciaPlanejamentoTransporte", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateExperienciaPlanejamentoTransporteReceiver), commandName: "Command.Write.ExperienciaPlanejamentoTransporteCrudCommand");
-                 var experienciaplanejamentotransporte = new ExperienciaPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Tipo, c.Referencia, c.PedidoId, c.ClienteId, c.Municipio, c.Regiao, c.RotaId, c.Peso, c.Volume, c.Observacao, c.CriadoEm, c.CriadoPor);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ExperienciaPlanejamentoTransporte", "UpdateExperienciaPlanejamentoTransporte", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ExperienciaPlanejamentoTransporteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateExperienciaPlanejamentoTransporte", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateExperienciaPlanejamentoTransporteReceiver), commandName: "Command.Write.ExperienciaPlanejamentoTransporteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var experienciaplanejamentotransporte = new ExperienciaPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Tipo, c.Referencia, c.PedidoId, c.ClienteId, c.Municipio, c.Regiao, c.RotaId, c.Peso, c.Volume, c.Observacao, c.CriadoEm, c.CriadoPor, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", experienciaplanejamentotransporte.OperationalEntityId);
                  var domainResult = ExperienciaPlanejamentoTransporteDomainBehavior.Apply(experienciaplanejamentotransporte, context);
                  if (!domainResult.IsValid)

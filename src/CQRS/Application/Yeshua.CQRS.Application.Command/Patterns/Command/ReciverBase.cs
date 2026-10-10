@@ -46,6 +46,8 @@ namespace Command.Patterns.Command
             if (!telemetry.Enabled)
                 return await ActionAsync(command, cancellationToken);
 
+            using var executionScope = _context.BeginOperationalExecution(CommandName);
+            var executionIdentity = _context.OperationalIdentity;
             var traceId = _context.TraceId;
             var startedAt = Stopwatch.GetTimestamp();
             using var activity = OperationalActivity.Source.StartActivity(
@@ -56,8 +58,16 @@ namespace Command.Patterns.Command
             activity?.SetTag("yeshua.trace_id", traceId);
             activity?.SetTag("yeshua.entity", entity);
             activity?.SetTag("yeshua.operational_entity_id", recordId);
+            activity?.SetTag("yeshua.depth", telemetry.DiagnosticDepth.ToString());
+            activity?.SetTag("yeshua.mode", telemetry.ExecutionMode.ToString());
+            OperationalActivity.SetIdentity(activity, executionIdentity);
 
-            _logger.CommandStarted(CommandName);
+            _logger.CommandStarted(
+                CommandName,
+                traceId,
+                telemetry,
+                executionIdentity,
+                recordId);
 
             try
             {
@@ -79,14 +89,28 @@ namespace Command.Patterns.Command
                     result.StatusCode is >= 200 and < 300,
                     ElapsedMilliseconds(startedAt),
                     result.StatusCode,
-                    workerCycle);
+                    workerCycle,
+                    telemetry,
+                    executionIdentity,
+                    recordId);
 
                 activity?.SetTag("http.response.status_code", result.StatusCode);
+                activity?.SetTag(
+                    "yeshua.technical_outcome",
+                    result.StatusCode >= 500 ? "Failed" : "Succeeded");
+                activity?.SetTag(
+                    "yeshua.business_outcome",
+                    result.StatusCode switch
+                    {
+                        >= 200 and < 400 => "Accepted",
+                        >= 400 and < 500 => "Rejected",
+                        _ => "NotEvaluated"
+                    });
                 activity?.SetStatus(
-                    result.StatusCode is >= 200 and < 400
+                    result.StatusCode < 500
                         ? ActivityStatusCode.Ok
                         : ActivityStatusCode.Error,
-                    result.Message?.ToString());
+                    result.StatusCode >= 500 ? "Technical failure" : null);
 
                 return result;
             }
@@ -96,9 +120,14 @@ namespace Command.Patterns.Command
                     CommandName,
                     traceId,
                     ex,
-                    ElapsedMilliseconds(startedAt));
-                activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
-                OperationalActivity.RecordException(activity, ex);
+                    ElapsedMilliseconds(startedAt),
+                    telemetry,
+                    executionIdentity,
+                    recordId);
+                activity?.SetTag("yeshua.technical_outcome", "Failed");
+                activity?.SetTag("yeshua.business_outcome", "NotEvaluated");
+                activity?.SetStatus(ActivityStatusCode.Error, ex.GetType().Name);
+                OperationalActivity.RecordException(activity, ex, telemetry.DiagnosticDepth);
                 throw;
             }
         }

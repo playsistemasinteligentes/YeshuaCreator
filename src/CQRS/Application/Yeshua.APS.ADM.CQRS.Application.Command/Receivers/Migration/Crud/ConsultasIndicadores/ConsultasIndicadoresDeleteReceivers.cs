@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ConsultasIndicadoresCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteConsultasIndicadores", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteConsultasIndicadoresReceiver), commandName: "Command.Write.ConsultasIndicadoresCrudCommand");
-                 var consultasindicadores = new ConsultasIndicadoresFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_ID, c.IND_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ConsultasIndicadores", "DeleteConsultasIndicadores", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ConsultasIndicadoresCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteConsultasIndicadores", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteConsultasIndicadoresReceiver), commandName: "Command.Write.ConsultasIndicadoresCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var consultasindicadores = new ConsultasIndicadoresFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CON_ID, c.IND_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", consultasindicadores.OperationalEntityId);
                  var domainResult = ConsultasIndicadoresDomainBehavior.Apply(consultasindicadores, context);
                  if (!domainResult.IsValid)

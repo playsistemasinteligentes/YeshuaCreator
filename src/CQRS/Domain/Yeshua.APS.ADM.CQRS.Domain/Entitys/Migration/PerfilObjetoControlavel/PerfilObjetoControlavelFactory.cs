@@ -34,13 +34,14 @@
                             }
 
                             public IPerfilObjetoControlavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string obj_id, string? peo_acao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string obj_id, string? peo_acao, ulong? trackingMask = null )
                             {
                             var entity = new PerfilObjetoControlavelEntity(id, per_id, obj_id, peo_acao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PerfilObjetoControlavel", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PerfilObjetoControlavelDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PerfilObjetoControlavel", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PerfilObjetoControlavelDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

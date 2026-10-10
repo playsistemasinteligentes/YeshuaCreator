@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.VincoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVinco", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVincoReceiver), commandName: "Command.Write.VincoCrudCommand");
-                 var vinco = new VincoFactory(_logger, _domainTrackingPolicy).Create(context, c.VIN_ID, c.VIN_DESCRICAO, c.VIN_ID_DESLOCAMENTO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Vinco", "DeleteVinco", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.VincoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVinco", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVincoReceiver), commandName: "Command.Write.VincoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var vinco = new VincoFactory(_logger, _domainTrackingPolicy).Create(context, c.VIN_ID, c.VIN_DESCRICAO, c.VIN_ID_DESLOCAMENTO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", vinco.OperationalEntityId);
                  var domainResult = VincoDomainBehavior.Apply(vinco, context);
                  if (!domainResult.IsValid)

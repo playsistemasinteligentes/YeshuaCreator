@@ -28,19 +28,20 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyTenantEntity Create(string cnpjcpf, string nome, int? userid )
+                                    } public IyTenantEntity Create(int id, string cnpjcpf, string nome, int? userid )
                             {
-                                return Create(null, cnpjcpf, nome, userid);
+                                return Create(null, id, cnpjcpf, nome, userid);
                             }
 
                             public IyTenantEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string cnpjcpf, string nome, int? userid )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string cnpjcpf, string nome, int? userid, ulong? trackingMask = null )
                             {
-                            var entity = new yTenantEntity(cnpjcpf, nome, userid );
+                            var entity = new yTenantEntity(id, cnpjcpf, nome, userid );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

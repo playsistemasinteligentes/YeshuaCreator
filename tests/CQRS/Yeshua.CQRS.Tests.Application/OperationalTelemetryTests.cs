@@ -3,6 +3,7 @@ using Command.Interfaces;
 using Command.Patterns;
 using Command.Patterns.Command;
 using Dominio.Interfaces;
+using Dominio.Operational;
 using Dominio.Patterns.Saga;
 using Microsoft.Extensions.Configuration;
 using RepositoryInterfaces.Patterns.Command;
@@ -87,6 +88,37 @@ public sealed class OperationalTelemetryTests
 
         Assert.Equal(200, result.StatusCode);
         Assert.Equal(1, result.Data.Processed);
+    }
+
+    [Fact]
+    public async Task Receiver_result_and_exception_are_not_changed_when_provider_fails()
+    {
+        var logger = new Shered.Logger.Logger(new EnabledPolicy(), new ThrowingSink());
+        var context = new TestExecutionContext();
+        var successReceiver = new TestReceiver(
+            logger,
+            context,
+            command => new State<WorkerResult>(200, "ok", command.Result));
+        var rejectionReceiver = new TestReceiver(
+            logger,
+            context,
+            command => new State<WorkerResult>(422, "rejected", command.Result, propagation: false));
+        var expected = new InvalidOperationException("business failure");
+        var failureReceiver = new TestReceiver(logger, context, _ => throw expected);
+
+        var success = await successReceiver.ExecuteAsync(
+            new TestCommand(new WorkerResult(1, 1, 1, 0)));
+        var rejection = await rejectionReceiver.ExecuteAsync(
+            new TestCommand(new WorkerResult(1, 0, 0, 0)));
+        var actual = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            failureReceiver.ExecuteAsync(new TestCommand(new WorkerResult(1, 0, 0, 0))));
+
+        Assert.Equal(200, success.StatusCode);
+        Assert.Equal(422, rejection.StatusCode);
+        Assert.Same(expected, actual);
+        var snapshot = Assert.Single(logger.Snapshot().Commands);
+        Assert.Equal(3, snapshot.Executions);
+        Assert.Equal(2, snapshot.Failures);
     }
 
     [Fact]
@@ -384,6 +416,11 @@ public sealed class OperationalTelemetryTests
         var executor = new SagaExecutor(logger);
         var saga = new TestSaga();
         saga.Start("fiscal-1", "EntradaFiscalContingencia");
+        saga.SetOperationalIdentity(
+            "root-fiscal-1",
+            "operation-fiscal-1",
+            "worker-execution-1",
+            "message-1");
         var resolver = new TestSagaResolver(
             new TestSagaHandler("WaitStep", requiresExternalStimulus: true),
             new TestSagaHandler("FinalStep", requiresExternalStimulus: false));
@@ -414,7 +451,14 @@ public sealed class OperationalTelemetryTests
             Assert.Equal(nameof(TestSaga), item.Saga);
             Assert.Equal(saga.CorrelationId.ToString("D"), item.CorrelationId);
             Assert.False(string.IsNullOrWhiteSpace(item.ExecutionId));
+            Assert.Equal("root-fiscal-1", item.RootOperationId);
+            Assert.Equal("operation-fiscal-1", item.OperationId);
+            Assert.Equal("worker-execution-1", item.CausationId);
+            Assert.True(item.DurationMs >= 0);
         });
+        Assert.Equal(
+            OperationalBusinessOutcome.Accepted,
+            logger.Snapshot().Sagas.Last().BusinessOutcome);
     }
 
     [Fact]
@@ -437,7 +481,19 @@ public sealed class OperationalTelemetryTests
 
         Assert.Equal([1, 2], starts.Select(item => item.Attempt));
         Assert.NotEqual(starts[0].ExecutionId, starts[1].ExecutionId);
-        Assert.Equal(2, logger.Snapshot().Sagas.Count(item => item.Phase == "RetryScheduled"));
+        var retries = logger.Snapshot().Sagas
+            .Where(item => item.Phase == "RetryScheduled")
+            .ToArray();
+        Assert.Equal(2, retries.Length);
+        Assert.All(retries, item =>
+        {
+            Assert.Equal(OperationalTechnicalOutcome.Failed, item.TechnicalOutcome);
+            Assert.Equal("InvalidOperationException", item.ErrorCode);
+            Assert.Equal(
+                "Saga step failed with InvalidOperationException.",
+                item.ErrorSummary);
+            Assert.NotNull(item.NextExecutionAtUtc);
+        });
     }
 
     [Fact]
@@ -654,6 +710,22 @@ public sealed class OperationalTelemetryTests
             string? entity = null,
             string? recordId = null) =>
             throw new InvalidOperationException("policy unavailable");
+    }
+
+    private sealed class EnabledPolicy : IOperationalTelemetryPolicy
+    {
+        public OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation = null,
+            string? entity = null,
+            string? recordId = null) =>
+            new(true, "Information", "D0");
+    }
+
+    private sealed class ThrowingSink : IOperationalLogSink
+    {
+        public void Write(string level, string category, ReadOnlySpan<byte> payload) =>
+            throw new InvalidOperationException("provider unavailable");
     }
 
     private sealed class DisabledPolicy : IOperationalTelemetryPolicy

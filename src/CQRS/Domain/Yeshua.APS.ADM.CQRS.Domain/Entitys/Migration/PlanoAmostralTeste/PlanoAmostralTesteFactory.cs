@@ -34,13 +34,14 @@
                             }
 
                             public IPlanoAmostralTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, Decimal? grp_tipo, int pat_id, int? pat_qtd_caixas_de, int? pat_qtd_caixas_ate, int? pat_n_amostragem, Decimal? pat_percent_especif )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, Decimal? grp_tipo, int pat_id, int? pat_qtd_caixas_de, int? pat_qtd_caixas_ate, int? pat_n_amostragem, Decimal? pat_percent_especif, ulong? trackingMask = null )
                             {
                             var entity = new PlanoAmostralTesteEntity(grp_tipo, pat_id, pat_qtd_caixas_de, pat_qtd_caixas_ate, pat_n_amostragem, pat_percent_especif );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PlanoAmostralTeste", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PlanoAmostralTesteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PlanoAmostralTeste", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PlanoAmostralTesteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

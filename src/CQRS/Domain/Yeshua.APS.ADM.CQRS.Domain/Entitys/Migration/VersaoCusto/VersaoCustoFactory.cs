@@ -34,13 +34,14 @@
                             }
 
                             public IVersaoCustoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ver_id, string? ver_status, string? ver_obs )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ver_id, string? ver_status, string? ver_obs, ulong? trackingMask = null )
                             {
                             var entity = new VersaoCustoEntity(id, ver_id, ver_status, ver_obs );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("VersaoCusto", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new VersaoCustoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("VersaoCusto", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new VersaoCustoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

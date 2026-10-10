@@ -63,9 +63,10 @@ function pageHtml() {
             <div class="flex gap-2"><button id="operational-reload" class="border border-gray-300 bg-white px-4 py-2 font-semibold hover:bg-gray-50">Atualizar</button><button id="operational-save" class="bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800">Aplicar</button></div>
         </div>
         <div id="operational-loading" class="hidden border-l-4 border-blue-600 bg-blue-50 px-4 py-3 text-sm text-blue-900">Processando...</div>
-        <section class="mt-4 border border-gray-200 bg-white p-4"><div class="grid gap-4 md:grid-cols-2">
+        <section class="mt-4 border border-gray-200 bg-white p-4"><div class="grid gap-4 md:grid-cols-3">
             <label class="text-sm font-semibold">Nivel padrao<select id="operational-default-level" class="mt-1 w-full border p-2 font-normal"><option value="None">Desligado</option><option value="Error">Erro</option><option value="Warning">Aviso</option><option value="Information">Informacao</option></select></label>
             <label class="text-sm font-semibold">Profundidade padrao<select id="operational-default-depth" class="mt-1 w-full border p-2 font-normal"><option>D0</option><option>D1</option></select></label>
+            <label class="text-sm font-semibold">Modo de execucao<select id="operational-default-mode" class="mt-1 w-full border p-2 font-normal"><option value="Live">Producao</option><option value="Replay">Reprocessamento</option><option value="Simulation">Simulacao</option><option value="Regression">Regressao</option></select></label>
         </div></section>
         <section class="mt-4 border border-gray-200 bg-white p-4">
             <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
@@ -97,6 +98,7 @@ function renderState(state) {
     document.getElementById('operational-application').textContent = `${catalog.application} / ${policy.environment}`;
     document.getElementById('operational-default-level').value = policy.defaultLevel || 'Information';
     document.getElementById('operational-default-depth').value = policy.defaultDepth || 'D0';
+    document.getElementById('operational-default-mode').value = policy.defaultMode || 'Live';
     renderLogAccess(catalog.application, policy.environment);
     document.getElementById('operational-components').innerHTML = catalog.components.filter(component => component.id !== 'DomainTracker').map(component => `
         <label class="flex cursor-pointer items-start gap-3 p-3 hover:bg-gray-50"><input class="operational-component mt-1 h-4 w-4" type="checkbox" data-component="${html(component.id)}" ${isEnabled(policy.targets, component.id) ? 'checked' : ''} /><span><strong class="block text-sm">${html(component.title)}</strong><span class="text-sm text-gray-600">${html(component.description)}</span></span></label>`).join('');
@@ -168,7 +170,15 @@ function escapeLogQuery(value) {
 
 function renderEntities(state) {
     document.getElementById('operational-entities').innerHTML = state.catalog.entities.map(entity => `
-        <details class="operational-entity p-3" data-search="${html(`${entity.name} ${entity.title}`.toLowerCase())}"><summary class="flex cursor-pointer list-none items-center gap-3"><input class="operational-entity-toggle h-4 w-4" type="checkbox" data-entity="${html(entity.name)}" ${isEnabled(state.policy.targets, 'DomainTracker', entity.name) ? 'checked' : ''} onclick="event.stopPropagation()" /><strong class="text-sm">${html(entity.title)}</strong><span class="text-xs text-gray-400">${html(entity.name)}</span></summary><div class="mt-3 grid gap-x-6 pl-7 sm:grid-cols-2 lg:grid-cols-3">${entity.fields.map(field => `<label class="flex items-center gap-2 py-1 text-sm"><input class="operational-field h-4 w-4" type="checkbox" data-entity="${html(entity.name)}" data-field="${html(field.name)}" ${isEnabled(state.policy.targets, 'DomainTracker', entity.name, field.name) ? 'checked' : ''} />${html(field.title)} <span class="text-xs text-gray-400">${html(field.name)}</span></label>`).join('')}</div></details>`).join('');
+        <details class="operational-entity p-3" data-search="${html(`${entity.name} ${entity.title}`.toLowerCase())}"><summary class="flex cursor-pointer list-none items-center gap-3"><input class="operational-entity-toggle h-4 w-4" type="checkbox" data-entity="${html(entity.name)}" ${isEnabled(state.policy.targets, 'DomainTracker', entity.name) ? 'checked' : ''} onclick="event.stopPropagation()" /><strong class="text-sm">${html(entity.title)}</strong><span class="text-xs text-gray-400">${html(entity.name)}</span></summary><div class="mt-3 grid gap-x-6 pl-7 sm:grid-cols-2 lg:grid-cols-3">${entity.fields.map(field => renderOperationalField(entity, field, state.policy.targets)).join('')}</div></details>`).join('');
+}
+
+function renderOperationalField(entity, field, targets) {
+    const fieldClassification = field.classification || 'Internal';
+    const neverCapture = fieldClassification === 'NeverCapture';
+    const checked = !neverCapture && isEnabled(targets, 'DomainTracker', entity.name, field.name);
+    const classification = neverCapture ? 'Nao capturavel' : fieldClassification;
+    return `<label class="flex items-center gap-2 py-1 text-sm ${neverCapture ? 'text-gray-400' : ''}"><input class="operational-field h-4 w-4" type="checkbox" data-entity="${html(entity.name)}" data-field="${html(field.name)}" ${checked ? 'checked' : ''} ${neverCapture ? 'disabled' : ''} />${html(field.title)} <span class="text-xs text-gray-400">${html(field.name)} - ${html(classification)}</span></label>`;
 }
 
 function buildUpdate(state) {
@@ -176,14 +186,15 @@ function buildUpdate(state) {
     const targets = (state.policy.targets || []).filter(target => !managed.has(target.component));
     const defaultLevel = document.getElementById('operational-default-level').value;
     const defaultDepth = document.getElementById('operational-default-depth').value;
-    document.querySelectorAll('.operational-component').forEach(input => targets.push({ component: input.dataset.component, level: input.checked ? defaultLevel : 'None', depth: defaultDepth }));
+    const defaultMode = document.getElementById('operational-default-mode').value;
+    document.querySelectorAll('.operational-component').forEach(input => targets.push({ component: input.dataset.component, level: input.checked ? defaultLevel : 'None', depth: defaultDepth, mode: defaultMode }));
     if (document.getElementById('operational-domain-all').checked) {
-        targets.push({ component: 'DomainTracker', level: defaultLevel, depth: 'D1' });
+        targets.push({ component: 'DomainTracker', level: defaultLevel, depth: 'D1', mode: defaultMode });
     } else {
-        document.querySelectorAll('.operational-entity-toggle:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, level: defaultLevel, depth: 'D1' }));
-        document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: 'D1' }));
+        document.querySelectorAll('.operational-entity-toggle:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, level: defaultLevel, depth: 'D1', mode: defaultMode }));
+        document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: 'D1', mode: defaultMode }));
     }
-    return { defaultLevel, defaultDepth, targets };
+    return { defaultLevel, defaultDepth, defaultMode, targets };
 }
 
 function applyDomainAllState(enabled) {

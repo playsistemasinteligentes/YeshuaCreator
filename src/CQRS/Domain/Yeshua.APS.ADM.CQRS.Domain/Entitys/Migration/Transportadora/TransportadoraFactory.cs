@@ -34,13 +34,14 @@
                             }
 
                             public ITransportadoraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tra_id, string? tra_nome, string? tra_cnpj, string? tra_inscricao_estadual, string? tra_rntrc, string? tra_email, string? tra_responsavel, string? tra_fone, string? tra_id_integracao, string? tra_id_integracao_erp )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tra_id, string? tra_nome, string? tra_cnpj, string? tra_inscricao_estadual, string? tra_rntrc, string? tra_email, string? tra_responsavel, string? tra_fone, string? tra_id_integracao, string? tra_id_integracao_erp, ulong? trackingMask = null )
                             {
                             var entity = new TransportadoraEntity(id, tra_id, tra_nome, tra_cnpj, tra_inscricao_estadual, tra_rntrc, tra_email, tra_responsavel, tra_fone, tra_id_integracao, tra_id_integracao_erp );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Transportadora", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TransportadoraDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Transportadora", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TransportadoraDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

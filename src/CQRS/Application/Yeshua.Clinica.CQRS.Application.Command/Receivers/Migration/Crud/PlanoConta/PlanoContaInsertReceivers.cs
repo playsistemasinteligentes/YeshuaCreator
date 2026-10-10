@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PlanoContaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlanoConta", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlanoContaReceiver), commandName: "Command.Write.PlanoContaCrudCommand");
-                 var planoconta = new PlanoContaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Codigo, c.Nome, c.Tipo);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PlanoConta", "InsertPlanoConta", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PlanoContaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlanoConta", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlanoContaReceiver), commandName: "Command.Write.PlanoContaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var planoconta = new PlanoContaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Codigo, c.Nome, c.Tipo, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", planoconta.OperationalEntityId);
                  var domainResult = PlanoContaDomainBehavior.Apply(planoconta, context);
                  if (!domainResult.IsValid)

@@ -37,6 +37,8 @@ namespace Dominio.Schemas.CQRS
                 var createContextParameters = string.IsNullOrWhiteSpace(createParameters)
                     ? "Dominio.Patterns.Domain.DomainOperationContext? context"
                     : $"Dominio.Patterns.Domain.DomainOperationContext? context, {createParameters}";
+                var createContextParametersWithTracking =
+                    $"{createContextParameters}, ulong? trackingMask = null";
 
                 sb.Append(@$"
 
@@ -67,13 +69,14 @@ namespace Dominio.Schemas.CQRS
                             }}
 
                             public I{_entity.EntityName}Entity Create(
-                                {createContextParameters} )
+                                {createContextParametersWithTracking} )
                             {{
                             var entity = new {_entity.EntityName}Entity({createArguments} );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask(""{_entity.EntityName}"", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new {_entity.EntityName}Decorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask(""{_entity.EntityName}"", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new {_entity.EntityName}Decorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }}
                                 }}
@@ -107,6 +110,7 @@ namespace Dominio.Schemas.CQRS
             if (_commandType == CommandType.EntityDecorator)
             {
                 sb.AppendLine(GenerateTrackingFieldsConstants());
+                sb.AppendLine(GenerateOperationalFieldClassifications());
                 sb.AppendLine($"        public partial class {_entity.EntityName}Decorator : I{_entity.EntityName}Entity");
                 sb.AppendLine("{");
 
@@ -115,6 +119,7 @@ namespace Dominio.Schemas.CQRS
                         private readonly {CQRSParam.I.NameSpaceDominioInterface}.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public {_entity.EntityName}Decorator(I{_entity.EntityName}Entity inner, {CQRSParam.I.NameSpaceDominioInterface}.ILogger logger)
@@ -132,6 +137,13 @@ namespace Dominio.Schemas.CQRS
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }}");
@@ -157,7 +169,7 @@ namespace Dominio.Schemas.CQRS
                     var trackingIndex = entityColumns.IndexOf(column);
                     var trackingBlock = trackingIndex < 64
                         ? $@"                                                if ((_trackingMask & {_entity.EntityName}TrackingFields.{column.Name}) != 0UL)
-                                                    _logger.DomainValueChanged(""{_entity.EntityName}"", ""{column.Name}"", _trackingTraceId, _trackingOperation, _trackingRecordId, value);"
+                                                    _logger.DomainValueChanged(""{_entity.EntityName}"", ""{column.Name}"", _trackingTraceId, _trackingOperation, _trackingRecordId, value, {_entity.EntityName}OperationalFields.{column.Name}, _trackingExecutionIdentity);"
                         : string.Empty;
 
                     sb.AppendLine($@"
@@ -260,6 +272,26 @@ namespace Dominio.Schemas.CQRS
             for (var i = 0; i < fields.Count; i++)
             {
                 sb.AppendLine($"            public const ulong {fields[i].Name} = 1UL << {i};");
+            }
+            sb.AppendLine("        }");
+            return sb.ToString();
+        }
+
+        private string GenerateOperationalFieldClassifications()
+        {
+            var fields = _entity.AddColumns
+                .Where(x => !x.IsBackEndField)
+                .Take(64)
+                .ToList();
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"        public static class {_entity.EntityName}OperationalFields");
+            sb.AppendLine("        {");
+            foreach (var field in fields)
+            {
+                var classification = OperationalDataClassificationConvention.Classify(field);
+                sb.AppendLine(
+                    $"            public const Dominio.Operational.OperationalDataClassification {field.Name} = Dominio.Operational.OperationalDataClassification.{classification};");
             }
             sb.AppendLine("        }");
             return sb.ToString();

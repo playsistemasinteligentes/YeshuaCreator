@@ -40,6 +40,28 @@
             public const ulong AlertasResumo = 1UL << 17;
         }
 
+        public static class PedidoPlanejavelOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PedidoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ClienteId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ClienteNome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Estado = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Municipio = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Regiao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Bairro = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RotaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmbarqueAlvo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataEntregaDe = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataEntregaAte = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Peso = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Volume = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SaldoAExpedir = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CargaAtualId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VersaoPlanejamento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AlertasResumo = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PedidoPlanejavelDecorator : IPedidoPlanejavelEntity
 {
 
@@ -47,6 +69,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PedidoPlanejavelDecorator(IPedidoPlanejavelEntity inner, Dominio.Interfaces.ILogger logger)
@@ -64,6 +87,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -76,7 +106,7 @@
                                             {
                                                 _inner.PedidoId = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.PedidoId) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.PedidoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -90,7 +120,7 @@
                                             {
                                                 _inner.ClienteId = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.ClienteId) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "ClienteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "ClienteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.ClienteId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -104,7 +134,7 @@
                                             {
                                                 _inner.ClienteNome = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.ClienteNome) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "ClienteNome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "ClienteNome", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.ClienteNome, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -118,7 +148,7 @@
                                             {
                                                 _inner.Estado = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Estado) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Estado", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Estado", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Estado, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -132,7 +162,7 @@
                                             {
                                                 _inner.Municipio = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Municipio) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Municipio", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Municipio", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Municipio, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -146,7 +176,7 @@
                                             {
                                                 _inner.Regiao = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Regiao) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Regiao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Regiao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Regiao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -160,7 +190,7 @@
                                             {
                                                 _inner.Bairro = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Bairro) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Bairro", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Bairro", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Bairro, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -174,7 +204,7 @@
                                             {
                                                 _inner.RotaId = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.RotaId) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "RotaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "RotaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.RotaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -188,7 +218,7 @@
                                             {
                                                 _inner.EmbarqueAlvo = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.EmbarqueAlvo) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "EmbarqueAlvo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "EmbarqueAlvo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.EmbarqueAlvo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -202,7 +232,7 @@
                                             {
                                                 _inner.DataEntregaDe = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.DataEntregaDe) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "DataEntregaDe", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "DataEntregaDe", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.DataEntregaDe, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -216,7 +246,7 @@
                                             {
                                                 _inner.DataEntregaAte = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.DataEntregaAte) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "DataEntregaAte", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "DataEntregaAte", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.DataEntregaAte, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -230,7 +260,7 @@
                                             {
                                                 _inner.Peso = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Peso) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Peso", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Peso", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Peso, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -244,7 +274,7 @@
                                             {
                                                 _inner.Volume = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Volume) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Volume", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Volume", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Volume, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -258,7 +288,7 @@
                                             {
                                                 _inner.SaldoAExpedir = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.SaldoAExpedir) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "SaldoAExpedir", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "SaldoAExpedir", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.SaldoAExpedir, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -272,7 +302,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -286,7 +316,7 @@
                                             {
                                                 _inner.CargaAtualId = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.CargaAtualId) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "CargaAtualId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "CargaAtualId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.CargaAtualId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -300,7 +330,7 @@
                                             {
                                                 _inner.VersaoPlanejamento = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.VersaoPlanejamento) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "VersaoPlanejamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "VersaoPlanejamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.VersaoPlanejamento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -314,7 +344,7 @@
                                             {
                                                 _inner.AlertasResumo = value;
                                                 if ((_trackingMask & PedidoPlanejavelTrackingFields.AlertasResumo) != 0UL)
-                                                    _logger.DomainValueChanged("PedidoPlanejavel", "AlertasResumo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PedidoPlanejavel", "AlertasResumo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PedidoPlanejavelOperationalFields.AlertasResumo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

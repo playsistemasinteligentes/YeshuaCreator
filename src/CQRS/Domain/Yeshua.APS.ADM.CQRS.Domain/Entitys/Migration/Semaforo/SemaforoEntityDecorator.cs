@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class SemaforoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SEM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SEM_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SEM_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SEM_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SEM_ID_CONEXAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class SemaforoDecorator : ISemaforoEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public SemaforoDecorator(ISemaforoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.SEM_ID = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.SEM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "SEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "SEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.SEM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.SEM_STATUS = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.SEM_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "SEM_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "SEM_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.SEM_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.SEM_ORIGEM = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.SEM_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "SEM_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "SEM_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.SEM_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.SEM_EMISSAO = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.SEM_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "SEM_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "SEM_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.SEM_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.SEM_ID_CONEXAO = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.SEM_ID_CONEXAO) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "SEM_ID_CONEXAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "SEM_ID_CONEXAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.SEM_ID_CONEXAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & SemaforoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Semaforo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Semaforo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SemaforoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

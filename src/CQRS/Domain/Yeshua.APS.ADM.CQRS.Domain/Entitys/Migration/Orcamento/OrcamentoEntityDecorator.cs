@@ -35,6 +35,23 @@
             public const ulong UserId = 1UL << 12;
         }
 
+        public static class OrcamentoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORC_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CON_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORC_TIPO_FRETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORC_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VER_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class OrcamentoDecorator : IOrcamentoEntity
 {
 
@@ -42,6 +59,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public OrcamentoDecorator(IOrcamentoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -59,6 +77,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -71,7 +96,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -85,7 +110,7 @@
                                             {
                                                 _inner.ORC_ID = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.ORC_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "ORC_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "ORC_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.ORC_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -99,7 +124,7 @@
                                             {
                                                 _inner.REP_ID = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.REP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "REP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "REP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.REP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -113,7 +138,7 @@
                                             {
                                                 _inner.CON_ID = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.CON_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "CON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "CON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.CON_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -127,7 +152,7 @@
                                             {
                                                 _inner.ORC_TIPO_FRETE = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.ORC_TIPO_FRETE) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "ORC_TIPO_FRETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "ORC_TIPO_FRETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.ORC_TIPO_FRETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -141,7 +166,7 @@
                                             {
                                                 _inner.ORC_EMISSAO = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.ORC_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "ORC_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "ORC_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.ORC_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -155,7 +180,7 @@
                                             {
                                                 _inner.CLI_ID = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.CLI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.CLI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +194,7 @@
                                             {
                                                 _inner.VER_ID = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.VER_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "VER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "VER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.VER_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +209,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -198,7 +223,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -212,7 +237,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -226,7 +251,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & OrcamentoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Orcamento", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Orcamento", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrcamentoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

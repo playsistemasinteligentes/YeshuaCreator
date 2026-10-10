@@ -34,13 +34,14 @@
                             }
 
                             public ICalendarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int cal_id, string cal_descricao, int? cal_divide_dia_em )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int cal_id, string cal_descricao, int? cal_divide_dia_em, ulong? trackingMask = null )
                             {
                             var entity = new CalendarioEntity(cal_id, cal_descricao, cal_divide_dia_em );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Calendario", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CalendarioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Calendario", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CalendarioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MovimentosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMovimentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMovimentosReceiver), commandName: "Command.Write.MovimentosCrudCommand");
-                 var movimentos = new MovimentosFactory(_logger, _domainTrackingPolicy).Create(context, c.MOV_ID, c.MOV_DATA, c.MOV_VALOR, c.MOV_PLAID, c.MOV_UNID, c.Tr_Unidade_UNI_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Movimentos", "DeleteMovimentos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MovimentosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMovimentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMovimentosReceiver), commandName: "Command.Write.MovimentosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var movimentos = new MovimentosFactory(_logger, _domainTrackingPolicy).Create(context, c.MOV_ID, c.MOV_DATA, c.MOV_VALOR, c.MOV_PLAID, c.MOV_UNID, c.Tr_Unidade_UNI_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", movimentos.OperationalEntityId);
                  var domainResult = MovimentosDomainBehavior.Apply(movimentos, context);
                  if (!domainResult.IsValid)

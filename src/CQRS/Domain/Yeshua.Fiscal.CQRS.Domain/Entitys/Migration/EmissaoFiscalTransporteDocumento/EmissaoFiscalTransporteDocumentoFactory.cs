@@ -34,13 +34,14 @@
                             }
 
                             public IEmissaoFiscalTransporteDocumentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int emissaofiscaltransporteid, int? documentofiscalid, int? documentofiscaloriginarioid, int? nfeprodutosnapshotid, int produtofiscal, int papel, string? tipoevento, string? chaveacesso, string? xmlstoragekey, string? pdfstoragekey, string? protocolo, string? codigoretorno, string? mensagemretorno, DateTime criadoemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int emissaofiscaltransporteid, int? documentofiscalid, int? documentofiscaloriginarioid, int? nfeprodutosnapshotid, int produtofiscal, int papel, string? tipoevento, string? chaveacesso, string? xmlstoragekey, string? pdfstoragekey, string? protocolo, string? codigoretorno, string? mensagemretorno, DateTime criadoemutc, int status, ulong? trackingMask = null )
                             {
                             var entity = new EmissaoFiscalTransporteDocumentoEntity(id, emissaofiscaltransporteid, documentofiscalid, documentofiscaloriginarioid, nfeprodutosnapshotid, produtofiscal, papel, tipoevento, chaveacesso, xmlstoragekey, pdfstoragekey, protocolo, codigoretorno, mensagemretorno, criadoemutc, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("EmissaoFiscalTransporteDocumento", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EmissaoFiscalTransporteDocumentoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("EmissaoFiscalTransporteDocumento", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EmissaoFiscalTransporteDocumentoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -1,20 +1,39 @@
-﻿using Dominio.Entitys;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeApplicationOutboxService
+// </yeshua>
+
+using Aplication.Interfaces.Services;
+using Dominio.Entitys;
 using Dominio.Interfaces;
 using IRepository.Write;
+using System;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Command.Patterns.OutBox
 {
     public class OutboxService
     {
-        private readonly IyOutboxWriteRepository _repoOutBox;
-        private readonly IyInboxWriteRepository _repoInbox;
+        private readonly IyOutboxWriteRepository _outboxWriteRepository;
+        private readonly IyInboxWriteRepository _inboxWriteRepository;
+        private readonly IExecutionContext _executionContext;
         private readonly ILogger _logger;
 
-        public OutboxService(IyOutboxWriteRepository repoOutBox, IyInboxWriteRepository repoInbox,ILogger logger)
+        public OutboxService(
+            IyOutboxWriteRepository outboxWriteRepository,
+            IyInboxWriteRepository inboxWriteRepository,
+            IExecutionContext executionContext,
+            ILogger logger)
         {
-            _repoOutBox = repoOutBox;
-            _repoInbox = repoInbox;
+            _outboxWriteRepository = outboxWriteRepository;
+            _inboxWriteRepository = inboxWriteRepository;
+            _executionContext = executionContext;
             _logger = logger;
         }
 
@@ -22,130 +41,220 @@ namespace Command.Patterns.OutBox
             string type,
             object payload,
             string entityType,
-            string entityID,
+            string entityId,
             string messageId,
             string correlationId,
             int transportType,
             object transportData,
             int? sagaId = null,
-            int? sagaStepID = null)
+            int? sagaStepId = null)
         {
-            if (string.IsNullOrWhiteSpace(messageId))
-                messageId = Guid.NewGuid().ToString();
-
-            string payloadJson;
-            string transportJson;
+            var resolvedMessageId = string.IsNullOrWhiteSpace(messageId)
+                ? Guid.NewGuid().ToString()
+                : messageId;
+            var identity = GetCurrentIdentity();
+            var telemetry = _logger.Evaluate("Outbox", type, entityType, entityId);
+            var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
 
             try
             {
-                payloadJson = JsonSerializer.Serialize(payload);
-                transportJson = transportData != null
-                    ? JsonSerializer.Serialize(transportData)
-                    : null;
+                var payloadJson = JsonSerializer.Serialize(payload);
+                var transportJson = transportData != null ? JsonSerializer.Serialize(transportData) : null;
+                var entity = new yOutboxFactory(_logger).Create(
+                    null,
+                    resolvedMessageId,
+                    type,
+                    entityType,
+                    entityId,
+                    correlationId,
+                    payloadJson,
+                    0,
+                    transportType,
+                    transportJson,
+                    DateTime.UtcNow,
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    sagaId,
+                    sagaStepId);
+                ApplyIdentity(entity, identity);
+
+                if (!entity.isValidInsert())
+                    throw new ApplicationException(string.Join("; ", entity.getErroMensagens()));
+
+                _outboxWriteRepository.Insert(entity);
+                RecordTransition(
+                    "Outbox",
+                    type,
+                    "Stored",
+                    "yOutbox",
+                    entityType,
+                    entityId,
+                    resolvedMessageId,
+                    correlationId,
+                    identity,
+                    telemetry,
+                    startedTimestamp);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                //_logger.Error("Erro serializando payload do Outbox: " + ex.Message);
+                RecordTransition(
+                    "Outbox",
+                    type,
+                    "StoreFailed",
+                    "yOutbox",
+                    entityType,
+                    entityId,
+                    resolvedMessageId,
+                    correlationId,
+                    identity,
+                    telemetry,
+                    startedTimestamp,
+                    exception);
                 throw;
             }
-
-            var entity = new yOutboxFactory(_logger).Create(
-                            id: 0,
-                            messageid: messageId,
-                            type: type,
-                            entitytype: entityType,
-                            entityid: entityID,
-                            correlationid: correlationId,
-
-                            payload: payloadJson,
-
-                            status: 0, // Pending
-
-                            transporttype: transportType,
-                            transportdata: transportJson,
-
-                            createdat: DateTime.UtcNow,
-                            sentat: null,
-
-                            retrycount: 0,
-                            lasterror: string.Empty,
-
-                            processingat: null,
-                            nextattemptat: null,
-
-                            sagaid: sagaId,
-                            sagastepid: sagaStepID
-                        );
-            if (!entity.isValidInsert())
-                throw new ApplicationException(string.Join("; ", entity.getErroMensagens()));
-
-            // 🔥 CAMPOS NOVOS (ESSENCIAL)
-            entity.TransportType = transportType;
-            entity.TransportData = transportJson;
-            entity.NextAttemptAt = null;
-            entity.ProcessingAt = null;
-
-            _repoOutBox.Insert(entity);
         }
-
 
         public void AddInboxEvent(
-        string type,
-        object payload,
-        string entityType,
-        string entityID,
-        string messageId,
-        string correlationId,
-        int? sagaId = null,
-        int? sagaStepID = null)
+            string type,
+            object payload,
+            string entityType,
+            string entityId,
+            string messageId,
+            string correlationId,
+            int? sagaId = null,
+            int? sagaStepId = null)
         {
-            if (string.IsNullOrWhiteSpace(messageId))
-                messageId = Guid.NewGuid().ToString();
-
-            string payloadJson;
+            var resolvedMessageId = string.IsNullOrWhiteSpace(messageId)
+                ? Guid.NewGuid().ToString()
+                : messageId;
+            var identity = GetCurrentIdentity();
+            var telemetry = _logger.Evaluate("Inbox", type, entityType, entityId);
+            var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
 
             try
             {
-                payloadJson = JsonSerializer.Serialize(payload);
+                var payloadJson = JsonSerializer.Serialize(payload);
+                var entity = new yInboxFactory(_logger).Create(
+                    null,
+                    resolvedMessageId,
+                    type,
+                    entityType,
+                    entityId,
+                    correlationId,
+                    payloadJson,
+                    0,
+                    DateTime.UtcNow,
+                    0,
+                    null,
+                    null,
+                    null,
+                    sagaId,
+                    sagaStepId);
+                ApplyIdentity(entity, identity);
+
+                if (!entity.isValidInsert())
+                    throw new ApplicationException(string.Join("; ", entity.getErroMensagens()));
+
+                _inboxWriteRepository.Insert(entity);
+                RecordTransition(
+                    "Inbox",
+                    type,
+                    "Stored",
+                    "yInbox",
+                    entityType,
+                    entityId,
+                    resolvedMessageId,
+                    correlationId,
+                    identity,
+                    telemetry,
+                    startedTimestamp);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                //_logger.Error("Erro serializando payload do Inbox: " + ex.Message);
+                RecordTransition(
+                    "Inbox",
+                    type,
+                    "StoreFailed",
+                    "yInbox",
+                    entityType,
+                    entityId,
+                    resolvedMessageId,
+                    correlationId,
+                    identity,
+                    telemetry,
+                    startedTimestamp,
+                    exception);
                 throw;
             }
-
-            var entity = new yInboxFactory(_logger).Create(
-                id: 0,
-                messageid: messageId,
-                type: type,
-                entitytype: entityType,
-                entityid: entityID,
-                correlationid: correlationId,
-
-                payload: payloadJson,
-
-                status: 0, // Pending
-
-                createdat: DateTime.UtcNow,
-
-                retrycount: 0,
-                lasterror: string.Empty,
-
-                processingat: null,
-                nextattemptat: null,
-
-                sagaid: sagaId,
-                sagastepid: sagaStepID
-            );
-
-            if (!entity.isValidInsert())
-                throw new ApplicationException(string.Join("; ", entity.getErroMensagens()));
-
-            entity.NextAttemptAt = null;
-            entity.ProcessingAt = null;
-
-            _repoInbox.Insert(entity); // 👈 ideal separar repo também
         }
 
+        private void RecordTransition(
+            string component,
+            string operation,
+            string phase,
+            string dependency,
+            string entityType,
+            string entityId,
+            string messageId,
+            string correlationId,
+            Dominio.Operational.OperationalExecutionIdentity identity,
+            OperationalTelemetryDecision telemetry,
+            long startedTimestamp,
+            Exception? exception = null)
+        {
+            if (!telemetry.Enabled)
+                return;
+
+            _logger.Transition(
+                new Dominio.Operational.OperationalEvidenceTransition(
+                    component,
+                    operation,
+                    phase,
+                    (long)Stopwatch.GetElapsedTime(startedTimestamp).TotalMilliseconds,
+                    exception is null
+                        ? Dominio.Operational.OperationalTechnicalOutcome.Succeeded
+                        : Dominio.Operational.OperationalTechnicalOutcome.Failed,
+                    Dominio.Operational.OperationalBusinessOutcome.NotEvaluated,
+                    identity,
+                    entityType,
+                    entityId,
+                    entityId,
+                    correlationId,
+                    messageId,
+                    dependency,
+                    ErrorCode: exception?.GetType().Name,
+                    ErrorSummary: exception is null
+                        ? null
+                        : $"{component} persistence failed with {exception.GetType().Name}."),
+                telemetry);
+        }
+
+        private Dominio.Operational.OperationalExecutionIdentity GetCurrentIdentity() =>
+            _executionContext.TryGetOperationalIdentity(out var identity)
+                ? identity
+                : default;
+
+        private static void ApplyIdentity(
+            IyOutboxEntity entity,
+            Dominio.Operational.OperationalExecutionIdentity identity)
+        {
+            entity.RootOperationId = identity.RootOperationId;
+            entity.OperationId = identity.OperationId;
+            entity.ExecutionId = identity.ExecutionId;
+            entity.CausationId = identity.CausationId;
+        }
+
+        private static void ApplyIdentity(
+            IyInboxEntity entity,
+            Dominio.Operational.OperationalExecutionIdentity identity)
+        {
+            entity.RootOperationId = identity.RootOperationId;
+            entity.OperationId = identity.OperationId;
+            entity.ExecutionId = identity.ExecutionId;
+            entity.CausationId = identity.CausationId;
+        }
     }
-}
+}//Dominio.Schemas.CQRS.SourceCodeApplicationOutboxService

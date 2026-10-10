@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TurmaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTurma", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTurmaReceiver), commandName: "Command.Write.TurmaCrudCommand");
-                 var turma = new TurmaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.TURM_HORA_INI_DIA1, c.TURM_HORA_FIM_DIA1, c.TURM_HORA_INI_DIA2, c.TURM_HORA_FIM_DIA2, c.TURM_HORA_INI_DIA3, c.TURM_HORA_FIM_DIA3, c.TURM_HORA_INI_DIA4, c.TURM_HORA_FIM_DIA4, c.TURM_HORA_INI_DIA5, c.TURM_HORA_FIM_DIA5, c.TURM_HORA_INI_DIA6, c.TURM_HORA_FIM_DIA6, c.TURM_HORA_INI_DIA7, c.TURM_HORA_FIM_DIA7);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Turma", "InsertTurma", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TurmaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTurma", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTurmaReceiver), commandName: "Command.Write.TurmaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var turma = new TurmaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.TURM_HORA_INI_DIA1, c.TURM_HORA_FIM_DIA1, c.TURM_HORA_INI_DIA2, c.TURM_HORA_FIM_DIA2, c.TURM_HORA_INI_DIA3, c.TURM_HORA_FIM_DIA3, c.TURM_HORA_INI_DIA4, c.TURM_HORA_FIM_DIA4, c.TURM_HORA_INI_DIA5, c.TURM_HORA_FIM_DIA5, c.TURM_HORA_INI_DIA6, c.TURM_HORA_FIM_DIA6, c.TURM_HORA_INI_DIA7, c.TURM_HORA_FIM_DIA7, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", turma.OperationalEntityId);
                  var domainResult = TurmaDomainBehavior.Apply(turma, context);
                  if (!domainResult.IsValid)

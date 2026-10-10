@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.SemaforoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteSemaforo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteSemaforoReceiver), commandName: "Command.Write.SemaforoCrudCommand");
-                 var semaforo = new SemaforoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEM_ID, c.SEM_STATUS, c.SEM_ORIGEM, c.SEM_EMISSAO, c.SEM_ID_CONEXAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Semaforo", "DeleteSemaforo", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.SemaforoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteSemaforo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteSemaforoReceiver), commandName: "Command.Write.SemaforoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var semaforo = new SemaforoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEM_ID, c.SEM_STATUS, c.SEM_ORIGEM, c.SEM_EMISSAO, c.SEM_ID_CONEXAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", semaforo.OperationalEntityId);
                  var domainResult = SemaforoDomainBehavior.Apply(semaforo, context);
                  if (!domainResult.IsValid)

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeRomaneioConsolidadoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeRomaneioConsolidado", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeRomaneioConsolidadoReceiver), commandName: "Command.Write.CTeRomaneioConsolidadoCrudCommand");
-                 var cteromaneioconsolidado = new CTeRomaneioConsolidadoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.CorrelationId, c.RomaneioId, c.CargaId, c.ConsolidadoEmUtc, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.EmitenteDocumento, c.TomadorDocumento, c.RotaSnapshotJson, c.CargaSnapshotJson, c.PreferenciasFiscaisJson, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeRomaneioConsolidado", "DeleteCTeRomaneioConsolidado", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeRomaneioConsolidadoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeRomaneioConsolidado", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeRomaneioConsolidadoReceiver), commandName: "Command.Write.CTeRomaneioConsolidadoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cteromaneioconsolidado = new CTeRomaneioConsolidadoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.CorrelationId, c.RomaneioId, c.CargaId, c.ConsolidadoEmUtc, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.EmitenteDocumento, c.TomadorDocumento, c.RotaSnapshotJson, c.CargaSnapshotJson, c.PreferenciasFiscaisJson, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cteromaneioconsolidado.OperationalEntityId);
                  var domainResult = CTeRomaneioConsolidadoDomainBehavior.Apply(cteromaneioconsolidado, context);
                  if (!domainResult.IsValid)

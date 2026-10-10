@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class VariavelPlotagemOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VAR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class VariavelPlotagemDecorator : IVariavelPlotagemEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public VariavelPlotagemDecorator(IVariavelPlotagemEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.VAR_ID = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.VAR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "VAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "VAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.VAR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.PLO_ID = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.PLO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "PLO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "PLO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.PLO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & VariavelPlotagemTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("VariavelPlotagem", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VariavelPlotagem", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelPlotagemOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

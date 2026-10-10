@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ClienteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCliente", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteClienteReceiver), commandName: "Command.Write.ClienteCrudCommand");
-                 var cliente = new ClienteFactory(_logger, _domainTrackingPolicy).Create(context, c.CLI_ID, c.CLI_NOME, c.CLI_FONE, c.CLI_OBS, c.CLI_ENDERECO_ENTREGA, c.CLI_CPF_CNPJ, c.CLI_BAIRRO_ENTREGA, c.CLI_CEP_ENTREGA, c.CLI_EMAIL, c.CLI_INTEGRACAO, c.MUN_ID_ENTREGA, c.CLI_TRANSLADO, c.CLI_REGIAO_ENTREGA, c.CLI_EXIGENTE_NA_IMPRESSAO, c.CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, c.CLI_TEMPO_DESCARREGAMENTO_UNITARIO, c.CLI_PERCENTUAL_JANELA_EMBARQUE, c.REP_ID, c.CLI_RAZAO_SOCIAL, c.CLI_EMAIL_MONITORAMENTO_TRANSPORTE, c.CLI_CONTATO, c.CLI_SETOR, c.SEG_ID, c.CLI_TIPO, c.CLI_INTEGRACAO_ERP, c.CLI_LATITUDE_ENTREGA, c.CLI_LONGITUDE_ENTREGA);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Cliente", "DeleteCliente", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ClienteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCliente", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteClienteReceiver), commandName: "Command.Write.ClienteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cliente = new ClienteFactory(_logger, _domainTrackingPolicy).Create(context, c.CLI_ID, c.CLI_NOME, c.CLI_FONE, c.CLI_OBS, c.CLI_ENDERECO_ENTREGA, c.CLI_CPF_CNPJ, c.CLI_BAIRRO_ENTREGA, c.CLI_CEP_ENTREGA, c.CLI_EMAIL, c.CLI_INTEGRACAO, c.MUN_ID_ENTREGA, c.CLI_TRANSLADO, c.CLI_REGIAO_ENTREGA, c.CLI_EXIGENTE_NA_IMPRESSAO, c.CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, c.CLI_TEMPO_DESCARREGAMENTO_UNITARIO, c.CLI_PERCENTUAL_JANELA_EMBARQUE, c.REP_ID, c.CLI_RAZAO_SOCIAL, c.CLI_EMAIL_MONITORAMENTO_TRANSPORTE, c.CLI_CONTATO, c.CLI_SETOR, c.SEG_ID, c.CLI_TIPO, c.CLI_INTEGRACAO_ERP, c.CLI_LATITUDE_ENTREGA, c.CLI_LONGITUDE_ENTREGA, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cliente.OperationalEntityId);
                  var domainResult = ClienteDomainBehavior.Apply(cliente, context);
                  if (!domainResult.IsValid)

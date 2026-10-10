@@ -34,13 +34,14 @@
                             }
 
                             public ITipoInspecaoVisualEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tiv_id, string? tiv_nome, string? tiv_descricao, string? tiv_fechamento, string? tiv_amostra_aleatoria, int? tiv_n_amostras, string? tiv_medida, Decimal? tiv_especificacao, Decimal? tiv_tol_mais, Decimal? tiv_tol_menos )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int tiv_id, string? tiv_nome, string? tiv_descricao, string? tiv_fechamento, string? tiv_amostra_aleatoria, int? tiv_n_amostras, string? tiv_medida, Decimal? tiv_especificacao, Decimal? tiv_tol_mais, Decimal? tiv_tol_menos, ulong? trackingMask = null )
                             {
                             var entity = new TipoInspecaoVisualEntity(id, tiv_id, tiv_nome, tiv_descricao, tiv_fechamento, tiv_amostra_aleatoria, tiv_n_amostras, tiv_medida, tiv_especificacao, tiv_tol_mais, tiv_tol_menos );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoInspecaoVisual", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoInspecaoVisualDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoInspecaoVisual", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoInspecaoVisualDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

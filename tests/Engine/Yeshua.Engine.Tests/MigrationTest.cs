@@ -54,5 +54,51 @@ namespace TestMigration
             Assert.AreEqual("OperationalEntityId", copy.Name);
             Assert.AreEqual("#Guid.NewGuid().ToString(\"N\")", copy.ValueDefault);
         }
+
+        [TestMethod]
+        public void TenantUsesCentralGlobalIdentityInsteadOfLocalIncrement()
+        {
+            var migration = new global::Migration.Dominio.Migration.S000001();
+            migration.Up();
+
+            var tenant = migration.Entitys.Single(entity => entity.EntityName == "yTenant");
+            var id = tenant.AddColumns.Single(column => column.Name == "Id");
+
+            Assert.IsTrue(id.IsGlobalIdentity);
+            Assert.AreEqual("Central", id.GlobalIdentityAuthority);
+            Assert.IsTrue(id.IsImmutable);
+            Assert.IsTrue(id.IsNotNull);
+            Assert.IsFalse(id.AutoIncremento);
+        }
+
+        [TestMethod]
+        public void UserUsesCentralGlobalIdentityInsteadOfLocalIncrement()
+        {
+            var migration = new global::Migration.Dominio.Migration.S000001();
+            migration.Up();
+
+            var user = migration.Entitys.Single(entity => entity.EntityName == "yUser");
+            var id = user.AddColumns.Single(column => column.Name == "Id");
+
+            Assert.IsTrue(id.IsGlobalIdentity);
+            Assert.AreEqual("Central", id.GlobalIdentityAuthority);
+            Assert.IsTrue(id.IsImmutable);
+            Assert.IsTrue(id.IsNotNull);
+            Assert.IsFalse(id.AutoIncremento);
+        }
+
+        [TestMethod]
+        public void GlobalIdentityMetadataSurvivesCopy()
+        {
+            var source = new Dominio.Entity("Authority");
+            source.AddColumn("Id", "ID").Int().Key().GlobalIdentity("Central");
+            var target = new Dominio.Entity("Projection");
+
+            var copy = source.AddColumns.Single().DeepCopy(target);
+
+            Assert.IsTrue(copy.IsGlobalIdentity);
+            Assert.AreEqual("Central", copy.GlobalIdentityAuthority);
+            Assert.IsFalse(copy.AutoIncremento);
+        }
     }
 }

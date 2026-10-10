@@ -41,75 +41,9 @@ namespace Command.Receivers.UseCase
 
         protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken)
 {
-            try
-            {
-
-                // Valida��o b�sica
-                if (string.IsNullOrEmpty(comand.CpfCnpj))
-                    throw new ReceiverException<CreateContaOutputCommand>(Error("Cpf / Cnpj � obrigat�rio", default));
-
-                if (string.IsNullOrWhiteSpace(comand.email))
-                    throw new ReceiverException<CreateContaOutputCommand>(Error("Email � obrigat�rio", default));
-
-                if (string.IsNullOrWhiteSpace(comand.nome))
-                    throw new ReceiverException<CreateContaOutputCommand>(Error("Nome � obrigat�rio", default));
-
-                if (comand.password != comand.confirmpassword)
-                    throw new ReceiverException<CreateContaOutputCommand>(Error("Senhas n�o conferem", default));
-
-                if (_repReadY_Tenant.ExistsByCnpjCpf(comand.CpfCnpj))
-                    throw new ReceiverException<CreateContaOutputCommand>(Error("Conta j� existente.", default));
-
-                if (_repReadY_User.ExistsByEmail(comand.email))
-                    if (_repReadY_Tenant.ExistsByUserId(_repReadY_User.FirstByEmail(comand.email).id))
-                        throw new ReceiverException<CreateContaOutputCommand>(Error("Conta existente.", default));
-
-                _unitOfWork.BeginTran();
-
-                var tenant = new yTenantFactory(_logger).Create(
-                    comand.CpfCnpj,
-                    comand.nome,
-                    null
-                );
-                _repWriteY_Tenant.Insert(tenant);
-
-                if (!tenant.isValidInsert())
-                    throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", tenant.getErroMensagens()), default));
-
-                if (!tenant.Id.HasValue)
-                    throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Tenant, Id n�o gerado", default));
-
-                // Cria��o do User usando Factory (padr�o seu)
-                var user = new yUserFactory(_logger).Create(
-                    null,
-                    comand.email,
-                    comand.email, // Nome: Aqui voc� decide o valor real, coloquei email como exemplo
-                    comand.password);
-
-                _executionContext.SetTenantId(tenant.Id.Value);
-
-                if (!user.isValidInsert())
-                    throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default));
-
-                _repWriteY_User.Insert(user);
-
-                _repWriteY_Tenant.UpdateUserId(tenant.Id.Value, user.Id.Value);
-
-                _unitOfWork.Commit();
-
-                state = Success("Conta criada com sucesso", new CreateContaOutputCommand { TenantId = tenant.Id.Value, UserId = user.Id.Value });
-            }
-            catch (ReceiverException<CreateContaOutputCommand>)
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                throw new ReceiverException<CreateContaOutputCommand>(Error(ex, default));
-            }
-            return state;
+            await Task.CompletedTask;
+            throw new ReceiverException<CreateContaOutputCommand>(
+                Error("A criacao de tenants pertence exclusivamente a Central.", default));
         }
     }
 }

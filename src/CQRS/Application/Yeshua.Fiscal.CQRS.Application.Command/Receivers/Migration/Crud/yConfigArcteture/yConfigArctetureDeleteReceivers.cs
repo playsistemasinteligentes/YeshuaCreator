@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yConfigArctetureCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyConfigArcteture", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyConfigArctetureReceiver), commandName: "Command.Write.yConfigArctetureCrudCommand");
-                 var yconfigarcteture = new yConfigArctetureFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yConfigArcteture", "DeleteyConfigArcteture", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yConfigArctetureCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyConfigArcteture", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyConfigArctetureReceiver), commandName: "Command.Write.yConfigArctetureCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var yconfigarcteture = new yConfigArctetureFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AuditTrackerActived, c.AuditCRUDActived, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yconfigarcteture.OperationalEntityId);
                  var domainResult = yConfigArctetureDomainBehavior.Apply(yconfigarcteture, context);
                  if (!domainResult.IsValid)

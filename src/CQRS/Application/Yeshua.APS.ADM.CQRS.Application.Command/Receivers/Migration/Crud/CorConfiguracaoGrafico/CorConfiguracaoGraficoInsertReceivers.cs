@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CorConfiguracaoGraficoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCorConfiguracaoGrafico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCorConfiguracaoGraficoReceiver), commandName: "Command.Write.CorConfiguracaoGraficoCrudCommand");
-                 var corconfiguracaografico = new CorConfiguracaoGraficoFactory(_logger, _domainTrackingPolicy).Create(context, c.COR_ID, c.COR_PERCENTUAL_INI, c.COR_PERCENTUAL_FIM, c.COR_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CorConfiguracaoGrafico", "InsertCorConfiguracaoGrafico", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CorConfiguracaoGraficoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCorConfiguracaoGrafico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCorConfiguracaoGraficoReceiver), commandName: "Command.Write.CorConfiguracaoGraficoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var corconfiguracaografico = new CorConfiguracaoGraficoFactory(_logger, _domainTrackingPolicy).Create(context, c.COR_ID, c.COR_PERCENTUAL_INI, c.COR_PERCENTUAL_FIM, c.COR_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", corconfiguracaografico.OperationalEntityId);
                  var domainResult = CorConfiguracaoGraficoDomainBehavior.Apply(corconfiguracaografico, context);
                  if (!domainResult.IsValid)

@@ -38,7 +38,7 @@ namespace Input.Repository.yTenant
         public void Insert(IyTenantEntity yTenant)
         {
             var query = _query.InseriryTenantQuery(yTenant);
-        yTenant.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
         }
 
         public void Update(IyTenantEntity yTenant)
@@ -64,11 +64,6 @@ namespace Input.Repository.yTenant
         public void UpdateUserId(int id, int value)
         {
             var query = _query.UpdateUserId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateOperationalEntityId(int id, string value)
-        {
-            var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(int id, bool value)

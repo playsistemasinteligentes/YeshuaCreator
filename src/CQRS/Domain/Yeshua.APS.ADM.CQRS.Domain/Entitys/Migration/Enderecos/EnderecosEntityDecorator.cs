@@ -29,6 +29,17 @@
             public const ulong UserId = 1UL << 6;
         }
 
+        public static class EnderecosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification END_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification END_GRUPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class EnderecosDecorator : IEnderecosEntity
 {
 
@@ -36,6 +47,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public EnderecosDecorator(IEnderecosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -53,6 +65,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -65,7 +84,7 @@
                                             {
                                                 _inner.END_ID = value;
                                                 if ((_trackingMask & EnderecosTrackingFields.END_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Enderecos", "END_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Enderecos", "END_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EnderecosOperationalFields.END_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -79,7 +98,7 @@
                                             {
                                                 _inner.END_GRUPO = value;
                                                 if ((_trackingMask & EnderecosTrackingFields.END_GRUPO) != 0UL)
-                                                    _logger.DomainValueChanged("Enderecos", "END_GRUPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Enderecos", "END_GRUPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EnderecosOperationalFields.END_GRUPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +113,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & EnderecosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Enderecos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Enderecos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EnderecosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -108,7 +127,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & EnderecosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Enderecos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Enderecos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EnderecosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -122,7 +141,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & EnderecosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Enderecos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Enderecos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EnderecosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +155,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & EnderecosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Enderecos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Enderecos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, EnderecosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

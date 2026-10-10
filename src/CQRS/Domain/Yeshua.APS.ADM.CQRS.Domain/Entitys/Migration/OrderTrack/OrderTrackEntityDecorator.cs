@@ -38,6 +38,26 @@
             public const ulong UserId = 1UL << 15;
         }
 
+        public static class OrderTrackOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_SEQUENCIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_VERSSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_EVENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_DATA_NECESSIDADE_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_DATA_NECESSIDADE_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_DATA_PREVISTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OTK_DATA_REALIZADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class OrderTrackDecorator : IOrderTrackEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public OrderTrackDecorator(IOrderTrackEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.OTK_ID = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_ID) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.OTK_SEQUENCIA = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_SEQUENCIA) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_SEQUENCIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.OTK_VERSSAO = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_VERSSAO) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_VERSSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_VERSSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_VERSSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.OTK_EVENTO = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_EVENTO) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_EVENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_EVENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_EVENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.OTK_DATA_NECESSIDADE_DE = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_DATA_NECESSIDADE_DE) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_NECESSIDADE_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_NECESSIDADE_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_DATA_NECESSIDADE_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.OTK_DATA_NECESSIDADE_ATE = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_DATA_NECESSIDADE_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_NECESSIDADE_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_NECESSIDADE_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_DATA_NECESSIDADE_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.OTK_DATA_PREVISTA = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_DATA_PREVISTA) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_PREVISTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_DATA_PREVISTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.OTK_DATA_REALIZADA = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.OTK_DATA_REALIZADA) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_REALIZADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "OTK_DATA_REALIZADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.OTK_DATA_REALIZADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +242,7 @@
                                             {
                                                 _inner.FPR_ID = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.FPR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "FPR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "FPR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.FPR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -229,7 +257,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +271,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +285,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,7 +299,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & OrderTrackTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("OrderTrack", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("OrderTrack", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderTrackOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

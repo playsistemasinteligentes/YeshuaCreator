@@ -34,13 +34,14 @@
                             }
 
                             public IT_DepartamentosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int dep_id, string dep_nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int dep_id, string dep_nome, ulong? trackingMask = null )
                             {
                             var entity = new T_DepartamentosEntity(dep_id, dep_nome );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_Departamentos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_DepartamentosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_Departamentos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_DepartamentosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

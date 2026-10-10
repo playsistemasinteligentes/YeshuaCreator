@@ -25,9 +25,19 @@
             public const ulong Email = 1UL << 2;
             public const ulong Senha = 1UL << 3;
             public const ulong TenantID = 1UL << 4;
-            public const ulong OperationalEntityId = 1UL << 5;
-            public const ulong Deleted = 1UL << 6;
-            public const ulong Changed = 1UL << 7;
+            public const ulong Deleted = 1UL << 5;
+            public const ulong Changed = 1UL << 6;
+        }
+
+        public static class yUserOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Nome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Email = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Senha = Dominio.Operational.OperationalDataClassification.NeverCapture;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class yUserDecorator : IyUserEntity
@@ -37,6 +47,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yUserDecorator(IyUserEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,22 +65,16 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
-                        }
-                                    public int? Id
-                                    {
-                                        get => _inner.Id;
-                                        set
-                                        {
-                                            if (_inner.Id != value)
-                                            {
-                                                _inner.Id = value;
-                                                if ((_trackingMask & yUserTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
-                                            }
-                                        }
-                                    }
+                        }    public int Id => _inner.Id;
 
                                     public string Nome
                                     {
@@ -80,7 +85,7 @@
                                             {
                                                 _inner.Nome = value;
                                                 if ((_trackingMask & yUserTrackingFields.Nome) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yUser", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yUserOperationalFields.Nome, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +99,7 @@
                                             {
                                                 _inner.Email = value;
                                                 if ((_trackingMask & yUserTrackingFields.Email) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "Email", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yUser", "Email", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yUserOperationalFields.Email, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -108,7 +113,7 @@
                                             {
                                                 _inner.Senha = value;
                                                 if ((_trackingMask & yUserTrackingFields.Senha) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "Senha", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yUser", "Senha", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yUserOperationalFields.Senha, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -122,11 +127,10 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yUserTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yUser", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yUserOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
-    public string OperationalEntityId => _inner.OperationalEntityId;
 
                                     public bool? Deleted
                                     {
@@ -137,7 +141,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yUserTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yUser", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yUserOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +155,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yUserTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yUser", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yUser", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yUserOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

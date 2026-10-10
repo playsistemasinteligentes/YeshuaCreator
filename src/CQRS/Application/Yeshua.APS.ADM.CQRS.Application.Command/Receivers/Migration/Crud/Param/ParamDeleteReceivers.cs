@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ParamCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteParam", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteParamReceiver), commandName: "Command.Write.ParamCrudCommand");
-                 var param = new ParamFactory(_logger, _domainTrackingPolicy).Create(context, c.PAR_ID, c.PAR_DESCRICAO, c.PAR_VALOR_S, c.PAR_VALOR_N, c.PAR_VALOR_D);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Param", "DeleteParam", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ParamCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteParam", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteParamReceiver), commandName: "Command.Write.ParamCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var param = new ParamFactory(_logger, _domainTrackingPolicy).Create(context, c.PAR_ID, c.PAR_DESCRICAO, c.PAR_VALOR_S, c.PAR_VALOR_N, c.PAR_VALOR_D, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", param.OperationalEntityId);
                  var domainResult = ParamDomainBehavior.Apply(param, context);
                  if (!domainResult.IsValid)

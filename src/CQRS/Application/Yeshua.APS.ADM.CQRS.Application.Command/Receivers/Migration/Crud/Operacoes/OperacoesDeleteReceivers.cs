@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OperacoesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteOperacoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteOperacoesReceiver), commandName: "Command.Write.OperacoesCrudCommand");
-                 var operacoes = new OperacoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OPE_TIPO_REGISTRO, c.OPE_ID, c.GMA_ID, c.MAQ_ID, c.PRO_ID, c.OPE_EXCECAO, c.ROT_SEQ_TRANFORMACAO, c.ORD_ID, c.FPR_SEQ_REPETICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Operacoes", "DeleteOperacoes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OperacoesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteOperacoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteOperacoesReceiver), commandName: "Command.Write.OperacoesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var operacoes = new OperacoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OPE_TIPO_REGISTRO, c.OPE_ID, c.GMA_ID, c.MAQ_ID, c.PRO_ID, c.OPE_EXCECAO, c.ROT_SEQ_TRANFORMACAO, c.ORD_ID, c.FPR_SEQ_REPETICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", operacoes.OperationalEntityId);
                  var domainResult = OperacoesDomainBehavior.Apply(operacoes, context);
                  if (!domainResult.IsValid)

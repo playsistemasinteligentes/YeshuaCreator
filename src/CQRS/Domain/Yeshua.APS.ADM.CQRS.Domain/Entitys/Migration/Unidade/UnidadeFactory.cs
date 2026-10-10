@@ -34,13 +34,14 @@
                             }
 
                             public IUnidadeEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int uni_id, string deescricao, string un )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int uni_id, string deescricao, string un, ulong? trackingMask = null )
                             {
                             var entity = new UnidadeEntity(uni_id, deescricao, un );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Unidade", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new UnidadeDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Unidade", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new UnidadeDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

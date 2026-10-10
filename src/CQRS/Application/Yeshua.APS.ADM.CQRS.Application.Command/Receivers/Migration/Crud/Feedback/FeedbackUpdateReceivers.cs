@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.FeedbackCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateFeedback", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateFeedbackReceiver), commandName: "Command.Write.FeedbackCrudCommand");
-                 var feedback = new FeedbackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DataInicial, c.Datafinal, c.MaquinaId, c.OcorrenciaId, c.TurnoId, c.TurmaId, c.UsuarioId, c.OrderId, c.ProdutoId, c.Observacoes, c.Grupo, c.DiaTurma, c.SequenciaTransformacao, c.SequenciaRepeticao, c.QuantidadePulsos, c.QuantidadePecasPorPulso, c.FEE_QTD_TOTAL_PRODUCAO_AJUSTADA, c.BOL_ID, c.COR_SEQUENCIA);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Feedback", "UpdateFeedback", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.FeedbackCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateFeedback", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateFeedbackReceiver), commandName: "Command.Write.FeedbackCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var feedback = new FeedbackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DataInicial, c.Datafinal, c.MaquinaId, c.OcorrenciaId, c.TurnoId, c.TurmaId, c.UsuarioId, c.OrderId, c.ProdutoId, c.Observacoes, c.Grupo, c.DiaTurma, c.SequenciaTransformacao, c.SequenciaRepeticao, c.QuantidadePulsos, c.QuantidadePecasPorPulso, c.FEE_QTD_TOTAL_PRODUCAO_AJUSTADA, c.BOL_ID, c.COR_SEQUENCIA, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", feedback.OperationalEntityId);
                  var domainResult = FeedbackDomainBehavior.Apply(feedback, context);
                  if (!domainResult.IsValid)

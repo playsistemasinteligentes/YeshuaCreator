@@ -34,13 +34,14 @@
                             }
 
                             public ICanhotosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string? can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string car_id, string ord_id, string not_id, DateTime? can_data_entrega, string? can_img, Decimal? can_lat_entrega, Decimal? can_long_entrega, ulong? trackingMask = null )
                             {
                             var entity = new CanhotosEntity(id, car_id, ord_id, not_id, can_data_entrega, can_img, can_lat_entrega, can_long_entrega );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Canhotos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CanhotosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Canhotos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CanhotosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

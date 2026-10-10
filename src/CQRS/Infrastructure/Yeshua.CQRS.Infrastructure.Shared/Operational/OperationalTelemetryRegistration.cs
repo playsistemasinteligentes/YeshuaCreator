@@ -20,6 +20,7 @@ public static class OperationalTelemetryRegistration
             OperationalLogSinkFactory.Create(
                 exportSettings,
                 sp.GetRequiredService<IRuntimeIdentityProvider>()));
+        services.AddTransient<OperationalHttpTelemetryHandler>();
 
         services
             .AddOpenTelemetry()
@@ -34,6 +35,7 @@ public static class OperationalTelemetryRegistration
             .WithTracing(tracing =>
             {
                 tracing.AddSource(OperationalActivity.SourceName);
+                tracing.AddProcessor(new OperationalActivitySanitizingProcessor());
                 if (exportSettings.Mode == OperationalTelemetryExportMode.Otlp)
                 {
                     var endpoint = exportSettings.OtlpEndpoint

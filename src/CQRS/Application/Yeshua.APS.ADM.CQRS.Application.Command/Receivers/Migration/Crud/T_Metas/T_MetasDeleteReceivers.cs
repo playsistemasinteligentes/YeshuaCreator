@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_MetasCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_Metas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_MetasReceiver), commandName: "Command.Write.T_MetasCrudCommand");
-                 var t_metas = new T_MetasFactory(_logger, _domainTrackingPolicy).Create(context, c.MET_ID, c.MET_DTINICIO, c.MET_DTFIM, c.MET_ALVO, c.MET_TIPOALVO, c.IND_ID, c.MET_RANGE01, c.MET_RANGE02, c.MET_RANGE03, c.DIM_ID, c.FAT_ID, c.DIM_SUBDIMENSAO_ID, c.PER_ID, c.DOM_EMPRESA, c.DOM_FILIAL);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_Metas", "DeleteT_Metas", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_MetasCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_Metas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_MetasReceiver), commandName: "Command.Write.T_MetasCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_metas = new T_MetasFactory(_logger, _domainTrackingPolicy).Create(context, c.MET_ID, c.MET_DTINICIO, c.MET_DTFIM, c.MET_ALVO, c.MET_TIPOALVO, c.IND_ID, c.MET_RANGE01, c.MET_RANGE02, c.MET_RANGE03, c.DIM_ID, c.FAT_ID, c.DIM_SUBDIMENSAO_ID, c.PER_ID, c.DOM_EMPRESA, c.DOM_FILIAL, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_metas.OperationalEntityId);
                  var domainResult = T_MetasDomainBehavior.Apply(t_metas, context);
                  if (!domainResult.IsValid)

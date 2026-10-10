@@ -34,13 +34,14 @@
                             }
 
                             public ITipoMovimentoEstoqueEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string tip_id, string tip_descricao, int tip_type, int spr )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string tip_id, string tip_descricao, int tip_type, int spr, ulong? trackingMask = null )
                             {
                             var entity = new TipoMovimentoEstoqueEntity(tip_id, tip_descricao, tip_type, spr );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoMovimentoEstoque", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoMovimentoEstoqueDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoMovimentoEstoque", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoMovimentoEstoqueDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IIndicadoresPeriodosDimencoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string per_id, int ind_id, int dim_id, string per_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string per_id, int ind_id, int dim_id, string per_descricao, ulong? trackingMask = null )
                             {
                             var entity = new IndicadoresPeriodosDimencoesEntity(id, per_id, ind_id, dim_id, per_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("IndicadoresPeriodosDimencoes", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new IndicadoresPeriodosDimencoesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("IndicadoresPeriodosDimencoes", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new IndicadoresPeriodosDimencoesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

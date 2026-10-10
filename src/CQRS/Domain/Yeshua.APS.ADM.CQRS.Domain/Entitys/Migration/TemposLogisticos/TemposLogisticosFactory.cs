@@ -34,13 +34,14 @@
                             }
 
                             public ITemposLogisticosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tmp_tipo_tempo, string tmp_tipo_carga, Decimal tmp_tempo_medio_unitario, string cli_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tmp_tipo_tempo, string tmp_tipo_carga, Decimal tmp_tempo_medio_unitario, string cli_id, ulong? trackingMask = null )
                             {
                             var entity = new TemposLogisticosEntity(id, tmp_tipo_tempo, tmp_tipo_carga, tmp_tempo_medio_unitario, cli_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TemposLogisticos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TemposLogisticosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TemposLogisticos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TemposLogisticosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

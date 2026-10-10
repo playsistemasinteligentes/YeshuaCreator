@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class RespInspVisualOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RIV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RIV_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class RespInspVisualDecorator : IRespInspVisualEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public RespInspVisualDecorator(IRespInspVisualEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.RIV_ID = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.RIV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "RIV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "RIV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.RIV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.IPV_ID = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.IPV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "IPV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "IPV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.IPV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.ITI_ID = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.ITI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "ITI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "ITI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.ITI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.RIV_STATUS = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.RIV_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "RIV_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "RIV_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.RIV_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & RespInspVisualTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("RespInspVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("RespInspVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RespInspVisualOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

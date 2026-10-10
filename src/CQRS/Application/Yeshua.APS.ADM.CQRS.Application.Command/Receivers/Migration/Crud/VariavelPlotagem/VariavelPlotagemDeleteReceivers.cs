@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.VariavelPlotagemCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVariavelPlotagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVariavelPlotagemReceiver), commandName: "Command.Write.VariavelPlotagemCrudCommand");
-                 var variavelplotagem = new VariavelPlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VAR_ID, c.PLO_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("VariavelPlotagem", "DeleteVariavelPlotagem", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.VariavelPlotagemCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteVariavelPlotagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteVariavelPlotagemReceiver), commandName: "Command.Write.VariavelPlotagemCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var variavelplotagem = new VariavelPlotagemFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.VAR_ID, c.PLO_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", variavelplotagem.OperationalEntityId);
                  var domainResult = VariavelPlotagemDomainBehavior.Apply(variavelplotagem, context);
                  if (!domainResult.IsValid)

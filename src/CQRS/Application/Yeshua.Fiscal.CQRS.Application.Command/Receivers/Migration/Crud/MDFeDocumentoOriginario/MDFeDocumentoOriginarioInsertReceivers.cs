@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MDFeDocumentoOriginarioCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeDocumentoOriginario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeDocumentoOriginarioReceiver), commandName: "Command.Write.MDFeDocumentoOriginarioCrudCommand");
-                 var mdfedocumentooriginario = new MDFeDocumentoOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.DocumentoFiscalOriginarioId, c.TipoDocumento, c.ChaveAcesso, c.SnapshotJson);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MDFeDocumentoOriginario", "InsertMDFeDocumentoOriginario", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MDFeDocumentoOriginarioCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMDFeDocumentoOriginario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMDFeDocumentoOriginarioReceiver), commandName: "Command.Write.MDFeDocumentoOriginarioCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var mdfedocumentooriginario = new MDFeDocumentoOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.DocumentoFiscalOriginarioId, c.TipoDocumento, c.ChaveAcesso, c.SnapshotJson, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mdfedocumentooriginario.OperationalEntityId);
                  var domainResult = MDFeDocumentoOriginarioDomainBehavior.Apply(mdfedocumentooriginario, context);
                  if (!domainResult.IsValid)

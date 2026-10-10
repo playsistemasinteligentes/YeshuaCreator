@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class VariavelOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VAR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VAR_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CON_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VAR_MODO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class VariavelDecorator : IVariavelEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public VariavelDecorator(IVariavelEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & VariavelTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.VAR_ID = value;
                                                 if ((_trackingMask & VariavelTrackingFields.VAR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "VAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "VAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.VAR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.VAR_DESCRICAO = value;
                                                 if ((_trackingMask & VariavelTrackingFields.VAR_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "VAR_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "VAR_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.VAR_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.CON_ID = value;
                                                 if ((_trackingMask & VariavelTrackingFields.CON_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "CON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "CON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.CON_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.VAR_MODO = value;
                                                 if ((_trackingMask & VariavelTrackingFields.VAR_MODO) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "VAR_MODO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "VAR_MODO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.VAR_MODO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & VariavelTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & VariavelTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & VariavelTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & VariavelTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Variavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Variavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VariavelOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

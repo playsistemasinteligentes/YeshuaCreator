@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.UsuarioPerfilCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUsuarioPerfil", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUsuarioPerfilReceiver), commandName: "Command.Write.UsuarioPerfilCrudCommand");
-                 var usuarioperfil = new UsuarioPerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.USE_ID, c.PER_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("UsuarioPerfil", "DeleteUsuarioPerfil", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.UsuarioPerfilCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUsuarioPerfil", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUsuarioPerfilReceiver), commandName: "Command.Write.UsuarioPerfilCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var usuarioperfil = new UsuarioPerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.USE_ID, c.PER_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", usuarioperfil.OperationalEntityId);
                  var domainResult = UsuarioPerfilDomainBehavior.Apply(usuarioperfil, context);
                  if (!domainResult.IsValid)

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.GrupoMaquinaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertGrupoMaquinaReceiver), commandName: "Command.Write.GrupoMaquinaCrudCommand");
-                 var grupomaquina = new GrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Status, c.GMA_TIPO_PLANEJAMENTO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("GrupoMaquina", "InsertGrupoMaquina", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.GrupoMaquinaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertGrupoMaquinaReceiver), commandName: "Command.Write.GrupoMaquinaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var grupomaquina = new GrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Status, c.GMA_TIPO_PLANEJAMENTO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", grupomaquina.OperationalEntityId);
                  var domainResult = GrupoMaquinaDomainBehavior.Apply(grupomaquina, context);
                  if (!domainResult.IsValid)

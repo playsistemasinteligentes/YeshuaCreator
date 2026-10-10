@@ -1,0 +1,1638 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                            namespace Dominio.Entitys
+                            {
+                                public class yTenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    private readonly Dominio.Interfaces.IDomainTrackingPolicy? _trackingPolicy;
+                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
+                                        : this(logger, null)
+                                    {
+                                    }
+                                    public yTenantFactory(
+                                        Dominio.Interfaces.ILogger logger,
+                                        Dominio.Interfaces.IDomainTrackingPolicy? trackingPolicy)
+                                    {
+                                        _logger = logger;
+                                        _trackingPolicy = trackingPolicy;
+                                    } public IyTenantEntity Create(int id, string cnpjcpf, string nome, int? userid )
+                            {
+                                return Create(null, id, cnpjcpf, nome, userid);
+                            }
+                            public IyTenantEntity Create(
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string cnpjcpf, string nome, int? userid, ulong? trackingMask = null )
+                            {
+                            var entity = new yTenantEntity(id, cnpjcpf, nome, userid );
+
+
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, effectiveTrackingMask);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                namespace Dominio.Entitys
+                {
+            public partial class yTenantEntity
+{
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel NextGlobalIdQuery()
+        {
+            return new QueryModel("SELECT NEXT VALUE FOR [yTenantIdGlobalSequence];", null);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public int NextGlobalId()
+        {
+            var query = _query.NextGlobalIdQuery();
+            return _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                            namespace Dominio.Entitys
+                            {
+                                public class yTenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    private readonly Dominio.Interfaces.IDomainTrackingPolicy? _trackingPolicy;
+                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
+                                        : this(logger, null)
+                                    {
+                                    }
+                                    public yTenantFactory(
+                                        Dominio.Interfaces.ILogger logger,
+                                        Dominio.Interfaces.IDomainTrackingPolicy? trackingPolicy)
+                                    {
+                                        _logger = logger;
+                                        _trackingPolicy = trackingPolicy;
+                                    } public IyTenantEntity Create(int id, string cnpjcpf, string nome, int? userid )
+                            {
+                                return Create(null, id, cnpjcpf, nome, userid);
+                            }
+                            public IyTenantEntity Create(
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string cnpjcpf, string nome, int? userid, ulong? trackingMask = null )
+                            {
+                            var entity = new yTenantEntity(id, cnpjcpf, nome, userid );
+
+
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, effectiveTrackingMask);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                namespace Dominio.Entitys
+                {
+            public partial class yTenantEntity
+{
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel NextGlobalIdQuery()
+        {
+            return new QueryModel("SELECT NEXT VALUE FOR [yTenantIdGlobalSequence];", null);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public int NextGlobalId()
+        {
+            var query = _query.NextGlobalIdQuery();
+            return _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                            namespace Dominio.Entitys
+                            {
+                                public class yTenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    private readonly Dominio.Interfaces.IDomainTrackingPolicy? _trackingPolicy;
+                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
+                                        : this(logger, null)
+                                    {
+                                    }
+                                    public yTenantFactory(
+                                        Dominio.Interfaces.ILogger logger,
+                                        Dominio.Interfaces.IDomainTrackingPolicy? trackingPolicy)
+                                    {
+                                        _logger = logger;
+                                        _trackingPolicy = trackingPolicy;
+                                    } public IyTenantEntity Create(int id, string cnpjcpf, string nome, int? userid )
+                            {
+                                return Create(null, id, cnpjcpf, nome, userid);
+                            }
+                            public IyTenantEntity Create(
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string cnpjcpf, string nome, int? userid, ulong? trackingMask = null )
+                            {
+                            var entity = new yTenantEntity(id, cnpjcpf, nome, userid );
+
+
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, effectiveTrackingMask);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                namespace Dominio.Entitys
+                {
+            public partial class yTenantEntity
+{
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel NextGlobalIdQuery()
+        {
+            return new QueryModel("SELECT NEXT VALUE FOR [yTenantIdGlobalSequence];", null);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public int NextGlobalId()
+        {
+            var query = _query.NextGlobalIdQuery();
+            return _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                            namespace Dominio.Entitys
+                            {
+                                public class yTenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    private readonly Dominio.Interfaces.IDomainTrackingPolicy? _trackingPolicy;
+                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
+                                        : this(logger, null)
+                                    {
+                                    }
+                                    public yTenantFactory(
+                                        Dominio.Interfaces.ILogger logger,
+                                        Dominio.Interfaces.IDomainTrackingPolicy? trackingPolicy)
+                                    {
+                                        _logger = logger;
+                                        _trackingPolicy = trackingPolicy;
+                                    } public IyTenantEntity Create(int id, string cnpjcpf, string nome, int? userid )
+                            {
+                                return Create(null, id, cnpjcpf, nome, userid);
+                            }
+                            public IyTenantEntity Create(
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string cnpjcpf, string nome, int? userid, ulong? trackingMask = null )
+                            {
+                            var entity = new yTenantEntity(id, cnpjcpf, nome, userid );
+
+
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, effectiveTrackingMask);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                namespace Dominio.Entitys
+                {
+            public partial class yTenantEntity
+{
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel NextGlobalIdQuery()
+        {
+            return new QueryModel("SELECT NEXT VALUE FOR [yTenantIdGlobalSequence];", null);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public int NextGlobalId()
+        {
+            var query = _query.NextGlobalIdQuery();
+            return _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                            namespace Dominio.Entitys
+                            {
+                                public class yTenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    private readonly Dominio.Interfaces.IDomainTrackingPolicy? _trackingPolicy;
+                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
+                                        : this(logger, null)
+                                    {
+                                    }
+                                    public yTenantFactory(
+                                        Dominio.Interfaces.ILogger logger,
+                                        Dominio.Interfaces.IDomainTrackingPolicy? trackingPolicy)
+                                    {
+                                        _logger = logger;
+                                        _trackingPolicy = trackingPolicy;
+                                    } public IyTenantEntity Create(int id, string cnpjcpf, string nome, int? userid )
+                            {
+                                return Create(null, id, cnpjcpf, nome, userid);
+                            }
+                            public IyTenantEntity Create(
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string cnpjcpf, string nome, int? userid, ulong? trackingMask = null )
+                            {
+                            var entity = new yTenantEntity(id, cnpjcpf, nome, userid );
+
+
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yTenant", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTenantDecorator(entity, _logger, context, effectiveTrackingMask);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+                namespace Dominio.Entitys
+                {
+            public partial class yTenantEntity
+{
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel NextGlobalIdQuery()
+        {
+            return new QueryModel("SELECT NEXT VALUE FOR [yTenantIdGlobalSequence];", null);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public int NextGlobalId()
+        {
+            var query = _query.NextGlobalIdQuery();
+            return _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO [yTenant] ([Id], [CnpjCpf], [Nome], [UserId]) VALUES(@Id, @CnpjCpf, @Nome, @UserId) ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf, [Nome] = @Nome, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [CnpjCpf] = @CnpjCpf WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [Nome] = @Nome WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [yTenant] SET [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM [yTenant] WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+// <yeshua>
+// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
+// createdBy: DSL
+// ownership: IA_DEV
+// editable: true
+// regeneration: NEVER_OVERWRITE
+// sourceOfTruth: THIS_FILE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+// </yeshua>
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+

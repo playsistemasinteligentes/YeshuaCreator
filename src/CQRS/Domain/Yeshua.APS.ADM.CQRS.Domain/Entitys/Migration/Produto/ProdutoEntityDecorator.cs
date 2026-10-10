@@ -86,6 +86,74 @@
             public const ulong PRO_TOLERANCIA_DIMENSAO_CHAPA_DE = 1UL << 63;
         }
 
+        public static class ProdutoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Descricao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ESTOQUE_ATUAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UNI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FARDOS_POR_CAMADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_CAMADAS_POR_PALETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TIPO_IDENTIFICACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_GRUPO_PALETIZACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_PECAS_POR_FARDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TEM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_LARGURA_PECA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COMPRIMENTO_PECA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ALTURA_PECA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_LARGURA_EMBALADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COMPRIMENTO_EMBALADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ALTURA_EMBALADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FRENTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ROTACIONA_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ROTACIONA_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ROTACIONA_ALTURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ESCALA_COR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_SUB_ESCALA_COR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_CUSTO_SUBIDA_ESCALA_COR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_CUSTO_DECIDA_ESCALA_COR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TMP_TIPO_CARGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TEMPO_CARREGAMENTO_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TEMPO_DESCARREGAMENTO_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_PERCENTUAL_JANELA_EMBARQUE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TEMPO_PRODUCAO_CONJUNTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_PECAS_DA_PECA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TYPE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COLOR_HEXA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_VINCOS_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_VINCOS_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_LARGURA_INTERNA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COMPRIMENTO_INTERNA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ALTURA_INTERNA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_COD_DESENHO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FECHAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TIPO_LAP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TAMANHO_LAP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_LAP_PROLONGADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TAMANHO_LAP_PROLONG = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ARRANJO_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ARRANJO_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FITILHOS_FARDO_LARG = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FITILHOS_FARDO_COMP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FITILHOS_PALETE_LARG = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FITILHOS_PALETE_COMP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_FILME_PALETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_QTD_ESPELHO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_CUSTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_AREA_LIQUIDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_PESO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_TOLERANCIA_DIMENSAO_CHAPA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ProdutoDecorator : IProdutoEntity
 {
 
@@ -93,6 +161,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ProdutoDecorator(IProdutoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -110,6 +179,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -122,7 +198,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +212,7 @@
                                             {
                                                 _inner.Descricao = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.Descricao) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.Descricao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -150,7 +226,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -165,7 +241,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -179,7 +255,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -193,7 +269,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -207,7 +283,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -221,7 +297,7 @@
                                             {
                                                 _inner.PRO_ESTOQUE_ATUAL = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ESTOQUE_ATUAL) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ESTOQUE_ATUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ESTOQUE_ATUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ESTOQUE_ATUAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -235,7 +311,7 @@
                                             {
                                                 _inner.UNI_ID = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.UNI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.UNI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -249,7 +325,7 @@
                                             {
                                                 _inner.PRO_FARDOS_POR_CAMADA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FARDOS_POR_CAMADA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FARDOS_POR_CAMADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FARDOS_POR_CAMADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FARDOS_POR_CAMADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -263,7 +339,7 @@
                                             {
                                                 _inner.PRO_CAMADAS_POR_PALETE = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_CAMADAS_POR_PALETE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_CAMADAS_POR_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_CAMADAS_POR_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_CAMADAS_POR_PALETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -277,7 +353,7 @@
                                             {
                                                 _inner.PRO_TIPO_IDENTIFICACAO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TIPO_IDENTIFICACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TIPO_IDENTIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TIPO_IDENTIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TIPO_IDENTIFICACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -291,7 +367,7 @@
                                             {
                                                 _inner.PRO_GRUPO_PALETIZACAO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_GRUPO_PALETIZACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_GRUPO_PALETIZACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_GRUPO_PALETIZACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_GRUPO_PALETIZACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -305,7 +381,7 @@
                                             {
                                                 _inner.PRO_PECAS_POR_FARDO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_PECAS_POR_FARDO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_PECAS_POR_FARDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_PECAS_POR_FARDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_PECAS_POR_FARDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +395,7 @@
                                             {
                                                 _inner.PRO_ID_INTEGRACAO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ID_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ID_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -333,7 +409,7 @@
                                             {
                                                 _inner.PRO_ID_INTEGRACAO_ERP = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ID_INTEGRACAO_ERP) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ID_INTEGRACAO_ERP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -347,7 +423,7 @@
                                             {
                                                 _inner.GRP_ID = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.GRP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.GRP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -361,7 +437,7 @@
                                             {
                                                 _inner.TEM_ID = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.TEM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.TEM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -375,7 +451,7 @@
                                             {
                                                 _inner.PRO_LARGURA_PECA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_LARGURA_PECA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_LARGURA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_LARGURA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_LARGURA_PECA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -389,7 +465,7 @@
                                             {
                                                 _inner.PRO_COMPRIMENTO_PECA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_COMPRIMENTO_PECA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_COMPRIMENTO_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_COMPRIMENTO_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_COMPRIMENTO_PECA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -403,7 +479,7 @@
                                             {
                                                 _inner.PRO_ALTURA_PECA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ALTURA_PECA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ALTURA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ALTURA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ALTURA_PECA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -417,7 +493,7 @@
                                             {
                                                 _inner.PRO_LARGURA_EMBALADA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_LARGURA_EMBALADA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_LARGURA_EMBALADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_LARGURA_EMBALADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_LARGURA_EMBALADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -431,7 +507,7 @@
                                             {
                                                 _inner.PRO_COMPRIMENTO_EMBALADA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_COMPRIMENTO_EMBALADA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_COMPRIMENTO_EMBALADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_COMPRIMENTO_EMBALADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_COMPRIMENTO_EMBALADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -445,7 +521,7 @@
                                             {
                                                 _inner.PRO_ALTURA_EMBALADA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ALTURA_EMBALADA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ALTURA_EMBALADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ALTURA_EMBALADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ALTURA_EMBALADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -459,7 +535,7 @@
                                             {
                                                 _inner.PRO_FRENTE = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FRENTE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FRENTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FRENTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FRENTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -473,7 +549,7 @@
                                             {
                                                 _inner.PRO_ROTACIONA_COMPRIMENTO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ROTACIONA_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ROTACIONA_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ROTACIONA_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ROTACIONA_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -487,7 +563,7 @@
                                             {
                                                 _inner.PRO_ROTACIONA_LARGURA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ROTACIONA_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ROTACIONA_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ROTACIONA_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ROTACIONA_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -501,7 +577,7 @@
                                             {
                                                 _inner.PRO_ROTACIONA_ALTURA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ROTACIONA_ALTURA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ROTACIONA_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ROTACIONA_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ROTACIONA_ALTURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -515,7 +591,7 @@
                                             {
                                                 _inner.PRO_ESCALA_COR = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ESCALA_COR) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ESCALA_COR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -529,7 +605,7 @@
                                             {
                                                 _inner.PRO_SUB_ESCALA_COR = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_SUB_ESCALA_COR) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_SUB_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_SUB_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_SUB_ESCALA_COR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -543,7 +619,7 @@
                                             {
                                                 _inner.PRO_CUSTO_SUBIDA_ESCALA_COR = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_CUSTO_SUBIDA_ESCALA_COR) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_CUSTO_SUBIDA_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_CUSTO_SUBIDA_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_CUSTO_SUBIDA_ESCALA_COR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -557,7 +633,7 @@
                                             {
                                                 _inner.PRO_CUSTO_DECIDA_ESCALA_COR = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_CUSTO_DECIDA_ESCALA_COR) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_CUSTO_DECIDA_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_CUSTO_DECIDA_ESCALA_COR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_CUSTO_DECIDA_ESCALA_COR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -571,7 +647,7 @@
                                             {
                                                 _inner.TMP_TIPO_CARGA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.TMP_TIPO_CARGA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "TMP_TIPO_CARGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "TMP_TIPO_CARGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.TMP_TIPO_CARGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -585,7 +661,7 @@
                                             {
                                                 _inner.PRO_TEMPO_CARREGAMENTO_UNITARIO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TEMPO_CARREGAMENTO_UNITARIO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TEMPO_CARREGAMENTO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TEMPO_CARREGAMENTO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TEMPO_CARREGAMENTO_UNITARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -599,7 +675,7 @@
                                             {
                                                 _inner.PRO_TEMPO_DESCARREGAMENTO_UNITARIO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TEMPO_DESCARREGAMENTO_UNITARIO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TEMPO_DESCARREGAMENTO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TEMPO_DESCARREGAMENTO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TEMPO_DESCARREGAMENTO_UNITARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -613,7 +689,7 @@
                                             {
                                                 _inner.PRO_PERCENTUAL_JANELA_EMBARQUE = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_PERCENTUAL_JANELA_EMBARQUE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_PERCENTUAL_JANELA_EMBARQUE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_PERCENTUAL_JANELA_EMBARQUE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_PERCENTUAL_JANELA_EMBARQUE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -627,7 +703,7 @@
                                             {
                                                 _inner.PRO_TEMPO_PRODUCAO_CONJUNTO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TEMPO_PRODUCAO_CONJUNTO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TEMPO_PRODUCAO_CONJUNTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TEMPO_PRODUCAO_CONJUNTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TEMPO_PRODUCAO_CONJUNTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -641,7 +717,7 @@
                                             {
                                                 _inner.PRO_PECAS_DA_PECA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_PECAS_DA_PECA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_PECAS_DA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_PECAS_DA_PECA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_PECAS_DA_PECA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -655,7 +731,7 @@
                                             {
                                                 _inner.PRO_TYPE = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TYPE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TYPE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TYPE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TYPE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -669,7 +745,7 @@
                                             {
                                                 _inner.PRO_COLOR_HEXA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_COLOR_HEXA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_COLOR_HEXA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_COLOR_HEXA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_COLOR_HEXA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -683,7 +759,7 @@
                                             {
                                                 _inner.PRO_VINCOS_LARGURA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_VINCOS_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_VINCOS_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_VINCOS_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_VINCOS_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -697,7 +773,7 @@
                                             {
                                                 _inner.PRO_VINCOS_COMPRIMENTO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_VINCOS_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_VINCOS_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_VINCOS_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_VINCOS_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -711,7 +787,7 @@
                                             {
                                                 _inner.PRO_LARGURA_INTERNA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_LARGURA_INTERNA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_LARGURA_INTERNA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_LARGURA_INTERNA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_LARGURA_INTERNA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -725,7 +801,7 @@
                                             {
                                                 _inner.PRO_COMPRIMENTO_INTERNA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_COMPRIMENTO_INTERNA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_COMPRIMENTO_INTERNA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_COMPRIMENTO_INTERNA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_COMPRIMENTO_INTERNA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -739,7 +815,7 @@
                                             {
                                                 _inner.PRO_ALTURA_INTERNA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ALTURA_INTERNA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ALTURA_INTERNA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ALTURA_INTERNA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ALTURA_INTERNA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -753,7 +829,7 @@
                                             {
                                                 _inner.PRO_COD_DESENHO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_COD_DESENHO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_COD_DESENHO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_COD_DESENHO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_COD_DESENHO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -767,7 +843,7 @@
                                             {
                                                 _inner.PRO_FECHAMENTO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FECHAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FECHAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FECHAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FECHAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -781,7 +857,7 @@
                                             {
                                                 _inner.PRO_TIPO_LAP = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TIPO_LAP) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TIPO_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TIPO_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TIPO_LAP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -795,7 +871,7 @@
                                             {
                                                 _inner.PRO_TAMANHO_LAP = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TAMANHO_LAP) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TAMANHO_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TAMANHO_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TAMANHO_LAP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -809,7 +885,7 @@
                                             {
                                                 _inner.PRO_LAP_PROLONGADO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_LAP_PROLONGADO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_LAP_PROLONGADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_LAP_PROLONGADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_LAP_PROLONGADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -823,7 +899,7 @@
                                             {
                                                 _inner.PRO_TAMANHO_LAP_PROLONG = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TAMANHO_LAP_PROLONG) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TAMANHO_LAP_PROLONG", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TAMANHO_LAP_PROLONG", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TAMANHO_LAP_PROLONG, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -837,7 +913,7 @@
                                             {
                                                 _inner.PRO_ARRANJO_LARGURA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ARRANJO_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ARRANJO_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ARRANJO_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ARRANJO_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -851,7 +927,7 @@
                                             {
                                                 _inner.PRO_ARRANJO_COMPRIMENTO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_ARRANJO_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_ARRANJO_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_ARRANJO_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_ARRANJO_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -865,7 +941,7 @@
                                             {
                                                 _inner.PRO_FITILHOS_FARDO_LARG = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FITILHOS_FARDO_LARG) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_FARDO_LARG", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_FARDO_LARG", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FITILHOS_FARDO_LARG, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -879,7 +955,7 @@
                                             {
                                                 _inner.PRO_FITILHOS_FARDO_COMP = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FITILHOS_FARDO_COMP) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_FARDO_COMP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_FARDO_COMP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FITILHOS_FARDO_COMP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -893,7 +969,7 @@
                                             {
                                                 _inner.PRO_FITILHOS_PALETE_LARG = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FITILHOS_PALETE_LARG) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_PALETE_LARG", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_PALETE_LARG", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FITILHOS_PALETE_LARG, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -907,7 +983,7 @@
                                             {
                                                 _inner.PRO_FITILHOS_PALETE_COMP = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FITILHOS_PALETE_COMP) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_PALETE_COMP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FITILHOS_PALETE_COMP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FITILHOS_PALETE_COMP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -921,7 +997,7 @@
                                             {
                                                 _inner.PRO_FILME_PALETE = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_FILME_PALETE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_FILME_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_FILME_PALETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_FILME_PALETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -935,7 +1011,7 @@
                                             {
                                                 _inner.PRO_QTD_ESPELHO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_QTD_ESPELHO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_QTD_ESPELHO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_QTD_ESPELHO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_QTD_ESPELHO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -949,7 +1025,7 @@
                                             {
                                                 _inner.PRO_CUSTO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_CUSTO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_CUSTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_CUSTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_CUSTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -963,7 +1039,7 @@
                                             {
                                                 _inner.PRO_AREA_LIQUIDA = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_AREA_LIQUIDA) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_AREA_LIQUIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_AREA_LIQUIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_AREA_LIQUIDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -977,7 +1053,7 @@
                                             {
                                                 _inner.PRO_PESO = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_PESO) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_PESO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_PESO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_PESO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -991,7 +1067,7 @@
                                             {
                                                 _inner.PRO_TOLERANCIA_DIMENSAO_CHAPA_DE = value;
                                                 if ((_trackingMask & ProdutoTrackingFields.PRO_TOLERANCIA_DIMENSAO_CHAPA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Produto", "PRO_TOLERANCIA_DIMENSAO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Produto", "PRO_TOLERANCIA_DIMENSAO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ProdutoOperationalFields.PRO_TOLERANCIA_DIMENSAO_CHAPA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

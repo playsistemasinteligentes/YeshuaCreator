@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TransportadoraCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTransportadora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTransportadoraReceiver), commandName: "Command.Write.TransportadoraCrudCommand");
-                 var transportadora = new TransportadoraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TRA_ID, c.TRA_NOME, c.TRA_CNPJ, c.TRA_INSCRICAO_ESTADUAL, c.TRA_RNTRC, c.TRA_EMAIL, c.TRA_RESPONSAVEL, c.TRA_FONE, c.TRA_ID_INTEGRACAO, c.TRA_ID_INTEGRACAO_ERP);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Transportadora", "UpdateTransportadora", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TransportadoraCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTransportadora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTransportadoraReceiver), commandName: "Command.Write.TransportadoraCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var transportadora = new TransportadoraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TRA_ID, c.TRA_NOME, c.TRA_CNPJ, c.TRA_INSCRICAO_ESTADUAL, c.TRA_RNTRC, c.TRA_EMAIL, c.TRA_RESPONSAVEL, c.TRA_FONE, c.TRA_ID_INTEGRACAO, c.TRA_ID_INTEGRACAO_ERP, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", transportadora.OperationalEntityId);
                  var domainResult = TransportadoraDomainBehavior.Apply(transportadora, context);
                  if (!domainResult.IsValid)

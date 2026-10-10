@@ -34,13 +34,14 @@
                             }
 
                             public IGrupoIndicadorEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int gru_ind_id, int gru_id, int ind_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int gru_ind_id, int gru_id, int ind_id, ulong? trackingMask = null )
                             {
                             var entity = new GrupoIndicadorEntity(gru_ind_id, gru_id, ind_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("GrupoIndicador", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new GrupoIndicadorDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("GrupoIndicador", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new GrupoIndicadorDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

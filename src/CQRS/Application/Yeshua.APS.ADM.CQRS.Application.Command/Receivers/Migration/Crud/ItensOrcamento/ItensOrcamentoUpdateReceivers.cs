@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItensOrcamentoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateItensOrcamento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateItensOrcamentoReceiver), commandName: "Command.Write.ItensOrcamentoCrudCommand");
-                 var itensorcamento = new ItensOrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITO_ID, c.ORC_ID, c.TIP_ID, c.PRO_ID, c.ITO_OBS, c.ITO_QUANTIDADE, c.ITO_CUSTO, c.ITO_MARGEM, c.ITO_VALOR_UNITARIO, c.ITO_VERSSAO_CUSTO, c.ITO_STATUS, c.ITO_ERP_CUSTOS_FIXOS, c.ITO_ERP_CUSTOS_VARIAVEIS, c.ITO_ERP_DESPESAS_VAR_VENDA, c.ITO_ERP_IMPOSTOS, c.GRP_ID_COMPOSICAO, c.ITO_LARGURA, c.ITO_COMPRIMENTO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItensOrcamento", "UpdateItensOrcamento", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItensOrcamentoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateItensOrcamento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateItensOrcamentoReceiver), commandName: "Command.Write.ItensOrcamentoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var itensorcamento = new ItensOrcamentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITO_ID, c.ORC_ID, c.TIP_ID, c.PRO_ID, c.ITO_OBS, c.ITO_QUANTIDADE, c.ITO_CUSTO, c.ITO_MARGEM, c.ITO_VALOR_UNITARIO, c.ITO_VERSSAO_CUSTO, c.ITO_STATUS, c.ITO_ERP_CUSTOS_FIXOS, c.ITO_ERP_CUSTOS_VARIAVEIS, c.ITO_ERP_DESPESAS_VAR_VENDA, c.ITO_ERP_IMPOSTOS, c.GRP_ID_COMPOSICAO, c.ITO_LARGURA, c.ITO_COMPRIMENTO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itensorcamento.OperationalEntityId);
                  var domainResult = ItensOrcamentoDomainBehavior.Apply(itensorcamento, context);
                  if (!domainResult.IsValid)

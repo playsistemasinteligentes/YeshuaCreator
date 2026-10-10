@@ -42,6 +42,30 @@
             public const ulong UserId = 1UL << 19;
         }
 
+        public static class CTeTentativaEmissaoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CTeSolicitacaoFiscalId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ChaveAcesso = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Numero = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Serie = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Tentativa = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification XmlAssinadoStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification XmlProcStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification XmlHash = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CodigoRetorno = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MensagemRetorno = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProtocoloAutorizacao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EnviadoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AutorizadoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CTeTentativaEmissaoDecorator : ICTeTentativaEmissaoEntity
 {
 
@@ -49,6 +73,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CTeTentativaEmissaoDecorator(ICTeTentativaEmissaoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -66,6 +91,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -78,7 +110,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -92,7 +124,7 @@
                                             {
                                                 _inner.CTeSolicitacaoFiscalId = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.CTeSolicitacaoFiscalId) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "CTeSolicitacaoFiscalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "CTeSolicitacaoFiscalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.CTeSolicitacaoFiscalId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -106,7 +138,7 @@
                                             {
                                                 _inner.ChaveAcesso = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.ChaveAcesso) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "ChaveAcesso", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "ChaveAcesso", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.ChaveAcesso, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -120,7 +152,7 @@
                                             {
                                                 _inner.Numero = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Numero) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Numero", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Numero", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Numero, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -134,7 +166,7 @@
                                             {
                                                 _inner.Serie = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Serie) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Serie", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Serie", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Serie, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -148,7 +180,7 @@
                                             {
                                                 _inner.Tentativa = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Tentativa) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Tentativa", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Tentativa", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Tentativa, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -162,7 +194,7 @@
                                             {
                                                 _inner.XmlAssinadoStorageKey = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.XmlAssinadoStorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "XmlAssinadoStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "XmlAssinadoStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.XmlAssinadoStorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -176,7 +208,7 @@
                                             {
                                                 _inner.XmlProcStorageKey = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.XmlProcStorageKey) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "XmlProcStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "XmlProcStorageKey", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.XmlProcStorageKey, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -190,7 +222,7 @@
                                             {
                                                 _inner.XmlHash = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.XmlHash) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "XmlHash", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "XmlHash", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.XmlHash, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -204,7 +236,7 @@
                                             {
                                                 _inner.CodigoRetorno = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.CodigoRetorno) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "CodigoRetorno", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "CodigoRetorno", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.CodigoRetorno, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -218,7 +250,7 @@
                                             {
                                                 _inner.MensagemRetorno = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.MensagemRetorno) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "MensagemRetorno", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "MensagemRetorno", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.MensagemRetorno, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -232,7 +264,7 @@
                                             {
                                                 _inner.ProtocoloAutorizacao = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.ProtocoloAutorizacao) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "ProtocoloAutorizacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "ProtocoloAutorizacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.ProtocoloAutorizacao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -246,7 +278,7 @@
                                             {
                                                 _inner.EnviadoEmUtc = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.EnviadoEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "EnviadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "EnviadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.EnviadoEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -260,7 +292,7 @@
                                             {
                                                 _inner.AutorizadoEmUtc = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.AutorizadoEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "AutorizadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "AutorizadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.AutorizadoEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -274,7 +306,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -289,7 +321,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -303,7 +335,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -317,7 +349,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -331,7 +363,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CTeTentativaEmissaoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CTeTentativaEmissao", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CTeTentativaEmissaoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

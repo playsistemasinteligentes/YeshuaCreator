@@ -34,13 +34,14 @@
                             }
 
                             public IyTokenEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tokenhash, string? description, string connectorkey, DateTime? validuntil, DateTime? lastusedat )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tokenhash, string? description, string connectorkey, DateTime? validuntil, DateTime? lastusedat, ulong? trackingMask = null )
                             {
                             var entity = new yTokenEntity(id, tokenhash, description, connectorkey, validuntil, lastusedat );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yToken", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yTokenDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yToken", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yTokenDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

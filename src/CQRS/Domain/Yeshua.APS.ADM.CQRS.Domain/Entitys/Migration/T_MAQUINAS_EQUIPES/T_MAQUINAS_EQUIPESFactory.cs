@@ -34,13 +34,14 @@
                             }
 
                             public IT_MAQUINAS_EQUIPESEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string maq_id, string equ_id, int? cal_id, string cli_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string maq_id, string equ_id, int? cal_id, string cli_id, ulong? trackingMask = null )
                             {
                             var entity = new T_MAQUINAS_EQUIPESEntity(id, maq_id, equ_id, cal_id, cli_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_MAQUINAS_EQUIPES", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_MAQUINAS_EQUIPESDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_MAQUINAS_EQUIPES", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_MAQUINAS_EQUIPESDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

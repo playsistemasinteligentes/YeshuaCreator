@@ -34,13 +34,14 @@
                             }
 
                             public IEnderecosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string end_id, string end_grupo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string end_id, string end_grupo, ulong? trackingMask = null )
                             {
                             var entity = new EnderecosEntity(end_id, end_grupo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Enderecos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EnderecosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Enderecos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EnderecosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

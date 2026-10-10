@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.BoletimEstudoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertBoletimEstudo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertBoletimEstudoReceiver), commandName: "Command.Write.BoletimEstudoCrudCommand");
-                 var boletimestudo = new BoletimEstudoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.BOL_ID, c.BOL_ID_ORIGEM, c.BOL_SOLVER, c.BOL_INTEGRACAO, c.BOL_SEQUENCIA, c.GRP_PAP_GRAMATURA_PROGRAMADO, c.GRP_ID_PROGRAMADO, c.GRP_PAPEL1_PROGRAMADO, c.GRP_PAPEL2_PROGRAMADO, c.GRP_PAPEL3_PROGRAMADO, c.GRP_PAPEL4_PROGRAMADO, c.GRP_PAPEL5_PROGRAMADO, c.BOL_STATUS_INTERFACE, c.BOL_TIPO, c.BOL_FORMATO, c.BOL_GRAMATURA_PAPEIS_PROGRAMADOS, c.BOL_GRAMATURA_PAPEIS_REALIZADO, c.BOL_CUSTO_PAPEIS_PROGRAMADOS, c.BOL_CUSTO_PAPEIS_REALIZADO, c.BOL_GRAMATURA_RESINA_PROGRAMADOS, c.BOL_CUSTO_RESINA_PROGRAMADOS, c.BOL_REFILE_OBRIGATORIO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("BoletimEstudo", "InsertBoletimEstudo", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.BoletimEstudoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertBoletimEstudo", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertBoletimEstudoReceiver), commandName: "Command.Write.BoletimEstudoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var boletimestudo = new BoletimEstudoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.BOL_ID, c.BOL_ID_ORIGEM, c.BOL_SOLVER, c.BOL_INTEGRACAO, c.BOL_SEQUENCIA, c.GRP_PAP_GRAMATURA_PROGRAMADO, c.GRP_ID_PROGRAMADO, c.GRP_PAPEL1_PROGRAMADO, c.GRP_PAPEL2_PROGRAMADO, c.GRP_PAPEL3_PROGRAMADO, c.GRP_PAPEL4_PROGRAMADO, c.GRP_PAPEL5_PROGRAMADO, c.BOL_STATUS_INTERFACE, c.BOL_TIPO, c.BOL_FORMATO, c.BOL_GRAMATURA_PAPEIS_PROGRAMADOS, c.BOL_GRAMATURA_PAPEIS_REALIZADO, c.BOL_CUSTO_PAPEIS_PROGRAMADOS, c.BOL_CUSTO_PAPEIS_REALIZADO, c.BOL_GRAMATURA_RESINA_PROGRAMADOS, c.BOL_CUSTO_RESINA_PROGRAMADOS, c.BOL_REFILE_OBRIGATORIO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", boletimestudo.OperationalEntityId);
                  var domainResult = BoletimEstudoDomainBehavior.Apply(boletimestudo, context);
                  if (!domainResult.IsValid)

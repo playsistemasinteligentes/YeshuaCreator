@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.SefazEndpointCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertSefazEndpoint", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertSefazEndpointReceiver), commandName: "Command.Write.SefazEndpointCrudCommand");
-                 var sefazendpoint = new SefazEndpointFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProdutoFiscal, c.UF, c.Ambiente, c.Servico, c.Versao, c.Url, c.Ativo);
+                 var trackingMask = _domainTrackingPolicy.GetMask("SefazEndpoint", "InsertSefazEndpoint", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.SefazEndpointCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertSefazEndpoint", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertSefazEndpointReceiver), commandName: "Command.Write.SefazEndpointCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var sefazendpoint = new SefazEndpointFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProdutoFiscal, c.UF, c.Ambiente, c.Servico, c.Versao, c.Url, c.Ativo, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", sefazendpoint.OperationalEntityId);
                  var domainResult = SefazEndpointDomainBehavior.Apply(sefazendpoint, context);
                  if (!domainResult.IsValid)

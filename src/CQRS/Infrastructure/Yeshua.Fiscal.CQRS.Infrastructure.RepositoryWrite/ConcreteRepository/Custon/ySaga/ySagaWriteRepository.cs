@@ -96,7 +96,7 @@ namespace Input.Repository.ySaga
                 ? saga.LockedAt
                 : null;
 
-            return new ySagaFactory(_logger).Create(
+            var entity = new ySagaFactory(_logger).Create(
                 saga.Id == 0 ? null : saga.Id,
                 saga.CorrelationId.ToString(),
                 saga.Type,
@@ -109,6 +109,11 @@ namespace Input.Repository.ySaga
                 nextExecutionAt,
                 lockedAt,
                 saga.LockedBy);
+            entity.RootOperationId = saga.RootOperationId;
+            entity.OperationId = saga.OperationId;
+            entity.ExecutionId = saga.ExecutionId;
+            entity.CausationId = saga.CausationId;
+            return entity;
         }
 
         private IySagaStepEntity MapStep(SagaStepBase step, int sagaId)
@@ -120,7 +125,7 @@ namespace Input.Repository.ySaga
                 ? step.CompletedAt
                 : null;
 
-            return new ySagaStepFactory(_logger).Create(
+            var entity = new ySagaStepFactory(_logger).Create(
                 step.Id == 0 ? null : step.Id,
                 sagaId,
                 step.Key,
@@ -133,6 +138,11 @@ namespace Input.Repository.ySaga
                 step.ErrorMessage,
                 step.Payload,
                 step.RetryCount);
+            entity.RootOperationId = step.RootOperationId;
+            entity.OperationId = step.OperationId;
+            entity.ExecutionId = step.ExecutionId;
+            entity.CausationId = step.CausationId;
+            return entity;
         }
     }
 }

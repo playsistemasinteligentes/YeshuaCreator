@@ -34,13 +34,14 @@
                             }
 
                             public ITipoAvaliacaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int ta_id, string ta_desc )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int ta_id, string ta_desc, ulong? trackingMask = null )
                             {
                             var entity = new TipoAvaliacaoEntity(ta_id, ta_desc );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoAvaliacao", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoAvaliacaoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoAvaliacao", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoAvaliacaoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

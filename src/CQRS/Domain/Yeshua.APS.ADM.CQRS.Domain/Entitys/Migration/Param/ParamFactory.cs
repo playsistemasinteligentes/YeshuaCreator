@@ -34,13 +34,14 @@
                             }
 
                             public IParamEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string par_id, string par_descricao, string par_valor_s, Decimal par_valor_n, DateTime par_valor_d )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string par_id, string par_descricao, string par_valor_s, Decimal par_valor_n, DateTime par_valor_d, ulong? trackingMask = null )
                             {
                             var entity = new ParamEntity(par_id, par_descricao, par_valor_s, par_valor_n, par_valor_d );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Param", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ParamDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Param", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ParamDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

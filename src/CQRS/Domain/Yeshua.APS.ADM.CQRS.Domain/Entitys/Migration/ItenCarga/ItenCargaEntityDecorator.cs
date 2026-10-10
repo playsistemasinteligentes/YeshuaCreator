@@ -38,6 +38,26 @@
             public const ulong UserId = 1UL << 15;
         }
 
+        public static class ItenCargaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITC_ENTREGA_PLANEJADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITC_ENTREGA_REALIZADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITC_ORDEM_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITC_QTD_PLANEJADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITC_QTD_REALIZADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_HASH_KEY = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NOT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NOT_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ItenCargaDecorator : IItenCargaEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ItenCargaDecorator(IItenCargaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.CAR_ID = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.CAR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "CAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "CAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.CAR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.ITC_ENTREGA_PLANEJADA = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ITC_ENTREGA_PLANEJADA) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ITC_ENTREGA_PLANEJADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ITC_ENTREGA_PLANEJADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ITC_ENTREGA_PLANEJADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.ITC_ENTREGA_REALIZADA = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ITC_ENTREGA_REALIZADA) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ITC_ENTREGA_REALIZADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ITC_ENTREGA_REALIZADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ITC_ENTREGA_REALIZADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.ITC_ORDEM_ENTREGA = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ITC_ORDEM_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ITC_ORDEM_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ITC_ORDEM_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ITC_ORDEM_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.ITC_QTD_PLANEJADA = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ITC_QTD_PLANEJADA) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ITC_QTD_PLANEJADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ITC_QTD_PLANEJADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ITC_QTD_PLANEJADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.ITC_QTD_REALIZADA = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ITC_QTD_REALIZADA) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ITC_QTD_REALIZADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ITC_QTD_REALIZADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ITC_QTD_REALIZADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.ORD_HASH_KEY = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.ORD_HASH_KEY) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "ORD_HASH_KEY", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "ORD_HASH_KEY", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.ORD_HASH_KEY, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.NOT_ID = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.NOT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "NOT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "NOT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.NOT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +242,7 @@
                                             {
                                                 _inner.NOT_EMISSAO = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.NOT_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "NOT_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "NOT_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.NOT_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -229,7 +257,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +271,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +285,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,7 +299,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ItenCargaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCarga", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCarga", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCargaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

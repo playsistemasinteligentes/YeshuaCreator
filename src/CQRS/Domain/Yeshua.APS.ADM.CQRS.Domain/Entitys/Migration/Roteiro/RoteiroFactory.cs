@@ -34,13 +34,14 @@
                             }
 
                             public IRoteiroEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string maquinaid, string produtoid, int sequenciatransformacao, string? grupomaquinaid, Decimal? pecasporpulso, Decimal? prioridadeinformada, string? acao, Decimal performance, Decimal? temposetup, Decimal? temposetupajuste, int? proximasequenciatransformacao, string? status, Decimal? hierarquiasequenciatransformacao, int? avaliacusto, string? operacoes, string? excecaooperacoes, Decimal? percentualiniciopassoanterior, string? linhadireta, int? templatedetestesid )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string maquinaid, string produtoid, int sequenciatransformacao, string? grupomaquinaid, Decimal? pecasporpulso, Decimal? prioridadeinformada, string? acao, Decimal performance, Decimal? temposetup, Decimal? temposetupajuste, int? proximasequenciatransformacao, string? status, Decimal? hierarquiasequenciatransformacao, int? avaliacusto, string? operacoes, string? excecaooperacoes, Decimal? percentualiniciopassoanterior, string? linhadireta, int? templatedetestesid, ulong? trackingMask = null )
                             {
                             var entity = new RoteiroEntity(id, maquinaid, produtoid, sequenciatransformacao, grupomaquinaid, pecasporpulso, prioridadeinformada, acao, performance, temposetup, temposetupajuste, proximasequenciatransformacao, status, hierarquiasequenciatransformacao, avaliacusto, operacoes, excecaooperacoes, percentualiniciopassoanterior, linhadireta, templatedetestesid );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Roteiro", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RoteiroDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Roteiro", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RoteiroDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

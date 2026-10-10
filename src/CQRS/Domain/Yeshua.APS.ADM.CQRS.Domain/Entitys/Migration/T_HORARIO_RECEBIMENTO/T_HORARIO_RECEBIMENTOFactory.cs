@@ -34,13 +34,14 @@
                             }
 
                             public IT_HORARIO_RECEBIMENTOEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int hre_dia_da_semana, DateTime hre_hora_inicial, DateTime hre_hora_final, string cli_id, int hre_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int hre_dia_da_semana, DateTime hre_hora_inicial, DateTime hre_hora_final, string cli_id, int hre_id, ulong? trackingMask = null )
                             {
                             var entity = new T_HORARIO_RECEBIMENTOEntity(hre_dia_da_semana, hre_hora_inicial, hre_hora_final, cli_id, hre_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_HORARIO_RECEBIMENTO", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_HORARIO_RECEBIMENTODecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_HORARIO_RECEBIMENTO", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_HORARIO_RECEBIMENTODecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

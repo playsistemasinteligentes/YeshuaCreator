@@ -34,13 +34,14 @@
                             }
 
                             public IPeriodicidadeTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string? per_qtd, string? uni_id, string? grp_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int per_id, string? per_qtd, string? uni_id, string? grp_id, ulong? trackingMask = null )
                             {
                             var entity = new PeriodicidadeTesteEntity(id, per_id, per_qtd, uni_id, grp_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("PeriodicidadeTeste", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PeriodicidadeTesteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("PeriodicidadeTeste", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PeriodicidadeTesteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

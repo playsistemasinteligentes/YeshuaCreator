@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeTentativaEmissaoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeTentativaEmissao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeTentativaEmissaoReceiver), commandName: "Command.Write.CTeTentativaEmissaoCrudCommand");
-                 var ctetentativaemissao = new CTeTentativaEmissaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.ChaveAcesso, c.Numero, c.Serie, c.Tentativa, c.XmlAssinadoStorageKey, c.XmlProcStorageKey, c.XmlHash, c.CodigoRetorno, c.MensagemRetorno, c.ProtocoloAutorizacao, c.EnviadoEmUtc, c.AutorizadoEmUtc, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeTentativaEmissao", "DeleteCTeTentativaEmissao", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeTentativaEmissaoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCTeTentativaEmissao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCTeTentativaEmissaoReceiver), commandName: "Command.Write.CTeTentativaEmissaoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ctetentativaemissao = new CTeTentativaEmissaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.ChaveAcesso, c.Numero, c.Serie, c.Tentativa, c.XmlAssinadoStorageKey, c.XmlProcStorageKey, c.XmlHash, c.CodigoRetorno, c.MensagemRetorno, c.ProtocoloAutorizacao, c.EnviadoEmUtc, c.AutorizadoEmUtc, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ctetentativaemissao.OperationalEntityId);
                  var domainResult = CTeTentativaEmissaoDomainBehavior.Apply(ctetentativaemissao, context);
                  if (!domainResult.IsValid)

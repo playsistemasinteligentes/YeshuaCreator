@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class T_HORARIO_RECEBIMENTOOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification HRE_DIA_DA_SEMANA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HRE_HORA_INICIAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HRE_HORA_FINAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HRE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class T_HORARIO_RECEBIMENTODecorator : IT_HORARIO_RECEBIMENTOEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public T_HORARIO_RECEBIMENTODecorator(IT_HORARIO_RECEBIMENTOEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.HRE_DIA_DA_SEMANA = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.HRE_DIA_DA_SEMANA) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_DIA_DA_SEMANA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_DIA_DA_SEMANA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.HRE_DIA_DA_SEMANA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.HRE_HORA_INICIAL = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.HRE_HORA_INICIAL) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_HORA_INICIAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_HORA_INICIAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.HRE_HORA_INICIAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.HRE_HORA_FINAL = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.HRE_HORA_FINAL) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_HORA_FINAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_HORA_FINAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.HRE_HORA_FINAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.CLI_ID = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.CLI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.CLI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.HRE_ID = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.HRE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "HRE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.HRE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & T_HORARIO_RECEBIMENTOTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_HORARIO_RECEBIMENTO", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_HORARIO_RECEBIMENTOOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

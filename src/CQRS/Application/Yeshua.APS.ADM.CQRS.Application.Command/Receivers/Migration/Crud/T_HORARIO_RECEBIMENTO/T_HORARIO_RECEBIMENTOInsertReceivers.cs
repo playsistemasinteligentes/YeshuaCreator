@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_HORARIO_RECEBIMENTOCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_HORARIO_RECEBIMENTO", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_HORARIO_RECEBIMENTOReceiver), commandName: "Command.Write.T_HORARIO_RECEBIMENTOCrudCommand");
-                 var t_horario_recebimento = new T_HORARIO_RECEBIMENTOFactory(_logger, _domainTrackingPolicy).Create(context, c.HRE_DIA_DA_SEMANA, c.HRE_HORA_INICIAL, c.HRE_HORA_FINAL, c.CLI_ID, c.HRE_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_HORARIO_RECEBIMENTO", "InsertT_HORARIO_RECEBIMENTO", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_HORARIO_RECEBIMENTOCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_HORARIO_RECEBIMENTO", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_HORARIO_RECEBIMENTOReceiver), commandName: "Command.Write.T_HORARIO_RECEBIMENTOCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_horario_recebimento = new T_HORARIO_RECEBIMENTOFactory(_logger, _domainTrackingPolicy).Create(context, c.HRE_DIA_DA_SEMANA, c.HRE_HORA_INICIAL, c.HRE_HORA_FINAL, c.CLI_ID, c.HRE_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_horario_recebimento.OperationalEntityId);
                  var domainResult = T_HORARIO_RECEBIMENTODomainBehavior.Apply(t_horario_recebimento, context);
                  if (!domainResult.IsValid)

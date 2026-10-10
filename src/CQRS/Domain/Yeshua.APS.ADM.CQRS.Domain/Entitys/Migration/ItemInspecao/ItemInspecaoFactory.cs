@@ -34,13 +34,14 @@
                             }
 
                             public IItemInspecaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int iti_id, string? iti_desc )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int iti_id, string? iti_desc, ulong? trackingMask = null )
                             {
                             var entity = new ItemInspecaoEntity(id, iti_id, iti_desc );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ItemInspecao", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ItemInspecaoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ItemInspecao", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ItemInspecaoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class AuditoriaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DATA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification USE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROTINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HISTORICO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CHAVE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class AuditoriaDecorator : IAuditoriaEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public AuditoriaDecorator(IAuditoriaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.ID = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.ID) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.DATA = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.DATA) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "DATA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "DATA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.DATA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.USE_ID = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.USE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.USE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.ROTINA = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.ROTINA) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "ROTINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "ROTINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.ROTINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.HISTORICO = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.HISTORICO) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "HISTORICO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "HISTORICO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.HISTORICO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.CHAVE = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.CHAVE) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "CHAVE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "CHAVE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.CHAVE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & AuditoriaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Auditoria", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Auditoria", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

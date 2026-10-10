@@ -34,6 +34,22 @@
             public const ulong UserId = 1UL << 11;
         }
 
+        public static class CotasOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COT_DATA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COT_DATA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COT_VALOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COT_OCUPADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CotasDecorator : ICotasEntity
 {
 
@@ -41,6 +57,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CotasDecorator(ICotasEntity inner, Dominio.Interfaces.ILogger logger)
@@ -58,6 +75,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -70,7 +94,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & CotasTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +108,7 @@
                                             {
                                                 _inner.COT_ID = value;
                                                 if ((_trackingMask & CotasTrackingFields.COT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "COT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "COT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.COT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +122,7 @@
                                             {
                                                 _inner.COT_DATA_DE = value;
                                                 if ((_trackingMask & CotasTrackingFields.COT_DATA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "COT_DATA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "COT_DATA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.COT_DATA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +136,7 @@
                                             {
                                                 _inner.COT_DATA_ATE = value;
                                                 if ((_trackingMask & CotasTrackingFields.COT_DATA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "COT_DATA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "COT_DATA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.COT_DATA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +150,7 @@
                                             {
                                                 _inner.COT_VALOR = value;
                                                 if ((_trackingMask & CotasTrackingFields.COT_VALOR) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "COT_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "COT_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.COT_VALOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +164,7 @@
                                             {
                                                 _inner.COT_OCUPADO = value;
                                                 if ((_trackingMask & CotasTrackingFields.COT_OCUPADO) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "COT_OCUPADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "COT_OCUPADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.COT_OCUPADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +178,7 @@
                                             {
                                                 _inner.REP_ID = value;
                                                 if ((_trackingMask & CotasTrackingFields.REP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "REP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "REP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.REP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +193,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CotasTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -183,7 +207,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CotasTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -197,7 +221,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CotasTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -211,7 +235,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CotasTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Cotas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cotas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CotasOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

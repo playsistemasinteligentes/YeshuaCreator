@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.EstradasCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertEstradas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertEstradasReceiver), commandName: "Command.Write.EstradasCrudCommand");
-                 var estradas = new EstradasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_ID, c.EST_DESCRICAO, c.EST_ID_LIGACAO_PONTO_A, c.EST_ID_LIGACAO_PONTO_B);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Estradas", "InsertEstradas", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.EstradasCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertEstradas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertEstradasReceiver), commandName: "Command.Write.EstradasCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var estradas = new EstradasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_ID, c.EST_DESCRICAO, c.EST_ID_LIGACAO_PONTO_A, c.EST_ID_LIGACAO_PONTO_B, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", estradas.OperationalEntityId);
                  var domainResult = EstradasDomainBehavior.Apply(estradas, context);
                  if (!domainResult.IsValid)

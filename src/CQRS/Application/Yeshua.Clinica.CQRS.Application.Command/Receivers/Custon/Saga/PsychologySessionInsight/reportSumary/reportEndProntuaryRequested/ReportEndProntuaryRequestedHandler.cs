@@ -37,7 +37,7 @@ namespace Command.Receivers
                 type: "session.summarize",
                 payload: BuildPayload(sessaoId,step.Payload),
                 entityType: string.Empty,
-                entityID: "",
+                entityId: "",
                 messageId: Guid.NewGuid().ToString(),
                 correlationId: step.CorrelationId,
                 transportType: 1,
@@ -49,7 +49,7 @@ namespace Command.Receivers
                     TaskName = "app.tasks.summarize_session"
                 },
                 sagaId: saga.Id,
-                sagaStepID: step.Id
+                sagaStepId: step.Id
             );
 
             _logger.Info($"[STEP_2] Payload enviado para sumariza��o � sess�o {sessaoId}.");

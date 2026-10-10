@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.IndicadoresFatosDimencoesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateIndicadoresFatosDimencoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateIndicadoresFatosDimencoesReceiver), commandName: "Command.Write.IndicadoresFatosDimencoesCrudCommand");
-                 var indicadoresfatosdimencoes = new IndicadoresFatosDimencoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FAT_ID, c.IND_ID, c.DIM_ID, c.FAT_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("IndicadoresFatosDimencoes", "UpdateIndicadoresFatosDimencoes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.IndicadoresFatosDimencoesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateIndicadoresFatosDimencoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateIndicadoresFatosDimencoesReceiver), commandName: "Command.Write.IndicadoresFatosDimencoesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var indicadoresfatosdimencoes = new IndicadoresFatosDimencoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.FAT_ID, c.IND_ID, c.DIM_ID, c.FAT_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", indicadoresfatosdimencoes.OperationalEntityId);
                  var domainResult = IndicadoresFatosDimencoesDomainBehavior.Apply(indicadoresfatosdimencoes, context);
                  if (!domainResult.IsValid)

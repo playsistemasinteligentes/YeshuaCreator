@@ -34,13 +34,14 @@
                             }
 
                             public IyFileUploadEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string type, int status, string? filepath, long? filesize, string? entitytype, string? entityid, DateTime createdat, DateTime? completedat )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string type, int status, string? filepath, long? filesize, string? entitytype, string? entityid, DateTime createdat, DateTime? completedat, ulong? trackingMask = null )
                             {
                             var entity = new yFileUploadEntity(id, type, status, filepath, filesize, entitytype, entityid, createdat, completedat );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yFileUpload", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yFileUploadDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yFileUpload", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yFileUploadDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

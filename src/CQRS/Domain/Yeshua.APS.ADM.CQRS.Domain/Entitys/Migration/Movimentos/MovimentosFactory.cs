@@ -34,13 +34,14 @@
                             }
 
                             public IMovimentosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int mov_id, string mov_data, Decimal mov_valor, int mov_plaid, int mov_unid, int? tr_unidade_uni_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int mov_id, string mov_data, Decimal mov_valor, int mov_plaid, int mov_unid, int? tr_unidade_uni_id, ulong? trackingMask = null )
                             {
                             var entity = new MovimentosEntity(mov_id, mov_data, mov_valor, mov_plaid, mov_unid, tr_unidade_uni_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Movimentos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MovimentosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Movimentos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MovimentosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

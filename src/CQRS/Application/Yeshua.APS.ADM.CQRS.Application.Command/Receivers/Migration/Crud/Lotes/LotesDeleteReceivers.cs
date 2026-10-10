@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.LotesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteLotes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteLotesReceiver), commandName: "Command.Write.LotesCrudCommand");
-                 var lotes = new LotesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MOV_LOTE, c.MOV_SUB_LOTE, c.LOT_LARGURA, c.LOT_COMPRIMENTO, c.LOT_DIAMETRO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Lotes", "DeleteLotes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.LotesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteLotes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteLotesReceiver), commandName: "Command.Write.LotesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var lotes = new LotesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MOV_LOTE, c.MOV_SUB_LOTE, c.LOT_LARGURA, c.LOT_COMPRIMENTO, c.LOT_DIAMETRO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", lotes.OperationalEntityId);
                  var domainResult = LotesDomainBehavior.Apply(lotes, context);
                  if (!domainResult.IsValid)

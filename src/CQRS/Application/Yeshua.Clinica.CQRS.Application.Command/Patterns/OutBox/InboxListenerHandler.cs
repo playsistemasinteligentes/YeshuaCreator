@@ -52,7 +52,7 @@ namespace Command.Patterns.OutBox
                     type: command.status,
                     payload: payload,
                     entityType: "SagaStep",
-                    entityID: string.Empty,
+                    entityId: string.Empty,
                     messageId: command.messageId, // 🔥 vem do Python agora
                     correlationId: command.correlationId
                 );

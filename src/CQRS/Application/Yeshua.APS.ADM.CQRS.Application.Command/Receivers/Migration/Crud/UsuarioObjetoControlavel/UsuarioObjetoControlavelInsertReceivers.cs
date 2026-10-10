@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.UsuarioObjetoControlavelCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUsuarioObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUsuarioObjetoControlavelReceiver), commandName: "Command.Write.UsuarioObjetoControlavelCrudCommand");
-                 var usuarioobjetocontrolavel = new UsuarioObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.USE_ID, c.OBJ_ID, c.USU_OBJETO_ACAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("UsuarioObjetoControlavel", "InsertUsuarioObjetoControlavel", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.UsuarioObjetoControlavelCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertUsuarioObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertUsuarioObjetoControlavelReceiver), commandName: "Command.Write.UsuarioObjetoControlavelCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var usuarioobjetocontrolavel = new UsuarioObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.USE_ID, c.OBJ_ID, c.USU_OBJETO_ACAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", usuarioobjetocontrolavel.OperationalEntityId);
                  var domainResult = UsuarioObjetoControlavelDomainBehavior.Apply(usuarioobjetocontrolavel, context);
                  if (!domainResult.IsValid)

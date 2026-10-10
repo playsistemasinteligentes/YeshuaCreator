@@ -34,13 +34,14 @@
                             }
 
                             public IyInboxEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? messageid, string type, string? entitytype, string? entityid, string? correlationid, string payload, int status, DateTime createdat, int retrycount, string? lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? messageid, string type, string? entitytype, string? entityid, string? correlationid, string payload, int status, DateTime createdat, int retrycount, string? lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid, ulong? trackingMask = null )
                             {
                             var entity = new yInboxEntity(id, messageid, type, entitytype, entityid, correlationid, payload, status, createdat, retrycount, lasterror, processingat, nextattemptat, sagaid, sagastepid );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yInbox", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yInboxDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yInbox", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yInboxDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TipoMovimentoEstoqueCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTipoMovimentoEstoque", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTipoMovimentoEstoqueReceiver), commandName: "Command.Write.TipoMovimentoEstoqueCrudCommand");
-                 var tipomovimentoestoque = new TipoMovimentoEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.TIP_ID, c.TIP_DESCRICAO, c.TIP_TYPE, c.SPR);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TipoMovimentoEstoque", "DeleteTipoMovimentoEstoque", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TipoMovimentoEstoqueCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTipoMovimentoEstoque", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTipoMovimentoEstoqueReceiver), commandName: "Command.Write.TipoMovimentoEstoqueCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tipomovimentoestoque = new TipoMovimentoEstoqueFactory(_logger, _domainTrackingPolicy).Create(context, c.TIP_ID, c.TIP_DESCRICAO, c.TIP_TYPE, c.SPR, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipomovimentoestoque.OperationalEntityId);
                  var domainResult = TipoMovimentoEstoqueDomainBehavior.Apply(tipomovimentoestoque, context);
                  if (!domainResult.IsValid)

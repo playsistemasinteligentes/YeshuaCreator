@@ -51,6 +51,39 @@
             public const ulong UserId = 1UL << 28;
         }
 
+        public static class CompensacaoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OND_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO1_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO2_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO3_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO4_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO5_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO6_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO7_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO8_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO9_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO10_OND = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO1_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO2_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO3_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO4_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO5_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO6_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO7_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO8_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO9_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COM_VINCO10_CONVERSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CompensacaoDecorator : ICompensacaoEntity
 {
 
@@ -58,6 +91,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CompensacaoDecorator(ICompensacaoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -75,6 +109,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -87,7 +128,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -101,7 +142,7 @@
                                             {
                                                 _inner.COM_ID = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -115,7 +156,7 @@
                                             {
                                                 _inner.GRP_ID = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.GRP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.GRP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -129,7 +170,7 @@
                                             {
                                                 _inner.OND_ID = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.OND_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "OND_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "OND_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.OND_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -143,7 +184,7 @@
                                             {
                                                 _inner.COM_VINCO1_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO1_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO1_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO1_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO1_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -157,7 +198,7 @@
                                             {
                                                 _inner.COM_VINCO2_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO2_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO2_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO2_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO2_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -171,7 +212,7 @@
                                             {
                                                 _inner.COM_VINCO3_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO3_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO3_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO3_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO3_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -185,7 +226,7 @@
                                             {
                                                 _inner.COM_VINCO4_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO4_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO4_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO4_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO4_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -199,7 +240,7 @@
                                             {
                                                 _inner.COM_VINCO5_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO5_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO5_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO5_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO5_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +254,7 @@
                                             {
                                                 _inner.COM_VINCO6_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO6_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO6_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO6_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO6_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +268,7 @@
                                             {
                                                 _inner.COM_VINCO7_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO7_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO7_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO7_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO7_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,7 +282,7 @@
                                             {
                                                 _inner.COM_VINCO8_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO8_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO8_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO8_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO8_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -255,7 +296,7 @@
                                             {
                                                 _inner.COM_VINCO9_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO9_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO9_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO9_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO9_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -269,7 +310,7 @@
                                             {
                                                 _inner.COM_VINCO10_OND = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO10_OND) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO10_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO10_OND", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO10_OND, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -283,7 +324,7 @@
                                             {
                                                 _inner.COM_VINCO1_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO1_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO1_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO1_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO1_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -297,7 +338,7 @@
                                             {
                                                 _inner.COM_VINCO2_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO2_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO2_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO2_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO2_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -311,7 +352,7 @@
                                             {
                                                 _inner.COM_VINCO3_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO3_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO3_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO3_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO3_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -325,7 +366,7 @@
                                             {
                                                 _inner.COM_VINCO4_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO4_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO4_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO4_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO4_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -339,7 +380,7 @@
                                             {
                                                 _inner.COM_VINCO5_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO5_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO5_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO5_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO5_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -353,7 +394,7 @@
                                             {
                                                 _inner.COM_VINCO6_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO6_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO6_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO6_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO6_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -367,7 +408,7 @@
                                             {
                                                 _inner.COM_VINCO7_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO7_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO7_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO7_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO7_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -381,7 +422,7 @@
                                             {
                                                 _inner.COM_VINCO8_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO8_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO8_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO8_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO8_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -395,7 +436,7 @@
                                             {
                                                 _inner.COM_VINCO9_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO9_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO9_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO9_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO9_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -409,7 +450,7 @@
                                             {
                                                 _inner.COM_VINCO10_CONVERSAO = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.COM_VINCO10_CONVERSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO10_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "COM_VINCO10_CONVERSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.COM_VINCO10_CONVERSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -424,7 +465,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -438,7 +479,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -452,7 +493,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -466,7 +507,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CompensacaoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Compensacao", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Compensacao", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CompensacaoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

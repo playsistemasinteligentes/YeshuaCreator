@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OndaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteOnda", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteOndaReceiver), commandName: "Command.Write.OndaCrudCommand");
-                 var onda = new OndaFactory(_logger, _domainTrackingPolicy).Create(context, c.OND_ID, c.OND_ESPESSURA, c.OND_PESO_COLA, c.OND_RENDIMENTO_ONDA_1, c.OND_RENDIMENTO_ONDA_2, c.OND_PROFUNDIDADE_VINCO, c.OND_ID_INTEGRACAO, c.VIN_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Onda", "DeleteOnda", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OndaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteOnda", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteOndaReceiver), commandName: "Command.Write.OndaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var onda = new OndaFactory(_logger, _domainTrackingPolicy).Create(context, c.OND_ID, c.OND_ESPESSURA, c.OND_PESO_COLA, c.OND_RENDIMENTO_ONDA_1, c.OND_RENDIMENTO_ONDA_2, c.OND_PROFUNDIDADE_VINCO, c.OND_ID_INTEGRACAO, c.VIN_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", onda.OperationalEntityId);
                  var domainResult = OndaDomainBehavior.Apply(onda, context);
                  if (!domainResult.IsValid)

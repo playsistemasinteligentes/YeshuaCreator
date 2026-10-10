@@ -37,6 +37,25 @@
             public const ulong UserId = 1UL << 14;
         }
 
+        public static class LaudoTesteFisicoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LTF_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LTF_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LTF_VALOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LTF_OBS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LTF_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_SEQ_REPETICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification USE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class LaudoTesteFisicoDecorator : ILaudoTesteFisicoEntity
 {
 
@@ -44,6 +63,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public LaudoTesteFisicoDecorator(ILaudoTesteFisicoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -61,6 +81,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -73,7 +100,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -87,7 +114,7 @@
                                             {
                                                 _inner.LTF_ID = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.LTF_ID) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.LTF_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -101,7 +128,7 @@
                                             {
                                                 _inner.LTF_EMISSAO = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.LTF_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.LTF_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -115,7 +142,7 @@
                                             {
                                                 _inner.LTF_VALOR = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.LTF_VALOR) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.LTF_VALOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -129,7 +156,7 @@
                                             {
                                                 _inner.LTF_OBS = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.LTF_OBS) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.LTF_OBS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -143,7 +170,7 @@
                                             {
                                                 _inner.LTF_STATUS = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.LTF_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "LTF_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.LTF_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -157,7 +184,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -171,7 +198,7 @@
                                             {
                                                 _inner.ROT_PRO_ID = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.ROT_PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "ROT_PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "ROT_PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.ROT_PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -185,7 +212,7 @@
                                             {
                                                 _inner.FPR_SEQ_REPETICAO = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.FPR_SEQ_REPETICAO) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.FPR_SEQ_REPETICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -199,7 +226,7 @@
                                             {
                                                 _inner.USE_ID = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.USE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "USE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.USE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +241,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -228,7 +255,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -242,7 +269,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -256,7 +283,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & LaudoTesteFisicoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("LaudoTesteFisico", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("LaudoTesteFisico", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LaudoTesteFisicoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

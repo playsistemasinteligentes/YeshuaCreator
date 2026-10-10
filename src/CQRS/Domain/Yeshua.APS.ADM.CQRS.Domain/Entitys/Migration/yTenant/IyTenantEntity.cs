@@ -20,11 +20,10 @@
                 {
                     public interface IyTenantEntity
 {
-    int? Id { get; set; }
+    int Id { get; }
     string CnpjCpf { get; set; }
     string Nome { get; set; }
     int? UserId { get; set; }
-    string OperationalEntityId { get; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     

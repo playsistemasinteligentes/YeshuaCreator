@@ -33,6 +33,10 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByRootOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByExecutionIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCausationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByTypeQuery(string value , bool TakeOffTenantID = false);
@@ -50,6 +54,10 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
         public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByRootOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByOperationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByExecutionIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCausationIdQuery(string value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

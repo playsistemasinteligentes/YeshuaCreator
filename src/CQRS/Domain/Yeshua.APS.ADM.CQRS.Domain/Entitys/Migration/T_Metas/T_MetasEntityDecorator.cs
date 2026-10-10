@@ -42,6 +42,30 @@
             public const ulong UserId = 1UL << 19;
         }
 
+        public static class T_MetasOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification MET_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_DTINICIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_DTFIM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_ALVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_TIPOALVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IND_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_RANGE01 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_RANGE02 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MET_RANGE03 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DIM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FAT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DIM_SUBDIMENSAO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PER_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DOM_EMPRESA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DOM_FILIAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class T_MetasDecorator : IT_MetasEntity
 {
 
@@ -49,6 +73,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public T_MetasDecorator(IT_MetasEntity inner, Dominio.Interfaces.ILogger logger)
@@ -66,6 +91,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -78,7 +110,7 @@
                                             {
                                                 _inner.MET_ID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -92,7 +124,7 @@
                                             {
                                                 _inner.MET_DTINICIO = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_DTINICIO) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_DTINICIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_DTINICIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_DTINICIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -106,7 +138,7 @@
                                             {
                                                 _inner.MET_DTFIM = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_DTFIM) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_DTFIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_DTFIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_DTFIM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -120,7 +152,7 @@
                                             {
                                                 _inner.MET_ALVO = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_ALVO) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_ALVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_ALVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_ALVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -134,7 +166,7 @@
                                             {
                                                 _inner.MET_TIPOALVO = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_TIPOALVO) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_TIPOALVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_TIPOALVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_TIPOALVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -148,7 +180,7 @@
                                             {
                                                 _inner.IND_ID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.IND_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "IND_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "IND_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.IND_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -162,7 +194,7 @@
                                             {
                                                 _inner.MET_RANGE01 = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_RANGE01) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_RANGE01", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_RANGE01", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_RANGE01, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -176,7 +208,7 @@
                                             {
                                                 _inner.MET_RANGE02 = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_RANGE02) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_RANGE02", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_RANGE02", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_RANGE02, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -190,7 +222,7 @@
                                             {
                                                 _inner.MET_RANGE03 = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.MET_RANGE03) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "MET_RANGE03", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "MET_RANGE03", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.MET_RANGE03, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -204,7 +236,7 @@
                                             {
                                                 _inner.DIM_ID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.DIM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "DIM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "DIM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.DIM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -218,7 +250,7 @@
                                             {
                                                 _inner.FAT_ID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.FAT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "FAT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "FAT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.FAT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -232,7 +264,7 @@
                                             {
                                                 _inner.DIM_SUBDIMENSAO_ID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.DIM_SUBDIMENSAO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "DIM_SUBDIMENSAO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "DIM_SUBDIMENSAO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.DIM_SUBDIMENSAO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -246,7 +278,7 @@
                                             {
                                                 _inner.PER_ID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.PER_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "PER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "PER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.PER_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -260,7 +292,7 @@
                                             {
                                                 _inner.DOM_EMPRESA = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.DOM_EMPRESA) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "DOM_EMPRESA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "DOM_EMPRESA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.DOM_EMPRESA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -274,7 +306,7 @@
                                             {
                                                 _inner.DOM_FILIAL = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.DOM_FILIAL) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "DOM_FILIAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "DOM_FILIAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.DOM_FILIAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -289,7 +321,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -303,7 +335,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -317,7 +349,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -331,7 +363,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & T_MetasTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("T_Metas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_Metas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_MetasOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

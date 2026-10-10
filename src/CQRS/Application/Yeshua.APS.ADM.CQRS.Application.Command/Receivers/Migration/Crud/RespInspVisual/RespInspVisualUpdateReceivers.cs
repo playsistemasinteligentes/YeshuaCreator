@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RespInspVisualCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRespInspVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRespInspVisualReceiver), commandName: "Command.Write.RespInspVisualCrudCommand");
-                 var respinspvisual = new RespInspVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RIV_ID, c.IPV_ID, c.ITI_ID, c.RIV_STATUS);
+                 var trackingMask = _domainTrackingPolicy.GetMask("RespInspVisual", "UpdateRespInspVisual", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RespInspVisualCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRespInspVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRespInspVisualReceiver), commandName: "Command.Write.RespInspVisualCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var respinspvisual = new RespInspVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.RIV_ID, c.IPV_ID, c.ITI_ID, c.RIV_STATUS, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", respinspvisual.OperationalEntityId);
                  var domainResult = RespInspVisualDomainBehavior.Apply(respinspvisual, context);
                  if (!domainResult.IsValid)

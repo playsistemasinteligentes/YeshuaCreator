@@ -59,7 +59,7 @@ if (!string.IsNullOrWhiteSpace(connectionString))
     using (IUnitOfWork unitOfWork = new UnitOfWork(connection, true))
     {
         Console.WriteLine("Try Migrations");
-        migration.ADDSchema(new SqlServerSchema(unitOfWork));
+        migration.ADDSchema(new SqlServerSchema(unitOfWork, GS.I.MYC.Project));
 
         var centralConnectionString = GS.I.MYC.CentralAuthorizationConectionString;
         if (string.IsNullOrWhiteSpace(centralConnectionString))

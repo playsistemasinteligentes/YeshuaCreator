@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.UniuserCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUniuser", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUniuserReceiver), commandName: "Command.Write.UniuserCrudCommand");
-                 var uniuser = new UniuserFactory(_logger, _domainTrackingPolicy).Create(context, c.USERGRU_ID, c.UNI_ID, c.USE_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Uniuser", "DeleteUniuser", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.UniuserCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteUniuser", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteUniuserReceiver), commandName: "Command.Write.UniuserCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var uniuser = new UniuserFactory(_logger, _domainTrackingPolicy).Create(context, c.USERGRU_ID, c.UNI_ID, c.USE_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", uniuser.OperationalEntityId);
                  var domainResult = UniuserDomainBehavior.Apply(uniuser, context);
                  if (!domainResult.IsValid)

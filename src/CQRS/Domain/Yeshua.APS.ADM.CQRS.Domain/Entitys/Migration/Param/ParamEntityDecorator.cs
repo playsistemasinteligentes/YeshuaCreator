@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class ParamOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PAR_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAR_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAR_VALOR_S = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAR_VALOR_N = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAR_VALOR_D = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ParamDecorator : IParamEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ParamDecorator(IParamEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.PAR_ID = value;
                                                 if ((_trackingMask & ParamTrackingFields.PAR_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "PAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "PAR_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.PAR_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.PAR_DESCRICAO = value;
                                                 if ((_trackingMask & ParamTrackingFields.PAR_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "PAR_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "PAR_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.PAR_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.PAR_VALOR_S = value;
                                                 if ((_trackingMask & ParamTrackingFields.PAR_VALOR_S) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "PAR_VALOR_S", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "PAR_VALOR_S", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.PAR_VALOR_S, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.PAR_VALOR_N = value;
                                                 if ((_trackingMask & ParamTrackingFields.PAR_VALOR_N) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "PAR_VALOR_N", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "PAR_VALOR_N", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.PAR_VALOR_N, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.PAR_VALOR_D = value;
                                                 if ((_trackingMask & ParamTrackingFields.PAR_VALOR_D) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "PAR_VALOR_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "PAR_VALOR_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.PAR_VALOR_D, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ParamTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ParamTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ParamTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ParamTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Param", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Param", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ParamOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

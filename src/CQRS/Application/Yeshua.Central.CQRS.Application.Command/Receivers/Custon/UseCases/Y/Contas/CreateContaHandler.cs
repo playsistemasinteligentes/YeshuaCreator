@@ -59,25 +59,23 @@ protected partial Task<State<CreateContaOutputCommand>> CustomActionHookAsync(St
     {
         _unitOfWork.BeginTran();
 
+        var tenantId = _repWriteyTenant.NextGlobalId();
         var tenant = new yTenantFactory(_logger, _domainTrackingPolicy)
-            .Create(comand.CpfCnpj, comand.nome, null);
+            .Create(tenantId, comand.CpfCnpj, comand.nome, null);
         _repWriteyTenant.Insert(tenant);
-        if (!tenant.Id.HasValue)
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Tenant nao foi criado.", default));
 
-        _executionContext.SetTenantId(tenant.Id.Value);
+        _executionContext.SetTenantId(tenantId);
+        var userId = _repWriteyUser.NextGlobalId();
         var user = new yUserFactory(_logger, _domainTrackingPolicy)
-            .Create(null, comand.nome, comand.email, comand.password);
+            .Create(userId, comand.nome, comand.email, comand.password);
         _repWriteyUser.Insert(user);
-        if (!user.Id.HasValue)
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Usuario nao foi criado.", default));
 
-        _repWriteyTenant.UpdateUserId(tenant.Id.Value, user.Id.Value);
+        _repWriteyTenant.UpdateUserId(tenantId, userId);
         _unitOfWork.Commit();
         state = Success("Conta criada com sucesso", new CreateContaOutputCommand
         {
-            TenantId = tenant.Id.Value,
-            UserId = user.Id.Value
+            TenantId = tenantId,
+            UserId = userId
         });
         return Task.FromResult(state);
     }

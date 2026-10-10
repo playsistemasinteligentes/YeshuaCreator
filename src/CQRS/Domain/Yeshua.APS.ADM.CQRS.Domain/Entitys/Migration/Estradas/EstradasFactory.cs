@@ -34,13 +34,14 @@
                             }
 
                             public IEstradasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int est_id, string? est_descricao, int? est_id_ligacao_ponto_a, int? est_id_ligacao_ponto_b )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int est_id, string? est_descricao, int? est_id_ligacao_ponto_a, int? est_id_ligacao_ponto_b, ulong? trackingMask = null )
                             {
                             var entity = new EstradasEntity(id, est_id, est_descricao, est_id_ligacao_ponto_a, est_id_ligacao_ponto_b );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Estradas", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EstradasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Estradas", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EstradasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

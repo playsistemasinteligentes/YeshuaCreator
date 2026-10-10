@@ -34,6 +34,22 @@
             public const ulong MUN_ID = 1UL << 11;
         }
 
+        public static class PontosMapaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PON_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_LATITUDE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_LONGITUDE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PON_DISTANCIA_KM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MUN_ID = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PontosMapaDecorator : IPontosMapaEntity
 {
 
@@ -41,6 +57,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PontosMapaDecorator(IPontosMapaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -58,6 +75,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -70,7 +94,7 @@
                                             {
                                                 _inner.PON_ID = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.PON_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "PON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "PON_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.PON_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +108,7 @@
                                             {
                                                 _inner.PON_DESCRICAO = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.PON_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "PON_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "PON_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.PON_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +122,7 @@
                                             {
                                                 _inner.PON_TIPO = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.PON_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "PON_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "PON_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.PON_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +136,7 @@
                                             {
                                                 _inner.PON_LATITUDE = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.PON_LATITUDE) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "PON_LATITUDE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "PON_LATITUDE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.PON_LATITUDE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +150,7 @@
                                             {
                                                 _inner.PON_LONGITUDE = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.PON_LONGITUDE) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "PON_LONGITUDE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "PON_LONGITUDE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.PON_LONGITUDE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +164,7 @@
                                             {
                                                 _inner.PON_DISTANCIA_KM = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.PON_DISTANCIA_KM) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "PON_DISTANCIA_KM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "PON_DISTANCIA_KM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.PON_DISTANCIA_KM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -155,7 +179,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +193,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -183,7 +207,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -197,7 +221,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -211,7 +235,7 @@
                                             {
                                                 _inner.MUN_ID = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.MUN_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PontosMapa", "MUN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PontosMapa", "MUN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PontosMapaOperationalFields.MUN_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TemplateTipoTesteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTemplateTipoTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTemplateTipoTesteReceiver), commandName: "Command.Write.TemplateTipoTesteCrudCommand");
-                 var templatetipoteste = new TemplateTipoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.TTT_ID, c.TT_ID, c.TEM_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TemplateTipoTeste", "UpdateTemplateTipoTeste", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TemplateTipoTesteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTemplateTipoTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTemplateTipoTesteReceiver), commandName: "Command.Write.TemplateTipoTesteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var templatetipoteste = new TemplateTipoTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.TTT_ID, c.TT_ID, c.TEM_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatetipoteste.OperationalEntityId);
                  var domainResult = TemplateTipoTesteDomainBehavior.Apply(templatetipoteste, context);
                  if (!domainResult.IsValid)

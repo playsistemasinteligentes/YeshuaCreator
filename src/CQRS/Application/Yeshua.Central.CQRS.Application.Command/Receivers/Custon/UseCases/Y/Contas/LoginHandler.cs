@@ -66,10 +66,8 @@ protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<Lo
         tenantId = user.tenantid,
         email = user.email,
         UserId = user.id,
-        tenantIdentity = tenant.operationalentityid,
         tenantDocument = tenant.cnpjcpf,
         tenantName = tenant.nome,
-        userIdentity = user.operationalentityid,
         userName = user.nome
     });
     return Task.FromResult(state);

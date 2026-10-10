@@ -38,6 +38,26 @@
             public const ulong UserId = 1UL << 15;
         }
 
+        public static class ItensCalendarioOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification ICA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ICA_DATA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ICA_DATA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ICA_OBSERVACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ICA_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification URM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification URN_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ICA_LIMPESA_MAQUINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ItensCalendarioDecorator : IItensCalendarioEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ItensCalendarioDecorator(IItensCalendarioEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.ICA_ID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.ICA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.ICA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.ICA_DATA_DE = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.ICA_DATA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_DATA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_DATA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.ICA_DATA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.ICA_DATA_ATE = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.ICA_DATA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_DATA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_DATA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.ICA_DATA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.ICA_OBSERVACAO = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.ICA_OBSERVACAO) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_OBSERVACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_OBSERVACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.ICA_OBSERVACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.ICA_TIPO = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.ICA_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.ICA_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.URM_ID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.URM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "URM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "URM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.URM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.URN_ID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.URN_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "URN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "URN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.URN_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.CAL_ID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.CAL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "CAL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "CAL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.CAL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.MAQ_ID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.MAQ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.MAQ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.PRO_ID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +242,7 @@
                                             {
                                                 _inner.ICA_LIMPESA_MAQUINA = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.ICA_LIMPESA_MAQUINA) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_LIMPESA_MAQUINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "ICA_LIMPESA_MAQUINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.ICA_LIMPESA_MAQUINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -229,7 +257,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -243,7 +271,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -257,7 +285,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -271,7 +299,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ItensCalendarioTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ItensCalendario", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItensCalendario", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItensCalendarioOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TipoDispositivoMaquinaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTipoDispositivoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTipoDispositivoMaquinaReceiver), commandName: "Command.Write.TipoDispositivoMaquinaCrudCommand");
-                 var tipodispositivomaquina = new TipoDispositivoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TDI_ID, c.MAQ_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TipoDispositivoMaquina", "DeleteTipoDispositivoMaquina", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TipoDispositivoMaquinaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTipoDispositivoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTipoDispositivoMaquinaReceiver), commandName: "Command.Write.TipoDispositivoMaquinaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tipodispositivomaquina = new TipoDispositivoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TDI_ID, c.MAQ_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipodispositivomaquina.OperationalEntityId);
                  var domainResult = TipoDispositivoMaquinaDomainBehavior.Apply(tipodispositivomaquina, context);
                  if (!domainResult.IsValid)

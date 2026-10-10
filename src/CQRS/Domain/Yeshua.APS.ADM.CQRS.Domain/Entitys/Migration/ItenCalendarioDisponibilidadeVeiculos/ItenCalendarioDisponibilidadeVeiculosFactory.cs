@@ -34,13 +34,14 @@
                             }
 
                             public IItenCalendarioDisponibilidadeVeiculosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? cdv_id, int? tip_id, int? idv_qtd )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? cdv_id, int? tip_id, int? idv_qtd, ulong? trackingMask = null )
                             {
                             var entity = new ItenCalendarioDisponibilidadeVeiculosEntity(id, cdv_id, tip_id, idv_qtd );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ItenCalendarioDisponibilidadeVeiculos", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ItenCalendarioDisponibilidadeVeiculosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ItenCalendarioDisponibilidadeVeiculos", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ItenCalendarioDisponibilidadeVeiculosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -6,7 +6,8 @@ qualquer rodada do plano.
 
 Documentos de referencia:
 
-- `OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md`: requisitos externos para suporte.
+- `OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md`: requisitos do padrao para
+  agentizacao da fabricacao, evolucao e manutencao de software.
 - `YESHUA_SRE_IMPLEMENTATION_PLAN.md`: plano detalhado de implementacao.
 - Este arquivo: situacao resumida e ponto atual.
 
@@ -14,10 +15,14 @@ Documentos de referencia:
 
 Construir capacidade operacional completa, ligando:
 
-`fonte versionado -> build -> runtime -> evidencias -> diagnostico -> mudanca`
+`necessidade -> concepcao -> planejamento -> fabricacao -> validacao -> entrega
+-> implantacao -> uso -> operacao -> manutencao e evolucao`
 
-O objetivo e responder problemas e duvidas com fatos, localizar os fontes
-envolvidos, comprovar a versao executada e alterar o sistema com menor risco.
+Cada etapa deve produzir evidencias utilizaveis pelas etapas seguintes. O
+objetivo imediato continua sendo tornar runtime, fonte e resultado
+reconstruiveis; o objetivo final e permitir que agentes autorizados usem essas
+evidencias para apoiar a construcao, validacao, entrega, manutencao e evolucao
+do software.
 
 ## 2. Conceitos Sem Mistura
 
@@ -54,10 +59,11 @@ testes para apoiar diagnostico, manutencao e, futuramente, agentes operacionais.
 - Profundidade: quantidade de contexto (`D0` a `D4`).
 - Modo: forma de execucao (`Live`, `Replay`, `Simulation`, `Regression`).
 
-Um eixo nao altera automaticamente o outro. No momento, o Yeshua possui uma
-base parcial de severidade e profundidade D0/D1, incluindo controle central e
-sincronizacao de politica. Ainda falta o envelope uniforme que carregue os tres
-eixos em toda evidencia; esse contrato pertence a R08.
+Um eixo nao altera automaticamente o outro. O contrato tipado e o envelope
+uniforme dos tres eixos foram implementados no Shared. As evidencias de
+Command, Repository, Saga e DomainTracker ja publicam profundidade, modo e
+severidade separadamente. O modo permanece `Live` na politica gerada atual;
+selecao dinamica de Replay, Simulation e Regression continua pendente.
 
 ## 4. Niveis De Capacidade
 
@@ -65,7 +71,7 @@ eixos em toda evidencia; esse contrato pertence a R08.
 | --- | --- | --- |
 | Y0 | Fonte versionado e pesquisavel | Implementado |
 | Y1 | Build verificavel | Parcial avancado; falta homologar o gate publicado e vincular o snapshot |
-| Y2 | Operacao observavel ponta a ponta | Nao implementado |
+| Y2 | Operacao observavel ponta a ponta | Parcial; envelope seguro D0/D1 implantado nas bordas comuns |
 | Y3 | Diagnostico dirigido | Nao implementado |
 | Y4 | Reproducao segura | Nao implementado |
 | Y5 | Operacao assistida | Conceito |
@@ -88,6 +94,14 @@ eixos em toda evidencia; esse contrato pertence a R08.
 - Contrato de progresso para ciclos de Worker.
 - Endpoint de snapshot de telemetria.
 - Logs estruturados em JSON enviados ao stdout dos containers.
+- Envelope operacional tipado com severidade, profundidade, modo, resultado
+  tecnico e resultado de negocio independentes.
+- Publicador unico de evidencias para Command, Repository, Saga e
+  DomainTracker, preservando `Level`, `Category` e `Data` para o Loki.
+- Classificacao `Public`, `Internal`, `Confidential`, `Restricted` e
+  `NeverCapture`, aplicada antes do sink.
+- Bloqueio de nomes proibidos tanto nos logs quanto nos spans antes dos
+  exportadores JSONL ou OTLP.
 
 ### Controle Operacional Antecipado
 
@@ -113,8 +127,8 @@ de assuntos durante R04.
 | --- | --- | --- |
 | G1 | Parcial | piloto documentado; governanca ainda nao generalizada |
 | G2 | Parcial avancado | runtime e fonte possuem versao; falta comprovacao automatica do mesmo artefato |
-| G3 | Parcial | TraceId/CorrelationId existem; identidade universal ainda nao |
-| G4 | Parcial | ha telemetria real; falta envelope seguro D0/D1 completo |
+| G3 | Parcial avancado | identidade sincrona universal implementada; falta propagacao assincrona por Outbox, Inbox, Saga e Worker |
+| G4 | Parcial avancado | envelope seguro implantado nas bordas comuns; faltam descritores gerados e demonstracao integral |
 | G5 | Parcial | fonte e consultavel; evidencia runtime ainda nao e central e duravel |
 | G6 | Parcial inicial | controle dirigido existe; governanca e captura D2 ainda nao |
 | G7 | Parcial | pos-build existe; demonstracao integral dos gates ainda nao |
@@ -129,17 +143,26 @@ de assuntos durante R04.
 | R04 | Telemetria e progresso | Implementado; build e testes locais aprovados, com evidencia operacional basica no ambiente publicado |
 | R05 | Gate pos-build e smoke CRUD | Implementado e compilado; execucao do gate publicado pendente |
 | R06 | Business smoke e vinculo ao snapshot | Pausado; nao iniciado |
-| R07+ | Protecao, eixos, propagacao e diagnostico | Nao iniciado |
+| R07 | Classificacao e protecao de dados | Parcial avancado; classificacao estatica gerada por campo, convencoes, complemento pela DSL, regras de profundidade e barreira `NeverCapture` implementados; faltam retencao por profundidade e homologacao integrada de vazamento |
+| R08 | Tres eixos e dois resultados | Implementado em codigo e validado localmente; severidade, profundidade e modo sao independentes, e o modo e controlado pelo snapshot da politica |
+| R09 | Identidade e propagacao sincrona | Implementado em codigo e validado localmente; Engine gera raiz, operacao, execucao e causa nas bordas HTTP, Command, Receiver, dominio e repository |
+| R10 | Propagacao assincrona e causalidade | Implementado e validado localmente no piloto HTTP do Fiscal; envelope de fila preparado e testado, com consumidor RabbitMQ real pendente de homologacao integrada |
+| R11 | Eventos operacionais essenciais | Implementado e validado localmente para Commands do Fiscal; baseline D0 inclui inicio, termino, identidade runtime e operacional, duracao, outcomes e erro sanitizado |
+| R12 | Narrativa operacional | Parcial avancado; Saga, Inbox/Outbox, SQL e chamada HTTP real emitem D1, e a Engine gera a entrada por contrato declarado; faltam estados de entrega/consumo, autenticacao/homologacao da entrada, SEFAZ e demonstracao integrada |
+| R13+ | Provider, consulta e diagnostico operacional | Nao iniciado |
 
 ## 7. Ponto Atual
 
 1. Congelar a criacao de mecanismos paralelos; evoluir somente os pontos
    arquiteturais existentes.
-2. Executar F-EXP-00 no Fiscal para provar custo minimo quando desligado.
-3. Executar R07 e R08 no Fiscal como uma fundacao segura: classificacao,
-   `NeverCapture`, tres eixos, dois resultados e envelope operacional.
-4. Executar R09 e R10 para identidade e causalidade sincronas e assincronas.
-5. Consolidar D0/D1 nos pontos existentes em R11 e R12.
+2. Manter a medicao quantitativa de F-EXP-00 pendente ate o fluxo estabilizar.
+3. Concluir R07 com retencao por profundidade e homologacao integrada dos
+   testes de vazamento.
+4. Homologar a cadeia R10 no ambiente publicado e validar um consumidor real
+   de fila quando um fluxo piloto adotar RabbitMQ.
+5. Concluir R12 nas transicoes de estado da entrega/consumo, autenticacao e
+   homologacao da borda gerada entre modulos, dependencias SEFAZ e demonstracao
+   integrada da narrativa Fiscal.
 6. Implementar o provider e `RuntimeContextCollector` em R13 sem chamada remota
    sincrona no caminho quente.
 7. Correlacionar runtime com o snapshot confirmado em R14.
@@ -148,9 +171,15 @@ de assuntos durante R04.
    demonstrados.
 
 A ordem detalhada e os criterios de saida estao em
-`YESHUA_SRE_IMPLEMENTATION_PLAN.md`. A proxima implementacao concreta e
-F-EXP-00, seguida pela fundacao R07/R08. R06 continua util ao gate de negocio,
-mas nao deve bloquear a seguranca da observabilidade.
+`YESHUA_SRE_IMPLEMENTATION_PLAN.md`. R11 esta concluida para Commands do
+piloto Fiscal e R12 esta parcial avancada. A chamada HTTP real do transporte
+ja possui evidencia D1 e a Engine ja gera a borda de entrada a partir da DSL; a
+proxima implementacao concreta e definir a credencial entre modulos, ativar a
+borda gerada, cobrir estados de entrega/consumo e dependencias SEFAZ sem
+instrumentar regras de negocio customizadas.
+A medicao quantitativa de
+F-EXP-00 permanece registrada, mas nao bloqueia esse avanco enquanto as bordas
+ainda estao evoluindo.
 
 O roteiro detalhado de custo e seletores do piloto Fiscal esta em
 `docs/operational/fiscal/FISCAL_OPERATIONAL_EXPERIMENT_PLAN.md`.

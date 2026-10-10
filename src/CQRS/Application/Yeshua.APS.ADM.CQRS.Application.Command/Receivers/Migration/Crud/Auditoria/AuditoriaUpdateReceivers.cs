@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.AuditoriaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateAuditoria", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateAuditoriaReceiver), commandName: "Command.Write.AuditoriaCrudCommand");
-                 var auditoria = new AuditoriaFactory(_logger, _domainTrackingPolicy).Create(context, c.ID, c.DATA, c.USE_ID, c.ROTINA, c.HISTORICO, c.CHAVE);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Auditoria", "UpdateAuditoria", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.AuditoriaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateAuditoria", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateAuditoriaReceiver), commandName: "Command.Write.AuditoriaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var auditoria = new AuditoriaFactory(_logger, _domainTrackingPolicy).Create(context, c.ID, c.DATA, c.USE_ID, c.ROTINA, c.HISTORICO, c.CHAVE, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", auditoria.OperationalEntityId);
                  var domainResult = AuditoriaDomainBehavior.Apply(auditoria, context);
                  if (!domainResult.IsValid)

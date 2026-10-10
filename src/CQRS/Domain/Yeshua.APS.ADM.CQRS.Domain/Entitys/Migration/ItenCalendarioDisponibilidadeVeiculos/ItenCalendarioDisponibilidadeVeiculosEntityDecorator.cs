@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class ItenCalendarioDisponibilidadeVeiculosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CDV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IDV_QTD = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ItenCalendarioDisponibilidadeVeiculosDecorator : IItenCalendarioDisponibilidadeVeiculosEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ItenCalendarioDisponibilidadeVeiculosDecorator(IItenCalendarioDisponibilidadeVeiculosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.CDV_ID = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.CDV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "CDV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "CDV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.CDV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.TIP_ID = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.TIP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "TIP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "TIP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.TIP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.IDV_QTD = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.IDV_QTD) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "IDV_QTD", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "IDV_QTD", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.IDV_QTD, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ItenCalendarioDisponibilidadeVeiculosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItenCalendarioDisponibilidadeVeiculos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItenCalendarioDisponibilidadeVeiculosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

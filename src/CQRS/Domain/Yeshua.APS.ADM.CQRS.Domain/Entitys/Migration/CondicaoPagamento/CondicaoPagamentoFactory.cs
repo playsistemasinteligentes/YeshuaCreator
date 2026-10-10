@@ -34,13 +34,14 @@
                             }
 
                             public ICondicaoPagamentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string con_id, string? con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string? con_integracao_erp )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string con_id, string? con_descricao, int? con_parcelas, Decimal? con_valor_acrecimo, string? con_integracao_erp, ulong? trackingMask = null )
                             {
                             var entity = new CondicaoPagamentoEntity(id, con_id, con_descricao, con_parcelas, con_valor_acrecimo, con_integracao_erp );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CondicaoPagamento", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CondicaoPagamentoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CondicaoPagamento", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CondicaoPagamentoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

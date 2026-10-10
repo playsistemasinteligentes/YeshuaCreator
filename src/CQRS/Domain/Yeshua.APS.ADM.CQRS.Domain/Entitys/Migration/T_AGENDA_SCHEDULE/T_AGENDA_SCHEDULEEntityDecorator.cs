@@ -44,6 +44,32 @@
             public const ulong UserId = 1UL << 21;
         }
 
+        public static class T_AGENDA_SCHEDULEOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_DATA_ESPECIFICA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_HORARIO_INICIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_HORARIO_FIM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_SEGUNDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_TERCA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_QUARTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_QUINTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_SEXTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_SABADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_DOMINGO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_INTERVALO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_ORDEM_EXECUCAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_PARAMETROS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_EXCECAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AGE_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class T_AGENDA_SCHEDULEDecorator : IT_AGENDA_SCHEDULEEntity
 {
 
@@ -51,6 +77,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public T_AGENDA_SCHEDULEDecorator(IT_AGENDA_SCHEDULEEntity inner, Dominio.Interfaces.ILogger logger)
@@ -68,6 +95,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -80,7 +114,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +128,7 @@
                                             {
                                                 _inner.AGE_ID = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -108,7 +142,7 @@
                                             {
                                                 _inner.AGE_DATA_ESPECIFICA = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_DATA_ESPECIFICA) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_DATA_ESPECIFICA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_DATA_ESPECIFICA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_DATA_ESPECIFICA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -122,7 +156,7 @@
                                             {
                                                 _inner.AGE_HORARIO_INICIO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_HORARIO_INICIO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_HORARIO_INICIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_HORARIO_INICIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_HORARIO_INICIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +170,7 @@
                                             {
                                                 _inner.AGE_HORARIO_FIM = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_HORARIO_FIM) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_HORARIO_FIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_HORARIO_FIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_HORARIO_FIM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -150,7 +184,7 @@
                                             {
                                                 _inner.AGE_SEGUNDA = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_SEGUNDA) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_SEGUNDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_SEGUNDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_SEGUNDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -164,7 +198,7 @@
                                             {
                                                 _inner.AGE_TERCA = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_TERCA) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_TERCA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_TERCA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_TERCA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -178,7 +212,7 @@
                                             {
                                                 _inner.AGE_QUARTA = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_QUARTA) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_QUARTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_QUARTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_QUARTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -192,7 +226,7 @@
                                             {
                                                 _inner.AGE_QUINTA = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_QUINTA) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_QUINTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_QUINTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_QUINTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -206,7 +240,7 @@
                                             {
                                                 _inner.AGE_SEXTA = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_SEXTA) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_SEXTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_SEXTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_SEXTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -220,7 +254,7 @@
                                             {
                                                 _inner.AGE_SABADO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_SABADO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_SABADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_SABADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_SABADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -234,7 +268,7 @@
                                             {
                                                 _inner.AGE_DOMINGO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_DOMINGO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_DOMINGO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_DOMINGO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_DOMINGO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -248,7 +282,7 @@
                                             {
                                                 _inner.AGE_INTERVALO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_INTERVALO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_INTERVALO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_INTERVALO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_INTERVALO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -262,7 +296,7 @@
                                             {
                                                 _inner.AGE_ORDEM_EXECUCAO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_ORDEM_EXECUCAO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_ORDEM_EXECUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_ORDEM_EXECUCAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_ORDEM_EXECUCAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -276,7 +310,7 @@
                                             {
                                                 _inner.AGE_PARAMETROS = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_PARAMETROS) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_PARAMETROS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_PARAMETROS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_PARAMETROS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -290,7 +324,7 @@
                                             {
                                                 _inner.AGE_EXCECAO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_EXCECAO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_EXCECAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_EXCECAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_EXCECAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -304,7 +338,7 @@
                                             {
                                                 _inner.AGE_DESCRICAO = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.AGE_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "AGE_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.AGE_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +353,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -333,7 +367,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -347,7 +381,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -361,7 +395,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & T_AGENDA_SCHEDULETrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_AGENDA_SCHEDULE", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_AGENDA_SCHEDULEOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

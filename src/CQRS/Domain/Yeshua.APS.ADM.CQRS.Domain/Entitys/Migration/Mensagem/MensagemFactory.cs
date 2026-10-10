@@ -34,13 +34,14 @@
                             }
 
                             public IMensagemEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string men_id, string? men_send, DateTime? men_emission, string? men_status, string? men_receive, string? men_type, Decimal? men_qtd_try_send, DateTime? men_date_try_send )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string men_id, string? men_send, DateTime? men_emission, string? men_status, string? men_receive, string? men_type, Decimal? men_qtd_try_send, DateTime? men_date_try_send, ulong? trackingMask = null )
                             {
                             var entity = new MensagemEntity(men_id, men_send, men_emission, men_status, men_receive, men_type, men_qtd_try_send, men_date_try_send );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Mensagem", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MensagemDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Mensagem", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MensagemDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

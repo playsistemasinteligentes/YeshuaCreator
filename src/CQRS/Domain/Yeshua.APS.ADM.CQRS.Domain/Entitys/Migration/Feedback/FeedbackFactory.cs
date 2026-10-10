@@ -34,13 +34,14 @@
                             }
 
                             public IFeedbackEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, DateTime datainicial, DateTime datafinal, string maquinaid, string? ocorrenciaid, string? turnoid, string? turmaid, int usuarioid, string? orderid, string? produtoid, string? observacoes, Decimal grupo, string? diaturma, int? sequenciatransformacao, int? sequenciarepeticao, Decimal quantidadepulsos, Decimal? quantidadepecasporpulso, Decimal? fee_qtd_total_producao_ajustada, string? bol_id, int? cor_sequencia )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, DateTime datainicial, DateTime datafinal, string maquinaid, string? ocorrenciaid, string? turnoid, string? turmaid, int usuarioid, string? orderid, string? produtoid, string? observacoes, Decimal grupo, string? diaturma, int? sequenciatransformacao, int? sequenciarepeticao, Decimal quantidadepulsos, Decimal? quantidadepecasporpulso, Decimal? fee_qtd_total_producao_ajustada, string? bol_id, int? cor_sequencia, ulong? trackingMask = null )
                             {
                             var entity = new FeedbackEntity(id, datainicial, datafinal, maquinaid, ocorrenciaid, turnoid, turmaid, usuarioid, orderid, produtoid, observacoes, grupo, diaturma, sequenciatransformacao, sequenciarepeticao, quantidadepulsos, quantidadepecasporpulso, fee_qtd_total_producao_ajustada, bol_id, cor_sequencia );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Feedback", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new FeedbackDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Feedback", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new FeedbackDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

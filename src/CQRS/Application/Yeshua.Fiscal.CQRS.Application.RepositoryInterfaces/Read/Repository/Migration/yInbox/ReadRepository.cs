@@ -46,6 +46,10 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
+        public bool ExistsByRootOperationId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByExecutionId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByCausationId(string value , bool TakeOffTenantID = false);
         public yInboxDTO FirstById(int value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByMessageId(string value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByType(string value , bool TakeOffTenantID = false);
@@ -66,6 +70,10 @@ namespace IRepository.Read
         public yInboxDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByUserId(int value , bool TakeOffTenantID = false);
+        public yInboxDTO FirstByRootOperationId(string value , bool TakeOffTenantID = false);
+        public yInboxDTO FirstByOperationId(string value , bool TakeOffTenantID = false);
+        public yInboxDTO FirstByExecutionId(string value , bool TakeOffTenantID = false);
+        public yInboxDTO FirstByCausationId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllById(int value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByMessageId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByType(string value , bool TakeOffTenantID = false);
@@ -86,6 +94,10 @@ namespace IRepository.Read
         public IEnumerable<yInboxDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yInboxDTO> GetAllByRootOperationId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yInboxDTO> GetAllByOperationId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yInboxDTO> GetAllByExecutionId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yInboxDTO> GetAllByCausationId(string value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

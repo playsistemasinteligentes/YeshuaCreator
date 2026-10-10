@@ -203,6 +203,11 @@ observabilidade nao serao criados em `Off`.
 O Receiver nao recebera wrappers repetidos como `TryTelemetry`. A garantia de
 nao afetar o negocio pertence ao provider de telemetria.
 
+**Situacao do piloto em 10/10/2026:** implementado e validado. Commands
+selecionados emitem inicio e termino com identidade runtime e operacional,
+duracao, outcomes e erro D0 sanitizado. Dependencias SEFAZ e a narrativa entre
+Saga, Inbox, Outbox e Worker permanecem na rodada R12.
+
 **Correlacao:** D0, Secoes 7, 9.4, 10 e G4.
 
 ### 5.4 Sagas
@@ -225,6 +230,10 @@ ficara no executor, nao espalhada nos handlers de cada step.
 No piloto serao cobertas `ContingenciaFiscalStandard` e
 `EmissaoFiscalCargaStandard`, incluindo a causalidade entre elas.
 
+**Situacao do piloto em 10/10/2026:** o executor compartilhado ja emite as
+transicoes acima com tentativa, duracao, outcomes, identidade e retry
+sanitizado. A demonstracao integrada das duas sagas permanece pendente.
+
 **Correlacao:** D1, Secoes 6.2, 9.4, 9.5, G3 e G4.
 
 ### 5.5 Workers, Inbox E Outbox
@@ -241,6 +250,17 @@ Inbox/Outbox/Saga.
 
 Ciclo vazio nao deve gerar evento. Backlog e heartbeat so serao mantidos se os
 experimentos demonstrarem utilidade e custo aceitavel.
+
+**Situacao do piloto em 10/10/2026:** a Engine gera evidencias de armazenamento
+e falha de armazenamento para Inbox e Outbox, sem payload. A chamada HTTP real
+do transporte entre modulos passa pelo handler compartilhado e registra host,
+status, duracao, resultado tecnico e cadeia causal. O handler nao le URL
+completa, query string, corpo nem credenciais. Ainda faltam as transicoes de
+estado da entrega/consumo. A Engine ja gera a borda padrao de entrada somente
+para contratos declarados por `StartsFromYeshuaModuleEvent`, com validacao do
+tipo, restauracao causal, transacao e autenticacao obrigatoria. O endpoint
+manual do Fiscal permanece temporariamente ate existir uma credencial definida
+para o transporte entre modulos.
 
 **Correlacao:** D1, Secoes 9.3, 9.5, 10, G3 e G4.
 
@@ -259,6 +279,10 @@ repository.
 
 D1 exige dependencia relevante, nao um evento para cada query bem-sucedida.
 Por isso, sucesso individual de repository nao sera baseline automatico.
+
+**Situacao do piloto em 10/10/2026:** eventos selecionados identificam `SQL`,
+`QueryId`, duracao e resultado; falhas usam resumo sanitizado e nao publicam
+SQL bruto nem parametros.
 
 **Correlacao:** D1/D2, Secoes 8, 9.4, 9.7, 10, G4 e G6.
 

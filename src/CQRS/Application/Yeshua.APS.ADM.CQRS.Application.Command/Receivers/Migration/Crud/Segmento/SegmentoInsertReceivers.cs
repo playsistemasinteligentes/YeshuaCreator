@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.SegmentoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertSegmento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertSegmentoReceiver), commandName: "Command.Write.SegmentoCrudCommand");
-                 var segmento = new SegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEG_ID, c.SEG_DESCRICAO, c.SEG_ID_SEGUIMENTO_PAI, c.GRS_ID, c.SEG_INTEGRACAO_ERP);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Segmento", "InsertSegmento", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.SegmentoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertSegmento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertSegmentoReceiver), commandName: "Command.Write.SegmentoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var segmento = new SegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.SEG_ID, c.SEG_DESCRICAO, c.SEG_ID_SEGUIMENTO_PAI, c.GRS_ID, c.SEG_INTEGRACAO_ERP, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", segmento.OperationalEntityId);
                  var domainResult = SegmentoDomainBehavior.Apply(segmento, context);
                  if (!domainResult.IsValid)

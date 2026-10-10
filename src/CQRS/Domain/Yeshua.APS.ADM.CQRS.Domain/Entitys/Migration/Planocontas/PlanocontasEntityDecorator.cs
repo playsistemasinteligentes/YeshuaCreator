@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class PlanocontasOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PLA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLA_CODIGO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLA_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLA_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PLA_NATUREZA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PlanocontasDecorator : IPlanocontasEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PlanocontasDecorator(IPlanocontasEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.PLA_ID = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.PLA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "PLA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "PLA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.PLA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.PLA_CODIGO = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.PLA_CODIGO) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "PLA_CODIGO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "PLA_CODIGO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.PLA_CODIGO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.PLA_DESCRICAO = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.PLA_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "PLA_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "PLA_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.PLA_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.PLA_TIPO = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.PLA_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "PLA_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "PLA_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.PLA_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.PLA_NATUREZA = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.PLA_NATUREZA) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "PLA_NATUREZA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "PLA_NATUREZA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.PLA_NATUREZA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PlanocontasTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Planocontas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Planocontas", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanocontasOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

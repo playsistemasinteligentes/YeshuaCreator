@@ -42,6 +42,30 @@
             public const ulong TT_MAX_DEF_GRAVE = 1UL << 19;
         }
 
+        public static class TipoTesteOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification TT_ESPECIFICACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_ORIGEM_ESPECIFICACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_IMPRIME_NO_LAUDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_NOME = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TT_DESC = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_TOL_MAIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_TOL_MENOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_NORMA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_INICIO_PROCESSO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UNI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_N_AMOSTRAS_P_TESTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_MAX_DEF_CRITICO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TT_MAX_DEF_GRAVE = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TipoTesteDecorator : ITipoTesteEntity
 {
 
@@ -49,6 +73,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TipoTesteDecorator(ITipoTesteEntity inner, Dominio.Interfaces.ILogger logger)
@@ -66,6 +91,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -78,7 +110,7 @@
                                             {
                                                 _inner.TT_ESPECIFICACAO = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_ESPECIFICACAO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_ESPECIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_ESPECIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_ESPECIFICACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -92,7 +124,7 @@
                                             {
                                                 _inner.TT_ORIGEM_ESPECIFICACAO = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_ORIGEM_ESPECIFICACAO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_ORIGEM_ESPECIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_ORIGEM_ESPECIFICACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_ORIGEM_ESPECIFICACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -106,7 +138,7 @@
                                             {
                                                 _inner.TT_IMPRIME_NO_LAUDO = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_IMPRIME_NO_LAUDO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_IMPRIME_NO_LAUDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_IMPRIME_NO_LAUDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_IMPRIME_NO_LAUDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -121,7 +153,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -135,7 +167,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -149,7 +181,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -163,7 +195,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -177,7 +209,7 @@
                                             {
                                                 _inner.TT_ID = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -191,7 +223,7 @@
                                             {
                                                 _inner.TT_NOME = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_NOME) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_NOME, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -205,7 +237,7 @@
                                             {
                                                 _inner.TT_DESC = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_DESC) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_DESC", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_DESC", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_DESC, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -219,7 +251,7 @@
                                             {
                                                 _inner.TT_TOL_MAIS = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_TOL_MAIS) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_TOL_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_TOL_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_TOL_MAIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -233,7 +265,7 @@
                                             {
                                                 _inner.TT_TOL_MENOS = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_TOL_MENOS) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_TOL_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_TOL_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_TOL_MENOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -247,7 +279,7 @@
                                             {
                                                 _inner.TT_NORMA = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_NORMA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_NORMA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_NORMA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_NORMA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -261,7 +293,7 @@
                                             {
                                                 _inner.TT_INICIO_PROCESSO = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_INICIO_PROCESSO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_INICIO_PROCESSO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_INICIO_PROCESSO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_INICIO_PROCESSO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -275,7 +307,7 @@
                                             {
                                                 _inner.TA_ID = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -289,7 +321,7 @@
                                             {
                                                 _inner.UNI_ID = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.UNI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.UNI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -303,7 +335,7 @@
                                             {
                                                 _inner.TT_N_AMOSTRAS_P_TESTE = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_N_AMOSTRAS_P_TESTE) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_N_AMOSTRAS_P_TESTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_N_AMOSTRAS_P_TESTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_N_AMOSTRAS_P_TESTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -317,7 +349,7 @@
                                             {
                                                 _inner.TT_MAX_DEF_CRITICO = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_MAX_DEF_CRITICO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_MAX_DEF_CRITICO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_MAX_DEF_CRITICO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_MAX_DEF_CRITICO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -331,7 +363,7 @@
                                             {
                                                 _inner.TT_MAX_DEF_GRAVE = value;
                                                 if ((_trackingMask & TipoTesteTrackingFields.TT_MAX_DEF_GRAVE) != 0UL)
-                                                    _logger.DomainValueChanged("TipoTeste", "TT_MAX_DEF_GRAVE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoTeste", "TT_MAX_DEF_GRAVE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoTesteOperationalFields.TT_MAX_DEF_GRAVE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

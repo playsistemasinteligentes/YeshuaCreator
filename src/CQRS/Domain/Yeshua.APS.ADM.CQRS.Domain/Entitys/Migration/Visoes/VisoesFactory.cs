@@ -34,13 +34,14 @@
                             }
 
                             public IVisoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int vis_id, int vis_planid, string? vis_formula, int cab_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int vis_id, int vis_planid, string? vis_formula, int cab_id, ulong? trackingMask = null )
                             {
                             var entity = new VisoesEntity(vis_id, vis_planid, vis_formula, cab_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Visoes", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new VisoesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Visoes", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new VisoesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

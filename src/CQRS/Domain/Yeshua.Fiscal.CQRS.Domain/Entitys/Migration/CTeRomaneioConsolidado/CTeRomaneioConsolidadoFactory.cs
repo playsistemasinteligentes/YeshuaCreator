@@ -34,13 +34,14 @@
                             }
 
                             public ICTeRomaneioConsolidadoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int entradaoficialid, string correlationid, string romaneioid, string? cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? emitentedocumento, string? tomadordocumento, string? rotasnapshotjson, string? cargasnapshotjson, string? preferenciasfiscaisjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int entradaoficialid, string correlationid, string romaneioid, string? cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? emitentedocumento, string? tomadordocumento, string? rotasnapshotjson, string? cargasnapshotjson, string? preferenciasfiscaisjson, int status, ulong? trackingMask = null )
                             {
                             var entity = new CTeRomaneioConsolidadoEntity(id, entradaoficialid, correlationid, romaneioid, cargaid, consolidadoemutc, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, emitentedocumento, tomadordocumento, rotasnapshotjson, cargasnapshotjson, preferenciasfiscaisjson, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeRomaneioConsolidado", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeRomaneioConsolidadoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeRomaneioConsolidado", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeRomaneioConsolidadoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

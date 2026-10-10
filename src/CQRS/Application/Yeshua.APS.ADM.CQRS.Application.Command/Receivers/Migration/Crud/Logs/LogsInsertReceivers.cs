@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.LogsCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLogs", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLogsReceiver), commandName: "Command.Write.LogsCrudCommand");
-                 var logs = new LogsFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LOG_CHAVE, c.LOG_CONTEXTO, c.LOG_CONTEUDO, c.LOG_ID, c.LOG_EMISSAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Logs", "InsertLogs", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.LogsCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLogs", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLogsReceiver), commandName: "Command.Write.LogsCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var logs = new LogsFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LOG_CHAVE, c.LOG_CONTEXTO, c.LOG_CONTEUDO, c.LOG_ID, c.LOG_EMISSAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", logs.OperationalEntityId);
                  var domainResult = LogsDomainBehavior.Apply(logs, context);
                  if (!domainResult.IsValid)

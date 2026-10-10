@@ -34,13 +34,14 @@
                             }
 
                             public IDocumentoFiscalOriginarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? documentofiscalid, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? snapshotjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? documentofiscalid, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? snapshotjson, int status, ulong? trackingMask = null )
                             {
                             var entity = new DocumentoFiscalOriginarioEntity(id, documentofiscalid, correlationid, sourceapplication, sourcemodule, sourcemessageid, tipodocumento, chaveacesso, numero, serie, emitentedocumento, destinatariodocumento, valordocumento, pesobruto, volume, snapshotjson, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("DocumentoFiscalOriginario", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new DocumentoFiscalOriginarioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("DocumentoFiscalOriginario", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new DocumentoFiscalOriginarioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

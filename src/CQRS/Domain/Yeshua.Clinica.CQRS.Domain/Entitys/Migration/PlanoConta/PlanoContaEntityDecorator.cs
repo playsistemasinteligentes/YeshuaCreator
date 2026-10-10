@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class PlanoContaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Codigo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Nome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Tipo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PlanoContaDecorator : IPlanoContaEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PlanoContaDecorator(IPlanoContaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.Codigo = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.Codigo) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "Codigo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "Codigo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.Codigo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.Nome = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.Nome) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.Nome, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.Tipo = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.Tipo) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "Tipo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "Tipo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.Tipo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PlanoContaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoConta", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoConta", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoContaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

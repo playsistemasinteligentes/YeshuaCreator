@@ -34,13 +34,14 @@
                             }
 
                             public IMaquinaImpressoraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int maq_imp_id, string maq_id, int imp_id, int mai_facao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int maq_imp_id, string maq_id, int imp_id, int mai_facao, ulong? trackingMask = null )
                             {
                             var entity = new MaquinaImpressoraEntity(maq_imp_id, maq_id, imp_id, mai_facao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MaquinaImpressora", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MaquinaImpressoraDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MaquinaImpressora", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MaquinaImpressoraDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

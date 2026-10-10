@@ -34,13 +34,14 @@
                             }
 
                             public IRelatoriosEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int rel_id, string? rel_nome_relatorio, string rel_nome_campo, string rel_tipo_campo, int? rel_pos_x, int? rel_pos_y, int? rel_tamanho_fonte )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int rel_id, string? rel_nome_relatorio, string rel_nome_campo, string rel_tipo_campo, int? rel_pos_x, int? rel_pos_y, int? rel_tamanho_fonte, ulong? trackingMask = null )
                             {
                             var entity = new RelatoriosEntity(rel_id, rel_nome_relatorio, rel_nome_campo, rel_tipo_campo, rel_pos_x, rel_pos_y, rel_tamanho_fonte );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Relatorios", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RelatoriosDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Relatorios", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RelatoriosDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OrderTrackCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertOrderTrack", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertOrderTrackReceiver), commandName: "Command.Write.OrderTrackCrudCommand");
-                 var ordertrack = new OrderTrackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OTK_ID, c.OTK_SEQUENCIA, c.OTK_VERSSAO, c.ORD_ID, c.OTK_EVENTO, c.OTK_DATA_NECESSIDADE_DE, c.OTK_DATA_NECESSIDADE_ATE, c.OTK_DATA_PREVISTA, c.OTK_DATA_REALIZADA, c.FPR_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("OrderTrack", "InsertOrderTrack", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OrderTrackCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertOrderTrack", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertOrderTrackReceiver), commandName: "Command.Write.OrderTrackCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ordertrack = new OrderTrackFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OTK_ID, c.OTK_SEQUENCIA, c.OTK_VERSSAO, c.ORD_ID, c.OTK_EVENTO, c.OTK_DATA_NECESSIDADE_DE, c.OTK_DATA_NECESSIDADE_ATE, c.OTK_DATA_PREVISTA, c.OTK_DATA_REALIZADA, c.FPR_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ordertrack.OperationalEntityId);
                  var domainResult = OrderTrackDomainBehavior.Apply(ordertrack, context);
                  if (!domainResult.IsValid)

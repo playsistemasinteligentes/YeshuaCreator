@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class VerssaoCustoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VER_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VER_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VER_DATA_VERSSAO_CUSTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VER_OBS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class VerssaoCustoDecorator : IVerssaoCustoEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public VerssaoCustoDecorator(IVerssaoCustoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.VER_ID = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.VER_ID) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.VER_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.VER_STATUS = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.VER_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.VER_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.VER_DATA_VERSSAO_CUSTO = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.VER_DATA_VERSSAO_CUSTO) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_DATA_VERSSAO_CUSTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_DATA_VERSSAO_CUSTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.VER_DATA_VERSSAO_CUSTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.VER_OBS = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.VER_OBS) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "VER_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.VER_OBS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & VerssaoCustoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("VerssaoCusto", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("VerssaoCusto", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VerssaoCustoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class CalendarioOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification CAL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAL_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAL_DIVIDE_DIA_EM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CalendarioDecorator : ICalendarioEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CalendarioDecorator(ICalendarioEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.CAL_ID = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.CAL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "CAL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "CAL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.CAL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.CAL_DESCRICAO = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.CAL_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "CAL_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "CAL_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.CAL_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.CAL_DIVIDE_DIA_EM = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.CAL_DIVIDE_DIA_EM) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "CAL_DIVIDE_DIA_EM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "CAL_DIVIDE_DIA_EM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.CAL_DIVIDE_DIA_EM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CalendarioTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Calendario", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Calendario", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CalendarioOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

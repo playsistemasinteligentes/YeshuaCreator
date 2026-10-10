@@ -34,13 +34,14 @@
                             }
 
                             public ILoteTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int lt_id, int? tes_id, int? rl_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int lt_id, int? tes_id, int? rl_id, ulong? trackingMask = null )
                             {
                             var entity = new LoteTesteEntity(id, lt_id, tes_id, rl_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("LoteTeste", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new LoteTesteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("LoteTeste", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new LoteTesteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

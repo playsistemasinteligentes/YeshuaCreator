@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeParticipanteSnapshotCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeParticipanteSnapshot", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeParticipanteSnapshotReceiver), commandName: "Command.Write.CTeParticipanteSnapshotCrudCommand");
-                 var cteparticipantesnapshot = new CTeParticipanteSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.Papel, c.Documento, c.Nome, c.InscricaoEstadual, c.UF, c.MunicipioCodigoIbge, c.EnderecoJson);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeParticipanteSnapshot", "UpdateCTeParticipanteSnapshot", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeParticipanteSnapshotCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeParticipanteSnapshot", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeParticipanteSnapshotReceiver), commandName: "Command.Write.CTeParticipanteSnapshotCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cteparticipantesnapshot = new CTeParticipanteSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.Papel, c.Documento, c.Nome, c.InscricaoEstadual, c.UF, c.MunicipioCodigoIbge, c.EnderecoJson, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cteparticipantesnapshot.OperationalEntityId);
                  var domainResult = CTeParticipanteSnapshotDomainBehavior.Apply(cteparticipantesnapshot, context);
                  if (!domainResult.IsValid)

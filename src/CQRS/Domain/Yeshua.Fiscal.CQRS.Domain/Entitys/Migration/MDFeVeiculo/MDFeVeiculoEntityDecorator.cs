@@ -34,6 +34,22 @@
             public const ulong UserId = 1UL << 11;
         }
 
+        public static class MDFeVeiculoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MDFeSolicitacaoFiscalId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Placa = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Renavam = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Tara = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CapacidadeKg = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CapacidadeM3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MDFeVeiculoDecorator : IMDFeVeiculoEntity
 {
 
@@ -41,6 +57,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MDFeVeiculoDecorator(IMDFeVeiculoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -58,6 +75,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -70,7 +94,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +108,7 @@
                                             {
                                                 _inner.MDFeSolicitacaoFiscalId = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.MDFeSolicitacaoFiscalId) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "MDFeSolicitacaoFiscalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "MDFeSolicitacaoFiscalId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.MDFeSolicitacaoFiscalId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +122,7 @@
                                             {
                                                 _inner.Placa = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.Placa) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "Placa", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "Placa", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.Placa, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +136,7 @@
                                             {
                                                 _inner.Renavam = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.Renavam) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "Renavam", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "Renavam", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.Renavam, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +150,7 @@
                                             {
                                                 _inner.Tara = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.Tara) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "Tara", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "Tara", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.Tara, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +164,7 @@
                                             {
                                                 _inner.CapacidadeKg = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.CapacidadeKg) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "CapacidadeKg", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "CapacidadeKg", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.CapacidadeKg, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +178,7 @@
                                             {
                                                 _inner.CapacidadeM3 = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.CapacidadeM3) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "CapacidadeM3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "CapacidadeM3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.CapacidadeM3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +193,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -183,7 +207,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -197,7 +221,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -211,7 +235,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MDFeVeiculoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("MDFeVeiculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MDFeVeiculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MDFeVeiculoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

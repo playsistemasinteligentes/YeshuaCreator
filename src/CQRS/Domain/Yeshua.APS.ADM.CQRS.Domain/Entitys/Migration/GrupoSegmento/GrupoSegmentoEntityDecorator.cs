@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class GrupoSegmentoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRS_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRS_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRS_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class GrupoSegmentoDecorator : IGrupoSegmentoEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public GrupoSegmentoDecorator(IGrupoSegmentoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.GRS_ID = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.GRS_ID) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "GRS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "GRS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.GRS_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.GRS_DESCRICAO = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.GRS_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "GRS_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "GRS_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.GRS_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.GRS_INTEGRACAO_ERP = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.GRS_INTEGRACAO_ERP) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "GRS_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "GRS_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.GRS_INTEGRACAO_ERP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & GrupoSegmentoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("GrupoSegmento", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("GrupoSegmento", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, GrupoSegmentoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

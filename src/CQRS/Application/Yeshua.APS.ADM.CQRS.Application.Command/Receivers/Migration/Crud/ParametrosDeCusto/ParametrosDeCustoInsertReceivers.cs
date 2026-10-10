@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ParametrosDeCustoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertParametrosDeCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertParametrosDeCustoReceiver), commandName: "Command.Write.ParametrosDeCustoCrudCommand");
-                 var parametrosdecusto = new ParametrosDeCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PAR_ID, c.PRO_ID, c.CUS_ID, c.PAR_VALOR);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ParametrosDeCusto", "InsertParametrosDeCusto", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ParametrosDeCustoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertParametrosDeCusto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertParametrosDeCustoReceiver), commandName: "Command.Write.ParametrosDeCustoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var parametrosdecusto = new ParametrosDeCustoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PAR_ID, c.PRO_ID, c.CUS_ID, c.PAR_VALOR, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", parametrosdecusto.OperationalEntityId);
                  var domainResult = ParametrosDeCustoDomainBehavior.Apply(parametrosdecusto, context);
                  if (!domainResult.IsValid)

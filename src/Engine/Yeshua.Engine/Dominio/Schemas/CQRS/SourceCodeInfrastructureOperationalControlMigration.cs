@@ -33,12 +33,18 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 string DefaultDepth,
                 IReadOnlyList<DiagnosticTarget> Targets,
                 DateTimeOffset UpdatedAtUtc,
-                string Source);
+                string Source)
+            {
+                public string DefaultMode { get; init; } = "Live";
+            }
 
             public sealed record OperationalLoggingPolicyUpdate(
                 string DefaultLevel,
                 string DefaultDepth,
-                IReadOnlyList<DiagnosticTarget>? Targets);
+                IReadOnlyList<DiagnosticTarget>? Targets)
+            {
+                public string? DefaultMode { get; init; }
+            }
 
             public sealed record DiagnosticTarget(
                 string? Component,
@@ -50,6 +56,7 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 DateTimeOffset? ExpiresAtUtc)
             {
                 public string? Field { get; init; }
+                public string? Mode { get; init; }
             }
 
             public readonly record struct OperationalLoggingContext(
@@ -65,6 +72,7 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 bool Enabled,
                 string Level,
                 string Depth,
+                string Mode,
                 DiagnosticTarget? MatchedTarget);
 
             public interface IOperationalLoggingPolicyAccessor
@@ -110,6 +118,13 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                             $"Policy for '{policy.Application}/{policy.Environment}' cannot replace policy for '{Current.Application}/{Current.Environment}'.");
                     }
 
+                    policy = policy with
+                    {
+                        DefaultMode = NormalizeMode(policy.DefaultMode, "Live")
+                    };
+                    foreach (var target in policy.Targets)
+                        _ = NormalizeMode(target.Mode, policy.DefaultMode);
+
                     Interlocked.Exchange(ref _current, policy);
                 }
 
@@ -125,6 +140,7 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         DefaultDepth = string.IsNullOrWhiteSpace(update.DefaultDepth)
                             ? current.DefaultDepth
                             : update.DefaultDepth,
+                        DefaultMode = NormalizeMode(update.DefaultMode, current.DefaultMode),
                         Targets = update.Targets ?? [],
                         UpdatedAtUtc = DateTimeOffset.UtcNow,
                         Source = "LocalRuntime"
@@ -195,15 +211,18 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                             false,
                             "None",
                             "D0",
+                            policy.DefaultMode,
                             null);
                     }
 
                     var level = target?.Level ?? policy.DefaultLevel;
                     var depth = target?.Depth ?? policy.DefaultDepth;
+                    var mode = NormalizeMode(target?.Mode, policy.DefaultMode);
                     return new OperationalLoggingDecision(
                         !level.Equals("None", StringComparison.OrdinalIgnoreCase),
                         level,
                         depth,
+                        mode,
                         target);
                 }
 
@@ -221,7 +240,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     return new OperationalTelemetryDecision(
                         decision.Enabled,
                         decision.Level,
-                        decision.Depth);
+                        decision.Depth,
+                        decision.Mode);
                 }
 
                 OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -240,7 +260,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     return new OperationalTelemetryDecision(
                         decision.Enabled,
                         decision.Level,
-                        decision.Depth);
+                        decision.Depth,
+                        decision.Mode);
                 }
 
             {{domainTrackingMaskMethods}}
@@ -260,6 +281,19 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 8;
                     if (!string.IsNullOrWhiteSpace(target.Field)) score += 16;
                     return score;
+                }
+
+                private static string NormalizeMode(string? mode, string fallback)
+                {
+                    var candidate = string.IsNullOrWhiteSpace(mode) ? fallback : mode;
+                    return candidate.ToUpperInvariant() switch
+                    {
+                        "LIVE" => "Live",
+                        "REPLAY" => "Replay",
+                        "SIMULATION" => "Simulation",
+                        "REGRESSION" => "Regression",
+                        _ => throw new ArgumentException($"Invalid operational execution mode '{candidate}'.")
+                    };
                 }
             }
             """);

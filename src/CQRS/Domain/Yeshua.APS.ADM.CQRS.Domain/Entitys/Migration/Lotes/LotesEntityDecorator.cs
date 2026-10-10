@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class LotesOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MOV_LOTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MOV_SUB_LOTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOT_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOT_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification LOT_DIAMETRO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class LotesDecorator : ILotesEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public LotesDecorator(ILotesEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & LotesTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.MOV_LOTE = value;
                                                 if ((_trackingMask & LotesTrackingFields.MOV_LOTE) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "MOV_LOTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "MOV_LOTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.MOV_LOTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.MOV_SUB_LOTE = value;
                                                 if ((_trackingMask & LotesTrackingFields.MOV_SUB_LOTE) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "MOV_SUB_LOTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "MOV_SUB_LOTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.MOV_SUB_LOTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.LOT_LARGURA = value;
                                                 if ((_trackingMask & LotesTrackingFields.LOT_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "LOT_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "LOT_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.LOT_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.LOT_COMPRIMENTO = value;
                                                 if ((_trackingMask & LotesTrackingFields.LOT_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "LOT_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "LOT_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.LOT_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.LOT_DIAMETRO = value;
                                                 if ((_trackingMask & LotesTrackingFields.LOT_DIAMETRO) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "LOT_DIAMETRO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "LOT_DIAMETRO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.LOT_DIAMETRO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & LotesTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & LotesTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & LotesTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & LotesTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Lotes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Lotes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, LotesOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

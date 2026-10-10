@@ -33,6 +33,21 @@
             public const ulong UserId = 1UL << 10;
         }
 
+        public static class MedidasTesteOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MDT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MDT_DESC = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MDT_VALOR_ESPERADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MDT_ENCONTRADO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UNI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MedidasTesteDecorator : IMedidasTesteEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MedidasTesteDecorator(IMedidasTesteEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -83,7 +106,7 @@
                                             {
                                                 _inner.MDT_ID = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.MDT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.MDT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +120,7 @@
                                             {
                                                 _inner.MDT_DESC = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.MDT_DESC) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_DESC", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_DESC", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.MDT_DESC, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +134,7 @@
                                             {
                                                 _inner.MDT_VALOR_ESPERADO = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.MDT_VALOR_ESPERADO) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_VALOR_ESPERADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_VALOR_ESPERADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.MDT_VALOR_ESPERADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +148,7 @@
                                             {
                                                 _inner.MDT_ENCONTRADO = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.MDT_ENCONTRADO) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_ENCONTRADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "MDT_ENCONTRADO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.MDT_ENCONTRADO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +162,7 @@
                                             {
                                                 _inner.UNI_ID = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.UNI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "UNI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.UNI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MedidasTesteTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("MedidasTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MedidasTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MedidasTesteOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -34,13 +34,14 @@
                             }
 
                             public IMemoriaDeCalculoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mem_id, int? orc_id, Decimal? mem_valor, string? mem_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mem_id, int? orc_id, Decimal? mem_valor, string? mem_descricao, ulong? trackingMask = null )
                             {
                             var entity = new MemoriaDeCalculoEntity(id, mem_id, orc_id, mem_valor, mem_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MemoriaDeCalculo", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MemoriaDeCalculoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MemoriaDeCalculo", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MemoriaDeCalculoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -34,13 +34,14 @@
                             }
 
                             public IEquipeEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string equ_id, Decimal? equ_hierarquia_seq_transformacao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string equ_id, Decimal? equ_hierarquia_seq_transformacao, ulong? trackingMask = null )
                             {
                             var entity = new EquipeEntity(id, equ_id, equ_hierarquia_seq_transformacao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Equipe", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new EquipeDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Equipe", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new EquipeDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

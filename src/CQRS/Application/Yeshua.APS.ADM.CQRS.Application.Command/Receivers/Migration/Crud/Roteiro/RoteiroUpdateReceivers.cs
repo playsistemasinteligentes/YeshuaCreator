@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RoteiroCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRoteiro", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRoteiroReceiver), commandName: "Command.Write.RoteiroCrudCommand");
-                 var roteiro = new RoteiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.GrupoMaquinaId, c.PecasPorPulso, c.PrioridadeInformada, c.Acao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.ProximaSequenciaTransformacao, c.Status, c.HierarquiaSequenciaTransformacao, c.AvaliaCusto, c.Operacoes, c.ExcecaoOperacoes, c.PercentualInicioPassoAnterior, c.LinhaDireta, c.TemplateDeTestesId);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Roteiro", "UpdateRoteiro", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RoteiroCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRoteiro", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRoteiroReceiver), commandName: "Command.Write.RoteiroCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var roteiro = new RoteiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.GrupoMaquinaId, c.PecasPorPulso, c.PrioridadeInformada, c.Acao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.ProximaSequenciaTransformacao, c.Status, c.HierarquiaSequenciaTransformacao, c.AvaliaCusto, c.Operacoes, c.ExcecaoOperacoes, c.PercentualInicioPassoAnterior, c.LinhaDireta, c.TemplateDeTestesId, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", roteiro.OperationalEntityId);
                  var domainResult = RoteiroDomainBehavior.Apply(roteiro, context);
                  if (!domainResult.IsValid)

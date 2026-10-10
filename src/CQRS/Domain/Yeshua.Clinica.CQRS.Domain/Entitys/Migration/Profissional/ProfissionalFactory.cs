@@ -34,13 +34,14 @@
                             }
 
                             public IProfissionalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, int? especialidadeid, string telefone )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, int? especialidadeid, string telefone, ulong? trackingMask = null )
                             {
                             var entity = new ProfissionalEntity(id, nome, especialidadeid, telefone );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Profissional", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ProfissionalDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Profissional", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ProfissionalDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

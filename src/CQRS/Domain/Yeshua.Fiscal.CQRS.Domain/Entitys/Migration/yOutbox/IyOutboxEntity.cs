@@ -44,6 +44,10 @@
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string? RootOperationId { get; set; }
+    string? OperationId { get; set; }
+    string? ExecutionId { get; set; }
+    string? CausationId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

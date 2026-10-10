@@ -34,13 +34,14 @@
                             }
 
                             public IOrderTrackEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int otk_id, Decimal otk_sequencia, int otk_verssao, string ord_id, string otk_evento, DateTime? otk_data_necessidade_de, DateTime? otk_data_necessidade_ate, DateTime? otk_data_prevista, DateTime? otk_data_realizada, int? fpr_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int otk_id, Decimal otk_sequencia, int otk_verssao, string ord_id, string otk_evento, DateTime? otk_data_necessidade_de, DateTime? otk_data_necessidade_ate, DateTime? otk_data_prevista, DateTime? otk_data_realizada, int? fpr_id, ulong? trackingMask = null )
                             {
                             var entity = new OrderTrackEntity(id, otk_id, otk_sequencia, otk_verssao, ord_id, otk_evento, otk_data_necessidade_de, otk_data_necessidade_ate, otk_data_prevista, otk_data_realizada, fpr_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("OrderTrack", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new OrderTrackDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("OrderTrack", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new OrderTrackDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

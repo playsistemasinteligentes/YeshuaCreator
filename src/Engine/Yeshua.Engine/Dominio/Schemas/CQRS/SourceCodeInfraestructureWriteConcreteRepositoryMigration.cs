@@ -7,11 +7,15 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeInfraestructureWriteConcreteRepositoryMigration : SourceCodeBase
     {
         private readonly Entity _entity;
+        private readonly string _applicationName;
 
-        public SourceCodeInfraestructureWriteConcreteRepositoryMigration(Entity entity)
+        public SourceCodeInfraestructureWriteConcreteRepositoryMigration(
+            Entity entity,
+            string applicationName)
             : base()
         {
             _entity = entity;
+            _applicationName = applicationName;
         }
 
         protected override StringBuilder GenerateCode()
@@ -76,6 +80,19 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("                _UnitOfWork.Execute(query.Query, query.Parameters);");
 
             sb.AppendLine("        }");
+
+            var globalIdentity = _entity.AddColumns.FirstOrDefault(
+                x => x.IsGlobalIdentityAuthority(_applicationName));
+            if (globalIdentity != null)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"        public {globalIdentity.getCsharpType()} NextGlobalId()");
+                sb.AppendLine("        {");
+                sb.AppendLine("            var query = _query.NextGlobalIdQuery();");
+                sb.AppendLine($"            return _UnitOfWork.ExecuteScalar<{globalIdentity.getCsharpType()}>(query.Query, query.Parameters);");
+                sb.AppendLine("        }");
+            }
+
             sb.AppendLine();
             sb.AppendLine($"        public void Update(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");

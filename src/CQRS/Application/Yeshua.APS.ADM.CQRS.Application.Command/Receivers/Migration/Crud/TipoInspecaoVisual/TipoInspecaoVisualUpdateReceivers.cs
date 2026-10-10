@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TipoInspecaoVisualCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoInspecaoVisualReceiver), commandName: "Command.Write.TipoInspecaoVisualCrudCommand");
-                 var tipoinspecaovisual = new TipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TIV_ID, c.TIV_NOME, c.TIV_DESCRICAO, c.TIV_FECHAMENTO, c.TIV_AMOSTRA_ALEATORIA, c.TIV_N_AMOSTRAS, c.TIV_MEDIDA, c.TIV_ESPECIFICACAO, c.TIV_TOL_MAIS, c.TIV_TOL_MENOS);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TipoInspecaoVisual", "UpdateTipoInspecaoVisual", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TipoInspecaoVisualCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTipoInspecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTipoInspecaoVisualReceiver), commandName: "Command.Write.TipoInspecaoVisualCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tipoinspecaovisual = new TipoInspecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TIV_ID, c.TIV_NOME, c.TIV_DESCRICAO, c.TIV_FECHAMENTO, c.TIV_AMOSTRA_ALEATORIA, c.TIV_N_AMOSTRAS, c.TIV_MEDIDA, c.TIV_ESPECIFICACAO, c.TIV_TOL_MAIS, c.TIV_TOL_MENOS, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoinspecaovisual.OperationalEntityId);
                  var domainResult = TipoInspecaoVisualDomainBehavior.Apply(tipoinspecaovisual, context);
                  if (!domainResult.IsValid)

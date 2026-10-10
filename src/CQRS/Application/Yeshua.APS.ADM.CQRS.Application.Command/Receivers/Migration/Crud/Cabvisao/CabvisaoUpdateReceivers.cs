@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CabvisaoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCabvisao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCabvisaoReceiver), commandName: "Command.Write.CabvisaoCrudCommand");
-                 var cabvisao = new CabvisaoFactory(_logger, _domainTrackingPolicy).Create(context, c.CAB_ID, c.CAB_DESC, c.CAB_STATUS, c.USE_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Cabvisao", "UpdateCabvisao", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CabvisaoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCabvisao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCabvisaoReceiver), commandName: "Command.Write.CabvisaoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var cabvisao = new CabvisaoFactory(_logger, _domainTrackingPolicy).Create(context, c.CAB_ID, c.CAB_DESC, c.CAB_STATUS, c.USE_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", cabvisao.OperationalEntityId);
                  var domainResult = CabvisaoDomainBehavior.Apply(cabvisao, context);
                  if (!domainResult.IsValid)

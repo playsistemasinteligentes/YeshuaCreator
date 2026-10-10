@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class SegmentosProdutosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRS_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SEG_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class SegmentosProdutosDecorator : ISegmentosProdutosEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public SegmentosProdutosDecorator(ISegmentosProdutosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.GRS_ID = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.GRS_ID) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "GRS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "GRS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.GRS_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.PRO_ID = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.SEG_ID = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.SEG_ID) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "SEG_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "SEG_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.SEG_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & SegmentosProdutosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("SegmentosProdutos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("SegmentosProdutos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SegmentosProdutosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

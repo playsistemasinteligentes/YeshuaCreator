@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.LoteTesteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteLoteTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteLoteTesteReceiver), commandName: "Command.Write.LoteTesteCrudCommand");
-                 var loteteste = new LoteTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LT_ID, c.TES_ID, c.RL_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("LoteTeste", "DeleteLoteTeste", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.LoteTesteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteLoteTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteLoteTesteReceiver), commandName: "Command.Write.LoteTesteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var loteteste = new LoteTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LT_ID, c.TES_ID, c.RL_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", loteteste.OperationalEntityId);
                  var domainResult = LoteTesteDomainBehavior.Apply(loteteste, context);
                  if (!domainResult.IsValid)

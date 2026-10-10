@@ -34,13 +34,14 @@
                             }
 
                             public ILaudoTesteFisicoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string? ltf_obs, string? ltf_status, string? ord_id, string? rot_pro_id, int? fpr_seq_repeticao, int? use_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ltf_id, DateTime? ltf_emissao, Decimal? ltf_valor, string? ltf_obs, string? ltf_status, string? ord_id, string? rot_pro_id, int? fpr_seq_repeticao, int? use_id, ulong? trackingMask = null )
                             {
                             var entity = new LaudoTesteFisicoEntity(id, ltf_id, ltf_emissao, ltf_valor, ltf_obs, ltf_status, ord_id, rot_pro_id, fpr_seq_repeticao, use_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("LaudoTesteFisico", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new LaudoTesteFisicoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("LaudoTesteFisico", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new LaudoTesteFisicoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

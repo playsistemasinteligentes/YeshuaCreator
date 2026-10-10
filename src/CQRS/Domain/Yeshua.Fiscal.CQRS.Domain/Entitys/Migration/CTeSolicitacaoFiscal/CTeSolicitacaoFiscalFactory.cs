@@ -34,13 +34,14 @@
                             }
 
                             public ICTeSolicitacaoFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string? preferenciasmanifestojson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string? preferenciasmanifestojson, int status, ulong? trackingMask = null )
                             {
                             var entity = new CTeSolicitacaoFiscalEntity(id, entradaoficialid, romaneioconsolidadoid, correlationid, ambiente, ufemitente, emitentedocumento, produtofiscal, tipocte, tiposervico, modal, globalizado, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, valorservico, valorcarga, preferenciasmanifestojson, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CTeSolicitacaoFiscal", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CTeSolicitacaoFiscalDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CTeSolicitacaoFiscal", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CTeSolicitacaoFiscalDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

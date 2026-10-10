@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.EstruturaProdutoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEstruturaProduto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEstruturaProdutoReceiver), commandName: "Command.Write.EstruturaProdutoCrudCommand");
-                 var estruturaproduto = new EstruturaProdutoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_DATA_VALIDADE, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.EST_QUANT, c.EST_DATA_INCLUSAO, c.EST_BASE_PRODUCAO, c.EST_TIPO_REQUISICAO, c.EST_CODIGO_DE_EXCECAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("EstruturaProduto", "DeleteEstruturaProduto", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.EstruturaProdutoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteEstruturaProduto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteEstruturaProdutoReceiver), commandName: "Command.Write.EstruturaProdutoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var estruturaproduto = new EstruturaProdutoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EST_DATA_VALIDADE, c.PRO_ID_PRODUTO, c.PRO_ID_COMPONENTE, c.EST_QUANT, c.EST_DATA_INCLUSAO, c.EST_BASE_PRODUCAO, c.EST_TIPO_REQUISICAO, c.EST_CODIGO_DE_EXCECAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", estruturaproduto.OperationalEntityId);
                  var domainResult = EstruturaProdutoDomainBehavior.Apply(estruturaproduto, context);
                  if (!domainResult.IsValid)

@@ -480,11 +480,18 @@ namespace Dominio.Schemas.CQRS
             var sqlColumnName = GetReadSqlColumn(sourceEntity ?? _entity, colunm);
             if (colunm.WhereNeedBe)
             {
-                if (colunm.ValueDefault.StartsWith("#"))
-                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {colunm.ValueDefault.Substring(1)};");
+                var whereValue = string.IsNullOrWhiteSpace(colunm.WhereValueDefault)
+                    ? colunm.ValueDefault
+                    : colunm.WhereValueDefault;
+
+                if (string.IsNullOrWhiteSpace(whereValue))
+                    throw new InvalidOperationException($"A coluna '{colunm.Entity?.EntityName}.{colunm.Name}' exige filtro, mas nao possui valor padrao para o WHERE.");
+
+                if (whereValue.StartsWith("#", StringComparison.Ordinal))
+                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {whereValue.Substring(1)};");
 
                 else
-                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {colunm.ValueDefault};");
+                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {whereValue};");
 
                 sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} whereClauses.Add($\"{sqlColumnName} = @{colunm.Name}\");");
             }

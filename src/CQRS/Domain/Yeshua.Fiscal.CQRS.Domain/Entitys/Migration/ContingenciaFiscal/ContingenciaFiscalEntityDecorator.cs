@@ -47,6 +47,35 @@
             public const ulong UserId = 1UL << 24;
         }
 
+        public static class ContingenciaFiscalOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmissaoFiscalTransporteId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EntradaFiscalContingenciaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CorrelationId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CargaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TipoSolicitante = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Ambiente = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmitenteDocumento = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TomadorDocumento = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification TransportadorDocumento = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification QuantidadeDocumentos = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification QuantidadeCTe = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QuantidadeMDFe = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ValorCarga = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PesoBruto = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UltimaMensagem = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CriadoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AtualizadoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ConcluidoEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ContingenciaFiscalDecorator : IContingenciaFiscalEntity
 {
 
@@ -54,6 +83,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ContingenciaFiscalDecorator(IContingenciaFiscalEntity inner, Dominio.Interfaces.ILogger logger)
@@ -71,6 +101,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -83,7 +120,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -97,7 +134,7 @@
                                             {
                                                 _inner.EmissaoFiscalTransporteId = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.EmissaoFiscalTransporteId) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "EmissaoFiscalTransporteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "EmissaoFiscalTransporteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.EmissaoFiscalTransporteId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -111,7 +148,7 @@
                                             {
                                                 _inner.EntradaFiscalContingenciaId = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.EntradaFiscalContingenciaId) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "EntradaFiscalContingenciaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "EntradaFiscalContingenciaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.EntradaFiscalContingenciaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -125,7 +162,7 @@
                                             {
                                                 _inner.CorrelationId = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.CorrelationId) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.CorrelationId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +176,7 @@
                                             {
                                                 _inner.CargaId = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.CargaId) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "CargaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "CargaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.CargaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +190,7 @@
                                             {
                                                 _inner.TipoSolicitante = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.TipoSolicitante) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TipoSolicitante", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TipoSolicitante", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.TipoSolicitante, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +204,7 @@
                                             {
                                                 _inner.Ambiente = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.Ambiente) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Ambiente", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Ambiente", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.Ambiente, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +218,7 @@
                                             {
                                                 _inner.EmitenteDocumento = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.EmitenteDocumento) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "EmitenteDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "EmitenteDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.EmitenteDocumento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -195,7 +232,7 @@
                                             {
                                                 _inner.TomadorDocumento = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.TomadorDocumento) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TomadorDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TomadorDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.TomadorDocumento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -209,7 +246,7 @@
                                             {
                                                 _inner.TransportadorDocumento = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.TransportadorDocumento) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TransportadorDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TransportadorDocumento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.TransportadorDocumento, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -223,7 +260,7 @@
                                             {
                                                 _inner.QuantidadeDocumentos = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.QuantidadeDocumentos) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "QuantidadeDocumentos", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "QuantidadeDocumentos", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.QuantidadeDocumentos, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -237,7 +274,7 @@
                                             {
                                                 _inner.QuantidadeCTe = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.QuantidadeCTe) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "QuantidadeCTe", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "QuantidadeCTe", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.QuantidadeCTe, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -251,7 +288,7 @@
                                             {
                                                 _inner.QuantidadeMDFe = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.QuantidadeMDFe) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "QuantidadeMDFe", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "QuantidadeMDFe", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.QuantidadeMDFe, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -265,7 +302,7 @@
                                             {
                                                 _inner.ValorCarga = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.ValorCarga) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "ValorCarga", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "ValorCarga", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.ValorCarga, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -279,7 +316,7 @@
                                             {
                                                 _inner.PesoBruto = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.PesoBruto) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "PesoBruto", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "PesoBruto", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.PesoBruto, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -293,7 +330,7 @@
                                             {
                                                 _inner.UltimaMensagem = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.UltimaMensagem) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "UltimaMensagem", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "UltimaMensagem", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.UltimaMensagem, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -307,7 +344,7 @@
                                             {
                                                 _inner.CriadoEmUtc = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.CriadoEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "CriadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "CriadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.CriadoEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -321,7 +358,7 @@
                                             {
                                                 _inner.AtualizadoEmUtc = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.AtualizadoEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "AtualizadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "AtualizadoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.AtualizadoEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -335,7 +372,7 @@
                                             {
                                                 _inner.ConcluidoEmUtc = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.ConcluidoEmUtc) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "ConcluidoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "ConcluidoEmUtc", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.ConcluidoEmUtc, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -349,7 +386,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -364,7 +401,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -378,7 +415,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -392,7 +429,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -406,7 +443,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ContingenciaFiscalTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ContingenciaFiscal", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ContingenciaFiscal", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ContingenciaFiscalOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

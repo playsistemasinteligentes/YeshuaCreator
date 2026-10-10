@@ -42,6 +42,10 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
+        public bool ExistsByRootOperationId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByOperationId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByExecutionId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByCausationId(string value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstById(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByStepKey(string value , bool TakeOffTenantID = false);
@@ -59,6 +63,10 @@ namespace IRepository.Read
         public ySagaStepDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByUserId(int value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByRootOperationId(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByOperationId(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByExecutionId(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByCausationId(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllById(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByStepKey(string value , bool TakeOffTenantID = false);
@@ -76,6 +84,10 @@ namespace IRepository.Read
         public IEnumerable<ySagaStepDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByRootOperationId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByOperationId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByExecutionId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByCausationId(string value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

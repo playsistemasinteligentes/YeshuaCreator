@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.LogsDatabaseCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateLogsDatabase", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateLogsDatabaseReceiver), commandName: "Command.Write.LogsDatabaseCrudCommand");
-                 var logsdatabase = new LogsDatabaseFactory(_logger, _domainTrackingPolicy).Create(context, c.LOGS_ID, c.LOGS_TABLE, c.LOGS_KEY, c.LOGS_KEY1, c.LOGS_KEY2, c.LOGS_KEY3, c.LOGS_KEY4, c.LOGS_COLUMN, c.LOGS_BEFORE, c.LOGS_AFTER, c.LOGS_ACTION, c.LOGS_DATE, c.USE_ID, c.LOGS_ORIGEM);
+                 var trackingMask = _domainTrackingPolicy.GetMask("LogsDatabase", "UpdateLogsDatabase", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.LogsDatabaseCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateLogsDatabase", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateLogsDatabaseReceiver), commandName: "Command.Write.LogsDatabaseCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var logsdatabase = new LogsDatabaseFactory(_logger, _domainTrackingPolicy).Create(context, c.LOGS_ID, c.LOGS_TABLE, c.LOGS_KEY, c.LOGS_KEY1, c.LOGS_KEY2, c.LOGS_KEY3, c.LOGS_KEY4, c.LOGS_COLUMN, c.LOGS_BEFORE, c.LOGS_AFTER, c.LOGS_ACTION, c.LOGS_DATE, c.USE_ID, c.LOGS_ORIGEM, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", logsdatabase.OperationalEntityId);
                  var domainResult = LogsDatabaseDomainBehavior.Apply(logsdatabase, context);
                  if (!domainResult.IsValid)

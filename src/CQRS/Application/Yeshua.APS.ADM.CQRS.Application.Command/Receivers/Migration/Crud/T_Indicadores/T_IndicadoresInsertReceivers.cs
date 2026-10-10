@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_IndicadoresCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_Indicadores", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_IndicadoresReceiver), commandName: "Command.Write.T_IndicadoresCrudCommand");
-                 var t_indicadores = new T_IndicadoresFactory(_logger, _domainTrackingPolicy).Create(context, c.IND_ID, c.IND_DESCRICAO, c.NEG_ID, c.DESC_CALCULO, c.IND_TIPOCOMPARADOR, c.IND_GRAFICO, c.IND_CONEXAO, c.IND_DTCRIACAO, c.RESPOSAVELIND, c.RESPOSAVELCARGA, c.PROCEXTRACAO, c.PER_ID, c.DIM_ID, c.DOM_EMPRESA, c.DOM_FILIAL);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_Indicadores", "InsertT_Indicadores", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_IndicadoresCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_Indicadores", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_IndicadoresReceiver), commandName: "Command.Write.T_IndicadoresCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_indicadores = new T_IndicadoresFactory(_logger, _domainTrackingPolicy).Create(context, c.IND_ID, c.IND_DESCRICAO, c.NEG_ID, c.DESC_CALCULO, c.IND_TIPOCOMPARADOR, c.IND_GRAFICO, c.IND_CONEXAO, c.IND_DTCRIACAO, c.RESPOSAVELIND, c.RESPOSAVELCARGA, c.PROCEXTRACAO, c.PER_ID, c.DIM_ID, c.DOM_EMPRESA, c.DOM_FILIAL, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_indicadores.OperationalEntityId);
                  var domainResult = T_IndicadoresDomainBehavior.Apply(t_indicadores, context);
                  if (!domainResult.IsValid)

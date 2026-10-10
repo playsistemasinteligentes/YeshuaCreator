@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItemInspecaoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateItemInspecao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateItemInspecaoReceiver), commandName: "Command.Write.ItemInspecaoCrudCommand");
-                 var iteminspecao = new ItemInspecaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITI_ID, c.ITI_DESC);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItemInspecao", "UpdateItemInspecao", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItemInspecaoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateItemInspecao", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateItemInspecaoReceiver), commandName: "Command.Write.ItemInspecaoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var iteminspecao = new ItemInspecaoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITI_ID, c.ITI_DESC, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", iteminspecao.OperationalEntityId);
                  var domainResult = ItemInspecaoDomainBehavior.Apply(iteminspecao, context);
                  if (!domainResult.IsValid)

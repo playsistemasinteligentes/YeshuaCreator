@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MensagemCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMensagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMensagemReceiver), commandName: "Command.Write.MensagemCrudCommand");
-                 var mensagem = new MensagemFactory(_logger, _domainTrackingPolicy).Create(context, c.MEN_ID, c.MEN_SEND, c.MEN_EMISSION, c.MEN_STATUS, c.MEN_RECEIVE, c.MEN_TYPE, c.MEN_QTD_TRY_SEND, c.MEN_DATE_TRY_SEND);
+                 var trackingMask = _domainTrackingPolicy.GetMask("Mensagem", "DeleteMensagem", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MensagemCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteMensagem", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteMensagemReceiver), commandName: "Command.Write.MensagemCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var mensagem = new MensagemFactory(_logger, _domainTrackingPolicy).Create(context, c.MEN_ID, c.MEN_SEND, c.MEN_EMISSION, c.MEN_STATUS, c.MEN_RECEIVE, c.MEN_TYPE, c.MEN_QTD_TRY_SEND, c.MEN_DATE_TRY_SEND, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", mensagem.OperationalEntityId);
                  var domainResult = MensagemDomainBehavior.Apply(mensagem, context);
                  if (!domainResult.IsValid)

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yPerfilCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyPerfil", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyPerfilReceiver), commandName: "Command.Write.yPerfilCrudCommand");
-                 var yperfil = new yPerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yPerfil", "DeleteyPerfil", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yPerfilCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyPerfil", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyPerfilReceiver), commandName: "Command.Write.yPerfilCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var yperfil = new yPerfilFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yperfil.OperationalEntityId);
                  var domainResult = yPerfilDomainBehavior.Apply(yperfil, context);
                  if (!domainResult.IsValid)

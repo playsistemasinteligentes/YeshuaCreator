@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_DepartamentosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_Departamentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_DepartamentosReceiver), commandName: "Command.Write.T_DepartamentosCrudCommand");
-                 var t_departamentos = new T_DepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.DEP_ID, c.DEP_NOME);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_Departamentos", "DeleteT_Departamentos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_DepartamentosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteT_Departamentos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteT_DepartamentosReceiver), commandName: "Command.Write.T_DepartamentosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_departamentos = new T_DepartamentosFactory(_logger, _domainTrackingPolicy).Create(context, c.DEP_ID, c.DEP_NOME, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_departamentos.OperationalEntityId);
                  var domainResult = T_DepartamentosDomainBehavior.Apply(t_departamentos, context);
                  if (!domainResult.IsValid)

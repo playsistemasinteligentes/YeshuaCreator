@@ -34,13 +34,14 @@
                             }
 
                             public IyPerfilEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string description )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string description, ulong? trackingMask = null )
                             {
                             var entity = new yPerfilEntity(id, description );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("yPerfil", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new yPerfilDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("yPerfil", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new yPerfilDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

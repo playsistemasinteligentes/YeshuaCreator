@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirySagaQuery(IySagaEntity ySaga)
         {
-            this.Query = $@" INSERT INTO [ySaga] ([CorrelationId], [Type], [Status], [KeyCurrentStep], [CreatedAt], [CompletedAt], [EntityType], [EntityId], [NextExecutionAt], [LockedAt], [LockedBy], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CorrelationId, @Type, @Status, @KeyCurrentStep, @CreatedAt, @CompletedAt, @EntityType, @EntityId, @NextExecutionAt, @LockedAt, @LockedBy, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ySaga] ([CorrelationId], [Type], [Status], [KeyCurrentStep], [CreatedAt], [CompletedAt], [EntityType], [EntityId], [NextExecutionAt], [LockedAt], [LockedBy], [ProcessingScope], [TenantID], [OperationalEntityId], [Deleted], [Changed], [UserId], [RootOperationId], [OperationId], [ExecutionId], [CausationId]) OUTPUT INSERTED.[Id] VALUES(@CorrelationId, @Type, @Status, @KeyCurrentStep, @CreatedAt, @CompletedAt, @EntityType, @EntityId, @NextExecutionAt, @LockedAt, @LockedBy, @ProcessingScope, @TenantID, @OperationalEntityId, @Deleted, @Changed, @UserId, @RootOperationId, @OperationId, @ExecutionId, @CausationId) ";
             this.Parameters = new
             {
                 CorrelationId = ySaga.CorrelationId,
@@ -44,17 +44,22 @@ namespace Query.Write
                 NextExecutionAt = ySaga.NextExecutionAt,
                 LockedAt = ySaga.LockedAt,
                 LockedBy = ySaga.LockedBy,
+                ProcessingScope = _executionContext.ProcessingScope,
                 TenantID = _executionContext.TenantID,
                 OperationalEntityId = ySaga.OperationalEntityId,
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                RootOperationId = ySaga.RootOperationId,
+                OperationId = ySaga.OperationId,
+                ExecutionId = ySaga.ExecutionId,
+                CausationId = ySaga.CausationId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateySagaQuery(IySagaEntity ySaga)
         {
-            this.Query = $@" UPDATE [ySaga] SET [CorrelationId] = @CorrelationId, [Type] = @Type, [Status] = @Status, [KeyCurrentStep] = @KeyCurrentStep, [CreatedAt] = @CreatedAt, [CompletedAt] = @CompletedAt, [EntityType] = @EntityType, [EntityId] = @EntityId, [NextExecutionAt] = @NextExecutionAt, [LockedAt] = @LockedAt, [LockedBy] = @LockedBy, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [ySaga] SET [CorrelationId] = @CorrelationId, [Type] = @Type, [Status] = @Status, [KeyCurrentStep] = @KeyCurrentStep, [CreatedAt] = @CreatedAt, [CompletedAt] = @CompletedAt, [EntityType] = @EntityType, [EntityId] = @EntityId, [NextExecutionAt] = @NextExecutionAt, [LockedAt] = @LockedAt, [LockedBy] = @LockedBy, [Changed] = @Changed, [UserId] = @UserId, [RootOperationId] = @RootOperationId, [OperationId] = @OperationId, [ExecutionId] = @ExecutionId, [CausationId] = @CausationId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CorrelationId = ySaga.CorrelationId,
@@ -70,6 +75,10 @@ namespace Query.Write
                 LockedBy = ySaga.LockedBy,
                 Changed = ySaga.Changed,
                 UserId = _executionContext.UserId,
+                RootOperationId = ySaga.RootOperationId,
+                OperationId = ySaga.OperationId,
+                ExecutionId = ySaga.ExecutionId,
+                CausationId = ySaga.CausationId,
                 Id = ySaga.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -230,6 +239,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateRootOperationId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySaga] SET [RootOperationId] = @RootOperationId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                RootOperationId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateOperationId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySaga] SET [OperationId] = @OperationId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                OperationId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateExecutionId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySaga] SET [ExecutionId] = @ExecutionId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                ExecutionId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCausationId(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySaga] SET [CausationId] = @CausationId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CausationId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

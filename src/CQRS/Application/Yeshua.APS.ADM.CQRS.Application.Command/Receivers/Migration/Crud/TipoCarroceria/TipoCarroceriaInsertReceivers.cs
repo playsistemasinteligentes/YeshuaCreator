@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TipoCarroceriaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTipoCarroceria", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTipoCarroceriaReceiver), commandName: "Command.Write.TipoCarroceriaCrudCommand");
-                 var tipocarroceria = new TipoCarroceriaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TCA_ID, c.TCA_DESCRICAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TipoCarroceria", "InsertTipoCarroceria", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TipoCarroceriaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTipoCarroceria", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTipoCarroceriaReceiver), commandName: "Command.Write.TipoCarroceriaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tipocarroceria = new TipoCarroceriaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TCA_ID, c.TCA_DESCRICAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipocarroceria.OperationalEntityId);
                  var domainResult = TipoCarroceriaDomainBehavior.Apply(tipocarroceria, context);
                  if (!domainResult.IsValid)

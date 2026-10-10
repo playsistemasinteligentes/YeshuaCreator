@@ -34,13 +34,14 @@
                             }
 
                             public IFechamentoTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int fec_id, int? fec_qtd, string? grp_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int fec_id, int? fec_qtd, string? grp_id, ulong? trackingMask = null )
                             {
                             var entity = new FechamentoTesteEntity(id, fec_id, fec_qtd, grp_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("FechamentoTeste", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new FechamentoTesteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("FechamentoTeste", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new FechamentoTesteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

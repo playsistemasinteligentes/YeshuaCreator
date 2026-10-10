@@ -38,6 +38,26 @@
             public const ulong PedidoCliente = 1UL << 15;
         }
 
+        public static class ConsultaPedidoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification PedidoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ClienteId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ClienteNome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification RazaoSocial = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProdutoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ProdutoDescricao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Estagio = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataEntregaDe = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DataEntregaAte = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmbarqueAlvo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Quantidade = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SaldoAProduzir = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SaldoAExpedir = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CorFila = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PedidoCliente = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ConsultaPedidoDecorator : IConsultaPedidoEntity
 {
 
@@ -45,6 +65,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ConsultaPedidoDecorator(IConsultaPedidoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -62,6 +83,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -74,7 +102,7 @@
                                             {
                                                 _inner.PedidoId = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.PedidoId) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "PedidoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.PedidoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -88,7 +116,7 @@
                                             {
                                                 _inner.ClienteId = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.ClienteId) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "ClienteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "ClienteId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.ClienteId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -102,7 +130,7 @@
                                             {
                                                 _inner.ClienteNome = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.ClienteNome) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "ClienteNome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "ClienteNome", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.ClienteNome, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -116,7 +144,7 @@
                                             {
                                                 _inner.RazaoSocial = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.RazaoSocial) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "RazaoSocial", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "RazaoSocial", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.RazaoSocial, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -130,7 +158,7 @@
                                             {
                                                 _inner.ProdutoId = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.ProdutoId) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "ProdutoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "ProdutoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.ProdutoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -144,7 +172,7 @@
                                             {
                                                 _inner.ProdutoDescricao = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.ProdutoDescricao) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "ProdutoDescricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "ProdutoDescricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.ProdutoDescricao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -158,7 +186,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -172,7 +200,7 @@
                                             {
                                                 _inner.Estagio = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.Estagio) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "Estagio", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "Estagio", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.Estagio, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -186,7 +214,7 @@
                                             {
                                                 _inner.DataEntregaDe = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.DataEntregaDe) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "DataEntregaDe", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "DataEntregaDe", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.DataEntregaDe, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -200,7 +228,7 @@
                                             {
                                                 _inner.DataEntregaAte = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.DataEntregaAte) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "DataEntregaAte", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "DataEntregaAte", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.DataEntregaAte, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -214,7 +242,7 @@
                                             {
                                                 _inner.EmbarqueAlvo = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.EmbarqueAlvo) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "EmbarqueAlvo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "EmbarqueAlvo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.EmbarqueAlvo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -228,7 +256,7 @@
                                             {
                                                 _inner.Quantidade = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.Quantidade) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "Quantidade", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "Quantidade", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.Quantidade, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -242,7 +270,7 @@
                                             {
                                                 _inner.SaldoAProduzir = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.SaldoAProduzir) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "SaldoAProduzir", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "SaldoAProduzir", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.SaldoAProduzir, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -256,7 +284,7 @@
                                             {
                                                 _inner.SaldoAExpedir = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.SaldoAExpedir) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "SaldoAExpedir", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "SaldoAExpedir", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.SaldoAExpedir, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -270,7 +298,7 @@
                                             {
                                                 _inner.CorFila = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.CorFila) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "CorFila", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "CorFila", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.CorFila, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -284,7 +312,7 @@
                                             {
                                                 _inner.PedidoCliente = value;
                                                 if ((_trackingMask & ConsultaPedidoTrackingFields.PedidoCliente) != 0UL)
-                                                    _logger.DomainValueChanged("ConsultaPedido", "PedidoCliente", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ConsultaPedido", "PedidoCliente", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ConsultaPedidoOperationalFields.PedidoCliente, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

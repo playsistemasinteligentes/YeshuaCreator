@@ -34,13 +34,14 @@
                             }
 
                             public IT_NegocioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int neg_id, string neg_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int neg_id, string neg_descricao, ulong? trackingMask = null )
                             {
                             var entity = new T_NegocioEntity(neg_id, neg_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("T_Negocio", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new T_NegocioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("T_Negocio", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new T_NegocioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

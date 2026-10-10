@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.RotaRealizadaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRotaRealizada", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRotaRealizadaReceiver), commandName: "Command.Write.RotaRealizadaCrudCommand");
-                 var rotarealizada = new RotaRealizadaFactory(_logger, _domainTrackingPolicy).Create(context, c.ROT_ID, c.CAR_ID, c.ROT_DATA_HORA, c.ROT_LAT, c.ROT_LONG);
+                 var trackingMask = _domainTrackingPolicy.GetMask("RotaRealizada", "UpdateRotaRealizada", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.RotaRealizadaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateRotaRealizada", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateRotaRealizadaReceiver), commandName: "Command.Write.RotaRealizadaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var rotarealizada = new RotaRealizadaFactory(_logger, _domainTrackingPolicy).Create(context, c.ROT_ID, c.CAR_ID, c.ROT_DATA_HORA, c.ROT_LAT, c.ROT_LONG, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", rotarealizada.OperationalEntityId);
                  var domainResult = RotaRealizadaDomainBehavior.Apply(rotarealizada, context);
                  if (!domainResult.IsValid)

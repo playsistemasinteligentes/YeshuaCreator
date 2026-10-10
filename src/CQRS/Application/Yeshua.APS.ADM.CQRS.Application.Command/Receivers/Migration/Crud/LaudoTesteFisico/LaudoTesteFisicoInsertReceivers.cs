@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.LaudoTesteFisicoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLaudoTesteFisico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLaudoTesteFisicoReceiver), commandName: "Command.Write.LaudoTesteFisicoCrudCommand");
-                 var laudotestefisico = new LaudoTesteFisicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LTF_ID, c.LTF_EMISSAO, c.LTF_VALOR, c.LTF_OBS, c.LTF_STATUS, c.ORD_ID, c.ROT_PRO_ID, c.FPR_SEQ_REPETICAO, c.USE_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("LaudoTesteFisico", "InsertLaudoTesteFisico", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.LaudoTesteFisicoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertLaudoTesteFisico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertLaudoTesteFisicoReceiver), commandName: "Command.Write.LaudoTesteFisicoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var laudotestefisico = new LaudoTesteFisicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.LTF_ID, c.LTF_EMISSAO, c.LTF_VALOR, c.LTF_OBS, c.LTF_STATUS, c.ORD_ID, c.ROT_PRO_ID, c.FPR_SEQ_REPETICAO, c.USE_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", laudotestefisico.OperationalEntityId);
                  var domainResult = LaudoTesteFisicoDomainBehavior.Apply(laudotestefisico, context);
                  if (!domainResult.IsValid)

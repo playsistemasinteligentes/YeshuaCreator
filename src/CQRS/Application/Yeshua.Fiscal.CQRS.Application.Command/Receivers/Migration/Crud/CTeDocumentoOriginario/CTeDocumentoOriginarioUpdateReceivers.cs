@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CTeDocumentoOriginarioCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeDocumentoOriginario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeDocumentoOriginarioReceiver), commandName: "Command.Write.CTeDocumentoOriginarioCrudCommand");
-                 var ctedocumentooriginario = new CTeDocumentoOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.DocumentoFiscalOriginarioId, c.TipoDocumento, c.ChaveAcesso, c.Numero, c.Serie, c.EmitenteDocumento, c.DestinatarioDocumento, c.ValorDocumento, c.PesoBruto, c.SnapshotJson);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CTeDocumentoOriginario", "UpdateCTeDocumentoOriginario", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CTeDocumentoOriginarioCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateCTeDocumentoOriginario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateCTeDocumentoOriginarioReceiver), commandName: "Command.Write.CTeDocumentoOriginarioCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var ctedocumentooriginario = new CTeDocumentoOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.DocumentoFiscalOriginarioId, c.TipoDocumento, c.ChaveAcesso, c.Numero, c.Serie, c.EmitenteDocumento, c.DestinatarioDocumento, c.ValorDocumento, c.PesoBruto, c.SnapshotJson, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ctedocumentooriginario.OperationalEntityId);
                  var domainResult = CTeDocumentoOriginarioDomainBehavior.Apply(ctedocumentooriginario, context);
                  if (!domainResult.IsValid)

@@ -34,13 +34,14 @@
                             }
 
                             public IServicoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? gruposervicoid, string nome, Decimal valor )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? gruposervicoid, string nome, Decimal valor, ulong? trackingMask = null )
                             {
                             var entity = new ServicoEntity(id, gruposervicoid, nome, valor );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Servico", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ServicoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Servico", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ServicoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

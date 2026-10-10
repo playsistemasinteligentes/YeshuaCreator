@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.GrupoIndicadorCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertGrupoIndicador", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertGrupoIndicadorReceiver), commandName: "Command.Write.GrupoIndicadorCrudCommand");
-                 var grupoindicador = new GrupoIndicadorFactory(_logger, _domainTrackingPolicy).Create(context, c.GRU_IND_ID, c.GRU_ID, c.IND_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("GrupoIndicador", "InsertGrupoIndicador", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.GrupoIndicadorCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertGrupoIndicador", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertGrupoIndicadorReceiver), commandName: "Command.Write.GrupoIndicadorCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var grupoindicador = new GrupoIndicadorFactory(_logger, _domainTrackingPolicy).Create(context, c.GRU_IND_ID, c.GRU_ID, c.IND_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", grupoindicador.OperationalEntityId);
                  var domainResult = GrupoIndicadorDomainBehavior.Apply(grupoindicador, context);
                  if (!domainResult.IsValid)

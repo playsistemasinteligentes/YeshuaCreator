@@ -44,6 +44,32 @@
             public const ulong UserId = 1UL << 21;
         }
 
+        public static class InspecaoVisualOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification IPV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_VALOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_ID_OPERADOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_ID_LIBERACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_OBS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_DATA_COLETA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_DATA_AVAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURN_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TURM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_MAQ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ROT_SEQ_TRANSFORMACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_SEQ_REPETICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_STATUS_LIBERACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_VALOR_MEDIDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class InspecaoVisualDecorator : IInspecaoVisualEntity
 {
 
@@ -51,6 +77,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public InspecaoVisualDecorator(IInspecaoVisualEntity inner, Dominio.Interfaces.ILogger logger)
@@ -68,6 +95,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -80,7 +114,7 @@
                                             {
                                                 _inner.IPV_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +128,7 @@
                                             {
                                                 _inner.IPV_VALOR = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_VALOR) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_VALOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -108,7 +142,7 @@
                                             {
                                                 _inner.IPV_ID_OPERADOR = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_ID_OPERADOR) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_ID_OPERADOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_ID_OPERADOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_ID_OPERADOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -122,7 +156,7 @@
                                             {
                                                 _inner.IPV_ID_LIBERACAO = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_ID_LIBERACAO) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_ID_LIBERACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_ID_LIBERACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_ID_LIBERACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +170,7 @@
                                             {
                                                 _inner.IPV_OBS = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_OBS) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_OBS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -150,7 +184,7 @@
                                             {
                                                 _inner.IPV_DATA_COLETA = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_DATA_COLETA) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_DATA_COLETA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_DATA_COLETA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_DATA_COLETA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -164,7 +198,7 @@
                                             {
                                                 _inner.IPV_DATA_AVAL = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_DATA_AVAL) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_DATA_AVAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_DATA_AVAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_DATA_AVAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -178,7 +212,7 @@
                                             {
                                                 _inner.TIV_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.TIV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "TIV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "TIV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.TIV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -192,7 +226,7 @@
                                             {
                                                 _inner.TURN_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.TURN_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "TURN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "TURN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.TURN_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -206,7 +240,7 @@
                                             {
                                                 _inner.TURM_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.TURM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "TURM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "TURM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.TURM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -220,7 +254,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -234,7 +268,7 @@
                                             {
                                                 _inner.ROT_PRO_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.ROT_PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "ROT_PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "ROT_PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.ROT_PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -248,7 +282,7 @@
                                             {
                                                 _inner.ROT_MAQ_ID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.ROT_MAQ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "ROT_MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "ROT_MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.ROT_MAQ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -262,7 +296,7 @@
                                             {
                                                 _inner.ROT_SEQ_TRANSFORMACAO = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.ROT_SEQ_TRANSFORMACAO) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "ROT_SEQ_TRANSFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "ROT_SEQ_TRANSFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.ROT_SEQ_TRANSFORMACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -276,7 +310,7 @@
                                             {
                                                 _inner.FPR_SEQ_REPETICAO = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.FPR_SEQ_REPETICAO) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "FPR_SEQ_REPETICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.FPR_SEQ_REPETICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -290,7 +324,7 @@
                                             {
                                                 _inner.IPV_STATUS_LIBERACAO = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_STATUS_LIBERACAO) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_STATUS_LIBERACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_STATUS_LIBERACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_STATUS_LIBERACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -304,7 +338,7 @@
                                             {
                                                 _inner.IPV_VALOR_MEDIDA = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.IPV_VALOR_MEDIDA) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_VALOR_MEDIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "IPV_VALOR_MEDIDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.IPV_VALOR_MEDIDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +353,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -333,7 +367,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -347,7 +381,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -361,7 +395,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & InspecaoVisualTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("InspecaoVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InspecaoVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InspecaoVisualOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

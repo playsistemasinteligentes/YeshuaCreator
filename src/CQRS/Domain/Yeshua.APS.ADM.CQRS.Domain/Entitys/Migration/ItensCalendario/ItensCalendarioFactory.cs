@@ -34,13 +34,14 @@
                             }
 
                             public IItensCalendarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int ica_id, DateTime ica_data_de, DateTime ica_data_ate, string? ica_observacao, int ica_tipo, string? urm_id, string? urn_id, int cal_id, string? maq_id, string? pro_id, int? ica_limpesa_maquina )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int ica_id, DateTime ica_data_de, DateTime ica_data_ate, string? ica_observacao, int ica_tipo, string? urm_id, string? urn_id, int cal_id, string? maq_id, string? pro_id, int? ica_limpesa_maquina, ulong? trackingMask = null )
                             {
                             var entity = new ItensCalendarioEntity(ica_id, ica_data_de, ica_data_ate, ica_observacao, ica_tipo, urm_id, urn_id, cal_id, maq_id, pro_id, ica_limpesa_maquina );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ItensCalendario", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ItensCalendarioDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ItensCalendario", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ItensCalendarioDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

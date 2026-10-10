@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Dominio.Operational;
+
 namespace Dominio.Interfaces
 {
     public sealed record CommandTelemetrySnapshot(
@@ -44,7 +46,34 @@ namespace Dominio.Interfaces
         int Attempt,
         string ExecutionId,
         string? CausationId,
-        DateTimeOffset ObservedAtUtc);
+        DateTimeOffset ObservedAtUtc,
+        long DurationMs = 0,
+        string? RootOperationId = null,
+        string? OperationId = null,
+        string? OperationalEntityId = null,
+        OperationalTechnicalOutcome TechnicalOutcome = OperationalTechnicalOutcome.NotEvaluated,
+        OperationalBusinessOutcome BusinessOutcome = OperationalBusinessOutcome.NotEvaluated,
+        string? Dependency = null,
+        string? ErrorCode = null,
+        string? ErrorSummary = null,
+        DateTimeOffset? NextExecutionAtUtc = null);
+
+    public readonly record struct SagaOperationalTransition(
+        string Saga,
+        string Step,
+        string CorrelationId,
+        string Phase,
+        int Attempt,
+        long DurationMs,
+        OperationalTechnicalOutcome TechnicalOutcome,
+        OperationalBusinessOutcome BusinessOutcome,
+        OperationalTelemetryDecision Telemetry,
+        OperationalExecutionIdentity ExecutionIdentity,
+        string? OperationalEntityId = null,
+        string? Dependency = null,
+        string? ErrorCode = null,
+        string? ErrorSummary = null,
+        DateTimeOffset? NextExecutionAtUtc = null);
 
     public sealed record OperationalTelemetrySnapshot(
         IReadOnlyList<CommandTelemetrySnapshot> Commands,
@@ -56,7 +85,13 @@ namespace Dominio.Interfaces
     public readonly record struct OperationalTelemetryDecision(
         bool Enabled,
         string Level,
-        string Depth);
+        string Depth,
+        string Mode = "Live")
+    {
+        public OperationalSeverity Severity => OperationalEvidenceAxes.ParseSeverity(Level);
+        public OperationalDepth DiagnosticDepth => OperationalEvidenceAxes.ParseDepth(Depth);
+        public OperationalExecutionMode ExecutionMode => OperationalEvidenceAxes.ParseMode(Mode);
+    }
 
     public readonly record struct WorkerCycleTelemetry(
         int BatchLimit,
@@ -98,18 +133,57 @@ namespace Dominio.Interfaces
             string? recordId = null);
         void Info(string message);
         void CommandStarted(string commandName);
+        void CommandStarted(
+            string commandName,
+            string traceId,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity = default,
+            string? operationalEntityId = null)
+            => CommandStarted(commandName);
         void CommandFinished(
             string commandName,
             string traceId,
             bool succeeded,
             long durationMs,
             int statusCode,
-            WorkerCycleTelemetry? workerCycle = null);
+            WorkerCycleTelemetry? workerCycle = null)
+            => CommandFinished(
+                commandName,
+                traceId,
+                succeeded,
+                durationMs,
+                statusCode,
+                workerCycle,
+                Evaluate("Command", commandName));
+        void CommandFinished(
+            string commandName,
+            string traceId,
+            bool succeeded,
+            long durationMs,
+            int statusCode,
+            WorkerCycleTelemetry? workerCycle,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity = default,
+            string? operationalEntityId = null);
         void CommandFailed(
             string commandName,
             string traceId,
             Exception ex,
-            long durationMs);
+            long durationMs)
+            => CommandFailed(
+                commandName,
+                traceId,
+                ex,
+                durationMs,
+                Evaluate("Command", commandName));
+        void CommandFailed(
+            string commandName,
+            string traceId,
+            Exception ex,
+            long durationMs,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity = default,
+            string? operationalEntityId = null);
         void Repository(
             string operation,
             string queryId,
@@ -118,14 +192,18 @@ namespace Dominio.Interfaces
             long durationMs,
             bool captureCounter,
             bool emitEvent,
-            Exception? exception = null);
+            OperationalTelemetryDecision eventDecision,
+            Exception? exception = null,
+            OperationalExecutionIdentity executionIdentity = default);
         void DomainValueChanged(
             string entity,
             string field,
             string traceId,
             string? operation,
             string? recordId,
-            object? value);
+            object? value,
+            OperationalDataClassification classification = OperationalDataClassification.Restricted,
+            OperationalExecutionIdentity executionIdentity = default);
         void Saga(
             string saga,
             string step,
@@ -134,6 +212,20 @@ namespace Dominio.Interfaces
             int attempt = 0,
             string? executionId = null,
             string? causationId = null);
+        void Saga(SagaOperationalTransition transition) =>
+            Saga(
+                transition.Saga,
+                transition.Step,
+                transition.CorrelationId,
+                transition.Phase,
+                transition.Attempt,
+                transition.ExecutionIdentity.ExecutionId,
+                transition.ExecutionIdentity.CausationId);
+        void Transition(
+            OperationalEvidenceTransition transition,
+            OperationalTelemetryDecision telemetry)
+        {
+        }
         void Metric(string component, string metric, long value);
         OperationalTelemetrySnapshot Snapshot();
     }

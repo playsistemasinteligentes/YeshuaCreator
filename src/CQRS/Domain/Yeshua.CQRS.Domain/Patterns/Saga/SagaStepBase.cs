@@ -25,6 +25,10 @@ namespace Dominio.Patterns.Saga
         public int MaxRetries { get; protected set; } = 3;
 
         public string CorrelationId { get; protected set; } = Guid.NewGuid().ToString();
+        public string? RootOperationId { get; private set; }
+        public string? OperationId { get; private set; }
+        public string? ExecutionId { get; private set; }
+        public string? CausationId { get; private set; }
         public bool IsNew { get; private set; } = true;
         public bool IsDirty { get; private set; } = false;
 
@@ -104,7 +108,29 @@ namespace Dominio.Patterns.Saga
         {
             RetryCount++;
         }
-        public void Hydrate(int id,int status,string correlationId,DateTime? completedAt,int retryCount,string payload)
+        public void SetOperationalIdentity(
+            string? rootOperationId,
+            string? operationId,
+            string? executionId,
+            string? causationId)
+        {
+            RootOperationId = rootOperationId;
+            OperationId = operationId;
+            ExecutionId = executionId;
+            CausationId = causationId;
+            MarkDirty();
+        }
+        public void Hydrate(
+            int id,
+            int status,
+            string correlationId,
+            DateTime? completedAt,
+            int retryCount,
+            string payload,
+            string? rootOperationId = null,
+            string? operationId = null,
+            string? executionId = null,
+            string? causationId = null)
         {
             Id = id;
             Status = (SagaStepStatus)status;
@@ -113,6 +139,10 @@ namespace Dominio.Patterns.Saga
             RetryCount = retryCount;
             //NextExecutionAt = nextExecutionAt;
             Payload = payload;
+            RootOperationId = rootOperationId;
+            OperationId = operationId;
+            ExecutionId = executionId;
+            CausationId = causationId;
             IsNew = false;
             IsDirty = false;
         }

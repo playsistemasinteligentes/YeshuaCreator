@@ -34,13 +34,14 @@
                             }
 
                             public IProtocoloOnduladeiraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string pto_id, string pto_chave, string maq_id, string pto_comando )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string pto_id, string pto_chave, string maq_id, string pto_comando, ulong? trackingMask = null )
                             {
                             var entity = new ProtocoloOnduladeiraEntity(id, pto_id, pto_chave, maq_id, pto_comando );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ProtocoloOnduladeira", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ProtocoloOnduladeiraDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ProtocoloOnduladeira", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ProtocoloOnduladeiraDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

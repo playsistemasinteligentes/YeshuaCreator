@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class VisoesOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification VIS_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VIS_PLANID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VIS_FORMULA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAB_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class VisoesDecorator : IVisoesEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public VisoesDecorator(IVisoesEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.VIS_ID = value;
                                                 if ((_trackingMask & VisoesTrackingFields.VIS_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "VIS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "VIS_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.VIS_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.VIS_PLANID = value;
                                                 if ((_trackingMask & VisoesTrackingFields.VIS_PLANID) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "VIS_PLANID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "VIS_PLANID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.VIS_PLANID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.VIS_FORMULA = value;
                                                 if ((_trackingMask & VisoesTrackingFields.VIS_FORMULA) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "VIS_FORMULA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "VIS_FORMULA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.VIS_FORMULA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.CAB_ID = value;
                                                 if ((_trackingMask & VisoesTrackingFields.CAB_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "CAB_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "CAB_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.CAB_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & VisoesTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & VisoesTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & VisoesTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & VisoesTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Visoes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Visoes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, VisoesOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

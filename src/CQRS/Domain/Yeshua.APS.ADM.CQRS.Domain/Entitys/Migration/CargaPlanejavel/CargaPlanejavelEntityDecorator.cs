@@ -34,6 +34,22 @@
             public const ulong AlertasResumo = 1UL << 11;
         }
 
+        public static class CargaPlanejavelOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification CargaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TransportadoraId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VeiculoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TipoVeiculoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PesoTeorico = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VolumeTeorico = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification InicioJanelaEmbarque = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FimJanelaEmbarque = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmbarqueAlvo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QuantidadePedidos = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AlertasResumo = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CargaPlanejavelDecorator : ICargaPlanejavelEntity
 {
 
@@ -41,6 +57,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CargaPlanejavelDecorator(ICargaPlanejavelEntity inner, Dominio.Interfaces.ILogger logger)
@@ -58,6 +75,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -70,7 +94,7 @@
                                             {
                                                 _inner.CargaId = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.CargaId) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "CargaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "CargaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.CargaId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +108,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +122,7 @@
                                             {
                                                 _inner.TransportadoraId = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.TransportadoraId) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "TransportadoraId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "TransportadoraId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.TransportadoraId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +136,7 @@
                                             {
                                                 _inner.VeiculoId = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.VeiculoId) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "VeiculoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "VeiculoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.VeiculoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +150,7 @@
                                             {
                                                 _inner.TipoVeiculoId = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.TipoVeiculoId) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "TipoVeiculoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "TipoVeiculoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.TipoVeiculoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +164,7 @@
                                             {
                                                 _inner.PesoTeorico = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.PesoTeorico) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "PesoTeorico", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "PesoTeorico", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.PesoTeorico, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +178,7 @@
                                             {
                                                 _inner.VolumeTeorico = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.VolumeTeorico) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "VolumeTeorico", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "VolumeTeorico", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.VolumeTeorico, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +192,7 @@
                                             {
                                                 _inner.InicioJanelaEmbarque = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.InicioJanelaEmbarque) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "InicioJanelaEmbarque", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "InicioJanelaEmbarque", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.InicioJanelaEmbarque, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +206,7 @@
                                             {
                                                 _inner.FimJanelaEmbarque = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.FimJanelaEmbarque) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "FimJanelaEmbarque", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "FimJanelaEmbarque", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.FimJanelaEmbarque, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +220,7 @@
                                             {
                                                 _inner.EmbarqueAlvo = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.EmbarqueAlvo) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "EmbarqueAlvo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "EmbarqueAlvo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.EmbarqueAlvo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -210,7 +234,7 @@
                                             {
                                                 _inner.QuantidadePedidos = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.QuantidadePedidos) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "QuantidadePedidos", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "QuantidadePedidos", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.QuantidadePedidos, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -224,7 +248,7 @@
                                             {
                                                 _inner.AlertasResumo = value;
                                                 if ((_trackingMask & CargaPlanejavelTrackingFields.AlertasResumo) != 0UL)
-                                                    _logger.DomainValueChanged("CargaPlanejavel", "AlertasResumo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("CargaPlanejavel", "AlertasResumo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargaPlanejavelOperationalFields.AlertasResumo, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

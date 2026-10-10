@@ -34,13 +34,14 @@
                             }
 
                             public IOperacoesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string ope_tipo_registro, string ope_id, string? gma_id, string maq_id, string pro_id, string? ope_excecao, int rot_seq_tranformacao, string ord_id, int fpr_seq_repeticao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string ope_tipo_registro, string ope_id, string? gma_id, string maq_id, string pro_id, string? ope_excecao, int rot_seq_tranformacao, string ord_id, int fpr_seq_repeticao, ulong? trackingMask = null )
                             {
                             var entity = new OperacoesEntity(id, ope_tipo_registro, ope_id, gma_id, maq_id, pro_id, ope_excecao, rot_seq_tranformacao, ord_id, fpr_seq_repeticao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Operacoes", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new OperacoesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Operacoes", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new OperacoesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

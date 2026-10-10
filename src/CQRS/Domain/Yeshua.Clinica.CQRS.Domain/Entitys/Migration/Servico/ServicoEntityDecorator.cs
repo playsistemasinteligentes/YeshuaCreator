@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class ServicoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GrupoServicoId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Nome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification Valor = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ServicoDecorator : IServicoEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ServicoDecorator(IServicoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ServicoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.GrupoServicoId = value;
                                                 if ((_trackingMask & ServicoTrackingFields.GrupoServicoId) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "GrupoServicoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "GrupoServicoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.GrupoServicoId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.Nome = value;
                                                 if ((_trackingMask & ServicoTrackingFields.Nome) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.Nome, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.Valor = value;
                                                 if ((_trackingMask & ServicoTrackingFields.Valor) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "Valor", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "Valor", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.Valor, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ServicoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ServicoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ServicoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ServicoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Servico", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Servico", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ServicoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItemTestavelCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItemTestavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItemTestavelReceiver), commandName: "Command.Write.ItemTestavelCrudCommand");
-                 var itemtestavel = new ItemTestavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITE_ID, c.ITE_DESCRICAO, c.ITE_OBS, c.ITE_NUMERO_DE_TESTES, c.ITE_CONDICIONAL_DE_AVALIACAO, c.ITE_VALOR_DA_CONDICIONAL, c.ITE_VALOR_CALCULADO_DA_CONDICIONAL, c.ITE_TIPO_AVALIACAO_FINAL);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItemTestavel", "DeleteItemTestavel", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItemTestavelCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteItemTestavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteItemTestavelReceiver), commandName: "Command.Write.ItemTestavelCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var itemtestavel = new ItemTestavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ITE_ID, c.ITE_DESCRICAO, c.ITE_OBS, c.ITE_NUMERO_DE_TESTES, c.ITE_CONDICIONAL_DE_AVALIACAO, c.ITE_VALOR_DA_CONDICIONAL, c.ITE_VALOR_CALCULADO_DA_CONDICIONAL, c.ITE_TIPO_AVALIACAO_FINAL, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itemtestavel.OperationalEntityId);
                  var domainResult = ItemTestavelDomainBehavior.Apply(itemtestavel, context);
                  if (!domainResult.IsValid)

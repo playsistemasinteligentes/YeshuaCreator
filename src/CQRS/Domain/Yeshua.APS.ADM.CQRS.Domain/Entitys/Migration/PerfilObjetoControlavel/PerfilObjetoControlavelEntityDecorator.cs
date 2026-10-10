@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class PerfilObjetoControlavelOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PER_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OBJ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PEO_ACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PerfilObjetoControlavelDecorator : IPerfilObjetoControlavelEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PerfilObjetoControlavelDecorator(IPerfilObjetoControlavelEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.PER_ID = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.PER_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "PER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "PER_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.PER_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.OBJ_ID = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.OBJ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "OBJ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "OBJ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.OBJ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.PEO_ACAO = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.PEO_ACAO) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "PEO_ACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "PEO_ACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.PEO_ACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PerfilObjetoControlavelTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PerfilObjetoControlavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PerfilObjetoControlavelOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -34,13 +34,14 @@
                             }
 
                             public IMedidasTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdt_id, string? mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string? uni_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdt_id, string? mdt_desc, Decimal? mdt_valor_esperado, Decimal? mdt_encontrado, string? uni_id, ulong? trackingMask = null )
                             {
                             var entity = new MedidasTesteEntity(id, mdt_id, mdt_desc, mdt_valor_esperado, mdt_encontrado, uni_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("MedidasTeste", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new MedidasTesteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("MedidasTeste", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new MedidasTesteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

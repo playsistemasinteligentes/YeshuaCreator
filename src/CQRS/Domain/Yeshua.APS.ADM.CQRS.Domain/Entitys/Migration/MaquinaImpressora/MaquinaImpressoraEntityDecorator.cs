@@ -31,6 +31,19 @@
             public const ulong UserId = 1UL << 8;
         }
 
+        public static class MaquinaImpressoraOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification MAQ_IMP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IMP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAI_FACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MaquinaImpressoraDecorator : IMaquinaImpressoraEntity
 {
 
@@ -38,6 +51,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MaquinaImpressoraDecorator(IMaquinaImpressoraEntity inner, Dominio.Interfaces.ILogger logger)
@@ -55,6 +69,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -67,7 +88,7 @@
                                             {
                                                 _inner.MAQ_IMP_ID = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.MAQ_IMP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "MAQ_IMP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "MAQ_IMP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.MAQ_IMP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -81,7 +102,7 @@
                                             {
                                                 _inner.MAQ_ID = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.MAQ_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "MAQ_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.MAQ_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +116,7 @@
                                             {
                                                 _inner.IMP_ID = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.IMP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "IMP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "IMP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.IMP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +130,7 @@
                                             {
                                                 _inner.MAI_FACAO = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.MAI_FACAO) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "MAI_FACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "MAI_FACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.MAI_FACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +145,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +159,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +173,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +187,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MaquinaImpressoraTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("MaquinaImpressora", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MaquinaImpressora", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaImpressoraOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

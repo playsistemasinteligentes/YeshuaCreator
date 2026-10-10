@@ -46,6 +46,34 @@
             public const ulong UserId = 1UL << 23;
         }
 
+        public static class TipoVeiculoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_QTD_DISPONIVEL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_VALOR_KM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_VALOR_DIARIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_VALOR_AJUDANTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_QTD_EIXOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_VELOCIDADE_MEDIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_ALTURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_ALTURA_PESCOCO_E = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_LARGURA_PESCOCO_E = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_ALTURA_PESCOCO_D = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_LARGURA_PESCOCO_D = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TIP_CAPACIDADE_M3 = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TipoVeiculoDecorator : ITipoVeiculoEntity
 {
 
@@ -53,6 +81,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TipoVeiculoDecorator(ITipoVeiculoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -70,6 +99,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -82,7 +118,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +132,7 @@
                                             {
                                                 _inner.TIP_ID = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +146,7 @@
                                             {
                                                 _inner.TIP_DESCRICAO = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +160,7 @@
                                             {
                                                 _inner.TIP_QTD_DISPONIVEL = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_QTD_DISPONIVEL) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_QTD_DISPONIVEL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_QTD_DISPONIVEL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_QTD_DISPONIVEL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +174,7 @@
                                             {
                                                 _inner.TIP_VALOR_KM = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_VALOR_KM) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VALOR_KM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VALOR_KM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_VALOR_KM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -152,7 +188,7 @@
                                             {
                                                 _inner.TIP_VALOR_DIARIA = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_VALOR_DIARIA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VALOR_DIARIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VALOR_DIARIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_VALOR_DIARIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -166,7 +202,7 @@
                                             {
                                                 _inner.TIP_VALOR_AJUDANTE = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_VALOR_AJUDANTE) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VALOR_AJUDANTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VALOR_AJUDANTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_VALOR_AJUDANTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -180,7 +216,7 @@
                                             {
                                                 _inner.TIP_QTD_EIXOS = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_QTD_EIXOS) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_QTD_EIXOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_QTD_EIXOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_QTD_EIXOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -194,7 +230,7 @@
                                             {
                                                 _inner.TIP_VELOCIDADE_MEDIA = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_VELOCIDADE_MEDIA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VELOCIDADE_MEDIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_VELOCIDADE_MEDIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_VELOCIDADE_MEDIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -208,7 +244,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_ALTURA = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_ALTURA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_ALTURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_ALTURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -222,7 +258,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_COMPRIMENTO = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -236,7 +272,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_LARGURA = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -250,7 +286,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_ALTURA_PESCOCO_E = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_ALTURA_PESCOCO_E) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_ALTURA_PESCOCO_E", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_ALTURA_PESCOCO_E", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_ALTURA_PESCOCO_E, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -264,7 +300,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_E, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -278,7 +314,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_LARGURA_PESCOCO_E = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_LARGURA_PESCOCO_E) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_LARGURA_PESCOCO_E", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_LARGURA_PESCOCO_E", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_LARGURA_PESCOCO_E, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -292,7 +328,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_ALTURA_PESCOCO_D = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_ALTURA_PESCOCO_D) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_ALTURA_PESCOCO_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_ALTURA_PESCOCO_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_ALTURA_PESCOCO_D, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -306,7 +342,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -320,7 +356,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_LARGURA_PESCOCO_D = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_LARGURA_PESCOCO_D) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_LARGURA_PESCOCO_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_LARGURA_PESCOCO_D", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_LARGURA_PESCOCO_D, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -334,7 +370,7 @@
                                             {
                                                 _inner.TIP_CAPACIDADE_M3 = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TIP_CAPACIDADE_M3) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_M3", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TIP_CAPACIDADE_M3", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TIP_CAPACIDADE_M3, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -349,7 +385,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -363,7 +399,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -377,7 +413,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -391,7 +427,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TipoVeiculoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("TipoVeiculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TipoVeiculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TipoVeiculoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

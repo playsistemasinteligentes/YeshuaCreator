@@ -34,13 +34,14 @@
                             }
 
                             public ICargaPlanejavelEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string cargaid, string? status, string? transportadoraid, string? veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string? alertasresumo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string cargaid, string? status, string? transportadoraid, string? veiculoid, int? tipoveiculoid, Decimal? pesoteorico, Decimal? volumeteorico, DateTime? iniciojanelaembarque, DateTime? fimjanelaembarque, DateTime? embarquealvo, int? quantidadepedidos, string? alertasresumo, ulong? trackingMask = null )
                             {
                             var entity = new CargaPlanejavelEntity(cargaid, status, transportadoraid, veiculoid, tipoveiculoid, pesoteorico, volumeteorico, iniciojanelaembarque, fimjanelaembarque, embarquealvo, quantidadepedidos, alertasresumo );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CargaPlanejavel", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CargaPlanejavelDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CargaPlanejavel", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CargaPlanejavelDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

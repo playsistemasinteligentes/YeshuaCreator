@@ -86,6 +86,74 @@
             public const ulong MAQ_FECHAMENTO = 1UL << 63;
         }
 
+        public static class MaquinaOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Descricao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Status = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_CONTROL_IP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GMA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ULTIMA_ATUALIZACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_SIRENE_SEMAFORO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COR_SEMAFORO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID_MAQ_PAI = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_TIPO_CONTADOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_TIPO_PLANEJAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_AVALIA_CUSTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FPR_ID_OP_PRODUZINDO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_CONGELA_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_TEMPO_MIN_PARADA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_QTD_CORES = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_HIERARQUIA_SEQ_TRANSFORMACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EQU_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ACOMPANHA_LOTE_PILOTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ID_SENSOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_DEBOUNCING_LOW = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_DEBOUNCING_HIGHT = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_TIPO_SINAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TEM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_CHAPA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_CHAPA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LARGURA_CHAPA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LARGURA_CHAPA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_ENTRE_VINCO_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_ENTRE_VINCO_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LARGURA_ENTRE_VINCO_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LARGURA_ENTRE_VINCO_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ALTURA_ENTRE_VINCO_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ALTURA_ENTRE_VINCO_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ABA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ABA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LAP_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LAP_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ONDAS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_PROLONGA_LAP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LARGURA_IMPRESSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_COMPRIMENTO_IMPRESSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ROLO_DISPOSITIVO_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_ROLO_DISPOSITIVO_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_FAMILIAS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_REFILE_MINIMO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_LARGURA_UTIL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_TOTAL_ACO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQ_FECHAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MaquinaDecorator : IMaquinaEntity
 {
 
@@ -93,6 +161,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MaquinaDecorator(IMaquinaEntity inner, Dominio.Interfaces.ILogger logger)
@@ -110,6 +179,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -122,7 +198,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +212,7 @@
                                             {
                                                 _inner.Descricao = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.Descricao) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.Descricao, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -150,7 +226,7 @@
                                             {
                                                 _inner.Status = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.Status) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.Status, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -165,7 +241,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -179,7 +255,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -193,7 +269,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -207,7 +283,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -221,7 +297,7 @@
                                             {
                                                 _inner.CAL_ID = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.CAL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "CAL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "CAL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.CAL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -235,7 +311,7 @@
                                             {
                                                 _inner.MAQ_CONTROL_IP = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_CONTROL_IP) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_CONTROL_IP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_CONTROL_IP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_CONTROL_IP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -249,7 +325,7 @@
                                             {
                                                 _inner.GMA_ID = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.GMA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "GMA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "GMA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.GMA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -263,7 +339,7 @@
                                             {
                                                 _inner.MAQ_ULTIMA_ATUALIZACAO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ULTIMA_ATUALIZACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ULTIMA_ATUALIZACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ULTIMA_ATUALIZACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ULTIMA_ATUALIZACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -277,7 +353,7 @@
                                             {
                                                 _inner.MAQ_SIRENE_SEMAFORO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_SIRENE_SEMAFORO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_SIRENE_SEMAFORO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_SIRENE_SEMAFORO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_SIRENE_SEMAFORO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -291,7 +367,7 @@
                                             {
                                                 _inner.MAQ_COR_SEMAFORO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COR_SEMAFORO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COR_SEMAFORO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COR_SEMAFORO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COR_SEMAFORO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -305,7 +381,7 @@
                                             {
                                                 _inner.MAQ_ID_MAQ_PAI = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ID_MAQ_PAI) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_MAQ_PAI", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_MAQ_PAI", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ID_MAQ_PAI, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +395,7 @@
                                             {
                                                 _inner.MAQ_TIPO_CONTADOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_TIPO_CONTADOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_TIPO_CONTADOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_TIPO_CONTADOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_TIPO_CONTADOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -333,7 +409,7 @@
                                             {
                                                 _inner.MAQ_TIPO_PLANEJAMENTO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_TIPO_PLANEJAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_TIPO_PLANEJAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_TIPO_PLANEJAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_TIPO_PLANEJAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -347,7 +423,7 @@
                                             {
                                                 _inner.MAQ_AVALIA_CUSTO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_AVALIA_CUSTO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_AVALIA_CUSTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_AVALIA_CUSTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_AVALIA_CUSTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -361,7 +437,7 @@
                                             {
                                                 _inner.FPR_ID_OP_PRODUZINDO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.FPR_ID_OP_PRODUZINDO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "FPR_ID_OP_PRODUZINDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "FPR_ID_OP_PRODUZINDO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.FPR_ID_OP_PRODUZINDO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -375,7 +451,7 @@
                                             {
                                                 _inner.MAQ_CONGELA_FILA = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_CONGELA_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_CONGELA_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_CONGELA_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_CONGELA_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -389,7 +465,7 @@
                                             {
                                                 _inner.MAQ_TEMPO_MIN_PARADA = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_TEMPO_MIN_PARADA) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_TEMPO_MIN_PARADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_TEMPO_MIN_PARADA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_TEMPO_MIN_PARADA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -403,7 +479,7 @@
                                             {
                                                 _inner.MAQ_QTD_CORES = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_QTD_CORES) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_QTD_CORES", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_QTD_CORES", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_QTD_CORES, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -417,7 +493,7 @@
                                             {
                                                 _inner.MAQ_ID_INTEGRACAO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ID_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ID_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -431,7 +507,7 @@
                                             {
                                                 _inner.MAQ_ID_INTEGRACAO_ERP = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ID_INTEGRACAO_ERP) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ID_INTEGRACAO_ERP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -445,7 +521,7 @@
                                             {
                                                 _inner.MAQ_HIERARQUIA_SEQ_TRANSFORMACAO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_HIERARQUIA_SEQ_TRANSFORMACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_HIERARQUIA_SEQ_TRANSFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_HIERARQUIA_SEQ_TRANSFORMACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_HIERARQUIA_SEQ_TRANSFORMACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -459,7 +535,7 @@
                                             {
                                                 _inner.EQU_ID = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.EQU_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "EQU_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "EQU_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.EQU_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -473,7 +549,7 @@
                                             {
                                                 _inner.MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_PERCENTUAL_INICIO_PASSO_ANTERIOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -487,7 +563,7 @@
                                             {
                                                 _inner.MAQ_ACOMPANHA_LOTE_PILOTO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ACOMPANHA_LOTE_PILOTO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ACOMPANHA_LOTE_PILOTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ACOMPANHA_LOTE_PILOTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ACOMPANHA_LOTE_PILOTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -501,7 +577,7 @@
                                             {
                                                 _inner.MAQ_ID_SENSOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ID_SENSOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_SENSOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ID_SENSOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ID_SENSOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -515,7 +591,7 @@
                                             {
                                                 _inner.MAQ_DEBOUNCING_LOW = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_DEBOUNCING_LOW) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_DEBOUNCING_LOW", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_DEBOUNCING_LOW", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_DEBOUNCING_LOW, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -529,7 +605,7 @@
                                             {
                                                 _inner.MAQ_DEBOUNCING_HIGHT = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_DEBOUNCING_HIGHT) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_DEBOUNCING_HIGHT", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_DEBOUNCING_HIGHT", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_DEBOUNCING_HIGHT, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -543,7 +619,7 @@
                                             {
                                                 _inner.MAQ_TIPO_SINAL = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_TIPO_SINAL) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_TIPO_SINAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_TIPO_SINAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_TIPO_SINAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -557,7 +633,7 @@
                                             {
                                                 _inner.TEM_ID = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.TEM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "TEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.TEM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -571,7 +647,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_CHAPA_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_CHAPA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_CHAPA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -585,7 +661,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_CHAPA_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_CHAPA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_CHAPA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -599,7 +675,7 @@
                                             {
                                                 _inner.MAQ_LARGURA_CHAPA_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LARGURA_CHAPA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LARGURA_CHAPA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -613,7 +689,7 @@
                                             {
                                                 _inner.MAQ_LARGURA_CHAPA_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LARGURA_CHAPA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LARGURA_CHAPA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -627,7 +703,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_CHAPA_DE_FACAO_SUPERIOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -641,7 +717,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_SUPERIOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -655,7 +731,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_CHAPA_DE_FACAO_INFERIOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -669,7 +745,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_CHAPA_ATE_FACAO_INFERIOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -683,7 +759,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_ENTRE_VINCO_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_ENTRE_VINCO_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_ENTRE_VINCO_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -697,7 +773,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_ENTRE_VINCO_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_ENTRE_VINCO_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_ENTRE_VINCO_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -711,7 +787,7 @@
                                             {
                                                 _inner.MAQ_LARGURA_ENTRE_VINCO_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LARGURA_ENTRE_VINCO_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LARGURA_ENTRE_VINCO_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -725,7 +801,7 @@
                                             {
                                                 _inner.MAQ_LARGURA_ENTRE_VINCO_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LARGURA_ENTRE_VINCO_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LARGURA_ENTRE_VINCO_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -739,7 +815,7 @@
                                             {
                                                 _inner.MAQ_ALTURA_ENTRE_VINCO_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ALTURA_ENTRE_VINCO_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ALTURA_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ALTURA_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ALTURA_ENTRE_VINCO_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -753,7 +829,7 @@
                                             {
                                                 _inner.MAQ_ALTURA_ENTRE_VINCO_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ALTURA_ENTRE_VINCO_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ALTURA_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ALTURA_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ALTURA_ENTRE_VINCO_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -767,7 +843,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -781,7 +857,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_MAIS_LARGURA_ENTRE_VINCO_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -795,7 +871,7 @@
                                             {
                                                 _inner.MAQ_ABA_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ABA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ABA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ABA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ABA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -809,7 +885,7 @@
                                             {
                                                 _inner.MAQ_ABA_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ABA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ABA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ABA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ABA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -823,7 +899,7 @@
                                             {
                                                 _inner.MAQ_LAP_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LAP_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LAP_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LAP_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LAP_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -837,7 +913,7 @@
                                             {
                                                 _inner.MAQ_LAP_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LAP_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LAP_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LAP_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LAP_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -851,7 +927,7 @@
                                             {
                                                 _inner.MAQ_ONDAS = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ONDAS) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ONDAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ONDAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ONDAS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -865,7 +941,7 @@
                                             {
                                                 _inner.MAQ_PROLONGA_LAP = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_PROLONGA_LAP) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_PROLONGA_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_PROLONGA_LAP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_PROLONGA_LAP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -879,7 +955,7 @@
                                             {
                                                 _inner.MAQ_LARGURA_IMPRESSAO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LARGURA_IMPRESSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_IMPRESSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_IMPRESSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LARGURA_IMPRESSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -893,7 +969,7 @@
                                             {
                                                 _inner.MAQ_COMPRIMENTO_IMPRESSAO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_COMPRIMENTO_IMPRESSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_IMPRESSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_COMPRIMENTO_IMPRESSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_COMPRIMENTO_IMPRESSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -907,7 +983,7 @@
                                             {
                                                 _inner.MAQ_ROLO_DISPOSITIVO_DE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ROLO_DISPOSITIVO_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ROLO_DISPOSITIVO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ROLO_DISPOSITIVO_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ROLO_DISPOSITIVO_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -921,7 +997,7 @@
                                             {
                                                 _inner.MAQ_ROLO_DISPOSITIVO_ATE = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_ROLO_DISPOSITIVO_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_ROLO_DISPOSITIVO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_ROLO_DISPOSITIVO_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_ROLO_DISPOSITIVO_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -935,7 +1011,7 @@
                                             {
                                                 _inner.MAQ_FAMILIAS = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_FAMILIAS) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_FAMILIAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_FAMILIAS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_FAMILIAS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -949,7 +1025,7 @@
                                             {
                                                 _inner.MAQ_REFILE_MINIMO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_REFILE_MINIMO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_REFILE_MINIMO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_REFILE_MINIMO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_REFILE_MINIMO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -963,7 +1039,7 @@
                                             {
                                                 _inner.MAQ_LARGURA_UTIL = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_LARGURA_UTIL) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_UTIL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_LARGURA_UTIL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_LARGURA_UTIL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -977,7 +1053,7 @@
                                             {
                                                 _inner.MAQ_TOTAL_ACO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_TOTAL_ACO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_TOTAL_ACO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_TOTAL_ACO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_TOTAL_ACO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -991,7 +1067,7 @@
                                             {
                                                 _inner.MAQ_FECHAMENTO = value;
                                                 if ((_trackingMask & MaquinaTrackingFields.MAQ_FECHAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Maquina", "MAQ_FECHAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Maquina", "MAQ_FECHAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MaquinaOperationalFields.MAQ_FECHAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

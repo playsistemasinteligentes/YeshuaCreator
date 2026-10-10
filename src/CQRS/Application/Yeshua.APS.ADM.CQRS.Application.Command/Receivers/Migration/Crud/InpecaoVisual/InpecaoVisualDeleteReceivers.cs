@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.InpecaoVisualCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteInpecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteInpecaoVisualReceiver), commandName: "Command.Write.InpecaoVisualCrudCommand");
-                 var inpecaovisual = new InpecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IPV_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("InpecaoVisual", "DeleteInpecaoVisual", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.InpecaoVisualCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteInpecaoVisual", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteInpecaoVisualReceiver), commandName: "Command.Write.InpecaoVisualCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var inpecaovisual = new InpecaoVisualFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.IPV_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", inpecaovisual.OperationalEntityId);
                  var domainResult = InpecaoVisualDomainBehavior.Apply(inpecaovisual, context);
                  if (!domainResult.IsValid)

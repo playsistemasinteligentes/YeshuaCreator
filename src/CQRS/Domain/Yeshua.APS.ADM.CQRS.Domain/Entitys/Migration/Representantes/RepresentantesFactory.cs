@@ -34,13 +34,14 @@
                             }
 
                             public IRepresentantesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rep_id, string? rep_nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int rep_id, string? rep_nome, ulong? trackingMask = null )
                             {
                             var entity = new RepresentantesEntity(id, rep_id, rep_nome );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Representantes", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new RepresentantesDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Representantes", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new RepresentantesDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

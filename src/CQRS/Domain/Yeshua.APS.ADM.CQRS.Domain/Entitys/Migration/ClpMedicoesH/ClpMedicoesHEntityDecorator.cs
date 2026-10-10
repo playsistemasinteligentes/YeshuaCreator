@@ -45,6 +45,33 @@
             public const ulong UserId = 1UL << 22;
         }
 
+        public static class ClpMedicoesHOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MAQUINA_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DATA_INI = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification DATA_FIM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLP_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QTD = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRUPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification URN_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification URM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ID_LOTE_CLP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OCO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FASE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLP_ORIGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLP_LOTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COMPACTA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification BOL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification COR_SEQUENCIA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ClpMedicoesHDecorator : IClpMedicoesHEntity
 {
 
@@ -52,6 +79,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ClpMedicoesHDecorator(IClpMedicoesHEntity inner, Dominio.Interfaces.ILogger logger)
@@ -69,6 +97,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -81,7 +116,7 @@
                                             {
                                                 _inner.ID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.ID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -95,7 +130,7 @@
                                             {
                                                 _inner.MAQUINA_ID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.MAQUINA_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "MAQUINA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "MAQUINA_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.MAQUINA_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +144,7 @@
                                             {
                                                 _inner.DATA_INI = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.DATA_INI) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "DATA_INI", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "DATA_INI", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.DATA_INI, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +158,7 @@
                                             {
                                                 _inner.DATA_FIM = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.DATA_FIM) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "DATA_FIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "DATA_FIM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.DATA_FIM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +172,7 @@
                                             {
                                                 _inner.CLP_EMISSAO = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.CLP_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "CLP_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "CLP_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.CLP_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +186,7 @@
                                             {
                                                 _inner.QTD = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.QTD) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "QTD", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "QTD", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.QTD, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -165,7 +200,7 @@
                                             {
                                                 _inner.GRUPO = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.GRUPO) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "GRUPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "GRUPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.GRUPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -179,7 +214,7 @@
                                             {
                                                 _inner.STATUS = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -193,7 +228,7 @@
                                             {
                                                 _inner.URN_ID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.URN_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "URN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "URN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.URN_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -207,7 +242,7 @@
                                             {
                                                 _inner.URM_ID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.URM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "URM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "URM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.URM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -221,7 +256,7 @@
                                             {
                                                 _inner.ID_LOTE_CLP = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.ID_LOTE_CLP) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "ID_LOTE_CLP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "ID_LOTE_CLP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.ID_LOTE_CLP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -235,7 +270,7 @@
                                             {
                                                 _inner.OCO_ID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.OCO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "OCO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "OCO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.OCO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -249,7 +284,7 @@
                                             {
                                                 _inner.FASE = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.FASE) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "FASE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "FASE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.FASE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -263,7 +298,7 @@
                                             {
                                                 _inner.CLP_ORIGEM = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.CLP_ORIGEM) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "CLP_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "CLP_ORIGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.CLP_ORIGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -277,7 +312,7 @@
                                             {
                                                 _inner.CLP_LOTE = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.CLP_LOTE) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "CLP_LOTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "CLP_LOTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.CLP_LOTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -291,7 +326,7 @@
                                             {
                                                 _inner.COMPACTA = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.COMPACTA) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "COMPACTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "COMPACTA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.COMPACTA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -305,7 +340,7 @@
                                             {
                                                 _inner.BOL_ID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.BOL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "BOL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "BOL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.BOL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -319,7 +354,7 @@
                                             {
                                                 _inner.COR_SEQUENCIA = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.COR_SEQUENCIA) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "COR_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "COR_SEQUENCIA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.COR_SEQUENCIA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -334,7 +369,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -348,7 +383,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -362,7 +397,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -376,7 +411,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ClpMedicoesHTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ClpMedicoesH", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ClpMedicoesH", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ClpMedicoesHOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -34,13 +34,14 @@
                             }
 
                             public IContingenciaFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? emissaofiscaltransporteid, int? entradafiscalcontingenciaid, string correlationid, string cargaid, int tiposolicitante, int ambiente, string? emitentedocumento, string? tomadordocumento, string? transportadordocumento, int? quantidadedocumentos, int? quantidadecte, int? quantidademdfe, Decimal? valorcarga, Decimal? pesobruto, string? ultimamensagem, DateTime criadoemutc, DateTime? atualizadoemutc, DateTime? concluidoemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? emissaofiscaltransporteid, int? entradafiscalcontingenciaid, string correlationid, string cargaid, int tiposolicitante, int ambiente, string? emitentedocumento, string? tomadordocumento, string? transportadordocumento, int? quantidadedocumentos, int? quantidadecte, int? quantidademdfe, Decimal? valorcarga, Decimal? pesobruto, string? ultimamensagem, DateTime criadoemutc, DateTime? atualizadoemutc, DateTime? concluidoemutc, int status, ulong? trackingMask = null )
                             {
                             var entity = new ContingenciaFiscalEntity(id, emissaofiscaltransporteid, entradafiscalcontingenciaid, correlationid, cargaid, tiposolicitante, ambiente, emitentedocumento, tomadordocumento, transportadordocumento, quantidadedocumentos, quantidadecte, quantidademdfe, valorcarga, pesobruto, ultimamensagem, criadoemutc, atualizadoemutc, concluidoemutc, status );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ContingenciaFiscal", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ContingenciaFiscalDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ContingenciaFiscal", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ContingenciaFiscalDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

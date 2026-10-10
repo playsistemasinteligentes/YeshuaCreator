@@ -34,13 +34,14 @@
                             }
 
                             public IImpressoraEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int imp_id, string? imp_ip, string? imp_nome )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int imp_id, string? imp_ip, string? imp_nome, ulong? trackingMask = null )
                             {
                             var entity = new ImpressoraEntity(imp_id, imp_ip, imp_nome );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Impressora", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ImpressoraDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Impressora", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ImpressoraDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

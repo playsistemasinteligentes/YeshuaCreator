@@ -34,13 +34,14 @@
                             }
 
                             public IAuditoriaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, DateTime data, int use_id, string rotina, string? historico, string? chave )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, DateTime data, int use_id, string rotina, string? historico, string? chave, ulong? trackingMask = null )
                             {
                             var entity = new AuditoriaEntity(id, data, use_id, rotina, historico, chave );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Auditoria", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new AuditoriaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Auditoria", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new AuditoriaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

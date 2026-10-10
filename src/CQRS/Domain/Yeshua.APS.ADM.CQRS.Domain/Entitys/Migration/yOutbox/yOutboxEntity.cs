@@ -44,6 +44,10 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string? RootOperationId { get; set; }
+    public string? OperationId { get; set; }
+    public string? ExecutionId { get; set; }
+    public string? CausationId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal yOutboxEntity(int? id, string? messageid, string type, string? entitytype, string? entityid, string? correlationid, string payload, int status, int transporttype, string? transportdata, DateTime createdat, DateTime? sentat, int retrycount, string? lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid ){
  Id = id; 
@@ -67,6 +71,10 @@
  OperationalEntityId = Guid.NewGuid().ToString("N"); 
  Deleted = false; 
  Changed = DateTime.Now; 
+ RootOperationId = null; 
+ OperationId = null; 
+ ExecutionId = null; 
+ CausationId = null; 
 }
 public bool isValidData()
 {

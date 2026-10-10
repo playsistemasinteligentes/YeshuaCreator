@@ -33,6 +33,21 @@
             public const ulong PAT_PERCENT_ESPECIF = 1UL << 10;
         }
 
+        public static class PlanoAmostralTesteOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification GRP_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAT_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAT_QTD_CAIXAS_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAT_QTD_CAIXAS_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAT_N_AMOSTRAGEM = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PAT_PERCENT_ESPECIF = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class PlanoAmostralTesteDecorator : IPlanoAmostralTesteEntity
 {
 
@@ -40,6 +55,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public PlanoAmostralTesteDecorator(IPlanoAmostralTesteEntity inner, Dominio.Interfaces.ILogger logger)
@@ -57,6 +73,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -69,7 +92,7 @@
                                             {
                                                 _inner.GRP_TIPO = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.GRP_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "GRP_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "GRP_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.GRP_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +107,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +121,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +135,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +149,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +163,7 @@
                                             {
                                                 _inner.PAT_ID = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.PAT_ID) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.PAT_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +177,7 @@
                                             {
                                                 _inner.PAT_QTD_CAIXAS_DE = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.PAT_QTD_CAIXAS_DE) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_QTD_CAIXAS_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_QTD_CAIXAS_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.PAT_QTD_CAIXAS_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -168,7 +191,7 @@
                                             {
                                                 _inner.PAT_QTD_CAIXAS_ATE = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.PAT_QTD_CAIXAS_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_QTD_CAIXAS_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_QTD_CAIXAS_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.PAT_QTD_CAIXAS_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -182,7 +205,7 @@
                                             {
                                                 _inner.PAT_N_AMOSTRAGEM = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.PAT_N_AMOSTRAGEM) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_N_AMOSTRAGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_N_AMOSTRAGEM", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.PAT_N_AMOSTRAGEM, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -196,7 +219,7 @@
                                             {
                                                 _inner.PAT_PERCENT_ESPECIF = value;
                                                 if ((_trackingMask & PlanoAmostralTesteTrackingFields.PAT_PERCENT_ESPECIF) != 0UL)
-                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_PERCENT_ESPECIF", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("PlanoAmostralTeste", "PAT_PERCENT_ESPECIF", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PlanoAmostralTesteOperationalFields.PAT_PERCENT_ESPECIF, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

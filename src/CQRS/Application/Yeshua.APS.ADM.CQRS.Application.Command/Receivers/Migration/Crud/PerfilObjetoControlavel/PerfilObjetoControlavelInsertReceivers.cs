@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PerfilObjetoControlavelCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPerfilObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPerfilObjetoControlavelReceiver), commandName: "Command.Write.PerfilObjetoControlavelCrudCommand");
-                 var perfilobjetocontrolavel = new PerfilObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.OBJ_ID, c.PEO_ACAO);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PerfilObjetoControlavel", "InsertPerfilObjetoControlavel", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PerfilObjetoControlavelCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPerfilObjetoControlavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPerfilObjetoControlavelReceiver), commandName: "Command.Write.PerfilObjetoControlavelCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var perfilobjetocontrolavel = new PerfilObjetoControlavelFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.OBJ_ID, c.PEO_ACAO, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", perfilobjetocontrolavel.OperationalEntityId);
                  var domainResult = PerfilObjetoControlavelDomainBehavior.Apply(perfilobjetocontrolavel, context);
                  if (!domainResult.IsValid)

@@ -31,6 +31,13 @@ namespace Command.Patterns
                 throw new Exception($"Handler não encontrado: {step.Key}");
 
             var telemetry = _logger.Evaluate("Saga", saga.Type, step.Key);
+            var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
+            var attempt = step.Status == SagaStepStatus.Pending
+                ? step.ExecutionCount + 1
+                : Math.Max(1, step.ExecutionCount);
+            var executionIdentity = telemetry.Enabled
+                ? CreateExecutionIdentity(saga, step, attempt)
+                : default;
             using var activity = telemetry.Enabled
                 ? OperationalActivity.Source.StartActivity(
                     $"{saga.Type}.{step.Key}",
@@ -39,7 +46,7 @@ namespace Command.Patterns
             activity?.SetTag("yeshua.component", "Saga");
             activity?.SetTag("yeshua.saga", saga.Type);
             activity?.SetTag("yeshua.saga.step", step.Key);
-            activity?.SetTag("yeshua.root_operation_id", saga.CorrelationId.ToString("D"));
+            OperationalActivity.SetIdentity(activity, executionIdentity);
 
             try
             {
@@ -54,22 +61,28 @@ namespace Command.Patterns
 
                     step.SetInProgress();
                     if (telemetry.Enabled && sagaStarting)
-                        Record(saga, step, "SagaStarted");
+                        Record(saga, step, "SagaStarted", telemetry, executionIdentity, 0);
 
                     if (telemetry.Enabled)
-                        Record(saga, step, "StepStarted");
+                        Record(saga, step, "StepStarted", telemetry, executionIdentity, 0);
 
                     handler.Execute(saga, step);
 
                     if (telemetry.Enabled && step.Status == SagaStepStatus.WaitingResponse)
-                        Record(saga, step, "Waiting");
+                        Record(
+                            saga,
+                            step,
+                            "Waiting",
+                            telemetry,
+                            executionIdentity,
+                            ElapsedMilliseconds(startedTimestamp));
                 }
 
                 // 📥 APLICA
                 if (step.Status == SagaStepStatus.PendingApply)
                 {
                     if (telemetry.Enabled)
-                        Record(saga, step, "Resumed");
+                        Record(saga, step, "Resumed", telemetry, executionIdentity, 0);
 
                     handler.ApplyResponse(saga, step, step.Payload);
 
@@ -77,11 +90,25 @@ namespace Command.Patterns
                         saga.CompleteCurrentStep(step.Payload);
 
                     if (telemetry.Enabled && step.Status == SagaStepStatus.Completed)
-                        Record(saga, step, "StepCompleted");
+                        Record(
+                            saga,
+                            step,
+                            "StepCompleted",
+                            telemetry,
+                            executionIdentity,
+                            ElapsedMilliseconds(startedTimestamp),
+                            businessOutcome: OperationalBusinessOutcome.Accepted);
                 }
 
                 if (telemetry.Enabled && saga.Status == SagaStatus.Completed)
-                    Record(saga, step, "SagaCompleted");
+                    Record(
+                        saga,
+                        step,
+                        "SagaCompleted",
+                        telemetry,
+                        executionIdentity,
+                        ElapsedMilliseconds(startedTimestamp),
+                        businessOutcome: OperationalBusinessOutcome.Accepted);
 
                 activity?.SetTag("yeshua.saga.status", saga.Status.ToString());
                 activity?.SetTag("yeshua.saga.step.status", step.Status.ToString());
@@ -89,25 +116,36 @@ namespace Command.Patterns
             }
             catch (SagaStepExecutionException e)
             {
-                activity?.SetStatus(ActivityStatusCode.Error, e.Message);
-                OperationalActivity.RecordException(activity, e);
+                activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
+                OperationalActivity.RecordException(activity, e, telemetry.DiagnosticDepth);
                 HandleFailure(saga, step, e, e.Retryable);
                 if (telemetry.Enabled)
-                    Record(saga, step, saga.Status == SagaStatus.Failed ? "Failed" : "RetryScheduled");
+                    RecordFailure(
+                        saga,
+                        step,
+                        saga.Status == SagaStatus.Failed ? "Failed" : "RetryScheduled",
+                        telemetry,
+                        executionIdentity,
+                        startedTimestamp,
+                        e);
             }
             catch (Exception e)
             {
-                activity?.SetStatus(ActivityStatusCode.Error, e.Message);
-                OperationalActivity.RecordException(activity, e);
+                activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
+                OperationalActivity.RecordException(activity, e, telemetry.DiagnosticDepth);
                 HandleFailure(saga, step, e, retryable: true);
                 if (telemetry.Enabled)
                 {
-                    Record(
+                    RecordFailure(
                         saga,
                         step,
                         saga.Status == SagaStatus.Failed
                             ? "Failed"
-                            : "RetryScheduled");
+                            : "RetryScheduled",
+                        telemetry,
+                        executionIdentity,
+                        startedTimestamp,
+                        e);
                 }
             }
         }
@@ -165,15 +203,85 @@ namespace Command.Patterns
             saga.MarkFailed(e.Message);
         }
 
-        private void Record(SagaBase saga, SagaStepBase step, string phase)
+        private void RecordFailure(
+            SagaBase saga,
+            SagaStepBase step,
+            string phase,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity,
+            long startedTimestamp,
+            Exception exception)
         {
-            _logger.Saga(
+            Record(
+                saga,
+                step,
+                phase,
+                telemetry,
+                executionIdentity,
+                ElapsedMilliseconds(startedTimestamp),
+                OperationalTechnicalOutcome.Failed,
+                errorCode: exception.GetType().Name,
+                errorSummary: $"Saga step failed with {exception.GetType().Name}.",
+                nextExecutionAtUtc: step.NextExecutionAt);
+        }
+
+        private void Record(
+            SagaBase saga,
+            SagaStepBase step,
+            string phase,
+            OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity,
+            long durationMs,
+            OperationalTechnicalOutcome technicalOutcome = OperationalTechnicalOutcome.Succeeded,
+            OperationalBusinessOutcome businessOutcome = OperationalBusinessOutcome.NotEvaluated,
+            string? errorCode = null,
+            string? errorSummary = null,
+            DateTimeOffset? nextExecutionAtUtc = null)
+        {
+            _logger.Saga(new SagaOperationalTransition(
                 saga.Type,
                 step.Key,
                 saga.CorrelationId.ToString("D"),
                 phase,
                 step.ExecutionCount,
-                step.CorrelationId + ":" + step.ExecutionCount);
+                durationMs,
+                technicalOutcome,
+                businessOutcome,
+                telemetry,
+                executionIdentity,
+                saga.CorrelationId.ToString("D"),
+                ErrorCode: errorCode,
+                ErrorSummary: errorSummary,
+                NextExecutionAtUtc: nextExecutionAtUtc));
         }
+
+        private static OperationalExecutionIdentity CreateExecutionIdentity(
+            SagaBase saga,
+            SagaStepBase step,
+            int attempt)
+        {
+            var rootOperationId = step.RootOperationId
+                ?? saga.RootOperationId
+                ?? saga.CorrelationId.ToString("D");
+            var operationId = step.OperationId
+                ?? saga.OperationId
+                ?? $"{saga.Type}.{step.Key}";
+            var executionId = $"{step.CorrelationId}:{attempt}";
+            var causationId = step.ExecutionId
+                ?? saga.ExecutionId
+                ?? step.CausationId
+                ?? saga.CausationId;
+
+            return new OperationalExecutionIdentity(
+                rootOperationId,
+                operationId,
+                executionId,
+                causationId);
+        }
+
+        private static long ElapsedMilliseconds(long startedTimestamp) =>
+            startedTimestamp == 0
+                ? 0
+                : (long)Stopwatch.GetElapsedTime(startedTimestamp).TotalMilliseconds;
     }
 }

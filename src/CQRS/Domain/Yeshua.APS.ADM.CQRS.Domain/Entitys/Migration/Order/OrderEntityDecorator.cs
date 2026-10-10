@@ -86,6 +86,74 @@
             public const ulong OCO_ID_CANCELAMENTO = 1UL << 63;
         }
 
+        public static class OrderOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification ORD_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID_RESERVA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID_CONJUNTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID_CONJUNTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PRECO_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_QUANTIDADE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_DATA_ENTREGA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_DATA_ENTREGA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TIPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TOLERANCIA_MAIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TOLERANCIA_MENOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification HASH_KEY = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_INICIO_JANELA_EMBARQUE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_FIM_JANELA_EMBARQUE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_EMBARQUE_ALVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_INICIO_GRUPO_PRODUTIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_FIM_GRUPO_PRODUTIVO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PESO_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PESO_UNITARIO_BRUTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_M2_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_MIT = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CAR_TIPO_CARREGAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_STATUS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TIPO_FRETE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ENDERECO_ENTREGA = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification ORD_BAIRRO_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UF_ID_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_CEP_ENTREGA = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification MUN_ID_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_REGIAO_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_LARGURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_COMPRIMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_GRAMATURA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification GRP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ID_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_OBSERVACAO_OTIMIZADOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_COR_FILA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PED_CLI = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_OP_INTEGRACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_LOTE_PILOTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PRIORIDADE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_EMISSAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REP_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_RESINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ENDURECEDOR_MIOLO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PRO_ID_INTEGRACAO_ERP = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_VINCOS_ONDULADEIRA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ERP_CUSTOS_FIXOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ERP_CUSTOS_VARIAVEIS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ERP_DESPESAS_VAR_VENDA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_ERP_IMPOSTOS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_STATUS_PLANEJAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TOLERANCIA_DIMENSAO_CHAPA_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PROMOVE_DE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PROMOVE_ATE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TRAVA_COMPOSICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_TRAVA_RESINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_PROMOVE_RESINA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_LATITUDE_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORD_LONGITUDE_ENTREGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OCO_ID_CANCELAMENTO = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class OrderDecorator : IOrderEntity
 {
 
@@ -93,6 +161,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public OrderDecorator(IOrderEntity inner, Dominio.Interfaces.ILogger logger)
@@ -110,6 +179,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -122,7 +198,7 @@
                                             {
                                                 _inner.ORD_ID = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +212,7 @@
                                             {
                                                 _inner.ORD_ID_RESERVA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ID_RESERVA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ID_RESERVA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ID_RESERVA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ID_RESERVA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -150,7 +226,7 @@
                                             {
                                                 _inner.ORD_ID_CONJUNTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ID_CONJUNTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ID_CONJUNTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ID_CONJUNTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ID_CONJUNTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -164,7 +240,7 @@
                                             {
                                                 _inner.PRO_ID = value;
                                                 if ((_trackingMask & OrderTrackingFields.PRO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "PRO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.PRO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -178,7 +254,7 @@
                                             {
                                                 _inner.PRO_ID_CONJUNTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.PRO_ID_CONJUNTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "PRO_ID_CONJUNTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "PRO_ID_CONJUNTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.PRO_ID_CONJUNTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -192,7 +268,7 @@
                                             {
                                                 _inner.CLI_ID = value;
                                                 if ((_trackingMask & OrderTrackingFields.CLI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.CLI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -206,7 +282,7 @@
                                             {
                                                 _inner.ORD_PRECO_UNITARIO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PRECO_UNITARIO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PRECO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PRECO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PRECO_UNITARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -220,7 +296,7 @@
                                             {
                                                 _inner.ORD_QUANTIDADE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_QUANTIDADE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_QUANTIDADE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_QUANTIDADE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_QUANTIDADE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -234,7 +310,7 @@
                                             {
                                                 _inner.ORD_DATA_ENTREGA_DE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_DATA_ENTREGA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_DATA_ENTREGA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_DATA_ENTREGA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_DATA_ENTREGA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -248,7 +324,7 @@
                                             {
                                                 _inner.ORD_DATA_ENTREGA_ATE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_DATA_ENTREGA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_DATA_ENTREGA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_DATA_ENTREGA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_DATA_ENTREGA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -262,7 +338,7 @@
                                             {
                                                 _inner.ORD_TIPO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TIPO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TIPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TIPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -276,7 +352,7 @@
                                             {
                                                 _inner.ORD_TOLERANCIA_MAIS = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TOLERANCIA_MAIS) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_MAIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TOLERANCIA_MAIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -290,7 +366,7 @@
                                             {
                                                 _inner.ORD_TOLERANCIA_MENOS = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TOLERANCIA_MENOS) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_MENOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TOLERANCIA_MENOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -304,7 +380,7 @@
                                             {
                                                 _inner.HASH_KEY = value;
                                                 if ((_trackingMask & OrderTrackingFields.HASH_KEY) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "HASH_KEY", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "HASH_KEY", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.HASH_KEY, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -318,7 +394,7 @@
                                             {
                                                 _inner.ORD_INICIO_JANELA_EMBARQUE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_INICIO_JANELA_EMBARQUE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_INICIO_JANELA_EMBARQUE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_INICIO_JANELA_EMBARQUE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_INICIO_JANELA_EMBARQUE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -332,7 +408,7 @@
                                             {
                                                 _inner.ORD_FIM_JANELA_EMBARQUE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_FIM_JANELA_EMBARQUE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_FIM_JANELA_EMBARQUE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_FIM_JANELA_EMBARQUE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_FIM_JANELA_EMBARQUE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -346,7 +422,7 @@
                                             {
                                                 _inner.ORD_EMBARQUE_ALVO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_EMBARQUE_ALVO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_EMBARQUE_ALVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_EMBARQUE_ALVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_EMBARQUE_ALVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -360,7 +436,7 @@
                                             {
                                                 _inner.ORD_INICIO_GRUPO_PRODUTIVO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_INICIO_GRUPO_PRODUTIVO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_INICIO_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_INICIO_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_INICIO_GRUPO_PRODUTIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -374,7 +450,7 @@
                                             {
                                                 _inner.ORD_FIM_GRUPO_PRODUTIVO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_FIM_GRUPO_PRODUTIVO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_FIM_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_FIM_GRUPO_PRODUTIVO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_FIM_GRUPO_PRODUTIVO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -388,7 +464,7 @@
                                             {
                                                 _inner.ORD_PESO_UNITARIO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PESO_UNITARIO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PESO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PESO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PESO_UNITARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -402,7 +478,7 @@
                                             {
                                                 _inner.ORD_PESO_UNITARIO_BRUTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PESO_UNITARIO_BRUTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PESO_UNITARIO_BRUTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PESO_UNITARIO_BRUTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PESO_UNITARIO_BRUTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -416,7 +492,7 @@
                                             {
                                                 _inner.ORD_M2_UNITARIO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_M2_UNITARIO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_M2_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_M2_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_M2_UNITARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -430,7 +506,7 @@
                                             {
                                                 _inner.ORD_MIT = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_MIT) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_MIT", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_MIT", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_MIT, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -444,7 +520,7 @@
                                             {
                                                 _inner.CAR_TIPO_CARREGAMENTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.CAR_TIPO_CARREGAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "CAR_TIPO_CARREGAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "CAR_TIPO_CARREGAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.CAR_TIPO_CARREGAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -458,7 +534,7 @@
                                             {
                                                 _inner.ORD_STATUS = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_STATUS) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_STATUS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_STATUS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -472,7 +548,7 @@
                                             {
                                                 _inner.ORD_TIPO_FRETE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TIPO_FRETE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TIPO_FRETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TIPO_FRETE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TIPO_FRETE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -486,7 +562,7 @@
                                             {
                                                 _inner.ORD_ENDERECO_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ENDERECO_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ENDERECO_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ENDERECO_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ENDERECO_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -500,7 +576,7 @@
                                             {
                                                 _inner.ORD_BAIRRO_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_BAIRRO_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_BAIRRO_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_BAIRRO_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_BAIRRO_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -514,7 +590,7 @@
                                             {
                                                 _inner.UF_ID_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.UF_ID_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "UF_ID_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "UF_ID_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.UF_ID_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -528,7 +604,7 @@
                                             {
                                                 _inner.ORD_CEP_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_CEP_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_CEP_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_CEP_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_CEP_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -542,7 +618,7 @@
                                             {
                                                 _inner.MUN_ID_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.MUN_ID_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "MUN_ID_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "MUN_ID_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.MUN_ID_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -556,7 +632,7 @@
                                             {
                                                 _inner.ORD_REGIAO_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_REGIAO_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_REGIAO_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_REGIAO_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_REGIAO_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -570,7 +646,7 @@
                                             {
                                                 _inner.ORD_LARGURA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_LARGURA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_LARGURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_LARGURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -584,7 +660,7 @@
                                             {
                                                 _inner.ORD_COMPRIMENTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_COMPRIMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_COMPRIMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_COMPRIMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -598,7 +674,7 @@
                                             {
                                                 _inner.ORD_GRAMATURA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_GRAMATURA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_GRAMATURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_GRAMATURA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_GRAMATURA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -612,7 +688,7 @@
                                             {
                                                 _inner.GRP_ID = value;
                                                 if ((_trackingMask & OrderTrackingFields.GRP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "GRP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.GRP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -626,7 +702,7 @@
                                             {
                                                 _inner.ORD_ID_INTEGRACAO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ID_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ID_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ID_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -640,7 +716,7 @@
                                             {
                                                 _inner.ORD_OBSERVACAO_OTIMIZADOR = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_OBSERVACAO_OTIMIZADOR) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_OBSERVACAO_OTIMIZADOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_OBSERVACAO_OTIMIZADOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_OBSERVACAO_OTIMIZADOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -654,7 +730,7 @@
                                             {
                                                 _inner.ORD_COR_FILA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_COR_FILA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_COR_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_COR_FILA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_COR_FILA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -668,7 +744,7 @@
                                             {
                                                 _inner.ORD_PED_CLI = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PED_CLI) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PED_CLI", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PED_CLI", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PED_CLI, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -682,7 +758,7 @@
                                             {
                                                 _inner.ORD_OP_INTEGRACAO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_OP_INTEGRACAO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_OP_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_OP_INTEGRACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_OP_INTEGRACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -696,7 +772,7 @@
                                             {
                                                 _inner.ORD_LOTE_PILOTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_LOTE_PILOTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_LOTE_PILOTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_LOTE_PILOTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_LOTE_PILOTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -710,7 +786,7 @@
                                             {
                                                 _inner.ORD_PRIORIDADE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PRIORIDADE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PRIORIDADE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PRIORIDADE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PRIORIDADE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -724,7 +800,7 @@
                                             {
                                                 _inner.ORD_EMISSAO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_EMISSAO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_EMISSAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_EMISSAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -738,7 +814,7 @@
                                             {
                                                 _inner.REP_ID = value;
                                                 if ((_trackingMask & OrderTrackingFields.REP_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "REP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "REP_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.REP_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -752,7 +828,7 @@
                                             {
                                                 _inner.ORD_RESINA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_RESINA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_RESINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -766,7 +842,7 @@
                                             {
                                                 _inner.ORD_ENDURECEDOR_MIOLO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ENDURECEDOR_MIOLO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ENDURECEDOR_MIOLO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ENDURECEDOR_MIOLO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ENDURECEDOR_MIOLO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -780,7 +856,7 @@
                                             {
                                                 _inner.PRO_ID_INTEGRACAO_ERP = value;
                                                 if ((_trackingMask & OrderTrackingFields.PRO_ID_INTEGRACAO_ERP) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "PRO_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "PRO_ID_INTEGRACAO_ERP", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.PRO_ID_INTEGRACAO_ERP, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -794,7 +870,7 @@
                                             {
                                                 _inner.ORD_VINCOS_ONDULADEIRA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_VINCOS_ONDULADEIRA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_VINCOS_ONDULADEIRA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_VINCOS_ONDULADEIRA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_VINCOS_ONDULADEIRA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -808,7 +884,7 @@
                                             {
                                                 _inner.ORD_ERP_CUSTOS_FIXOS = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ERP_CUSTOS_FIXOS) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ERP_CUSTOS_FIXOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ERP_CUSTOS_FIXOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ERP_CUSTOS_FIXOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -822,7 +898,7 @@
                                             {
                                                 _inner.ORD_ERP_CUSTOS_VARIAVEIS = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ERP_CUSTOS_VARIAVEIS) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ERP_CUSTOS_VARIAVEIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ERP_CUSTOS_VARIAVEIS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ERP_CUSTOS_VARIAVEIS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -836,7 +912,7 @@
                                             {
                                                 _inner.ORD_ERP_DESPESAS_VAR_VENDA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ERP_DESPESAS_VAR_VENDA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ERP_DESPESAS_VAR_VENDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ERP_DESPESAS_VAR_VENDA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ERP_DESPESAS_VAR_VENDA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -850,7 +926,7 @@
                                             {
                                                 _inner.ORD_ERP_IMPOSTOS = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_ERP_IMPOSTOS) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_ERP_IMPOSTOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_ERP_IMPOSTOS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_ERP_IMPOSTOS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -864,7 +940,7 @@
                                             {
                                                 _inner.ORD_STATUS_PLANEJAMENTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_STATUS_PLANEJAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_STATUS_PLANEJAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_STATUS_PLANEJAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_STATUS_PLANEJAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -878,7 +954,7 @@
                                             {
                                                 _inner.ORD_TOLERANCIA_DIMENSAO_CHAPA_DE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TOLERANCIA_DIMENSAO_CHAPA_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_DIMENSAO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_DIMENSAO_CHAPA_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TOLERANCIA_DIMENSAO_CHAPA_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -892,7 +968,7 @@
                                             {
                                                 _inner.ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -906,7 +982,7 @@
                                             {
                                                 _inner.ORD_PROMOVE_DE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PROMOVE_DE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PROMOVE_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PROMOVE_DE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PROMOVE_DE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -920,7 +996,7 @@
                                             {
                                                 _inner.ORD_PROMOVE_ATE = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PROMOVE_ATE) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PROMOVE_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PROMOVE_ATE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PROMOVE_ATE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -934,7 +1010,7 @@
                                             {
                                                 _inner.ORD_TRAVA_COMPOSICAO = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TRAVA_COMPOSICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TRAVA_COMPOSICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TRAVA_COMPOSICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TRAVA_COMPOSICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -948,7 +1024,7 @@
                                             {
                                                 _inner.ORD_TRAVA_RESINA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_TRAVA_RESINA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_TRAVA_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_TRAVA_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_TRAVA_RESINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -962,7 +1038,7 @@
                                             {
                                                 _inner.ORD_PROMOVE_RESINA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_PROMOVE_RESINA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_PROMOVE_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_PROMOVE_RESINA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_PROMOVE_RESINA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -976,7 +1052,7 @@
                                             {
                                                 _inner.ORD_LATITUDE_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_LATITUDE_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_LATITUDE_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_LATITUDE_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_LATITUDE_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -990,7 +1066,7 @@
                                             {
                                                 _inner.ORD_LONGITUDE_ENTREGA = value;
                                                 if ((_trackingMask & OrderTrackingFields.ORD_LONGITUDE_ENTREGA) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "ORD_LONGITUDE_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "ORD_LONGITUDE_ENTREGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.ORD_LONGITUDE_ENTREGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -1004,7 +1080,7 @@
                                             {
                                                 _inner.OCO_ID_CANCELAMENTO = value;
                                                 if ((_trackingMask & OrderTrackingFields.OCO_ID_CANCELAMENTO) != 0UL)
-                                                    _logger.DomainValueChanged("Order", "OCO_ID_CANCELAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Order", "OCO_ID_CANCELAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrderOperationalFields.OCO_ID_CANCELAMENTO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ClpMedicoesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertClpMedicoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertClpMedicoesReceiver), commandName: "Command.Write.ClpMedicoesCrudCommand");
-                 var clpmedicoes = new ClpMedicoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2, c.MaquinaId, c.DataInicio, c.DataFim, c.Emissao, c.Quantidade, c.Grupo, c.Status, c.TurnoId, c.TurmaId, c.IdLoteClp, c.OcorrenciaId, c.Fase, c.ClpOrigem, c.CLP_LOTE, c.COMPACTA, c.BOL_ID, c.COR_SEQUENCIA);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ClpMedicoes", "InsertClpMedicoes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ClpMedicoesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertClpMedicoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertClpMedicoesReceiver), commandName: "Command.Write.ClpMedicoesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var clpmedicoes = new ClpMedicoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2, c.MaquinaId, c.DataInicio, c.DataFim, c.Emissao, c.Quantidade, c.Grupo, c.Status, c.TurnoId, c.TurmaId, c.IdLoteClp, c.OcorrenciaId, c.Fase, c.ClpOrigem, c.CLP_LOTE, c.COMPACTA, c.BOL_ID, c.COR_SEQUENCIA, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", clpmedicoes.OperationalEntityId);
                  var domainResult = ClpMedicoesDomainBehavior.Apply(clpmedicoes, context);
                  if (!domainResult.IsValid)

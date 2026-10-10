@@ -27,6 +27,9 @@ public class ApplicationDomainProjectGenerationTests
             var content = File.ReadAllText(path);
             StringAssert.Contains(content, "AddYeshuaOperationalTelemetry");
             StringAssert.Contains(content, "runtimeIdentityProvider.Current");
+            StringAssert.Contains(
+                content,
+                "sp.GetRequiredService<IRuntimeIdentityProvider>()));");
         }
         finally
         {

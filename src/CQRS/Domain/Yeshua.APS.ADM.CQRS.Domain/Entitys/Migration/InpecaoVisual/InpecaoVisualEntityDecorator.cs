@@ -29,6 +29,17 @@
             public const ulong UserId = 1UL << 6;
         }
 
+        public static class InpecaoVisualOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification IPV_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class InpecaoVisualDecorator : IInpecaoVisualEntity
 {
 
@@ -36,6 +47,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public InpecaoVisualDecorator(IInpecaoVisualEntity inner, Dominio.Interfaces.ILogger logger)
@@ -53,6 +65,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -65,7 +84,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & InpecaoVisualTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("InpecaoVisual", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InpecaoVisual", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InpecaoVisualOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -79,7 +98,7 @@
                                             {
                                                 _inner.IPV_ID = value;
                                                 if ((_trackingMask & InpecaoVisualTrackingFields.IPV_ID) != 0UL)
-                                                    _logger.DomainValueChanged("InpecaoVisual", "IPV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InpecaoVisual", "IPV_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InpecaoVisualOperationalFields.IPV_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +113,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & InpecaoVisualTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("InpecaoVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InpecaoVisual", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InpecaoVisualOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -108,7 +127,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & InpecaoVisualTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("InpecaoVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InpecaoVisual", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InpecaoVisualOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -122,7 +141,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & InpecaoVisualTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("InpecaoVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InpecaoVisual", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InpecaoVisualOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -136,7 +155,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & InpecaoVisualTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("InpecaoVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("InpecaoVisual", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, InpecaoVisualOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

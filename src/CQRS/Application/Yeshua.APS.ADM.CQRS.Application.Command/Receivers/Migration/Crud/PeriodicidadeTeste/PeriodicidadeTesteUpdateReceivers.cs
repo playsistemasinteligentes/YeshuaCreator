@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PeriodicidadeTesteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePeriodicidadeTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePeriodicidadeTesteReceiver), commandName: "Command.Write.PeriodicidadeTesteCrudCommand");
-                 var periodicidadeteste = new PeriodicidadeTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.PER_QTD, c.UNI_ID, c.GRP_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("PeriodicidadeTeste", "UpdatePeriodicidadeTeste", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.PeriodicidadeTesteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdatePeriodicidadeTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdatePeriodicidadeTesteReceiver), commandName: "Command.Write.PeriodicidadeTesteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var periodicidadeteste = new PeriodicidadeTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PER_ID, c.PER_QTD, c.UNI_ID, c.GRP_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", periodicidadeteste.OperationalEntityId);
                  var domainResult = PeriodicidadeTesteDomainBehavior.Apply(periodicidadeteste, context);
                  if (!domainResult.IsValid)

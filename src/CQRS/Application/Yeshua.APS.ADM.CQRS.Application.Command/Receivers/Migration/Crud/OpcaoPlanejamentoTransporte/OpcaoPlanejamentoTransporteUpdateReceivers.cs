@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OpcaoPlanejamentoTransporteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOpcaoPlanejamentoTransporte", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOpcaoPlanejamentoTransporteReceiver), commandName: "Command.Write.OpcaoPlanejamentoTransporteCrudCommand");
-                 var opcaoplanejamentotransporte = new OpcaoPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.OpcaoId, c.GrupoDecisaoId, c.Peso, c.Volume, c.CustoEstimado, c.AderenciaCubagem, c.AderenciaJanelaEntrega, c.RiscoResumo, c.PedidosResumo, c.OpcoesConflitantesResumo);
+                 var trackingMask = _domainTrackingPolicy.GetMask("OpcaoPlanejamentoTransporte", "UpdateOpcaoPlanejamentoTransporte", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OpcaoPlanejamentoTransporteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOpcaoPlanejamentoTransporte", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOpcaoPlanejamentoTransporteReceiver), commandName: "Command.Write.OpcaoPlanejamentoTransporteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var opcaoplanejamentotransporte = new OpcaoPlanejamentoTransporteFactory(_logger, _domainTrackingPolicy).Create(context, c.OpcaoId, c.GrupoDecisaoId, c.Peso, c.Volume, c.CustoEstimado, c.AderenciaCubagem, c.AderenciaJanelaEntrega, c.RiscoResumo, c.PedidosResumo, c.OpcoesConflitantesResumo, trackingMask: trackingMask);
                  var domainResult = OpcaoPlanejamentoTransporteDomainBehavior.Apply(opcaoplanejamentotransporte, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

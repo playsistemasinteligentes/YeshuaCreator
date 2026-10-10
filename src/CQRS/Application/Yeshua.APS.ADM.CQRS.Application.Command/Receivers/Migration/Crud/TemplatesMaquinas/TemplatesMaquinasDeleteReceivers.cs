@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TemplatesMaquinasCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplatesMaquinas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplatesMaquinasReceiver), commandName: "Command.Write.TemplatesMaquinasCrudCommand");
-                 var templatesmaquinas = new TemplatesMaquinasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TEM_ID, c.MAQ_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TemplatesMaquinas", "DeleteTemplatesMaquinas", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TemplatesMaquinasCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplatesMaquinas", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplatesMaquinasReceiver), commandName: "Command.Write.TemplatesMaquinasCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var templatesmaquinas = new TemplatesMaquinasFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TEM_ID, c.MAQ_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", templatesmaquinas.OperationalEntityId);
                  var domainResult = TemplatesMaquinasDomainBehavior.Apply(templatesmaquinas, context);
                  if (!domainResult.IsValid)

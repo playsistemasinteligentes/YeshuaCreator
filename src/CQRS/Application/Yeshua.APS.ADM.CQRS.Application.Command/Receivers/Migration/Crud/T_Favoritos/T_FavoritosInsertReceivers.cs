@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.T_FavoritosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_Favoritos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_FavoritosReceiver), commandName: "Command.Write.T_FavoritosCrudCommand");
-                 var t_favoritos = new T_FavoritosFactory(_logger, _domainTrackingPolicy).Create(context, c.IDFAVORITO, c.USE_ID, c.ID_INDICADOR);
+                 var trackingMask = _domainTrackingPolicy.GetMask("T_Favoritos", "InsertT_Favoritos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.T_FavoritosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertT_Favoritos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertT_FavoritosReceiver), commandName: "Command.Write.T_FavoritosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var t_favoritos = new T_FavoritosFactory(_logger, _domainTrackingPolicy).Create(context, c.IDFAVORITO, c.USE_ID, c.ID_INDICADOR, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", t_favoritos.OperationalEntityId);
                  var domainResult = T_FavoritosDomainBehavior.Apply(t_favoritos, context);
                  if (!domainResult.IsValid)

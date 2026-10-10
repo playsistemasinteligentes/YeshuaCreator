@@ -34,13 +34,14 @@
                             }
 
                             public IParametrosDeCustoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int par_id, string pro_id, string cus_id, string par_valor )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int par_id, string pro_id, string cus_id, string par_valor, ulong? trackingMask = null )
                             {
                             var entity = new ParametrosDeCustoEntity(id, par_id, pro_id, cus_id, par_valor );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("ParametrosDeCusto", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ParametrosDeCustoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("ParametrosDeCusto", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ParametrosDeCustoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

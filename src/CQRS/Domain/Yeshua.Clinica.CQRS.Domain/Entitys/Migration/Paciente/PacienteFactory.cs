@@ -34,13 +34,14 @@
                             }
 
                             public IPacienteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string? escolaridade, string? profissao, string? endereco, string? nomeresponsavel, string? telefoneresponsavel, string? observacao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string? escolaridade, string? profissao, string? endereco, string? nomeresponsavel, string? telefoneresponsavel, string? observacao, ulong? trackingMask = null )
                             {
                             var entity = new PacienteEntity(id, nome, telefone, datanascimento, genero, escolaridade, profissao, endereco, nomeresponsavel, telefoneresponsavel, observacao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Paciente", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new PacienteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Paciente", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new PacienteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

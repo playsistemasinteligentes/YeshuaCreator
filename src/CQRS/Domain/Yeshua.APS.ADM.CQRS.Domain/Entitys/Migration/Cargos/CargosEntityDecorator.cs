@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class CargosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RGO_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RGO_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class CargosDecorator : ICargosEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public CargosDecorator(ICargosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & CargosTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.RGO_ID = value;
                                                 if ((_trackingMask & CargosTrackingFields.RGO_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "RGO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "RGO_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.RGO_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.RGO_DESCRICAO = value;
                                                 if ((_trackingMask & CargosTrackingFields.RGO_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "RGO_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "RGO_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.RGO_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & CargosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & CargosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & CargosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & CargosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Cargos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Cargos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, CargosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

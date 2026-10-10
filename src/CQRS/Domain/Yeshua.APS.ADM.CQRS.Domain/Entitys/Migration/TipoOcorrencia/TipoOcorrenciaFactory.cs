@@ -34,13 +34,14 @@
                             }
 
                             public ITipoOcorrenciaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string descricao, int? spr )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int id, string descricao, int? spr, ulong? trackingMask = null )
                             {
                             var entity = new TipoOcorrenciaEntity(id, descricao, spr );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TipoOcorrencia", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TipoOcorrenciaDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TipoOcorrencia", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TipoOcorrenciaDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

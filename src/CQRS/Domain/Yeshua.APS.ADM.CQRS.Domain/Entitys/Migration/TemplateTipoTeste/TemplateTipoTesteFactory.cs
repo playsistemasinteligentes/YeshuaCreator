@@ -34,13 +34,14 @@
                             }
 
                             public ITemplateTipoTesteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int ttt_id, int tt_id, int tem_id )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int ttt_id, int tt_id, int tem_id, ulong? trackingMask = null )
                             {
                             var entity = new TemplateTipoTesteEntity(ttt_id, tt_id, tem_id );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("TemplateTipoTeste", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new TemplateTipoTesteDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("TemplateTipoTeste", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new TemplateTipoTesteDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

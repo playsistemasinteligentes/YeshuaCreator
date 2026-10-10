@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.GrupoSegmentoCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateGrupoSegmento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateGrupoSegmentoReceiver), commandName: "Command.Write.GrupoSegmentoCrudCommand");
-                 var gruposegmento = new GrupoSegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.GRS_DESCRICAO, c.GRS_INTEGRACAO_ERP);
+                 var trackingMask = _domainTrackingPolicy.GetMask("GrupoSegmento", "UpdateGrupoSegmento", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.GrupoSegmentoCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateGrupoSegmento", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateGrupoSegmentoReceiver), commandName: "Command.Write.GrupoSegmentoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var gruposegmento = new GrupoSegmentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.GRS_DESCRICAO, c.GRS_INTEGRACAO_ERP, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", gruposegmento.OperationalEntityId);
                  var domainResult = GrupoSegmentoDomainBehavior.Apply(gruposegmento, context);
                  if (!domainResult.IsValid)

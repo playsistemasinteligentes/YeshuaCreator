@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.DocumentoFiscalCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateDocumentoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateDocumentoFiscalReceiver), commandName: "Command.Write.DocumentoFiscalCrudCommand");
-                 var documentofiscal = new DocumentoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.ProdutoFiscal, c.ChaveAcesso, c.Serie, c.Numero, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.DestinatarioDocumento, c.XmlStorageKey, c.XmlHash, c.ProtocoloAutorizacao, c.CodigoRetorno, c.MensagemRetorno, c.Status);
+                 var trackingMask = _domainTrackingPolicy.GetMask("DocumentoFiscal", "UpdateDocumentoFiscal", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.DocumentoFiscalCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateDocumentoFiscal", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateDocumentoFiscalReceiver), commandName: "Command.Write.DocumentoFiscalCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var documentofiscal = new DocumentoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.ProdutoFiscal, c.ChaveAcesso, c.Serie, c.Numero, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.DestinatarioDocumento, c.XmlStorageKey, c.XmlHash, c.ProtocoloAutorizacao, c.CodigoRetorno, c.MensagemRetorno, c.Status, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", documentofiscal.OperationalEntityId);
                  var domainResult = DocumentoFiscalDomainBehavior.Apply(documentofiscal, context);
                  if (!domainResult.IsValid)

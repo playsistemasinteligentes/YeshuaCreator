@@ -13,14 +13,23 @@ namespace Dominio.Schemas
     public class SqlServerSchema : ISchemaDataBase
     {
         public IUnitOfWork _unitOfWork { get; set; }
-        public SqlServerSchema(IUnitOfWork unitOfWork)
+        private readonly string _applicationName;
+        public SqlServerSchema(IUnitOfWork unitOfWork, string applicationName)
         {
             _unitOfWork = unitOfWork;
+            _applicationName = applicationName;
         }
 
         public List<MigrationQuery> ApplyMigration(Dominio.Migration.MigrationBase migration)
         {
             List<MigrationQuery> querys = new List<MigrationQuery>();
+            foreach (var entity in migration.Entitys)
+            {
+                foreach (var column in entity.AddColumns.Where(
+                    x => x.IsGlobalIdentityAuthority(_applicationName)))
+                    querys.Add(CreateGlobalIdentitySequence(entity, column));
+            }
+
             foreach (var e in migration.Entitys.Where(x => x.EntityName != "yStandardFields"))
             {
                 if (e.IsFromView)
@@ -40,6 +49,17 @@ namespace Dominio.Schemas
             querys.AddRange(BuildForeignKeyQueries(migration.Entitys));
 
             return querys;
+        }
+
+        private static MigrationQuery CreateGlobalIdentitySequence(Entity entity, Column column)
+        {
+            var sequenceName = $"{entity.EntityName}{column.Name}GlobalSequence";
+            var escapedName = EscapeSqlLiteral(sequenceName);
+            return new MigrationQuery($@"
+IF OBJECT_ID(N'{escapedName}', N'SO') IS NULL
+BEGIN
+    EXEC(N'CREATE SEQUENCE {SqlIdentifier(sequenceName)} AS INT START WITH 1 INCREMENT BY 1;');
+END;", null);
         }
 
         private MigrationQuery AlterTable(Entity entity)

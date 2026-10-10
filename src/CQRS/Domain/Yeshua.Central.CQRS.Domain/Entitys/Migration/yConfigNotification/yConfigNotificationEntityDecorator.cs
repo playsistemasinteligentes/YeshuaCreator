@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class yConfigNotificationOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification EmailSmtpClient = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification EmailPort = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification EmailUserName = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification EmailPassword = Dominio.Operational.OperationalDataClassification.NeverCapture;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class yConfigNotificationDecorator : IyConfigNotificationEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public yConfigNotificationDecorator(IyConfigNotificationEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.EmailSmtpClient = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.EmailSmtpClient) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "EmailSmtpClient", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "EmailSmtpClient", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.EmailSmtpClient, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.EmailPort = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.EmailPort) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "EmailPort", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "EmailPort", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.EmailPort, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.EmailUserName = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.EmailUserName) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "EmailUserName", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "EmailUserName", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.EmailUserName, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -138,7 +160,7 @@
                                             {
                                                 _inner.EmailPassword = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.EmailPassword) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "EmailPassword", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "EmailPassword", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.EmailPassword, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & yConfigNotificationTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("yConfigNotification", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("yConfigNotification", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, yConfigNotificationOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

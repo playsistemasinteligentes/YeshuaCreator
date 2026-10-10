@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MaquinaGrupoMaquinaCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMaquinaGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMaquinaGrupoMaquinaReceiver), commandName: "Command.Write.MaquinaGrupoMaquinaCrudCommand");
-                 var maquinagrupomaquina = new MaquinaGrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GMA_ID, c.MAQ_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MaquinaGrupoMaquina", "UpdateMaquinaGrupoMaquina", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MaquinaGrupoMaquinaCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateMaquinaGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateMaquinaGrupoMaquinaReceiver), commandName: "Command.Write.MaquinaGrupoMaquinaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var maquinagrupomaquina = new MaquinaGrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GMA_ID, c.MAQ_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", maquinagrupomaquina.OperationalEntityId);
                  var domainResult = MaquinaGrupoMaquinaDomainBehavior.Apply(maquinagrupomaquina, context);
                  if (!domainResult.IsValid)

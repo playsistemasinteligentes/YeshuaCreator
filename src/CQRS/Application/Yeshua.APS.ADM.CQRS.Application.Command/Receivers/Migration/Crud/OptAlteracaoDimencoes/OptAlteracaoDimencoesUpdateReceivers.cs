@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.OptAlteracaoDimencoesCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOptAlteracaoDimencoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOptAlteracaoDimencoesReceiver), commandName: "Command.Write.OptAlteracaoDimencoesCrudCommand");
-                 var optalteracaodimencoes = new OptAlteracaoDimencoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OAD_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("OptAlteracaoDimencoes", "UpdateOptAlteracaoDimencoes", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.OptAlteracaoDimencoesCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateOptAlteracaoDimencoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateOptAlteracaoDimencoesReceiver), commandName: "Command.Write.OptAlteracaoDimencoesCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var optalteracaodimencoes = new OptAlteracaoDimencoesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.OAD_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", optalteracaodimencoes.OperationalEntityId);
                  var domainResult = OptAlteracaoDimencoesDomainBehavior.Apply(optalteracaodimencoes, context);
                  if (!domainResult.IsValid)

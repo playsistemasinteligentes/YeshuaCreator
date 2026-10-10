@@ -51,6 +51,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using Shered.DB.Connection;");
             sb.AppendLine("using Aplication.Interfaces.Services;");
             sb.AppendLine("using Shared.Operational;");
+            sb.AppendLine("using Shared.ModuleTransport;");
             sb.AppendLine("using Yeshua.Generated.Operational;");
             sb.AppendLine("using Yeshua.Generated.OperationalControl;");
             if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
@@ -76,6 +77,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                    var runtimeIdentityProvider = new RuntimeIdentityProvider(builder.Environment.EnvironmentName);");
             sb.AppendLine("                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(runtimeIdentityProvider);");
             sb.AppendLine("                    builder.Services.AddYeshuaOperationalTelemetry(builder.Configuration, runtimeIdentityProvider.Current);");
+            sb.AppendLine("                    builder.Services.AddYeshuaModuleAuthentication(builder.Configuration);");
             sb.AppendLine("                    builder.Services.AddSingleton<OperationalLoggingPolicyState>(sp =>");
             sb.AppendLine("                        new OperationalLoggingPolicyState(");
             sb.AppendLine("                            sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Application,");
@@ -107,7 +109,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                    builder.Services.AddSingleton<Shered.Logger.Logger>(sp =>");
             sb.AppendLine("                        new Shered.Logger.Logger(");
             sb.AppendLine("                            sp.GetRequiredService<Dominio.Interfaces.IOperationalTelemetryPolicy>(),");
-            sb.AppendLine("                            sp.GetRequiredService<IOperationalLogSink>()));");
+            sb.AppendLine("                            sp.GetRequiredService<IOperationalLogSink>(),");
+            sb.AppendLine("                            sp.GetRequiredService<IRuntimeIdentityProvider>()));");
             sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>");
             sb.AppendLine("                        sp.GetRequiredService<Shered.Logger.Logger>());");
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");

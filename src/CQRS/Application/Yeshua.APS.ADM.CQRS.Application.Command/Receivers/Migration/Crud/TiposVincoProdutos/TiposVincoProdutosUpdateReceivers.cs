@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TiposVincoProdutosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTiposVincoProdutos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTiposVincoProdutosReceiver), commandName: "Command.Write.TiposVincoProdutosCrudCommand");
-                 var tiposvincoprodutos = new TiposVincoProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TiposVincoProdutos", "UpdateTiposVincoProdutos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TiposVincoProdutosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateTiposVincoProdutos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateTiposVincoProdutosReceiver), commandName: "Command.Write.TiposVincoProdutosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tiposvincoprodutos = new TiposVincoProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Id2, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tiposvincoprodutos.OperationalEntityId);
                  var domainResult = TiposVincoProdutosDomainBehavior.Apply(tiposvincoprodutos, context);
                  if (!domainResult.IsValid)

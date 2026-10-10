@@ -34,13 +34,14 @@
                             }
 
                             public IConsultasEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? con_casas_decimais, string? con_conexao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? con_casas_decimais, string? con_conexao, ulong? trackingMask = null )
                             {
                             var entity = new ConsultasEntity(id, con_casas_decimais, con_conexao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("Consultas", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new ConsultasDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("Consultas", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new ConsultasDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

@@ -10,11 +10,16 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
         private readonly bool _isInterface;
-        public SourceCodeInfraestructureQueryWriteMigration(Entity entity, bool isInterface)
+        private readonly string _applicationName;
+        public SourceCodeInfraestructureQueryWriteMigration(
+            Entity entity,
+            bool isInterface,
+            string applicationName)
             : base()
         {
             _entity = entity;
             _isInterface = isInterface;
+            _applicationName = applicationName;
         }
 
         protected override StringBuilder GenerateCode()
@@ -49,6 +54,11 @@ namespace Dominio.Schemas.CQRS
 
                 //delete 
                 sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName});");
+
+                var globalIdentity = _entity.AddColumns.FirstOrDefault(
+                    x => x.IsGlobalIdentityAuthority(_applicationName));
+                if (globalIdentity != null)
+                    sb.AppendLine("        public QueryModel NextGlobalIdQuery();");
 
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
@@ -102,7 +112,9 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
                     else if (column.IsValueDefault)
                     {
-                        if (column.ValueDefault.StartsWith("#"))
+                        if (string.Equals(column.ValueDefault, "#null", StringComparison.Ordinal))
+                            sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
+                        else if (column.ValueDefault.StartsWith("#"))
                             sb.AppendLine($"                {column.Name} = {(column.ValueDefault.Substring(1))},");
                         else
                             sb.AppendLine($"                {column.Name} = {(column.ValueDefault == "''" ? "\"\"" : column.ValueDefault)},");
@@ -113,6 +125,18 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            };");
                 sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
                 sb.AppendLine("        }");
+
+                var globalIdentity = _entity.AddColumns.FirstOrDefault(
+                    x => x.IsGlobalIdentityAuthority(_applicationName));
+                if (globalIdentity != null)
+                {
+                    var sequenceName = $"{_entity.EntityName}{globalIdentity.Name}GlobalSequence";
+                    sb.AppendLine();
+                    sb.AppendLine("        public QueryModel NextGlobalIdQuery()");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"            return new QueryModel(\"SELECT NEXT VALUE FOR {SqlIdentifier(sequenceName)};\", null);");
+                    sb.AppendLine("        }");
+                }
 
                 // update 
                 sb.AppendLine($"        public QueryModel Update{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");

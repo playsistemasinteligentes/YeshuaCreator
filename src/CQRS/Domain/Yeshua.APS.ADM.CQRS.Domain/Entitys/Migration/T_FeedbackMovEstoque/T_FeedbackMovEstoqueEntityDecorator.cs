@@ -30,6 +30,18 @@
             public const ulong UserId = 1UL << 7;
         }
 
+        public static class T_FeedbackMovEstoqueOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FeedbackId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MovimentoEstoqueId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class T_FeedbackMovEstoqueDecorator : IT_FeedbackMovEstoqueEntity
 {
 
@@ -37,6 +49,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public T_FeedbackMovEstoqueDecorator(IT_FeedbackMovEstoqueEntity inner, Dominio.Interfaces.ILogger logger)
@@ -54,6 +67,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -66,7 +86,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -80,7 +100,7 @@
                                             {
                                                 _inner.FeedbackId = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.FeedbackId) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "FeedbackId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "FeedbackId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.FeedbackId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -94,7 +114,7 @@
                                             {
                                                 _inner.MovimentoEstoqueId = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.MovimentoEstoqueId) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "MovimentoEstoqueId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "MovimentoEstoqueId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.MovimentoEstoqueId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -109,7 +129,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -123,7 +143,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -137,7 +157,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -151,7 +171,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & T_FeedbackMovEstoqueTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("T_FeedbackMovEstoque", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, T_FeedbackMovEstoqueOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

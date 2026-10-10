@@ -34,6 +34,22 @@
             public const ulong UserId = 1UL << 11;
         }
 
+        public static class RelatoriosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification REL_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REL_NOME_RELATORIO = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification REL_NOME_CAMPO = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification REL_TIPO_CAMPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REL_POS_X = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REL_POS_Y = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification REL_TAMANHO_FONTE = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class RelatoriosDecorator : IRelatoriosEntity
 {
 
@@ -41,6 +57,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public RelatoriosDecorator(IRelatoriosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -58,6 +75,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -70,7 +94,7 @@
                                             {
                                                 _inner.REL_ID = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_ID) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -84,7 +108,7 @@
                                             {
                                                 _inner.REL_NOME_RELATORIO = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_NOME_RELATORIO) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_NOME_RELATORIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_NOME_RELATORIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_NOME_RELATORIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -98,7 +122,7 @@
                                             {
                                                 _inner.REL_NOME_CAMPO = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_NOME_CAMPO) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_NOME_CAMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_NOME_CAMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_NOME_CAMPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -112,7 +136,7 @@
                                             {
                                                 _inner.REL_TIPO_CAMPO = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_TIPO_CAMPO) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_TIPO_CAMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_TIPO_CAMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_TIPO_CAMPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -126,7 +150,7 @@
                                             {
                                                 _inner.REL_POS_X = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_POS_X) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_POS_X", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_POS_X", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_POS_X, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -140,7 +164,7 @@
                                             {
                                                 _inner.REL_POS_Y = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_POS_Y) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_POS_Y", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_POS_Y", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_POS_Y, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -154,7 +178,7 @@
                                             {
                                                 _inner.REL_TAMANHO_FONTE = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.REL_TAMANHO_FONTE) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "REL_TAMANHO_FONTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "REL_TAMANHO_FONTE", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.REL_TAMANHO_FONTE, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -169,7 +193,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -183,7 +207,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -197,7 +221,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -211,7 +235,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & RelatoriosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("Relatorios", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("Relatorios", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, RelatoriosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

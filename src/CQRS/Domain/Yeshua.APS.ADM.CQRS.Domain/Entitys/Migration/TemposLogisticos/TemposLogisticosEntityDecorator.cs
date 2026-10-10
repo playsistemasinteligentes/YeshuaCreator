@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class TemposLogisticosOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TMP_TIPO_TEMPO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TMP_TIPO_CARGA = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TMP_TEMPO_MEDIO_UNITARIO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CLI_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class TemposLogisticosDecorator : ITemposLogisticosEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public TemposLogisticosDecorator(ITemposLogisticosEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.TMP_TIPO_TEMPO = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.TMP_TIPO_TEMPO) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "TMP_TIPO_TEMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "TMP_TIPO_TEMPO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.TMP_TIPO_TEMPO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.TMP_TIPO_CARGA = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.TMP_TIPO_CARGA) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "TMP_TIPO_CARGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "TMP_TIPO_CARGA", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.TMP_TIPO_CARGA, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.TMP_TEMPO_MEDIO_UNITARIO = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.TMP_TEMPO_MEDIO_UNITARIO) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "TMP_TEMPO_MEDIO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "TMP_TEMPO_MEDIO_UNITARIO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.TMP_TEMPO_MEDIO_UNITARIO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.CLI_ID = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.CLI_ID) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "CLI_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.CLI_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TemposLogisticosTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("TemposLogisticos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("TemposLogisticos", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, TemposLogisticosOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

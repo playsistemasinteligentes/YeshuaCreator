@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.TipoInspecaoItensCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTipoInspecaoItens", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTipoInspecaoItensReceiver), commandName: "Command.Write.TipoInspecaoItensCrudCommand");
-                 var tipoinspecaoitens = new TipoInspecaoItensFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TII_ID, c.TIV_ID, c.ITI_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("TipoInspecaoItens", "InsertTipoInspecaoItens", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.TipoInspecaoItensCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTipoInspecaoItens", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTipoInspecaoItensReceiver), commandName: "Command.Write.TipoInspecaoItensCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var tipoinspecaoitens = new TipoInspecaoItensFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TII_ID, c.TIV_ID, c.ITI_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", tipoinspecaoitens.OperationalEntityId);
                  var domainResult = TipoInspecaoItensDomainBehavior.Apply(tipoinspecaoitens, context);
                  if (!domainResult.IsValid)

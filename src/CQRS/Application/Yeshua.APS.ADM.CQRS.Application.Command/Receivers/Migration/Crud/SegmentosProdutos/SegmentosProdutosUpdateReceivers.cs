@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.SegmentosProdutosCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateSegmentosProdutos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateSegmentosProdutosReceiver), commandName: "Command.Write.SegmentosProdutosCrudCommand");
-                 var segmentosprodutos = new SegmentosProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.PRO_ID, c.SEG_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("SegmentosProdutos", "UpdateSegmentosProdutos", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.SegmentosProdutosCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateSegmentosProdutos", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateSegmentosProdutosReceiver), commandName: "Command.Write.SegmentosProdutosCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var segmentosprodutos = new SegmentosProdutosFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.GRS_ID, c.PRO_ID, c.SEG_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", segmentosprodutos.OperationalEntityId);
                  var domainResult = SegmentosProdutosDomainBehavior.Apply(segmentosprodutos, context);
                  if (!domainResult.IsValid)

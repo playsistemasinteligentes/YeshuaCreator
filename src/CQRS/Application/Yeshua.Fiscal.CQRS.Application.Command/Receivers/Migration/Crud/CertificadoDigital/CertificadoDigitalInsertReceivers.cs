@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.CertificadoDigitalCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCertificadoDigital", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCertificadoDigitalReceiver), commandName: "Command.Write.CertificadoDigitalCrudCommand");
-                 var certificadodigital = new CertificadoDigitalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Apelido, c.DocumentoTitular, c.StorageKey, c.Thumbprint, c.ValidoDe, c.ValidoAte, c.Ativo, c.SenhaStorageKey);
+                 var trackingMask = _domainTrackingPolicy.GetMask("CertificadoDigital", "InsertCertificadoDigital", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.CertificadoDigitalCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertCertificadoDigital", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertCertificadoDigitalReceiver), commandName: "Command.Write.CertificadoDigitalCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var certificadodigital = new CertificadoDigitalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Apelido, c.DocumentoTitular, c.StorageKey, c.Thumbprint, c.ValidoDe, c.ValidoAte, c.Ativo, c.SenhaStorageKey, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", certificadodigital.OperationalEntityId);
                  var domainResult = CertificadoDigitalDomainBehavior.Apply(certificadodigital, context);
                  if (!domainResult.IsValid)

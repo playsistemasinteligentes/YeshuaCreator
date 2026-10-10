@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MedidasTesteCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMedidasTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMedidasTesteReceiver), commandName: "Command.Write.MedidasTesteCrudCommand");
-                 var medidasteste = new MedidasTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDT_ID, c.MDT_DESC, c.MDT_VALOR_ESPERADO, c.MDT_ENCONTRADO, c.UNI_ID);
+                 var trackingMask = _domainTrackingPolicy.GetMask("MedidasTeste", "InsertMedidasTeste", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.MedidasTesteCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMedidasTeste", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMedidasTesteReceiver), commandName: "Command.Write.MedidasTesteCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var medidasteste = new MedidasTesteFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDT_ID, c.MDT_DESC, c.MDT_VALOR_ESPERADO, c.MDT_ENCONTRADO, c.UNI_ID, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", medidasteste.OperationalEntityId);
                  var domainResult = MedidasTesteDomainBehavior.Apply(medidasteste, context);
                  if (!domainResult.IsValid)

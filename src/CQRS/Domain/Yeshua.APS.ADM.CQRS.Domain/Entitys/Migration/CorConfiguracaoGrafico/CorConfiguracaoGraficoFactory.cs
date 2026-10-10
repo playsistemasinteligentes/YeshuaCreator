@@ -34,13 +34,14 @@
                             }
 
                             public ICorConfiguracaoGraficoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string cor_id, Decimal cor_percentual_ini, Decimal cor_percentual_fim, string cor_descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string cor_id, Decimal cor_percentual_ini, Decimal cor_percentual_fim, string cor_descricao, ulong? trackingMask = null )
                             {
                             var entity = new CorConfiguracaoGraficoEntity(cor_id, cor_percentual_ini, cor_percentual_fim, cor_descricao );
 
 
-                            var trackingMask = _trackingPolicy?.GetMask("CorConfiguracaoGrafico", context?.Intent, context?.RecordId) ?? 0UL;
-                            var decoratedEntity = new CorConfiguracaoGraficoDecorator(entity, _logger, context, trackingMask);
+                            var effectiveTrackingMask = trackingMask ??
+                                _trackingPolicy?.GetMask("CorConfiguracaoGrafico", context?.Intent, context?.RecordId) ?? 0UL;
+                            var decoratedEntity = new CorConfiguracaoGraficoDecorator(entity, _logger, context, effectiveTrackingMask);
                             return decoratedEntity;
                                     }
                                 }

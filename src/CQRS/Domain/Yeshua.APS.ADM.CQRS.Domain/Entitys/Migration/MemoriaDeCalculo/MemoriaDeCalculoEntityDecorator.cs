@@ -32,6 +32,20 @@
             public const ulong UserId = 1UL << 9;
         }
 
+        public static class MemoriaDeCalculoOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MEM_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ORC_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MEM_VALOR = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MEM_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class MemoriaDeCalculoDecorator : IMemoriaDeCalculoEntity
 {
 
@@ -39,6 +53,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public MemoriaDeCalculoDecorator(IMemoriaDeCalculoEntity inner, Dominio.Interfaces.ILogger logger)
@@ -56,6 +71,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -68,7 +90,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -82,7 +104,7 @@
                                             {
                                                 _inner.MEM_ID = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.MEM_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "MEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "MEM_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.MEM_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -96,7 +118,7 @@
                                             {
                                                 _inner.ORC_ID = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.ORC_ID) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "ORC_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "ORC_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.ORC_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -110,7 +132,7 @@
                                             {
                                                 _inner.MEM_VALOR = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.MEM_VALOR) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "MEM_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "MEM_VALOR", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.MEM_VALOR, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -124,7 +146,7 @@
                                             {
                                                 _inner.MEM_DESCRICAO = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.MEM_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "MEM_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "MEM_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.MEM_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -139,7 +161,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -153,7 +175,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -167,7 +189,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -181,7 +203,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & MemoriaDeCalculoTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("MemoriaDeCalculo", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, MemoriaDeCalculoOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

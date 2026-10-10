@@ -36,6 +36,24 @@
             public const ulong UserId = 1UL << 13;
         }
 
+        public static class ItemTestavelOperationalFields
+        {
+            public const Dominio.Operational.OperationalDataClassification Id = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_ID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_DESCRICAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_OBS = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_NUMERO_DE_TESTES = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_CONDICIONAL_DE_AVALIACAO = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_VALOR_DA_CONDICIONAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_VALOR_CALCULADO_DA_CONDICIONAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ITE_TIPO_AVALIACAO_FINAL = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification TenantID = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Deleted = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
+        }
+
         public partial class ItemTestavelDecorator : IItemTestavelEntity
 {
 
@@ -43,6 +61,7 @@
                         private readonly Dominio.Interfaces.ILogger _logger;
                         private readonly ulong _trackingMask;
                         private readonly string _trackingTraceId;
+                        private readonly Dominio.Operational.OperationalExecutionIdentity _trackingExecutionIdentity;
                         private readonly string? _trackingOperation;
                         private readonly string? _trackingRecordId;
                         public ItemTestavelDecorator(IItemTestavelEntity inner, Dominio.Interfaces.ILogger logger)
@@ -60,6 +79,13 @@
                             _logger = logger;
                             _trackingMask = trackingMask;
                             _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingExecutionIdentity = context is null
+                                ? default
+                                : new Dominio.Operational.OperationalExecutionIdentity(
+                                    context.RootOperationId,
+                                    context.OperationId,
+                                    context.ExecutionId,
+                                    context.CausationId);
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
@@ -72,7 +98,7 @@
                                             {
                                                 _inner.Id = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.Id) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.Id, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -86,7 +112,7 @@
                                             {
                                                 _inner.ITE_ID = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_ID) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_ID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -100,7 +126,7 @@
                                             {
                                                 _inner.ITE_DESCRICAO = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_DESCRICAO) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_DESCRICAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_DESCRICAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -114,7 +140,7 @@
                                             {
                                                 _inner.ITE_OBS = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_OBS) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_OBS", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_OBS, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -128,7 +154,7 @@
                                             {
                                                 _inner.ITE_NUMERO_DE_TESTES = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_NUMERO_DE_TESTES) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_NUMERO_DE_TESTES", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_NUMERO_DE_TESTES", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_NUMERO_DE_TESTES, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -142,7 +168,7 @@
                                             {
                                                 _inner.ITE_CONDICIONAL_DE_AVALIACAO = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_CONDICIONAL_DE_AVALIACAO) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_CONDICIONAL_DE_AVALIACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_CONDICIONAL_DE_AVALIACAO", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_CONDICIONAL_DE_AVALIACAO, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -156,7 +182,7 @@
                                             {
                                                 _inner.ITE_VALOR_DA_CONDICIONAL = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_VALOR_DA_CONDICIONAL) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_VALOR_DA_CONDICIONAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_VALOR_DA_CONDICIONAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_VALOR_DA_CONDICIONAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -170,7 +196,7 @@
                                             {
                                                 _inner.ITE_VALOR_CALCULADO_DA_CONDICIONAL = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_VALOR_CALCULADO_DA_CONDICIONAL) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_VALOR_CALCULADO_DA_CONDICIONAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_VALOR_CALCULADO_DA_CONDICIONAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_VALOR_CALCULADO_DA_CONDICIONAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -184,7 +210,7 @@
                                             {
                                                 _inner.ITE_TIPO_AVALIACAO_FINAL = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.ITE_TIPO_AVALIACAO_FINAL) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_TIPO_AVALIACAO_FINAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "ITE_TIPO_AVALIACAO_FINAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.ITE_TIPO_AVALIACAO_FINAL, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -199,7 +225,7 @@
                                             {
                                                 _inner.TenantID = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.TenantID) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.TenantID, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -213,7 +239,7 @@
                                             {
                                                 _inner.Deleted = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.Deleted) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.Deleted, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -227,7 +253,7 @@
                                             {
                                                 _inner.Changed = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.Changed) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.Changed, _trackingExecutionIdentity);
                                             }
                                         }
                                     }
@@ -241,7 +267,7 @@
                                             {
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & ItemTestavelTrackingFields.UserId) != 0UL)
-                                                    _logger.DomainValueChanged("ItemTestavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                                    _logger.DomainValueChanged("ItemTestavel", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ItemTestavelOperationalFields.UserId, _trackingExecutionIdentity);
                                             }
                                         }
                                     }

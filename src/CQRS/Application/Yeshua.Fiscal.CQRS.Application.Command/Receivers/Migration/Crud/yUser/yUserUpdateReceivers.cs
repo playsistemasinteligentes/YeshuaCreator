@@ -48,9 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yUserCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyUser", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyUserReceiver), commandName: "Command.Write.yUserCrudCommand");
-                 var yuser = new yUserFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Email, c.Senha);
-                 System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", yuser.OperationalEntityId);
+                 var trackingMask = _domainTrackingPolicy.GetMask("yUser", "UpdateyUser", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.yUserCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateyUser", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateyUserReceiver), commandName: "Command.Write.yUserCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var yuser = new yUserFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Email, c.Senha, trackingMask: trackingMask);
                  var domainResult = yUserDomainBehavior.Apply(yuser, context);
                  if (!domainResult.IsValid)
                      return Task.FromResult(ValidationError(domainResult.Errors));

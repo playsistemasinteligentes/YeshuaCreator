@@ -48,8 +48,13 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ItensCalendarioCrudCommand c) 
              {    
-                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertItensCalendario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertItensCalendarioReceiver), commandName: "Command.Write.ItensCalendarioCrudCommand");
-                 var itenscalendario = new ItensCalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.ICA_ID, c.ICA_DATA_DE, c.ICA_DATA_ATE, c.ICA_OBSERVACAO, c.ICA_TIPO, c.URM_ID, c.URN_ID, c.CAL_ID, c.MAQ_ID, c.PRO_ID, c.ICA_LIMPESA_MAQUINA);
+                 var trackingMask = _domainTrackingPolicy.GetMask("ItensCalendario", "InsertItensCalendario", null);
+                 var hasExecutionIdentity = _executionContext.TryGetOperationalIdentity(out var executionIdentity);
+                 using var domainTrackingExecutionScope = !hasExecutionIdentity && trackingMask != 0UL ? _executionContext.BeginOperationalExecution("Command.Write.ItensCalendarioCrudCommand") : null;
+                 if (!hasExecutionIdentity && trackingMask != 0UL)
+                     executionIdentity = _executionContext.OperationalIdentity;
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertItensCalendario", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertItensCalendarioReceiver), commandName: "Command.Write.ItensCalendarioCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
+                 var itenscalendario = new ItensCalendarioFactory(_logger, _domainTrackingPolicy).Create(context, c.ICA_ID, c.ICA_DATA_DE, c.ICA_DATA_ATE, c.ICA_OBSERVACAO, c.ICA_TIPO, c.URM_ID, c.URN_ID, c.CAL_ID, c.MAQ_ID, c.PRO_ID, c.ICA_LIMPESA_MAQUINA, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", itenscalendario.OperationalEntityId);
                  var domainResult = ItensCalendarioDomainBehavior.Apply(itenscalendario, context);
                  if (!domainResult.IsValid)
