@@ -56,6 +56,23 @@ namespace TestMigration
         }
 
         [TestMethod]
+        public void OperationalEntityIdIsDeclaredByInitialMigration()
+        {
+            var migration = new global::Migration.Dominio.Migration.S000001();
+            migration.Up();
+
+            foreach (var entityName in new[] { "yTenant", "yUser", "yStandardFields" })
+            {
+                var entity = migration.Entitys.Single(item => item.EntityName == entityName);
+                var column = entity.AddColumns.Single(item => item.Name == "OperationalEntityId");
+
+                Assert.IsTrue(column.IsImmutable);
+                Assert.IsTrue(column.IsNotNull);
+                Assert.AreEqual(32, column.Length);
+            }
+        }
+
+        [TestMethod]
         public void TenantUsesCentralGlobalIdentityInsteadOfLocalIncrement()
         {
             var migration = new global::Migration.Dominio.Migration.S000001();

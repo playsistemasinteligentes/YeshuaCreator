@@ -43,12 +43,14 @@ Polling
 
             AddEntity("yTenant").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Key().GlobalIdentity("Central").NeedBeWhere("#_executionContext.TenantID").CanTakeOffWhere()
+            .AddColumn("OperationalEntityId", "Identificador operacional").Varchar(32).NotNull().DefaultValue("#Guid.NewGuid().ToString(\"N\")").Immutable().EditFront(false).VisivelFront(false)
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Varchar(14).NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull()
             .AddColumn("UserId", "User ID").Int();
 
             AddEntity("yUser").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Key().GlobalIdentity("Central")
+            .AddColumn("OperationalEntityId", "Identificador operacional").Varchar(32).NotNull().DefaultValue("#Guid.NewGuid().ToString(\"N\")").Immutable().EditFront(false).VisivelFront(false)
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
@@ -63,7 +65,17 @@ Polling
             .AddColumn("Changed", "Changed").DateTime().DefaultValue("#DateTime.Now").EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
             .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_executionContext.UserId").EditFront(false).VisivelFront(false)
-            .NotEntity("yModule");
+            .NotEntity("yModule")
+            .AddColumn("OperationalEntityId", "Identificador operacional")
+            .Varchar(32)
+            .NotNull()
+            .DefaultValue("#Guid.NewGuid().ToString(\"N\")")
+            .Immutable()
+            .EditFront(false)
+            .VisivelFront(false)
+            .NotEntity("yModule")
+            .NotEntity("yTenant")
+            .NotEntity("yUser");
 
 
             AddEntity("yConfigArcteture").AddModule("ADM").Cached()

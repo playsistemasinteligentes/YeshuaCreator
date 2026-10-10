@@ -68,6 +68,10 @@ namespace Migration.Dominio.Migration
             .AddColumn("NextExecutionAt", "Proxima execucao").DateTime()
             .AddColumn("LockedAt", "LockedAt").DateTime()
             .AddColumn("LockedBy", "LockedBy").Varchar(100)
+            .AddColumn("RootOperationId", "Operacao raiz").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+            .AddColumn("OperationId", "Operacao logica").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+            .AddColumn("ExecutionId", "Tentativa de execucao").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+            .AddColumn("CausationId", "Execucao causadora").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
             .AddColumn("ProcessingScope", "Escopo de processamento").Varchar(100).NotNull().DefaultValue("#_executionContext.ProcessingScope").Immutable().EditFront(false).VisivelFront(false).NeedBeWhere()
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
@@ -96,6 +100,10 @@ namespace Migration.Dominio.Migration
             .AddColumn("ErrorMessage", "Erro").Varchar(2000)
             .AddColumn("Payload", "Payload").VarcharMax()
             .AddColumn("RetryCount", "Tentativas").Int().NotNull()
+            .AddColumn("RootOperationId", "Operacao raiz").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+            .AddColumn("OperationId", "Operacao logica").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+            .AddColumn("ExecutionId", "Tentativa de execucao").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+            .AddColumn("CausationId", "Execucao causadora").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
@@ -130,6 +138,10 @@ namespace Migration.Dominio.Migration
                 .AddColumn("ProcessingAt", "Processando em").DateTime() 
                 .AddColumn("NextAttemptAt", "Próxima tentativa").DateTime() 
 
+                .AddColumn("RootOperationId", "Operacao raiz").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+                .AddColumn("OperationId", "Operacao logica").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+                .AddColumn("ExecutionId", "Tentativa de execucao").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+                .AddColumn("CausationId", "Execucao causadora").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
 
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
@@ -164,6 +176,10 @@ namespace Migration.Dominio.Migration
                 .AddColumn("ProcessingAt", "Processando em").DateTime()
                 .AddColumn("NextAttemptAt", "Próxima tentativa").DateTime()
 
+                .AddColumn("RootOperationId", "Operacao raiz").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+                .AddColumn("OperationId", "Operacao logica").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+                .AddColumn("ExecutionId", "Tentativa de execucao").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
+                .AddColumn("CausationId", "Execucao causadora").Varchar(128).DefaultValue("#null").EditFront(false).VisivelFront(false)
 
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()

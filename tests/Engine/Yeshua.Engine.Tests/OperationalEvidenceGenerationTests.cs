@@ -123,15 +123,28 @@ public sealed class OperationalEvidenceGenerationTests
     [TestMethod]
     public void AsyncOperationalIdentityIsStandardForSagaOutboxAndInbox()
     {
-        var migration = new Migration.Dominio.Migration.S000009();
+        var migration = new Migration.Dominio.Migration.S000003();
         migration.Up();
+        var schema = new SqlServerSchema(null!, "Central").ApplyMigration(migration);
 
+        var expectedFields = new[] { "RootOperationId", "OperationId", "ExecutionId", "CausationId" };
         foreach (var entityName in new[] { "ySaga", "ySagaStep", "yOutbox", "yInbox" })
         {
             var entity = migration.Entitys.Single(candidate => candidate.EntityName == entityName);
             CollectionAssert.AreEquivalent(
-                new[] { "RootOperationId", "OperationId", "ExecutionId", "CausationId" },
-                entity.AddColumns.Select(column => column.Name).ToArray());
+                expectedFields,
+                entity.AddColumns
+                    .Where(column => expectedFields.Contains(column.Name))
+                    .Select(column => column.Name)
+                    .ToArray());
+
+            var createTable = schema.Single(query =>
+                query.Query.StartsWith($" CREATE TABLE [{entityName}]", StringComparison.Ordinal));
+            foreach (var field in expectedFields)
+                StringAssert.Contains(createTable.Query, $"[{field}]");
+
+            Assert.IsFalse(schema.Any(query =>
+                query.Query.Contains($"ALTER TABLE [{entityName}] ADD [{expectedFields[0]}]", StringComparison.Ordinal)));
         }
     }
 
@@ -216,7 +229,9 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "BeginOperationalExecution(parentIdentity, \"Inbox.YeshuaModuleEvent\")");
             StringAssert.Contains(content, "outboxService.AddInboxEvent(");
             StringAssert.Contains(content, "unitOfWork.Commit();");
-            StringAssert.Contains(content, ").RequireAuthorization();");
+            StringAssert.Contains(content, "IYeshuaModuleRequestAuthenticator authenticator");
+            StringAssert.Contains(content, "authenticator.Authenticate(");
+            StringAssert.Contains(content, "}).AllowAnonymous();");
             Assert.IsFalse(content.Contains("unitOfWork.Execute(", StringComparison.Ordinal));
         }
         finally
