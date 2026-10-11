@@ -60,7 +60,7 @@ public sealed class OperationalEvidenceGenerationTests
     }
 
     [TestMethod]
-    public void OperationalPolicyGenerationPropagatesExecutionMode()
+    public void OperationalPolicyGenerationDoesNotExposeGlobalExecutionMode()
     {
         var directory = CreateDirectory();
 
@@ -74,11 +74,11 @@ public sealed class OperationalEvidenceGenerationTests
                 .WriteGeneratedCode(path);
 
             var content = File.ReadAllText(path);
-            StringAssert.Contains(content, "public string DefaultMode { get; init; } = \"Live\"");
-            StringAssert.Contains(content, "public string? Mode { get; init; }");
-            StringAssert.Contains(content, "DefaultMode = NormalizeMode(update.DefaultMode, current.DefaultMode)");
-            StringAssert.Contains(content, "decision.Mode");
-            StringAssert.Contains(content, "\"SIMULATION\" => \"Simulation\"");
+            StringAssert.Contains(content, "string DefaultLevel");
+            StringAssert.Contains(content, "string DefaultDepth");
+            Assert.IsFalse(content.Contains("DefaultMode", StringComparison.Ordinal));
+            Assert.IsFalse(content.Contains("NormalizeMode", StringComparison.Ordinal));
+            Assert.IsFalse(content.Contains("decision.Mode", StringComparison.Ordinal));
         }
         finally
         {

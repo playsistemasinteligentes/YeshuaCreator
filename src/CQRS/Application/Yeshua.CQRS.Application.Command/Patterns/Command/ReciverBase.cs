@@ -59,7 +59,6 @@ namespace Command.Patterns.Command
             activity?.SetTag("yeshua.entity", entity);
             activity?.SetTag("yeshua.operational_entity_id", recordId);
             activity?.SetTag("yeshua.depth", telemetry.DiagnosticDepth.ToString());
-            activity?.SetTag("yeshua.mode", telemetry.ExecutionMode.ToString());
             OperationalActivity.SetIdentity(activity, executionIdentity);
 
             _logger.CommandStarted(

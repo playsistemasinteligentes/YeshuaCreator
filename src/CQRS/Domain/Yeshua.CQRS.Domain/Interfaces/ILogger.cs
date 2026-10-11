@@ -85,12 +85,10 @@ namespace Dominio.Interfaces
     public readonly record struct OperationalTelemetryDecision(
         bool Enabled,
         string Level,
-        string Depth,
-        string Mode = "Live")
+        string Depth)
     {
         public OperationalSeverity Severity => OperationalEvidenceAxes.ParseSeverity(Level);
         public OperationalDepth DiagnosticDepth => OperationalEvidenceAxes.ParseDepth(Depth);
-        public OperationalExecutionMode ExecutionMode => OperationalEvidenceAxes.ParseMode(Mode);
     }
 
     public readonly record struct WorkerCycleTelemetry(

@@ -289,7 +289,7 @@ public sealed class OperationalExecutionIdentityTests
             string? operation = null,
             string? entity = null,
             string? recordId = null) =>
-            new(true, "Information", "D1", "Live");
+            new(true, "Information", "D1");
     }
 
     private sealed class CapturingSink : IOperationalLogSink

@@ -1078,7 +1078,6 @@ namespace Dominio.Schemas.CQRS
             // gates: G2,G7
             // depths: D0
             // severities: notApplicable
-            // modes: Live
             // dataClassification: SafeMetadata
             // identities: Application,Environment,Version
             // technicalOutcomes: Success,Failure
@@ -1109,7 +1108,6 @@ namespace Dominio.Schemas.CQRS
                 "gates": ["G2", "G7"],
                 "depths": ["D0"],
                 "severities": ["notApplicable"],
-                "modes": ["Live"],
                 "dataClassification": ["SafeMetadata"],
                 "identities": ["Application", "Environment", "Version"],
                 "technicalOutcomes": ["Success", "Failure"],
@@ -1201,7 +1199,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("// gates: G7");
             sb.AppendLine("// depths: D0");
             sb.AppendLine("// severities: notApplicable");
-            sb.AppendLine("// modes: Live");
             sb.AppendLine("// dataClassification: OperationalData");
             sb.AppendLine("// identities: Application,Environment,Version");
             sb.AppendLine("// technicalOutcomes: Success,Failure");
@@ -1214,7 +1211,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("[Trait(\"TestPurpose\", \"TechnicalSmoke\")]");
             sb.AppendLine("[Trait(\"SpecificationGate\", \"G7\")]");
             sb.AppendLine("[Trait(\"DiagnosticDepth\", \"D0\")]");
-            sb.AppendLine("[Trait(\"ExecutionMode\", \"Live\")]");
             sb.AppendLine("public sealed class ApiSmokeCrudSuiteTests");
             sb.AppendLine("{");
             sb.AppendLine("    [IntegrationFact]");
@@ -1300,7 +1296,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("// gates: G7");
             sb.AppendLine("// depths: D0");
             sb.AppendLine("// severities: notApplicable");
-            sb.AppendLine("// modes: Live");
             sb.AppendLine("// dataClassification: OperationalData");
             sb.AppendLine("// identities: Application,Environment,Version");
             sb.AppendLine("// technicalOutcomes: Success,Failure");
@@ -1313,7 +1308,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("[Trait(\"TestPurpose\", \"TestDataSeed\")]");
             sb.AppendLine("[Trait(\"SpecificationGate\", \"G7\")]");
             sb.AppendLine("[Trait(\"DiagnosticDepth\", \"D0\")]");
-            sb.AppendLine("[Trait(\"ExecutionMode\", \"Live\")]");
             sb.AppendLine("public sealed class ApiSeedCrudSuiteTests");
             sb.AppendLine("{");
             sb.AppendLine("    [IntegrationFact]");

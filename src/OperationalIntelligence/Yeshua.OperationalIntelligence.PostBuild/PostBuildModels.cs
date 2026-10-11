@@ -3,7 +3,6 @@
 // gates: G2,G7
 // depths: D0
 // severities: notApplicable
-// modes: Live
 // dataClassification: SafeMetadata
 // identities: Application,Environment,Version
 // technicalOutcomes: Success,Failure
@@ -53,7 +52,6 @@ public sealed record OperationalSpecificationClassification(
     string[] Gates,
     string[] Depths,
     string[] Severities,
-    string[] Modes,
     string[] DataClassification,
     string[] Identities,
     string[] TechnicalOutcomes,
@@ -65,7 +63,6 @@ public sealed record OperationalSpecificationClassification(
         ["G2", "G7"],
         ["D0"],
         ["notApplicable"],
-        ["Live"],
         ["SafeMetadata"],
         ["Application", "Environment", "Version"],
         ["Success", "Failure"],

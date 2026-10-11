@@ -17,7 +17,6 @@ namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.Saga.Psychol
 [Trait("TestPurpose", "SagaE2ESmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D1")]
-[Trait("ExecutionMode", "Live")]
 public partial class PsychologySessionInsightSagaApiSmokeTests : ApiIntegrationTestBase
 {
     private const string ReadSagaEndpoint = "yapi/ySaga/ReadySaga";

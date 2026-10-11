@@ -17,7 +17,6 @@ namespace Yeshua.Memorias.CQRS.Tests.Integration.Api.Smoke.Migration.Saga.Public
 [Trait("TestPurpose", "SagaE2ESmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D1")]
-[Trait("ExecutionMode", "Live")]
 public partial class PublicarAlbumYouTubeSagaApiSmokeTests : ApiIntegrationTestBase
 {
     private const string ReadSagaEndpoint = "yapi/ySaga/ReadySaga";

@@ -3,7 +3,6 @@
 // gates: G2,G7
 // depths: D0
 // severities: notApplicable
-// modes: Live
 // dataClassification: SafeMetadata,OperationalData
 // identities: Application,Environment,Version
 // technicalOutcomes: Success,Failure

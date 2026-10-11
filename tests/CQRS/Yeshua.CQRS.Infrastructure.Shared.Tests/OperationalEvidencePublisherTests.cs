@@ -13,7 +13,7 @@ namespace Yeshua.CQRS.Infrastructure.Shared.Tests;
 public sealed class OperationalEvidencePublisherTests
 {
     [TestMethod]
-    public void Publish_PreservesIndependentAxesAndOutcomes()
+    public void Publish_PreservesSeverityDepthAndOutcomes()
     {
         var sink = new CapturingSink();
         var publisher = new OperationalEvidencePublisher(sink);
@@ -22,7 +22,6 @@ public sealed class OperationalEvidencePublisherTests
             "EmitirCte",
             OperationalSeverity.Warning,
             OperationalDepth.D3,
-            OperationalExecutionMode.Simulation,
             OperationalTechnicalOutcome.Succeeded,
             OperationalBusinessOutcome.Rejected,
             TraceId: "trace-1");
@@ -33,7 +32,6 @@ public sealed class OperationalEvidencePublisherTests
         var root = document.RootElement;
         Assert.AreEqual("Warning", root.GetProperty("Level").GetString());
         Assert.AreEqual("D3", root.GetProperty("Depth").GetString());
-        Assert.AreEqual("Simulation", root.GetProperty("Mode").GetString());
         Assert.AreEqual("Succeeded", root.GetProperty("TechnicalOutcome").GetString());
         Assert.AreEqual("Rejected", root.GetProperty("BusinessOutcome").GetString());
     }
@@ -92,8 +90,7 @@ public sealed class OperationalEvidencePublisherTests
         var telemetry = new OperationalTelemetryDecision(
             true,
             "Information",
-            "D1",
-            "Live");
+            "D1");
         var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
 
         logger.CommandStarted("EmitirCte");
@@ -120,7 +117,7 @@ public sealed class OperationalEvidencePublisherTests
     public void CommandBaseline_EmitsStartAndCompletionWithRuntimeAndOperationalIdentity()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Information", "D0", "Live");
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D0");
         var runtime = new FixedRuntimeIdentityProvider(new RuntimeIdentity(
             "Fiscal",
             "Production",
@@ -175,7 +172,7 @@ public sealed class OperationalEvidencePublisherTests
     public void CommandFailure_EmitsSanitizedSummaryWithoutSensitiveMessageAtD0()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Information", "D0", "Live");
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D0");
         var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
 
         logger.CommandStarted("EmitirCte", "trace-2", telemetry);
@@ -204,7 +201,7 @@ public sealed class OperationalEvidencePublisherTests
     public void SagaTransition_EmitsSearchableD1NarrativeWithRuntimeIdentity()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Warning", "D1", "Live");
+        var telemetry = new OperationalTelemetryDecision(true, "Warning", "D1");
         var runtime = new FixedRuntimeIdentityProvider(new RuntimeIdentity(
             "Fiscal",
             "Production",
@@ -258,7 +255,7 @@ public sealed class OperationalEvidencePublisherTests
     public void OperationalTransition_EmitsComponentChangeWithoutPayload()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1", "Live");
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1");
         var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
         var identity = new OperationalExecutionIdentity(
             "root-2",
@@ -297,7 +294,7 @@ public sealed class OperationalEvidencePublisherTests
     public void RepositoryFailure_IdentifiesSqlDependencyWithoutSensitiveDetails()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1", "Live");
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1");
         var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
 
         logger.Repository(
@@ -328,7 +325,7 @@ public sealed class OperationalEvidencePublisherTests
     public async Task HttpDependency_EmitsSanitizedResultWithCausalIdentity()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1", "Live");
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1");
         var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
         var handler = new OperationalHttpTelemetryHandler(logger)
         {
@@ -398,7 +395,7 @@ public sealed class OperationalEvidencePublisherTests
     public void DomainTracking_UsesGeneratedClassificationAtSelectedDepth()
     {
         var sink = new CapturingSink();
-        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1", "Replay");
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1");
         var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
 
         logger.DomainValueChanged(
@@ -412,7 +409,6 @@ public sealed class OperationalEvidencePublisherTests
 
         using var document = JsonDocument.Parse(sink.SinglePayload);
         var root = document.RootElement;
-        Assert.AreEqual("Replay", root.GetProperty("Mode").GetString());
         Assert.AreEqual("12345678900", root.GetProperty("Data").GetProperty("Value").GetString());
     }
 
@@ -421,7 +417,6 @@ public sealed class OperationalEvidencePublisherTests
         "Test",
         OperationalSeverity.Information,
         depth,
-        OperationalExecutionMode.Live,
         OperationalTechnicalOutcome.Succeeded,
         OperationalBusinessOutcome.Accepted);
 

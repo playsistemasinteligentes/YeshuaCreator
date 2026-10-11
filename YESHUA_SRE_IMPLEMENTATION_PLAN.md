@@ -38,7 +38,7 @@ identificar, conforme aplicavel:
 - gate G1-G7;
 - profundidade D0-D4;
 - severidade;
-- modo de execucao;
+- escopo de captura;
 - classificacao de dados;
 - identidade operacional;
 - resultado tecnico e de negocio;
@@ -60,7 +60,6 @@ Formato canonico para artefatos operacionais C#:
 // gates: G2,G7
 // depths: D0
 // severities: notApplicable
-// modes: Live
 // dataClassification: SafeMetadata
 // identities: Application,Environment,Version
 // technicalOutcomes: Success,Failure
@@ -134,7 +133,7 @@ intencao e a rastreabilidade; somente a evidencia executada comprova o gate.
 - Retencao por profundidade e homologacao integrada contra vazamento de dados.
 - Provider central de eventos operacionais consultavel por `OperationId`.
 - Coletores de runtime na Inteligencia Operacional.
-- Replay, Simulation e Regression baseados em capturas.
+- Reproducao, simulacao e regressao baseadas em capturas.
 - Agentes operacionais autonomos.
 - Deteccao preditiva baseada em comportamento runtime.
 
@@ -172,7 +171,7 @@ intencao e a rastreabilidade; somente a evidencia executada comprova o gate.
 - Informar decisoes e resultados que somente a regra de negocio conhece.
 - Sanitizar dados particulares que nao possam ser classificados pela Engine.
 - Implementar coletores e integracoes especificas.
-- Implementar corpos customizados de Replay ou Simulation quando houver
+- Implementar corpos customizados de reproducao ou simulacao quando houver
   efeitos particulares.
 
 ### Infraestrutura
@@ -215,7 +214,8 @@ O fluxo alvo e unico:
 
 `borda -> IExecutionContext -> Command/Receiver -> Repository/Saga/Worker -> evento operacional sanitizado -> provider -> Inteligencia Operacional -> contexto de fonte`
 
-1. `Shared` define contratos pequenos: identidades, tres eixos, resultados,
+1. `Shared` define contratos pequenos: identidades, severidade, profundidade,
+   escopo, resultados,
    classificacao de dados, envelope operacional, sanitizador e publisher.
 2. A `Engine` gera descritores estaticos, propagacao e chamadas nos pontos
    arquiteturais existentes. Nao usa reflection no caminho quente.
@@ -254,7 +254,7 @@ O fluxo alvo e unico:
 | G1 Governanca | PARCIAL | escopo e runbook piloto da Clinica | donos, ambientes, exclusoes e aprovacao por operacao/aplicativo |
 | G2 Fonte e versao | PARCIAL AVANCADO | identidade runtime, snapshots por commit e pos-build | provar automaticamente artefato publicado igual ao snapshot confirmado |
 | G3 Identidade operacional | PARCIAL | `TraceId` e `CorrelationId` em varios fluxos | contrato universal e propagacao de raiz, operacao, execucao e causa |
-| G4 Evidencia minima | PARCIAL | Commands, repositories, health e logs JSON | envelope D0/D1, tres eixos, dois resultados e sanitizacao obrigatoria |
+| G4 Evidencia minima | PARCIAL | Commands, repositories, health e logs JSON | envelope D0/D1, severidade, profundidade, escopo, dois resultados e sanitizacao obrigatoria |
 | G5 Consulta | PARCIAL | API de fonte e snapshots locais | persistencia runtime central, retencao, auditoria e consulta por operacao |
 | G6 Diagnostico dirigido | PARCIAL INICIAL | controle central, alvos e expiracao | aprovacao, justificativa, volume, campos autorizados e captura D2 completa |
 | G7 Demonstracao | PARCIAL | runner pos-build e smoke CRUD | pacote de sucesso, rejeicao, falha, propagacao, NeverCapture e D2 |
@@ -323,22 +323,22 @@ sejam inferiveis.
 **Aceite:** cada operacao homologada possui identificador estavel, entrada,
 etapas, dependencias, resultados e eventos esperados.
 
-### Passo 4 - Modelar Os Tres Eixos
+### Passo 4 - Modelar Evidencia E Politica De Captura
 
-**Entrega externa:** severidade, profundidade e modo variam de forma
-independente.
+**Entrega externa:** severidade e profundidade variam de forma independente, e
+a politica define explicitamente o escopo capturado.
 
 **Yeshua hoje: CONCEITO**
 
-- Os tres eixos estao definidos na especificacao.
-- Nao existem tipos runtime nem persistencia desses eixos.
+- Os dois eixos e o escopo estao definidos na especificacao.
+- Nao existem tipos runtime nem persistencia completa desses conceitos.
 
 **Implementacao Yeshua:** criar tipos genericos `OperationalSeverity`,
-`DiagnosticDepth` e `ExecutionMode`; a Engine deve inclui-los nos eventos sem
-acoplar um eixo ao outro.
+`DiagnosticDepth` e seletores de escopo; a Engine deve inclui-los na politica e
+nos eventos sem acoplar severidade e profundidade.
 
-**Aceite:** testes combinam severidades diferentes com D0/D1/D2 e com Live,
-Replay, Simulation e Regression sem alterar automaticamente os outros eixos.
+**Aceite:** testes combinam severidades diferentes com D0/D1/D2 e escopos
+distintos sem alterar automaticamente os demais controles.
 
 ### Passo 5 - Implementar Identidade E Propagacao
 
@@ -395,7 +395,8 @@ administrativo ao servidor.
 
 **Implementacao Yeshua:** definir um provider inicial de eventos e adicionar
 coletores de logs/eventos, metricas, traces, banco operacional e integracoes.
-Implementar consulta por identidades, tres eixos, versao e janela de tempo.
+Implementar consulta por identidades, severidade, profundidade, escopo, versao
+e janela de tempo.
 
 **Aceite:** o suporte recupera uma operacao completa pela API sem entrar no
 servidor, e a consulta fica auditada.
@@ -653,7 +654,7 @@ Nenhum degrau autoriza sozinho uma alteracao de producao.
 | Y1 | Build verificavel | health pos-build e versao runtime ligada ao snapshot | PARCIAL |
 | Y2 | Operacao observavel | D0/D1, identidades e propagacao ponta a ponta | PARCIAL |
 | Y3 | Diagnostico dirigido | D2, protecao de dados e coletores runtime | NAO IMPLEMENTADO |
-| Y4 | Reproducao segura | D3/D4, Replay, Simulation e Regression | NAO IMPLEMENTADO |
+| Y4 | Reproducao segura | D3/D4, reproducao, simulacao e regressao | NAO IMPLEMENTADO |
 | Y5 | Operacao assistida | agentes investigadores, validadores e de melhoria | CONCEITO |
 | Y6 | Prevencao inteligente | tendencias, anomalias e agentes limitados | CONCEITO |
 
@@ -680,7 +681,7 @@ demonstrados.
 | R05 | Orquestracao pos-build e smoke CRUD | Passo 11 | G7 | Evidencia de teste | Y1 |
 | R06 | Business smoke e vinculo com snapshot | Passos 2 e 11 | G2 e G7 | Evidencia de teste | Y1 |
 | R07 | Classificacao e protecao de dados | Passo 10 | G4 | D0-D4 | Base de Y2 |
-| R08 | Contrato dos tres eixos e resultados | Passo 4 | G4 | D0/D1 | Y2 |
+| R08 | Contrato de evidencia, escopo e resultados | Passo 4 | G4 | D0/D1 | Y2 |
 | R09 | Identidade e propagacao sincrona | Passo 5 | G3 | D0 | Y2 |
 | R10 | Propagacao assincrona e causalidade | Passo 5 | G3 | D1 | Y2 |
 | R11 | Eventos operacionais essenciais | Passo 6 | G4 | D0 | Y2 |
@@ -704,7 +705,7 @@ incompletas por todos os aplicativos.
 
 1. Evoluir os tipos existentes de politica, sem criar uma segunda familia de
    configuracao.
-2. Definir no Shared os tres eixos, resultados tecnico e de negocio,
+2. Definir no Shared severidade, profundidade, escopo, resultados tecnico e de negocio,
    classificacao de dados e envelope operacional D0/D1.
 3. Criar sanitizacao obrigatoria antes do publisher e uma lista irremovivel de
    `NeverCapture` para senha, token, certificado, chave privada e segredo.
@@ -716,7 +717,7 @@ incompletas por todos os aplicativos.
    `docs/operational/fiscal/FISCAL_OPERATIONAL_STANDARD_CORRELATION.md` sem
    alterar o documento externo.
 
-**Aceite:** testes provam independencia dos tres eixos, separacao dos dois
+**Aceite:** testes provam independencia entre severidade, profundidade e escopo, separacao dos dois
 resultados e impossibilidade de `NeverCapture` atravessar o publisher.
 
 **Bloco B - Identidade universal (R09 + R10)**
@@ -797,7 +798,7 @@ evidencias pelo ecossistema.
 Primeiro incremento executado na worktree
 `codex/agentic-software-lifecycle-pilot`:
 
-- contrato tipado para severidade, profundidade e modo;
+- contrato tipado para severidade e profundidade;
 - resultados tecnico e de negocio separados no mesmo envelope;
 - classificacoes `Public`, `Internal`, `Confidential`, `Restricted` e
   `NeverCapture`;
@@ -809,9 +810,9 @@ Primeiro incremento executado na worktree
   atuais do Loki;
 - descritores de classificacao gerados por entidade e campo, com convencao
   segura e possibilidade de complemento explicito na DSL;
-- modo `Live`, `Replay`, `Simulation` ou `Regression` no snapshot da politica,
-  com selecao padrao ou por alvo e sincronizacao da API para o Worker;
-- testes comprovando independencia dos eixos, rejeicao de negocio sem falha
+- escopo por componente, operacao, entidade, registro e campo no snapshot da
+  politica, com selecao padrao ou por alvo e sincronizacao da API para o Worker;
+- testes comprovando independencia dos controles, rejeicao de negocio sem falha
   tecnica, protecao por profundidade, `NeverCapture` e isolamento de falha do
   sink.
 
@@ -1023,23 +1024,24 @@ permanecem pendentes.
 **Criterio de saida:** os testes comprovam que `NeverCapture` nao atravessa a
 borda de observabilidade.
 
-### 10.9 R08 - Contrato Dos Tres Eixos E Resultados
+### 10.9 R08 - Contrato De Evidencia, Escopo E Resultados
 
 **Correlacao:** Passo 4, Gate G4, profundidades D0/D1, nivel Y2.
 
-**Estado:** implementado em codigo e validado localmente. O modo e resolvido
-pelo snapshot da politica, com valor padrao ou especifico por alvo, e se
-propaga da API para o Worker pelo mecanismo operacional existente.
+**Estado:** implementado em codigo e validado localmente. Severidade,
+profundidade e escopo sao resolvidos pelo snapshot da politica, com valor
+padrao ou especifico por alvo, e se propagam da API para o Worker pelo
+mecanismo operacional existente.
 
-1. Criar os tipos de severidade, profundidade e modo de execucao.
+1. Criar os tipos de severidade e profundidade e os seletores de escopo.
 2. Criar resultados tecnico e de negocio independentes.
 3. Criar o envelope minimo do evento operacional.
-4. Definir defaults seguros para operacoes Live.
-5. Testar combinacoes independentes dos tres eixos.
+4. Definir defaults seguros de captura.
+5. Testar combinacoes independentes dos controles.
 
 **Entrega:** contratos estaticos e testes sem provider definitivo.
 
-**Criterio de saida:** alterar severidade nao altera profundidade ou modo, e
+**Criterio de saida:** alterar severidade nao altera profundidade ou escopo, e
 rejeicao de negocio nao vira falha tecnica automaticamente.
 
 ### 10.10 R09 - Identidade E Propagacao Sincrona
@@ -1283,16 +1285,16 @@ segredo ou informacao fora da politica.
 **Correlacao:** Passo 12, maturidade avancada, profundidade D4, nivel Y4.
 
 1. Isolar banco, filas, relogio, IDs e integracoes externas.
-2. Implementar Replay com a mesma versao capturada.
-3. Implementar Simulation com alteracao controlada.
+2. Implementar reproducao com a mesma versao capturada.
+3. Implementar simulacao com alteracao controlada.
 4. Bloquear efeitos reais por padrao.
-5. Converter o incidente em Regression.
+5. Converter o incidente em teste de regressao.
 6. Executar a regressao no gate de build.
 
 **Entrega:** um incidente reproduzivel e transformado em teste.
 
-**Criterio de saida:** Replay e Simulation nao produzem efeito externo, e a
-Regression detecta a reintroducao do problema.
+**Criterio de saida:** reproducao e simulacao nao produzem efeito externo, e o
+teste de regressao detecta a reintroducao do problema.
 
 ### 10.20 R19 - Agentes Operacionais Assistidos
 

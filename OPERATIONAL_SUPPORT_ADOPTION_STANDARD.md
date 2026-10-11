@@ -184,22 +184,23 @@ afetado.
 - Profundidade de captura pode ser seletiva e temporaria.
 - Segredos nunca podem ser capturados.
 - Diagnostico direcionado possui alvo, prazo e limites.
-- Replay e simulacao nao produzem efeitos reais por padrao.
+- Reproducao, simulacao e regressao sao capacidades evolutivas baseadas nas
+  evidencias capturadas.
 - Acesso a evidencias deve ser auditado.
-- Severidade, profundidade e modo de execucao sao eixos independentes.
+- Severidade e profundidade sao eixos independentes; a politica define o
+  escopo ao qual a captura se aplica.
 
-## 5. Tres Eixos Independentes
+## 5. Eixos Da Evidencia E Escopo De Captura
 
-Toda evidencia operacional deve ser compreendida por tres eixos separados:
+Toda evidencia operacional deve ser compreendida por dois eixos independentes:
 
 1. Severidade: informa a gravidade do fato.
 2. Profundidade: informa quanto contexto foi capturado.
-3. Modo de execucao: informa em que tipo de execucao o fato ocorreu.
 
-Os eixos nao substituem um ao outro. Um evento critico nao precisa conter uma
-captura profunda. Uma simulacao pode produzir somente informacao. Uma operacao
-bem-sucedida pode ser registrada com profundidade forense quando estiver sendo
-investigada.
+A politica de captura complementa esses eixos definindo seu escopo, como
+componente, operacao, entidade, registro ou campo. Um evento critico nao precisa
+conter uma captura profunda. Uma operacao bem-sucedida pode ser registrada com
+profundidade forense quando estiver sendo investigada.
 
 ### 5.1 Eixo De Severidade
 
@@ -210,8 +211,16 @@ investigada.
 | Error | Falha que impediu uma etapa ou resultado | excecao, timeout ou persistencia recusada |
 | Critical | Risco grave, indisponibilidade ou perda de controle | corrupcao, indisponibilidade ampla ou risco de dados |
 
-Severidade nao controla volume de dados. Ela serve para priorizacao,
-notificacao e resposta operacional.
+A severidade pertence ao fato registrado. A politica operacional pode definir
+a menor severidade que deve ser capturada:
+
+- Information captura Information, Warning, Error e Critical.
+- Warning captura Warning, Error e Critical.
+- Error captura Error e Critical.
+- Critical captura somente Critical.
+
+O filtro de severidade decide quais fatos sao capturados, mas nao altera a
+profundidade, a classificacao nem o conteudo de cada evidencia.
 
 ### 5.2 Eixo De Profundidade
 
@@ -235,40 +244,46 @@ Regras de profundidade:
 - D4 exige isolamento de efeitos e dependencias nao deterministicas.
 - Aumento de profundidade nao aumenta automaticamente a severidade.
 
-### 5.3 Eixo De Modo De Execucao
+### 5.3 Escopo Da Captura
 
-| Modo | Objetivo | Efeitos permitidos |
-| --- | --- | --- |
-| Live | Executar a operacao real | efeitos reais conforme a operacao |
-| Replay | Repetir a mesma versao e dependencias capturadas | efeitos externos bloqueados por padrao |
-| Simulation | Alterar versao, dados, configuracao ou dependencia | ambiente controlado e sem efeito real por padrao |
-| Regression | Preservar o incidente como teste repetivel | efeitos isolados e resultado verificavel |
+A politica operacional deve permitir aplicar severidade minima e profundidade
+a alvos especificos:
 
-O modo precisa aparecer nas evidencias. Um resultado produzido em Simulation
-nao pode ser confundido com um resultado de producao.
+- componente;
+- operacao;
+- entidade;
+- registro;
+- campo.
+
+O escopo permite aumentar o detalhamento somente onde necessario, reduzindo
+custo, ruido e exposicao de dados.
 
 ### 5.4 Exemplos De Combinacao
 
-| Severidade | Profundidade | Modo | Interpretacao |
+| Severidade minima | Profundidade | Escopo | Interpretacao |
 | --- | --- | --- | --- |
-| Critical | D0 | Live | incidente grave detectado com evidencia essencial; pode exigir ativacao D2 |
-| Error | D2 | Live | falha real sob diagnostico direcionado |
-| Information | D3 | Simulation | simulacao bem-sucedida com snapshot forense |
-| Warning | D1 | Replay | replay concluiu com degradacao ou dependencia simulada lenta |
-| Information | D4 | Regression | caso reproduzivel executado como teste de regressao |
+| Information | D0 | aplicacao | baseline essencial de todos os fatos operacionais |
+| Warning | D1 | dependencia externa | narrativa de avisos, erros e eventos criticos da dependencia |
+| Error | D2 | operacao selecionada | diagnostico direcionado de falhas e eventos criticos |
+| Information | D3 | entidade selecionada | historico forense completo da entidade sob investigacao |
 
 ### 5.5 Por Que A Separacao E Obrigatoria
 
-Misturar os eixos produz problemas operacionais:
+Misturar severidade, profundidade e escopo produz problemas operacionais:
 
 - usar Error como sinonimo de log detalhado impede controlar volume;
-- usar Debug como modo e profundidade ao mesmo tempo impede auditoria;
-- tratar Replay como severidade mistura fato com ambiente de execucao;
 - aumentar tudo em producao cria ruido, custo e risco de dados;
-- reduzir severidade para diminuir volume esconde incidentes reais.
+- aumentar profundidade para capturar somente erros desperdiça recursos;
+- aplicar diagnostico profundo sem escopo amplia custo e exposicao de dados.
 
-O fabricante deve conseguir configurar profundidade sem alterar severidade e
-executar Replay ou Simulation sem falsificar o resultado Live.
+O fabricante deve conseguir configurar severidade minima, profundidade e escopo
+sem que uma dimensao altere automaticamente as demais.
+
+Reproducao, simulacao e regressao nao fazem parte da politica global de captura.
+Sao fluxos evolutivos que consomem evidencias previamente capturadas. Quando
+implementados, sua finalidade deve nascer no contexto da operacao raiz e ser
+propagada somente para as execucoes pertencentes ao fluxo, nunca para toda a
+aplicacao.
 
 ## 6. Identidade Operacional
 
@@ -315,7 +330,7 @@ incorretos e falsos indicadores de disponibilidade.
 | SafeMetadata | Permitido no baseline |
 | OperationalData | Permitido conforme politica e finalidade |
 | Sensitive | Captura explicita, mascarada, temporaria e auditada |
-| NeverCapture | Proibido em qualquer severidade, profundidade ou modo |
+| NeverCapture | Proibido em qualquer severidade, profundidade ou escopo |
 
 Senhas, tokens, chaves privadas e certificados privados sao NeverCapture.
 
@@ -387,7 +402,7 @@ O fabricante deve implementar:
 - D0 em todas as operacoes cobertas;
 - D1 em todas as operacoes cobertas;
 - severidade independente da profundidade;
-- modo de execucao explicito;
+- escopo de captura explicito;
 - resultados tecnico e de negocio separados;
 - duracao das etapas relevantes;
 - identificacao das dependencias;
@@ -414,7 +429,7 @@ permita:
 - pesquisar por OperationId;
 - filtrar por Application, Environment e Version;
 - recuperar etapas por ExecutionId e CausationId;
-- filtrar severidade, profundidade e modo;
+- filtrar severidade, profundidade e escopo;
 - localizar falhas, retries e dependencias;
 - acessar sem login administrativo no servidor;
 - auditar consultas;
@@ -486,7 +501,7 @@ A declaracao deve identificar, conforme aplicavel:
 
 - gates G1-G7 atendidos;
 - profundidades D0-D4 produzidas ou suportadas;
-- severidades e modos de execucao aceitos;
+- severidades, profundidades e escopos aceitos;
 - classificacao dos dados manipulados;
 - identidades e resultados presentes na evidencia;
 - artefato de comprovacao produzido.
@@ -588,7 +603,7 @@ Um fluxo somente e ELEGIVEL PARA SUPORTE quando comprova G1 a G7.
 - tempo e conclusao registrados.
 - evidencias identificam explicitamente os conceitos e gates que comprovam.
 
-D3, D4, Replay, Simulation, Regression, previsao e analise assistida nao sao
+D3, D4, reproducao, simulacao, regressao, previsao e analise assistida nao sao
 obrigatorios para o gate inicial. Eles determinam maturidade avancada.
 
 ## 12. Classificacao De Suportabilidade
@@ -788,16 +803,17 @@ Saida: uma execucao aponta para uma unica versao confirmada.
 
 Saida: catalogo operacional.
 
-### Passo 4 - Modelar Os Tres Eixos
+### Passo 4 - Modelar Evidencia E Politica De Captura
 
-1. Definir politica de severidade.
+1. Definir severidades e a gravidade minima de captura.
 2. Definir baseline D0/D1.
 3. Definir ativacao D2.
 4. Definir usos futuros de D3/D4.
-5. Definir modos Live, Replay, Simulation e Regression.
-6. Validar que os eixos podem variar separadamente.
+5. Definir escopos por componente, operacao, entidade, registro e campo.
+6. Validar que severidade minima, profundidade e escopo podem variar
+   separadamente.
 
-Saida: matriz de severidade, profundidade e modo.
+Saida: matriz de severidade, profundidade e escopo.
 
 ### Passo 5 - Implementar Identidade E Propagacao
 
@@ -882,8 +898,8 @@ Saida: decisao de homologacao.
 1. Selecionar incidentes prioritarios.
 2. Criar snapshots D3 sanitizados.
 3. Isolar dependencias para D4.
-4. Implementar Replay e Simulation.
-5. Converter reproducoes em Regression.
+4. Implementar fluxos isolados de reproducao e simulacao.
+5. Converter reproducoes em testes de regressao.
 6. Criar checks preventivos.
 7. Avaliar analise assistida somente com evidencias consolidadas.
 

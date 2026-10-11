@@ -107,7 +107,6 @@ A politica tambem carrega:
 
 - severidade minima;
 - profundidade D0-D4;
-- modo Live, Replay, Simulation ou Regression;
 - expiracao;
 - limite de eventos e bytes;
 - amostragem, quando permitida;

@@ -63,7 +63,6 @@ namespace Shered.DB.Connection
             activity?.SetTag("yeshua.query_id", queryId);
             activity?.SetTag("yeshua.trace_id", _context.TraceId);
             activity?.SetTag("yeshua.depth", selection.EventDecision.DiagnosticDepth.ToString());
-            activity?.SetTag("yeshua.mode", selection.EventDecision.ExecutionMode.ToString());
             OperationalActivity.SetIdentity(activity, _context.OperationalIdentity);
             return activity;
         }

@@ -31,7 +31,6 @@ public sealed class OperationalEvidencePublisher
             writer.WriteString("Level", envelope.Severity.ToString());
             writer.WriteString("Category", envelope.Component);
             writer.WriteString("Depth", envelope.Depth.ToString());
-            writer.WriteString("Mode", envelope.Mode.ToString());
             writer.WriteString("TechnicalOutcome", envelope.TechnicalOutcome.ToString());
             writer.WriteString("BusinessOutcome", envelope.BusinessOutcome.ToString());
             if (_runtimeIdentity is { } identity)

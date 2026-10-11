@@ -38,7 +38,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("[Trait(\"TestPurpose\", \"SagaE2ESmoke\")]");
             sb.AppendLine("[Trait(\"SpecificationGate\", \"G7\")]");
             sb.AppendLine("[Trait(\"DiagnosticDepth\", \"D1\")]");
-            sb.AppendLine("[Trait(\"ExecutionMode\", \"Live\")]");
             sb.AppendLine($"public partial class {className} : ApiIntegrationTestBase");
             sb.AppendLine("{");
             sb.AppendLine("    private const string ReadSagaEndpoint = \"yapi/ySaga/ReadySaga\";");

@@ -17,7 +17,6 @@ namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.Saga.Encerram
 [Trait("TestPurpose", "SagaE2ESmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D1")]
-[Trait("ExecutionMode", "Live")]
 public partial class EncerramentoMDFeStandardSagaApiSmokeTests : ApiIntegrationTestBase
 {
     private const string ReadSagaEndpoint = "yapi/ySaga/ReadySaga";

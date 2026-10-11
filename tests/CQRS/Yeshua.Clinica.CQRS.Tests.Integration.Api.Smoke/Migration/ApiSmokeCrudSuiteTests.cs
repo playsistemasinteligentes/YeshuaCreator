@@ -13,7 +13,6 @@
 // gates: G7
 // depths: D0
 // severities: notApplicable
-// modes: Live
 // dataClassification: OperationalData
 // identities: Application,Environment,Version
 // technicalOutcomes: Success,Failure
@@ -26,7 +25,6 @@ namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration;
 [Trait("TestPurpose", "TechnicalSmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D0")]
-[Trait("ExecutionMode", "Live")]
 public sealed class ApiSmokeCrudSuiteTests
 {
     [IntegrationFact]

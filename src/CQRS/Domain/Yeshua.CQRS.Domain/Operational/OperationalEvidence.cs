@@ -19,14 +19,6 @@ public enum OperationalDepth
     D4
 }
 
-public enum OperationalExecutionMode
-{
-    Live,
-    Replay,
-    Simulation,
-    Regression
-}
-
 public enum OperationalTechnicalOutcome
 {
     NotEvaluated,
@@ -71,7 +63,6 @@ public readonly record struct OperationalEvidenceEnvelope(
     string Operation,
     OperationalSeverity Severity,
     OperationalDepth Depth,
-    OperationalExecutionMode Mode,
     OperationalTechnicalOutcome TechnicalOutcome,
     OperationalBusinessOutcome BusinessOutcome,
     string? TraceId = null,
@@ -124,11 +115,4 @@ public static class OperationalEvidenceAxes
         return OperationalDepth.D0;
     }
 
-    public static OperationalExecutionMode ParseMode(string? value)
-    {
-        if (Enum.TryParse<OperationalExecutionMode>(value, true, out var mode))
-            return mode;
-
-        return OperationalExecutionMode.Live;
-    }
 }

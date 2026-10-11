@@ -378,11 +378,11 @@ No Fiscal nascem como `NeverCapture`:
 
 | Requisito do padrao | Implementacao no Fiscal | Modo minimo | Experimento | Evidencia |
 | --- | --- | --- | --- | --- |
-| Secao 5 - tres eixos | severidade, profundidade e modo independentes na politica | `Basic` | F-EXP-01 | teste de independencia |
+| Secao 5 - evidencia e escopo | severidade, profundidade e escopo independentes na politica | `Basic` | F-EXP-01 | teste de independencia |
 | Secao 5.2 - D0 | `ReciverBase`, identidade e resultados | `Basic` | F-EXP-01/F-EXP-05 | inicio, termino, duracao e resultado |
 | Secao 5.2 - D1 | executor de saga, Worker e dependencias | `Basic` | F-EXP-02 a F-EXP-05 | narrativa causal |
 | Secao 5.2 - D2 | sessao temporaria e alvo compilado | `Diagnostic` | F-EXP-06 | captura limitada e auditada |
-| Secao 5.3 - modo | campo explicito, inicialmente `Live` | `Basic` | F-EXP-01 | evento com modo |
+| Secao 5.3 - escopo | componente, operacao, entidade, registro e campo | `Basic` | F-EXP-01 | politica e evento com escopo |
 | Secao 6 | `RuntimeIdentityProvider` e `IExecutionContext` | `Basic` | F-EXP-02/F-EXP-03 | identidade ponta a ponta |
 | Secao 7 | outcomes tecnico e de negocio separados | `Errors` parcial; `Basic` completo | F-EXP-01/F-EXP-05 | rejeicao sem falsa falha tecnica |
 | Secao 8 | descritores e `NeverCapture` | todos | F-EXP-06/F-EXP-07 | relatorio de protecao |
@@ -432,7 +432,6 @@ comprovam isoladamente todos os gates do suporte.
 | `operation` | ID estatico do Command, step, query ou chamada |
 | `severity` | politica independente da profundidade |
 | `depth` | modo e seletor efetivos |
-| `executionMode` | `Live` no primeiro ciclo |
 | `technicalOutcome` | sucesso, falha, timeout ou indisponibilidade |
 | `businessOutcome` | autorizado, rejeitado, concluido ou cancelado |
 | `durationMs` | cronometro iniciado depois do seletor |
@@ -522,6 +521,6 @@ utilidade e generalidade.
 - stack completa em D0/D1;
 - D2 permanente;
 - D3 ou D4;
-- Replay, Simulation ou Regression no gate inicial;
+- reproducao, simulacao ou regressao no gate inicial;
 - dashboard complexo;
 - agente autonomo.

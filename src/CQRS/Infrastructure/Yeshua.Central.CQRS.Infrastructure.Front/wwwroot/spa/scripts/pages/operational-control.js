@@ -63,10 +63,24 @@ function pageHtml() {
             <div class="flex gap-2"><button id="operational-reload" class="border border-gray-300 bg-white px-4 py-2 font-semibold hover:bg-gray-50">Atualizar</button><button id="operational-save" class="bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800">Aplicar</button></div>
         </div>
         <div id="operational-loading" class="hidden border-l-4 border-blue-600 bg-blue-50 px-4 py-3 text-sm text-blue-900">Processando...</div>
-        <section class="mt-4 border border-gray-200 bg-white p-4"><div class="grid gap-4 md:grid-cols-3">
-            <label class="text-sm font-semibold">Nivel padrao<select id="operational-default-level" class="mt-1 w-full border p-2 font-normal"><option value="None">Desligado</option><option value="Error">Erro</option><option value="Warning">Aviso</option><option value="Information">Informacao</option></select></label>
-            <label class="text-sm font-semibold">Profundidade padrao<select id="operational-default-depth" class="mt-1 w-full border p-2 font-normal"><option>D0</option><option>D1</option></select></label>
-            <label class="text-sm font-semibold">Modo de execucao<select id="operational-default-mode" class="mt-1 w-full border p-2 font-normal"><option value="Live">Producao</option><option value="Replay">Reprocessamento</option><option value="Simulation">Simulacao</option><option value="Regression">Regressao</option></select></label>
+        <section class="mt-4 border border-gray-200 bg-white p-4"><div class="grid gap-4 md:grid-cols-2">
+            <label class="text-sm font-semibold">Gravidade minima capturada
+                <select id="operational-default-level" class="mt-1 w-full border p-2 font-normal">
+                    <option value="None">Desligado</option>
+                    <option value="Information">Informacao - sucessos, avisos, erros e criticos</option>
+                    <option value="Warning">Aviso - avisos, erros e criticos</option>
+                    <option value="Error">Erro - erros e criticos</option>
+                    <option value="Critical">Critico - somente criticos</option>
+                </select>
+                <span class="mt-1 block text-xs font-normal text-gray-600">Qual e a menor gravidade que deve entrar na evidencia operacional.</span>
+            </label>
+            <label class="text-sm font-semibold">Profundidade da evidencia
+                <select id="operational-default-depth" class="mt-1 w-full border p-2 font-normal">
+                    <option value="D0">D0 - essencial: identidade, resultado e erro resumido</option>
+                    <option value="D1">D1 - narrativa: etapas, duracoes e dependencias</option>
+                </select>
+                <span class="mt-1 block text-xs font-normal text-gray-600">Quanto contexto a captura deve guardar para explicar a operacao.</span>
+            </label>
         </div></section>
         <section class="mt-4 border border-gray-200 bg-white p-4">
             <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
@@ -98,7 +112,6 @@ function renderState(state) {
     document.getElementById('operational-application').textContent = `${catalog.application} / ${policy.environment}`;
     document.getElementById('operational-default-level').value = policy.defaultLevel || 'Information';
     document.getElementById('operational-default-depth').value = policy.defaultDepth || 'D0';
-    document.getElementById('operational-default-mode').value = policy.defaultMode || 'Live';
     renderLogAccess(catalog.application, policy.environment);
     document.getElementById('operational-components').innerHTML = catalog.components.filter(component => component.id !== 'DomainTracker').map(component => `
         <label class="flex cursor-pointer items-start gap-3 p-3 hover:bg-gray-50"><input class="operational-component mt-1 h-4 w-4" type="checkbox" data-component="${html(component.id)}" ${isEnabled(policy.targets, component.id) ? 'checked' : ''} /><span><strong class="block text-sm">${html(component.title)}</strong><span class="text-sm text-gray-600">${html(component.description)}</span></span></label>`).join('');
@@ -186,15 +199,14 @@ function buildUpdate(state) {
     const targets = (state.policy.targets || []).filter(target => !managed.has(target.component));
     const defaultLevel = document.getElementById('operational-default-level').value;
     const defaultDepth = document.getElementById('operational-default-depth').value;
-    const defaultMode = document.getElementById('operational-default-mode').value;
-    document.querySelectorAll('.operational-component').forEach(input => targets.push({ component: input.dataset.component, level: input.checked ? defaultLevel : 'None', depth: defaultDepth, mode: defaultMode }));
+    document.querySelectorAll('.operational-component').forEach(input => targets.push({ component: input.dataset.component, level: input.checked ? defaultLevel : 'None', depth: defaultDepth }));
     if (document.getElementById('operational-domain-all').checked) {
-        targets.push({ component: 'DomainTracker', level: defaultLevel, depth: 'D1', mode: defaultMode });
+        targets.push({ component: 'DomainTracker', level: defaultLevel, depth: 'D1' });
     } else {
-        document.querySelectorAll('.operational-entity-toggle:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, level: defaultLevel, depth: 'D1', mode: defaultMode }));
-        document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: 'D1', mode: defaultMode }));
+        document.querySelectorAll('.operational-entity-toggle:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, level: defaultLevel, depth: 'D1' }));
+        document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: 'D1' }));
     }
-    return { defaultLevel, defaultDepth, defaultMode, targets };
+    return { defaultLevel, defaultDepth, targets };
 }
 
 function applyDomainAllState(enabled) {

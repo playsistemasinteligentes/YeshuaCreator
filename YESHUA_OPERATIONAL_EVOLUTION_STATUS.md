@@ -53,17 +53,18 @@ que um artefato invalido seja considerado aprovado.
 Correlaciona codigo, versao, runtime, telemetria, configuracao e resultados de
 testes para apoiar diagnostico, manutencao e, futuramente, agentes operacionais.
 
-## 3. Tres Eixos Independentes
+## 3. Evidencia E Escopo De Captura
 
 - Severidade: gravidade do fato (`Information`, `Warning`, `Error`, `Critical`).
 - Profundidade: quantidade de contexto (`D0` a `D4`).
-- Modo: forma de execucao (`Live`, `Replay`, `Simulation`, `Regression`).
+- Escopo: componente, operacao, entidade, registro e campo selecionados.
 
-Um eixo nao altera automaticamente o outro. O contrato tipado e o envelope
-uniforme dos tres eixos foram implementados no Shared. As evidencias de
-Command, Repository, Saga e DomainTracker ja publicam profundidade, modo e
-severidade separadamente. O modo permanece `Live` na politica gerada atual;
-selecao dinamica de Replay, Simulation e Regression continua pendente.
+Severidade e profundidade nao se alteram automaticamente. O contrato tipado e
+o envelope uniforme foram implementados no Shared. As evidencias de Command,
+Repository, Saga e DomainTracker publicam severidade e profundidade, enquanto
+a politica operacional seleciona o escopo. Reproducao, simulacao e regressao
+sao capacidades futuras que consumirao as evidencias, nao modos globais da
+politica.
 
 ## 4. Niveis De Capacidade
 
@@ -94,7 +95,7 @@ selecao dinamica de Replay, Simulation e Regression continua pendente.
 - Contrato de progresso para ciclos de Worker.
 - Endpoint de snapshot de telemetria.
 - Logs estruturados em JSON enviados ao stdout dos containers.
-- Envelope operacional tipado com severidade, profundidade, modo, resultado
+- Envelope operacional tipado com severidade, profundidade, resultado
   tecnico e resultado de negocio independentes.
 - Publicador unico de evidencias para Command, Repository, Saga e
   DomainTracker, preservando `Level`, `Category` e `Data` para o Loki.
@@ -144,7 +145,7 @@ de assuntos durante R04.
 | R05 | Gate pos-build e smoke CRUD | Implementado e compilado; execucao do gate publicado pendente |
 | R06 | Business smoke e vinculo ao snapshot | Pausado; nao iniciado |
 | R07 | Classificacao e protecao de dados | Parcial avancado; classificacao estatica gerada por campo, convencoes, complemento pela DSL, regras de profundidade e barreira `NeverCapture` implementados; faltam retencao por profundidade e homologacao integrada de vazamento |
-| R08 | Tres eixos e dois resultados | Implementado em codigo e validado localmente; severidade, profundidade e modo sao independentes, e o modo e controlado pelo snapshot da politica |
+| R08 | Evidencia, escopo e dois resultados | Implementado em codigo e validado localmente; severidade e profundidade sao independentes, e o escopo e controlado pelo snapshot da politica |
 | R09 | Identidade e propagacao sincrona | Implementado em codigo e validado localmente; Engine gera raiz, operacao, execucao e causa nas bordas HTTP, Command, Receiver, dominio e repository |
 | R10 | Propagacao assincrona e causalidade | Implementado e validado localmente no piloto HTTP do Fiscal; envelope de fila preparado e testado, com consumidor RabbitMQ real pendente de homologacao integrada |
 | R11 | Eventos operacionais essenciais | Implementado e validado localmente para Commands do Fiscal; baseline D0 inclui inicio, termino, identidade runtime e operacional, duracao, outcomes e erro sanitizado |
