@@ -492,3 +492,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Generated presentation previews and render artifacts
+tmp/presentations/runtime-temp/
