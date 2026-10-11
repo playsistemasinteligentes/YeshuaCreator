@@ -79,6 +79,13 @@ public sealed class OperationalEvidenceGenerationTests
             Assert.IsFalse(content.Contains("DefaultMode", StringComparison.Ordinal));
             Assert.IsFalse(content.Contains("NormalizeMode", StringComparison.Ordinal));
             Assert.IsFalse(content.Contains("decision.Mode", StringComparison.Ordinal));
+            StringAssert.Contains(content, "Default depth must be D0 or D1");
+            StringAssert.Contains(content, "public string? DiagnosticSessionId");
+            StringAssert.Contains(content, "public string? OperationId");
+            StringAssert.Contains(content, "public int? MaximumCaptures");
+            StringAssert.Contains(content, "public IReadOnlyList<string>? AuthorizedFields");
+            StringAssert.Contains(content, "BuildDiagnosticAudit");
+            StringAssert.Contains(content, "TryConsumeDiagnosticCapture");
         }
         finally
         {

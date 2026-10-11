@@ -36,6 +36,16 @@ public static class OperationalActivity
         activity.SetTag("yeshua.causation_id", identity.CausationId);
     }
 
+    public static void SetDiagnosticSession(
+        Activity? activity,
+        string? diagnosticSessionId)
+    {
+        if (activity is null || string.IsNullOrWhiteSpace(diagnosticSessionId))
+            return;
+
+        activity.SetTag("yeshua.diagnostic_session_id", diagnosticSessionId);
+    }
+
     public static void RecordException(
         Activity? activity,
         Exception exception,

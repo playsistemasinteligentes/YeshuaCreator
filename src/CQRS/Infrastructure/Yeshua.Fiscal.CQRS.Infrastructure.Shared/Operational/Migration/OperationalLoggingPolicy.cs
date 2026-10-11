@@ -10,6 +10,7 @@
 
 using Dominio.Interfaces;
 using Dominio.Entitys;
+using System.Collections.Concurrent;
 
 namespace Yeshua.Generated.OperationalControl;
 
@@ -21,7 +22,18 @@ public sealed record OperationalLoggingPolicy(
     string DefaultDepth,
     IReadOnlyList<DiagnosticTarget> Targets,
     DateTimeOffset UpdatedAtUtc,
-    string Source);
+    string Source)
+{
+    public IReadOnlyList<DiagnosticPolicyAuditEntry> DiagnosticAudit { get; init; } = [];
+}
+
+public sealed record DiagnosticPolicyAuditEntry(
+    string DiagnosticSessionId,
+    string Action,
+    DateTimeOffset OccurredAtUtc,
+    string RequestedBy,
+    string ApprovedBy,
+    string Justification);
 
 public sealed record OperationalLoggingPolicyUpdate(
     string DefaultLevel,
@@ -38,6 +50,14 @@ public sealed record DiagnosticTarget(
     DateTimeOffset? ExpiresAtUtc)
 {
     public string? Field { get; init; }
+    public string? OperationId { get; init; }
+    public string? DiagnosticSessionId { get; init; }
+    public string? RequestedBy { get; init; }
+    public string? ApprovedBy { get; init; }
+    public string? Justification { get; init; }
+    public DateTimeOffset? StartsAtUtc { get; init; }
+    public int? MaximumCaptures { get; init; }
+    public IReadOnlyList<string>? AuthorizedFields { get; init; }
 }
 
 public readonly record struct OperationalLoggingContext(
@@ -47,6 +67,7 @@ public readonly record struct OperationalLoggingContext(
     string? RecordId)
 {
     public string? Field { get; init; }
+    public string? OperationId { get; init; }
 }
 
 public readonly record struct OperationalLoggingDecision(
@@ -67,6 +88,8 @@ public sealed class OperationalLoggingPolicyState :
     IDomainTrackingPolicy
 {
     private OperationalLoggingPolicy _current;
+    private readonly ConcurrentDictionary<string, int> _diagnosticCaptureCounts =
+        new(StringComparer.OrdinalIgnoreCase);
 
     public OperationalLoggingPolicyState(string application, string environment)
     {
@@ -81,7 +104,7 @@ public sealed class OperationalLoggingPolicyState :
             "LocalBaseline");
     }
 
-    public OperationalLoggingPolicy Current => Volatile.Read(ref _current);
+    public OperationalLoggingPolicy Current => RefreshExpiredTargets();
 
     public void Replace(OperationalLoggingPolicy policy)
     {
@@ -99,23 +122,33 @@ public sealed class OperationalLoggingPolicyState :
         }
 
         Interlocked.Exchange(ref _current, policy);
+        RemoveInactiveCaptureCounters(policy);
     }
 
     public OperationalLoggingPolicy ApplyLocal(OperationalLoggingPolicyUpdate update)
     {
         var current = Current;
+        var now = DateTimeOffset.UtcNow;
+        var defaultLevel = string.IsNullOrWhiteSpace(update.DefaultLevel)
+            ? current.DefaultLevel
+            : update.DefaultLevel.Trim();
+        var defaultDepth = string.IsNullOrWhiteSpace(update.DefaultDepth)
+            ? current.DefaultDepth
+            : update.DefaultDepth.Trim();
+        var targets = NormalizeAndValidateTargets(
+            defaultLevel,
+            defaultDepth,
+            update.Targets ?? [],
+            now);
         var policy = current with
         {
             Revision = Guid.NewGuid().ToString("N"),
-            DefaultLevel = string.IsNullOrWhiteSpace(update.DefaultLevel)
-                ? current.DefaultLevel
-                : update.DefaultLevel,
-            DefaultDepth = string.IsNullOrWhiteSpace(update.DefaultDepth)
-                ? current.DefaultDepth
-                : update.DefaultDepth,
-            Targets = update.Targets ?? [],
-            UpdatedAtUtc = DateTimeOffset.UtcNow,
-            Source = "LocalRuntime"
+            DefaultLevel = defaultLevel,
+            DefaultDepth = defaultDepth,
+            Targets = targets,
+            UpdatedAtUtc = now,
+            Source = "LocalRuntime",
+            DiagnosticAudit = BuildDiagnosticAudit(current, targets, now)
         };
 
         Replace(policy);
@@ -129,7 +162,8 @@ public OperationalLoggingDecision Evaluate(OperationalLoggingContext context)
         context.Operation,
         context.Entity,
         context.RecordId,
-        context.Field);
+        context.Field,
+        context.OperationId);
 }
 
 private OperationalLoggingDecision Evaluate(
@@ -137,9 +171,19 @@ private OperationalLoggingDecision Evaluate(
     string? operation,
     string? entity,
     string? recordId,
-    string? field = null)
+    string? field = null,
+    string? operationId = null)
 {
-    return Evaluate(Current, component, operation, entity, recordId, field, true);
+    return Evaluate(
+        Current,
+        component,
+        operation,
+        entity,
+        recordId,
+        field,
+        operationId,
+        true,
+        true);
 }
 
 private OperationalLoggingDecision Evaluate(
@@ -149,7 +193,9 @@ private OperationalLoggingDecision Evaluate(
     string? entity,
     string? recordId,
     string? field,
-    bool useDefault)
+    string? operationId,
+    bool useDefault,
+    bool consumeDiagnosticCapture)
 {
     DiagnosticTarget? target = null;
     if (policy.Targets.Count > 0)
@@ -159,8 +205,10 @@ private OperationalLoggingDecision Evaluate(
         foreach (var candidate in policy.Targets)
         {
             if ((candidate.ExpiresAtUtc is not null && candidate.ExpiresAtUtc <= now) ||
+                (candidate.StartsAtUtc is not null && candidate.StartsAtUtc > now) ||
                 !Matches(candidate.Component, component) ||
                 !Matches(candidate.Operation, operation) ||
+                !Matches(candidate.OperationId, operationId) ||
                 !Matches(candidate.Entity, entity) ||
                 !Matches(candidate.RecordId, recordId) ||
                 !Matches(candidate.Field, field))
@@ -176,6 +224,13 @@ private OperationalLoggingDecision Evaluate(
             target = candidate;
         }
     }
+
+        if (target is not null &&
+            consumeDiagnosticCapture &&
+            !TryConsumeDiagnosticCapture(target))
+        {
+            target = null;
+        }
 
         if (!useDefault && target is null)
         {
@@ -209,7 +264,9 @@ private OperationalLoggingDecision Evaluate(
         return new OperationalTelemetryDecision(
             decision.Enabled,
             decision.Level,
-            decision.Depth);
+            decision.Depth,
+            decision.MatchedTarget?.DiagnosticSessionId,
+            decision.MatchedTarget?.AuthorizedFields);
     }
 
     OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -228,7 +285,32 @@ private OperationalLoggingDecision Evaluate(
         return new OperationalTelemetryDecision(
             decision.Enabled,
             decision.Level,
-            decision.Depth);
+            decision.Depth,
+            decision.MatchedTarget?.DiagnosticSessionId,
+            decision.MatchedTarget?.AuthorizedFields);
+    }
+
+    OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
+        string component,
+        string? operation,
+        string? entity,
+        string? recordId,
+        string? field,
+        string? operationId)
+    {
+        var decision = Evaluate(
+            component,
+            operation,
+            entity,
+            recordId,
+            field,
+            operationId);
+        return new OperationalTelemetryDecision(
+            decision.Enabled,
+            decision.Level,
+            decision.Depth,
+            decision.MatchedTarget?.DiagnosticSessionId,
+            decision.MatchedTarget?.AuthorizedFields);
     }
 
                 public ulong GetMask(
@@ -2020,6 +2102,8 @@ private OperationalLoggingDecision Evaluate(
                         entity,
                         recordId,
                         field,
+                        null,
+                        false,
                         false);
 
                     return decision.MatchedTarget is { } target &&
@@ -2034,6 +2118,8 @@ private OperationalLoggingDecision Evaluate(
                     foreach (var target in policy.Targets)
                     {
                         if (target.ExpiresAtUtc is not null && target.ExpiresAtUtc <= now)
+                            continue;
+                        if (target.StartsAtUtc is not null && target.StartsAtUtc > now)
                             continue;
                         if (!string.Equals(target.Component, "DomainTracker", StringComparison.OrdinalIgnoreCase))
                             continue;
@@ -2060,10 +2146,268 @@ private OperationalLoggingDecision Evaluate(
         var score = 0;
         if (!string.IsNullOrWhiteSpace(target.Component)) score++;
         if (!string.IsNullOrWhiteSpace(target.Operation)) score += 2;
-        if (!string.IsNullOrWhiteSpace(target.Entity)) score += 4;
-        if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 8;
-        if (!string.IsNullOrWhiteSpace(target.Field)) score += 16;
+        if (!string.IsNullOrWhiteSpace(target.OperationId)) score += 4;
+        if (!string.IsNullOrWhiteSpace(target.Entity)) score += 8;
+        if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 16;
+        if (!string.IsNullOrWhiteSpace(target.Field)) score += 32;
         return score;
     }
+
+    private bool TryConsumeDiagnosticCapture(DiagnosticTarget target)
+    {
+        if (!target.Depth.Equals("D2", StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (string.IsNullOrWhiteSpace(target.DiagnosticSessionId) ||
+            target.MaximumCaptures is not > 0)
+        {
+            return false;
+        }
+
+        var sessionId = target.DiagnosticSessionId;
+        var maximum = target.MaximumCaptures.Value;
+        while (true)
+        {
+            var current = _diagnosticCaptureCounts.GetOrAdd(sessionId, 0);
+            if (current >= maximum)
+                return false;
+            if (_diagnosticCaptureCounts.TryUpdate(sessionId, current + 1, current))
+                return true;
+        }
+    }
+
+    private void RemoveInactiveCaptureCounters(OperationalLoggingPolicy policy)
+    {
+        foreach (var sessionId in _diagnosticCaptureCounts.Keys)
+        {
+            var active = false;
+            foreach (var target in policy.Targets)
+            {
+                if (string.Equals(
+                        target.DiagnosticSessionId,
+                        sessionId,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    active = true;
+                    break;
+                }
+            }
+
+            if (!active)
+                _diagnosticCaptureCounts.TryRemove(sessionId, out _);
+        }
+    }
+
+    private static IReadOnlyList<DiagnosticTarget> NormalizeAndValidateTargets(
+        string defaultLevel,
+        string defaultDepth,
+        IReadOnlyList<DiagnosticTarget> targets,
+        DateTimeOffset now)
+    {
+        if (!IsLevel(defaultLevel))
+            throw new ArgumentException($"Invalid log level '{defaultLevel}'.");
+        if (!IsBaselineDepth(defaultDepth))
+            throw new ArgumentException("Default depth must be D0 or D1. D2 requires a directed diagnostic session.");
+
+        var normalized = new DiagnosticTarget[targets.Count];
+        for (var index = 0; index < targets.Count; index++)
+        {
+            var target = targets[index];
+            if (!IsLevel(target.Level))
+                throw new ArgumentException($"Invalid log level '{target.Level}'.");
+            if (!IsTargetDepth(target.Depth))
+                throw new ArgumentException("Target depth must be D0, D1 or D2.");
+            if (target.Level.Equals("Debug", StringComparison.OrdinalIgnoreCase) &&
+                target.ExpiresAtUtc is null)
+            {
+                throw new ArgumentException("Debug targets require expiration.");
+            }
+
+            if (!target.Depth.Equals("D2", StringComparison.OrdinalIgnoreCase))
+            {
+                normalized[index] = target;
+                continue;
+            }
+
+            var authorizedFields = (target.AuthorizedFields ?? [])
+                .Where(field => !string.IsNullOrWhiteSpace(field))
+                .Select(field => field.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+            if (!string.IsNullOrWhiteSpace(target.Field) &&
+                !authorizedFields.Contains(target.Field, StringComparer.OrdinalIgnoreCase))
+            {
+                authorizedFields = [.. authorizedFields, target.Field.Trim()];
+            }
+
+            var normalizedTarget = target with
+            {
+                DiagnosticSessionId = string.IsNullOrWhiteSpace(target.DiagnosticSessionId)
+                    ? Guid.NewGuid().ToString("N")
+                    : target.DiagnosticSessionId.Trim(),
+                StartsAtUtc = target.StartsAtUtc ?? now,
+                RequestedBy = target.RequestedBy?.Trim(),
+                ApprovedBy = target.ApprovedBy?.Trim(),
+                Justification = target.Justification?.Trim(),
+                AuthorizedFields = authorizedFields
+            };
+            ValidateDiagnosticTarget(normalizedTarget, now);
+            normalized[index] = normalizedTarget;
+        }
+
+        return normalized;
+    }
+
+    private static void ValidateDiagnosticTarget(
+        DiagnosticTarget target,
+        DateTimeOffset now)
+    {
+        if (string.IsNullOrWhiteSpace(target.Component) &&
+            string.IsNullOrWhiteSpace(target.Operation) &&
+            string.IsNullOrWhiteSpace(target.OperationId) &&
+            string.IsNullOrWhiteSpace(target.Entity) &&
+            string.IsNullOrWhiteSpace(target.RecordId) &&
+            string.IsNullOrWhiteSpace(target.Field))
+        {
+            throw new ArgumentException("D2 requires at least one explicit target selector.");
+        }
+        if (string.IsNullOrWhiteSpace(target.RequestedBy) ||
+            string.IsNullOrWhiteSpace(target.ApprovedBy) ||
+            string.IsNullOrWhiteSpace(target.Justification))
+        {
+            throw new ArgumentException("D2 requires requester, approver and justification.");
+        }
+        if (target.StartsAtUtc is null ||
+            target.ExpiresAtUtc is null ||
+            target.ExpiresAtUtc <= target.StartsAtUtc ||
+            target.ExpiresAtUtc <= now)
+        {
+            throw new ArgumentException("D2 requires a valid start and future expiration.");
+        }
+        if (target.MaximumCaptures is not > 0)
+            throw new ArgumentException("D2 requires a positive capture limit.");
+        if (target.AuthorizedFields is not { Count: > 0 })
+            throw new ArgumentException("D2 requires at least one explicitly authorized field.");
+    }
+
+    private static IReadOnlyList<DiagnosticPolicyAuditEntry> BuildDiagnosticAudit(
+        OperationalLoggingPolicy current,
+        IReadOnlyList<DiagnosticTarget> targets,
+        DateTimeOffset now)
+    {
+        var audit = current.DiagnosticAudit.ToList();
+        foreach (var target in targets)
+        {
+            if (!target.Depth.Equals("D2", StringComparison.OrdinalIgnoreCase) ||
+                current.Targets.Any(candidate => string.Equals(
+                    candidate.DiagnosticSessionId,
+                    target.DiagnosticSessionId,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            audit.Add(new DiagnosticPolicyAuditEntry(
+                target.DiagnosticSessionId!,
+                "Activated",
+                now,
+                target.RequestedBy!,
+                target.ApprovedBy!,
+                target.Justification!));
+        }
+
+        foreach (var target in current.Targets)
+        {
+            if (!target.Depth.Equals("D2", StringComparison.OrdinalIgnoreCase) ||
+                targets.Any(candidate => string.Equals(
+                    candidate.DiagnosticSessionId,
+                    target.DiagnosticSessionId,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            audit.Add(new DiagnosticPolicyAuditEntry(
+                target.DiagnosticSessionId!,
+                "Ended",
+                now,
+                target.RequestedBy ?? "unknown",
+                target.ApprovedBy ?? "unknown",
+                target.Justification ?? "not informed"));
+        }
+
+        if (audit.Count > 200)
+            audit.RemoveRange(0, audit.Count - 200);
+        return audit.ToArray();
+    }
+
+    private OperationalLoggingPolicy RefreshExpiredTargets()
+    {
+        while (true)
+        {
+            var current = Volatile.Read(ref _current);
+            var now = DateTimeOffset.UtcNow;
+            var expired = current.Targets
+                .Where(target => target.ExpiresAtUtc is not null && target.ExpiresAtUtc <= now)
+                .ToArray();
+            if (expired.Length == 0)
+                return current;
+
+            var active = current.Targets
+                .Where(target => target.ExpiresAtUtc is null || target.ExpiresAtUtc > now)
+                .ToArray();
+            var audit = current.DiagnosticAudit.ToList();
+            foreach (var target in expired)
+            {
+                if (!target.Depth.Equals("D2", StringComparison.OrdinalIgnoreCase) ||
+                    audit.Any(entry =>
+                        entry.DiagnosticSessionId.Equals(
+                            target.DiagnosticSessionId,
+                            StringComparison.OrdinalIgnoreCase) &&
+                        entry.Action.Equals("Expired", StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue;
+                }
+
+                audit.Add(new DiagnosticPolicyAuditEntry(
+                    target.DiagnosticSessionId!,
+                    "Expired",
+                    now,
+                    target.RequestedBy ?? "unknown",
+                    target.ApprovedBy ?? "unknown",
+                    target.Justification ?? "not informed"));
+            }
+
+            if (audit.Count > 200)
+                audit.RemoveRange(0, audit.Count - 200);
+            var updated = current with
+            {
+                Targets = active,
+                DiagnosticAudit = audit.ToArray()
+            };
+            if (ReferenceEquals(
+                    Interlocked.CompareExchange(ref _current, updated, current),
+                    current))
+            {
+                RemoveInactiveCaptureCounters(updated);
+                return updated;
+            }
+        }
+    }
+
+    private static bool IsLevel(string value) =>
+        value.Equals("Trace", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("Debug", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("Information", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("Warning", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("Error", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("Critical", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("None", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsBaselineDepth(string value) =>
+        value.Equals("D0", StringComparison.OrdinalIgnoreCase) ||
+        value.Equals("D1", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsTargetDepth(string value) =>
+        IsBaselineDepth(value) || value.Equals("D2", StringComparison.OrdinalIgnoreCase);
 
 }//Dominio.Schemas.CQRS.SourceCodeInfrastructureOperationalControlStateMigration

@@ -42,7 +42,12 @@ namespace Command.Patterns.Command
                 recordId = operationalCommand.OperationalRecordId;
             }
 
-            var telemetry = _logger.Evaluate("Command", CommandName, entity, recordId);
+            var telemetry = _logger.Evaluate(
+                "Command",
+                CommandName,
+                entity,
+                recordId,
+                _context.OperationalIdentity.OperationId);
             if (!telemetry.Enabled)
                 return await ActionAsync(command, cancellationToken);
 
@@ -60,6 +65,7 @@ namespace Command.Patterns.Command
             activity?.SetTag("yeshua.operational_entity_id", recordId);
             activity?.SetTag("yeshua.depth", telemetry.DiagnosticDepth.ToString());
             OperationalActivity.SetIdentity(activity, executionIdentity);
+            OperationalActivity.SetDiagnosticSession(activity, telemetry.DiagnosticSessionId);
 
             _logger.CommandStarted(
                 CommandName,

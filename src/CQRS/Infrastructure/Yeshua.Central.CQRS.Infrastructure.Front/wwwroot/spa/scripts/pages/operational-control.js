@@ -35,24 +35,8 @@ async function renderOperationalControl() {
     };
 
     document.getElementById('operational-reload').onclick = reload;
-    document.getElementById('operational-save').onclick = async () => {
-        setBusy(true);
-        try {
-            const response = await apiFetch(`${environments.urlApi}/operational/logging-policy`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(buildUpdate(state))
-            });
-            if (!response.ok) throw new Error(await response.text() || 'Nao foi possivel aplicar a configuracao.');
-            state.policy = await response.json();
-            renderState(state);
-            showAlert('Configuracao operacional aplicada.', 'success');
-        } catch (error) {
-            showAlert(error.message, 'error');
-        } finally {
-            setBusy(false);
-        }
-    };
+    document.getElementById('operational-save').onclick = () =>
+        persistPolicy(state, buildUpdate(state), 'Configuracao operacional aplicada.');
     await reload();
 }
 
@@ -83,6 +67,25 @@ function pageHtml() {
             </label>
         </div></section>
         <section class="mt-4 border border-gray-200 bg-white p-4">
+            <div class="mb-4"><h2 class="text-lg font-bold text-gray-900">Diagnostico direcionado D2</h2><p class="text-sm text-gray-600">Captura profunda, temporaria, limitada e auditada para um alvo especifico.</p></div>
+            <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+                <label class="text-sm font-semibold">Componente<input id="operational-d2-component" list="operational-d2-components" class="mt-1 w-full border p-2 font-normal" placeholder="Command" /><datalist id="operational-d2-components"></datalist></label>
+                <label class="text-sm font-semibold">Operacao<input id="operational-d2-operation" class="mt-1 w-full border p-2 font-normal" placeholder="Nome do command ou operacao" /></label>
+                <label class="text-sm font-semibold">OperationId<input id="operational-d2-operation-id" class="mt-1 w-full border p-2 font-normal" placeholder="Fluxo especifico, quando conhecido" /></label>
+                <label class="text-sm font-semibold">Registro<input id="operational-d2-record-id" class="mt-1 w-full border p-2 font-normal" placeholder="Identificador de negocio" /></label>
+                <label class="text-sm font-semibold">Entidade<input id="operational-d2-entity" list="operational-d2-entities" class="mt-1 w-full border p-2 font-normal" placeholder="Entidade opcional" /><datalist id="operational-d2-entities"></datalist></label>
+                <label class="text-sm font-semibold">Campo alvo<input id="operational-d2-field" class="mt-1 w-full border p-2 font-normal" placeholder="Campo opcional" /></label>
+                <label class="text-sm font-semibold">Duracao em minutos<input id="operational-d2-duration" type="number" min="1" max="1440" value="30" class="mt-1 w-full border p-2 font-normal" /></label>
+                <label class="text-sm font-semibold">Limite de capturas<input id="operational-d2-limit" type="number" min="1" max="1000000" value="500" class="mt-1 w-full border p-2 font-normal" /></label>
+                <label class="text-sm font-semibold">Solicitante<input id="operational-d2-requested-by" class="mt-1 w-full border p-2 font-normal" /></label>
+                <label class="text-sm font-semibold">Aprovador<input id="operational-d2-approved-by" class="mt-1 w-full border p-2 font-normal" /></label>
+                <label class="text-sm font-semibold md:col-span-2">Campos autorizados<input id="operational-d2-authorized-fields" class="mt-1 w-full border p-2 font-normal" placeholder="ExceptionMessage, StackTrace, Value" /><span class="mt-1 block text-xs font-normal text-gray-600">Somente estes campos restritos poderao entrar na evidencia D2.</span></label>
+                <label class="text-sm font-semibold md:col-span-2 lg:col-span-4">Justificativa<textarea id="operational-d2-justification" rows="2" class="mt-1 w-full border p-2 font-normal"></textarea></label>
+            </div>
+            <div class="mt-3 flex justify-end"><button id="operational-d2-activate" class="bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800">Ativar sessao D2</button></div>
+            <div class="mt-5"><h3 class="mb-2 text-sm font-bold text-gray-900">Sessoes ativas</h3><div id="operational-d2-active" class="divide-y border border-gray-200"></div></div>
+        </section>
+        <section class="mt-4 border border-gray-200 bg-white p-4">
             <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
                 <div><h2 class="text-lg font-bold text-gray-900">Logs e telemetria</h2><p class="text-sm text-gray-600">Acessos operacionais para consultar a aplicacao selecionada.</p></div>
                 <span id="operational-log-scope" class="border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-600"></span>
@@ -112,6 +115,7 @@ function renderState(state) {
     document.getElementById('operational-application').textContent = `${catalog.application} / ${policy.environment}`;
     document.getElementById('operational-default-level').value = policy.defaultLevel || 'Information';
     document.getElementById('operational-default-depth').value = policy.defaultDepth || 'D0';
+    renderDiagnosticControl(state);
     renderLogAccess(catalog.application, policy.environment);
     document.getElementById('operational-components').innerHTML = catalog.components.filter(component => component.id !== 'DomainTracker').map(component => `
         <label class="flex cursor-pointer items-start gap-3 p-3 hover:bg-gray-50"><input class="operational-component mt-1 h-4 w-4" type="checkbox" data-component="${html(component.id)}" ${isEnabled(policy.targets, component.id) ? 'checked' : ''} /><span><strong class="block text-sm">${html(component.title)}</strong><span class="text-sm text-gray-600">${html(component.description)}</span></span></label>`).join('');
@@ -196,7 +200,7 @@ function renderOperationalField(entity, field, targets) {
 
 function buildUpdate(state) {
     const managed = new Set(state.catalog.components.map(component => component.id));
-    const targets = (state.policy.targets || []).filter(target => !managed.has(target.component));
+    const targets = (state.policy.targets || []).filter(target => target.depth === 'D2' || !managed.has(target.component));
     const defaultLevel = document.getElementById('operational-default-level').value;
     const defaultDepth = document.getElementById('operational-default-depth').value;
     document.querySelectorAll('.operational-component').forEach(input => targets.push({ component: input.dataset.component, level: input.checked ? defaultLevel : 'None', depth: defaultDepth }));
@@ -207,6 +211,111 @@ function buildUpdate(state) {
         document.querySelectorAll('.operational-field:checked').forEach(input => targets.push({ component: 'DomainTracker', entity: input.dataset.entity, field: input.dataset.field, level: defaultLevel, depth: 'D1' }));
     }
     return { defaultLevel, defaultDepth, targets };
+}
+
+function renderDiagnosticControl(state) {
+    document.getElementById('operational-d2-components').innerHTML = state.catalog.components
+        .map(component => `<option value="${html(component.id)}">${html(component.title)}</option>`)
+        .join('');
+    document.getElementById('operational-d2-entities').innerHTML = state.catalog.entities
+        .map(entity => `<option value="${html(entity.name)}">${html(entity.title)}</option>`)
+        .join('');
+
+    const active = (state.policy.targets || []).filter(target =>
+        target.depth === 'D2' && (!target.expiresAtUtc || new Date(target.expiresAtUtc) > new Date()));
+    document.getElementById('operational-d2-active').innerHTML = active.length
+        ? active.map(target => diagnosticSessionHtml(target)).join('')
+        : '<p class="p-3 text-sm text-gray-500">Nenhuma sessao D2 ativa.</p>';
+
+    document.getElementById('operational-d2-activate').onclick = () => activateDiagnosticSession(state);
+    document.querySelectorAll('.operational-d2-stop').forEach(button => {
+        button.onclick = () => stopDiagnosticSession(state, button.dataset.sessionId);
+    });
+}
+
+function diagnosticSessionHtml(target) {
+    const scope = [target.component, target.operation, target.operationId, target.entity, target.recordId, target.field]
+        .filter(Boolean)
+        .join(' / ');
+    return `<div class="flex flex-wrap items-center justify-between gap-3 p-3"><div><strong class="block text-sm text-gray-900">${html(scope)}</strong><span class="text-xs text-gray-600">Ate ${html(formatDate(target.expiresAtUtc))} · limite ${html(target.maximumCaptures)} · ${html(target.requestedBy)} / ${html(target.approvedBy)}</span><span class="mt-1 block text-xs text-gray-500">${html(target.justification)}</span></div><button class="operational-d2-stop border border-red-700 px-3 py-1 text-sm font-semibold text-red-700 hover:bg-red-50" data-session-id="${html(target.diagnosticSessionId)}">Encerrar</button></div>`;
+}
+
+async function activateDiagnosticSession(state) {
+    const value = id => String(document.getElementById(id).value || '').trim();
+    const component = value('operational-d2-component');
+    const operation = value('operational-d2-operation');
+    const operationId = value('operational-d2-operation-id');
+    const entity = value('operational-d2-entity');
+    const recordId = value('operational-d2-record-id');
+    const field = value('operational-d2-field');
+    const requestedBy = value('operational-d2-requested-by');
+    const approvedBy = value('operational-d2-approved-by');
+    const justification = value('operational-d2-justification');
+    const duration = Number(value('operational-d2-duration'));
+    const maximumCaptures = Number(value('operational-d2-limit'));
+    const authorizedFields = value('operational-d2-authorized-fields')
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean);
+
+    if (![component, operation, operationId, entity, recordId, field].some(Boolean)) {
+        showAlert('Informe ao menos um alvo para o diagnostico D2.', 'error');
+        return;
+    }
+    if (!requestedBy || !approvedBy || !justification || !duration || !maximumCaptures || !authorizedFields.length) {
+        showAlert('Preencha solicitante, aprovador, justificativa, duracao, limite e campos autorizados.', 'error');
+        return;
+    }
+
+    const target = {
+        component: component || null,
+        operation: operation || null,
+        operationId: operationId || null,
+        entity: entity || null,
+        recordId: recordId || null,
+        field: field || null,
+        level: 'Debug',
+        depth: 'D2',
+        startsAtUtc: new Date().toISOString(),
+        expiresAtUtc: new Date(Date.now() + duration * 60000).toISOString(),
+        maximumCaptures,
+        requestedBy,
+        approvedBy,
+        justification,
+        authorizedFields
+    };
+    state.policy.targets = [...(state.policy.targets || []), target];
+    await persistPolicy(state, buildUpdate(state), 'Sessao D2 ativada.');
+}
+
+async function stopDiagnosticSession(state, sessionId) {
+    state.policy.targets = (state.policy.targets || []).filter(target =>
+        target.diagnosticSessionId !== sessionId);
+    await persistPolicy(state, buildUpdate(state), 'Sessao D2 encerrada.');
+}
+
+async function persistPolicy(state, update, successMessage) {
+    setBusy(true);
+    try {
+        const response = await apiFetch(`${environments.urlApi}/operational/logging-policy`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(update)
+        });
+        if (!response.ok) throw new Error(await response.text() || 'Nao foi possivel aplicar a configuracao.');
+        state.policy = await response.json();
+        renderState(state);
+        showAlert(successMessage, 'success');
+    } catch (error) {
+        showAlert(error.message, 'error');
+    } finally {
+        setBusy(false);
+    }
+}
+
+function formatDate(value) {
+    if (!value) return '-';
+    return new Date(value).toLocaleString('pt-BR');
 }
 
 function applyDomainAllState(enabled) {

@@ -52,7 +52,16 @@ app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvide
     .AllowAnonymous();
 
 app.MapPut("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyState policyState, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update) =>
-    Results.Ok(policyState.ApplyLocal(update)))
+{
+    try
+    {
+        return Results.Ok(policyState.ApplyLocal(update));
+    }
+    catch (ArgumentException exception)
+    {
+        return Results.BadRequest(new { error = exception.Message });
+    }
+})
     .RequireAuthorization();
 
 app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>

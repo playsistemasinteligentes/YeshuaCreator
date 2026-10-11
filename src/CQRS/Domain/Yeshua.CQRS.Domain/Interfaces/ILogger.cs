@@ -85,7 +85,9 @@ namespace Dominio.Interfaces
     public readonly record struct OperationalTelemetryDecision(
         bool Enabled,
         string Level,
-        string Depth)
+        string Depth,
+        string? DiagnosticSessionId = null,
+        IReadOnlyList<string>? AuthorizedFields = null)
     {
         public OperationalSeverity Severity => OperationalEvidenceAxes.ParseSeverity(Level);
         public OperationalDepth DiagnosticDepth => OperationalEvidenceAxes.ParseDepth(Depth);
@@ -112,6 +114,15 @@ namespace Dominio.Interfaces
             string? recordId,
             string? field)
             => Evaluate(component, operation, entity, recordId);
+
+        OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation,
+            string? entity,
+            string? recordId,
+            string? field,
+            string? operationId)
+            => Evaluate(component, operation, entity, recordId, field);
     }
 
     public interface IDomainTrackingPolicy
@@ -129,6 +140,13 @@ namespace Dominio.Interfaces
             string? operation = null,
             string? entity = null,
             string? recordId = null);
+        OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation,
+            string? entity,
+            string? recordId,
+            string? operationId)
+            => Evaluate(component, operation, entity, recordId);
         void Info(string message);
         void CommandStarted(string commandName);
         void CommandStarted(

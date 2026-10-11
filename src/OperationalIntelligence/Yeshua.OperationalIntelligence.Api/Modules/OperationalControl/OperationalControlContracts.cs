@@ -8,7 +8,18 @@ public sealed record OperationalLoggingPolicy(
     string DefaultDepth,
     IReadOnlyList<DiagnosticTarget> Targets,
     DateTimeOffset UpdatedAtUtc,
-    string Source);
+    string Source)
+{
+    public IReadOnlyList<DiagnosticPolicyAuditEntry> DiagnosticAudit { get; init; } = [];
+}
+
+public sealed record DiagnosticPolicyAuditEntry(
+    string DiagnosticSessionId,
+    string Action,
+    DateTimeOffset OccurredAtUtc,
+    string RequestedBy,
+    string ApprovedBy,
+    string Justification);
 
 public sealed record DiagnosticTarget(
     string? Component,
@@ -20,6 +31,14 @@ public sealed record DiagnosticTarget(
     DateTimeOffset? ExpiresAtUtc)
 {
     public string? Field { get; init; }
+    public string? OperationId { get; init; }
+    public string? DiagnosticSessionId { get; init; }
+    public string? RequestedBy { get; init; }
+    public string? ApprovedBy { get; init; }
+    public string? Justification { get; init; }
+    public DateTimeOffset? StartsAtUtc { get; init; }
+    public int? MaximumCaptures { get; init; }
+    public IReadOnlyList<string>? AuthorizedFields { get; init; }
 }
 
 public sealed record OperationalLoggingPolicyUpdate(

@@ -52,10 +52,14 @@ public sealed class OperationalEvidencePublisher
             WriteOptional(writer, "CausationId", envelope.CausationId);
             WriteOptional(writer, "OperationalEntityId", envelope.OperationalEntityId);
             WriteOptional(writer, "ErrorCode", envelope.ErrorCode);
+            WriteOptional(writer, "DiagnosticSessionId", envelope.DiagnosticSessionId);
 
             foreach (ref readonly var field in fields)
             {
-                if (!OperationalEvidenceProtection.CanPublish(field, envelope.Depth))
+                if (!OperationalEvidenceProtection.CanPublish(
+                        field,
+                        envelope.Depth,
+                        envelope.AuthorizedFields))
                     continue;
 
                 WriteValue(writer, field.Name, field.Value);
@@ -124,7 +128,8 @@ public static class OperationalEvidenceProtection
 
     public static bool CanPublish(
         in OperationalEvidenceField field,
-        OperationalDepth depth)
+        OperationalDepth depth,
+        IReadOnlyList<string>? authorizedFields = null)
     {
         if (field.Classification == OperationalDataClassification.NeverCapture ||
             IsForbiddenName(field.Name))
@@ -137,9 +142,31 @@ public static class OperationalEvidenceProtection
             OperationalDataClassification.Public => true,
             OperationalDataClassification.Internal => true,
             OperationalDataClassification.Confidential => depth >= OperationalDepth.D1,
-            OperationalDataClassification.Restricted => depth >= OperationalDepth.D2,
+            OperationalDataClassification.Restricted =>
+                depth >= OperationalDepth.D2 && IsAuthorized(field.Name, authorizedFields),
             _ => false
         };
+    }
+
+    private static bool IsAuthorized(
+        string fieldName,
+        IReadOnlyList<string>? authorizedFields)
+    {
+        if (authorizedFields is null || authorizedFields.Count == 0)
+            return false;
+
+        for (var index = 0; index < authorizedFields.Count; index++)
+        {
+            if (string.Equals(
+                    authorizedFields[index],
+                    fieldName,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static bool IsForbiddenName(string name)

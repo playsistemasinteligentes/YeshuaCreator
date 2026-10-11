@@ -37,10 +37,16 @@ public sealed class OperationalHttpTelemetryHandler : DelegatingHandler
         var operation = GetOperation(request);
         var entity = GetOption(request, OperationalHttpRequestOptions.Entity);
         var recordId = GetOption(request, OperationalHttpRequestOptions.RecordId);
+        var identity = ReadIdentity(request);
         Dominio.Interfaces.OperationalTelemetryDecision telemetry;
         try
         {
-            telemetry = _logger.Evaluate(Component, operation, entity, recordId);
+            telemetry = _logger.Evaluate(
+                Component,
+                operation,
+                entity,
+                recordId,
+                identity.OperationId);
         }
         catch
         {
@@ -51,7 +57,6 @@ public sealed class OperationalHttpTelemetryHandler : DelegatingHandler
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
         var startedTimestamp = Stopwatch.GetTimestamp();
-        var identity = ReadIdentity(request);
         var dependency = request.RequestUri?.Host;
 
         try

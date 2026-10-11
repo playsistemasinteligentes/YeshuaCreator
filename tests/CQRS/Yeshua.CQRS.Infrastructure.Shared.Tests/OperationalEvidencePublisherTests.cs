@@ -73,7 +73,12 @@ public sealed class OperationalEvidencePublisherTests
 
         var d0 = Publish(CreateEnvelope(OperationalDepth.D0), fields);
         var d1 = Publish(CreateEnvelope(OperationalDepth.D1), fields);
-        var d2 = Publish(CreateEnvelope(OperationalDepth.D2), fields);
+        var d2 = Publish(
+            CreateEnvelope(
+                OperationalDepth.D2,
+                authorizedFields: ["RestrictedValue"]),
+            fields);
+        var d2WithoutAuthorization = Publish(CreateEnvelope(OperationalDepth.D2), fields);
 
         Assert.IsTrue(HasDataProperty(d0, "InternalValue"));
         Assert.IsFalse(HasDataProperty(d0, "ConfidentialValue"));
@@ -81,6 +86,23 @@ public sealed class OperationalEvidencePublisherTests
         Assert.IsTrue(HasDataProperty(d1, "ConfidentialValue"));
         Assert.IsFalse(HasDataProperty(d1, "RestrictedValue"));
         Assert.IsTrue(HasDataProperty(d2, "RestrictedValue"));
+        Assert.IsFalse(HasDataProperty(d2WithoutAuthorization, "RestrictedValue"));
+    }
+
+    [TestMethod]
+    public void Publish_IdentifiesDirectedDiagnosticSession()
+    {
+        var payload = Publish(
+            CreateEnvelope(
+                OperationalDepth.D2,
+                "diagnostic-123",
+                ["RestrictedValue"]),
+            [new("RestrictedValue", "captured", OperationalDataClassification.Restricted)]);
+
+        using var document = JsonDocument.Parse(payload);
+        Assert.AreEqual(
+            "diagnostic-123",
+            document.RootElement.GetProperty("Data").GetProperty("DiagnosticSessionId").GetString());
     }
 
     [TestMethod]
@@ -412,13 +434,19 @@ public sealed class OperationalEvidencePublisherTests
         Assert.AreEqual("12345678900", root.GetProperty("Data").GetProperty("Value").GetString());
     }
 
-    private static OperationalEvidenceEnvelope CreateEnvelope(OperationalDepth depth) => new(
-        "Command",
-        "Test",
-        OperationalSeverity.Information,
-        depth,
-        OperationalTechnicalOutcome.Succeeded,
-        OperationalBusinessOutcome.Accepted);
+    private static OperationalEvidenceEnvelope CreateEnvelope(
+        OperationalDepth depth,
+        string? diagnosticSessionId = null,
+        IReadOnlyList<string>? authorizedFields = null) =>
+        new(
+            "Command",
+            "Test",
+            OperationalSeverity.Information,
+            depth,
+            OperationalTechnicalOutcome.Succeeded,
+            OperationalBusinessOutcome.Accepted,
+            DiagnosticSessionId: diagnosticSessionId,
+            AuthorizedFields: authorizedFields);
 
     private static string Publish(
         OperationalEvidenceEnvelope envelope,

@@ -30,7 +30,12 @@ namespace Command.Patterns
             if (!handlers.TryGetValue(step.Key, out var handler))
                 throw new Exception($"Handler não encontrado: {step.Key}");
 
-            var telemetry = _logger.Evaluate("Saga", saga.Type, step.Key);
+            var telemetry = _logger.Evaluate(
+                "Saga",
+                saga.Type,
+                step.Key,
+                saga.CorrelationId.ToString("D"),
+                step.OperationId ?? saga.OperationId ?? step.Key);
             var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
             var attempt = step.Status == SagaStepStatus.Pending
                 ? step.ExecutionCount + 1
@@ -47,6 +52,7 @@ namespace Command.Patterns
             activity?.SetTag("yeshua.saga", saga.Type);
             activity?.SetTag("yeshua.saga.step", step.Key);
             OperationalActivity.SetIdentity(activity, executionIdentity);
+            OperationalActivity.SetDiagnosticSession(activity, telemetry.DiagnosticSessionId);
 
             try
             {

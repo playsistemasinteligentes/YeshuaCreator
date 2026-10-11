@@ -36,9 +36,19 @@ namespace Shered.DB.Connection
         {
             // OBS: F-EXP-04 - capacidades decididas na borda antes do custo de medicao.
             var captureCounters = _logger
-                .Evaluate("RepositoryCounters", operation)
+                .Evaluate(
+                    "RepositoryCounters",
+                    operation,
+                    null,
+                    null,
+                    _context.OperationalIdentity.OperationId)
                 .Enabled;
-            var eventDecision = _logger.Evaluate("RepositoryEvents", operation);
+            var eventDecision = _logger.Evaluate(
+                "RepositoryEvents",
+                operation,
+                null,
+                null,
+                _context.OperationalIdentity.OperationId);
             return new RepositoryTelemetrySelection(captureCounters, eventDecision);
         }
 
@@ -64,6 +74,9 @@ namespace Shered.DB.Connection
             activity?.SetTag("yeshua.trace_id", _context.TraceId);
             activity?.SetTag("yeshua.depth", selection.EventDecision.DiagnosticDepth.ToString());
             OperationalActivity.SetIdentity(activity, _context.OperationalIdentity);
+            OperationalActivity.SetDiagnosticSession(
+                activity,
+                selection.EventDecision.DiagnosticSessionId);
             return activity;
         }
 

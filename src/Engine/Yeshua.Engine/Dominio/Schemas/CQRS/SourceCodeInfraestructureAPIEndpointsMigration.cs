@@ -60,7 +60,16 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
 
             sb.AppendLine($"app.MapPut(\"{getPrefixo()}/operational/logging-policy\", ([FromServices] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyState policyState, [FromBody] Yeshua.Generated.OperationalControl.OperationalLoggingPolicyUpdate update) =>");
-            sb.AppendLine("    Results.Ok(policyState.ApplyLocal(update)))");
+            sb.AppendLine("{");
+            sb.AppendLine("    try");
+            sb.AppendLine("    {");
+            sb.AppendLine("        return Results.Ok(policyState.ApplyLocal(update));");
+            sb.AppendLine("    }");
+            sb.AppendLine("    catch (ArgumentException exception)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        return Results.BadRequest(new { error = exception.Message });");
+            sb.AppendLine("    }");
+            sb.AppendLine("})");
             sb.AppendLine("    .RequireAuthorization();");
             sb.AppendLine("");
 
