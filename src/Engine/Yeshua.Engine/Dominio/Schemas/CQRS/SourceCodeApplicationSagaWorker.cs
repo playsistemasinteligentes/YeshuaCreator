@@ -54,8 +54,10 @@ namespace Command.Patterns
         private readonly IySagaStepReadRepository _sagaStepReadRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        private readonly Dominio.Interfaces.ILogger _logger;
 
         public SagaStepContinuation(
+            Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context,
             SagaResolverRegistry registry,
             ISagaExecutor executor,
@@ -64,6 +66,7 @@ namespace Command.Patterns
             IySagaStepReadRepository sagaStepReadRepository,
             IUnitOfWork unitOfWork)
         {
+            _logger = logger;
             _executionContext = context;
             _registry = registry;
             _executor = executor;
@@ -90,6 +93,19 @@ namespace Command.Patterns
                 if (!string.IsNullOrWhiteSpace(stimulus.CorrelationId))
                     _executionContext.SetTraceId(stimulus.CorrelationId);
 
+                var operation = string.IsNullOrWhiteSpace(stimulus.StepKey)
+                    ? "SagaStepStimulus"
+                    : stimulus.StepKey;
+                var telemetry = _logger.Evaluate(
+                    "Inbox",
+                    operation,
+                    "yInbox",
+                    stimulus.InboxId.ToString());
+                var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
+                var executionIdentity = _executionContext.TryGetOperationalIdentity(out var currentIdentity)
+                    ? currentIdentity
+                    : OperationalExecutionIdentity.FromTrace(stimulus.CorrelationId);
+
                 _unitOfWork.BeginTran();
                 try
                 {
@@ -98,10 +114,30 @@ namespace Command.Patterns
 
                     if (applied <= 0)
                         return Task.CompletedTask;
+
+                    RecordInboxTransition(
+                        stimulus,
+                        operation,
+                        "Consumed",
+                        telemetry,
+                        executionIdentity,
+                        startedTimestamp,
+                        OperationalTechnicalOutcome.Succeeded,
+                        OperationalBusinessOutcome.Accepted);
                 }
-                catch
+                catch (Exception exception)
                 {
                     _unitOfWork.Rollback();
+                    RecordInboxTransition(
+                        stimulus,
+                        operation,
+                        "ConsumptionFailed",
+                        telemetry,
+                        executionIdentity,
+                        startedTimestamp,
+                        OperationalTechnicalOutcome.Failed,
+                        OperationalBusinessOutcome.NotEvaluated,
+                        exception);
                     throw;
                 }
 
@@ -112,6 +148,41 @@ namespace Command.Patterns
             {
                 _sagaReadRepository.ReleaseLock(stimulus.SagaId, lockedBy);
             }
+        }
+
+        private void RecordInboxTransition(
+            ISagaStepStimulusOutput stimulus,
+            string operation,
+            string phase,
+            Dominio.Interfaces.OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity,
+            long startedTimestamp,
+            OperationalTechnicalOutcome technicalOutcome,
+            OperationalBusinessOutcome businessOutcome,
+            Exception? exception = null)
+        {
+            if (!telemetry.Enabled)
+                return;
+
+            _logger.Transition(
+                new OperationalEvidenceTransition(
+                    "Inbox",
+                    operation,
+                    phase,
+                    (long)Stopwatch.GetElapsedTime(startedTimestamp).TotalMilliseconds,
+                    technicalOutcome,
+                    businessOutcome,
+                    executionIdentity,
+                    "yInbox",
+                    stimulus.InboxId.ToString(),
+                    stimulus.CorrelationId,
+                    stimulus.CorrelationId,
+                    Dependency: "Saga",
+                    ErrorCode: exception?.GetType().Name,
+                    ErrorSummary: exception is null
+                        ? null
+                        : $"Inbox consumption failed with {exception.GetType().Name}."),
+                telemetry);
         }
 
         private void RunClaimedSaga(int sagaId, string lockedBy, DateTime lockedAt, CancellationToken cancellationToken)

@@ -376,7 +376,18 @@ public sealed class OperationalEvidencePublisherTests
         using var response = await client.SendAsync(request);
 
         Assert.AreEqual(HttpStatusCode.Accepted, response.StatusCode);
-        using var document = JsonDocument.Parse(sink.SinglePayload);
+        CollectionAssert.AreEqual(
+            new[]
+            {
+                "Outbox.DeliveryStarted",
+                "ExternalDependency.Completed",
+                "Outbox.Delivered"
+            },
+            sink.Payloads.Select(ReadEventName).ToArray());
+
+        var dependencyPayload = sink.Payloads.Single(payload =>
+            ReadEventName(payload) == "ExternalDependency.Completed");
+        using var document = JsonDocument.Parse(dependencyPayload);
         var root = document.RootElement;
         var data = root.GetProperty("Data");
         Assert.AreEqual("ExternalDependency.Completed", data.GetProperty("EventName").GetString());
@@ -387,7 +398,53 @@ public sealed class OperationalEvidencePublisherTests
         Assert.AreEqual("root-http", data.GetProperty("RootOperationId").GetString());
         Assert.AreEqual("operation-http", data.GetProperty("OperationId").GetString());
         Assert.AreEqual("execution-http", data.GetProperty("ExecutionId").GetString());
-        Assert.IsFalse(sink.SinglePayload.Contains("do-not-publish", StringComparison.Ordinal));
+        Assert.IsFalse(sink.Payloads.Any(payload =>
+            payload.Contains("do-not-publish", StringComparison.Ordinal)));
+
+        var deliveredPayload = sink.Payloads.Single(payload =>
+            ReadEventName(payload) == "Outbox.Delivered");
+        using var deliveredDocument = JsonDocument.Parse(deliveredPayload);
+        var deliveredData = deliveredDocument.RootElement.GetProperty("Data");
+        Assert.AreEqual("yOutbox", deliveredData.GetProperty("Entity").GetString());
+        Assert.AreEqual("message-10", deliveredData.GetProperty("RecordId").GetString());
+        Assert.AreEqual("message-10", deliveredData.GetProperty("MessageId").GetString());
+    }
+
+    [TestMethod]
+    public async Task ModuleHttpDelivery_EmitsFailedOutboxTransitionFromAuthenticationHeader()
+    {
+        var sink = new CapturingSink();
+        var telemetry = new OperationalTelemetryDecision(true, "Information", "D1");
+        var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
+        var handler = new OperationalHttpTelemetryHandler(logger)
+        {
+            InnerHandler = new StubHttpHandler(HttpStatusCode.BadGateway)
+        };
+        using var client = new HttpClient(handler);
+        using var request = new HttpRequestMessage(
+            HttpMethod.Post,
+            "https://fiscal.example.test/yapi/Fiscal/Inbox/YeshuaModuleEvent");
+        request.Headers.TryAddWithoutValidation(
+            global::Shared.ModuleTransport.YeshuaModuleAuthenticationHeaders.MessageId,
+            "message-failed");
+
+        using var response = await client.SendAsync(request);
+
+        Assert.AreEqual(HttpStatusCode.BadGateway, response.StatusCode);
+        CollectionAssert.AreEqual(
+            new[]
+            {
+                "Outbox.DeliveryStarted",
+                "ExternalDependency.Failed",
+                "Outbox.DeliveryFailed"
+            },
+            sink.Payloads.Select(ReadEventName).ToArray());
+        var failedPayload = sink.Payloads.Single(payload =>
+            ReadEventName(payload) == "Outbox.DeliveryFailed");
+        using var document = JsonDocument.Parse(failedPayload);
+        var data = document.RootElement.GetProperty("Data");
+        Assert.AreEqual("message-failed", data.GetProperty("MessageId").GetString());
+        Assert.AreEqual(502, data.GetProperty("StatusCode").GetInt32());
     }
 
     [TestMethod]
@@ -461,6 +518,15 @@ public sealed class OperationalEvidencePublisherTests
     {
         using var document = JsonDocument.Parse(payload);
         return document.RootElement.GetProperty("Data").TryGetProperty(name, out _);
+    }
+
+    private static string? ReadEventName(string payload)
+    {
+        using var document = JsonDocument.Parse(payload);
+        return document.RootElement
+            .GetProperty("Data")
+            .GetProperty("EventName")
+            .GetString();
     }
 
     private sealed class FixedPolicy : IOperationalTelemetryPolicy

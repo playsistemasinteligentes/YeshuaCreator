@@ -12,233 +12,90 @@ using System;
 
 namespace MyApp.Domain.Entities
 {
-    public class Clinica
+    public class Foto
     {
         public int? Id { get; set; }
-        public string Nome { get; set; }
-        public string Endereco { get; set; }
-        public string Telefone { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Clinica> Query() => new MyApp.QueryBuilder.Query<Clinica>();
-    }
-
-    public class Especialidade
-    {
-        public int? Id { get; set; }
-        public string Descricao { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Especialidade> Query() => new MyApp.QueryBuilder.Query<Especialidade>();
-    }
-
-    public class Profissional
-    {
-        public int? Id { get; set; }
-        public string Nome { get; set; }
-        public int? EspecialidadeId { get; set; }
-        public Especialidade Especialidade { get; set; }
-        public string Telefone { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Profissional> Query() => new MyApp.QueryBuilder.Query<Profissional>();
-    }
-
-    public class DisponibilidadeAgenda
-    {
-        public int? Id { get; set; }
-        public int? ProfissionalId { get; set; }
-        public Profissional Profissional { get; set; }
-        public DateTime DataHora { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<DisponibilidadeAgenda> Query() => new MyApp.QueryBuilder.Query<DisponibilidadeAgenda>();
-    }
-
-    public class GrupoServico
-    {
-        public int? Id { get; set; }
-        public string Descricao { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<GrupoServico> Query() => new MyApp.QueryBuilder.Query<GrupoServico>();
-    }
-
-    public class Servico
-    {
-        public int? Id { get; set; }
-        public int? GrupoServicoId { get; set; }
-        public GrupoServico GrupoServico { get; set; }
-        public string Nome { get; set; }
-        public Decimal Valor { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Servico> Query() => new MyApp.QueryBuilder.Query<Servico>();
-    }
-
-    public class Paciente
-    {
-        public int? Id { get; set; }
-        public string Nome { get; set; }
-        public string Telefone { get; set; }
-        public DateTime? DataNascimento { get; set; }
-        public int? Genero { get; set; }
-        public string? Escolaridade { get; set; }
-        public string? Profissao { get; set; }
-        public string? Endereco { get; set; }
-        public string? NomeResponsavel { get; set; }
-        public string? TelefoneResponsavel { get; set; }
-        public string? Observacao { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Paciente> Query() => new MyApp.QueryBuilder.Query<Paciente>();
-    }
-
-    public class MovimentacaoFinanceira
-    {
-        public int? Id { get; set; }
-        public int? PacienteId { get; set; }
-        public Paciente Paciente { get; set; }
-        public int? ServicoId { get; set; }
-        public Servico Servico { get; set; }
-        public Decimal Valor { get; set; }
-        public int TipoMovimentacao { get; set; }
-        public DateTime DataMovimentacao { get; set; }
-        public Decimal SaldoAtual { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MovimentacaoFinanceira> Query() => new MyApp.QueryBuilder.Query<MovimentacaoFinanceira>();
-    }
-
-    public class Sesoes
-    {
-        public int? PacienteId { get; set; }
-        public Paciente Paciente { get; set; }
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
-        public int? StatusAgendamento { get; set; }
-        public int? StatusProntuario { get; set; }
-        public string? Prontuario { get; set; }
-        public string? QueixaPrincipal { get; set; }
-        public string? RegistroDocumental { get; set; }
-        public string? SintomasRelatados { get; set; }
-        public int? MudancasDesdeUltimaSessaao { get; set; }
-        public string? ComportamentoObservado { get; set; }
-        public string? EstadoEmocionalGeral { get; set; }
-        public string? DiscursoPensamentos { get; set; }
-        public string? UsoMedicacao { get; set; }
-        public string? TecnicasUtilizadas { get; set; }
-        public string? QuestionamentosReflexoesAbordadas { get; set; }
-        public string? ExerciciosTarefasSugeridas { get; set; }
-        public string? DiagnoosticoHipoteseDiagnoostica { get; set; }
-        public string? ObjetivosCurtoPrazo { get; set; }
-        public string? ObjetivosLongoPrazo { get; set; }
-        public string? FrequenciaSugeridaSessooes { get; set; }
-        public string? EncaminhamentoOutrosProfissionais { get; set; }
-        public string? InformacoesRelevantesFuturasConsultas { get; set; }
-        public string? FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
-        public int? Id { get; set; }
-        public int? ServicoId { get; set; }
-        public Servico Servico { get; set; }
-        public int? MovimentacaoFinanceiraId { get; set; }
-        public MovimentacaoFinanceira MovimentacaoFinanceira { get; set; }
-        public int? ProfissionalId { get; set; }
-        public Profissional Profissional { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Sesoes> Query() => new MyApp.QueryBuilder.Query<Sesoes>();
-    }
-
-    public class PlanoConta
-    {
-        public int? Id { get; set; }
-        public string Codigo { get; set; }
-        public string Nome { get; set; }
-        public int Tipo { get; set; }
-        public string OperationalEntityId { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<PlanoConta> Query() => new MyApp.QueryBuilder.Query<PlanoConta>();
-    }
-
-    public class MovimentoFinanceiro
-    {
-        public int? Id { get; set; }
-        public string IdOrigem { get; set; }
-        public int ContaDebitoId { get; set; }
-        public PlanoConta PlanoConta { get; set; }
-        public Decimal Valor { get; set; }
-        public DateTime DataMovimento { get; set; }
-        public DateTime? DataVencimento { get; set; }
+        public string StorageKey { get; set; }
+        public string NomeOriginal { get; set; }
+        public string ContentType { get; set; }
+        public string? HashArquivo { get; set; }
+        public DateTime? CapturadaEmUtc { get; set; }
+        public int? Largura { get; set; }
+        public int? Altura { get; set; }
         public int Status { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
-        public static MyApp.QueryBuilder.Query<MovimentoFinanceiro> Query() => new MyApp.QueryBuilder.Query<MovimentoFinanceiro>();
+        public static MyApp.QueryBuilder.Query<Foto> Query() => new MyApp.QueryBuilder.Query<Foto>();
+    }
+
+    public class Album
+    {
+        public int? Id { get; set; }
+        public string Titulo { get; set; }
+        public string? Descricao { get; set; }
+        public int Privacidade { get; set; }
+        public int SegundosPorFoto { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<Album> Query() => new MyApp.QueryBuilder.Query<Album>();
+    }
+
+    public class AlbumFoto
+    {
+        public int? Id { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
+        public int FotoId { get; set; }
+        public Foto Foto { get; set; }
+        public int Ordem { get; set; }
+        public string? Legenda { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<AlbumFoto> Query() => new MyApp.QueryBuilder.Query<AlbumFoto>();
+    }
+
+    public class PublicacaoAlbum
+    {
+        public int? Id { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
+        public string CorrelationId { get; set; }
+        public string? ManifestStorageKey { get; set; }
+        public string? VideoStorageKey { get; set; }
+        public string? YouTubeVideoId { get; set; }
+        public string? YouTubeUrl { get; set; }
+        public string? Mensagem { get; set; }
+        public DateTime SolicitadaEmUtc { get; set; }
+        public DateTime? PublicadaEmUtc { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<PublicacaoAlbum> Query() => new MyApp.QueryBuilder.Query<PublicacaoAlbum>();
     }
 
     public class yFileUpload
@@ -254,11 +111,11 @@ namespace MyApp.Domain.Entities
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yFileUpload> Query() => new MyApp.QueryBuilder.Query<yFileUpload>();
     }
@@ -277,18 +134,18 @@ namespace MyApp.Domain.Entities
         public DateTime? NextExecutionAt { get; set; }
         public DateTime? LockedAt { get; set; }
         public string? LockedBy { get; set; }
-        public string ProcessingScope { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
         public string? RootOperationId { get; set; }
         public string? OperationId { get; set; }
         public string? ExecutionId { get; set; }
         public string? CausationId { get; set; }
+        public string ProcessingScope { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<ySaga> Query() => new MyApp.QueryBuilder.Query<ySaga>();
     }
@@ -308,17 +165,17 @@ namespace MyApp.Domain.Entities
         public string? ErrorMessage { get; set; }
         public string? Payload { get; set; }
         public int RetryCount { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
         public string? RootOperationId { get; set; }
         public string? OperationId { get; set; }
         public string? ExecutionId { get; set; }
         public string? CausationId { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<ySagaStep> Query() => new MyApp.QueryBuilder.Query<ySagaStep>();
     }
@@ -341,6 +198,10 @@ namespace MyApp.Domain.Entities
         public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
+        public string? RootOperationId { get; set; }
+        public string? OperationId { get; set; }
+        public string? ExecutionId { get; set; }
+        public string? CausationId { get; set; }
         public int? SagaId { get; set; }
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }
@@ -348,15 +209,11 @@ namespace MyApp.Domain.Entities
         public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
-        public string? RootOperationId { get; set; }
-        public string? OperationId { get; set; }
-        public string? ExecutionId { get; set; }
-        public string? CausationId { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yOutbox> Query() => new MyApp.QueryBuilder.Query<yOutbox>();
     }
@@ -376,6 +233,10 @@ namespace MyApp.Domain.Entities
         public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
+        public string? RootOperationId { get; set; }
+        public string? OperationId { get; set; }
+        public string? ExecutionId { get; set; }
+        public string? CausationId { get; set; }
         public int? SagaId { get; set; }
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }
@@ -383,15 +244,11 @@ namespace MyApp.Domain.Entities
         public string ProcessingScope { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
-        public string? RootOperationId { get; set; }
-        public string? OperationId { get; set; }
-        public string? ExecutionId { get; set; }
-        public string? CausationId { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yInbox> Query() => new MyApp.QueryBuilder.Query<yInbox>();
     }
@@ -410,9 +267,9 @@ namespace MyApp.Domain.Entities
         public yTenant yTenant { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yToken> Query() => new MyApp.QueryBuilder.Query<yToken>();
     }
@@ -424,11 +281,11 @@ namespace MyApp.Domain.Entities
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public DateTime ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yTenantApplication> Query() => new MyApp.QueryBuilder.Query<yTenantApplication>();
     }
@@ -436,6 +293,7 @@ namespace MyApp.Domain.Entities
     public class yTenant
     {
         public int Id { get; set; }
+        public string OperationalEntityId { get; set; }
         public string CnpjCpf { get; set; }
         public string Nome { get; set; }
         public int? UserId { get; set; }
@@ -448,6 +306,7 @@ namespace MyApp.Domain.Entities
     public class yUser
     {
         public int Id { get; set; }
+        public string OperationalEntityId { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string? Senha { get; set; }
@@ -464,13 +323,13 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int? AuditTrackerActived { get; set; }
         public int? AuditCRUDActived { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yConfigArcteture> Query() => new MyApp.QueryBuilder.Query<yConfigArcteture>();
     }
@@ -484,11 +343,11 @@ namespace MyApp.Domain.Entities
         public int? EmailPort { get; set; }
         public string? EmailUserName { get; set; }
         public string? EmailPassword { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yConfigNotification> Query() => new MyApp.QueryBuilder.Query<yConfigNotification>();
     }
@@ -497,13 +356,13 @@ namespace MyApp.Domain.Entities
     {
         public int? Id { get; set; }
         public string Description { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yPerfil> Query() => new MyApp.QueryBuilder.Query<yPerfil>();
     }
@@ -524,11 +383,11 @@ namespace MyApp.Domain.Entities
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yTenantModule> Query() => new MyApp.QueryBuilder.Query<yTenantModule>();
     }
@@ -541,11 +400,11 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserModule> Query() => new MyApp.QueryBuilder.Query<yUserModule>();
     }
@@ -554,13 +413,13 @@ namespace MyApp.Domain.Entities
     {
         public string? Id { get; set; }
         public string? Description { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yGrant> Query() => new MyApp.QueryBuilder.Query<yGrant>();
     }
@@ -578,13 +437,13 @@ namespace MyApp.Domain.Entities
         public bool? CanUpdate { get; set; }
         public bool? CanDelete { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yPerfilGrant> Query() => new MyApp.QueryBuilder.Query<yPerfilGrant>();
     }
@@ -602,13 +461,13 @@ namespace MyApp.Domain.Entities
         public bool? CanUpdate { get; set; }
         public bool? CanDelete { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string OperationalEntityId { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<yUserGrant> Query() => new MyApp.QueryBuilder.Query<yUserGrant>();
     }

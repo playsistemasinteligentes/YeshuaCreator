@@ -175,6 +175,10 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "\"SagaWorker.Record\"");
             StringAssert.Contains(content, "saga.SetOperationalIdentity(");
             StringAssert.Contains(content, "saga.GetCurrent()?.SetOperationalIdentity(");
+            StringAssert.Contains(content, "\"Inbox\"");
+            StringAssert.Contains(content, "\"Consumed\"");
+            StringAssert.Contains(content, "\"ConsumptionFailed\"");
+            StringAssert.Contains(content, "Dependency: \"Saga\"");
         }
         finally
         {
