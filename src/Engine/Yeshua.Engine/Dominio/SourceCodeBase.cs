@@ -61,25 +61,27 @@ namespace Migration.Dominio
                 //novoSB.AppendLine("");
                 //novoSB.AppendLine("");
 
-                // Abre ou cria o arquivo com compartilhamento liberado para leitura
-                using (var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
-                using (var writer = new StreamWriter(stream, Encoding.UTF8))
+                string[] linhas = content.Split(Environment.NewLine);
+                string prefixoParaRemover = "using";
+                foreach (var linha in linhas)
                 {
+                    var linhaTrimmed = linha.Trim();
 
-                    string[] linhas = content.Split(Environment.NewLine);
-                    string prefixoParaRemover = "using";
-                    foreach (var linha in linhas)
-                    {
-                        var linhaTrimmed = linha.Trim();
+                    // Ignora linhas em branco ou que comecem com o prefixo
+                    if (string.IsNullOrWhiteSpace(linhaTrimmed)) continue;
+                    if (linhaTrimmed.StartsWith(prefixoParaRemover)) continue;
 
-                        // Ignora linhas em branco ou que comecem com o prefixo
-                        if (string.IsNullOrWhiteSpace(linhaTrimmed)) continue;
-                        if (linhaTrimmed.StartsWith(prefixoParaRemover)) continue;
-
-                        novoSB.AppendLine(linha);
-                    }
-                    writer.WriteLine(novoSB);
+                    novoSB.AppendLine(linha);
                 }
+
+                var bloco = novoSB.ToString();
+                if (File.Exists(filePath) && File.ReadAllText(filePath, Encoding.UTF8).Contains(bloco, StringComparison.Ordinal))
+                    return;
+
+                // Abre ou cria o arquivo com compartilhamento liberado para leitura
+                using var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read);
+                using var writer = new StreamWriter(stream, Encoding.UTF8);
+                writer.WriteLine(bloco);
             }
             catch (Exception ex)
             {

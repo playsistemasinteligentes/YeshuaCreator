@@ -203,21 +203,21 @@ public class ApplicationDomainProjectGenerationTests
                 "Repository",
                 "Migration",
                 "MDFe",
-                "IMDFeRepositoryInterfacesRead.cs")));
+                "ReadRepository.cs")));
             Assert.IsTrue(File.Exists(Path.Combine(
                 Path.GetDirectoryName(applicationRepositoryInterfacesProjectPath)!,
                 "Write",
                 "Repository",
                 "Migration",
                 "MDFe",
-                "IMDFeWriteRepository.cs")));
+                "WriteRepository.cs")));
             Assert.IsFalse(File.Exists(Path.Combine(
                 sharedRepositoryInterfacesProjectDirectory,
                 "Read",
                 "Repository",
                 "Migration",
                 "MDFe",
-                "IMDFeRepositoryInterfacesRead.cs")));
+                "ReadRepository.cs")));
 
             var applicationRepositoryInterfacesProjectContent = File.ReadAllText(
                 applicationRepositoryInterfacesProjectPath);
