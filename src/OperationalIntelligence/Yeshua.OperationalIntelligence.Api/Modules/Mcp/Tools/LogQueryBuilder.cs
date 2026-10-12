@@ -38,6 +38,47 @@ public static class LogQueryBuilder
         return builder.ToString();
     }
 
+    public static string BuildRuntime(
+        string application,
+        string? environment,
+        string? version,
+        string? rootOperationId,
+        string? operationId,
+        string? operationalEntityId,
+        string? traceId)
+    {
+        var labels = new List<string>
+        {
+            $"service_name=~\".*{EscapeLabel(Regex.Escape(application))}.*\""
+        };
+
+        if (!string.IsNullOrWhiteSpace(environment))
+            labels.Add($"deployment_environment_name=~\".*{EscapeLabel(Regex.Escape(environment))}.*\"");
+        if (!string.IsNullOrWhiteSpace(version))
+            labels.Add($"service_version=\"{EscapeLabel(version)}\"");
+
+        var builder = new StringBuilder();
+        builder.Append('{');
+        builder.Append(string.Join(",", labels));
+        builder.Append('}');
+
+        AppendTextFilter(builder, rootOperationId);
+        AppendTextFilter(builder, operationId);
+        AppendTextFilter(builder, operationalEntityId);
+        AppendTextFilter(builder, traceId);
+        return builder.ToString();
+    }
+
+    private static void AppendTextFilter(StringBuilder builder, string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return;
+
+        builder.Append(" |= \"");
+        builder.Append(EscapeLogQl(value));
+        builder.Append('"');
+    }
+
     private static string EscapeLabel(string value) =>
         value.Replace("\\", "\\\\", StringComparison.Ordinal)
             .Replace("\"", "\\\"", StringComparison.Ordinal);

@@ -104,7 +104,10 @@ public static class OperationalIntelligenceEndpoints
 
                 var investigation = await orchestrator.InvestigateAsync(request, cancellationToken);
                 var context = contextBuilder.Build(request, investigation);
-                var bundle = await bundleBuilder.BuildAsync(context, cancellationToken);
+                var bundle = await bundleBuilder.BuildAsync(
+                    context,
+                    investigation,
+                    cancellationToken);
                 var safeApplication = string.Concat(request.Application.Select(character =>
                     char.IsLetterOrDigit(character) ? character : '-'));
                 return Results.File(

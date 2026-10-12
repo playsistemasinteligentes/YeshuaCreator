@@ -22,6 +22,8 @@ builder.Services
 builder.Services.AddSingleton<OperationalIntelligenceDatabase>();
 builder.Services.AddScoped<ISourceContextRepository, SourceContextRepository>();
 builder.Services.AddScoped<IContextCollector, SourceCodeContextCollector>();
+builder.Services.AddScoped<IRuntimeEvidenceProvider, LokiRuntimeEvidenceProvider>();
+builder.Services.AddScoped<IContextCollector, RuntimeContextCollector>();
 builder.Services.AddScoped<OperationalContextOrchestrator>();
 builder.Services.AddScoped<QuestionContextBuilder>();
 builder.Services.AddScoped<SourceBundleBuilder>();

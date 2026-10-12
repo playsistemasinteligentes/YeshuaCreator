@@ -69,6 +69,31 @@ Exemplo de investigacao:
 }
 ```
 
+Para consultar evidencias runtime no mesmo orquestrador, selecione a fonte
+`runtime` e informe o menor escopo conhecido:
+
+```json
+{
+  "application": "Fiscal",
+  "version": "commit-fec665473d7a",
+  "environment": "Production",
+  "operationId": "operation-1",
+  "fromUtc": "2026-10-11T10:00:00Z",
+  "toUtc": "2026-10-11T11:00:00Z",
+  "maxResults": 100,
+  "sources": ["runtime"]
+}
+```
+
+Tambem podem ser usados `rootOperationId`, `operationalEntityId` e `traceId`.
+Periodo e volume sao limitados pela configuracao MCP. O coletor consulta o
+Loki central e nao chama a API do aplicativo investigado.
+Por padrao, `includeKnowledgeReferences` e verdadeiro: a versao e o commit dos
+rotulos do Loki selecionam o snapshot e os sinais dos logs sao correlacionados
+com os fontes indexados. Use `includeSourceContent=true` somente quando o
+conteudo integral for necessario. O bundle separa `RUNTIME FACTS`,
+`SOURCE INFERENCES` e `EVIDENCE GAPS`.
+
 `/api/investigations` preserva o diagnostico completo de cada coletor.
 `/api/investigations/context` produz o pacote compacto para o agente, com
 um resumo quantitativo e somente os arquivos ranqueados com motivos e linhas

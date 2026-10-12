@@ -4,8 +4,17 @@ public sealed class InvestigationRequest
 {
     public string Application { get; init; } = string.Empty;
     public string? Version { get; init; }
+    public string? Environment { get; init; }
     public string? Question { get; init; }
     public string? Purpose { get; init; }
+    public string? RootOperationId { get; init; }
+    public string? OperationId { get; init; }
+    public string? OperationalEntityId { get; init; }
+    public string? TraceId { get; init; }
+    public DateTimeOffset? FromUtc { get; init; }
+    public DateTimeOffset? ToUtc { get; init; }
+    public bool IncludeKnowledgeReferences { get; init; } = true;
+    public bool IncludeSourceContent { get; init; }
     public string? Field { get; init; }
     public string? Class { get; init; }
     public string? Function { get; init; }

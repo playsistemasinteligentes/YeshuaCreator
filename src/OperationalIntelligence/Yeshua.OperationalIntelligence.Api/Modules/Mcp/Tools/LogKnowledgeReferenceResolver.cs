@@ -41,6 +41,7 @@ public sealed class LogKnowledgeReferenceResolver
                 signals,
                 null,
                 [],
+                [],
                 ["No function, class, exception type or source file path was found in the supplied logs."]);
         }
 
@@ -129,6 +130,7 @@ public sealed class LogKnowledgeReferenceResolver
             signals,
             selectedContext,
             sourceContents,
+            evidence,
             selectedContext.Warnings);
     }
 
@@ -298,4 +300,3 @@ public sealed class LogKnowledgeReferenceResolver
         return !string.IsNullOrWhiteSpace(line);
     }
 }
-

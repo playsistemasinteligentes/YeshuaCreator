@@ -1,13 +1,13 @@
 // <operational-spec>
 // standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD
-// gates: G2,G7
-// depths: D0
+// gates: G1,G2,G3,G4,G5,G6,G7
+// depths: D0,D1,D2
 // severities: notApplicable
 // dataClassification: SafeMetadata,OperationalData
 // identities: Application,Environment,Version
 // technicalOutcomes: Success,Failure
 // businessOutcomes: notApplicable
-// evidence: PostBuildHealthReport
+// evidence: OperationalGateReport
 // </operational-spec>
 
 using System.Diagnostics;
@@ -22,7 +22,7 @@ static async Task<int> RunAsync(string[] args)
     var options = ParseArguments(args);
     if (!options.TryGetValue("manifest", out var manifestArgument) || string.IsNullOrWhiteSpace(manifestArgument))
     {
-        Console.Error.WriteLine("Uso: --manifest <arquivo> --commit <sha> [--output <diretorio>] [--skip-smoke]");
+        Console.Error.WriteLine("Uso: --manifest <arquivo> --commit <sha> [--output <diretorio>] [--skip-smoke] [--require-gates]");
         return 2;
     }
 
@@ -48,6 +48,7 @@ static async Task<int> RunAsync(string[] args)
         Environment = manifest.Environment,
         ExpectedCommit = expectedCommit,
         StartedAtUtc = DateTimeOffset.UtcNow,
+        RequiresAllGates = options.ContainsKey("require-gates"),
         Specification = OperationalSpecificationClassification.PostBuild
     };
 
@@ -96,6 +97,8 @@ static async Task<int> RunAsync(string[] args)
                 smoke.Check.DurationMs,
                 "Cobertura atual da Clinica: API, autenticacao e SQL exercitados pela suite CRUD. Redis e RabbitMQ ainda nao possuem prova neste gate."));
         }
+
+        LoadGateEvidence(repositoryRoot, manifest, report);
     }
     catch (Exception ex)
     {
@@ -108,7 +111,9 @@ static async Task<int> RunAsync(string[] args)
     }
 
     report.FinishedAtUtc = DateTimeOffset.UtcNow;
-    report.Approved = report.Checks.All(check => !check.Required || check.Status == "Passed");
+    report.Gates.AddRange(OperationalGateEvaluator.Evaluate(report.Checks));
+    report.Approved = report.Checks.All(check => !check.Required || check.Status == "Passed") &&
+        (!report.RequiresAllGates || report.Gates.All(gate => gate.Status == "Passed"));
 
     var reportPath = Path.Combine(
         outputDirectory,
@@ -121,6 +126,7 @@ static async Task<int> RunAsync(string[] args)
     Console.WriteLine($"Aplicacao: {report.Application}");
     Console.WriteLine($"Commit esperado: {report.ExpectedCommit}");
     Console.WriteLine($"Resultado: {(report.Approved ? "APROVADO" : "REPROVADO")}");
+    Console.WriteLine($"Gates: {string.Join(", ", report.Gates.Select(gate => $"{gate.Gate}={gate.Status}"))}");
     Console.WriteLine($"Relatorio: {reportPath}");
 
     return report.Approved ? 0 : 1;
@@ -174,6 +180,47 @@ static PostBuildManifest LoadManifest(string manifestPath)
             File.ReadAllText(manifestPath, Encoding.UTF8),
             PostBuildJsonContext.Default.PostBuildManifest) ??
         throw new InvalidDataException("Manifesto pos-build invalido.");
+}
+
+static void LoadGateEvidence(
+    string repositoryRoot,
+    PostBuildManifest manifest,
+    PostBuildHealthReport report)
+{
+    foreach (var evidencePath in manifest.GateEvidenceFiles)
+    {
+        var path = ResolvePath(repositoryRoot, evidencePath);
+        if (!File.Exists(path))
+        {
+            report.Checks.Add(new PostBuildCheckResult(
+                "GateEvidenceFile",
+                "Failed",
+                true,
+                0,
+                $"Evidence file not found: {path}",
+                ["G7"]));
+            continue;
+        }
+
+        var file = JsonSerializer.Deserialize(
+            File.ReadAllText(path, Encoding.UTF8),
+            PostBuildJsonContext.Default.OperationalGateEvidenceFile) ??
+            throw new InvalidDataException($"Invalid gate evidence file: {path}");
+        foreach (var evidence in file.Evidence)
+        {
+            var gate = evidence.Gate.Trim().ToUpperInvariant();
+            if (gate is not ("G1" or "G2" or "G3" or "G4" or "G5" or "G6" or "G7"))
+                throw new InvalidDataException($"Unknown operational gate '{evidence.Gate}' in {path}.");
+
+            report.Checks.Add(new PostBuildCheckResult(
+                evidence.Name,
+                evidence.Status,
+                evidence.Required,
+                0,
+                evidence.Evidence,
+                [gate]));
+        }
+    }
 }
 
 static Uri LoadBaseUrl(string repositoryRoot, string settingsPath)

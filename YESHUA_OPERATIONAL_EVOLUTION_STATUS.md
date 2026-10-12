@@ -127,12 +127,12 @@ de assuntos durante R04.
 | Gate | Estado | Resumo |
 | --- | --- | --- |
 | G1 | Parcial | piloto documentado; governanca ainda nao generalizada |
-| G2 | Parcial avancado | runtime e fonte possuem versao; falta comprovacao automatica do mesmo artefato |
+| G2 | Parcial avancado | runtime resolve versao/commit e seleciona o snapshot correspondente; falta comprovacao no artefato publicado |
 | G3 | Parcial avancado | identidade sincrona universal implementada; falta propagacao assincrona por Outbox, Inbox, Saga e Worker |
 | G4 | Parcial avancado | envelope seguro implantado nas bordas comuns; faltam descritores gerados e demonstracao integral |
-| G5 | Parcial | fonte e consultavel; evidencia runtime ainda nao e central e duravel |
-| G6 | Parcial inicial | controle dirigido existe; governanca e captura D2 ainda nao |
-| G7 | Parcial | pos-build existe; demonstracao integral dos gates ainda nao |
+| G5 | Parcial avancado | fonte e runtime sao consultaveis pela API central; falta homologar retencao e auditoria no ambiente publicado |
+| G6 | Parcial avancado | D2 dirigido, temporario, limitado e auditado foi implementado; falta demonstracao integrada |
+| G7 | Parcial avancado | pos-build e bundle separam fatos, inferencias e lacunas; demonstracao integral ainda nao |
 
 ## 6. Situacao Das Rodadas
 
@@ -150,7 +150,10 @@ de assuntos durante R04.
 | R10 | Propagacao assincrona e causalidade | Implementado e validado localmente no piloto HTTP do Fiscal; envelope de fila preparado e testado, com consumidor RabbitMQ real pendente de homologacao integrada |
 | R11 | Eventos operacionais essenciais | Implementado e validado localmente para Commands do Fiscal; baseline D0 inclui inicio, termino, identidade runtime e operacional, duracao, outcomes e erro sanitizado |
 | R12 | Narrativa operacional | Parcial avancado; Saga, Inbox/Outbox, SQL e chamada HTTP real emitem D1, e a Engine gera a entrada por contrato declarado; faltam estados de entrega/consumo, autenticacao/homologacao da entrada, SEFAZ e demonstracao integrada |
-| R13+ | Provider, consulta e diagnostico operacional | Nao iniciado |
+| R13 | Provider, consulta e coletor runtime | Implementado em codigo e validado localmente sobre o Loki existente; homologacao publicada pendente |
+| R14 | Correlacao automatica runtime-codigo | Implementado em codigo e validado localmente; homologacao com evidencias publicadas pendente |
+| R15 | Diagnostico direcionado | Implementado em codigo e validado localmente; demonstracao integrada pendente |
+| R16 | Homologacao operacional | Estrutura G1-G7 implementada e validada localmente; execucao dos cenarios publicados pendente |
 
 ## 7. Ponto Atual
 
@@ -164,20 +167,23 @@ de assuntos durante R04.
 5. Concluir R12 nas transicoes de estado da entrega/consumo, autenticacao e
    homologacao da borda gerada entre modulos, dependencias SEFAZ e demonstracao
    integrada da narrativa Fiscal.
-6. Implementar o provider e `RuntimeContextCollector` em R13 sem chamada remota
-   sincrona no caminho quente.
-7. Correlacionar runtime com o snapshot confirmado em R14.
-8. Fechar D2 e homologar G1-G7 em R15 e R16.
+6. Homologar o provider e `RuntimeContextCollector` de R13 no ambiente
+   publicado, incluindo indisponibilidade do Loki.
+7. Homologar a correlacao automatica de R14 com runtime e snapshots publicados.
+8. Executar os cenarios publicados e alimentar o relatorio G1-G7 de R16.
 9. Manter D3, D4, replay e agentes fora do caminho critico ate G1-G7 estarem
    demonstrados.
 
 A ordem detalhada e os criterios de saida estao em
 `YESHUA_SRE_IMPLEMENTATION_PLAN.md`. R11 esta concluida para Commands do
-piloto Fiscal e R12 esta parcial avancada. A chamada HTTP real do transporte
-ja possui evidencia D1 e a Engine ja gera a borda de entrada a partir da DSL; a
-proxima implementacao concreta e definir a credencial entre modulos, ativar a
-borda gerada, cobrir estados de entrega/consumo e dependencias SEFAZ sem
-instrumentar regras de negocio customizadas.
+piloto Fiscal e R12 esta parcial avancada. R13 agora consulta evidencias do
+Loki pelo orquestrador central usando aplicacao, versao, periodo e identidades
+operacionais, sem chamada sincrona aos aplicativos. R14 usa a versao e o commit
+dos rotulos do Loki para selecionar o snapshot confirmado, resolve sinais dos
+logs e produz bundle com fatos, inferencias e lacunas separados. O proximo
+avanco estrutural foi entregue em R16: o PostBuild agora consolida G1-G7,
+mantem gates sem prova como `Missing` e pode exigir todos os gates no modo
+final. Permanece pendente executar os cenarios no ambiente publicado.
 A medicao quantitativa de
 F-EXP-00 permanece registrada, mas nao bloqueia esse avanco enquanto as bordas
 ainda estao evoluindo.

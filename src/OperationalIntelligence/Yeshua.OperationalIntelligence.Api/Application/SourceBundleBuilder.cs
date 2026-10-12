@@ -15,10 +15,18 @@ public sealed class SourceBundleBuilder
 
     public async Task<string> BuildAsync(
         QuestionContextResponse context,
+        InvestigationResponse investigation,
         CancellationToken cancellationToken)
     {
+        var output = new StringBuilder(RenderHeader(context));
+        AppendOperationalEvidence(output, investigation);
+
         if (context.BuildId == Guid.Empty)
-            return RenderHeader(context) + Environment.NewLine + "NO_SOURCE_FILES_FOUND";
+        {
+            output.AppendLine();
+            output.AppendLine("NO_SOURCE_FILES_FOUND");
+            return output.ToString();
+        }
 
         var contents = await _repository.GetSourceContentsAsync(
             context.BuildId,
@@ -32,8 +40,6 @@ public sealed class SourceBundleBuilder
         var historyByPath = history
             .GroupBy(item => item.File, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(group => group.Key, group => group.ToArray(), StringComparer.OrdinalIgnoreCase);
-        var output = new StringBuilder(RenderHeader(context));
-
         foreach (var file in context.SourceFiles)
         {
             output.AppendLine();
@@ -59,6 +65,40 @@ public sealed class SourceBundleBuilder
         }
 
         return output.ToString();
+    }
+
+    private static void AppendOperationalEvidence(
+        StringBuilder output,
+        InvestigationResponse investigation)
+    {
+        var runtime = investigation.Evidence
+            .Select(evidence => evidence.Data)
+            .OfType<RuntimeInvestigationEvidence>()
+            .ToArray();
+        if (runtime.Length == 0)
+            return;
+
+        AppendSection(output, "RUNTIME FACTS", runtime.SelectMany(item => item.Facts));
+        AppendSection(output, "SOURCE INFERENCES", runtime.SelectMany(item => item.Inferences));
+        AppendSection(output, "EVIDENCE GAPS", runtime.SelectMany(item => item.Gaps));
+    }
+
+    private static void AppendSection(
+        StringBuilder output,
+        string title,
+        IEnumerable<string> entries)
+    {
+        var values = entries.Distinct(StringComparer.Ordinal).ToArray();
+        output.AppendLine();
+        output.AppendLine(title + ":");
+        if (values.Length == 0)
+        {
+            output.AppendLine("- none");
+            return;
+        }
+
+        foreach (var value in values)
+            output.AppendLine("- " + value);
     }
 
     private static string RenderHeader(QuestionContextResponse context)

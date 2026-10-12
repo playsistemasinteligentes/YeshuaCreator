@@ -252,12 +252,12 @@ O fluxo alvo e unico:
 | Gate | Estado em 2026-09-19 | Evidencia existente | Lacuna para conformidade |
 | --- | --- | --- | --- |
 | G1 Governanca | PARCIAL | escopo e runbook piloto da Clinica | donos, ambientes, exclusoes e aprovacao por operacao/aplicativo |
-| G2 Fonte e versao | PARCIAL AVANCADO | identidade runtime, snapshots por commit e pos-build | provar automaticamente artefato publicado igual ao snapshot confirmado |
+| G2 Fonte e versao | PARCIAL AVANCADO | identidade runtime, rotulos de versao/commit e selecao automatica do snapshot | provar no ambiente publicado que o artefato e o snapshot coincidem |
 | G3 Identidade operacional | PARCIAL | `TraceId` e `CorrelationId` em varios fluxos | contrato universal e propagacao de raiz, operacao, execucao e causa |
 | G4 Evidencia minima | PARCIAL | Commands, repositories, health e logs JSON | envelope D0/D1, severidade, profundidade, escopo, dois resultados e sanitizacao obrigatoria |
-| G5 Consulta | PARCIAL | API de fonte e snapshots locais | persistencia runtime central, retencao, auditoria e consulta por operacao |
-| G6 Diagnostico dirigido | PARCIAL INICIAL | controle central, alvos e expiracao | aprovacao, justificativa, volume, campos autorizados e captura D2 completa |
-| G7 Demonstracao | PARCIAL | runner pos-build e smoke CRUD | pacote de sucesso, rejeicao, falha, propagacao, NeverCapture e D2 |
+| G5 Consulta | PARCIAL AVANCADO | API de fonte, Loki e `RuntimeContextCollector` por aplicacao, versao, periodo e identidades | homologar retencao, auditoria e indisponibilidade do provider |
+| G6 Diagnostico dirigido | PARCIAL AVANCADO | D2 dirigido com aprovacao, justificativa, expiracao, volume, campos autorizados e auditoria | demonstracao integrada fora e dentro do alvo |
+| G7 Demonstracao | PARCIAL AVANCADO | runner pos-build, smoke CRUD e bundle com fatos, inferencias e lacunas | pacote publicado de sucesso, rejeicao, falha, propagacao, NeverCapture e D2 |
 
 Nenhum gate deve ser apresentado como conforme enquanto a coluna de lacuna nao
 for zerada por evidencia executada.
@@ -653,7 +653,7 @@ Nenhum degrau autoriza sozinho uma alteracao de producao.
 | Y0 | Fonte versionada e pesquisavel | snapshot, indice, API e bundle | IMPLEMENTADO |
 | Y1 | Build verificavel | health pos-build e versao runtime ligada ao snapshot | PARCIAL |
 | Y2 | Operacao observavel | D0/D1, identidades e propagacao ponta a ponta | PARCIAL |
-| Y3 | Diagnostico dirigido | D2, protecao de dados e coletores runtime | NAO IMPLEMENTADO |
+| Y3 | Diagnostico dirigido | D2, protecao de dados e coletores runtime | PARCIAL AVANCADO |
 | Y4 | Reproducao segura | D3/D4, reproducao, simulacao e regressao | NAO IMPLEMENTADO |
 | Y5 | Operacao assistida | agentes investigadores, validadores e de melhoria | CONCEITO |
 | Y6 | Prevencao inteligente | tendencias, anomalias e agentes limitados | CONCEITO |

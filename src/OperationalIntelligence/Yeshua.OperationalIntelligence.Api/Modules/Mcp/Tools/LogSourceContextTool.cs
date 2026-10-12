@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Yeshua.OperationalIntelligence.Api.Contracts;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.Mcp.Tools;
 
@@ -79,6 +80,7 @@ public sealed record LogSourceContextResponse(
     IReadOnlyList<LogSourceSignal> ExtractedSignals,
     object? Context,
     IReadOnlyList<LogSourceFileContent> SourceContents,
+    IReadOnlyList<ContextEvidence> Evidence,
     IReadOnlyList<string> Warnings);
 
 public sealed record LogSourceFileContent(
@@ -93,4 +95,3 @@ public sealed record LogSourceFileContent(
     string SourceOfTruth,
     string Content,
     bool Truncated);
-

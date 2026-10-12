@@ -11,6 +11,16 @@ Aplicativos consultam
 local. Aplicativo e ambiente formam a identidade da politica. O modulo nao
 persiste politicas no banco de engenharia reversa.
 
+O `RuntimeContextCollector` consulta o Loki pelo provider existente e entra no
+orquestrador quando `sources` contem `runtime` ou quando a requisicao informa
+ambiente, periodo ou alguma identidade operacional. A consulta e limitada por
+`Mcp:MaxTimeRangeHours` e `Mcp:MaxLimit`; indisponibilidade do Loki retorna
+aviso e nunca chama os aplicativos.
+Quando referencias de conhecimento estao habilitadas, o coletor usa a versao e
+o commit dos rotulos do Loki para selecionar o snapshot indexado e reaproveita
+o resolvedor `log -> fonte` do MCP. O bundle deve manter fatos runtime,
+inferencias de fonte e lacunas em secoes separadas.
+
 ## Chamadas Diretas Pelo Agente
 
 Quando o usuario solicitar uma investigacao, uma consulta de contexto ou a

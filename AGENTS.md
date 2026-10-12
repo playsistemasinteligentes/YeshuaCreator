@@ -1089,6 +1089,19 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.
 - Esse database pode compartilhar a instancia SQL da Clinica e do MDF-e, mas nunca os catalogos dos aplicativos.
 - `Yeshua.OperationalIntelligence.Api` consulta o indice e nao referencia a Engine nem projetos de aplicativos.
+- `RuntimeContextCollector` consulta as evidencias runtime no Loki pelo cliente
+  ja existente da Operational Intelligence API. A coleta e somente leitura,
+  limitada por periodo e volume e filtravel por aplicacao, versao, ambiente,
+  raiz, operacao, entidade operacional e trace. Ela nunca chama APIs dos
+  aplicativos nem adiciona trabalho ao caminho quente.
+- A correlacao runtime-codigo usa os rotulos `service_version` e
+  `service_commit_sha` do Loki para selecionar o snapshot indexado. Logs podem
+  sugerir simbolos e fontes, mas essas relacoes permanecem inferencias; bundles
+  devem separar fatos runtime, inferencias de fonte e lacunas de evidencia.
+- O PostBuild sempre materializa a ficha G1-G7. Gates sem evidencia ficam
+  `Missing`; evidencias obrigatorias nao aprovadas deixam o gate `Failed`.
+  Somente o modo final `--require-gates` exige todos os gates aprovados, sem
+  quebrar as verificacoes tecnicas parciais anteriores.
 - Quando o usuario solicitar uma investigacao, o agente deve chamar diretamente a Operational Intelligence API e interpretar o resultado; o Swagger e opcional e nao deve ser delegado ao usuario sem necessidade.
 - A API, o orquestrador e os coletores permanecem no mesmo projeto e processo nesta fase.
 - A camada MCP inicial fica dentro de
