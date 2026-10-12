@@ -1199,6 +1199,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            new { id = \"Saga\", title = \"Sagas\", description = \"Execucao e transicao dos steps de saga.\" },");
             sb.AppendLine("            new { id = \"RepositoryCounters\", title = \"Repositorios - contadores\", description = \"Contadores e tempos agregados de acesso a dados.\" },");
             sb.AppendLine("            new { id = \"RepositoryEvents\", title = \"Repositorios - eventos\", description = \"Eventos detalhados das operacoes de repositorio.\" },");
+            sb.AppendLine("            new { id = \"ExternalCallEvents\", title = \"Chamadas externas\", description = \"Duracao e resultado de integracoes externas, sem conteudo sensivel.\" },");
             sb.AppendLine("            new { id = \"DomainTracker\", title = \"Rastreamento de dominio\", description = \"Alteracoes das entidades e campos selecionados.\" }");
             sb.AppendLine("        },");
             sb.AppendLine("        entities = new object[]");

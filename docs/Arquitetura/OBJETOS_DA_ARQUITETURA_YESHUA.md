@@ -192,6 +192,119 @@ continuidade fica em `ISagaExecutor.ExecuteUntilWait(...)`. A peca gerada por
 aplicativo que lida com banco deve apenas carregar, travar, aplicar o estimulo,
 chamar o executor e salvar.
 
+### Padrao: Observabilidade De Chamadas Externas
+
+Uma chamada para um sistema externo constitui uma borda operacional propria.
+Ela nao substitui a telemetria do `Command`: as duas evidencias descrevem
+partes diferentes da mesma execucao e devem compartilhar a mesma identidade
+causal.
+
+```text
+Command/Receiver
+    -> evidencia a intencao completa
+    -> adaptador do sistema externo
+        -> evidencia cada tentativa externa
+```
+
+Esse desenho segue o conceito de operacao cliente usado pelo OpenTelemetry
+para chamadas remotas do tipo requisicao/resposta. Os nomes
+`ExternalCallEvents`, `Accepted`, `Rejected` e os resultados tecnico e de
+negocio sao convencoes operacionais do Yeshua.
+
+Objetivos:
+
+- separar o tempo total do `Command` do tempo consumido pela dependencia;
+- distinguir falha tecnica, indisponibilidade e timeout de rejeicao de negocio;
+- correlacionar a tentativa externa com command, saga, entidade e fluxo raiz;
+- permitir diagnostico sem registrar payloads, credenciais ou dados sensiveis;
+- reutilizar a mesma classificacao em SEFAZ, bancos, transportadoras, APIs de
+  clientes, storage, servicos de IA e outras dependencias.
+
+Objetos padrao:
+
+| Objeto | Responsabilidade |
+| --- | --- |
+| `OperationalExternalCallScope` | Delimita uma tentativa externa, mede sua duracao e publica o resultado sem interferir na operacao principal. |
+| `OperationalExternalCallDescriptor` | Identifica operacao, entidade, dependencia, endpoint sanitizado, ambiente e regiao. |
+| `OperationalExternalCallContext` | Transporta identidade causal, registro, entidade operacional, correlacao e numero da tentativa. |
+| `ExternalCallEvents` | Componente operacional pelo qual a politica liga, desliga e filtra essas evidencias. |
+
+Quando usar:
+
+- chamada remota direta em que o fluxo espera a resposta, mesmo quando o
+  codigo usa `async/await`;
+- tentativa HTTP, SOAP, RPC ou protocolo equivalente feita por um adaptador;
+- envio realizado posteriormente por um worker de Outbox, envolvendo somente
+  a tentativa real de entrega ao destino;
+- operacao em que o adaptador possui contexto para interpretar o resultado de
+  negocio, como `cStat` da SEFAZ ou codigo de uma transacao bancaria.
+
+Quando nao usar:
+
+- chamada entre metodos internos do mesmo processo;
+- acesso a banco, que pertence a telemetria de repository;
+- gravacao ou retirada da Outbox, que possui sua propria narrativa operacional;
+- como justificativa para criar um segundo `Command` apenas para instrumentar;
+- dentro de entidade ou `DomainBehavior`, pois o dominio nao conhece transporte
+  nem dependencia externa.
+
+Relacao com chamada direta e Outbox:
+
+```text
+Chamada direta:
+Command -> adaptador externo -> resposta
+                 \-> ExternalCallEvents
+
+Entrega diferida:
+Command -> grava Outbox -> termina
+Worker  -> retira Outbox -> adaptador externo -> confirma ou reagenda
+            \-> Outbox telemetry  \-> ExternalCallEvents por tentativa
+```
+
+A Outbox garante persistencia, retomada e entrega. `ExternalCallEvents` descreve
+a execucao concreta de cada tentativa externa. Um fluxo pode e deve possuir as
+duas evidencias quando usar entrega diferida.
+
+Resultados padrao:
+
+| Situacao | Resultado tecnico | Resultado de negocio |
+| --- | --- | --- |
+| Dependencia respondeu e aceitou | `Succeeded` | `Accepted` |
+| Dependencia respondeu e rejeitou | `Succeeded` | `Rejected` |
+| Timeout | `TimedOut` | `NotEvaluated` |
+| Cancelamento | `Cancelled` | `NotEvaluated` |
+| Falha de rede ou indisponibilidade | `Unavailable` | `NotEvaluated` |
+| Falha inesperada | `Failed` | `NotEvaluated` |
+
+Regras obrigatorias:
+
+- A politica operacional deve ser consultada antes de criar `Stopwatch`,
+  `Activity`, payload, tags ou qualquer estrutura da tentativa.
+- Quando `ExternalCallEvents` estiver desligado, a instrumentacao deve retornar
+  imediatamente e nao alterar o caminho de negocio.
+- Falha da telemetria nunca pode mudar retorno, rejeicao, retry ou excecao da
+  operacao principal.
+- A borda do `Command` registra o resultado geral; a borda externa registra a
+  tentativa da dependencia. Uma nao substitui a outra.
+- Nao criar `Command` chamando `Command` somente para obter telemetria.
+- Em Outbox, cada retry deve produzir uma tentativa externa independente,
+  preservando raiz, operacao, causacao e numero da tentativa.
+- Endpoint deve ser sanitizado. URL completa com query string nao deve ser
+  registrada.
+- Nunca registrar corpo HTTP/SOAP, XML fiscal, token, header de autenticacao,
+  certificado, senha, chave privada ou mensagem de excecao nao sanitizada.
+- O adaptador interpreta o resultado especifico da integracao; o mecanismo de
+  publicacao, correlacao, duracao e seguranca permanece generico.
+
+Ownership:
+
+- Application contem o escopo generico e a aplicacao do padrao no adaptador.
+- Domain contem somente contratos operacionais neutros, sem conhecer HTTP,
+  SOAP, SEFAZ ou outra dependencia.
+- Infrastructure publica e exporta as evidencias pelos provedores configurados.
+- A Engine deve evoluir para gerar a aplicacao do padrao quando a DSL declarar
+  uma borda externa padronizavel.
+
 ### Padrao: Tela Assistente Sobre Saga
 
 Quando uma tela customizada representar um assistente operacional, como

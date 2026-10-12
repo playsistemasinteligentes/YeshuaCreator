@@ -25,7 +25,7 @@ public static class OperationalHttpRequestOptions
 
 public sealed class OperationalHttpTelemetryHandler : DelegatingHandler
 {
-    private const string Component = "ExternalDependency";
+    private const string Component = "ExternalCallEvents";
     private readonly Dominio.Interfaces.ILogger _logger;
 
     public OperationalHttpTelemetryHandler(Dominio.Interfaces.ILogger logger)

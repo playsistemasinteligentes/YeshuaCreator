@@ -428,7 +428,7 @@ namespace Shered.Logger
                     ErrorCode: transition.ErrorCode,
                     DiagnosticSessionId: telemetry.DiagnosticSessionId,
                     AuthorizedFields: telemetry.AuthorizedFields);
-                var fields = new List<OperationalEvidenceField>(12)
+                var fields = new List<OperationalEvidenceField>(16)
                 {
                     new("EventName", $"{transition.Component}.{transition.Phase}"),
                     new("Phase", transition.Phase),
@@ -441,6 +441,10 @@ namespace Shered.Logger
                 AddOptional(fields, "CorrelationId", transition.CorrelationId);
                 AddOptional(fields, "MessageId", transition.MessageId);
                 AddOptional(fields, "Dependency", transition.Dependency);
+                AddOptional(fields, "DependencyEndpoint", transition.DependencyEndpoint);
+                AddOptional(fields, "DependencyEnvironment", transition.DependencyEnvironment);
+                AddOptional(fields, "DependencyRegion", transition.DependencyRegion);
+                AddOptional(fields, "ResultCode", transition.ResultCode);
                 AddOptional(fields, "ErrorSummary", transition.ErrorSummary);
                 if (transition.StatusCode.HasValue)
                 {

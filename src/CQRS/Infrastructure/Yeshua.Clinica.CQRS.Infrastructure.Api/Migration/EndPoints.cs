@@ -54,6 +54,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
             new { id = "Saga", title = "Sagas", description = "Execucao e transicao dos steps de saga." },
             new { id = "RepositoryCounters", title = "Repositorios - contadores", description = "Contadores e tempos agregados de acesso a dados." },
             new { id = "RepositoryEvents", title = "Repositorios - eventos", description = "Eventos detalhados das operacoes de repositorio." },
+            new { id = "ExternalCallEvents", title = "Chamadas externas", description = "Duracao e resultado de integracoes externas, sem conteudo sensivel." },
             new { id = "DomainTracker", title = "Rastreamento de dominio", description = "Alteracoes das entidades e campos selecionados." }
         },
         entities = new object[]

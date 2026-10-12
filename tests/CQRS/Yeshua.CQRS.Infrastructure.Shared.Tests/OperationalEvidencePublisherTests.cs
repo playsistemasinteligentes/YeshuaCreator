@@ -380,17 +380,17 @@ public sealed class OperationalEvidencePublisherTests
             new[]
             {
                 "Outbox.DeliveryStarted",
-                "ExternalDependency.Completed",
+                "ExternalCallEvents.Completed",
                 "Outbox.Delivered"
             },
             sink.Payloads.Select(ReadEventName).ToArray());
 
         var dependencyPayload = sink.Payloads.Single(payload =>
-            ReadEventName(payload) == "ExternalDependency.Completed");
+            ReadEventName(payload) == "ExternalCallEvents.Completed");
         using var document = JsonDocument.Parse(dependencyPayload);
         var root = document.RootElement;
         var data = root.GetProperty("Data");
-        Assert.AreEqual("ExternalDependency.Completed", data.GetProperty("EventName").GetString());
+        Assert.AreEqual("ExternalCallEvents.Completed", data.GetProperty("EventName").GetString());
         Assert.AreEqual("Outbox.YeshuaApi.Deliver", data.GetProperty("Operation").GetString());
         Assert.AreEqual("fiscal.example.test", data.GetProperty("Dependency").GetString());
         Assert.AreEqual(202, data.GetProperty("StatusCode").GetInt32());
@@ -435,7 +435,7 @@ public sealed class OperationalEvidencePublisherTests
             new[]
             {
                 "Outbox.DeliveryStarted",
-                "ExternalDependency.Failed",
+                "ExternalCallEvents.Failed",
                 "Outbox.DeliveryFailed"
             },
             sink.Payloads.Select(ReadEventName).ToArray());

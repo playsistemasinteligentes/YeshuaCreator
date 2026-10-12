@@ -14,6 +14,8 @@ using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Command.Patterns.Operational;
+using Dominio.Interfaces;
 
 namespace Command.Receivers
 {
@@ -402,6 +404,22 @@ namespace Command.Receivers
 
         public static MdfeRecepcaoSincResult Autorizar(
             MdfeRecepcaoSincPrepared prepared,
+            ILogger logger,
+            OperationalExternalCallContext context)
+        {
+            var options = MdfeRecepcaoSincOptions.FromEnvironment() with
+            {
+                ChaveCTe = OnlyDigits(prepared.ChaveCTe),
+                ChavesCTe = prepared.ChavesCTe.Count > 0
+                    ? prepared.ChavesCTe
+                    : new[] { OnlyDigits(prepared.ChaveCTe) }
+            };
+
+            return EnviarPreparadoAsync(options, prepared, logger, context).GetAwaiter().GetResult();
+        }
+
+        public static MdfeRecepcaoSincResult Autorizar(
+            MdfeRecepcaoSincPrepared prepared,
             string certificatePath,
             string certificatePassword)
         {
@@ -415,6 +433,25 @@ namespace Command.Receivers
                     : new[] { OnlyDigits(prepared.ChaveCTe) }
             };
             return EnviarPreparadoAsync(options, prepared).GetAwaiter().GetResult();
+        }
+
+        public static MdfeRecepcaoSincResult Autorizar(
+            MdfeRecepcaoSincPrepared prepared,
+            string certificatePath,
+            string certificatePassword,
+            ILogger logger,
+            OperationalExternalCallContext context)
+        {
+            var options = MdfeRecepcaoSincOptions.FromEnvironment() with
+            {
+                CertificatePath = certificatePath,
+                CertificatePassword = certificatePassword,
+                ChaveCTe = OnlyDigits(prepared.ChaveCTe),
+                ChavesCTe = prepared.ChavesCTe.Count > 0
+                    ? prepared.ChavesCTe
+                    : new[] { OnlyDigits(prepared.ChaveCTe) }
+            };
+            return EnviarPreparadoAsync(options, prepared, logger, context).GetAwaiter().GetResult();
         }
 
         internal static MdfeRecepcaoSincPrepared Preparar(MdfeRecepcaoSincOptions options)
@@ -449,7 +486,9 @@ namespace Command.Receivers
 
         private static async Task<MdfeRecepcaoSincResult> EnviarPreparadoAsync(
             MdfeRecepcaoSincOptions options,
-            MdfeRecepcaoSincPrepared prepared)
+            MdfeRecepcaoSincPrepared prepared,
+            ILogger? logger = null,
+            OperationalExternalCallContext context = default)
         {
             options.ValidateForSend();
 
@@ -458,39 +497,67 @@ namespace Command.Receivers
             var soapEnvelope = WrapRecepcaoInSoapEnvelope(CompressToBase64(mdfeXml));
 
             using var transportCertificate = LoadCertificate(options.CertificatePath, options.CertificatePassword);
-            var response = await SendAsync(options, soapEnvelope, options.SoapAction, transportCertificate).ConfigureAwait(false);
+            var telemetry = logger is null
+                ? null
+                : OperationalExternalCallScope.Begin(
+                    logger,
+                    new OperationalExternalCallDescriptor(
+                        "AutorizarMDFeNaSefaz",
+                        "MDFe",
+                        "SEFAZ",
+                        options.Endpoint,
+                        options.Ambiente == 1 ? "Production" : "Homologation",
+                        options.UfEmitente),
+                    context);
 
-            if ((HttpStatusCode)response.HttpStatusCode == HttpStatusCode.BadRequest &&
-                string.IsNullOrWhiteSpace(response.SoapResponse) &&
-                !string.IsNullOrWhiteSpace(options.FallbackSoapAction))
+            try
             {
-                response = await SendAsync(options, soapEnvelope, options.FallbackSoapAction, transportCertificate).ConfigureAwait(false);
+                var response = await SendAsync(options, soapEnvelope, options.SoapAction, transportCertificate).ConfigureAwait(false);
+
+                if ((HttpStatusCode)response.HttpStatusCode == HttpStatusCode.BadRequest &&
+                    string.IsNullOrWhiteSpace(response.SoapResponse) &&
+                    !string.IsNullOrWhiteSpace(options.FallbackSoapAction))
+                {
+                    response = await SendAsync(options, soapEnvelope, options.FallbackSoapAction, transportCertificate).ConfigureAwait(false);
+                }
+
+                if (response.HttpStatusCode < 200 || response.HttpStatusCode > 299)
+                {
+                    telemetry?.FailHttp(response.HttpStatusCode);
+                    throw new InvalidOperationException(
+                        $"SEFAZ MDF-e retornou HTTP {response.HttpStatusCode}. {response.SoapResponse}");
+                }
+
+                var codigoRetorno = ReadInt(response.SoapResponse, "infProt", "cStat")
+                    ?? ReadInt(response.SoapResponse, "retMDFe", "cStat")
+                    ?? 0;
+                var motivo = ReadText(response.SoapResponse, "infProt", "xMotivo")
+                    ?? ReadText(response.SoapResponse, "retMDFe", "xMotivo")
+                    ?? string.Empty;
+                var protocolo = ReadText(response.SoapResponse, "infProt", "nProt");
+                var chaveRetorno = ReadText(response.SoapResponse, "infProt", "chMDFe") ?? chave;
+                var result = response with
+                {
+                    Autorizado = codigoRetorno == 100,
+                    CodigoRetorno = codigoRetorno,
+                    Motivo = motivo,
+                    Protocolo = protocolo,
+                    Chave = chaveRetorno,
+                    XmlMDFe = mdfeXml
+                };
+
+                telemetry?.Complete(
+                    result.HttpStatusCode,
+                    codigoRetorno,
+                    result.Autorizado,
+                    codigoRetorno > 0 && !string.IsNullOrWhiteSpace(motivo));
+                return result;
             }
-
-            if (response.HttpStatusCode < 200 || response.HttpStatusCode > 299)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(
-                    $"SEFAZ MDF-e retornou HTTP {response.HttpStatusCode}. {response.SoapResponse}");
+                telemetry?.Fail(ex);
+                throw;
             }
-
-            var codigoRetorno = ReadInt(response.SoapResponse, "infProt", "cStat")
-                ?? ReadInt(response.SoapResponse, "retMDFe", "cStat")
-                ?? 0;
-            var motivo = ReadText(response.SoapResponse, "infProt", "xMotivo")
-                ?? ReadText(response.SoapResponse, "retMDFe", "xMotivo")
-                ?? string.Empty;
-            var protocolo = ReadText(response.SoapResponse, "infProt", "nProt");
-            var chaveRetorno = ReadText(response.SoapResponse, "infProt", "chMDFe") ?? chave;
-
-            return response with
-            {
-                Autorizado = codigoRetorno == 100,
-                CodigoRetorno = codigoRetorno,
-                Motivo = motivo,
-                Protocolo = protocolo,
-                Chave = chaveRetorno,
-                XmlMDFe = mdfeXml
-            };
         }
 
         private static async Task<MdfeRecepcaoSincResult> SendAsync(

@@ -9,12 +9,15 @@
 // </yeshua>
 
 using Dominio.Interfaces;
+using Dominio.Operational;
 using Dominio.Patterns.Saga;
+using Command.Patterns.Operational;
 using IRepository.Read;
 using IRepository.Write;
 using Repositorio.Outputs;
 using System;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 
 namespace Command.Receivers
@@ -80,12 +83,24 @@ namespace Command.Receivers
                         emitenteDocumento ?? string.Empty,
                         $"Solicitacao MDF-e {solicitacao.id}");
                 }
+                var callContext = new OperationalExternalCallContext(
+                    new OperationalExecutionIdentity(
+                        step.RootOperationId,
+                        step.OperationId,
+                        step.ExecutionId,
+                        step.CausationId),
+                    tentativa.id.ToString(CultureInfo.InvariantCulture),
+                    tentativa.operationalentityid,
+                    step.CorrelationId,
+                    tentativa.tentativa > 0 ? tentativa.tentativa : Math.Max(step.ExecutionCount, 1));
                 var result = certificado is null
-                    ? MdfeRecepcaoSincHomologacaoClient.Autorizar(prepared)
+                    ? MdfeRecepcaoSincHomologacaoClient.Autorizar(prepared, _logger, callContext)
                     : MdfeRecepcaoSincHomologacaoClient.Autorizar(
                         prepared,
                         certificado.CertificatePath,
-                        certificado.Password);
+                        certificado.Password,
+                        _logger,
+                        callContext);
                 var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
 
                 if (!respostaEstruturada)

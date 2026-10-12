@@ -322,8 +322,21 @@ na borda central; causalidade entre modulos devolvida ao backlog arquitetural.**
   normalmente.
 - Os testes focados comprovaram tentativas e execucoes distintas do mesmo step.
 
-Continua pendente instrumentar a borda generica de Inbox/Outbox e depois
-executar o fluxo completo em homologacao com API e Worker separados.
+**Resultado da segunda rodada (2026-10-12): bordas genericas de Inbox/Outbox
+instrumentadas.**
+
+- O consumo de `yInbox` registra `Consumed` e `Failed` no executor compartilhado
+  de saga, preservando raiz, execucao, causa, correlacao e identificador da
+  mensagem.
+- A entrega HTTP de `yOutbox` registra `DeliveryStarted`, `Delivered` e
+  `DeliveryFailed` no handler compartilhado, sem instrumentacao nos handlers de
+  negocio.
+- A decisao da politica ocorre antes do cronometro e da montagem das evidencias;
+  com os componentes desligados, o transporte e o consumo seguem normalmente.
+- Nenhum payload de Inbox/Outbox atravessa a borda operacional.
+
+Continua pendente somente executar o fluxo completo em homologacao com API e
+Worker separados e confirmar visualmente a narrativa entre os modulos.
 
 ### F-EXP-04 - Repositories
 
@@ -374,6 +387,27 @@ G4.
 
 **Aceite:** distinguir autorizado, rejeitado e indisponibilidade tecnica sem
 capturar XML, PFX, senha ou chave privada.
+
+**Resultado da primeira rodada (2026-10-12): borda externa SEFAZ implementada
+e comportamento isolado comprovado.**
+
+- `ExternalCallEvents` e avaliado antes de iniciar cronometro, resolver o host
+  autorizador ou criar o escopo de telemetria. Desligado, nao existe escopo nem
+  evento.
+- Os clientes CT-e e MDF-e registram o ciclo logico da autorizacao, inclusive
+  quando o transporte usa o fallback OpenSSL.
+- As evidencias registram documento, ambiente, UF, host autorizador, duracao,
+  HTTP, `cStat`, tentativa e identidades operacionais.
+- Autorizacao aparece como sucesso tecnico e aceite de negocio; rejeicao fiscal
+  como sucesso tecnico e rejeicao de negocio; timeout, cancelamento e falha de
+  transporte permanecem resultados tecnicos distintos.
+- XML, resposta SOAP, motivo fiscal, PFX, caminho de certificado, senha e chave
+  privada nao sao enviados para a telemetria.
+- Tres testes focados comprovaram desligamento antecipado, autorizacao,
+  rejeicao, indisponibilidade e sanitizacao. O projeto Fiscal compilou sem erros.
+
+Continua pendente habilitar `ExternalCallEvents` em homologacao e confirmar no
+Grafana uma autorizacao, uma rejeicao e uma indisponibilidade reais.
 
 ### F-EXP-06 - D2 Direcionado
 

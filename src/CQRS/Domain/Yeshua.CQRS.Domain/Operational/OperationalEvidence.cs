@@ -92,7 +92,11 @@ public readonly record struct OperationalEvidenceTransition(
     int Attempt = 0,
     string? ErrorCode = null,
     string? ErrorSummary = null,
-    int? StatusCode = null);
+    int? StatusCode = null,
+    string? DependencyEndpoint = null,
+    string? DependencyEnvironment = null,
+    string? DependencyRegion = null,
+    string? ResultCode = null);
 
 public readonly record struct OperationalEvidenceField(
     string Name,

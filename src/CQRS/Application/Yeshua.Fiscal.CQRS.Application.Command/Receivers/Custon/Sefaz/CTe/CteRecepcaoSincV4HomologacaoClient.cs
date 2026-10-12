@@ -14,6 +14,8 @@ using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Command.Patterns.Operational;
+using Dominio.Interfaces;
 
 namespace Command.Receivers
 {
@@ -324,6 +326,16 @@ namespace Command.Receivers
 
         public static CteRecepcaoSincV4Result Autorizar(
             CteRecepcaoSincV4Prepared prepared,
+            ILogger logger,
+            OperationalExternalCallContext context)
+        {
+            return EnviarAsync(CteRecepcaoSincV4Options.FromEnvironment(), prepared, logger, context)
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        public static CteRecepcaoSincV4Result Autorizar(
+            CteRecepcaoSincV4Prepared prepared,
             string certificatePath,
             string certificatePassword)
         {
@@ -333,6 +345,21 @@ namespace Command.Receivers
                 CertificatePassword = certificatePassword
             };
             return EnviarAsync(options, prepared).GetAwaiter().GetResult();
+        }
+
+        public static CteRecepcaoSincV4Result Autorizar(
+            CteRecepcaoSincV4Prepared prepared,
+            string certificatePath,
+            string certificatePassword,
+            ILogger logger,
+            OperationalExternalCallContext context)
+        {
+            var options = CteRecepcaoSincV4Options.FromEnvironment() with
+            {
+                CertificatePath = certificatePath,
+                CertificatePassword = certificatePassword
+            };
+            return EnviarAsync(options, prepared, logger, context).GetAwaiter().GetResult();
         }
 
         private static async Task<CteRecepcaoSincV4Result> AutorizarAsync(CteRecepcaoSincV4Options options)
@@ -363,7 +390,9 @@ namespace Command.Receivers
 
         private static async Task<CteRecepcaoSincV4Result> EnviarAsync(
             CteRecepcaoSincV4Options options,
-            CteRecepcaoSincV4Prepared prepared)
+            CteRecepcaoSincV4Prepared prepared,
+            ILogger? logger = null,
+            OperationalExternalCallContext context = default)
         {
             options.ValidateForSend();
 
@@ -396,60 +425,88 @@ namespace Command.Receivers
             request.Headers.ExpectContinue = false;
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
-            string responseBody;
-            int httpStatusCode;
+            var telemetry = logger is null
+                ? null
+                : OperationalExternalCallScope.Begin(
+                    logger,
+                    new OperationalExternalCallDescriptor(
+                        "AutorizarCTeNaSefaz",
+                        "CTe",
+                        "SEFAZ",
+                        options.Endpoint,
+                        options.Ambiente == 1 ? "Production" : "Homologation",
+                        options.UfEmitente),
+                    context);
+
             try
             {
-                var response = await httpClient.SendAsync(request).ConfigureAwait(false);
-                responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                httpStatusCode = (int)response.StatusCode;
-            }
-            catch (Exception ex) when (ex is HttpRequestException or AuthenticationException or IOException)
-            {
-                if (SefazOpenSslHttpFallback.CanHandle(ex))
+                string responseBody;
+                int httpStatusCode;
+                try
                 {
-                    var fallbackResponse = await SefazOpenSslHttpFallback.PostAsync(
-                        options.Endpoint,
-                        soapEnvelope,
-                        $"{options.ContentMediaType}; charset=utf-8; action=\"{options.SoapAction}\"",
-                        options.CertificatePath,
-                        options.CertificatePassword,
-                        options.TimeoutSeconds).ConfigureAwait(false);
-
-                    responseBody = fallbackResponse.Body;
-                    httpStatusCode = fallbackResponse.StatusCode;
+                    var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+                    responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    httpStatusCode = (int)response.StatusCode;
                 }
-                else
+                catch (Exception ex) when (ex is HttpRequestException or AuthenticationException or IOException)
                 {
+                    if (SefazOpenSslHttpFallback.CanHandle(ex))
+                    {
+                        var fallbackResponse = await SefazOpenSslHttpFallback.PostAsync(
+                            options.Endpoint,
+                            soapEnvelope,
+                            $"{options.ContentMediaType}; charset=utf-8; action=\"{options.SoapAction}\"",
+                            options.CertificatePath,
+                            options.CertificatePassword,
+                            options.TimeoutSeconds).ConfigureAwait(false);
+
+                        responseBody = fallbackResponse.Body;
+                        httpStatusCode = fallbackResponse.StatusCode;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(
+                            "Falha HTTP/SSL ao chamar SEFAZ CT-e. " + DescribeException(ex),
+                            ex);
+                    }
+                }
+
+                if (httpStatusCode < 200 || httpStatusCode > 299)
+                {
+                    telemetry?.FailHttp(httpStatusCode);
                     throw new InvalidOperationException(
-                        "Falha HTTP/SSL ao chamar SEFAZ CT-e. " + DescribeException(ex),
-                        ex);
+                        $"SEFAZ CT-e retornou HTTP {httpStatusCode}. {responseBody}");
                 }
-            }
 
-            if (httpStatusCode < 200 || httpStatusCode > 299)
+                var codigoRetorno = ReadInt(responseBody, "infProt", "cStat")
+                    ?? ReadInt(responseBody, "retCTe", "cStat")
+                    ?? 0;
+                var motivo = ReadText(responseBody, "infProt", "xMotivo")
+                    ?? ReadText(responseBody, "retCTe", "xMotivo")
+                    ?? string.Empty;
+                var protocolo = ReadText(responseBody, "infProt", "nProt");
+                var result = new CteRecepcaoSincV4Result(
+                    codigoRetorno == 100,
+                    codigoRetorno,
+                    motivo,
+                    chave,
+                    protocolo,
+                    httpStatusCode,
+                    cteXml,
+                    responseBody);
+
+                telemetry?.Complete(
+                    httpStatusCode,
+                    codigoRetorno,
+                    result.Autorizado,
+                    codigoRetorno > 0 && !string.IsNullOrWhiteSpace(motivo));
+                return result;
+            }
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(
-                    $"SEFAZ CT-e retornou HTTP {httpStatusCode}. {responseBody}");
+                telemetry?.Fail(ex);
+                throw;
             }
-
-            var codigoRetorno = ReadInt(responseBody, "infProt", "cStat")
-                ?? ReadInt(responseBody, "retCTe", "cStat")
-                ?? 0;
-            var motivo = ReadText(responseBody, "infProt", "xMotivo")
-                ?? ReadText(responseBody, "retCTe", "xMotivo")
-                ?? string.Empty;
-            var protocolo = ReadText(responseBody, "infProt", "nProt");
-
-            return new CteRecepcaoSincV4Result(
-                codigoRetorno == 100,
-                codigoRetorno,
-                motivo,
-                chave,
-                protocolo,
-                httpStatusCode,
-                cteXml,
-                responseBody);
         }
 
         private static string BuildHomologCteXml(CteRecepcaoSincV4Options options)
