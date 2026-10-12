@@ -481,6 +481,13 @@ Regra resumida:
 
 - O aplicativo Memorias reutiliza o caminho assincrono padrao do Yeshua:
   Saga -> Outbox -> RabbitMQ/Celery -> Worker Python -> RabbitMQ -> Inbox -> Saga.
+- A saga de publicacao do Memorias deve começar no pedido de publicacao do
+  album, por exemplo no use case `SolicitarPublicacaoAlbum`. O album existir
+  com fotos ainda e preparo de dados; ao solicitar publicacao, a saga cria ou
+  vincula `PublicacaoAlbum`, gera manifesto, publica renderizacao, aguarda o
+  resultado do FFmpeg e depois coordena o upload ao YouTube. Portanto a saga
+  nao começa depois de o album ja estar publicado; ela e justamente a
+  coordenacao da publicacao.
 - O worker Python de midia pertence ao aplicativo Memorias e tem responsabilidade
   unica: transformar um manifesto de fotos em video por FFmpeg. Ele nao acessa
   banco do aplicativo, nao decide regra de negocio e nao armazena credenciais do
@@ -490,6 +497,11 @@ Regra resumida:
 - OAuth, tokens e envio ao YouTube pertencem ao miolo customizado .NET do
   aplicativo Memorias, usando a API oficial. A Engine gera somente as bordas,
   a saga e os pontos de extensao dessa integracao.
+- O Front do Memorias nao deve usar polling automatico de status de publicacao
+  nesta fase. Para evitar milhares de requisicoes passivas, a primeira versao
+  deve expor um botao manual de atualizar status/consultar publicacao. Polling
+  automatico, backoff, SSE ou WebSocket ficam como revisao futura explicita,
+  somente apos decisao operacional sobre carga, limites e experiencia.
 
 ## Front Central
 
