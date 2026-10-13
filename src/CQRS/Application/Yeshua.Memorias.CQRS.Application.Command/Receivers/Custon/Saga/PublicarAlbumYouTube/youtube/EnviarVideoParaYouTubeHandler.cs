@@ -125,8 +125,8 @@ namespace Command.Receivers
         {
             return privacidade switch
             {
-                2 => "public",
-                1 => "unlisted",
+                3 => "public",
+                2 => "unlisted",
                 _ => "private"
             };
         }
