@@ -34,6 +34,9 @@ namespace Repositorio.Outputs
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
+    public string conexaoyoutubeid { get; set; } = string.Empty;
+    public string canalyoutubeid { get; set; } = string.Empty;
+    public int youtubecredentialuserid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

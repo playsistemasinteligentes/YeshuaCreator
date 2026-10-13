@@ -41,6 +41,9 @@ namespace IRepository.Read
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
+        public bool ExistsByConexaoYouTubeId(string value );
+        public bool ExistsByCanalYouTubeId(string value );
+        public bool ExistsByYouTubeCredentialUserId(int value );
         public PublicacaoAlbumDTO FirstById(int value );
         public PublicacaoAlbumDTO FirstByAlbumId(int value );
         public PublicacaoAlbumDTO FirstByCorrelationId(string value );
@@ -57,6 +60,9 @@ namespace IRepository.Read
         public PublicacaoAlbumDTO FirstByChanged(DateTime value );
         public PublicacaoAlbumDTO FirstByUserId(int value );
         public PublicacaoAlbumDTO FirstByOperationalEntityId(string value );
+        public PublicacaoAlbumDTO FirstByConexaoYouTubeId(string value );
+        public PublicacaoAlbumDTO FirstByCanalYouTubeId(string value );
+        public PublicacaoAlbumDTO FirstByYouTubeCredentialUserId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllById(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByAlbumId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByCorrelationId(string value );
@@ -73,6 +79,9 @@ namespace IRepository.Read
         public IEnumerable<PublicacaoAlbumDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByUserId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByOperationalEntityId(string value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByConexaoYouTubeId(string value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByCanalYouTubeId(string value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeCredentialUserId(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

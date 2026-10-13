@@ -36,6 +36,9 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    string? ConexaoYouTubeId { get; }
+    string? CanalYouTubeId { get; }
+    int? YouTubeCredentialUserId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

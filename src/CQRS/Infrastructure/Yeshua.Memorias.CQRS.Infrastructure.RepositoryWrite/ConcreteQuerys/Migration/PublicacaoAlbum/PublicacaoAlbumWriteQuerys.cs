@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPublicacaoAlbumQuery(IPublicacaoAlbumEntity PublicacaoAlbum)
         {
-            this.Query = $@" INSERT INTO [PublicacaoAlbum] ([AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@AlbumId, @CorrelationId, @ManifestStorageKey, @VideoStorageKey, @YouTubeVideoId, @YouTubeUrl, @Mensagem, @SolicitadaEmUtc, @PublicadaEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
+            this.Query = $@" INSERT INTO [PublicacaoAlbum] ([AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId]) OUTPUT INSERTED.[Id] VALUES(@AlbumId, @CorrelationId, @ManifestStorageKey, @VideoStorageKey, @YouTubeVideoId, @YouTubeUrl, @Mensagem, @SolicitadaEmUtc, @PublicadaEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @ConexaoYouTubeId, @CanalYouTubeId, @YouTubeCredentialUserId) ";
             this.Parameters = new
             {
                 AlbumId = PublicacaoAlbum.AlbumId,
@@ -48,6 +48,9 @@ namespace Query.Write
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
                 OperationalEntityId = PublicacaoAlbum.OperationalEntityId,
+                ConexaoYouTubeId = PublicacaoAlbum.ConexaoYouTubeId,
+                CanalYouTubeId = PublicacaoAlbum.CanalYouTubeId,
+                YouTubeCredentialUserId = PublicacaoAlbum.YouTubeCredentialUserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -218,6 +221,36 @@ namespace Query.Write
             this.Parameters = new
             {
                 OperationalEntityId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateConexaoYouTubeId(int id, string value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [ConexaoYouTubeId] = @ConexaoYouTubeId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                ConexaoYouTubeId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCanalYouTubeId(int id, string value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [CanalYouTubeId] = @CanalYouTubeId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                CanalYouTubeId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateYouTubeCredentialUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [YouTubeCredentialUserId] = @YouTubeCredentialUserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                YouTubeCredentialUserId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

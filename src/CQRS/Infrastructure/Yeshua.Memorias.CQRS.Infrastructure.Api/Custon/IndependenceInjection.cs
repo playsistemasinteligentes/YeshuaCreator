@@ -1,5 +1,6 @@
 ﻿using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
+using Memorias.YouTube;
 using Command.Interfaces.Patterns.Queue;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
@@ -14,6 +15,7 @@ public static class DependenceInjectionCuston
 {
     public static void MapDependenceInjection(WebApplicationBuilder builder)
     {
+        builder.Services.AddMemoriasYouTube(builder.Configuration);
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IExecutionContext, executionContextHttp>();
 

@@ -16,6 +16,11 @@ namespace Dominio.Behaviors
 {
     public static partial class PublicacaoAlbumDomainBehavior
     {
+        static partial void ValidateCustom(IPublicacaoAlbumEntity entity, DomainOperationContext context, List<string> errors)
+        {
+            if (context.EntryPoint == DomainEntryPoint.Crud)
+                errors.Add("Publicacoes sao controladas pelos comandos de solicitar e retomar publicacao.");
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

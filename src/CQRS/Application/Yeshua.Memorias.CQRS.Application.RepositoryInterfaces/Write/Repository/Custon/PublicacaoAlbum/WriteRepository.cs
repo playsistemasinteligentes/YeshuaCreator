@@ -8,4 +8,12 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
 // </yeshua>
 
+namespace IRepository.Write;
+
+public partial interface IPublicacaoAlbumWriteRepository
+{
+    bool ScheduleYouTubeResume(int publicationId, int tenantId, int userId, string processingScope, DateTime now,
+        string connectionId, string channelId, int credentialUserId);
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

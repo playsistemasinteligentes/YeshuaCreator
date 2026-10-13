@@ -32,6 +32,9 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateConexaoYouTubeId(int id, string value);
+        QueryModel UpdateCanalYouTubeId(int id, string value);
+        QueryModel UpdateYouTubeCredentialUserId(int id, int value);
         public QueryModel DeletePublicacaoAlbumQuery(IPublicacaoAlbumEntity PublicacaoAlbum);
     }
 }

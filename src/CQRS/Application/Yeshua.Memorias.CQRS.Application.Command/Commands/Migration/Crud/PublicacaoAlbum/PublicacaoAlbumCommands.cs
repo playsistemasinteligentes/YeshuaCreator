@@ -29,6 +29,9 @@ namespace Command.Write
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? ConexaoYouTubeId { get; set; }
+        public string? CanalYouTubeId { get; set; }
+        public int? YouTubeCredentialUserId { get; set; }
  public string OperationalEntity => "PublicacaoAlbum";
  public string? OperationalRecordId => OperationalEntityId;
     }

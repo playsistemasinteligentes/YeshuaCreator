@@ -40,6 +40,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    public async Task ExecuteAsync()");
             sb.AppendLine("    {");
             sb.AppendLine("        using var client = await CreateAuthenticatedClientAsync();");
+            sb.AppendLine("        Task? customExecution = null;");
+            sb.AppendLine("        CustomizeExecution(client, ref customExecution);");
+            sb.AppendLine("        if (customExecution != null) { await customExecution; return; }");
             sb.AppendLine();
             sb.AppendLine("        var createPayload = BuildCreatePayload();");
             sb.AppendLine("        CustomizeCreatePayload(createPayload);");
@@ -94,6 +97,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    }");
             sb.AppendLine();
             sb.AppendLine("    partial void CustomizeCreatePayload(JsonObject payload);");
+            sb.AppendLine("    partial void CustomizeExecution(HttpClient client, ref Task? execution);");
             sb.AppendLine("    partial void CustomizeReadPayload(JsonObject payload);");
             sb.AppendLine("    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);");
             sb.AppendLine("    partial void CustomizeUpdatePayload(JsonObject payload);");

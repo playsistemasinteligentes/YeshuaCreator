@@ -19,5 +19,13 @@ namespace Command.UseCase
     {
     }
 
+public partial record YouTubeConnectionInfo : ICommand
+{
+    public string ConexaoId { get; set; } = string.Empty;
+    public string CanalId { get; set; } = string.Empty;
+    public string CanalTitulo { get; set; } = string.Empty;
+    public bool Conectado { get; set; }
+}
+
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

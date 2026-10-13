@@ -140,6 +140,9 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "ConexaoYouTubeId", title = "Conexao YouTube", classification = "Internal" },
+                    new { name = "CanalYouTubeId", title = "Canal de Destino", classification = "Internal" },
+                    new { name = "YouTubeCredentialUserId", title = "Responsavel pela Conexao", classification = "Internal" },
                 }
             },
             new
@@ -2638,6 +2641,7 @@ app.MapGet("/yapi/getMetaDataPublicacaoAlbum", (HttpContext context) =>
                 new { id = "solicitadaemutc", label = "Solicitada em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "publicadaemutc", label = "Publicada em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Solicitada" }, new { value = 2, display = "Preparando Manifesto" }, new { value = 3, display = "Renderizando" }, new { value = 4, display = "Enviando ao YouTube" }, new { value = 5, display = "Publicada" }, new { value = 6, display = "Falha" },}, },
+                new { id = "canalyoutubeid", label = "Canal de Destino", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -2652,6 +2656,7 @@ app.MapGet("/yapi/getMetaDataPublicacaoAlbum", (HttpContext context) =>
                 new { id = "solicitadaemutc", label = "Solicitada em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "publicadaemutc", label = "Publicada em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Solicitada" }, new { value = 2, display = "Preparando Manifesto" }, new { value = 3, display = "Renderizando" }, new { value = 4, display = "Enviando ao YouTube" }, new { value = 5, display = "Publicada" }, new { value = 6, display = "Falha" },}, },
+                new { id = "canalyoutubeid", label = "Canal de Destino", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -2673,6 +2678,7 @@ app.MapGet("/yapi/getMetaDataPublicacaoAlbum", (HttpContext context) =>
             new { id = "solicitadaemutc", label = "Solicitada em UTC", type = "DateTime", required = false, displaygroup = "Datas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "publicadaemutc", label = "Publicada em UTC", type = "DateTime", required = false, displaygroup = "Datas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Solicitada" }, new { value = 2, display = "Preparando Manifesto" }, new { value = 3, display = "Renderizando" }, new { value = 4, display = "Enviando ao YouTube" }, new { value = 5, display = "Publicada" }, new { value = 6, display = "Falha" },}, },
+            new { id = "canalyoutubeid", label = "Canal de Destino", type = "string", required = false, displaygroup = "YouTube", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4017,6 +4023,108 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
 }).RequireAuthorization();
 #region ServicesMethod
 app.MapPost("/yapi/Memorias/AlbunsSolicitarPublicacaoAlbumUseCase", async ([FromServices] Command.Receivers.UseCase.SolicitarPublicacaoAlbumHandler receiver, [FromBody] Command.UseCase.SolicitarPublicacaoAlbumInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeIniciarConexaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.IniciarConexaoYouTubeHandler receiver, [FromBody] Command.UseCase.IniciarConexaoYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeConcluirConexaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.ConcluirConexaoYouTubeHandler receiver, [FromBody] Command.UseCase.ConcluirConexaoYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeConsultarConexaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarConexaoYouTubeHandler receiver, [FromBody] Command.UseCase.ConsultarConexaoYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeListarConexoesYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.ListarConexoesYouTubeHandler receiver, [FromBody] Command.UseCase.ListarConexoesYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeDesconectarYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.DesconectarYouTubeHandler receiver, [FromBody] Command.UseCase.DesconectarYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeRetomarPublicacaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.RetomarPublicacaoYouTubeHandler receiver, [FromBody] Command.UseCase.RetomarPublicacaoYouTubeInputCommand command) =>
 {
 try
 {

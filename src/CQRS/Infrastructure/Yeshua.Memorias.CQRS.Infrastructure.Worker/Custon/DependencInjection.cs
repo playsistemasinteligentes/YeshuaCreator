@@ -4,6 +4,7 @@ public static class CustonDependenceInjection
 {
     public static void MapCustonDependenceInjection(WebApplicationBuilder builder)
     {
+        Memorias.YouTube.YouTubeRegistration.AddMemoriasYouTube(builder.Services, builder.Configuration);
         builder.Services.AddTransient<MediaOutboxTransportWorker>();
         builder.Services.AddHostedService(sp =>
             new PollingWorker<MediaOutboxTransportWorker, MediaOutboxTransportInputCommand, MediaOutboxTransportOutputCommand>(

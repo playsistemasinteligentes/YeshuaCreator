@@ -174,8 +174,164 @@ async function requestUpload(apiBase, command, body, signal) {
     return result;
 }
 
+let activeYouTube = null;
+
+function renderYouTubeConnection(payload) {
+    activeYouTube?.dispose();
+    activeYouTube = null;
+    const entity = payload.metadata?.entityName;
+    if (entity !== 'Album' && entity !== 'PublicacaoAlbum') return;
+    const formGroup = payload.formGroup || document.getElementById('form-group');
+    if (!formGroup) return;
+    const panel = document.createElement('section');
+    panel.className = 'mt-6 border-t pt-4';
+    panel.setAttribute('aria-label', 'Conta YouTube');
+    const title = document.createElement('h3');
+    title.className = 'text-base font-semibold mb-3';
+    title.textContent = 'YouTube';
+    const controls = document.createElement('div');
+    controls.className = 'flex flex-wrap items-center gap-3';
+    const status = document.createElement('p');
+    status.className = 'text-sm text-gray-700 mt-3';
+    status.style.overflowWrap = 'anywhere';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    status.textContent = 'Conexao nao consultada.';
+    const controller = new AbortController();
+    const buttons = [];
+    const accounts = new Map();
+    const record = payload.crudState?.currentRecord;
+    const recordId = Number(record?.id);
+    const fixedConnection = entity === 'PublicacaoAlbum' ? record?.conexaoyoutubeid || '' : '';
+    const destination = document.createElement('select');
+    destination.className = 'border rounded px-3 py-2 text-sm';
+    destination.style.cssText = 'width:360px;max-width:100%;min-width:0';
+    destination.setAttribute('aria-label', 'Canal YouTube de destino');
+    destination.append(new Option('Selecione um canal', ''));
+    const destinations = document.createElement('div');
+    destinations.className = 'mb-3';
+    destinations.append(destination);
+    let busy = false;
+    const selected = () => accounts.get(fixedConnection || destination.value);
+    function updateButtons() {
+        destination.disabled = busy || Boolean(fixedConnection);
+        buttons.forEach(item => item.element.disabled = busy || item.disabled());
+    }
+
+    function button(label, icon, action, disabled = () => false) {
+        const element = document.createElement('button');
+        element.type = 'button';
+        element.className = 'px-4 py-2 border rounded text-sm disabled:opacity-40';
+        element.title = label;
+        element.innerHTML = `<i class="${icon}" aria-hidden="true"></i> ${label}`;
+        element.onclick = async () => {
+            if (busy) return;
+            busy = true;
+            updateButtons();
+            try { await action(); }
+            catch (error) { if (error.name !== 'AbortError') status.textContent = error.message; }
+            finally {
+                busy = false;
+                updateButtons();
+            }
+        };
+        buttons.push({ element, disabled });
+        controls.append(element);
+        return element;
+    }
+
+    const call = (command, body = {}) => requestYouTube(environments.urlApi, command, body, controller.signal);
+    function showList(result) {
+        const previous = fixedConnection || destination.value;
+        accounts.clear();
+        destination.replaceChildren(new Option('Selecione um canal', ''));
+        for (const account of result.conexoes || []) {
+            accounts.set(account.conexaoId, account);
+            const name = account.canalTitulo || account.canalId;
+            destination.append(new Option(`${name}${account.conectado ? '' : ' (desconectado)'}`, account.conexaoId));
+        }
+        if (accounts.has(previous)) destination.value = previous;
+        status.textContent = result.configurado
+            ? `${accounts.size} conexao(oes).${fixedConnection ? ` Destino: ${record.canalyoutubeid || fixedConnection}.` : ''}`
+            : 'YouTube ainda nao configurado no servidor.';
+        updateButtons();
+    }
+
+    async function authorize(connectionId = '') {
+        const result = await call('IniciarConexaoYouTube', { conexaoId: connectionId });
+        const authorization = new URL(result.authorizationUrl);
+        if (authorization.protocol !== 'https:' || authorization.hostname !== 'accounts.google.com')
+            throw new Error('Endereco de autorizacao invalido.');
+        window.location.assign(authorization.href);
+    }
+    button('Conectar YouTube', 'fa-brands fa-youtube', () => authorize());
+    button('Consultar conexoes', 'fa-solid fa-rotate', async () => showList(await call('ListarConexoesYouTube')));
+    button('Reconectar canal', 'fa-solid fa-link', () => authorize(selected().conexaoId), () => !selected());
+    button('Desconectar', 'fa-solid fa-link-slash', async () => {
+        if (!window.confirm('Desconectar este canal? A revogacao no Google pode afetar outras conexoes da mesma conta Google.')) return;
+        const result = await call('DesconectarYouTube', { conexaoId: selected().conexaoId });
+        accounts.set(result.conexaoId, result);
+        status.textContent = result.mensagem;
+    }, () => !selected()?.conectado);
+    if (entity === 'Album') {
+        button('Publicar album', 'fa-solid fa-paper-plane', async () => {
+            const result = await requestMemorias(environments.urlApi, 'AlbunsSolicitarPublicacaoAlbum', {
+                albumId: recordId, conexaoYouTubeId: selected().conexaoId
+            }, controller.signal);
+            status.textContent = `Publicacao ${result.publicacaoAlbumId} solicitada.`;
+            payload.openCrudEntity('PublicacaoAlbum', { id: result.publicacaoAlbumId });
+        }, () => !recordId || !selected()?.conectado);
+    }
+    if (entity === 'PublicacaoAlbum' && recordId > 0 && Number(record?.status) === 45) {
+        button('Retomar envio', 'fa-solid fa-paper-plane', async () => {
+            await call('RetomarPublicacaoYouTube', {
+                publicacaoAlbumId: recordId, conexaoYouTubeId: fixedConnection || selected().conexaoId
+            });
+            status.textContent = 'Envio ao YouTube agendado.';
+        }, () => !selected()?.conectado);
+    }
+    destination.onchange = () => {
+        const account = selected();
+        status.textContent = account ? `Canal: ${account.canalTitulo || account.canalId}` : 'Nenhum canal selecionado.';
+        updateButtons();
+    };
+    const returned = sessionStorage.getItem('memorias.youtube.result');
+    if (returned) {
+        sessionStorage.removeItem('memorias.youtube.result');
+        try {
+            const result = JSON.parse(returned);
+            status.textContent = `Canal conectado: ${result.canalTitulo || result.canalId}`;
+        } catch { }
+    }
+    updateButtons();
+    panel.append(title, destinations, controls, status);
+    formGroup.append(panel);
+    activeYouTube = { dispose() { controller.abort(); panel.remove(); } };
+}
+
+async function requestYouTube(apiBase, command, body, signal) {
+    return requestMemorias(apiBase, `YouTube${command}`, body, signal);
+}
+
+async function requestMemorias(apiBase, command, body, signal) {
+    const response = await fetch(`${apiBase}/Memorias/${command}UseCase`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body), signal
+    });
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result)
+        throw new Error(result?.message || (response.status === 401 ? 'Sua sessao expirou.' : 'Falha na conexao YouTube.'));
+    return result;
+}
+
+function renderMemoriasForm(payload) {
+    renderPhotoUpload(payload);
+    renderYouTubeConnection(payload);
+}
+
 window.yeshuaExtensions.crud = {
     ...(window.yeshuaExtensions.crud || {}),
-    afterRenderForm: renderPhotoUpload,
-    afterFillForm: renderPhotoUpload
+    afterRenderForm: renderMemoriasForm,
+    afterFillForm: renderMemoriasForm
 };

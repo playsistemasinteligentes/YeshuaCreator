@@ -23,6 +23,9 @@ public partial class PublicacaoAlbumCrudApiSeedTests : ApiIntegrationTestBase
     public async Task ExecuteAsync()
     {
         using var client = await CreateAuthenticatedClientAsync();
+        Task? customExecution = null;
+        CustomizeExecution(client, ref customExecution);
+        if (customExecution != null) { await customExecution; return; }
 
         var createPayload = BuildCreatePayload();
         CustomizeCreatePayload(createPayload);
@@ -63,6 +66,9 @@ public partial class PublicacaoAlbumCrudApiSeedTests : ApiIntegrationTestBase
             ["SolicitadaEmUtc"] = DateTime.UtcNow,
             ["PublicadaEmUtc"] = DateTime.UtcNow,
             ["Status"] = 1,
+            ["ConexaoYouTubeId"] = ApiTestData.Text("PublicacaoAlbum ConexaoYouTubeId", 32),
+            ["CanalYouTubeId"] = ApiTestData.Text("PublicacaoAlbum CanalYouTubeId", 80),
+            ["YouTubeCredentialUserId"] = 1,
         };
     }
 
@@ -89,10 +95,14 @@ public partial class PublicacaoAlbumCrudApiSeedTests : ApiIntegrationTestBase
         payload["SolicitadaEmUtc"] = DateTime.UtcNow.AddMinutes(1);
         payload["PublicadaEmUtc"] = DateTime.UtcNow.AddMinutes(1);
         payload["Status"] = 1;
+        payload["ConexaoYouTubeId"] = ApiTestData.Text("PublicacaoAlbum ConexaoYouTubeId Update", 32);
+        payload["CanalYouTubeId"] = ApiTestData.Text("PublicacaoAlbum CanalYouTubeId Update", 80);
+        payload["YouTubeCredentialUserId"] = 2;
         return payload;
     }
 
     partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeExecution(HttpClient client, ref Task? execution);
     partial void CustomizeReadPayload(JsonObject payload);
     partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);

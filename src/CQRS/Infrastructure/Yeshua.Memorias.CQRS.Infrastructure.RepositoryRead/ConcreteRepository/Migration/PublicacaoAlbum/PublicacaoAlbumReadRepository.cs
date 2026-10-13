@@ -245,6 +245,30 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByConexaoYouTubeId(string value )
+        {
+            var query = _query.ExistsByConexaoYouTubeIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByCanalYouTubeId(string value )
+        {
+            var query = _query.ExistsByCanalYouTubeIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByYouTubeCredentialUserId(int value )
+        {
+            var query = _query.ExistsByYouTubeCredentialUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public PublicacaoAlbumDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -373,6 +397,30 @@ namespace Read.Repository
                 return result;
         }
 
+        public PublicacaoAlbumDTO FirstByConexaoYouTubeId(string value )
+        {
+            var query = _query.FirstByConexaoYouTubeIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public PublicacaoAlbumDTO FirstByCanalYouTubeId(string value )
+        {
+            var query = _query.FirstByCanalYouTubeIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public PublicacaoAlbumDTO FirstByYouTubeCredentialUserId(int value )
+        {
+            var query = _query.FirstByYouTubeCredentialUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<PublicacaoAlbumDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -496,6 +544,30 @@ namespace Read.Repository
         public IEnumerable<PublicacaoAlbumDTO> GetAllByOperationalEntityId(string value )
         {
             var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByConexaoYouTubeId(string value )
+        {
+            var query = _query.FirstByConexaoYouTubeIdQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByCanalYouTubeId(string value )
+        {
+            var query = _query.FirstByCanalYouTubeIdQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeCredentialUserId(int value )
+        {
+            var query = _query.FirstByYouTubeCredentialUserIdQuery(value );
 
                 var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
                 return result;

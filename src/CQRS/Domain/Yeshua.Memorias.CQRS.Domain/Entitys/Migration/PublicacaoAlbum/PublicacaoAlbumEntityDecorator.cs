@@ -36,6 +36,9 @@
             public const ulong Changed = 1UL << 13;
             public const ulong UserId = 1UL << 14;
             public const ulong OperationalEntityId = 1UL << 15;
+            public const ulong ConexaoYouTubeId = 1UL << 16;
+            public const ulong CanalYouTubeId = 1UL << 17;
+            public const ulong YouTubeCredentialUserId = 1UL << 18;
         }
 
         public static class PublicacaoAlbumOperationalFields
@@ -56,6 +59,9 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ConexaoYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanalYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification YouTubeCredentialUserId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class PublicacaoAlbumDecorator : IPublicacaoAlbumEntity
@@ -303,6 +309,9 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+    public string? ConexaoYouTubeId => _inner.ConexaoYouTubeId;
+    public string? CanalYouTubeId => _inner.CanalYouTubeId;
+    public int? YouTubeCredentialUserId => _inner.YouTubeCredentialUserId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

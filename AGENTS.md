@@ -479,6 +479,16 @@ Regra resumida:
 
 ## Memorias E Processamento De Midia
 
+- O upload YouTube persiste sessao resumable e recibo cifrados no repositorio
+  privado do aplicativo, com lock por publicacao e vinculo imutavel a dono,
+  conexao, canal, chave/hash/tamanho do video. Retry consulta a mesma sessao
+  antes de enviar bytes; sessao expirada ou confirmacao ambigua exige revisao,
+  nunca recriacao automatica que possa duplicar videos.
+- Testes CRUD gerados oferecem `CustomizeExecution` em Custon para entidades
+  cujo ciclo exige commands. No Memorias, PublicacaoAlbum comprova leitura e
+  bloqueio de criacao CRUD; o fluxo completo pertence ao BusinessSmoke da saga,
+  sem liberar escrita arbitraria apenas para satisfazer o teste generico.
+
 - O transportador de midia busca Outbox por `ProcessingScope`, sem restringir
   o lote ao tenant vazio do processo, e restaura tenant, usuario e identidade
   de cada registro antes da entrega. O retorno FFmpeg resolve explicitamente
@@ -509,6 +519,35 @@ Regra resumida:
 - OAuth, tokens e envio ao YouTube pertencem ao miolo customizado .NET do
   aplicativo Memorias, usando a API oficial. A Engine gera somente as bordas,
   a saga e os pontos de extensao dessa integracao.
+- Um usuario pode gerenciar N conexoes YouTube dentro do seu tenant. Cada
+  conexao identifica um canal autorizado e possui ID estavel; ela nao e apenas
+  um email Google nem um token global do servidor. Reconectar o mesmo canal
+  preserva o ID, enquanto conectar outro canal cria outra conexao.
+- A publicacao captura `ConexaoYouTubeId`, `CanalYouTubeId` e
+  `YouTubeCredentialUserId` quando e solicitada. O Worker usa esse destino,
+  nunca a ultima conta conectada ou um canal padrao implicito. Desconexao ou
+  perda de autorizacao deixa a publicacao pendente para retomada manual, sem
+  trocar de canal. O CRUD de publicacao nao altera esses vinculos: a entidade
+  e controlada pelos comandos de solicitar/retomar e pela saga.
+- No prototipo, os tokens de N conexoes sao cifrados com AES-256-GCM em um
+  repository privado do aplicativo, por escopo/tenant/usuario/conexao. O volume
+  `/root/YeshuaMemoriasSecrets` pertence somente a API e Worker .NET; nao e
+  storage de midia e nao e montado no renderer Python ou no gateway. A chave
+  e o Client Secret permanecem fora do repositorio, na configuracao protegida
+  carregada pelo deploy padrao.
+- A modalidade simplificada futura tambem usa usuario autenticado: o cliente
+  recebe uma identidade/perfil limitado dentro do tenant vinculado a essa
+  modalidade, mesmo quando a experiencia comercial for chamada de anonima.
+  Ela reutiliza Album, Foto, PublicacaoAlbum e a saga, com canal gerenciado
+  pelo servico e configuracoes YouTube ocultas do cliente. O solicitante e o
+  responsavel pela credencial sao papeis distintos; a autorizacao para usar
+  conexao de servico deve vir de politica confiavel do tenant, nunca de um
+  UserId/tenant/canal enviado livremente pelo navegador.
+- `pendencia`: entrada simplificada, perfil limitado, conexao gerenciada por
+  tenant, confirmacao idempotente de pagamento e entrega do link ao cliente.
+  Pagamento precisa ser confirmado no servidor antes de liberar a publicacao;
+  nao criar endpoints abertos de upload/publicacao nem inferir pagamento por
+  retorno de tela. Esta modalidade nao foi implementada no primeiro ciclo OAuth.
 - O Front do Memorias nao deve usar polling automatico de status de publicacao
   nesta fase. Para evitar milhares de requisicoes passivas, a primeira versao
   deve expor um botao manual de atualizar status/consultar publicacao. Polling

@@ -30,3 +30,10 @@ if [[ -z "${YESHUA_MODULE_SHARED_KEY:-}" ]]; then
 fi
 
 export YESHUA_MODULE_SHARED_KEY
+
+MEMORIAS_YOUTUBE_ENV="${YESHUA_MEMORIAS_YOUTUBE_ENV:-/root/YeshuaDB/persistent/config/memorias-youtube.env}"
+if [[ -f "$MEMORIAS_YOUTUBE_ENV" ]]; then
+  set -a
+  source "$MEMORIAS_YOUTUBE_ENV"
+  set +a
+fi

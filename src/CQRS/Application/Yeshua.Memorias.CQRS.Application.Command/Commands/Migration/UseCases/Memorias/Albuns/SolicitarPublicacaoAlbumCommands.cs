@@ -18,6 +18,7 @@ namespace Command.UseCase
 public partial record SolicitarPublicacaoAlbumInputCommand : ICommand, IOperationalTelemetryCommand
 {
     public int AlbumId { get; set; }
+    public string ConexaoYouTubeId { get; set; } = string.Empty;
 
     public string OperationalEntity => "Album";
     public string? OperationalRecordId => null;

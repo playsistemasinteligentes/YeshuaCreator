@@ -107,7 +107,7 @@ public class M000001 : MigrationBase
     }
 }
 
-public sealed record SolicitarPublicacaoAlbumInput(int AlbumId);
+public sealed record SolicitarPublicacaoAlbumInput(int AlbumId, string ConexaoYouTubeId = "");
 
 public sealed record SolicitarPublicacaoAlbumOutput(
     int PublicacaoAlbumId,

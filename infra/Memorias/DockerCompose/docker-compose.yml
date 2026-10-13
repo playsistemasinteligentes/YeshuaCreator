@@ -12,6 +12,11 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
       YeshuaProcessing__Scope: "production"
+      MemoriasYouTube__ClientId: "${YESHUA_MEMORIAS_YOUTUBE_CLIENT_ID:-}"
+      MemoriasYouTube__ClientSecret: "${YESHUA_MEMORIAS_YOUTUBE_CLIENT_SECRET:-}"
+      MemoriasYouTube__EncryptionKey: "${YESHUA_MEMORIAS_YOUTUBE_ENCRYPTION_KEY:-}"
+      MemoriasYouTube__RedirectUri: "${YESHUA_MEMORIAS_YOUTUBE_REDIRECT_URI:-https://playsis.com.br/spa/youtube-callback.html}"
+      MemoriasYouTube__CredentialsDirectory: "/memorias-secrets/accounts"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
       JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
@@ -32,6 +37,7 @@ services:
       - "7214"
     volumes:
       - /root/YeshuaStorage:/storage
+      - /root/YeshuaMemoriasSecrets:/memorias-secrets
     restart: unless-stopped
     networks:
       - yeshua-net
@@ -47,6 +53,11 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
       YeshuaProcessing__Scope: "production"
+      MemoriasYouTube__ClientId: "${YESHUA_MEMORIAS_YOUTUBE_CLIENT_ID:-}"
+      MemoriasYouTube__ClientSecret: "${YESHUA_MEMORIAS_YOUTUBE_CLIENT_SECRET:-}"
+      MemoriasYouTube__EncryptionKey: "${YESHUA_MEMORIAS_YOUTUBE_ENCRYPTION_KEY:-}"
+      MemoriasYouTube__RedirectUri: "${YESHUA_MEMORIAS_YOUTUBE_REDIRECT_URI:-https://playsis.com.br/spa/youtube-callback.html}"
+      MemoriasYouTube__CredentialsDirectory: "/memorias-secrets/accounts"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
@@ -71,6 +82,7 @@ services:
       - "7215"
     volumes:
       - /root/YeshuaStorage:/storage
+      - /root/YeshuaMemoriasSecrets:/memorias-secrets
     restart: unless-stopped
     networks:
       - yeshua-net

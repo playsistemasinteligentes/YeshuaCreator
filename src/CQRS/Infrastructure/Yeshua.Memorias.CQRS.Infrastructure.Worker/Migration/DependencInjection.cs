@@ -372,6 +372,18 @@ builder.Services.AddTransient<FinalizarPublicacaoAlbumHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SolicitarPublicacaoAlbumHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.IniciarConexaoYouTubeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConcluirConexaoYouTubeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarConexaoYouTubeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ListarConexoesYouTubeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.DesconectarYouTubeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.RetomarPublicacaoYouTubeHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();

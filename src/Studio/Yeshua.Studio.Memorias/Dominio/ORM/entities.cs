@@ -94,6 +94,9 @@ namespace Yeshua.Studio.Memorias.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? ConexaoYouTubeId { get; set; }
+        public string? CanalYouTubeId { get; set; }
+        public int? YouTubeCredentialUserId { get; set; }
 
         public static MyApp.QueryBuilder.Query<PublicacaoAlbum> Query() => new MyApp.QueryBuilder.Query<PublicacaoAlbum>();
     }

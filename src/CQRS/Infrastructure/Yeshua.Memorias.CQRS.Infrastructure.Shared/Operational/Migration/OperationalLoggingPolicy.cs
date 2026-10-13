@@ -487,6 +487,12 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PublicacaoAlbumTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "OperationalEntityId"))
                         mask |= PublicacaoAlbumTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "ConexaoYouTubeId"))
+                        mask |= PublicacaoAlbumTrackingFields.ConexaoYouTubeId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "CanalYouTubeId"))
+                        mask |= PublicacaoAlbumTrackingFields.CanalYouTubeId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "YouTubeCredentialUserId"))
+                        mask |= PublicacaoAlbumTrackingFields.YouTubeCredentialUserId;
                     return mask;
                 }
 

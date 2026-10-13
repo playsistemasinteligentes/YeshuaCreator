@@ -8,13 +8,12 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
 // </yeshua>
 
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using Command.Interfaces.Patterns.FileStore;
 using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
+using Memorias.YouTube;
 
 namespace Command.Receivers
 {
@@ -24,17 +23,20 @@ namespace Command.Receivers
         private readonly IPublicacaoAlbumWriteRepository _publicacaoWriteRepository;
         private readonly IAlbumReadRepository _albumReadRepository;
         private readonly IFileStorage _fileStorage;
+        private readonly IYouTubeVideoUploader _uploader;
 
         public EnviarVideoParaYouTubeHandler(
             IPublicacaoAlbumReadRepository publicacaoReadRepository,
             IPublicacaoAlbumWriteRepository publicacaoWriteRepository,
             IAlbumReadRepository albumReadRepository,
-            IFileStorage fileStorage)
+            IFileStorage fileStorage,
+            IYouTubeVideoUploader uploader)
         {
             _publicacaoReadRepository = publicacaoReadRepository;
             _publicacaoWriteRepository = publicacaoWriteRepository;
             _albumReadRepository = albumReadRepository;
             _fileStorage = fileStorage;
+            _uploader = uploader;
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
@@ -46,67 +48,29 @@ namespace Command.Receivers
             if (string.IsNullOrWhiteSpace(publicacao.videostoragekey))
                 throw new SagaStepExecutionException("Video da publicacao ainda nao foi renderizado.", retryable: true);
 
-            var accessToken = Environment.GetEnvironmentVariable("YESHUA_MEMORIAS_YOUTUBE_ACCESS_TOKEN");
-            if (string.IsNullOrWhiteSpace(accessToken))
-            {
-                _publicacaoWriteRepository.UpdateStatus(publicacaoId, MemoriasPublicationStatus.YouTubePendenteConfiguracao);
-                _publicacaoWriteRepository.UpdateMensagem(publicacaoId, "Video renderizado. Publicacao no YouTube pendente de OAuth/token no .NET.");
-                step.SetPayload(JsonSerializer.Serialize(new { youtube = "pending-oauth", publicacaoId }));
-                return;
-            }
-
+            // Uma tentativa ja confirmada nunca reenvia o arquivo.
+            if (!string.IsNullOrWhiteSpace(publicacao.youtubevideoid)) return;
             var album = _albumReadRepository.FirstById(publicacao.albumid)
                 ?? throw new SagaStepExecutionException("Album da publicacao nao encontrado.", retryable: false);
-
-            using var videoStream = _fileStorage.OpenRead(new StoragePath(publicacao.videostoragekey));
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            var metadata = new
+            string videoId;
+            try
             {
-                snippet = new
-                {
-                    title = string.IsNullOrWhiteSpace(album.titulo) ? $"Album {album.id}" : album.titulo,
-                    description = album.descricao ?? string.Empty
-                },
-                status = new
-                {
-                    privacyStatus = ResolvePrivacyStatus(album.privacidade)
-                }
-            };
-
-            using var startContent = new StringContent(
-                JsonSerializer.Serialize(metadata),
-                Encoding.UTF8,
-                "application/json");
-            startContent.Headers.Add("X-Upload-Content-Type", "video/mp4");
-            startContent.Headers.Add("X-Upload-Content-Length", videoStream.Length.ToString());
-
-            using var startResponse = http.PostAsync(
-                "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
-                startContent).GetAwaiter().GetResult();
-
-            if (!startResponse.IsSuccessStatusCode || startResponse.Headers.Location == null)
-            {
-                var body = startResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                throw new SagaStepExecutionException($"YouTube nao aceitou o inicio do upload: {(int)startResponse.StatusCode} {body}", retryable: false);
+                using var videoStream = _fileStorage.OpenRead(new StoragePath(publicacao.videostoragekey));
+                videoId = _uploader.UploadAsync(new YouTubeVideoUpload(
+                    new YouTubeOwner(publicacao.tenantid, publicacao.youtubecredentialuserid),
+                    publicacaoId, publicacao.conexaoyoutubeid, publicacao.canalyoutubeid, publicacao.videostoragekey,
+                    string.IsNullOrWhiteSpace(album.titulo) ? $"Album {album.id}" : album.titulo,
+                    album.descricao ?? string.Empty, ResolvePrivacyStatus(album.privacidade)),
+                    videoStream, CancellationToken.None).GetAwaiter().GetResult();
             }
-
-            using var uploadContent = new StreamContent(videoStream);
-            uploadContent.Headers.ContentType = new MediaTypeHeaderValue("video/mp4");
-            using var uploadResponse = http.PutAsync(startResponse.Headers.Location, uploadContent).GetAwaiter().GetResult();
-            var uploadBody = uploadResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
-            if (!uploadResponse.IsSuccessStatusCode)
-                throw new SagaStepExecutionException($"Upload para YouTube falhou: {(int)uploadResponse.StatusCode} {uploadBody}", retryable: true);
-
-            using var document = JsonDocument.Parse(uploadBody);
-            var videoId = document.RootElement.TryGetProperty("id", out var idElement)
-                ? idElement.GetString()
-                : null;
-
-            if (string.IsNullOrWhiteSpace(videoId))
-                throw new SagaStepExecutionException("YouTube concluiu upload sem retornar id do video.", retryable: false);
+            catch (Exception exception) when (exception is YouTubeConnectionException or YouTubeUploadReviewException)
+            {
+                _publicacaoWriteRepository.UpdateStatus(publicacaoId, MemoriasPublicationStatus.YouTubePendenteConfiguracao);
+                _publicacaoWriteRepository.UpdateMensagem(publicacaoId, exception.Message);
+                step.SetPayload(JsonSerializer.Serialize(new { youtube = "pending-oauth", publicacaoId }));
+                step.SetWaiting();
+                return;
+            }
 
             var url = $"https://www.youtube.com/watch?v={videoId}";
             _publicacaoWriteRepository.UpdateYouTubeVideoId(publicacaoId, videoId);
