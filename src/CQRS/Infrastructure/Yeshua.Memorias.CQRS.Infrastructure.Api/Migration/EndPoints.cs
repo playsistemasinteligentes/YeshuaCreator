@@ -4050,7 +4050,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.SendFileHandler receiver, [FromBody] Command.UseCase.SendFileInputCommand command) =>
+app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.SendFileHandler receiver, [FromForm] Command.UseCase.SendFileInputCommand command) =>
 {
 try
 {
@@ -4064,7 +4064,9 @@ catch (Exception ex)
 {
 return Results.Problem(ex.Message);
 }
-}).RequireAuthorization();
+}).DisableAntiforgery()
+.Accepts<Command.UseCase.SendFileInputCommand>("multipart/form-data")
+.RequireAuthorization();
 
 
 app.MapPost("/yapi/Saga/OperacaoRetrySagaStepUseCase", async ([FromServices] Command.Receivers.UseCase.RetrySagaStepHandler receiver, [FromBody] Command.UseCase.RetrySagaStepInputCommand command) =>

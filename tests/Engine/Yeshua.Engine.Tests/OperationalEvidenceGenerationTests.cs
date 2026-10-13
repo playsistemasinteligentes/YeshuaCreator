@@ -252,6 +252,61 @@ public sealed class OperationalEvidenceGenerationTests
     }
 
     [TestMethod]
+    public void FileUploadEndpointUsesMultipartBinding()
+    {
+        var directory = CreateDirectory();
+
+        try
+        {
+            var migration = new FileUploadEndpointMigration();
+            migration.Up();
+            var migrationPath = Path.Combine(directory, "EndPoints.cs");
+
+            new SourceCodeInfraestructureAPIEndpointsMigration(migration, "Memorias")
+                .WriteCode(null, migrationPath, Path.Combine(directory, "EndPoints.Custon.cs"));
+
+            var content = File.ReadAllText(migrationPath);
+            StringAssert.Contains(
+                content,
+                "[FromForm] Command.UseCase.UploadPhotoInputCommand command");
+            StringAssert.Contains(
+                content,
+                ".Accepts<Command.UseCase.UploadPhotoInputCommand>(\"multipart/form-data\")");
+            StringAssert.Contains(
+                content,
+                "[FromBody] Command.UseCase.StartUploadInputCommand command");
+        }
+        finally
+        {
+            Directory.Delete(directory, true);
+        }
+    }
+
+    private sealed class FileUploadEndpointMigration : MigrationBase
+    {
+        public override void Up()
+        {
+            AddUsecaseGroup("FileUpload")
+                .AddUseCaseSubGrup("Infra")
+                .AddCommand(
+                    "StartUpload",
+                    new StartUploadInput(string.Empty),
+                    new UploadOutput(true));
+
+            AddUsecaseGroup("FileUpload")
+                .AddUseCaseSubGrup("Infra")
+                .AddCommand(
+                    "UploadPhoto",
+                    new UploadPhotoInput(null!),
+                    new UploadOutput(true));
+        }
+    }
+
+    private sealed record StartUploadInput(string EntityId);
+    private sealed record UploadPhotoInput(Microsoft.AspNetCore.Http.IFormFile FileStream);
+    private sealed record UploadOutput(bool Success);
+
+    [TestMethod]
     public void GlobalTenantIdentityGenerationUsesExplicitKeyAndCentralSequence()
     {
         var directory = CreateDirectory();

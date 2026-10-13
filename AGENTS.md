@@ -479,6 +479,12 @@ Regra resumida:
 
 ## Memorias E Processamento De Midia
 
+- O upload de fotos reutiliza `yFileUpload`, `StarSessionUpload`, `SendFile` e
+  `IFileStorage`. Na primeira versao, cada sessao recebe uma foto de ate 25 MB;
+  o token opaco e o `OperationalEntityId` da sessao, validado por tenant,
+  usuario, album, estado e prazo de uma hora. A conclusao da sessao, a `Foto`
+  e seu vinculo `AlbumFoto` sao persistidos na mesma transacao. O storage usa
+  `persistent/memorias/photos`, compartilhado com o worker FFmpeg.
 - O aplicativo Memorias reutiliza o caminho assincrono padrao do Yeshua:
   Saga -> Outbox -> RabbitMQ/Celery -> Worker Python -> RabbitMQ -> Inbox -> Saga.
 - A saga de publicacao do Memorias deve começar no pedido de publicacao do

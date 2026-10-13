@@ -8,4 +8,11 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
 // </yeshua>
 
-//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+namespace IRepository.Write;
+
+public partial interface IyFileUploadWriteRepository
+{
+    bool TryCompletePhotoUpload(
+        int uploadId, int albumId, int tenantId, int userId,
+        string storageKey, long fileSize, DateTime completedAt, DateTime minimumCreatedAt);
+}

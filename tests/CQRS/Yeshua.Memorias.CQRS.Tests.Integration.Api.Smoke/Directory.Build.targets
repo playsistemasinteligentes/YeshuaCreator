@@ -1,0 +1,6 @@
+<Project>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\CQRS\Application\Yeshua.Memorias.CQRS.Application.Command\Yeshua.Memorias.CQRS.Application.Command.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+</Project>

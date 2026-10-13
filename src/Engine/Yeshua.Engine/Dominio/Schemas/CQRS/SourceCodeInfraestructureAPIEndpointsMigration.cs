@@ -535,15 +535,29 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var useCase in subGroup.UseCaseCommand)
                     {
-                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{useCase.Name.SourceType()}Handler receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{useCase.Name.SourceType()}InputCommand command) =>");
+                        var inputCommandType = $"{CQRSParam.I.NameSpaceCommandCommandsUseCases}.{useCase.Name.SourceType()}InputCommand";
+                        var hasFormFileInput = useCase.Inputs
+                            .Where(input => input is not null)
+                            .Select(input => input.GetType())
+                            .Any(type => type.GetProperties().Any(property =>
+                                typeof(Microsoft.AspNetCore.Http.IFormFile).IsAssignableFrom(property.PropertyType)));
+                        var bindingAttribute = hasFormFileInput ? "[FromForm]" : "[FromBody]";
+
+                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{useCase.Name.SourceType()}Handler receiver, {bindingAttribute} {inputCommandType} command) =>");
                         sb.AppendLine("{");
 
                         setResultHttp(sb, "result.Data");
 
+                        if (hasFormFileInput)
+                        {
+                            sb.AppendLine("}).DisableAntiforgery()");
+                            sb.AppendLine($".Accepts<{inputCommandType}>(\"multipart/form-data\")");
+                        }
+
                         if (useCase.Authorization == Authorization.Free)
-                            sb.AppendLine("});");
+                            sb.AppendLine(hasFormFileInput ? ";" : "});");
                         else
-                            sb.AppendLine("}).RequireAuthorization();");
+                            sb.AppendLine(hasFormFileInput ? ".RequireAuthorization();" : "}).RequireAuthorization();");
 
                         sb.AppendLine("");
                         sb.AppendLine("");
