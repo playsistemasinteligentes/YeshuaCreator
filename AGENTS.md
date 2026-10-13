@@ -479,6 +479,12 @@ Regra resumida:
 
 ## Memorias E Processamento De Midia
 
+- O transportador de midia busca Outbox por `ProcessingScope`, sem restringir
+  o lote ao tenant vazio do processo, e restaura tenant, usuario e identidade
+  de cada registro antes da entrega. O retorno FFmpeg resolve explicitamente
+  o step de renderizacao e sua saga no mesmo escopo antes de gravar Inbox.
+- `pendencia`: aplicar os filtros obrigatorios `NeedBeWhere`, incluindo
+  `ProcessingScope`, tambem nas queries geradas por `WhereContext`.
 - O upload de fotos reutiliza `yFileUpload`, `StarSessionUpload`, `SendFile` e
   `IFileStorage`. Na primeira versao, cada sessao recebe uma foto de ate 25 MB;
   o token opaco e o `OperationalEntityId` da sessao, validado por tenant,

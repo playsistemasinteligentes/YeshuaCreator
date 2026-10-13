@@ -8,4 +8,9 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
 // </yeshua>
 
-//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+namespace IRepository.Read;
+
+public partial interface IyOutboxReadRepository
+{
+    IEnumerable<Repositorio.Outputs.yOutboxDTO> GetPendingMediaRenderMessages(int batchSize);
+}
