@@ -71,6 +71,14 @@ namespace Command.Receivers
                 step.SetWaiting();
                 return;
             }
+            catch (SagaStepExecutionException exception)
+            {
+                _publicacaoWriteRepository.UpdateStatus(publicacaoId, MemoriasPublicationStatus.Falhou);
+                _publicacaoWriteRepository.UpdateMensagem(publicacaoId, exception.Retryable
+                    ? "Falha temporaria no envio. A saga controla a retomada da mesma sessao."
+                    : exception.Message);
+                throw;
+            }
 
             var url = $"https://www.youtube.com/watch?v={videoId}";
             _publicacaoWriteRepository.UpdateYouTubeVideoId(publicacaoId, videoId);

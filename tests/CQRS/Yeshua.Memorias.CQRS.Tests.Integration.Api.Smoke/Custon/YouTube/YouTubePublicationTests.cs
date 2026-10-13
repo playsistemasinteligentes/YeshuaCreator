@@ -7,6 +7,7 @@ using Command.Interfaces.Patterns.FileStore;
 using Command.Receivers;
 using Command.Receivers.UseCase;
 using Command.UseCase;
+using Command.Patterns;
 using Dominio.Entitys;
 using Dominio.Behaviors;
 using Dominio.Patterns.Domain;
@@ -18,6 +19,7 @@ using IRepository.Write;
 using Memorias.YouTube;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Patterns.Saga;
 using static Yeshua.Memorias.Tests.PhotoUploadTests;
 
 namespace Yeshua.Memorias.Tests;
@@ -25,6 +27,60 @@ namespace Yeshua.Memorias.Tests;
 [Trait("Category", "BusinessSmoke")]
 public class YouTubePublicationTests
 {
+    [Fact]
+    public async Task ExecutorWaitsForCredentialThenFinishesSameRenderedSaga()
+    {
+        using var rig = new RenderedRig();
+        rig.Saga.CompleteCurrentStep("manifest");
+        rig.Saga.CompleteCurrentStep("rendered");
+        var finalize = new FinalizarPublicacaoAlbumHandler(
+            TestProxy.For<IPublicacaoAlbumReadRepository>((_, _) => rig.Publication),
+            TestProxy.For<IPublicacaoAlbumWriteRepository>((method, args) =>
+            {
+                if (method == "UpdateStatus") rig.Publication.status = (int)args[1]!;
+                return null;
+            }));
+        var handlers = new Dictionary<string, ISagaStepHandler>
+        {
+            [PublicarAlbumYouTubeSaga.STEP_3] = rig.Handler,
+            [PublicarAlbumYouTubeSaga.STEP_4] = finalize
+        };
+        var resolver = TestProxy.For<ISagaHandlerResolver>((_, _) => handlers);
+        var executor = new SagaExecutor(TestProxy.For<ILogger>());
+        executor.ExecuteUntilWait(rig.Saga, resolver);
+        Assert.Equal(SagaStepStatus.WaitingResponse, rig.Step.Status);
+        Assert.Equal(SagaStatus.InProgress, rig.Saga.Status);
+        Assert.Equal(SagaStepStatus.Created, rig.Saga.Steps.Single(step => step.Key == PublicarAlbumYouTubeSaga.STEP_4).Status);
+        Assert.Equal(0, rig.Upload.Requests);
+        var destination = await rig.Connections.Connect("channel-a");
+        rig.Publication.conexaoyoutubeid = destination.ConexaoId;
+        rig.Step.SetPending(DateTime.UtcNow);
+        executor.ExecuteUntilWait(rig.Saga, resolver);
+        Assert.Equal(SagaStatus.Completed, rig.Saga.Status);
+        Assert.All(rig.Saga.Steps, step => Assert.Equal(SagaStepStatus.Completed, step.Status));
+        Assert.Equal(60, rig.Publication.status);
+        Assert.Equal(2, rig.Upload.Requests);
+    }
+
+    [Theory]
+    [InlineData(503, true)]
+    [InlineData(403, false)]
+    public async Task ExecutorControlsRetryAndPermanentFailure(int code, bool retryable)
+    {
+        using var rig = new RenderedRig();
+        rig.Saga.CompleteCurrentStep("manifest");
+        rig.Saga.CompleteCurrentStep("rendered");
+        rig.Publication.conexaoyoutubeid = (await rig.Connections.Connect("channel-a")).ConexaoId;
+        rig.Upload.Failure = (HttpStatusCode)code;
+        var handlers = new Dictionary<string, ISagaStepHandler> { [PublicarAlbumYouTubeSaga.STEP_3] = rig.Handler };
+        new SagaExecutor(TestProxy.For<ILogger>()).Execute(rig.Saga,
+            TestProxy.For<ISagaHandlerResolver>((_, _) => handlers));
+        Assert.Equal(retryable ? SagaStatus.InProgress : SagaStatus.Failed, rig.Saga.Status);
+        Assert.Equal(retryable ? SagaStepStatus.Pending : SagaStepStatus.Failed, rig.Step.Status);
+        Assert.Equal(retryable ? 1 : 0, rig.Step.RetryCount);
+        Assert.Equal(90, rig.Publication.status);
+    }
+
     [Theory]
     [InlineData(DomainOperation.Registro)]
     [InlineData(DomainOperation.Alteracao)]
@@ -119,6 +175,23 @@ public class YouTubePublicationTests
         Assert.Equal(0, rig.Upload.Requests);
     }
 
+    [Theory]
+    [InlineData(503, true)]
+    [InlineData(429, true)]
+    [InlineData(403, false)]
+    public async Task FailedUploadUpdatesPublicationAndPreservesExecutorRetryDecision(int code, bool retryable)
+    {
+        using var rig = new RenderedRig();
+        var destination = await rig.Connections.Connect("channel-a");
+        rig.Publication.conexaoyoutubeid = destination.ConexaoId;
+        rig.Upload.Failure = (HttpStatusCode)code;
+        var exception = Assert.Throws<SagaStepExecutionException>(() => rig.Handler.Execute(rig.Saga, rig.Step));
+        Assert.Equal(retryable, exception.Retryable);
+        Assert.Equal(90, rig.Publication.status);
+        Assert.DoesNotContain("SECRET", rig.Publication.mensagem);
+        Assert.Equal(SagaStepStatus.InProgress, rig.Step.Status);
+    }
+
     [Fact]
     public async Task ResumeCannotChangeDestination()
     {
@@ -191,6 +264,7 @@ public class YouTubePublicationTests
                 {
                     if (method == "UpdateStatus") Publication.status = (int)args[1]!;
                     if (method == "UpdateYouTubeVideoId") Publication.youtubevideoid = (string)args[1]!;
+                    if (method == "UpdateMensagem") Publication.mensagem = (string)args[1]!;
                     return null;
                 }), TestProxy.For<IAlbumReadRepository>((_, _) => new AlbumDTO { id = 5, titulo = "Album", privacidade = 1 }),
                 TestProxy.For<IFileStorage>((_, _) => new MemoryStream([1, 2, 3])),
@@ -204,6 +278,7 @@ public class YouTubePublicationTests
         public int Requests;
         public string? Token;
         public string? Privacy;
+        public HttpStatusCode? Failure;
         public HttpClient CreateClient(string name) => new(this, false);
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -217,6 +292,7 @@ public class YouTubePublicationTests
                 response.Headers.Location = new("https://www.googleapis.com/upload/youtube/v3/videos?upload_id=test");
                 return response;
             }
+            if (Failure.HasValue) return new(Failure.Value) { Content = new StringContent("SECRET upstream details") };
             return new(HttpStatusCode.OK) { Content = new StringContent("{\"id\":\"video-test\"}", Encoding.UTF8, "application/json") };
         }
     }

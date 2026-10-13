@@ -45,6 +45,8 @@ Usuario autenticado + tenant -> Album -> upload padrao de fotos -> selecionar co
 
 Se faltar autorizacao, a publicacao fica no estado 45. Reconectar o mesmo canal -> abrir a publicacao -> Retomar envio -> Worker continua a mesma saga/sessao. Consultar conexoes/status e atualizar a publicacao sao acoes manuais, sem polling no Front.
 
+Falha de envio registra estado 90 e mensagem segura na publicacao. A saga continua sendo dona da decisao de retry: falhas temporarias retomam a mesma sessao; recusa definitiva falha sem gastar tentativas iguais. Falhas de comunicacao OAuth tambem sao sanitizadas antes de chegar a tela/log operacional.
+
 ## Validacao
 
 Os testes BusinessSmoke usam repositorio cifrado real em diretorio temporario, Google/HTTP simulados, ownership por tenant/usuario, N canais, PKCE/state, replay, refresh/revogacao, destino imutavel, retomada e falhas ambiguas. Os testes Playwright cobrem desktop e celular, callback, negacao/expiracao e ausencia de polling.

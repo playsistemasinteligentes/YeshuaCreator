@@ -39,6 +39,8 @@ public sealed class GoogleYouTubeOAuthClient : IYouTubeOAuthClient, IDisposable
     {
         try { return Map(await _flow.ExchangeCodeForTokenAsync(Identity(owner), code, verifier, redirectUri, cancellationToken)); }
         catch (TokenResponseException) { throw new YouTubeConnectionException("Google recusou a autorizacao. Conecte novamente."); }
+        catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException)
+        { throw new YouTubeConnectionException("Comunicacao com Google indisponivel. Reinicie a conexao."); }
     }
 
     public async Task<YouTubeTokens> RefreshAsync(YouTubeOwner owner, string refreshToken, CancellationToken cancellationToken)
@@ -49,6 +51,8 @@ public sealed class GoogleYouTubeOAuthClient : IYouTubeOAuthClient, IDisposable
             throw new YouTubeConnectionException("Google nao renovou a autorizacao. Reconecte sua conta.",
                 authorizationRejected: exception.Error?.Error == "invalid_grant");
         }
+        catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException)
+        { throw new YouTubeConnectionException("Comunicacao com Google indisponivel. Tente novamente mais tarde."); }
     }
 
     public async Task<YouTubeChannel> ReadChannelAsync(string accessToken, CancellationToken cancellationToken)
@@ -74,6 +78,8 @@ public sealed class GoogleYouTubeOAuthClient : IYouTubeOAuthClient, IDisposable
         try { await _flow.RevokeTokenAsync("Memorias", token, cancellationToken); }
         catch (TokenResponseException exception) when (exception.Error?.Error == "invalid_token") { }
         catch (TokenResponseException) { throw new YouTubeConnectionException("Nao foi possivel revogar o acesso no Google. Tente novamente."); }
+        catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException)
+        { throw new YouTubeConnectionException("Comunicacao com Google indisponivel. Tente desconectar novamente."); }
     }
 
     private YouTubeTokens Map(TokenResponse token)
