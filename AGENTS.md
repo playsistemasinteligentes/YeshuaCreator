@@ -479,6 +479,14 @@ Regra resumida:
 
 ## Memorias E Processamento De Midia
 
+- O Estudio Memorias e uma tela unica customizada do Front Central, ancorada
+  por `AddCustomPage` na DSL do modulo MEM. Ela reutiliza CRUD de Album/AlbumFoto,
+  upload padrao e commands de YouTube/publicacao, sem novo fluxo de backend.
+  Status e fatos dos steps sao consultados somente na entrada/interacao do
+  usuario ou pelo botao Atualizar status, nunca por polling automatico.
+  A extensao `dashboard` do Memorias abre o estudio como tela inicial; as
+  telas genericas continuam acessiveis pelo menu padrao.
+
 - O upload YouTube persiste sessao resumable e recibo cifrados no repositorio
   privado do aplicativo, com lock por publicacao e vinculo imutavel a dono,
   conexao, canal, chave/hash/tamanho do video. Retry consulta a mesma sessao

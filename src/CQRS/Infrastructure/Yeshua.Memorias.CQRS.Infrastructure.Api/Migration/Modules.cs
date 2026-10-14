@@ -122,6 +122,9 @@ public static class StaticModules
         var menuGroup0_2 = new Menu("Publicacoes", "", "menuGroup");
         menuGroup0_2.AddSubMenu(new SubMenu("PublicacaoAlbum", "/getMetaDataPublicacaoAlbum", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(menuGroup0_2);
+        var menuGroup0_3 = new Menu("Publicar memorias", "", "menuGroup");
+        menuGroup0_3.AddSubMenu(new SubMenu("Estudio Memorias", "#memorias-estudio", "customPage", "memorias-estudio", "memorias.estudio.visualizar"));
+        Modules[Modules.Count - 1].Menus.Add(menuGroup0_3);
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules[Modules.Count - 1].Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));

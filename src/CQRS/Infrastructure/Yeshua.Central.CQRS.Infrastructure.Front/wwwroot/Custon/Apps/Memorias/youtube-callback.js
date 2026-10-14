@@ -3,6 +3,14 @@
     window.history.replaceState(null, '', window.location.pathname);
     const status = document.getElementById('youtube-status');
     try {
+        const target = JSON.parse(sessionStorage.getItem('memorias.youtube.return') || 'null');
+        if (target?.page === 'memorias-estudio') {
+            document.querySelector('main a').href = '/spa/#memorias-estudio';
+            if (Number.isInteger(target.albumId) && target.albumId > 0)
+                sessionStorage.setItem('memorias.studio.album', String(target.albumId));
+        }
+    } catch { }
+    try {
         if (parameters.has('error')) throw new Error('Autorizacao nao concluida no Google.');
         const code = parameters.get('code');
         const state = parameters.get('state');

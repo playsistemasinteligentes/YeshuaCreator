@@ -1,4 +1,10 @@
 window.yeshuaExtensions = window.yeshuaExtensions || {};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
+window.yeshuaExtensions.pages['memorias-estudio'] = async () => {
+    const page = await import('/Custon/Apps/Memorias/pages/estudio.js?v=20261014-estudio01');
+    await page.renderMemoriasStudio();
+};
+window.yeshuaExtensions.dashboard = window.yeshuaExtensions.pages['memorias-estudio'];
 
 const maxPhotoSize = 25 * 1024 * 1024;
 const photoExtensions = /\.(jpe?g|png|webp)$/i;
