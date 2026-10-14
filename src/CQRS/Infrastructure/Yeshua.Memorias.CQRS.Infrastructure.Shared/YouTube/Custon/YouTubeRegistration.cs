@@ -14,9 +14,12 @@ public static class YouTubeRegistration
         var options = new YouTubeOptions();
         configuration.GetSection("MemoriasYouTube").Bind(options);
         options.ProcessingScope = configuration["YeshuaProcessing:Scope"] ?? "";
-        services.AddSingleton(options);
+        var applicationConfiguration = new EncryptedYouTubeApplicationConfigurationRepository(options);
+        services.AddSingleton<IYouTubeApplicationConfigurationRepository>(applicationConfiguration);
+        services.AddSingleton<IYouTubeApplicationConfigurationService>(new YouTubeApplicationConfigurationService(options, applicationConfiguration));
+        services.AddScoped(_ => options.Snapshot(applicationConfiguration.Read()));
         services.TryAddSingleton(TimeProvider.System);
-        services.AddSingleton<IYouTubeAccountRepository, EncryptedYouTubeAccountRepository>();
+        services.AddScoped<IYouTubeAccountRepository, EncryptedYouTubeAccountRepository>();
         services.AddScoped<IYouTubeOAuthClient, GoogleYouTubeOAuthClient>();
         services.AddScoped<IYouTubeConnectionService, YouTubeConnectionService>();
         services.AddScoped<IYouTubeVideoUploader, ResumableYouTubeVideoUploader>();

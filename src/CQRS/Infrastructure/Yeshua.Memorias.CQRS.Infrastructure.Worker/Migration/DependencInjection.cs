@@ -384,6 +384,10 @@ builder.Services.AddTransient<Command.Receivers.UseCase.DesconectarYouTubeHandle
 
 builder.Services.AddTransient<Command.Receivers.UseCase.RetomarPublicacaoYouTubeHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarConfiguracaoYouTubeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.SalvarConfiguracaoYouTubeHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();

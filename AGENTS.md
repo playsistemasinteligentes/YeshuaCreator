@@ -479,6 +479,20 @@ Regra resumida:
 
 ## Memorias E Processamento De Midia
 
+- A configuracao OAuth do aplicativo pode ser salva pelo Estudio via Commands
+  gerados, mas e global por ProcessingScope e restrita ao par TenantId/UserId
+  administrativo definido pela implantacao. O papel legado Admin emitido para
+  todos pela Central nao autoriza essa operacao. Ausencia desse par fecha o
+  acesso; scopes de DSL sao metadata, nao uma guarda suficiente nesta fase.
+  A configuracao fica cifrada no volume privado ja existente; a chave interna
+  e persistente, nunca exibida nem editada pelo Front. API e Worker recebem
+  snapshots por escopo de DI, sem novo polling ou restart para aplicar a tela.
+  Atualizacao de segredo preserva tokens e recibos; mudar o Client ID requer
+  revisao operacional. Configuracao do aplicativo nao autoriza nenhum canal.
+- Grupos de use case repetidos em migrations devem gerar os tipos complexos
+  compartilhados considerando todas as declaracoes do grupo, para a migration
+  posterior nao apagar contratos usados por commands anteriores.
+
 - O Estudio Memorias e uma tela unica customizada do Front Central, ancorada
   por `AddCustomPage` na DSL do modulo MEM. Ela reutiliza CRUD de Album/AlbumFoto,
   upload padrao e commands de YouTube/publicacao, sem novo fluxo de backend.

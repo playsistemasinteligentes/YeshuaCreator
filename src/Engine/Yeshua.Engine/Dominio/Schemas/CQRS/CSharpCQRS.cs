@@ -151,7 +151,8 @@ namespace Dominio.Schemas.CQRS
 
                 var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Migration"), $"{group.Name}\\{group.Name.SourceType()}HubCommands.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Custon"), $"{group.Name}\\{group.Name.SourceType()}HubCommands.cs");
-                var sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(group);
+                var sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(group,
+                    migration.UseCaseGroup.Where(candidate => candidate.Name.SourceType() == group.Name.SourceType()));
                 sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
 
                 foreach (var subGroup in group.UseCaseSubGroup)

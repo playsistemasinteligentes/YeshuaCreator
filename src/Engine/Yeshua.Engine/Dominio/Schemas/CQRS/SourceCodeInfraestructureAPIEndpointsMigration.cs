@@ -1192,6 +1192,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("var result = await receiver.ExecuteAsync(command);");
             sb.AppendLine("if (result.StatusCode == 200)");
             sb.AppendLine($"    return Results.Ok({result});");
+            sb.AppendLine("else if (result.StatusCode == 403)");
+            sb.AppendLine("    return Results.Json(result, statusCode: 403);");
             sb.AppendLine("else");
             sb.AppendLine("    return Results.BadRequest(result);");
             sb.AppendLine("}");

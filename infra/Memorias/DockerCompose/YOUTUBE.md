@@ -1,5 +1,47 @@
 # Conexao YouTube do Memorias
 
+## Configuracao Pela Interface
+
+O Estudio possui o botao Configuracao YouTube junto ao canal. A configuracao
+OAuth do aplicativo e global por ProcessingScope; nao pertence a um canal,
+usuario ou tenant. O dialogo pede Client ID e Client Secret, exibe o endereco
+de retorno definido pela implantacao e consulta somente metadata segura.
+Salvar nao concede consentimento Google nem publica videos. Cada usuario
+continua autorizando seus proprios canais pelo botao Conectar canal.
+
+A implantacao deve designar uma unica identidade administrativa confiavel:
+
+```bash
+YESHUA_MEMORIAS_CONFIG_ADMIN_TENANT_ID=<TenantId global do administrador>
+YESHUA_MEMORIAS_CONFIG_ADMIN_USER_ID=<UserId global do administrador>
+```
+
+Esses valores entram no ambiente de deploy, nunca pelo navegador. Sem ambos,
+o acesso administrativo fica fechado. O papel legado Admin nao e suficiente:
+o login atual da Central ainda emite esse papel para todos os usuarios. O
+receiver valida os dois identificadores do contexto autenticado antes de ler
+metadata administrativa ou salvar qualquer segredo. O scope declarativo
+memorias.youtube.configurar registra a intencao, mas nao substitui essa guarda.
+
+O repositorio guarda configuracao cifrada e chave interna persistente em
+`/root/YeshuaMemoriasSecrets/accounts/configuration/<hash-do-escopo>`. O arquivo
+oauth.bin e cifrado por AES-256-GCM; key.bin nunca e devolvido pela API. A
+chave existente do ambiente e preservada na primeira importacao. Depois,
+perda da chave ou corrupcao exige revisao operacional, sem substituicao cega.
+Preserve esses arquivos em backup privado junto dos tokens e recibos.
+
+API e Worker leem um snapshot por escopo de DI somente ao resolver os servicos
+YouTube, sem novo polling. Uma nova operacao usa a configuracao salva sem
+reiniciar/deploy; operacoes ja em andamento mantem seu snapshot. O segredo
+nao e persistido em localStorage/sessionStorage e e limpo do formulario e do
+command apos o envio. Atualizacao do segredo preserva tokens, recibos e chave;
+Client ID ja vinculado nao pode ser trocado pela tela nesta fase.
+
+O configurador SSH abaixo permanece como caminho legado/bootstrap. A
+configuracao cifrada salva pela interface tem precedencia sobre o ambiente;
+nao use o script para tentar sobrescrever uma configuracao ja administrada
+pela tela. Nao configure credenciais falsas em producao para homologacao.
+
 ## Configuracao inicial do aplicativo
 
 1. No Google Cloud, crie ou selecione o projeto do aplicativo e habilite YouTube Data API v3.

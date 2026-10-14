@@ -30,6 +30,28 @@ public sealed class YouTubeConnectionException(string message, bool authorizatio
     public bool AuthorizationRejected { get; } = authorizationRejected;
 }
 
+public sealed record YouTubeApplicationConfiguration(string ClientId, string ClientSecret, string EncryptionKey, DateTime UpdatedAtUtc);
+public sealed record YouTubeApplicationConfigurationStatus(
+    bool PodeConfigurar, bool Configurado, string ClientId = "", string RedirectUri = "",
+    bool SegredoSalvo = false, string AtualizadoEmUtc = "");
+
+public interface IYouTubeApplicationConfigurationRepository
+{
+    YouTubeApplicationConfiguration? Read();
+    Task<YouTubeApplicationConfiguration> SaveAsync(string clientId, string clientSecret, CancellationToken cancellationToken);
+}
+
+public interface IYouTubeApplicationConfigurationService
+{
+    YouTubeApplicationConfigurationStatus Read(YouTubeOwner owner);
+    Task<YouTubeApplicationConfigurationStatus> SaveAsync(YouTubeOwner owner, string clientId, string clientSecret, CancellationToken cancellationToken);
+}
+
+public sealed class YouTubeConfigurationAccessException : Exception
+{
+    public YouTubeConfigurationAccessException() : base("Configuracao YouTube restrita ao administrador do aplicativo.") { }
+}
+
 public sealed record YouTubeAccount(
     string ClientId, string AccessToken, string RefreshToken, DateTime ExpiresAtUtc,
     string ChannelId, string ChannelTitle, string ConnectionId, bool Connected = true);

@@ -1486,6 +1486,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1503,6 +1505,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1520,6 +1524,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1537,6 +1543,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1554,6 +1562,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1571,6 +1581,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1588,6 +1600,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1605,6 +1619,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1622,6 +1638,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1639,6 +1657,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1656,6 +1676,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1673,6 +1695,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1690,6 +1714,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1707,6 +1733,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1724,6 +1752,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1741,6 +1771,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1758,6 +1790,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1775,6 +1809,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1792,6 +1828,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1809,6 +1847,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1826,6 +1866,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1843,6 +1885,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1860,6 +1904,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1877,6 +1923,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1894,6 +1942,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1911,6 +1961,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1928,6 +1980,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1945,6 +1999,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1962,6 +2018,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1979,6 +2037,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -1996,6 +2056,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2013,6 +2075,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2030,6 +2094,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2047,6 +2113,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2064,6 +2132,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2081,6 +2151,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2098,6 +2170,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2115,6 +2189,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2132,6 +2208,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2149,6 +2227,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2166,6 +2246,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2183,6 +2265,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2200,6 +2284,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2217,6 +2303,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2234,6 +2322,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2251,6 +2341,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2268,6 +2360,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2285,6 +2379,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2302,6 +2398,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2319,6 +2417,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2336,6 +2436,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2353,6 +2455,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -2370,6 +2474,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4029,6 +4135,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4046,6 +4154,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4063,6 +4173,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4080,6 +4192,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4097,6 +4211,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4114,6 +4230,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4131,6 +4249,46 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeConsultarConfiguracaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarConfiguracaoYouTubeHandler receiver, [FromBody] Command.UseCase.ConsultarConfiguracaoYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/YouTubeSalvarConfiguracaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.SalvarConfiguracaoYouTubeHandler receiver, [FromBody] Command.UseCase.SalvarConfiguracaoYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4148,6 +4306,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4165,6 +4325,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4184,6 +4346,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4201,6 +4365,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4218,6 +4384,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4235,6 +4403,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }
@@ -4252,6 +4422,8 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
 else
     return Results.BadRequest(result);
 }

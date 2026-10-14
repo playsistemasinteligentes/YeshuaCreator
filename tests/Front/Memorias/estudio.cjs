@@ -34,6 +34,8 @@ async function main() {
             const page = await context.newPage();
             const errors = [], calls = [], albums = [], photos = [], publications = [];
             const channels = [structuredClone(channelA),structuredClone(channelB)];
+            let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
+            const testSecret = 'GOCSPX-test-secret-only';
             let sessions = 0, sends = 0, failSecond = true;
             page.on('pageerror', error => errors.push(error.message));
             page.on('dialog',dialog => dialog.accept());
@@ -43,6 +45,12 @@ async function main() {
                 const body = req.headers()['content-type']?.includes('application/json') ? req.postDataJSON() : {};
                 calls.push({endpoint,body});
                 const respond = json => route.fulfill({json});
+                if (endpoint.includes('YouTubeConsultarConfiguracao')) return respond(configuration);
+                if (endpoint.includes('YouTubeSalvarConfiguracao')) {
+                    assert.equal(body.clientId,'123-test.apps.googleusercontent.com');
+                    assert.equal(body.clientSecret,testSecret);
+                    configuration={...configuration,configurado:true,clientId:body.clientId,segredoSalvo:true};return respond(configuration);
+                }
                 const read = items => respond({statusCode:200,data:{items}});
                 if (endpoint.endsWith('/ReadAlbum')) {
                     assert.equal(body.userId,1);
@@ -70,7 +78,7 @@ async function main() {
                     const id=photos.length+1;photos.push({id,albumid:9,fotoid:id+100,ordem:id,legenda:''});return respond({success:true,isFinalized:true});
                 }
                 if (endpoint.endsWith('/ReadPublicacaoAlbum')) { assert.equal(body.userId,1);return read(publications); }
-                if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:true,conexoes:channels});
+                if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:configuration.configurado,conexoes:configuration.configurado?channels:[]});
                 if (endpoint.includes('YouTubeIniciarConexao')) return respond({authorizationUrl:'https://evil.example/oauth'});
                 if (endpoint.includes('YouTubeConcluirConexao')) return respond({...channels[1],configurado:true});
                 if (endpoint.includes('YouTubeDesconectar')) { channels.find(item=>item.conexaoId===body.conexaoId).conectado=false;return respond({conectado:false}); }
@@ -94,6 +102,21 @@ async function main() {
             assert.equal(await page.getByRole('button',{name:'Enviar fotos',exact:true}).isDisabled(),true);
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
             const initial=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,initial,'Sem consultas passivas.');
+            await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).click();
+            const dialog=page.getByRole('dialog',{name:'Configuracao YouTube',exact:true});
+            await dialog.waitFor();
+            await dialog.getByLabel('Client ID',{exact:true}).fill('123-test.apps.googleusercontent.com');
+            await dialog.getByLabel('Client Secret',{exact:true}).fill(testSecret);
+            assert.equal(await dialog.getByLabel('Endereco de retorno',{exact:true}).inputValue(),configuration.redirectUri);
+            await dialog.getByRole('button',{name:'Salvar configuracao',exact:true}).click();
+            await dialog.getByRole('status').filter({hasText:'Configuracao salva.'}).waitFor();
+            assert.equal(await dialog.getByLabel('Client Secret',{exact:true}).inputValue(),'');
+            assert.equal(await dialog.getByLabel('Client ID',{exact:true}).evaluate(input=>input.readOnly),true);
+            assert.equal(await page.evaluate(secret=>Object.values(localStorage).concat(Object.values(sessionStorage)).some(value=>value.includes(secret)),testSecret),false);
+            assert.equal(await dialog.evaluate(element=>element.scrollWidth>element.clientWidth),false);
+            fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});
+            await page.screenshot({path:path.join(__dirname,`artifacts/configuracao-${viewport.width}.png`)});
+            await dialog.getByRole('button',{name:'Fechar configuracao',exact:true}).click();
             await page.getByLabel('Titulo',{exact:true}).fill('<img src=x onerror=alert(1)> Album de familia');
             await page.getByLabel('Descricao',{exact:true}).fill('Momentos importantes da nossa familia.');
             await page.getByLabel('Segundos por foto',{exact:true}).fill('2');
@@ -169,6 +192,11 @@ async function main() {
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true,'Nao duplica publicacao durante retry da saga.');
             assert.deepEqual(errors,[]);
+            configuration={podeConfigurar:false,configurado:false};
+            await page.reload();await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).count(),0,'Usuario comum nao ve configuracao global.');
+            await page.evaluate(()=>document.getElementById('custom-page-container').replaceChildren());
+            await page.waitForTimeout(50);assert.deepEqual(errors,[],'Desmontar a tela remove os controles e o dialogo sem erro.');
             await context.close();console.log(`Estudio Memorias passou: ${viewport.width}x${viewport.height}`);
         }
     } finally { await browser?.close();await new Promise(resolve=>server.close(resolve)); }

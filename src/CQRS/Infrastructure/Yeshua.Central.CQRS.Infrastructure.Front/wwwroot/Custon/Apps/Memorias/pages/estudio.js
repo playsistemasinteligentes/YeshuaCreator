@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261014-estudio02';
+const version = '20261014-youtube-config01';
 const stepNames = [
     ['PrepararManifestoAlbum', 'Manifesto', 'fa-list-check'],
     ['RenderizarVideoAlbum', 'Video', 'fa-film'],
@@ -72,6 +72,8 @@ class Studio {
     text(id, text) { this.el(id).textContent = text; }
     dispose() {
         if (this.disposed) return;
+        const secret = this.el('config-secret'); if (secret) secret.value = '';
+        this.el('config-dialog')?.close();
         this.disposed = true; this.controller.abort(); this.observer.disconnect(); this.clearQueue();
     }
     feedback(message, error = false) {
@@ -82,7 +84,13 @@ class Studio {
         if (this.busy || this.disposed) return;
         this.busy = true; this.updateControls();
         try { await action(); }
-        catch (error) { if (error.name !== 'AbortError') this.feedback(error.message || 'Nao foi possivel concluir a operacao.', true); }
+        catch (error) {
+            if (!this.disposed && error.name !== 'AbortError') {
+                const message = error.message || 'Nao foi possivel concluir a operacao.';
+                if (this.el('config-dialog').open) { this.text('config-feedback', message); this.el('config-feedback').dataset.error = 'true'; }
+                else this.feedback(message, true);
+            }
+        }
         finally { this.busy = false; if (!this.disposed) this.updateControls(); }
     }
     async api(path, body = {}, method = 'POST') {
@@ -125,6 +133,12 @@ class Studio {
         });
         click('more-photos', () => this.loadPhotos(this.photosPage.page + 1, true));
         click('refresh-channels', () => this.loadChannels());
+        click('configure', async () => { await this.loadConfiguration(); if (this.configuration?.podeConfigurar) this.el('config-dialog').showModal(); });
+        on('config-close', 'click', () => this.el('config-dialog').close());
+        on('config-dialog', 'close', () => { this.el('config-secret').value = ''; });
+        on('config-form', 'submit', event => { event.preventDefault(); this.run(() => this.saveConfiguration()); });
+        click('config-refresh', () => this.loadConfiguration());
+        click('config-copy', async () => { await navigator.clipboard.writeText(this.configuration.redirectUri); this.text('config-feedback', 'Endereco copiado.'); });
         click('connect', () => this.authorize(''));
         click('reconnect', () => this.authorize(this.selectedChannel()?.conexaoId));
         click('disconnect', () => this.disconnect());
@@ -143,6 +157,7 @@ class Studio {
             await this.loadAlbums(1);
             if (id > 0) await this.openAlbum(id);
             await this.loadChannels();
+            await this.loadConfiguration();
             const completed = sessionStorage.getItem('memorias.youtube.result');
             if (completed) {
                 sessionStorage.removeItem('memorias.youtube.result');
@@ -307,6 +322,26 @@ class Studio {
         for (const channel of this.channels) this.el('channel').append(new Option(`${channel.canalTitulo || channel.canalId}${channel.conectado ? '' : ' (desconectado)'}`, channel.conexaoId));
         this.el('channel').value = (this.destinationLocked() && this.publication?.conexaoyoutubeid) || previous;
         this.text('channel-status', result.configurado ? `${this.channels.length} canal(is) cadastrado(s).` : 'YouTube ainda nao configurado no servidor.');
+    }
+    async loadConfiguration() {
+        this.configuration = await this.command('YouTubeConsultarConfiguracaoYouTube');
+        this.el('configure').hidden = !this.configuration.podeConfigurar;
+        if (!this.configuration.podeConfigurar) { this.el('config-dialog').close(); this.el('config-secret').value = ''; return; }
+        this.el('config-client-id').value = this.configuration.clientId || '';
+        this.el('config-client-id').readOnly = Boolean(this.configuration.clientId);
+        this.el('config-secret').value = ''; this.el('config-secret').required = !this.configuration.segredoSalvo;
+        this.el('config-secret').placeholder = this.configuration.segredoSalvo ? 'Segredo salvo' : '';
+        this.el('config-redirect').value = this.configuration.redirectUri || '';
+        this.text('config-state', this.configuration.configurado ? 'Configurado' : 'Configuracao pendente');
+        this.text('config-feedback', ''); this.el('config-feedback').dataset.error = 'false';
+    }
+    async saveConfiguration() {
+        if (!this.configuration?.podeConfigurar || !this.el('config-form').reportValidity()) return;
+        try {
+            await this.command('YouTubeSalvarConfiguracaoYouTube', {clientId:this.el('config-client-id').value.trim(),clientSecret:this.el('config-secret').value});
+            await this.loadConfiguration(); await this.loadChannels();
+            this.text('config-feedback', 'Configuracao salva.');
+        } finally { const secret = this.el('config-secret'); if (secret) secret.value = ''; }
     }
     selectedChannel() { return this.channels.find(channel => channel.conexaoId === this.el('channel').value); }
     destinationLocked() { return Boolean(this.publication?.conexaoyoutubeid) && [10,20,30,40,45,50].includes(Number(this.publication?.status)); }

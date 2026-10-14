@@ -1,0 +1,77 @@
+const assert=require('node:assert/strict');
+const crypto=require('node:crypto');
+const fs=require('node:fs');
+const os=require('node:os');
+const path=require('node:path');
+const {spawn}=require('node:child_process');
+const project=path.resolve(__dirname,'../../../src/CQRS/Infrastructure/Yeshua.Memorias.CQRS.Infrastructure.Api');
+const dll=path.join(project,'bin/Debug/net8.0/Yeshua.Memorias.CQRS.Infrastructure.Api.dll');
+const root=fs.mkdtempSync(path.join(os.tmpdir(),'memorias-config-http-'));
+const signingKey='memorias-local-configuration-test-key-never-use-in-production-12345';
+const clientId='123-test.apps.googleusercontent.com',secret='GOCSPX-local-test-not-real';
+let logs='';
+function token(tenant,user){
+ const encode=value=>Buffer.from(JSON.stringify(value)).toString('base64url');
+ const payload=encode({nameid:String(user),tenantId:String(tenant),role:'Admin',tokenOrigin:'Application',application:'Memorias',exp:Math.floor(Date.now()/1000)+3600});
+ const data=encode({alg:'HS256',typ:'JWT'})+'.'+payload;
+ return data+'.'+crypto.createHmac('sha256',signingKey).update(data).digest('base64url');
+}
+async function start(){
+ let startupLogs='';
+ const child=spawn('dotnet',[dll,'--urls','http://127.0.0.1:0'],{cwd:project,windowsHide:true,env:{...process.env,
+  ASPNETCORE_ENVIRONMENT:'Production',YeshuaProcessing__Scope:'http-test',JwtSettings__SecretKey:signingKey,
+  MemoriasYouTube__CredentialsDirectory:root,MemoriasYouTube__RedirectUri:'https://playsis.com.br/spa/youtube-callback.html',
+  MemoriasYouTube__ClientId:'',MemoriasYouTube__ClientSecret:'',MemoriasYouTube__EncryptionKey:'',
+  MemoriasYouTube__ConfigurationAdminTenantId:'7',MemoriasYouTube__ConfigurationAdminUserId:'9',
+  OpenTelemetry__ExportMode:'ConsoleJsonl',OperationalControl__Enabled:'false',
+  MYCONFIG__READCONECTIONSTRING:'Server=127.0.0.1;Database=local-test;Integrated Security=True;',
+  MYCONFIG__WRITECONECTIONSTRING:'Server=127.0.0.1;Database=local-test;Integrated Security=True;'
+ }});
+ const exited=new Promise(resolve=>child.once('exit',resolve));
+ const append=chunk=>{startupLogs+=chunk.toString();logs+=chunk.toString();if(logs.length>300000)logs=logs.slice(-300000);};
+ child.stdout.on('data',append);child.stderr.on('data',append);
+ try{
+  const deadline=Date.now()+30000;
+  while(Date.now()<deadline){
+   const match=startupLogs.match(/Now listening on: (http:\/\/127\.0\.0\.1:\d+)/);
+   if(match)return {child,exited,base:match[1]};
+   if(child.exitCode!==null)throw new Error('API local encerrou antes de iniciar: '+logs.slice(-2500));
+   await new Promise(resolve=>setTimeout(resolve,100));
+  }
+  throw new Error('API local nao iniciou no prazo.');
+ }catch(error){child.kill();await exited;throw error;}
+}
+async function stop(server){if(server.child.exitCode===null)server.child.kill();await server.exited;}
+async function post(server,name,body,identity){
+ const response=await fetch(server.base+'/yapi/Memorias/YouTube'+name+'YouTubeUseCase',{method:'POST',headers:{'Content-Type':'application/json',...(identity?{Authorization:'Bearer '+identity}:{})},body:JSON.stringify(body)});
+ const data=await response.json().catch(()=>null);return {status:response.status,data};
+}
+async function main(){
+ let server;
+ try{
+  server=await start();const admin=token(7,9),otherUser=token(7,10),otherTenant=token(8,9);
+  assert.equal((await post(server,'ConsultarConfiguracao',{})).status,401);
+  const initial=await post(server,'ConsultarConfiguracao',{},admin);assert.equal(initial.status,200);assert.equal(initial.data.podeConfigurar,true);assert.equal(initial.data.configurado,false);
+  for(const identity of [otherUser,otherTenant]){
+   const read=await post(server,'ConsultarConfiguracao',{},identity);assert.equal(read.status,200);assert.equal(read.data.podeConfigurar,false);assert.equal(read.data.clientId,'');
+   const denied=await post(server,'SalvarConfiguracao',{clientId,clientSecret:secret,tenantId:7,userId:9},identity);assert.equal(denied.status,403);assert.equal(denied.data.statusCode,403);
+   assert.ok(!JSON.stringify(denied.data).includes(secret));
+  }
+  const saved=await post(server,'SalvarConfiguracao',{clientId,clientSecret:secret},admin);assert.equal(saved.status,200);assert.equal(saved.data.configurado,true);
+  assert.equal(saved.data.segredoSalvo,true);assert.equal(saved.data.redirectUri,'https://playsis.com.br/spa/youtube-callback.html');
+  assert.ok(!/clientSecret|encryptionKey|GOCSPX/i.test(JSON.stringify(saved.data)));
+  const preserved=await post(server,'SalvarConfiguracao',{clientId,clientSecret:''},admin);assert.equal(preserved.status,200);
+  const changed=await post(server,'SalvarConfiguracao',{clientId:'other.apps.googleusercontent.com',clientSecret:secret},admin);assert.equal(changed.status,400);
+  const connections=await post(server,'ListarConexoes',{},otherUser);assert.equal(connections.status,200);assert.equal(connections.data.configurado,true);assert.deepEqual(connections.data.conexoes,[]);
+  await stop(server);server=await start();
+  const restored=await post(server,'ConsultarConfiguracao',{},admin);assert.equal(restored.status,200);assert.equal(restored.data.clientId,clientId);assert.equal(restored.data.configurado,true);
+  assert.ok(!logs.includes(secret),'Segredo nao aparece nos logs da API real.');
+  console.log('HTTP real: autenticacao, guarda administrativa, criptografia, resposta sem segredo, canais e persistencia apos restart passaram.');
+ }finally{
+  if(server)await stop(server);
+  const absolute=path.resolve(root),temporary=path.resolve(os.tmpdir())+path.sep;
+  assert.ok(absolute.startsWith(temporary)&&path.basename(absolute).startsWith('memorias-config-http-'));
+  fs.rmSync(absolute,{recursive:true,force:true});
+ }
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});

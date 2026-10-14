@@ -11,6 +11,7 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeAplicationCommandCommandsUseCaseGroup : SourceCodeBase
     {
         private UseCaseGroup _hub;
+        private IEnumerable<UseCaseGroup> _sharedGroups = Array.Empty<UseCaseGroup>();
         private CommandType _commandType;
 
         private UseCaseSubGroup _service;
@@ -19,10 +20,11 @@ namespace Dominio.Schemas.CQRS
         private string _nameSpace;
         private HashSet<string> _generatedTypes = new HashSet<string>();
 
-        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseGroup hub)
+        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseGroup hub, IEnumerable<UseCaseGroup>? sharedGroups = null)
             : base()
         {
             _hub = hub;
+            _sharedGroups = sharedGroups ?? new[] { hub };
             _commandType = CommandType.UseCaseGroup;
             _nameSpace = CQRSParam.I.NameSpaceCommandCommandsUseCases;
         }
@@ -119,7 +121,7 @@ namespace Dominio.Schemas.CQRS
 
         private void GenerateUseCaseGroupSharedTypes(StringBuilder sb)
         {
-            foreach (var subGroup in _hub.UseCaseSubGroup)
+            foreach (var subGroup in _sharedGroups.SelectMany(group => group.UseCaseSubGroup))
             {
                 foreach (var method in subGroup.UseCaseCommand)
                 {
