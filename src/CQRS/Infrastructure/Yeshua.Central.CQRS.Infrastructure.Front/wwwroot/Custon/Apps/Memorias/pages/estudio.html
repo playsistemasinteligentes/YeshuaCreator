@@ -37,8 +37,8 @@
       <section class="mem-section" aria-labelledby="mem-youtube-title">
         <div class="mem-section-heading"><h2 id="mem-youtube-title"><i class="fa-brands fa-youtube" aria-hidden="true"></i> Canal YouTube</h2><div class="mem-tools"><button id="mem-configure" class="mem-icon" title="Configuracao YouTube" aria-label="Configuracao YouTube" hidden><i class="fa-solid fa-gear" aria-hidden="true"></i></button><button id="mem-refresh-channels" class="mem-icon" title="Atualizar canais" aria-label="Atualizar canais"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div></div>
         <label class="mem-channel-label">Canal de destino<select id="mem-channel" aria-label="Canal YouTube de destino"><option value="">Selecione um canal</option></select></label>
-        <div class="mem-actions"><button id="mem-connect" class="mem-button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Conectar canal</button><button id="mem-reconnect" class="mem-button"><i class="fa-solid fa-link" aria-hidden="true"></i> Reconectar</button><button id="mem-disconnect" class="mem-icon" title="Desconectar canal" aria-label="Desconectar canal"><i class="fa-solid fa-link-slash" aria-hidden="true"></i></button></div>
-        <p id="mem-channel-status" class="mem-muted"></p>
+        <p id="mem-channel-status" class="mem-connection-status" role="status" aria-live="polite"></p>
+        <div class="mem-actions"><button id="mem-connect" class="mem-button"><i class="fa-solid fa-plus" aria-hidden="true"></i><span id="mem-connect-label">Conectar canal</span></button><button id="mem-reconnect" class="mem-button" hidden><i class="fa-solid fa-link" aria-hidden="true"></i> Reconectar</button><button id="mem-disconnect" class="mem-icon" title="Desconectar canal" aria-label="Desconectar canal"><i class="fa-solid fa-link-slash" aria-hidden="true"></i></button></div>
       </section>
       <section class="mem-section mem-publication" aria-labelledby="mem-publication-title">
         <div class="mem-section-heading"><h2 id="mem-publication-title">Publicacao</h2><button id="mem-refresh-status" class="mem-button"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Atualizar status</button></div>
@@ -56,7 +56,7 @@
     <form id="mem-config-form">
       <div class="mem-config-fields">
         <label>Client ID<input id="mem-config-client-id" required maxlength="256" autocomplete="off" spellcheck="false"></label>
-        <label>Client Secret<input id="mem-config-secret" type="password" maxlength="512" autocomplete="new-password" spellcheck="false"></label>
+        <div><label>Client Secret<input id="mem-config-secret" type="password" maxlength="512" autocomplete="new-password" spellcheck="false" aria-describedby="mem-config-secret-state"></label><p id="mem-config-secret-state" class="mem-muted"></p></div>
         <label>Endereco de retorno<textarea id="mem-config-redirect" rows="2" readonly></textarea></label>
       </div>
       <p id="mem-config-state" class="mem-muted"></p>

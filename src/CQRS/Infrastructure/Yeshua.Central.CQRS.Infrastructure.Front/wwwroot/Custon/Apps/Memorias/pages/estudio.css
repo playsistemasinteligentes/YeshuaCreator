@@ -54,6 +54,9 @@
 .mem-photo-row label { font-size:12px; }
 .mem-photo-footer { margin-top:12px; }
 .mem-channel-label { max-width:620px; }
+.mem-connection-status { margin:12px 0 0; font-weight:600; overflow-wrap:anywhere; }
+.mem-connection-status[data-state=connected] { color:var(--mem-green); }
+.mem-connection-status[data-state=disconnected] { color:#b42332; }
 .mem-timeline { list-style:none; padding:0; margin:20px 0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
 .mem-timeline li { border-top:3px solid #e3e8e5; padding:10px 0; min-width:0; }
 .mem-timeline strong,.mem-timeline small { display:block; overflow-wrap:anywhere; }

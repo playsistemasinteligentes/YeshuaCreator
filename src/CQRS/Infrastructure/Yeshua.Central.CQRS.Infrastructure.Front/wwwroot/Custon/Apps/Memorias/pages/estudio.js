@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261014-youtube-config01';
+const version = '20261014-youtube-reuse01';
 const stepNames = [
     ['PrepararManifestoAlbum', 'Manifesto', 'fa-list-check'],
     ['RenderizarVideoAlbum', 'Video', 'fa-film'],
@@ -114,11 +114,7 @@ class Studio {
         on('album-form', 'submit', event => { event.preventDefault(); this.run(() => this.saveAlbum()); });
         on('album-fields', 'input', () => { this.dirty = true; this.updateControls(); });
         on('files', 'change', () => this.selectFiles());
-        on('channel', 'change', () => {
-            const selected = this.selectedChannel();
-            this.text('channel-status', selected ? `Canal selecionado: ${selected.canalTitulo || selected.canalId}` : 'Nenhum canal selecionado.');
-            this.updateControls();
-        });
+        on('channel', 'change', () => this.updateControls());
         on('history', 'change', () => this.run(async () => {
             this.publication = this.publications.find(item => item.id === Number(this.el('history').value)) || null;
             await this.loadSteps(); this.renderPublication();
@@ -320,8 +316,23 @@ class Studio {
         const previous = this.el('channel').value;
         this.el('channel').replaceChildren(new Option('Selecione um canal', ''));
         for (const channel of this.channels) this.el('channel').append(new Option(`${channel.canalTitulo || channel.canalId}${channel.conectado ? '' : ' (desconectado)'}`, channel.conexaoId));
-        this.el('channel').value = (this.destinationLocked() && this.publication?.conexaoyoutubeid) || previous;
-        this.text('channel-status', result.configurado ? `${this.channels.length} canal(is) cadastrado(s).` : 'YouTube ainda nao configurado no servidor.');
+        const fixed = this.destinationLocked() && this.publication?.conexaoyoutubeid;
+        const connected = this.channels.filter(channel => channel.conectado);
+        this.el('channel').value = fixed || (this.channels.some(channel => channel.conexaoId === previous) ? previous
+            : connected.length === 1 ? connected[0].conexaoId : '');
+        this.renderChannelStatus();
+    }
+    renderChannelStatus() {
+        const selected = this.selectedChannel();
+        let state = 'waiting', message = 'Canal de destino nao selecionado.';
+        if (this.googleConfigured === false) message = 'YouTube ainda nao configurado no servidor.';
+        else if (selected) {
+            state = selected.conectado ? 'connected' : 'disconnected';
+            message = `Canal ${selected.conectado ? 'conectado' : 'desconectado'}: ${selected.canalTitulo || selected.canalId}`;
+        } else if (this.destinationLocked()) message = 'Canal desta publicacao indisponivel.';
+        else if (!this.channels.some(channel => channel.conectado)) message = 'Nenhum canal conectado.';
+        this.text('channel-status', message); this.el('channel-status').dataset.state = state;
+        this.text('connect-label', this.channels.length ? 'Adicionar outro canal' : 'Conectar canal');
     }
     async loadConfiguration() {
         this.configuration = await this.command('YouTubeConsultarConfiguracaoYouTube');
@@ -330,9 +341,10 @@ class Studio {
         this.el('config-client-id').value = this.configuration.clientId || '';
         this.el('config-client-id').readOnly = Boolean(this.configuration.clientId);
         this.el('config-secret').value = ''; this.el('config-secret').required = !this.configuration.segredoSalvo;
-        this.el('config-secret').placeholder = this.configuration.segredoSalvo ? 'Segredo salvo' : '';
+        this.el('config-secret').placeholder = this.configuration.segredoSalvo ? 'Novo segredo (opcional)' : '';
+        this.text('config-secret-state', this.configuration.segredoSalvo ? 'Segredo salvo' : 'Segredo nao cadastrado');
         this.el('config-redirect').value = this.configuration.redirectUri || '';
-        this.text('config-state', this.configuration.configurado ? 'Configurado' : 'Configuracao pendente');
+        this.text('config-state', this.configuration.configurado ? 'Aplicativo configurado' : 'Configuracao pendente');
         this.text('config-feedback', ''); this.el('config-feedback').dataset.error = 'false';
     }
     async saveConfiguration() {
@@ -346,11 +358,11 @@ class Studio {
     selectedChannel() { return this.channels.find(channel => channel.conexaoId === this.el('channel').value); }
     destinationLocked() { return Boolean(this.publication?.conexaoyoutubeid) && [10,20,30,40,45,50].includes(Number(this.publication?.status)); }
     async authorize(connectionId) {
+        if (!this.canLeave()) return;
         const result = await this.command('YouTubeIniciarConexaoYouTube', {conexaoId:connectionId || ''});
         const url = new URL(result.authorizationUrl);
         if (url.protocol !== 'https:' || url.hostname !== 'accounts.google.com' || url.port || url.username || url.password)
             throw new Error('Endereco de autorizacao invalido.');
-        if (!this.canLeave()) return;
         sessionStorage.setItem('memorias.youtube.return', JSON.stringify({page:'memorias-estudio',albumId:this.album?.id || 0}));
         this.dispose();
         window.location.assign(url.href);
@@ -412,11 +424,6 @@ class Studio {
         this.text('publication-destination', publication?.canalyoutubeid ? `Canal desta publicacao: ${publication.canalyoutubeid}` : '');
         if (publication?.conexaoyoutubeid && this.destinationLocked()) {
             this.el('channel').value = publication.conexaoyoutubeid;
-            this.text('channel-status', `Destino fixado: ${publication.canalyoutubeid || 'canal da publicacao'}`);
-        } else {
-            const selected = this.selectedChannel();
-            this.text('channel-status', this.googleConfigured === false ? 'YouTube ainda nao configurado no servidor.'
-                : selected ? `Canal selecionado: ${selected.canalTitulo || selected.canalId}` : 'Nenhum canal selecionado.');
         }
         const url = this.videoUrl();
         this.el('video-link').hidden = !url; this.el('copy-link').hidden = !url;
@@ -457,6 +464,7 @@ class Studio {
     }
     updateControls() {
         if (this.disposed) return;
+        this.renderChannelStatus();
         this.host.querySelectorAll('button,input,select,textarea').forEach(element => element.disabled = this.busy);
         const publishing = this.publicationInProgress();
         this.el('album-fields').disabled = this.busy || publishing;
@@ -472,7 +480,9 @@ class Studio {
         this.el('refresh-status').disabled = this.busy || !this.album?.id;
         this.el('more-photos').disabled = this.busy || !this.album?.id || this.photoEdits.size > 0;
         this.el('channel').disabled = this.busy || this.destinationLocked();
-        this.el('reconnect').disabled = this.busy || !this.selectedChannel();
+        this.el('connect').disabled = this.busy || !this.googleConfigured;
+        this.el('reconnect').hidden = !this.selectedChannel() || Boolean(this.selectedChannel().conectado);
+        this.el('reconnect').disabled = this.busy || !this.selectedChannel() || Boolean(this.selectedChannel().conectado);
         this.el('disconnect').disabled = this.busy || !this.selectedChannel()?.conectado;
         this.el('resume').disabled = this.busy || !this.selectedChannel()?.conectado;
         const reason = this.publishReason(); this.text('publish-reason', reason);

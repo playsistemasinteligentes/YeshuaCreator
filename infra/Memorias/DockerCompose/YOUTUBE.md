@@ -9,6 +9,16 @@ de retorno definido pela implantacao e consulta somente metadata segura.
 Salvar nao concede consentimento Google nem publica videos. Cada usuario
 continua autorizando seus proprios canais pelo botao Conectar canal.
 
+Uma conexao autorizada pertence ao tenant/usuario e permanece disponivel nos
+proximos logins, inclusive em outro dispositivo. O Estudio seleciona o unico
+canal conectado quando nao ha destino escolhido; com varios canais, exige
+escolha explicita. Uma publicacao em andamento sempre preserva seu destino,
+mesmo se outro canal continuar conectado. Adicionar outro canal inicia OAuth;
+Reconectar aparece somente para uma conexao marcada como desconectada. Entrar
+no Estudio, consultar canais e publicar com uma conexao valida nao iniciam OAuth.
+O campo Client Secret fica vazio; Segredo salvo confirma a persistencia e um
+campo vazio na atualizacao preserva o valor existente.
+
 A implantacao deve designar uma unica identidade administrativa confiavel:
 
 ```bash

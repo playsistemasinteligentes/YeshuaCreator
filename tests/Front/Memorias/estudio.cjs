@@ -36,9 +36,9 @@ async function main() {
             const channels = [structuredClone(channelA),structuredClone(channelB)];
             let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
             const testSecret = 'GOCSPX-test-secret-only';
-            let sessions = 0, sends = 0, failSecond = true;
+            let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false;
             page.on('pageerror', error => errors.push(error.message));
-            page.on('dialog',dialog => dialog.accept());
+            page.on('dialog',dialog => acceptDialogs ? dialog.accept() : dialog.dismiss());
             await page.route('**/apps/memorias/yapi/**', async route => {
                 const req = route.request(), endpoint = new URL(req.url()).pathname;
                 assert.equal(req.headers().authorization,`Bearer ${jwt}`);
@@ -48,7 +48,8 @@ async function main() {
                 if (endpoint.includes('YouTubeConsultarConfiguracao')) return respond(configuration);
                 if (endpoint.includes('YouTubeSalvarConfiguracao')) {
                     assert.equal(body.clientId,'123-test.apps.googleusercontent.com');
-                    assert.equal(body.clientSecret,testSecret);
+                    assert.ok(body.clientSecret===testSecret || (applicationConfigured && body.clientSecret===''));
+                    applicationConfigured=true;
                     configuration={...configuration,configurado:true,clientId:body.clientId,segredoSalvo:true};return respond(configuration);
                 }
                 const read = items => respond({statusCode:200,data:{items}});
@@ -78,7 +79,7 @@ async function main() {
                     const id=photos.length+1;photos.push({id,albumid:9,fotoid:id+100,ordem:id,legenda:''});return respond({success:true,isFinalized:true});
                 }
                 if (endpoint.endsWith('/ReadPublicacaoAlbum')) { assert.equal(body.userId,1);return read(publications); }
-                if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:configuration.configurado,conexoes:configuration.configurado?channels:[]});
+                if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:applicationConfigured,conexoes:applicationConfigured?channels:[]});
                 if (endpoint.includes('YouTubeIniciarConexao')) return respond({authorizationUrl:'https://evil.example/oauth'});
                 if (endpoint.includes('YouTubeConcluirConexao')) return respond({...channels[1],configurado:true});
                 if (endpoint.includes('YouTubeDesconectar')) { channels.find(item=>item.conexaoId===body.conexaoId).conectado=false;return respond({conectado:false}); }
@@ -101,6 +102,7 @@ async function main() {
             assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).isDisabled(),true,'O seletor nativo permanece invisivel quando desabilitado.');
             assert.equal(await page.getByRole('button',{name:'Enviar fotos',exact:true}).isDisabled(),true);
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
+            assert.equal(await page.getByRole('button',{name:'Conectar canal',exact:true}).isDisabled(),true);
             const initial=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,initial,'Sem consultas passivas.');
             await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).click();
             const dialog=page.getByRole('dialog',{name:'Configuracao YouTube',exact:true});
@@ -112,14 +114,48 @@ async function main() {
             await dialog.getByRole('status').filter({hasText:'Configuracao salva.'}).waitFor();
             assert.equal(await dialog.getByLabel('Client Secret',{exact:true}).inputValue(),'');
             assert.equal(await dialog.getByLabel('Client ID',{exact:true}).evaluate(input=>input.readOnly),true);
+            assert.equal(await page.locator('#mem-config-secret-state').innerText(),'Segredo salvo');
+            assert.equal(await page.locator('#mem-config-state').innerText(),'Aplicativo configurado');
+            assert.equal(await dialog.getByLabel('Client Secret',{exact:true}).evaluate(input=>input.required),false);
             assert.equal(await page.evaluate(secret=>Object.values(localStorage).concat(Object.values(sessionStorage)).some(value=>value.includes(secret)),testSecret),false);
             assert.equal(await dialog.evaluate(element=>element.scrollWidth>element.clientWidth),false);
             fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});
             await page.screenshot({path:path.join(__dirname,`artifacts/configuracao-${viewport.width}.png`)});
             await dialog.getByRole('button',{name:'Fechar configuracao',exact:true}).click();
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),'','Varios canais exigem escolha explicita.');
+            channels.splice(1);
+            await page.evaluate(()=>{localStorage.clear();sessionStorage.clear();});
+            await page.reload();await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelA.conexaoId,'Novo login usa o unico canal conectado salvo no servidor.');
+            assert.equal(await page.locator('#mem-channel-status').innerText(),'Canal conectado: Canal pessoal');
+            assert.equal(await page.getByRole('button',{name:'Reconectar',exact:true}).count(),0);
+            assert.equal(await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).isEnabled(),true);
+            assert.equal(calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length,0,'Login e consulta nao iniciam OAuth.');
+            await page.screenshot({path:path.join(__dirname,`artifacts/canal-salvo-${viewport.width}.png`),fullPage:true});
+            await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).click();
+            await dialog.waitFor();
+            assert.equal(await dialog.getByLabel('Client Secret',{exact:true}).inputValue(),'','Segredo nao e devolvido ao navegador.');
+            assert.equal(await page.locator('#mem-config-secret-state').innerText(),'Segredo salvo');
+            await dialog.getByRole('button',{name:'Salvar configuracao',exact:true}).click();
+            await dialog.getByRole('status').filter({hasText:'Configuracao salva.'}).waitFor();
+            assert.equal(calls.findLast(call=>call.endpoint.includes('YouTubeSalvarConfiguracao')).body.clientSecret,'','Campo vazio preserva o segredo salvo.');
+            await dialog.getByRole('button',{name:'Fechar configuracao',exact:true}).click();
+            channels.push(structuredClone(channelB));
+            await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelA.conexaoId,'Consulta manual preserva a selecao existente.');
+            await page.reload();await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),'','Novo login com varios canais nao escolhe um destino implicito.');
             await page.getByLabel('Titulo',{exact:true}).fill('<img src=x onerror=alert(1)> Album de familia');
             await page.getByLabel('Descricao',{exact:true}).fill('Momentos importantes da nossa familia.');
             await page.getByLabel('Segundos por foto',{exact:true}).fill('2');
+            const beforeCancel=calls.length;
+            acceptDialogs=false;
+            await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-connect').disabled);
+            acceptDialogs=true;
+            assert.equal(calls.length,beforeCancel,'Cancelar saida nao cria autorizacao pendente.');
+            assert.equal(await page.getByLabel('Titulo',{exact:true}).inputValue(),'<img src=x onerror=alert(1)> Album de familia');
             await page.getByRole('button',{name:'Salvar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
             assert.equal(await page.locator('#mem-album-list img').count(),0,'Titulo e texto, nao HTML.');
@@ -143,6 +179,8 @@ async function main() {
             await page.getByRole('status').filter({hasText:'Foto atualizada.'}).waitFor();
             assert.equal(photos[0].legenda,'Primeira memoria');
             await page.getByLabel('Canal YouTube de destino').selectOption(channelB.conexaoId);
+            assert.equal(await page.locator('#mem-channel-status').innerText(),`Canal conectado: ${channelB.canalTitulo}`);
+            assert.equal(calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length,0,'Usar um canal salvo nao exige OAuth novamente.');
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isEnabled(),true);
             await page.getByRole('button',{name:'Publicar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
@@ -153,6 +191,23 @@ async function main() {
             publications[0].status=45;publications[0].mensagem='Video pronto. Reconecte o mesmo canal.';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.getByRole('button',{name:'Retomar envio',exact:true}).waitFor();
+            const unavailable=channels.pop();
+            await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),'','Destino fixado indisponivel nao e substituido pelo outro canal conectado.');
+            assert.equal(await page.locator('#mem-channel-status').innerText(),'Canal desta publicacao indisponivel.');
+            assert.equal(await page.getByRole('button',{name:'Retomar envio',exact:true}).isDisabled(),true);
+            unavailable.conectado=false;channels.push(unavailable);
+            await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelB.conexaoId);
+            assert.equal(await page.locator('#mem-channel-status').innerText(),`Canal desconectado: ${channelB.canalTitulo}`);
+            assert.equal(await page.getByRole('button',{name:'Reconectar',exact:true}).isEnabled(),true);
+            assert.equal(await page.getByRole('button',{name:'Retomar envio',exact:true}).isDisabled(),true);
+            unavailable.conectado=true;
+            await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            assert.equal(await page.getByRole('button',{name:'Reconectar',exact:true}).count(),0);
             await page.waitForFunction(()=>!document.getElementById('mem-resume').disabled);
             await page.getByRole('button',{name:'Retomar envio',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Envio agendado para o Worker.'}).waitFor();
@@ -162,7 +217,7 @@ async function main() {
             assert.equal(await page.getByRole('link',{name:'Abrir video',exact:true}).getAttribute('href'),'https://www.youtube.com/watch?v=a1B2c3D4e5F');
             await page.waitForFunction(()=>!document.getElementById('mem-channel').disabled);
             await page.getByLabel('Canal YouTube de destino').selectOption(channelA.conexaoId);
-            await page.getByRole('button',{name:'Conectar canal',exact:true}).click();
+            await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Endereco de autorizacao invalido.'}).waitFor();
             const last=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,last,'Status somente por botao.');
             await page.getByLabel('Titulo',{exact:true}).fill('Memorias de familia');
@@ -195,6 +250,7 @@ async function main() {
             configuration={podeConfigurar:false,configurado:false};
             await page.reload();await page.waitForFunction(()=>window.ready);
             assert.equal(await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).count(),0,'Usuario comum nao ve configuracao global.');
+            assert.equal(await page.getByLabel('Canal YouTube de destino').locator('option').count(),3,'Usuario comum ainda pode usar suas conexoes salvas.');
             await page.evaluate(()=>document.getElementById('custom-page-container').replaceChildren());
             await page.waitForTimeout(50);assert.deepEqual(errors,[],'Desmontar a tela remove os controles e o dialogo sem erro.');
             await context.close();console.log(`Estudio Memorias passou: ${viewport.width}x${viewport.height}`);
