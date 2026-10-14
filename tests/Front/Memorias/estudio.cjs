@@ -89,6 +89,8 @@ async function main() {
                 throw new Error(`Endpoint inesperado: ${endpoint}`);
             });
             await page.goto(base);await page.waitForFunction(()=>window.ready);
+            await page.waitForFunction(()=>getComputedStyle(document.getElementById('mem-files')).opacity==='0');
+            assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).isDisabled(),true,'O seletor nativo permanece invisivel quando desabilitado.');
             assert.equal(await page.getByRole('button',{name:'Enviar fotos',exact:true}).isDisabled(),true);
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
             const initial=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,initial,'Sem consultas passivas.');
@@ -123,6 +125,7 @@ async function main() {
             await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
             assert.equal(await page.getByLabel('Canal YouTube de destino').isDisabled(),true);
             assert.equal(await page.getByLabel('Titulo',{exact:true}).isDisabled(),true,'Album solicitado nao muda durante a renderizacao.');
+            assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).evaluate(input=>getComputedStyle(input).opacity),'0');
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
             publications[0].status=45;publications[0].mensagem='Video pronto. Reconecte o mesmo canal.';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();

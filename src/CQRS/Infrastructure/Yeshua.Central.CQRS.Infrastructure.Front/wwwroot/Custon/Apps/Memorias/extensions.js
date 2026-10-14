@@ -1,7 +1,7 @@
 window.yeshuaExtensions = window.yeshuaExtensions || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
 window.yeshuaExtensions.pages['memorias-estudio'] = async () => {
-    const page = await import('/Custon/Apps/Memorias/pages/estudio.js?v=20261014-estudio01');
+    const page = await import('/Custon/Apps/Memorias/pages/estudio.js?v=20261014-estudio02');
     await page.renderMemoriasStudio();
 };
 window.yeshuaExtensions.dashboard = window.yeshuaExtensions.pages['memorias-estudio'];

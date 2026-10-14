@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261014-estudio01';
+const version = '20261014-estudio02';
 const stepNames = [
     ['PrepararManifestoAlbum', 'Manifesto', 'fa-list-check'],
     ['RenderizarVideoAlbum', 'Video', 'fa-film'],
