@@ -50,6 +50,33 @@ async function main(){
  let server;
  try{
   server=await start();const admin=token(7,9),otherUser=token(7,10),otherTenant=token(8,9);
+  const photoPath=server.base+'/yapi/Memorias/fotos/0/arquivo';
+  assert.equal((await fetch(photoPath)).status,401,'Previa de foto exige autenticacao.');
+  const missingPhoto=await fetch(photoPath,{headers:{Authorization:'Bearer '+admin}});
+  assert.equal(missingPhoto.status,404);
+  assert.equal(missingPhoto.headers.get('cache-control'),'private, no-store');
+  assert.equal(missingPhoto.headers.get('x-content-type-options'),'nosniff');
+  const rotationPath=server.base+'/yapi/Memorias/FotosGirarFotoUseCase';
+  const cataloguePath=server.base+'/yapi/Memorias/ApresentacaoConsultarModelosVideoUseCase';
+  assert.equal((await fetch(cataloguePath,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status,401);
+  const catalogue=await fetch(cataloguePath,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+admin},body:'{}'});
+  assert.equal(catalogue.status,200);
+  const musicData=await catalogue.json();
+  assert.equal(musicData.modelos.length,4);assert.equal(musicData.musicas.length,3);
+  const musicPath=server.base+'/yapi/Memorias/musicas/0/arquivo';
+  assert.equal((await fetch(musicPath)).status,401);
+  assert.equal((await fetch(musicPath,{headers:{Authorization:'Bearer '+admin}})).status,404);
+  const rotate=identity=>fetch(rotationPath,{method:'POST',headers:{'Content-Type':'application/json',...(identity?{Authorization:'Bearer '+identity}:{})},body:JSON.stringify({albumFotoId:5,rotacao:45})});
+  assert.equal((await rotate()).status,401);
+  assert.equal((await rotate(admin)).status,400,'Command gerado resolve DI e rejeita angulo invalido antes do banco.');
+  const metadataResponse=await fetch(server.base+'/yapi/getMetaDataAlbum',{headers:{Authorization:'Bearer '+admin}});
+  assert.equal(metadataResponse.status,200);
+  const metadata=await metadataResponse.json();
+  const quality=metadata.formFields.find(field=>field.id==='qualidadevideo');
+  assert.equal(quality.type,'enum');
+  assert.deepEqual(quality.options,[{value:1,display:'Economica (HD 720p)'},{value:2,display:'Padrao (Full HD 1080p)'},{value:3,display:'Alta (4K 2160p)'}]);
+  const invalidQuality=await fetch(server.base+'/yapi/Album/PostAlbum',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+admin},body:JSON.stringify({titulo:'Teste local',descricao:'',privacidade:1,segundosPorFoto:4,status:1,qualidadeVideo:99})});
+  assert.equal(invalidQuality.status,400,'CRUD real valida a classe antes de tentar gravar no banco.');
   assert.equal((await post(server,'ConsultarConfiguracao',{})).status,401);
   const initial=await post(server,'ConsultarConfiguracao',{},admin);assert.equal(initial.status,200);assert.equal(initial.data.podeConfigurar,true);assert.equal(initial.data.configurado,false);
   for(const identity of [otherUser,otherTenant]){
@@ -66,7 +93,7 @@ async function main(){
   await stop(server);server=await start();
   const restored=await post(server,'ConsultarConfiguracao',{},admin);assert.equal(restored.status,200);assert.equal(restored.data.clientId,clientId);assert.equal(restored.data.configurado,true);
   assert.ok(!logs.includes(secret),'Segredo nao aparece nos logs da API real.');
-  console.log('HTTP real: autenticacao, guarda administrativa, criptografia, resposta sem segredo, canais e persistencia apos restart passaram.');
+  console.log('HTTP real: autenticacao, guarda administrativa, criptografia, canais, giro, classes de qualidade e persistencia apos restart passaram.');
  }finally{
   if(server)await stop(server);
   const absolute=path.resolve(root),temporary=path.resolve(os.tmpdir())+path.sep;

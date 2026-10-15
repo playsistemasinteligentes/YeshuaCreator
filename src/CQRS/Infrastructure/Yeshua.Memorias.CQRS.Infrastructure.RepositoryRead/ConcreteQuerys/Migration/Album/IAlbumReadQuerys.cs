@@ -27,6 +27,10 @@ namespace IQuery.Read
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel ExistsByOperationalEntityIdQuery(string value );
+        public QueryModel ExistsByQualidadeVideoQuery(int value );
+        public QueryModel ExistsByModeloVideoQuery(int value );
+        public QueryModel ExistsByMusicaIdQuery(int value );
+        public QueryModel ExistsByVolumeMusicaQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTituloQuery(string value );
         public QueryModel FirstByDescricaoQuery(string value );
@@ -38,6 +42,10 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+        public QueryModel FirstByQualidadeVideoQuery(int value );
+        public QueryModel FirstByModeloVideoQuery(int value );
+        public QueryModel FirstByMusicaIdQuery(int value );
+        public QueryModel FirstByVolumeMusicaQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

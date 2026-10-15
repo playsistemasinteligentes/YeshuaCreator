@@ -31,6 +31,10 @@
             public const ulong Changed = 1UL << 8;
             public const ulong UserId = 1UL << 9;
             public const ulong OperationalEntityId = 1UL << 10;
+            public const ulong QualidadeVideo = 1UL << 11;
+            public const ulong ModeloVideo = 1UL << 12;
+            public const ulong MusicaId = 1UL << 13;
+            public const ulong VolumeMusica = 1UL << 14;
         }
 
         public static class AlbumOperationalFields
@@ -46,6 +50,10 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QualidadeVideo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ModeloVideo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MusicaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VolumeMusica = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class AlbumDecorator : IAlbumEntity
@@ -223,6 +231,62 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+
+                                    public int? QualidadeVideo
+                                    {
+                                        get => _inner.QualidadeVideo;
+                                        set
+                                        {
+                                            if (_inner.QualidadeVideo != value)
+                                            {
+                                                _inner.QualidadeVideo = value;
+                                                if ((_trackingMask & AlbumTrackingFields.QualidadeVideo) != 0UL)
+                                                    _logger.DomainValueChanged("Album", "QualidadeVideo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.QualidadeVideo, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? ModeloVideo
+                                    {
+                                        get => _inner.ModeloVideo;
+                                        set
+                                        {
+                                            if (_inner.ModeloVideo != value)
+                                            {
+                                                _inner.ModeloVideo = value;
+                                                if ((_trackingMask & AlbumTrackingFields.ModeloVideo) != 0UL)
+                                                    _logger.DomainValueChanged("Album", "ModeloVideo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.ModeloVideo, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? MusicaId
+                                    {
+                                        get => _inner.MusicaId;
+                                        set
+                                        {
+                                            if (_inner.MusicaId != value)
+                                            {
+                                                _inner.MusicaId = value;
+                                                if ((_trackingMask & AlbumTrackingFields.MusicaId) != 0UL)
+                                                    _logger.DomainValueChanged("Album", "MusicaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.MusicaId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? VolumeMusica
+                                    {
+                                        get => _inner.VolumeMusica;
+                                        set
+                                        {
+                                            if (_inner.VolumeMusica != value)
+                                            {
+                                                _inner.VolumeMusica = value;
+                                                if ((_trackingMask & AlbumTrackingFields.VolumeMusica) != 0UL)
+                                                    _logger.DomainValueChanged("Album", "VolumeMusica", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AlbumOperationalFields.VolumeMusica, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

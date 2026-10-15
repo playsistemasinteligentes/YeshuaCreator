@@ -39,6 +39,10 @@
     string? ConexaoYouTubeId { get; }
     string? CanalYouTubeId { get; }
     int? YouTubeCredentialUserId { get; }
+    int? QualidadeVideo { get; }
+    int? ModeloVideo { get; }
+    int? MusicaId { get; }
+    int? VolumeMusica { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

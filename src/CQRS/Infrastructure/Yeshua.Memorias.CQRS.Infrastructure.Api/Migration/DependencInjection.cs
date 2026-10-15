@@ -383,6 +383,10 @@ builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarConfiguracaoYou
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SalvarConfiguracaoYouTubeHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.GirarFotoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarModelosVideoHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();

@@ -91,6 +91,10 @@ public partial class PublicacaoAlbumCrudApiSmokeTests : ApiIntegrationTestBase
             ["ConexaoYouTubeId"] = ApiTestData.Text("PublicacaoAlbum ConexaoYouTubeId", 32),
             ["CanalYouTubeId"] = ApiTestData.Text("PublicacaoAlbum CanalYouTubeId", 80),
             ["YouTubeCredentialUserId"] = 1,
+            ["QualidadeVideo"] = 1,
+            ["ModeloVideo"] = 1,
+            ["MusicaId"] = 0,
+            ["VolumeMusica"] = 1,
         };
     }
 
@@ -120,6 +124,10 @@ public partial class PublicacaoAlbumCrudApiSmokeTests : ApiIntegrationTestBase
         payload["ConexaoYouTubeId"] = ApiTestData.Text("PublicacaoAlbum ConexaoYouTubeId Update", 32);
         payload["CanalYouTubeId"] = ApiTestData.Text("PublicacaoAlbum CanalYouTubeId Update", 80);
         payload["YouTubeCredentialUserId"] = 2;
+        payload["QualidadeVideo"] = 1;
+        payload["ModeloVideo"] = 1;
+        payload["MusicaId"] = 0;
+        payload["VolumeMusica"] = 2;
         return payload;
     }
 

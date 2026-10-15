@@ -39,6 +39,10 @@
             public const ulong ConexaoYouTubeId = 1UL << 16;
             public const ulong CanalYouTubeId = 1UL << 17;
             public const ulong YouTubeCredentialUserId = 1UL << 18;
+            public const ulong QualidadeVideo = 1UL << 19;
+            public const ulong ModeloVideo = 1UL << 20;
+            public const ulong MusicaId = 1UL << 21;
+            public const ulong VolumeMusica = 1UL << 22;
         }
 
         public static class PublicacaoAlbumOperationalFields
@@ -62,6 +66,10 @@
             public const Dominio.Operational.OperationalDataClassification ConexaoYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification CanalYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification YouTubeCredentialUserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QualidadeVideo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ModeloVideo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MusicaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VolumeMusica = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class PublicacaoAlbumDecorator : IPublicacaoAlbumEntity
@@ -312,6 +320,10 @@
     public string? ConexaoYouTubeId => _inner.ConexaoYouTubeId;
     public string? CanalYouTubeId => _inner.CanalYouTubeId;
     public int? YouTubeCredentialUserId => _inner.YouTubeCredentialUserId;
+    public int? QualidadeVideo => _inner.QualidadeVideo;
+    public int? ModeloVideo => _inner.ModeloVideo;
+    public int? MusicaId => _inner.MusicaId;
+    public int? VolumeMusica => _inner.VolumeMusica;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

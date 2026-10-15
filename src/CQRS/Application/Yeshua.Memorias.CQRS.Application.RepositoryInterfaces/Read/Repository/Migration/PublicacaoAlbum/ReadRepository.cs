@@ -44,6 +44,10 @@ namespace IRepository.Read
         public bool ExistsByConexaoYouTubeId(string value );
         public bool ExistsByCanalYouTubeId(string value );
         public bool ExistsByYouTubeCredentialUserId(int value );
+        public bool ExistsByQualidadeVideo(int value );
+        public bool ExistsByModeloVideo(int value );
+        public bool ExistsByMusicaId(int value );
+        public bool ExistsByVolumeMusica(int value );
         public PublicacaoAlbumDTO FirstById(int value );
         public PublicacaoAlbumDTO FirstByAlbumId(int value );
         public PublicacaoAlbumDTO FirstByCorrelationId(string value );
@@ -63,6 +67,10 @@ namespace IRepository.Read
         public PublicacaoAlbumDTO FirstByConexaoYouTubeId(string value );
         public PublicacaoAlbumDTO FirstByCanalYouTubeId(string value );
         public PublicacaoAlbumDTO FirstByYouTubeCredentialUserId(int value );
+        public PublicacaoAlbumDTO FirstByQualidadeVideo(int value );
+        public PublicacaoAlbumDTO FirstByModeloVideo(int value );
+        public PublicacaoAlbumDTO FirstByMusicaId(int value );
+        public PublicacaoAlbumDTO FirstByVolumeMusica(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllById(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByAlbumId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByCorrelationId(string value );
@@ -82,6 +90,10 @@ namespace IRepository.Read
         public IEnumerable<PublicacaoAlbumDTO> GetAllByConexaoYouTubeId(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByCanalYouTubeId(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeCredentialUserId(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByQualidadeVideo(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByModeloVideo(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByMusicaId(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByVolumeMusica(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

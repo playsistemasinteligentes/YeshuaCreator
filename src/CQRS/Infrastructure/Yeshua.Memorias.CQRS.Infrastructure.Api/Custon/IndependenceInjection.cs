@@ -16,6 +16,8 @@ public static class DependenceInjectionCuston
     public static void MapDependenceInjection(WebApplicationBuilder builder)
     {
         builder.Services.AddMemoriasYouTube(builder.Configuration);
+        builder.Services.AddScoped<Memorias.Media.PhotoFileReader>();
+        builder.Services.AddScoped<Memorias.Media.MusicFileReader>();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IExecutionContext, executionContextHttp>();
 

@@ -35,6 +35,10 @@ namespace IQuery.Write
         QueryModel UpdateConexaoYouTubeId(int id, string value);
         QueryModel UpdateCanalYouTubeId(int id, string value);
         QueryModel UpdateYouTubeCredentialUserId(int id, int value);
+        QueryModel UpdateQualidadeVideo(int id, int value);
+        QueryModel UpdateModeloVideo(int id, int value);
+        QueryModel UpdateMusicaId(int id, int value);
+        QueryModel UpdateVolumeMusica(int id, int value);
         public QueryModel DeletePublicacaoAlbumQuery(IPublicacaoAlbumEntity PublicacaoAlbum);
     }
 }

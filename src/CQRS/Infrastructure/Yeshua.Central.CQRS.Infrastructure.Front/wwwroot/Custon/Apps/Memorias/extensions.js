@@ -1,7 +1,7 @@
 window.yeshuaExtensions = window.yeshuaExtensions || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
 window.yeshuaExtensions.pages['memorias-estudio'] = async () => {
-    const page = await import('/Custon/Apps/Memorias/pages/estudio.js?v=20261014-youtube-reuse01');
+    const page = await import('/Custon/Apps/Memorias/pages/estudio.js?v=20261015-video-models01');
     await page.renderMemoriasStudio();
 };
 window.yeshuaExtensions.dashboard = window.yeshuaExtensions.pages['memorias-estudio'];

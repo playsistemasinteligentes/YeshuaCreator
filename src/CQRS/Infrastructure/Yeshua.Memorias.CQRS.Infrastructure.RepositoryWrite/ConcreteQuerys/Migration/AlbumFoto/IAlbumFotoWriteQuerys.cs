@@ -26,6 +26,7 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateRotacao(int id, int value);
         public QueryModel DeleteAlbumFotoQuery(IAlbumFotoEntity AlbumFoto);
     }
 }

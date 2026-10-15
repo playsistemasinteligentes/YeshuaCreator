@@ -269,6 +269,38 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByQualidadeVideo(int value )
+        {
+            var query = _query.ExistsByQualidadeVideoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByModeloVideo(int value )
+        {
+            var query = _query.ExistsByModeloVideoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByMusicaId(int value )
+        {
+            var query = _query.ExistsByMusicaIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByVolumeMusica(int value )
+        {
+            var query = _query.ExistsByVolumeMusicaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public PublicacaoAlbumDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -421,6 +453,38 @@ namespace Read.Repository
                 return result;
         }
 
+        public PublicacaoAlbumDTO FirstByQualidadeVideo(int value )
+        {
+            var query = _query.FirstByQualidadeVideoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public PublicacaoAlbumDTO FirstByModeloVideo(int value )
+        {
+            var query = _query.FirstByModeloVideoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public PublicacaoAlbumDTO FirstByMusicaId(int value )
+        {
+            var query = _query.FirstByMusicaIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public PublicacaoAlbumDTO FirstByVolumeMusica(int value )
+        {
+            var query = _query.FirstByVolumeMusicaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PublicacaoAlbumDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<PublicacaoAlbumDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -568,6 +632,38 @@ namespace Read.Repository
         public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeCredentialUserId(int value )
         {
             var query = _query.FirstByYouTubeCredentialUserIdQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByQualidadeVideo(int value )
+        {
+            var query = _query.FirstByQualidadeVideoQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByModeloVideo(int value )
+        {
+            var query = _query.FirstByModeloVideoQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByMusicaId(int value )
+        {
+            var query = _query.FirstByMusicaIdQuery(value );
+
+                var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByVolumeMusica(int value )
+        {
+            var query = _query.FirstByVolumeMusicaQuery(value );
 
                 var result = _unitOfWork.Query<PublicacaoAlbumDTO>(query.Query,query.Parameters).ToList();
                 return result;

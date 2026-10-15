@@ -4,17 +4,27 @@
   "width": 1920,
   "height": 1080,
   "fps": 30,
+  "qualityClass": 2,
+  "crf": 18,
+  "motion": "zoom-in",
+  "transition": "fade",
+  "transitionSeconds": 0.7,
+  "zoom": 1.06,
+  "audioStorageKey": "persistent/memorias/music/air-prelude-v1.mp3",
+  "audioVolume": 0.35,
   "secondsPerPhoto": 4,
   "photos": [
     {
       "storageKey": "persistent/memorias/photos/foto-001.jpg",
       "durationSeconds": 4,
-      "caption": ""
+      "caption": "",
+      "rotationDegrees": 0
     },
     {
       "storageKey": "persistent/memorias/photos/foto-002.jpg",
       "durationSeconds": 5,
-      "caption": ""
+      "caption": "",
+      "rotationDegrees": 180
     }
   ]
 }

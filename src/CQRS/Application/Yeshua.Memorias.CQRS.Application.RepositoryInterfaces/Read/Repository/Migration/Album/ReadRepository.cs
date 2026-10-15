@@ -35,6 +35,10 @@ namespace IRepository.Read
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
+        public bool ExistsByQualidadeVideo(int value );
+        public bool ExistsByModeloVideo(int value );
+        public bool ExistsByMusicaId(int value );
+        public bool ExistsByVolumeMusica(int value );
         public AlbumDTO FirstById(int value );
         public AlbumDTO FirstByTitulo(string value );
         public AlbumDTO FirstByDescricao(string value );
@@ -46,6 +50,10 @@ namespace IRepository.Read
         public AlbumDTO FirstByChanged(DateTime value );
         public AlbumDTO FirstByUserId(int value );
         public AlbumDTO FirstByOperationalEntityId(string value );
+        public AlbumDTO FirstByQualidadeVideo(int value );
+        public AlbumDTO FirstByModeloVideo(int value );
+        public AlbumDTO FirstByMusicaId(int value );
+        public AlbumDTO FirstByVolumeMusica(int value );
         public IEnumerable<AlbumDTO> GetAllById(int value );
         public IEnumerable<AlbumDTO> GetAllByTitulo(string value );
         public IEnumerable<AlbumDTO> GetAllByDescricao(string value );
@@ -57,6 +65,10 @@ namespace IRepository.Read
         public IEnumerable<AlbumDTO> GetAllByChanged(DateTime value );
         public IEnumerable<AlbumDTO> GetAllByUserId(int value );
         public IEnumerable<AlbumDTO> GetAllByOperationalEntityId(string value );
+        public IEnumerable<AlbumDTO> GetAllByQualidadeVideo(int value );
+        public IEnumerable<AlbumDTO> GetAllByModeloVideo(int value );
+        public IEnumerable<AlbumDTO> GetAllByMusicaId(int value );
+        public IEnumerable<AlbumDTO> GetAllByVolumeMusica(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

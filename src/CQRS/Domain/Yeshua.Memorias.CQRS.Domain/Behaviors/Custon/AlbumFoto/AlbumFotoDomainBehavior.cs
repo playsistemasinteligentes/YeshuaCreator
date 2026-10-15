@@ -16,6 +16,11 @@ namespace Dominio.Behaviors
 {
     public static partial class AlbumFotoDomainBehavior
     {
+        static partial void ValidateCustom(IAlbumFotoEntity albumfoto, DomainOperationContext context, List<string> errors)
+        {
+            if (albumfoto.Rotacao.GetValueOrDefault() is not (0 or 90 or 180 or 270))
+                errors.Add("A rotacao deve ser 0, 90, 180 ou 270 graus.");
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

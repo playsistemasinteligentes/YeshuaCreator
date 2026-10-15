@@ -30,6 +30,20 @@ if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
 fi
 
 mkdir -p /root/YeshuaStorage
+MUSIC_DIR="/root/YeshuaStorage/persistent/memorias/music"
+mkdir -p "$MUSIC_DIR"
+(
+  cd "$COMPOSE_DIR/music"
+  sha256sum --check SHA256SUMS
+  while read -r checksum file; do
+    if [[ -f "$MUSIC_DIR/$file" ]]; then
+      echo "$checksum  $MUSIC_DIR/$file" | sha256sum --check -
+    else
+      install -m 644 "$file" "$MUSIC_DIR/$file.tmp"
+      mv "$MUSIC_DIR/$file.tmp" "$MUSIC_DIR/$file"
+    fi
+  done < SHA256SUMS
+)
 
 cd "$COMPOSE_DIR"
 BUILD_OPTIONS=()

@@ -39,20 +39,33 @@
 .mem-studio .mem-file { display:inline-flex; flex-direction:row; position:relative; overflow:hidden; font-weight:400; }
 .mem-studio .mem-file input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; }
 .mem-tools { display:flex; gap:8px; }
-.mem-config-dialog { width:min(560px,calc(100% - 32px)); max-height:calc(100% - 32px); padding:20px; margin:auto; border:1px solid var(--mem-border); border-radius:6px; overflow:auto; color:inherit; background:#fff; }
-.mem-config-dialog::backdrop { background:rgba(15,30,26,.5); }
+.mem-config-dialog,.mem-photo-dialog { width:min(560px,calc(100% - 32px)); max-height:calc(100% - 32px); padding:20px; margin:auto; border:1px solid var(--mem-border); border-radius:6px; overflow:auto; color:inherit; background:#fff; }
+.mem-config-dialog::backdrop,.mem-photo-dialog::backdrop { background:rgba(15,30,26,.5); }
+.mem-photo-frame { aspect-ratio:1; width:min(100%,480px); margin:auto; background:#f2f5f4; overflow:hidden; }
+.mem-photo-frame img { display:block; width:100%; height:100%; object-fit:contain; }
 .mem-config-fields { display:grid; gap:16px; }
+.mem-music-details audio { width:100%; max-width:420px; margin-top:12px; }
+.mem-music-details .mem-muted { flex:1; min-width:0; overflow-wrap:anywhere; }
+.mem-studio input[type=range] { width:100%; min-height:32px; padding:0; accent-color:var(--mem-green); }
 .mem-config-dialog input { font-size:14px; }
 .mem-previews { display:grid; grid-template-columns:repeat(auto-fill,minmax(135px,1fr)); gap:12px; margin-top:18px; }
 .mem-previews figure { min-width:0; margin:0; border:1px solid var(--mem-border); border-radius:4px; overflow:hidden; }
-.mem-previews img { display:block; width:100%; aspect-ratio:4/3; object-fit:contain; background:#f2f5f4; }
+.mem-preview-image { aspect-ratio:1; background:#f2f5f4; overflow:hidden; }
+.mem-previews img { display:block; width:100%; height:100%; object-fit:contain; }
+.mem-preview-tools { display:flex; justify-content:center; gap:4px; padding:6px; }
+.mem-preview-tools .mem-icon { width:36px; height:36px; min-height:36px; flex-basis:36px; }
 .mem-previews figcaption { padding:8px; font-size:12px; overflow-wrap:anywhere; }
 .mem-upload-state { display:block; color:var(--mem-green); }
 .mem-studio progress { width:100%; height:6px; accent-color:var(--mem-green); margin-top:16px; }
-.mem-photo-row { display:grid; grid-template-columns:40px minmax(0,1fr) minmax(65px,85px) 40px 40px; align-items:end; gap:8px; padding:12px 0; border-bottom:1px solid #edf0ee; }
+.mem-photo-row { display:grid; grid-template-columns:40px minmax(0,1fr) minmax(65px,85px) 136px; align-items:end; gap:8px; padding:12px 0; border-bottom:1px solid #edf0ee; }
+.mem-photo-tools { display:flex; gap:8px; justify-content:flex-end; }
 .mem-photo-id { align-self:center; color:#5b7064; text-align:center; }
 .mem-photo-row label { font-size:12px; }
 .mem-photo-footer { margin-top:12px; }
+@media(max-width:650px) {
+    .mem-photo-list .mem-photo-row { grid-template-columns:32px minmax(0,1fr) 68px; }
+    .mem-photo-tools { grid-column:1 / -1; }
+}
 .mem-channel-label { max-width:620px; }
 .mem-connection-status { margin:12px 0 0; font-weight:600; overflow-wrap:anywhere; }
 .mem-connection-status[data-state=connected] { color:var(--mem-green); }
@@ -71,4 +84,4 @@
 .mem-publication-state p { margin:6px 0 0; overflow-wrap:anywhere; }
 @media(max-width:1100px) { .mem-workspace { display:block; } .mem-publishing { border-left:0; padding-left:0; } }
 @media(max-width:900px) { .mem-layout { grid-template-columns:205px minmax(0,1fr); } .mem-workspace { padding-left:20px; } }
-@media(max-width:650px) { .mem-studio { margin:0; padding:0 16px; } .mem-layout { display:block; } .mem-albums { border-right:0; border-bottom:1px solid var(--mem-border); padding:16px 0; } .mem-album-list { max-height:200px; overflow:auto; min-height:0; } .mem-workspace { padding:0; } .mem-fields { grid-template-columns:minmax(0,1fr); } .mem-section-heading { flex-wrap:wrap; } .mem-photo-row { grid-template-columns:32px minmax(0,1fr) 68px 36px 36px; gap:5px; } .mem-photo-row .mem-icon { width:36px; min-height:36px; height:36px; flex-basis:36px; } .mem-button { padding:9px 12px; } }
+@media(max-width:650px) { .mem-studio { margin:0; padding:0 16px; } .mem-layout { display:block; } .mem-albums { border-right:0; border-bottom:1px solid var(--mem-border); padding:16px 0; } .mem-album-list { max-height:200px; overflow:auto; min-height:0; } .mem-workspace { padding:0; } .mem-fields { grid-template-columns:minmax(0,1fr); } .mem-section-heading { flex-wrap:wrap; } .mem-photo-row { grid-template-columns:32px minmax(0,1fr) 68px 36px 36px 36px; gap:5px; } .mem-photo-row .mem-icon { width:36px; min-height:36px; height:36px; flex-basis:36px; } .mem-button { padding:9px 12px; } }

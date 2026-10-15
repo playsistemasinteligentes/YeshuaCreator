@@ -54,7 +54,7 @@ namespace Command.Receivers.Write
                  if (!hasExecutionIdentity && trackingMask != 0UL)
                      executionIdentity = _executionContext.OperationalIdentity;
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteAlbum", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteAlbumReceiver), commandName: "Command.Write.AlbumCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
-                 var album = new AlbumFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Titulo, c.Descricao, c.Privacidade, c.SegundosPorFoto, c.Status, trackingMask: trackingMask);
+                 var album = new AlbumFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Titulo, c.Descricao, c.Privacidade, c.SegundosPorFoto, c.Status, c.QualidadeVideo, c.ModeloVideo, c.MusicaId, c.VolumeMusica, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", album.OperationalEntityId);
                  var domainResult = AlbumDomainBehavior.Apply(album, context);
                  if (!domainResult.IsValid)

@@ -31,6 +31,10 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    int? QualidadeVideo { get; set; }
+    int? ModeloVideo { get; set; }
+    int? MusicaId { get; set; }
+    int? VolumeMusica { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

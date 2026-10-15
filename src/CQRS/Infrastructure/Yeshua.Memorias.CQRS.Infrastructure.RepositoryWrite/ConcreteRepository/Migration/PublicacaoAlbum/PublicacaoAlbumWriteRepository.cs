@@ -141,6 +141,26 @@ namespace Input.Repository.PublicacaoAlbum
             var query = _query.UpdateYouTubeCredentialUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateQualidadeVideo(int id, int value)
+        {
+            var query = _query.UpdateQualidadeVideo(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateModeloVideo(int id, int value)
+        {
+            var query = _query.UpdateModeloVideo(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateMusicaId(int id, int value)
+        {
+            var query = _query.UpdateMusicaId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateVolumeMusica(int id, int value)
+        {
+            var query = _query.UpdateVolumeMusica(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

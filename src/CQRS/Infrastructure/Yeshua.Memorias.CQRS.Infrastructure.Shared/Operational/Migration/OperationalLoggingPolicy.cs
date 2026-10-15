@@ -417,6 +417,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AlbumTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "Album", operation, recordId, "OperationalEntityId"))
                         mask |= AlbumTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "QualidadeVideo"))
+                        mask |= AlbumTrackingFields.QualidadeVideo;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "ModeloVideo"))
+                        mask |= AlbumTrackingFields.ModeloVideo;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "MusicaId"))
+                        mask |= AlbumTrackingFields.MusicaId;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "VolumeMusica"))
+                        mask |= AlbumTrackingFields.VolumeMusica;
                     return mask;
                 }
 
@@ -446,6 +454,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AlbumFotoTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "OperationalEntityId"))
                         mask |= AlbumFotoTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "Rotacao"))
+                        mask |= AlbumFotoTrackingFields.Rotacao;
                     return mask;
                 }
 
@@ -493,6 +503,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PublicacaoAlbumTrackingFields.CanalYouTubeId;
                     if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "YouTubeCredentialUserId"))
                         mask |= PublicacaoAlbumTrackingFields.YouTubeCredentialUserId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "QualidadeVideo"))
+                        mask |= PublicacaoAlbumTrackingFields.QualidadeVideo;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "ModeloVideo"))
+                        mask |= PublicacaoAlbumTrackingFields.ModeloVideo;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "MusicaId"))
+                        mask |= PublicacaoAlbumTrackingFields.MusicaId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "VolumeMusica"))
+                        mask |= PublicacaoAlbumTrackingFields.VolumeMusica;
                     return mask;
                 }
 

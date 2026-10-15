@@ -20,7 +20,13 @@
             <label class="mem-wide">Descricao<textarea id="mem-description" maxlength="2000" rows="2"></textarea></label>
             <label>Visibilidade no YouTube<select id="mem-privacy"><option value="1">Privado</option><option value="2">Nao listado</option><option value="3">Publico</option></select></label>
             <label>Segundos por foto<input id="mem-duration" type="number" min="1" max="60" step="1" value="4" required></label>
+            <label class="mem-wide">Qualidade do video<select id="mem-quality" aria-label="Qualidade do video" required><option value="1">Economica (HD 720p)</option><option value="2" selected>Padrao (Full HD 1080p)</option><option value="3">Alta (4K 2160p)</option></select></label>
+            <label>Modelo<select id="mem-model" aria-label="Modelo" required><option value="1">Classico</option><option value="2">Romantico</option><option value="3">Aventura</option><option value="4">Celebracao</option></select></label>
+            <label>Musica<select id="mem-music" aria-label="Musica"><option value="0">Sem musica</option></select></label>
+            <label class="mem-wide">Volume <output id="mem-volume-value" for="mem-volume">35%</output><input id="mem-volume" type="range" min="0" max="100" step="1" value="35"></label>
+            <div class="mem-wide mem-music-details"><div class="mem-actions"><button id="mem-listen" type="button" class="mem-icon" title="Ouvir musica" aria-label="Ouvir musica"><i class="fa-solid fa-play" aria-hidden="true"></i></button><span id="mem-music-credit" class="mem-muted"></span><a id="mem-music-license" target="_blank" rel="noopener noreferrer" hidden>CC BY 4.0</a></div><audio id="mem-audio" controls preload="none" hidden></audio></div>
           </fieldset>
+          <p class="mem-muted"><a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer">Biblioteca de audio do YouTube</a></p>
           <div class="mem-actions"><button id="mem-save" class="mem-button mem-primary" type="submit"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Salvar album</button><span id="mem-unsaved" class="mem-muted"></span></div>
         </form>
       </section>
@@ -44,13 +50,25 @@
         <div class="mem-section-heading"><h2 id="mem-publication-title">Publicacao</h2><button id="mem-refresh-status" class="mem-button"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Atualizar status</button></div>
         <label id="mem-history-label" hidden>Publicacao<select id="mem-history" aria-label="Historico de publicacoes"></select></label>
         <ol id="mem-timeline" class="mem-timeline" aria-label="Etapas da publicacao"></ol>
-        <div class="mem-publication-state"><strong id="mem-publication-state">Ainda nao solicitada</strong><p id="mem-publication-message"></p><p id="mem-publication-destination" class="mem-muted"></p><small id="mem-updated-at" class="mem-muted"></small></div>
+        <div class="mem-publication-state"><strong id="mem-publication-state">Ainda nao solicitada</strong><p id="mem-publication-message"></p><p id="mem-publication-destination" class="mem-muted"></p><p id="mem-publication-quality" class="mem-muted"></p><p id="mem-publication-model" class="mem-muted"></p><small id="mem-updated-at" class="mem-muted"></small></div>
         <div class="mem-actions"><button id="mem-publish" class="mem-button mem-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Publicar album</button><button id="mem-resume" class="mem-button" hidden><i class="fa-solid fa-play" aria-hidden="true"></i> Retomar envio</button><a id="mem-video-link" class="mem-button" target="_blank" rel="noopener noreferrer" hidden><i class="fa-brands fa-youtube" aria-hidden="true"></i> Abrir video</a><button id="mem-copy-link" class="mem-icon" title="Copiar link do video" aria-label="Copiar link do video" hidden><i class="fa-solid fa-copy" aria-hidden="true"></i></button></div>
         <p id="mem-publish-reason" class="mem-muted"></p>
       </section>
       </div>
     </div>
   </div>
+  <dialog id="mem-photo-dialog" class="mem-photo-dialog" aria-labelledby="mem-photo-dialog-title">
+    <div class="mem-section-heading"><h2 id="mem-photo-dialog-title">Orientacao da foto</h2><button id="mem-photo-close" class="mem-icon" title="Fechar foto" aria-label="Fechar foto"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+    <div class="mem-photo-frame"><img id="mem-photo-image" alt="Foto do album" hidden></div>
+    <p id="mem-photo-angle" class="mem-muted"></p>
+    <p id="mem-photo-feedback" role="status" aria-live="polite" class="mem-feedback"></p>
+    <div class="mem-actions">
+      <button id="mem-photo-left" class="mem-icon" title="Girar para a esquerda" aria-label="Girar para a esquerda"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i></button>
+      <button id="mem-photo-right" class="mem-icon" title="Girar para a direita" aria-label="Girar para a direita"><i class="fa-solid fa-rotate-right" aria-hidden="true"></i></button>
+      <button id="mem-photo-invert" class="mem-icon" title="Girar 180 graus" aria-label="Girar 180 graus"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></button>
+      <button id="mem-photo-save" class="mem-button mem-primary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Salvar orientacao</button>
+    </div>
+  </dialog>
   <dialog id="mem-config-dialog" class="mem-config-dialog" aria-labelledby="mem-config-title">
     <div class="mem-section-heading"><h2 id="mem-config-title">Configuracao YouTube</h2><button id="mem-config-close" class="mem-icon" title="Fechar configuracao" aria-label="Fechar configuracao"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
     <form id="mem-config-form">

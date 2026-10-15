@@ -96,6 +96,11 @@ namespace Input.Repository.AlbumFoto
             var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateRotacao(int id, int value)
+        {
+            var query = _query.UpdateRotacao(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

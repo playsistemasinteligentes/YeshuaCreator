@@ -32,6 +32,10 @@ namespace IRepository.Write
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
         void UpdateOperationalEntityId(int id, string value);
+        void UpdateQualidadeVideo(int id, int value);
+        void UpdateModeloVideo(int id, int value);
+        void UpdateMusicaId(int id, int value);
+        void UpdateVolumeMusica(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IAlbumFotoEntity Create(int? id, int albumid, int fotoid, int ordem, string? legenda )
+                                    } public IAlbumFotoEntity Create(int? id, int albumid, int fotoid, int ordem, string? legenda, int? rotacao )
                             {
-                                return Create(null, id, albumid, fotoid, ordem, legenda);
+                                return Create(null, id, albumid, fotoid, ordem, legenda, rotacao);
                             }
 
                             public IAlbumFotoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int albumid, int fotoid, int ordem, string? legenda, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int albumid, int fotoid, int ordem, string? legenda, int? rotacao, ulong? trackingMask = null )
                             {
-                            var entity = new AlbumFotoEntity(id, albumid, fotoid, ordem, legenda );
+                            var entity = new AlbumFotoEntity(id, albumid, fotoid, ordem, legenda, rotacao );
 
 
                             var effectiveTrackingMask = trackingMask ??

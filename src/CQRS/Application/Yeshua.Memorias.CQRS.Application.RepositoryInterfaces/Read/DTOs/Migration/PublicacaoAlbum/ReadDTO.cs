@@ -37,6 +37,10 @@ namespace Repositorio.Outputs
     public string conexaoyoutubeid { get; set; } = string.Empty;
     public string canalyoutubeid { get; set; } = string.Empty;
     public int youtubecredentialuserid { get; set; }
+    public int qualidadevideo { get; set; }
+    public int modelovideo { get; set; }
+    public int musicaid { get; set; }
+    public int volumemusica { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

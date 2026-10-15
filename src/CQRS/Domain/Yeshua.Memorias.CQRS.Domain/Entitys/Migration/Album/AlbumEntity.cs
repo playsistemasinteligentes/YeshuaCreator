@@ -31,14 +31,22 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public int? QualidadeVideo { get; set; }
+    public int? ModeloVideo { get; set; }
+    public int? MusicaId { get; set; }
+    public int? VolumeMusica { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal AlbumEntity(int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status ){
+ internal AlbumEntity(int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica ){
  Id = id; 
  Titulo = titulo; 
  Descricao = descricao; 
  Privacidade = privacidade; 
  SegundosPorFoto = segundosporfoto; 
  Status = status; 
+ QualidadeVideo = qualidadevideo;
+ ModeloVideo = modelovideo;
+ MusicaId = musicaid;
+ VolumeMusica = volumemusica;
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

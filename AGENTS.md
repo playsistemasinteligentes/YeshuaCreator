@@ -479,6 +479,40 @@ Regra resumida:
 
 ## Memorias E Processamento De Midia
 
+- A qualidade de video e classificacao tecnica do Memorias, separada de
+  preco, plano e pagamento. IDs estaveis iniciais: 1 Economica (1280x720,
+  CRF 23), 2 Padrao (1920x1080, CRF 18) e 3 Alta (3840x2160, CRF 18), todos
+  a 30 fps. NULL/zero em dados antigos significa Padrao para preservar o
+  comportamento anterior. IDs existentes nao devem mudar de significado.
+- `Album.QualidadeVideo` e a escolha para a proxima publicacao;
+  `PublicacaoAlbum.QualidadeVideo` captura essa escolha no pedido e fica
+  imutavel. A saga monta dimensoes/CRF a partir da classe capturada, nunca da
+  escolha atual do album em uma retomada. O renderer recebe parametros prontos
+  no manifesto; nao decide preco, plano nem regra de classe.
+- Classificacao de resolucao nao promete backup ou recuperacao exata das
+  fotos. Todas as classes iniciais geram video de apresentacao com perdas.
+  Cobranca, elegibilidade, pagamento e preservacao sem perdas sao revisoes
+  futuras; nao rotular nenhuma classe como gratis ou paga antes dessa decisao.
+- Modelos de apresentacao do Memorias sao presets estaticos do aplicativo:
+  Classico (sem movimento), Romantico (zoom de aproximacao), Aventura
+  (deslocamento lateral) e Celebracao (zoom de abertura). Os tres ultimos
+  usam fades curtos pelo preto, nao um novo fluxo de saga.
+- Album escolhe modelo, musica e volume; PublicacaoAlbum captura os tres
+  campos imutaveis no pedido. O .NET traduz o preset em parametros do manifesto;
+  Python apenas renderiza esses parametros. Quadros temporarios reservam margem
+  para evitar recorte durante movimento, e clipes intermediarios sem perdas
+  limitam memoria a uma foto por vez. Originais permanecem intactos.
+- O catalogo inicial de musicas e curado, versionado e restrito a faixas com
+  licenca comprovada. As tres faixas Kevin MacLeod CC BY 4.0 ficam em
+  `infra/Memorias/DockerCompose/music`, com fonte, creditos e SHA-256. O deploy
+  padrao verifica e copia para `persistent/memorias/music`; nunca substituir
+  bytes de uma chave versionada. O envio YouTube acrescenta a atribuicao da
+  musica capturada na publicacao. Sem musica e volume zero sao escolhas validas.
+- Esse catalogo nao e uma integracao de listagem da Biblioteca de Audio do
+  YouTube. A tela oferece link para ela; nao raspar o Studio nem prometer
+  ausencia de Content ID para obras obtidas de terceiros. A previa de musica
+  e streaming autenticado pelo IFileStorage, carregado somente ao clicar Ouvir.
+
 - A configuracao OAuth do aplicativo pode ser salva pelo Estudio via Commands
   gerados, mas e global por ProcessingScope e restrita ao par TenantId/UserId
   administrativo definido pela implantacao. O papel legado Admin emitido para
@@ -523,6 +557,21 @@ Regra resumida:
   usuario, album, estado e prazo de uma hora. A conclusao da sessao, a `Foto`
   e seu vinculo `AlbumFoto` sao persistidos na mesma transacao. O storage usa
   `persistent/memorias/photos`, compartilhado com o worker FFmpeg.
+- A orientacao manual da foto pertence ao vinculo `AlbumFoto.Rotacao`, em
+  graus horarios absolutos (0, 90, 180 ou 270), nao ao arquivo original. O
+  upload pode informar esse valor e a alteracao posterior usa o Command
+  `FotosGirarFoto`, validando tenant/usuario e impedindo mudancas durante a
+  publicacao. O campo fica imutavel no CRUD para nao ser zerado ao editar
+  legenda/ordem. Registros antigos sem valor sao lidos como zero.
+- A previa privada de foto usa o ponto de extensao `Custon/EndPoints.cs` da
+  API do Memorias para streaming autenticado, sem cache, do `IFileStorage`,
+  apos leitura/ownership pelo repository. E uma borda binaria especifica do
+  aplicativo; nao cria storage publico, endpoint CRUD paralelo nem entrega
+  tokens em URL. O Front carrega essa imagem somente ao abrir a previa.
+- O manifesto inclui `rotationDegrees` por foto (ausencia significa zero).
+  O renderer normaliza orientacao de metadados e giro manual em quadros
+  temporarios antes de concatenar; originais e hashes do upload permanecem
+  intactos. Nao alterar a orientacao somente na tela ou regravar o original.
 - O aplicativo Memorias reutiliza o caminho assincrono padrao do Yeshua:
   Saga -> Outbox -> RabbitMQ/Celery -> Worker Python -> RabbitMQ -> Inbox -> Saga.
 - A saga de publicacao do Memorias deve começar no pedido de publicacao do

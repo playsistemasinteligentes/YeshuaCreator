@@ -83,6 +83,37 @@ public class PhotoUploadTests
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(90)]
+    [InlineData(180)]
+    [InlineData(270)]
+    public async Task UploadPersistsOrientationWithoutChangingOriginal(int rotation)
+    {
+        var rig = new UploadRig();
+        var command = CreateCommand();
+        command.Rotacao = rotation;
+        var result = await rig.Handler.ExecuteAsync(command);
+        Assert.Equal(200, result.StatusCode);
+        Assert.Equal(rotation, rig.Link!.Rotacao);
+        Assert.Equal(Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Png)), rig.Photo!.HashArquivo);
+        Assert.Equal(new[] { "BeginTran", "CompleteSession", "InsertPhoto", "InsertLink", "Commit" }, rig.Events);
+    }
+
+    [Theory]
+    [InlineData(-90)]
+    [InlineData(45)]
+    [InlineData(360)]
+    public async Task InvalidOrientationIsRejectedBeforeStorage(int rotation)
+    {
+        var rig = new UploadRig();
+        var command = CreateCommand();
+        command.Rotacao = rotation;
+        Assert.Equal(400, (await rig.Handler.ExecuteAsync(command)).StatusCode);
+        Assert.False(rig.SavedFile);
+        Assert.Empty(rig.Events);
+    }
+
+    [Theory]
     [InlineData("expired")]
     [InlineData("other-user")]
     [InlineData("other-album-owner")]
@@ -190,6 +221,7 @@ public class PhotoUploadTests
             form.Add(new StringContent("upload-token"), "token");
             form.Add(new StringContent("0"), "ChunkIndex");
             form.Add(new StringContent("true"), "IsFinalChunk");
+            form.Add(new StringContent("180"), "Rotacao");
             var content = new ByteArrayContent(Png);
             content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
             form.Add(content, "FileStream", "photo.png");
@@ -198,6 +230,7 @@ public class PhotoUploadTests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotNull(rig.Photo);
             Assert.Equal("image/png", rig.Photo.ContentType);
+            Assert.Equal(180, rig.Link!.Rotacao);
         }
         finally
         {

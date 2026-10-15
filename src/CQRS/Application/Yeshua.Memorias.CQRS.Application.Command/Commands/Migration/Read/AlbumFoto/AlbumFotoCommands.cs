@@ -23,6 +23,7 @@ namespace Command.Read
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string? OperationalEntityId { get; set; }
+        public int? Rotacao { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "AlbumFoto";
  public string? OperationalRecordId => OperationalEntityId;

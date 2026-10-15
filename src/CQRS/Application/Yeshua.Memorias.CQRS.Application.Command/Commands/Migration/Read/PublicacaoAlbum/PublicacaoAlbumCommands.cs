@@ -32,6 +32,10 @@ namespace Command.Read
         public string? ConexaoYouTubeId { get; set; }
         public string? CanalYouTubeId { get; set; }
         public int? YouTubeCredentialUserId { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "PublicacaoAlbum";
  public string? OperationalRecordId => OperationalEntityId;

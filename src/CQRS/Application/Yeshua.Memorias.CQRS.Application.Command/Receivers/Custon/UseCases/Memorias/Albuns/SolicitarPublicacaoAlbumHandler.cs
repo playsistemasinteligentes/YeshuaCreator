@@ -14,6 +14,7 @@ using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
 using Dominio.Saga;
 using Dominio.Behaviors;
+using Dominio.Media;
 using Dominio.Patterns.Domain;
 using Aplication.Interfaces.Services;
 using RepositoryInterfaces.Patterns.Command;
@@ -23,6 +24,7 @@ using IRepository.Write;
 using Command.UseCase;
 using Command.Receivers;
 using Memorias.YouTube;
+using Command.Interfaces.Patterns.FileStore;
 
 namespace Command.Receivers.UseCase
 {
@@ -35,7 +37,8 @@ namespace Command.Receivers.UseCase
         private readonly IPublicacaoAlbumWriteRepository _repWritePublicacaoAlbum = default!;
         private readonly IySagaWriteRepository _sagaWriteRepository = default!;
         private readonly IYouTubeConnectionService _connections;
-        public SolicitarPublicacaoAlbumHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IAlbumReadRepository repReadAlbum, IAlbumWriteRepository repWriteAlbum, IPublicacaoAlbumWriteRepository repWritePublicacaoAlbum, IySagaWriteRepository sagaWriteRepository, IYouTubeConnectionService connections)
+        private readonly IFileStorage _music;
+        public SolicitarPublicacaoAlbumHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IAlbumReadRepository repReadAlbum, IAlbumWriteRepository repWriteAlbum, IPublicacaoAlbumWriteRepository repWritePublicacaoAlbum, IySagaWriteRepository sagaWriteRepository, IYouTubeConnectionService connections, IFileStorage music)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -47,6 +50,7 @@ namespace Command.Receivers.UseCase
             _repWritePublicacaoAlbum = repWritePublicacaoAlbum;
             _sagaWriteRepository = sagaWriteRepository;
             _connections = connections;
+            _music = music;
         }
 protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> CustomActionHookAsync(State<SolicitarPublicacaoAlbumOutputCommand> state, SolicitarPublicacaoAlbumInputCommand comand, CancellationToken cancellationToken)
 {
@@ -56,6 +60,14 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
     var album = _repReadAlbum.FirstById(comand.AlbumId);
     if (album == null || album.deleted || album.tenantid != _executionContext.TenantID || album.userid != _executionContext.UserId)
         return ValidationError("Album nao encontrado.", new SolicitarPublicacaoAlbumOutputCommand());
+
+    if (!VideoQualityProfiles.TryResolve(album.qualidadevideo, out var quality))
+        return ValidationError("Selecione uma qualidade de video valida.", new SolicitarPublicacaoAlbumOutputCommand());
+    if (!VideoPresentation.TryModel(album.modelovideo, out var model) || !VideoPresentation.ValidMusic(album.musicaid) || !VideoPresentation.ValidVolume(album.volumemusica))
+        return ValidationError("Selecione um modelo, musica e volume validos.", new SolicitarPublicacaoAlbumOutputCommand());
+    var track = VideoPresentation.FindMusic(album.musicaid);
+    if (track != null && !await _music.ExistsAsync(new StoragePath(track.StorageKey), cancellationToken))
+        return ValidationError("A musica selecionada nao esta disponivel no servidor.", new SolicitarPublicacaoAlbumOutputCommand());
 
     YouTubeConnectionStatus destination;
     try
@@ -89,7 +101,8 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
         DateTime.UtcNow,
         null,
         MemoriasPublicationStatus.Solicitada,
-        destination.ConexaoId, destination.CanalId, _executionContext.UserId);
+        destination.ConexaoId, destination.CanalId, _executionContext.UserId, (int)quality.Quality,
+        model.Id, album.musicaid, album.volumemusica);
     var validation = PublicacaoAlbumDomainBehavior.Apply(publicacao, domainContext);
     if (!validation.IsValid)
         return ValidationError(validation.Errors, new SolicitarPublicacaoAlbumOutputCommand());

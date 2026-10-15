@@ -8,4 +8,11 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup
 // </yeshua>
 
+namespace Command.UseCase;
+
+public partial record SendFileInputCommand
+{
+    public int Rotacao { get; set; }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

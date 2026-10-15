@@ -40,6 +40,10 @@ namespace IRepository.Write
         void UpdateConexaoYouTubeId(int id, string value);
         void UpdateCanalYouTubeId(int id, string value);
         void UpdateYouTubeCredentialUserId(int id, int value);
+        void UpdateQualidadeVideo(int id, int value);
+        void UpdateModeloVideo(int id, int value);
+        void UpdateMusicaId(int id, int value);
+        void UpdateVolumeMusica(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

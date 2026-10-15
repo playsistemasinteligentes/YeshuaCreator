@@ -1,7 +1,7 @@
 import hashlib
 import json
+import math
 import os
-import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -21,6 +21,9 @@ def render_album(manifest_storage_key: str) -> dict:
     width = _positive_int(manifest.get("width", 1920), "width")
     height = _positive_int(manifest.get("height", 1080), "height")
     fps = _positive_int(manifest.get("fps", 30), "fps")
+    crf = manifest["crf"] if "crf" in manifest else int(os.environ.get("FFMPEG_CRF", "18"))
+    if type(crf) is not int or not 0 <= crf <= 51:
+        raise ValueError("crf deve ser um inteiro entre 0 e 51.")
     default_duration = _positive_number(
         manifest.get("secondsPerPhoto", 4),
         "secondsPerPhoto",
@@ -30,6 +33,18 @@ def render_album(manifest_storage_key: str) -> dict:
         raise ValueError("outputStorageKey e obrigatorio.")
 
     output_path = _storage_path(storage_root, output_storage_key)
+    motion = manifest.get("motion", "none")
+    transition = manifest.get("transition", "none")
+    if motion not in ("none", "zoom-in", "zoom-out", "pan") or transition not in ("none", "fade"):
+        raise ValueError("Movimento ou transicao invalida.")
+    zoom = _bounded_number(manifest.get("zoom", 1), "zoom", 1, 1.2)
+    transition_seconds = _bounded_number(manifest.get("transitionSeconds", 0), "transitionSeconds", 0, 2)
+    audio_volume = _bounded_number(manifest.get("audioVolume", .35), "audioVolume", 0, 1)
+    audio_key = manifest.get("audioStorageKey")
+    audio_path = _storage_path(storage_root, audio_key) if audio_key else None
+    if audio_path and not audio_path.is_file():
+        raise FileNotFoundError("Musica do manifesto nao encontrada.")
+    styled = motion != "none" or transition != "none"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(prefix="yeshua-memorias-") as temp_directory:
@@ -48,30 +63,37 @@ def render_album(manifest_storage_key: str) -> dict:
             if not source_path.is_file():
                 raise FileNotFoundError(f"Foto nao encontrada: {storage_key}")
 
-            extension = source_path.suffix.lower() or ".jpg"
-            staged_path = temp_root / f"photo-{index:06d}{extension}"
-            shutil.copy2(source_path, staged_path)
+            rotation = photo.get("rotationDegrees", 0)
+            if type(rotation) is not int or rotation not in (0, 90, 180, 270):
+                raise ValueError(f"photos[{index}].rotationDegrees deve ser 0, 90, 180 ou 270.")
+            staged_path = temp_root / f"photo-{index:06d}.png"
+            _prepare_photo(source_path, staged_path, rotation, width, height, zoom if styled else 1)
 
             duration = _positive_number(
                 photo.get("durationSeconds", default_duration),
                 f"photos[{index}].durationSeconds",
             )
-            concat_lines.append(f"file '{staged_path.as_posix()}'")
-            concat_lines.append(f"duration {duration}")
+            if styled:
+                frames = max(1, round(duration * fps))
+                duration = frames / fps
+                clip = temp_root / f"clip-{index:06d}.mkv"
+                _motion_clip(staged_path, clip, width, height, fps, frames, motion, zoom,
+                             min(transition_seconds, duration / 4) if transition == "fade" else 0)
+                concat_lines.append(f"file '{clip.as_posix()}'")
+            else:
+                concat_lines.append(f"file '{staged_path.as_posix()}'")
+                concat_lines.append(f"duration {duration}")
             total_duration += duration
             last_staged_path = staged_path
 
         # FFmpeg precisa da ultima imagem repetida para respeitar sua duracao.
-        concat_lines.append(f"file '{last_staged_path.as_posix()}'")
+        if not styled:
+            concat_lines.append(f"file '{last_staged_path.as_posix()}'")
         concat_path.write_text("\n".join(concat_lines) + "\n", encoding="utf-8")
 
-        video_filter = (
-            f"scale={width}:{height}:force_original_aspect_ratio=decrease,"
-            f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=black,"
-            f"setsar=1,fps={fps},format=yuv420p"
-        )
+        video_filter = f"setsar=1,fps={fps},format=yuv420p"
         command = [
-            "ffmpeg",
+            os.environ.get("FFMPEG_BINARY", "ffmpeg"),
             "-hide_banner",
             "-loglevel",
             "error",
@@ -86,15 +108,26 @@ def render_album(manifest_storage_key: str) -> dict:
             video_filter,
             "-c:v",
             "libx264",
+            "-threads", "2", "-filter_threads", "2",
             "-preset",
             os.environ.get("FFMPEG_PRESET", "medium"),
             "-crf",
-            os.environ.get("FFMPEG_CRF", "18"),
+            str(crf),
             "-movflags",
             "+faststart",
-            str(output_path),
+            "-t", str(total_duration), "-an",
+            str(temp_root / "video.mp4" if audio_path else output_path),
         ]
         subprocess.run(command, check=True, capture_output=True, text=True)
+        if audio_path:
+            fade = min(.8, total_duration / 4)
+            audio_filter = f"volume={audio_volume},afade=t=in:d={fade},afade=t=out:st={total_duration-fade}:d={fade}"
+            subprocess.run([os.environ.get("FFMPEG_BINARY", "ffmpeg"), "-hide_banner", "-loglevel", "error", "-y",
+                            "-i", str(temp_root / "video.mp4"), "-stream_loop", "-1", "-i", str(audio_path),
+                            "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-af", audio_filter,
+                            "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2", "-threads", "2",
+                            "-t", str(total_duration), "-movflags", "+faststart", str(output_path)],
+                           check=True, capture_output=True, text=True)
 
     return {
         "outputStorageKey": output_storage_key,
@@ -106,6 +139,17 @@ def render_album(manifest_storage_key: str) -> dict:
         "height": height,
         "fps": fps,
     }
+
+
+def _prepare_photo(source: Path, output: Path, rotation: int, width: int, height: int, zoom: float = 1) -> None:
+    filters = {0: [], 90: ["transpose=clock"], 180: ["hflip", "vflip"], 270: ["transpose=cclock"]}[rotation]
+    # A margem protege as bordas da foto durante o zoom e o deslocamento.
+    filters += [f"scale={int(width / zoom) // 2 * 2}:{int(height / zoom) // 2 * 2}:force_original_aspect_ratio=decrease",
+                f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=black", "setsar=1"]
+    # Cada foto tem sua propria orientacao; normalizar antes de concatenar preserva o giro individual.
+    subprocess.run([os.environ.get("FFMPEG_BINARY", "ffmpeg"), "-hide_banner", "-loglevel", "error", "-y",
+                    "-i", str(source), "-vf", ",".join(filters), "-filter_threads", "2", "-threads", "2", "-frames:v", "1", str(output)],
+                   check=True, capture_output=True, text=True)
 
 
 def _storage_path(storage_root: Path, storage_key: str) -> Path:
@@ -125,9 +169,31 @@ def _positive_int(value, field_name: str) -> int:
 
 def _positive_number(value, field_name: str) -> float:
     parsed = float(value)
-    if parsed <= 0:
+    if not math.isfinite(parsed) or parsed <= 0:
         raise ValueError(f"{field_name} deve ser maior que zero.")
     return parsed
+
+
+def _bounded_number(value, name, minimum, maximum):
+    if type(value) not in (int, float) or not math.isfinite(value) or not minimum <= value <= maximum:
+        raise ValueError(f"{name} deve estar entre {minimum} e {maximum}.")
+    return float(value)
+
+
+def _motion_clip(source, output, width, height, fps, frames, motion, zoom, fade):
+    progress = f"on/{max(1, frames-1)}"
+    z = {"none": "1", "zoom-in": f"1+({zoom}-1)*{progress}",
+         "zoom-out": f"{zoom}-({zoom}-1)*{progress}", "pan": str(zoom)}[motion]
+    x = f"(iw-iw/zoom)*{progress}" if motion == "pan" else "(iw-iw/zoom)/2"
+    filters = [f"zoompan=z='{z}':x='{x}':y='(ih-ih/zoom)/2':d={frames}:s={width}x{height}:fps={fps}",
+               "setsar=1", "format=yuv420p"]
+    if fade:
+        filters += [f"fade=t=in:d={fade}", f"fade=t=out:st={frames/fps-fade}:d={fade}"]
+    # Um clipe por foto limita memoria; a compressao com perda so ocorre no video final.
+    subprocess.run([os.environ.get("FFMPEG_BINARY", "ffmpeg"), "-hide_banner", "-loglevel", "error", "-y",
+                    "-i", str(source), "-vf", ",".join(filters), "-frames:v", str(frames),
+                    "-c:v", "libx264", "-preset", "ultrafast", "-crf", "0", "-threads", "2", "-filter_threads", "2", str(output)],
+                   check=True, capture_output=True, text=True)
 
 
 def _sha256(path: Path) -> str:

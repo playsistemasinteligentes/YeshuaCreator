@@ -8,4 +8,11 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
 // </yeshua>
 
+namespace IRepository.Write;
+
+public partial interface IAlbumFotoWriteRepository
+{
+    bool TrySetRotation(int albumPhotoId, int tenantId, int userId, int rotation, DateTime now);
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

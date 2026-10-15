@@ -27,5 +27,27 @@ public partial record YouTubeConnectionInfo : ICommand
     public bool Conectado { get; set; }
 }
 
+public partial record VideoModelInfo : ICommand
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Movimento { get; set; } = string.Empty;
+    public string Transicao { get; set; } = string.Empty;
+    public int MusicaSugeridaId { get; set; }
+}
+
+public partial record MusicInfo : ICommand
+{
+    public int Id { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+    public string Autor { get; set; } = string.Empty;
+    public string Categoria { get; set; } = string.Empty;
+    public string Licenca { get; set; } = string.Empty;
+    public string UrlFonte { get; set; } = string.Empty;
+    public string UrlLicenca { get; set; } = string.Empty;
+    public string Creditos { get; set; } = string.Empty;
+    public bool Disponivel { get; set; }
+}
+
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

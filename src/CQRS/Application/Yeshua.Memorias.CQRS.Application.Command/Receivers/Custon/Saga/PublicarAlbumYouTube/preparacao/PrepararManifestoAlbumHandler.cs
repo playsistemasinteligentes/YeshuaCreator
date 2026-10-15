@@ -11,6 +11,7 @@
 using System.Text.Json;
 using Command.Interfaces.Patterns.FileStore;
 using Dominio.Patterns.Saga;
+using Dominio.Media;
 using IRepository.Read;
 using IRepository.Write;
 
@@ -50,6 +51,11 @@ namespace Command.Receivers
             var album = _albumReadRepository.FirstById(publicacao.albumid)
                 ?? throw new SagaStepExecutionException("Album da publicacao nao encontrado.", retryable: false);
 
+            if (!VideoQualityProfiles.TryResolve(publicacao.qualidadevideo, out var quality))
+                throw new SagaStepExecutionException("Qualidade do video da publicacao invalida.", retryable: false);
+            if (!VideoPresentation.TryModel(publicacao.modelovideo, out var model) || !VideoPresentation.ValidMusic(publicacao.musicaid) || !VideoPresentation.ValidVolume(publicacao.volumemusica))
+                throw new SagaStepExecutionException("Apresentacao da publicacao invalida.", retryable: false);
+
             var fotos = _albumFotoReadRepository
                 .GetAllByAlbumId(album.id)
                 .Where(albumFoto => !albumFoto.deleted)
@@ -60,11 +66,14 @@ namespace Command.Receivers
                         ?? throw new SagaStepExecutionException($"Foto {albumFoto.fotoid} nao encontrada.", retryable: false);
                     if (foto.deleted || string.IsNullOrWhiteSpace(foto.storagekey))
                         throw new SagaStepExecutionException($"Foto {albumFoto.fotoid} invalida para renderizacao.", retryable: false);
+                    if (albumFoto.rotacao is not (0 or 90 or 180 or 270))
+                        throw new SagaStepExecutionException("Rotacao da foto invalida para renderizacao.", retryable: false);
 
                     return new AlbumRenderPhoto(
                         foto.storagekey.Replace('\\', '/'),
                         Math.Max(1, album.segundosporfoto),
-                        albumFoto.legenda ?? string.Empty);
+                        albumFoto.legenda ?? string.Empty,
+                        albumFoto.rotacao);
                 })
                 .ToArray();
 
@@ -77,11 +86,16 @@ namespace Command.Receivers
             var manifest = new AlbumRenderManifest(
                 1,
                 outputStorageKey,
-                1920,
-                1080,
+                quality.Width,
+                quality.Height,
                 30,
                 Math.Max(1, album.segundosporfoto),
-                fotos);
+                fotos,
+                (int)quality.Quality,
+                quality.Crf,
+                model.Motion, model.Transition, model.TransitionSeconds, model.Zoom,
+                VideoPresentation.FindMusic(publicacao.musicaid)?.StorageKey,
+                publicacao.volumemusica / 100d);
 
             using (var stream = _fileStorage.OpenWrite(new StoragePath(manifestStorageKey)))
             {

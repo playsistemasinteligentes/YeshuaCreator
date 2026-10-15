@@ -10,6 +10,7 @@
 
 using Dominio.Entitys;
 using Dominio.Patterns.Domain;
+using Dominio.Media;
 using System.Collections.Generic;
 
 namespace Dominio.Behaviors
@@ -20,6 +21,11 @@ namespace Dominio.Behaviors
         {
             if (context.EntryPoint == DomainEntryPoint.Crud)
                 errors.Add("Publicacoes sao controladas pelos comandos de solicitar e retomar publicacao.");
+            if (!VideoQualityProfiles.TryResolve(entity.QualidadeVideo, out _))
+                errors.Add("A qualidade do video da publicacao e invalida.");
+            if (!VideoPresentation.TryModel(entity.ModeloVideo, out _)) errors.Add("Modelo de video invalido.");
+            if (!VideoPresentation.ValidMusic(entity.MusicaId)) errors.Add("Musica invalida.");
+            if (!VideoPresentation.ValidVolume(entity.VolumeMusica)) errors.Add("Volume invalido.");
         }
     }
 }

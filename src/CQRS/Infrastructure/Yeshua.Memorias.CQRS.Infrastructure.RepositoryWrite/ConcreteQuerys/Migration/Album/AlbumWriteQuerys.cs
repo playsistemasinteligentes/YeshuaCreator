@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirAlbumQuery(IAlbumEntity Album)
         {
-            this.Query = $@" INSERT INTO [Album] ([Titulo], [Descricao], [Privacidade], [SegundosPorFoto], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@Titulo, @Descricao, @Privacidade, @SegundosPorFoto, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
+            this.Query = $@" INSERT INTO [Album] ([Titulo], [Descricao], [Privacidade], [SegundosPorFoto], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica]) OUTPUT INSERTED.[Id] VALUES(@Titulo, @Descricao, @Privacidade, @SegundosPorFoto, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @QualidadeVideo, @ModeloVideo, @MusicaId, @VolumeMusica) ";
             this.Parameters = new
             {
                 Titulo = Album.Titulo,
@@ -43,12 +43,16 @@ namespace Query.Write
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
                 OperationalEntityId = Album.OperationalEntityId,
+                QualidadeVideo = Album.QualidadeVideo,
+                ModeloVideo = Album.ModeloVideo,
+                MusicaId = Album.MusicaId,
+                VolumeMusica = Album.VolumeMusica,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateAlbumQuery(IAlbumEntity Album)
         {
-            this.Query = $@" UPDATE [Album] SET [Titulo] = @Titulo, [Descricao] = @Descricao, [Privacidade] = @Privacidade, [SegundosPorFoto] = @SegundosPorFoto, [Status] = @Status, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [Album] SET [Titulo] = @Titulo, [Descricao] = @Descricao, [Privacidade] = @Privacidade, [SegundosPorFoto] = @SegundosPorFoto, [Status] = @Status, [Changed] = @Changed, [UserId] = @UserId, [QualidadeVideo] = @QualidadeVideo, [ModeloVideo] = @ModeloVideo, [MusicaId] = @MusicaId, [VolumeMusica] = @VolumeMusica WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Titulo = Album.Titulo,
@@ -58,6 +62,10 @@ namespace Query.Write
                 Status = Album.Status,
                 Changed = Album.Changed,
                 UserId = _executionContext.UserId,
+                QualidadeVideo = Album.QualidadeVideo,
+                ModeloVideo = Album.ModeloVideo,
+                MusicaId = Album.MusicaId,
+                VolumeMusica = Album.VolumeMusica,
                 Id = Album.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -158,6 +166,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 OperationalEntityId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateQualidadeVideo(int id, int value)
+        {
+            this.Query = $@" UPDATE [Album] SET [QualidadeVideo] = @QualidadeVideo WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                QualidadeVideo = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateModeloVideo(int id, int value)
+        {
+            this.Query = $@" UPDATE [Album] SET [ModeloVideo] = @ModeloVideo WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                ModeloVideo = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateMusicaId(int id, int value)
+        {
+            this.Query = $@" UPDATE [Album] SET [MusicaId] = @MusicaId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                MusicaId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateVolumeMusica(int id, int value)
+        {
+            this.Query = $@" UPDATE [Album] SET [VolumeMusica] = @VolumeMusica WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                VolumeMusica = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

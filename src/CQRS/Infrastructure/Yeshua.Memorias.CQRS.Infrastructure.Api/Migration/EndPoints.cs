@@ -76,6 +76,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "QualidadeVideo", title = "Qualidade do Video", classification = "Internal" },
+                    new { name = "ModeloVideo", title = "Modelo do Video", classification = "Internal" },
+                    new { name = "MusicaId", title = "Musica", classification = "Internal" },
+                    new { name = "VolumeMusica", title = "Volume da Musica (%)", classification = "Internal" },
                 }
             },
             new
@@ -94,6 +98,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "Rotacao", title = "Rotacao da Foto", classification = "Internal" },
                 }
             },
             new
@@ -143,6 +148,10 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ConexaoYouTubeId", title = "Conexao YouTube", classification = "Internal" },
                     new { name = "CanalYouTubeId", title = "Canal de Destino", classification = "Internal" },
                     new { name = "YouTubeCredentialUserId", title = "Responsavel pela Conexao", classification = "Internal" },
+                    new { name = "QualidadeVideo", title = "Qualidade do Video", classification = "Internal" },
+                    new { name = "ModeloVideo", title = "Modelo do Video", classification = "Internal" },
+                    new { name = "MusicaId", title = "Musica", classification = "Internal" },
+                    new { name = "VolumeMusica", title = "Volume da Musica (%)", classification = "Internal" },
                 }
             },
             new
@@ -2599,6 +2608,10 @@ app.MapGet("/yapi/getMetaDataAlbum", (HttpContext context) =>
                 new { id = "privacidade", label = "Privacidade no YouTube", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Privado" }, new { value = 2, display = "Nao Listado" }, new { value = 3, display = "Publico" },}, },
                 new { id = "segundosporfoto", label = "Segundos por Foto", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Em Edicao" }, new { value = 2, display = "Pronto Para Publicar" }, new { value = 3, display = "Publicando" }, new { value = 4, display = "Publicado" }, new { value = 5, display = "Falha" },}, },
+                new { id = "qualidadevideo", label = "Qualidade do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Economica (HD 720p)" }, new { value = 2, display = "Padrao (Full HD 1080p)" }, new { value = 3, display = "Alta (4K 2160p)" },}, },
+                new { id = "modelovideo", label = "Modelo do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Classico" }, new { value = 2, display = "Romantico" }, new { value = 3, display = "Aventura" }, new { value = 4, display = "Celebracao" },}, },
+                new { id = "musicaid", label = "Musica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Sem musica" }, new { value = 1, display = "Air Prelude" }, new { value = 2, display = "Adventure Meme" }, new { value = 3, display = "Carefree" },}, },
+                new { id = "volumemusica", label = "Volume da Musica (%)", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -2608,6 +2621,10 @@ app.MapGet("/yapi/getMetaDataAlbum", (HttpContext context) =>
                 new { id = "privacidade", label = "Privacidade no YouTube", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Privado" }, new { value = 2, display = "Nao Listado" }, new { value = 3, display = "Publico" },}, },
                 new { id = "segundosporfoto", label = "Segundos por Foto", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Em Edicao" }, new { value = 2, display = "Pronto Para Publicar" }, new { value = 3, display = "Publicando" }, new { value = 4, display = "Publicado" }, new { value = 5, display = "Falha" },}, },
+                new { id = "qualidadevideo", label = "Qualidade do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Economica (HD 720p)" }, new { value = 2, display = "Padrao (Full HD 1080p)" }, new { value = 3, display = "Alta (4K 2160p)" },}, },
+                new { id = "modelovideo", label = "Modelo do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Classico" }, new { value = 2, display = "Romantico" }, new { value = 3, display = "Aventura" }, new { value = 4, display = "Celebracao" },}, },
+                new { id = "musicaid", label = "Musica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Sem musica" }, new { value = 1, display = "Air Prelude" }, new { value = 2, display = "Adventure Meme" }, new { value = 3, display = "Carefree" },}, },
+                new { id = "volumemusica", label = "Volume da Musica (%)", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -2623,6 +2640,10 @@ app.MapGet("/yapi/getMetaDataAlbum", (HttpContext context) =>
             new { id = "privacidade", label = "Privacidade no YouTube", type = "enum", required = false, displaygroup = "Publicacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Privado" }, new { value = 2, display = "Nao Listado" }, new { value = 3, display = "Publico" },}, },
             new { id = "segundosporfoto", label = "Segundos por Foto", type = "int", required = false, displaygroup = "Renderizacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Em Edicao" }, new { value = 2, display = "Pronto Para Publicar" }, new { value = 3, display = "Publicando" }, new { value = 4, display = "Publicado" }, new { value = 5, display = "Falha" },}, },
+            new { id = "qualidadevideo", label = "Qualidade do Video", type = "enum", required = false, displaygroup = "Renderizacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Economica (HD 720p)" }, new { value = 2, display = "Padrao (Full HD 1080p)" }, new { value = 3, display = "Alta (4K 2160p)" },}, },
+            new { id = "modelovideo", label = "Modelo do Video", type = "enum", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Classico" }, new { value = 2, display = "Romantico" }, new { value = 3, display = "Aventura" }, new { value = 4, display = "Celebracao" },}, },
+            new { id = "musicaid", label = "Musica", type = "enum", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Sem musica" }, new { value = 1, display = "Air Prelude" }, new { value = 2, display = "Adventure Meme" }, new { value = 3, display = "Carefree" },}, },
+            new { id = "volumemusica", label = "Volume da Musica (%)", type = "int", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -2669,6 +2690,7 @@ app.MapGet("/yapi/getMetaDataAlbumFoto", (HttpContext context) =>
                 new { id = "fotoid", label = "Foto", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataFoto", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "ordem", label = "Ordem", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "legenda", label = "Legenda", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rotacao", label = "Rotacao da Foto", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -2677,6 +2699,7 @@ app.MapGet("/yapi/getMetaDataAlbumFoto", (HttpContext context) =>
                 new { id = "fotoid", label = "Foto", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataFoto", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "ordem", label = "Ordem", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "legenda", label = "Legenda", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rotacao", label = "Rotacao da Foto", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -2693,6 +2716,7 @@ app.MapGet("/yapi/getMetaDataAlbumFoto", (HttpContext context) =>
             new { id = "fotoid", label = "Foto", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataFoto", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "ordem", label = "Ordem", type = "int", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "legenda", label = "Legenda", type = "string", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "rotacao", label = "Rotacao da Foto", type = "int", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -2748,6 +2772,10 @@ app.MapGet("/yapi/getMetaDataPublicacaoAlbum", (HttpContext context) =>
                 new { id = "publicadaemutc", label = "Publicada em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Solicitada" }, new { value = 2, display = "Preparando Manifesto" }, new { value = 3, display = "Renderizando" }, new { value = 4, display = "Enviando ao YouTube" }, new { value = 5, display = "Publicada" }, new { value = 6, display = "Falha" },}, },
                 new { id = "canalyoutubeid", label = "Canal de Destino", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "qualidadevideo", label = "Qualidade do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Economica (HD 720p)" }, new { value = 2, display = "Padrao (Full HD 1080p)" }, new { value = 3, display = "Alta (4K 2160p)" },}, },
+                new { id = "modelovideo", label = "Modelo do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Classico" }, new { value = 2, display = "Romantico" }, new { value = 3, display = "Aventura" }, new { value = 4, display = "Celebracao" },}, },
+                new { id = "musicaid", label = "Musica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Sem musica" }, new { value = 1, display = "Air Prelude" }, new { value = 2, display = "Adventure Meme" }, new { value = 3, display = "Carefree" },}, },
+                new { id = "volumemusica", label = "Volume da Musica (%)", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -2763,6 +2791,10 @@ app.MapGet("/yapi/getMetaDataPublicacaoAlbum", (HttpContext context) =>
                 new { id = "publicadaemutc", label = "Publicada em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Solicitada" }, new { value = 2, display = "Preparando Manifesto" }, new { value = 3, display = "Renderizando" }, new { value = 4, display = "Enviando ao YouTube" }, new { value = 5, display = "Publicada" }, new { value = 6, display = "Falha" },}, },
                 new { id = "canalyoutubeid", label = "Canal de Destino", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "qualidadevideo", label = "Qualidade do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Economica (HD 720p)" }, new { value = 2, display = "Padrao (Full HD 1080p)" }, new { value = 3, display = "Alta (4K 2160p)" },}, },
+                new { id = "modelovideo", label = "Modelo do Video", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Classico" }, new { value = 2, display = "Romantico" }, new { value = 3, display = "Aventura" }, new { value = 4, display = "Celebracao" },}, },
+                new { id = "musicaid", label = "Musica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Sem musica" }, new { value = 1, display = "Air Prelude" }, new { value = 2, display = "Adventure Meme" }, new { value = 3, display = "Carefree" },}, },
+                new { id = "volumemusica", label = "Volume da Musica (%)", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -2785,6 +2817,10 @@ app.MapGet("/yapi/getMetaDataPublicacaoAlbum", (HttpContext context) =>
             new { id = "publicadaemutc", label = "Publicada em UTC", type = "DateTime", required = false, displaygroup = "Datas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Solicitada" }, new { value = 2, display = "Preparando Manifesto" }, new { value = 3, display = "Renderizando" }, new { value = 4, display = "Enviando ao YouTube" }, new { value = 5, display = "Publicada" }, new { value = 6, display = "Falha" },}, },
             new { id = "canalyoutubeid", label = "Canal de Destino", type = "string", required = false, displaygroup = "YouTube", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "qualidadevideo", label = "Qualidade do Video", type = "enum", required = false, displaygroup = "Renderizacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Economica (HD 720p)" }, new { value = 2, display = "Padrao (Full HD 1080p)" }, new { value = 3, display = "Alta (4K 2160p)" },}, },
+            new { id = "modelovideo", label = "Modelo do Video", type = "enum", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Classico" }, new { value = 2, display = "Romantico" }, new { value = 3, display = "Aventura" }, new { value = 4, display = "Celebracao" },}, },
+            new { id = "musicaid", label = "Musica", type = "enum", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Sem musica" }, new { value = 1, display = "Air Prelude" }, new { value = 2, display = "Adventure Meme" }, new { value = 3, display = "Carefree" },}, },
+            new { id = "volumemusica", label = "Volume da Musica (%)", type = "int", required = false, displaygroup = "Apresentacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4281,6 +4317,44 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Memorias/YouTubeSalvarConfiguracaoYouTubeUseCase", async ([FromServices] Command.Receivers.UseCase.SalvarConfiguracaoYouTubeHandler receiver, [FromBody] Command.UseCase.SalvarConfiguracaoYouTubeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/FotosGirarFotoUseCase", async ([FromServices] Command.Receivers.UseCase.GirarFotoHandler receiver, [FromBody] Command.UseCase.GirarFotoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Memorias/ApresentacaoConsultarModelosVideoUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarModelosVideoHandler receiver, [FromBody] Command.UseCase.ConsultarModelosVideoInputCommand command) =>
 {
 try
 {

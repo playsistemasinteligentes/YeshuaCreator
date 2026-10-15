@@ -39,8 +39,12 @@
     public string? ConexaoYouTubeId { get; set; }
     public string? CanalYouTubeId { get; set; }
     public int? YouTubeCredentialUserId { get; set; }
+    public int? QualidadeVideo { get; set; }
+    public int? ModeloVideo { get; set; }
+    public int? MusicaId { get; set; }
+    public int? VolumeMusica { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal PublicacaoAlbumEntity(int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status, string? conexaoyoutubeid, string? canalyoutubeid, int? youtubecredentialuserid ){
+ internal PublicacaoAlbumEntity(int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status, string? conexaoyoutubeid, string? canalyoutubeid, int? youtubecredentialuserid, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica ){
  Id = id; 
  AlbumId = albumid; 
  CorrelationId = correlationid; 
@@ -55,6 +59,10 @@
  ConexaoYouTubeId = conexaoyoutubeid; 
  CanalYouTubeId = canalyoutubeid; 
  YouTubeCredentialUserId = youtubecredentialuserid; 
+ QualidadeVideo = qualidadevideo;
+ ModeloVideo = modelovideo;
+ MusicaId = musicaid;
+ VolumeMusica = volumemusica;
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

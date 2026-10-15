@@ -49,6 +49,10 @@ namespace Yeshua.Studio.Memorias.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
 
         public static MyApp.QueryBuilder.Query<Album> Query() => new MyApp.QueryBuilder.Query<Album>();
     }
@@ -69,6 +73,7 @@ namespace Yeshua.Studio.Memorias.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? Rotacao { get; set; }
 
         public static MyApp.QueryBuilder.Query<AlbumFoto> Query() => new MyApp.QueryBuilder.Query<AlbumFoto>();
     }
@@ -97,6 +102,10 @@ namespace Yeshua.Studio.Memorias.Domain.Entities
         public string? ConexaoYouTubeId { get; set; }
         public string? CanalYouTubeId { get; set; }
         public int? YouTubeCredentialUserId { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
 
         public static MyApp.QueryBuilder.Query<PublicacaoAlbum> Query() => new MyApp.QueryBuilder.Query<PublicacaoAlbum>();
     }

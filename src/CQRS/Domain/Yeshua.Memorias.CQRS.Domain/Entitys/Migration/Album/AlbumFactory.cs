@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IAlbumEntity Create(int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status )
+                                    } public IAlbumEntity Create(int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica )
                             {
-                                return Create(null, id, titulo, descricao, privacidade, segundosporfoto, status);
+                                return Create(null, id, titulo, descricao, privacidade, segundosporfoto, status, qualidadevideo, modelovideo, musicaid, volumemusica);
                             }
 
                             public IAlbumEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string titulo, string? descricao, int privacidade, int segundosporfoto, int status, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica, ulong? trackingMask = null )
                             {
-                            var entity = new AlbumEntity(id, titulo, descricao, privacidade, segundosporfoto, status );
+                            var entity = new AlbumEntity(id, titulo, descricao, privacidade, segundosporfoto, status, qualidadevideo, modelovideo, musicaid, volumemusica );
 
 
                             var effectiveTrackingMask = trackingMask ??

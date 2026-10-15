@@ -214,6 +214,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByRotacao(int value )
+        {
+            var query = _query.ExistsByRotacaoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public AlbumFotoDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -294,6 +302,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public AlbumFotoDTO FirstByRotacao(int value )
+        {
+            var query = _query.FirstByRotacaoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<AlbumFotoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<AlbumFotoDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -369,6 +385,14 @@ namespace Read.Repository
         public IEnumerable<AlbumFotoDTO> GetAllByOperationalEntityId(string value )
         {
             var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.Query<AlbumFotoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<AlbumFotoDTO> GetAllByRotacao(int value )
+        {
+            var query = _query.FirstByRotacaoQuery(value );
 
                 var result = _unitOfWork.Query<AlbumFotoDTO>(query.Query,query.Parameters).ToList();
                 return result;

@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] from [PublicacaoAlbum] ";
+            this.Query = $@" select [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] from [PublicacaoAlbum] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (Command.AlbumId.HasValue) dict["AlbumId"] = Command.AlbumId.Value;
@@ -70,6 +70,23 @@ if (!string.IsNullOrEmpty(Command.CanalYouTubeId)) dict["CanalYouTubeId"] = $"%{
 if (!string.IsNullOrEmpty(Command.CanalYouTubeId)) whereClauses.Add($"[CanalYouTubeId] like @CanalYouTubeId");
 if (Command.YouTubeCredentialUserId.HasValue) dict["YouTubeCredentialUserId"] = Command.YouTubeCredentialUserId.Value;
 if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredentialUserId] = @YouTubeCredentialUserId");
+if (Command.QualidadeVideo.HasValue)
+{
+    dict["QualidadeVideo"] = Command.QualidadeVideo.Value;
+    whereClauses.Add($"[QualidadeVideo] = @QualidadeVideo");
+}
+if (Command.ModeloVideo.HasValue)
+{
+    dict["ModeloVideo"] = Command.ModeloVideo.Value;
+    whereClauses.Add($"[ModeloVideo] = @ModeloVideo");
+}
+if (Command.MusicaId.HasValue)
+{
+    dict["MusicaId"] = Command.MusicaId.Value;
+    whereClauses.Add($"[MusicaId] = @MusicaId");
+}
+if (Command.VolumeMusica.HasValue) dict["VolumeMusica"] = Command.VolumeMusica.Value;
+if (Command.VolumeMusica.HasValue) whereClauses.Add($"[VolumeMusica] = @VolumeMusica");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -494,12 +511,80 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByQualidadeVideoQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["QualidadeVideo"] = value; //04
+                      whereClauses.Add($" [QualidadeVideo] = @QualidadeVideo ");//04
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByModeloVideoQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["ModeloVideo"] = value; //04
+                      whereClauses.Add($" [ModeloVideo] = @ModeloVideo ");//04
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByMusicaIdQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["MusicaId"] = value; //04
+                      whereClauses.Add($" [MusicaId] = @MusicaId ");//04
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByVolumeMusicaQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["VolumeMusica"] = value; //04
+                      whereClauses.Add($" [VolumeMusica] = @VolumeMusica ");//04
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -516,7 +601,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -533,7 +618,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -550,7 +635,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -567,7 +652,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -584,7 +669,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -601,7 +686,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -618,7 +703,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -635,7 +720,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -652,7 +737,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -669,7 +754,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -686,7 +771,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -703,7 +788,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -720,7 +805,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -737,7 +822,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -754,7 +839,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -771,7 +856,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -788,7 +873,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -805,7 +890,7 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId] FROM [PublicacaoAlbum] ";
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -814,6 +899,74 @@ if (Command.YouTubeCredentialUserId.HasValue) whereClauses.Add($"[YouTubeCredent
                       whereClauses.Add($" [YouTubeCredentialUserId] = @YouTubeCredentialUserId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByQualidadeVideoQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["QualidadeVideo"] = value; //06
+                      whereClauses.Add($" [QualidadeVideo] = @QualidadeVideo ");//06
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByModeloVideoQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["ModeloVideo"] = value; //06
+                      whereClauses.Add($" [ModeloVideo] = @ModeloVideo ");//06
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByMusicaIdQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["MusicaId"] = value; //06
+                      whereClauses.Add($" [MusicaId] = @MusicaId ");//06
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByVolumeMusicaQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica] FROM [PublicacaoAlbum] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["VolumeMusica"] = value; //06
+                      whereClauses.Add($" [VolumeMusica] = @VolumeMusica ");//06
+            if (whereClauses.Any())
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }

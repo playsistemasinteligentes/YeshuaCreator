@@ -101,6 +101,46 @@ Falha de envio registra estado 90 e mensagem segura na publicacao. A saga contin
 
 ## Validacao
 
+### Classes de qualidade
+
+O seletor Qualidade do video possui IDs estaveis independentes da futura
+politica comercial: 1 Economica (HD 720p, CRF 23), 2 Padrao (Full HD 1080p,
+CRF 18) e 3 Alta (4K 2160p, CRF 18). Todos usam 30 fps. Ainda nao existem
+precos, planos, pagamentos nem restricoes comerciais entre essas classes.
+
+O Album grava a escolha e PublicacaoAlbum captura a classe ao solicitar.
+Manifestos e retries usam a classe da publicacao, mesmo que o album seja
+editado depois. NULL/zero em registros anteriores e tratado como Padrao,
+nunca como classe invalida ou como a escolha atual do album. As novas colunas
+permanecem nullable para permitir a migration de bases existentes.
+
+O .NET define os parametros; o renderer somente aplica width/height/fps/crf
+do manifesto. O CRF explicito prevalece sobre `FFMPEG_CRF`, mantido como
+fallback para manifestos antigos. Testes geram videos reais em 720p, 1080p e
+4K e validam dimensoes, giro e parametro de compressao. Nenhuma dessas
+classes e arquivo de preservacao sem perdas nem garante recuperar originais.
+
+### Orientacao das fotos
+
+No Estudio, as fotos selecionadas oferecem giros de 90 graus para esquerda,
+direita e 180 graus. O envio salva essa orientacao no vinculo AlbumFoto, sem
+reescrever o arquivo. Nas fotos ja enviadas, o botao Girar foto abre a previa
+privada e Salvar orientacao confirma a mudanca. Durante publicacao os controles
+ficam bloqueados; a validacao tambem acontece no servidor.
+
+O manifesto leva `rotationDegrees` por foto, com zero como padrao para
+manifestos antigos. FFmpeg aplica primeiro a orientacao de metadados, depois
+o giro manual e o ajuste sem corte ao quadro do video. Registros antigos de
+AlbumFoto aceitam NULL na nova coluna; o DTO os representa como zero. O campo
+imutavel no CRUD evita que a edicao de legenda/ordem apague a orientacao.
+
+`tests/Media/Memorias/test_rotation.py` usa Python, Pillow e FFmpeg local para
+validar pixels de todos os giros, retrato/paisagem, EXIF, video com orientacoes
+mistas, manifesto legado e rejeicao de angulos invalidos. Execute
+`python tests/Media/Memorias/test_rotation.py`; FFmpeg deve estar no PATH ou
+em `FFMPEG_BINARY`. Os testes de tela usam API simulada e tamanhos desktop e
+celular; nao substituem homologacao em iPhone fisico ou no servidor publicado.
+
 Os testes BusinessSmoke usam repositorio cifrado real em diretorio temporario, Google/HTTP simulados, ownership por tenant/usuario, N canais, PKCE/state, replay, refresh/revogacao, destino imutavel, retomada e falhas ambiguas. Os testes Playwright cobrem desktop e celular, callback, negacao/expiracao e ausencia de polling.
 
 A suite CRUD gerada permite `CustomizeExecution` em Custon. PublicacaoAlbum verifica leitura e rejeicao da criacao CRUD, sem fabricar uma publicacao nem furar o DomainBehavior. A seed tambem respeita esse controle. Testes HTTP reais exigem ambiente explicitamente configurado; testes locais simulados nao comprovam consentimento ou publicacao real no Google.
@@ -110,3 +150,23 @@ A suite CRUD gerada permite `CustomizeExecution` em Custon. PublicacaoAlbum veri
 Modalidade simplificada: cliente com identidade limitada em tenant gerenciado, fotos/pagamento e recebimento do link, usando uma conexao do servico sem expor OAuth ao cliente. Reutilizar os mesmos commands/saga/storage; separar solicitante de responsavel pela credencial. A primeira implementacao aceita somente conexoes particulares do proprio usuario; compartilhamento e canais de servico exigem politica explicita e confirmacao de pagamento no servidor.
 
 Consentimento/publicacao real no YouTube depende de Client ID/Secret do aplicativo e autorizacao humana do canal. Nenhum teste automatizado deve substituir esse consentimento por credenciais falsas em producao.
+
+## Modelos E Musica
+
+O Estudio salva modelo, trilha e volume no album. A solicitacao de publicacao
+captura essas escolhas, como ja faz com qualidade e canal. Modelo Classico
+mantem fotos estaticas; Romantico aproxima, Aventura desloca lateralmente e
+Celebracao afasta. Modelos animados usam fades curtos pelo preto.
+
+O catalogo inicial tem Air Prelude, Adventure Meme e Carefree, de Kevin MacLeod,
+com CC BY 4.0 e atribuicao automatica na descricao do video. Consulte
+`music/LICENSE.md` e `music/SHA256SUMS`. Sao faixas do catalogo do compositor,
+nao uma listagem automatica da Biblioteca de Audio do YouTube; licenca nao e
+garantia contra reivindicacoes de terceiros. O usuario pode escolher Sem musica.
+
+O deploy padrao instala as trilhas versionadas em
+`/root/YeshuaStorage/persistent/memorias/music`, verificando os hashes e sem
+sobrescrever arquivos divergentes. API, Worker e renderer compartilham esse
+storage. Para desenvolvimento local, copiar os mesmos arquivos para
+`storage/persistent/memorias/music` do host; sem eles a tela indica indisponivel.
+Nao precisa configurar credenciais Google para ouvir o catalogo.

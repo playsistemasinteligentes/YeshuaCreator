@@ -30,6 +30,7 @@
             public const ulong Changed = 1UL << 7;
             public const ulong UserId = 1UL << 8;
             public const ulong OperationalEntityId = 1UL << 9;
+            public const ulong Rotacao = 1UL << 10;
         }
 
         public static class AlbumFotoOperationalFields
@@ -44,6 +45,7 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Rotacao = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class AlbumFotoDecorator : IAlbumFotoEntity
@@ -207,6 +209,7 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+    public int? Rotacao => _inner.Rotacao;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

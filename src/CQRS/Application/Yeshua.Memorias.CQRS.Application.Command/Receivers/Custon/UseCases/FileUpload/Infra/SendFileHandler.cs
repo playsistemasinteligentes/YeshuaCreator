@@ -208,7 +208,8 @@ namespace Command.Receivers.UseCase
                     albumid: albumId,
                     fotoid: foto.Id!.Value,
                     ordem: nextOrder,
-                    legenda: null);
+                    legenda: null,
+                    rotacao: comand.Rotacao);
 
                 var linkValidation = AlbumFotoDomainBehavior.Apply(albumFoto, context);
                 if (!linkValidation.IsValid)
@@ -261,6 +262,10 @@ namespace Command.Receivers.UseCase
 
         private void ValidateCommand(SendFileInputCommand command)
         {
+            if (command.Rotacao is not (0 or 90 or 180 or 270))
+                throw new ReceiverException<SendFileOutputCommand>(
+                    ValidationError("A rotacao deve ser 0, 90, 180 ou 270 graus."));
+
             if (string.IsNullOrWhiteSpace(command.token))
             {
                 throw new ReceiverException<SendFileOutputCommand>(

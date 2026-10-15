@@ -82,6 +82,7 @@ public partial class AlbumFotoCrudApiSmokeTests : ApiIntegrationTestBase
             ["FotoId"] = ApiSmokeTestContext.GetRequiredCreatedId("Foto", "FotoId"),
             ["Ordem"] = 1,
             ["Legenda"] = ApiTestData.Text("AlbumFoto Legenda", 80),
+            ["Rotacao"] = 1,
         };
     }
 
@@ -102,6 +103,7 @@ public partial class AlbumFotoCrudApiSmokeTests : ApiIntegrationTestBase
         payload["FotoId"] = ApiSmokeTestContext.GetRequiredCreatedId("Foto", "FotoId");
         payload["Ordem"] = 2;
         payload["Legenda"] = ApiTestData.Text("AlbumFoto Legenda Update", 80);
+        payload["Rotacao"] = 2;
         return payload;
     }
 

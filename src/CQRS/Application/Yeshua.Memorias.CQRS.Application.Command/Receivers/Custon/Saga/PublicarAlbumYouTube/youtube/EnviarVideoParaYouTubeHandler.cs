@@ -60,7 +60,7 @@ namespace Command.Receivers
                     new YouTubeOwner(publicacao.tenantid, publicacao.youtubecredentialuserid),
                     publicacaoId, publicacao.conexaoyoutubeid, publicacao.canalyoutubeid, publicacao.videostoragekey,
                     string.IsNullOrWhiteSpace(album.titulo) ? $"Album {album.id}" : album.titulo,
-                    album.descricao ?? string.Empty, ResolvePrivacyStatus(album.privacidade)),
+                    BuildDescription(album.descricao, publicacao.musicaid), ResolvePrivacyStatus(album.privacidade)),
                     videoStream, CancellationToken.None).GetAwaiter().GetResult();
             }
             catch (Exception exception) when (exception is YouTubeConnectionException or YouTubeUploadReviewException)
@@ -91,6 +91,12 @@ namespace Command.Receivers
 
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {
+        }
+
+        private static string BuildDescription(string? description, int musicId)
+        {
+            var track = Dominio.Media.VideoPresentation.FindMusic(musicId);
+            return track == null ? description ?? string.Empty : $"{description}\n\n{track.Credits}".Trim();
         }
 
         private static string ResolvePrivacyStatus(int privacidade)

@@ -2,7 +2,8 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261014-youtube-reuse01';
+const version = '20261015-video-models01';
+const qualityNames = {1:'Economica (HD 720p)',2:'Padrao (Full HD 1080p)',3:'Alta (4K 2160p)'};
 const stepNames = [
     ['PrepararManifestoAlbum', 'Manifesto', 'fa-list-check'],
     ['RenderizarVideoAlbum', 'Video', 'fa-film'],
@@ -56,6 +57,8 @@ class Studio {
         this.albums = []; this.album = null; this.dirty = false; this.queue = []; this.channels = [];
         this.photos = []; this.photoEdits = new Set(); this.publications = []; this.publication = null; this.steps = [];
         this.photosLoaded = false; this.publicationsLoaded = false;
+        this.photoPreview = null;
+        this.models = []; this.music = []; this.audioUrl = null;
         this.albumsPage = createPaginationState({pageSize:8});
         this.photosPage = createPaginationState({pageSize:12});
         this.observer = new MutationObserver(() => {
@@ -74,6 +77,8 @@ class Studio {
         if (this.disposed) return;
         const secret = this.el('config-secret'); if (secret) secret.value = '';
         this.el('config-dialog')?.close();
+        this.el('photo-dialog')?.close(); this.closePhoto();
+        this.stopMusic();
         this.disposed = true; this.controller.abort(); this.observer.disconnect(); this.clearQueue();
     }
     feedback(message, error = false) {
@@ -87,7 +92,8 @@ class Studio {
         catch (error) {
             if (!this.disposed && error.name !== 'AbortError') {
                 const message = error.message || 'Nao foi possivel concluir a operacao.';
-                if (this.el('config-dialog').open) { this.text('config-feedback', message); this.el('config-feedback').dataset.error = 'true'; }
+                if (this.el('photo-dialog').open) { this.text('photo-feedback', message); this.el('photo-feedback').dataset.error = 'true'; }
+                else if (this.el('config-dialog').open) { this.text('config-feedback', message); this.el('config-feedback').dataset.error = 'true'; }
                 else this.feedback(message, true);
             }
         }
@@ -115,6 +121,14 @@ class Studio {
         on('album-fields', 'input', () => { this.dirty = true; this.updateControls(); });
         on('files', 'change', () => this.selectFiles());
         on('channel', 'change', () => this.updateControls());
+        on('model', 'change', () => {
+            const suggested = this.models.find(model => model.id === Number(this.el('model').value))?.musicaSugeridaId || 0;
+            this.el('music').value = String(this.music.some(track => track.id === suggested && track.disponivel) ? suggested : 0);
+            this.stopMusic(); this.renderMusic(); this.dirty = true; this.updateControls();
+        });
+        on('music', 'change', () => { this.stopMusic(); this.renderMusic(); this.dirty = true; this.updateControls(); });
+        on('volume', 'input', () => { this.text('volume-value', `${this.el('volume').value}%`); this.el('audio').volume = Number(this.el('volume').value) / 100; });
+        click('listen', () => this.listenMusic());
         on('history', 'change', () => this.run(async () => {
             this.publication = this.publications.find(item => item.id === Number(this.el('history').value)) || null;
             await this.loadSteps(); this.renderPublication();
@@ -135,6 +149,12 @@ class Studio {
         on('config-form', 'submit', event => { event.preventDefault(); this.run(() => this.saveConfiguration()); });
         click('config-refresh', () => this.loadConfiguration());
         click('config-copy', async () => { await navigator.clipboard.writeText(this.configuration.redirectUri); this.text('config-feedback', 'Endereco copiado.'); });
+        on('photo-close', 'click', () => { this.closePhoto(); this.el('photo-dialog').close(); });
+        on('photo-dialog', 'close', () => this.closePhoto());
+        on('photo-left', 'click', () => this.rotatePhoto(-90));
+        on('photo-right', 'click', () => this.rotatePhoto(90));
+        on('photo-invert', 'click', () => this.rotatePhoto(180));
+        click('photo-save', () => this.savePhotoOrientation());
         click('connect', () => this.authorize(''));
         click('reconnect', () => this.authorize(this.selectedChannel()?.conexaoId));
         click('disconnect', () => this.disconnect());
@@ -150,6 +170,7 @@ class Studio {
             if (!Number.isInteger(this.userId) || this.userId <= 0) throw new Error('Sessao invalida. Entre novamente no Memorias.');
             const id = Number(sessionStorage.getItem('memorias.studio.album'));
             this.openNewAlbum();
+            await this.loadModels();
             await this.loadAlbums(1);
             if (id > 0) await this.openAlbum(id);
             await this.loadChannels();
@@ -172,6 +193,7 @@ class Studio {
         this.latestSagaInProgress = false;
         this.photosPage = createPaginationState({pageSize:12}); this.text('updated-at', '');
         this.el('album-form').reset(); this.text('heading', 'Novo album'); this.text('album-badge', 'Novo');
+        this.stopMusic(); this.renderMusic();
         this.renderQueue(); this.renderPhotos(); this.renderPublication(); this.renderAlbums(); this.updateControls();
     }
     async loadAlbums(page) {
@@ -204,6 +226,11 @@ class Studio {
         this.photosPage = createPaginationState({pageSize:12}); this.text('updated-at', '');
         this.el('title').value = album.titulo || ''; this.el('description').value = album.descricao || '';
         this.el('privacy').value = String(album.privacidade); this.el('duration').value = album.segundosporfoto;
+        this.el('quality').value = String(album.qualidadevideo || 2);
+        this.el('model').value = String(album.modelovideo || 1);
+        this.el('music').value = String(album.musicaid || 0);
+        this.el('volume').value = String(album.volumemusica ?? 35);
+        this.stopMusic(); this.renderMusic();
         sessionStorage.setItem('memorias.studio.album', String(id));
         this.text('heading', album.titulo); this.text('album-badge', `#${id}`);
         this.renderAlbums(); this.renderQueue(); this.renderPhotos(); this.renderPublication();
@@ -214,10 +241,13 @@ class Studio {
         if (this.photoEdits.size) throw new Error('Salve as alteracoes das fotos antes de salvar o album.');
         if (!this.el('album-form').reportValidity()) return;
         const body = {id:this.album?.id, titulo:this.el('title').value.trim(), descricao:this.el('description').value.trim(),
-            privacidade:Number(this.el('privacy').value), segundosPorFoto:Number(this.el('duration').value), status:this.album?.status || 1};
+            privacidade:Number(this.el('privacy').value), segundosPorFoto:Number(this.el('duration').value),
+            qualidadeVideo:Number(this.el('quality').value), modeloVideo:Number(this.el('model').value),
+            musicaId:Number(this.el('music').value), volumeMusica:Number(this.el('volume').value), status:this.album?.status || 1};
         if (!body.titulo) throw new Error('Informe o titulo do album.');
         if (!Number.isInteger(body.segundosPorFoto) || body.segundosPorFoto < 1 || body.segundosPorFoto > 60)
             throw new Error('Informe de 1 a 60 segundos por foto.');
+        if (!qualityNames[body.qualidadeVideo]) throw new Error('Selecione uma qualidade de video valida.');
         const result = await this.api(`/Album/${this.album ? 'Put' : 'Post'}Album`, body, this.album ? 'PUT' : 'POST');
         const saved = result.data;
         if (!saved?.id) throw new Error('A API nao confirmou o album.');
@@ -232,7 +262,7 @@ class Studio {
         const files = Array.from(this.el('files').files || []);
         const invalid = files.find(file => !/\.(jpe?g|png|webp)$/i.test(file.name) || file.size <= 0 || file.size > 25*1024*1024);
         if (invalid) { this.el('files').value = ''; this.feedback(`${invalid.name}: envie JPEG, PNG ou WebP de ate 25 MB.`, true); return; }
-        this.queue.push(...files.map(file => ({file, url:URL.createObjectURL(file), token:null, done:false})));
+        this.queue.push(...files.map(file => ({file, url:URL.createObjectURL(file), token:null, done:false,rotation:0})));
         this.el('files').value = ''; this.renderQueue(); this.updateControls();
     }
     clearQueue() {
@@ -242,10 +272,18 @@ class Studio {
         const previews = this.el('file-previews'); previews.replaceChildren();
         for (const photo of this.queue) {
             const figure = document.createElement('figure'); const image = document.createElement('img');
-            image.src = photo.url; image.alt = photo.file.name;
+            image.src = photo.url; image.alt = photo.file.name; image.style.transform = `rotate(${photo.rotation}deg)`;
+            const frame = document.createElement('div'); frame.className = 'mem-preview-image'; frame.append(image);
             const caption = document.createElement('figcaption'); caption.textContent = photo.file.name;
             const state = document.createElement('span'); state.className = 'mem-upload-state'; state.textContent = photo.done ? 'Enviada' : 'Selecionada';
-            caption.append(state); figure.append(image, caption); previews.append(figure);
+            const tools = document.createElement('div'); tools.className = 'mem-preview-tools';
+            for (const [delta,label,icon] of [[-90,'Girar para a esquerda','fa-rotate-left'],[90,'Girar para a direita','fa-rotate-right'],[180,'Girar 180 graus','fa-arrows-rotate']]) {
+                const button = iconButton(`${label}: ${photo.file.name}`, icon);
+                button.disabled = this.busy || photo.done || Boolean(photo.token);
+                button.onclick = () => { if (!this.busy && !photo.done && !photo.token) { photo.rotation = (photo.rotation + delta + 360) % 360; this.renderQueue(); this.updateControls(); } };
+                tools.append(button);
+            }
+            caption.append(state); figure.append(frame, caption,tools); previews.append(figure);
         }
         this.text('file-count', this.queue.length ? `${this.queue.filter(photo => photo.done).length}/${this.queue.length} enviadas` : '');
         const progress = this.el('upload-progress'); progress.hidden = !this.queue.length;
@@ -263,6 +301,7 @@ class Studio {
             }
             const form = new FormData(); form.append('token', photo.token); form.append('ChunkIndex', '0'); form.append('IsFinalChunk', 'true');
             form.append('FileName', photo.file.name); form.append('ContentType', photo.file.type); form.append('FileStream', photo.file, photo.file.name);
+            form.append('Rotacao', String(photo.rotation));
             const result = await this.api('/FileUpload/InfraSendFileUseCase', form);
             if (!result.success || !result.isFinalized) throw new Error('A API nao confirmou o envio da foto.');
             photo.done = true; this.renderQueue();
@@ -288,6 +327,8 @@ class Studio {
             const caption = document.createElement('input'); caption.maxLength = 500; caption.value = photo.legenda || ''; caption.setAttribute('aria-label', `Legenda da foto ${photo.fotoid}`); captionLabel.append(caption);
             const orderLabel = document.createElement('label'); orderLabel.textContent = 'Ordem';
             const order = document.createElement('input'); order.type = 'number'; order.min = 1; order.step = 1; order.value = photo.ordem; order.setAttribute('aria-label', `Ordem da foto ${photo.fotoid}`); orderLabel.append(order);
+            const rotate = iconButton(`Girar foto ${photo.fotoid}`, 'fa-rotate-right');
+            rotate.onclick = () => this.run(() => this.openPhoto(photo));
             const save = iconButton('Salvar foto', 'fa-floppy-disk');
             const changed = () => { this.photoEdits.add(photo.id); this.updateControls(); };
             caption.oninput = changed; order.oninput = changed;
@@ -304,10 +345,84 @@ class Studio {
                 await this.api('/AlbumFoto/DeleteAlbumFoto', {id:photo.id,albumId:this.album.id,fotoId:photo.fotoid,ordem:photo.ordem,legenda:photo.legenda}, 'DELETE');
                 await this.loadPhotos(1); this.feedback('Foto removida do album.');
             });
-            row.append(id,captionLabel,orderLabel,save,remove); list.append(row);
+            const tools = document.createElement('div'); tools.className = 'mem-photo-tools'; tools.append(rotate,save,remove);
+            row.append(id,captionLabel,orderLabel,tools); list.append(row);
         }
         this.text('photo-count', this.photos.length ? `${this.photos.length} foto(s) carregada(s)` : '');
         this.el('more-photos').hidden = !this.photosPage.hasNext;
+    }
+    async openPhoto(photo) {
+        if (this.publicationInProgress()) throw new Error('O album possui uma publicacao em andamento.');
+        this.closePhoto();
+        const preview = {photo,rotation:photo.rotacao || 0,url:null}; this.photoPreview = preview;
+        this.text('photo-feedback', 'Carregando foto...'); this.el('photo-feedback').dataset.error = 'false';
+        this.el('photo-image').hidden = true; this.renderPhotoOrientation(); this.el('photo-dialog').showModal();
+        const response = await apiFetch(`${environments.urlApi}/Memorias/fotos/${photo.fotoid}/arquivo`, {signal:this.controller.signal});
+        if (!response.ok || !/^image\/(jpeg|png|webp)(;|$)/i.test(response.headers.get('Content-Type') || ''))
+            throw new Error('Nao foi possivel carregar esta foto.');
+        const blob = await response.blob();
+        if (this.disposed || this.photoPreview !== preview) return;
+        preview.url = URL.createObjectURL(blob);
+        this.el('photo-image').src = preview.url; this.el('photo-image').hidden = false;
+        this.text('photo-feedback', ''); this.renderPhotoOrientation();
+    }
+    closePhoto() {
+        if (this.photoPreview?.url) URL.revokeObjectURL(this.photoPreview.url);
+        this.photoPreview = null;
+        const image = this.el('photo-image'); if (image) { image.removeAttribute('src'); image.hidden = true; }
+    }
+    rotatePhoto(delta) {
+        if (this.busy || !this.photoPreview?.url) return;
+        this.photoPreview.rotation = (this.photoPreview.rotation + delta + 360) % 360;
+        this.renderPhotoOrientation();
+    }
+    renderPhotoOrientation() {
+        const rotation = this.photoPreview?.rotation || 0;
+        this.el('photo-image').style.transform = `rotate(${rotation}deg)`;
+        this.text('photo-angle', `${rotation} graus`);
+    }
+    async savePhotoOrientation() {
+        const preview = this.photoPreview;
+        if (!preview?.url || this.publicationInProgress()) return;
+        const result = await this.command('FotosGirarFoto', {albumFotoId:preview.photo.id,rotacao:preview.rotation});
+        preview.photo.rotacao = result.rotacao;
+        this.closePhoto(); this.el('photo-dialog').close(); this.feedback('Orientacao da foto salva.');
+    }
+    async loadModels() {
+        const catalogue = await this.command('ApresentacaoConsultarModelosVideo');
+        this.models = catalogue.modelos || []; this.music = catalogue.musicas || [];
+        this.el('music').replaceChildren(new Option('Sem musica', '0'));
+        for (const track of this.music) {
+            const option = new Option(`${track.titulo} - ${track.categoria}${track.disponivel ? '' : ' (indisponivel)'}`, track.id);
+            option.disabled = !track.disponivel; this.el('music').append(option);
+        }
+        this.renderMusic();
+    }
+    renderMusic() {
+        const track = this.music.find(item => item.id === Number(this.el('music').value));
+        this.text('music-credit', track ? `${track.autor} / ${track.licenca}` : '');
+        this.text('volume-value', `${this.el('volume').value}%`);
+        this.el('music-license').hidden = !track;
+        this.el('music-license').href = 'https://creativecommons.org/licenses/by/4.0/';
+    }
+    stopMusic() {
+        const audio = this.el('audio');
+        if (audio) { audio.pause(); audio.removeAttribute('src'); audio.load(); audio.hidden = true; }
+        if (this.audioUrl) URL.revokeObjectURL(this.audioUrl);
+        this.audioUrl = null;
+    }
+    async listenMusic() {
+        const track = this.music.find(item => item.id === Number(this.el('music').value) && item.disponivel);
+        if (!track) return;
+        this.stopMusic();
+        const response = await apiFetch(`${environments.urlApi}/Memorias/musicas/${track.id}/arquivo`, {signal:this.controller.signal});
+        if (!response.ok || !/^audio\/mpeg(;|$)/i.test(response.headers.get('Content-Type') || '')) throw new Error('Musica indisponivel.');
+        const blob = await response.blob();
+        if (this.disposed) return;
+        this.audioUrl = URL.createObjectURL(blob);
+        const audio = this.el('audio'); audio.src = this.audioUrl; audio.volume = Number(this.el('volume').value) / 100; audio.hidden = false;
+        try { await audio.play(); }
+        catch (error) { if (error.name !== 'NotAllowedError') throw error; }
     }
     async loadChannels() {
         const result = await this.command('YouTubeListarConexoesYouTube');
@@ -422,6 +537,10 @@ class Studio {
         this.text('publication-state', publication ? `#${publication.id} - ${publicationNames[publication.status] || 'Em processamento'}` : 'Ainda nao solicitada');
         this.text('publication-message', publication?.mensagem || '');
         this.text('publication-destination', publication?.canalyoutubeid ? `Canal desta publicacao: ${publication.canalyoutubeid}` : '');
+        this.text('publication-quality', publication ? `Qualidade: ${qualityNames[publication.qualidadevideo || 2] || 'Indisponivel'}` : '');
+        const model = this.models.find(item => item.id === (publication?.modelovideo || 1));
+        const track = this.music.find(item => item.id === publication?.musicaid);
+        this.text('publication-model', publication ? `${model?.nome || 'Classico'} / ${track?.titulo || 'Sem musica'}` : '');
         if (publication?.conexaoyoutubeid && this.destinationLocked()) {
             this.el('channel').value = publication.conexaoyoutubeid;
         }
@@ -469,7 +588,12 @@ class Studio {
         const publishing = this.publicationInProgress();
         this.el('album-fields').disabled = this.busy || publishing;
         this.el('save').disabled = this.busy || publishing;
+        const track = this.music.find(item => item.id === Number(this.el('music').value));
+        this.el('volume').disabled = this.busy || publishing || !track;
+        this.el('listen').disabled = this.busy || publishing || !track?.disponivel;
         this.el('photo-list').querySelectorAll('input,button').forEach(element => element.disabled = this.busy || publishing);
+        this.el('file-previews').querySelectorAll('figure').forEach((figure,index) => figure.querySelectorAll('button').forEach(button => button.disabled = this.busy || this.queue[index].done || Boolean(this.queue[index].token)));
+        for (const id of ['photo-left','photo-right','photo-invert','photo-save']) this.el(id).disabled = this.busy || publishing || !this.photoPreview?.url;
         this.el('prev').disabled = this.busy || this.albumsPage.page <= 1;
         this.el('next').disabled = this.busy || !this.albumsPage.hasNext;
         const albumReady = Boolean(this.album?.id) && !this.dirty;

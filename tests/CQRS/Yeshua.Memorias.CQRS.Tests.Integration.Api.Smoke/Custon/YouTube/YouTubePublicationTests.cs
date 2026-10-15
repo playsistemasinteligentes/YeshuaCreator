@@ -28,6 +28,19 @@ namespace Yeshua.Memorias.Tests;
 public class YouTubePublicationTests
 {
     [Fact]
+    public async Task UploadIncludesAttributionForPinnedMusic()
+    {
+        using var rig = new RenderedRig();
+        rig.Publication.musicaid = 2;
+        rig.Publication.conexaoyoutubeid = (await rig.Connections.Connect("channel-a")).ConexaoId;
+        rig.Handler.Execute(rig.Saga, rig.Step);
+        Assert.Contains("Adventure Meme", rig.Upload.Description);
+        Assert.Contains("Kevin MacLeod", rig.Upload.Description);
+        Assert.Contains("https://creativecommons.org/licenses/by/4.0/", rig.Upload.Description);
+        Assert.DoesNotContain("Carefree", rig.Upload.Description);
+    }
+
+    [Fact]
     public async Task ExecutorWaitsForCredentialThenFinishesSameRenderedSaga()
     {
         using var rig = new RenderedRig();
@@ -90,7 +103,7 @@ public class YouTubePublicationTests
         var context = DomainOperationContext.Create(operation, DomainEntryPoint.Crud, "Crud", 7, 9);
         var entity = new PublicacaoAlbumFactory(TestProxy.For<ILogger>()).Create(
             context, 3, 5, Guid.NewGuid().ToString(), null, null, null, null, null,
-            DateTime.UtcNow, null, 45, Guid.NewGuid().ToString("N"), "channel-a", 9);
+            DateTime.UtcNow, null, 45, Guid.NewGuid().ToString("N"), "channel-a", 9, 2, null, null, null);
         var result = PublicacaoAlbumDomainBehavior.Apply(entity, context);
         Assert.Contains(result.Errors, error => error.Contains("comandos de solicitar e retomar"));
     }
@@ -110,6 +123,57 @@ public class YouTubePublicationTests
         Assert.Equal("channel-a", rig.Created.CanalYouTubeId);
         Assert.Equal(9, rig.Created.YouTubeCredentialUserId);
         Assert.Equal(new[] { "BeginTran", "Insert", "SaveSaga", "Commit" }, rig.Events);
+    }
+
+    [Theory]
+    [InlineData(0, 2)]
+    [InlineData(1, 1)]
+    [InlineData(2, 2)]
+    [InlineData(3, 3)]
+    public async Task PublicationCapturesQualityBeforeAlbumChanges(int selected, int expected)
+    {
+        using var rig = new RequestRig();
+        rig.Album.qualidadevideo = selected;
+        var channel = await rig.Connections.Connect("channel-a");
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId });
+        Assert.Equal(200, result.StatusCode);
+        Assert.Equal(expected, rig.Created!.QualidadeVideo);
+        rig.Album.qualidadevideo = 1;
+        Assert.Equal(expected, rig.Created.QualidadeVideo);
+    }
+
+    [Fact]
+    public async Task MissingSelectedTrackBlocksPublicationBeforeTransaction()
+    {
+        using var rig = new RequestRig();
+        rig.Album.musicaid = 1; rig.MusicAvailable = false;
+        var channel = await rig.Connections.Connect("channel-a");
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId });
+        Assert.Equal(400, result.StatusCode); Assert.Null(rig.Created); Assert.Empty(rig.Events);
+    }
+
+    [Fact]
+    public async Task PublicationPinsPresentationAndMusic()
+    {
+        using var rig = new RequestRig();
+        rig.Album.modelovideo = 3; rig.Album.musicaid = 2; rig.Album.volumemusica = 0;
+        var channel = await rig.Connections.Connect("channel-a");
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId });
+        Assert.Equal(200, result.StatusCode);
+        rig.Album.modelovideo = 1; rig.Album.musicaid = 0; rig.Album.volumemusica = 35;
+        Assert.Equal(3, rig.Created!.ModeloVideo); Assert.Equal(2, rig.Created.MusicaId); Assert.Equal(0, rig.Created.VolumeMusica);
+    }
+
+    [Fact]
+    public async Task InvalidAlbumQualityCannotCreatePublication()
+    {
+        using var rig = new RequestRig();
+        rig.Album.qualidadevideo = 99;
+        var channel = await rig.Connections.Connect("channel-a");
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId });
+        Assert.Equal(400, result.StatusCode);
+        Assert.Null(rig.Created);
+        Assert.Empty(rig.Events);
     }
 
     [Theory]
@@ -228,6 +292,7 @@ public class YouTubePublicationTests
             _ => null
         });
         public SolicitarPublicacaoAlbumHandler Handler { get; }
+        public bool MusicAvailable = true;
 
         public RequestRig()
         {
@@ -238,7 +303,8 @@ public class YouTubePublicationTests
                 {
                     Events.Add("Insert"); Created = (IPublicacaoAlbumEntity)args[0]!; Created.Id = 3; return null;
                 }),
-                TestProxy.For<IySagaWriteRepository>((_, _) => { Events.Add("SaveSaga"); return null; }), Connections.Service);
+                TestProxy.For<IySagaWriteRepository>((_, _) => { Events.Add("SaveSaga"); return null; }), Connections.Service,
+                TestProxy.For<IFileStorage>((_, _) => Task.FromResult(MusicAvailable)));
         }
         public void Dispose() => Connections.Dispose();
     }
@@ -278,6 +344,7 @@ public class YouTubePublicationTests
         public int Requests;
         public string? Token;
         public string? Privacy;
+        public string Description = string.Empty;
         public HttpStatusCode? Failure;
         public HttpClient CreateClient(string name) => new(this, false);
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -288,6 +355,7 @@ public class YouTubePublicationTests
             {
                 using var json = JsonDocument.Parse(await request.Content!.ReadAsStringAsync(cancellationToken));
                 Privacy = json.RootElement.GetProperty("status").GetProperty("privacyStatus").GetString();
+                Description = json.RootElement.GetProperty("snippet").GetProperty("description").GetString()!;
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Headers.Location = new("https://www.googleapis.com/upload/youtube/v3/videos?upload_id=test");
                 return response;

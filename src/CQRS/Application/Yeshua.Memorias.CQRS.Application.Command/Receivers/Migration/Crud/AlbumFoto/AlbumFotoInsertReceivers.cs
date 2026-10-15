@@ -54,7 +54,7 @@ namespace Command.Receivers.Write
                  if (!hasExecutionIdentity && trackingMask != 0UL)
                      executionIdentity = _executionContext.OperationalIdentity;
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertAlbumFoto", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertAlbumFotoReceiver), commandName: "Command.Write.AlbumFotoCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
-                 var albumfoto = new AlbumFotoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.FotoId, c.Ordem, c.Legenda, trackingMask: trackingMask);
+                 var albumfoto = new AlbumFotoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.AlbumId, c.FotoId, c.Ordem, c.Legenda, c.Rotacao, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", albumfoto.OperationalEntityId);
                  var domainResult = AlbumFotoDomainBehavior.Apply(albumfoto, context);
                  if (!domainResult.IsValid)

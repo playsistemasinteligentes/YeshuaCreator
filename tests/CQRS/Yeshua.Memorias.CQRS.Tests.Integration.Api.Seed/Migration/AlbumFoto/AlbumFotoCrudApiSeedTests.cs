@@ -60,6 +60,7 @@ public partial class AlbumFotoCrudApiSeedTests : ApiIntegrationTestBase
             ["FotoId"] = ApiSeedTestContext.GetRequiredCreatedId("Foto", "FotoId"),
             ["Ordem"] = 1,
             ["Legenda"] = ApiTestData.Text("AlbumFoto Legenda", 80),
+            ["Rotacao"] = 1,
         };
     }
 
@@ -80,6 +81,7 @@ public partial class AlbumFotoCrudApiSeedTests : ApiIntegrationTestBase
         payload["FotoId"] = ApiSeedTestContext.GetRequiredCreatedId("Foto", "FotoId");
         payload["Ordem"] = 2;
         payload["Legenda"] = ApiTestData.Text("AlbumFoto Legenda Update", 80);
+        payload["Rotacao"] = 2;
         return payload;
     }
 

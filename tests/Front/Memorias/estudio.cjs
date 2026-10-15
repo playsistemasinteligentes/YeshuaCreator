@@ -36,7 +36,7 @@ async function main() {
             const channels = [structuredClone(channelA),structuredClone(channelB)];
             let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
             const testSecret = 'GOCSPX-test-secret-only';
-            let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false;
+            let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false, failRotation = false, photoPng;
             page.on('pageerror', error => errors.push(error.message));
             page.on('dialog',dialog => acceptDialogs ? dialog.accept() : dialog.dismiss());
             await page.route('**/apps/memorias/yapi/**', async route => {
@@ -45,6 +45,21 @@ async function main() {
                 const body = req.headers()['content-type']?.includes('application/json') ? req.postDataJSON() : {};
                 calls.push({endpoint,body});
                 const respond = json => route.fulfill({json});
+                if (/\/Memorias\/musicas\/\d+\/arquivo$/.test(endpoint)) return route.fulfill({contentType:'audio/mpeg',body:fs.readFileSync(path.resolve(__dirname,'../../../infra/Memorias/DockerCompose/music/air-prelude-v1.mp3'))});
+                if (endpoint.includes('ApresentacaoConsultarModelosVideo')) return respond({
+                    modelos:[{id:1,nome:'Classico',musicaSugeridaId:0},{id:2,nome:'Romantico',musicaSugeridaId:1},{id:3,nome:'Aventura',musicaSugeridaId:2},{id:4,nome:'Celebracao',musicaSugeridaId:3}],
+                    musicas:[{id:1,titulo:'Air Prelude',autor:'Kevin MacLeod',categoria:'Romantico',licenca:'CC BY 4.0',disponivel:true},{id:2,titulo:'Adventure Meme',autor:'Kevin MacLeod',categoria:'Aventura',licenca:'CC BY 4.0',disponivel:true},{id:3,titulo:'Carefree',autor:'Kevin MacLeod',categoria:'Celebracao',licenca:'CC BY 4.0',disponivel:false}]
+                });
+                if (/\/Memorias\/fotos\/\d+\/arquivo$/.test(endpoint)) {
+                    assert.equal(req.method(),'GET');
+                    return route.fulfill({contentType:'image/png',body:photoPng});
+                }
+                if (endpoint.includes('FotosGirarFoto')) {
+                    if (failRotation) { failRotation=false;return route.fulfill({status:400,json:{message:'Album em publicacao.'}}); }
+                    const photo=photos.find(item=>item.id===body.albumFotoId);
+                    assert.ok([0,90,180,270].includes(body.rotacao));photo.rotacao=body.rotacao;
+                    return respond({albumFotoId:body.albumFotoId,rotacao:body.rotacao});
+                }
                 if (endpoint.includes('YouTubeConsultarConfiguracao')) return respond(configuration);
                 if (endpoint.includes('YouTubeSalvarConfiguracao')) {
                     assert.equal(body.clientId,'123-test.apps.googleusercontent.com');
@@ -58,7 +73,8 @@ async function main() {
                     return read(albums.filter(item => (!body.id || item.id===body.id) && (!body.titulo || item.titulo.includes(body.titulo))));
                 }
                 if (endpoint.endsWith('/PostAlbum') || endpoint.endsWith('/PutAlbum')) {
-                    const album = {id:9,userid:1,titulo:body.titulo,descricao:body.descricao,privacidade:body.privacidade,segundosporfoto:body.segundosPorFoto,status:1};
+                    assert.ok([1,2,3].includes(body.qualidadeVideo));
+                    const album = {id:9,userid:1,titulo:body.titulo,descricao:body.descricao,privacidade:body.privacidade,segundosporfoto:body.segundosPorFoto,qualidadevideo:body.qualidadeVideo,modelovideo:body.modeloVideo,musicaid:body.musicaId,volumemusica:body.volumeMusica,status:1};
                     if (albums.length) albums[0]=album; else albums.push(album);
                     return respond({statusCode:200,data:album});
                 }
@@ -75,8 +91,12 @@ async function main() {
                 if (endpoint.includes('InfraStarSessionUpload')) { ++sessions; return respond({uploadToken:`session-${sessions}`}); }
                 if (endpoint.includes('InfraSendFile')) {
                     ++sends;
+                    const form=await new Request(req.url(),{method:'POST',headers:req.headers(),body:req.postDataBuffer()}).formData();
+                    const rotation=Number(form.get('Rotacao'));
+                    assert.equal(rotation,form.get('FileName')==='familia.png'?180:90,'O envio preserva o giro inclusive ao retomar.');
+                    assert.deepEqual(Buffer.from(await form.get('FileStream').arrayBuffer()),photoPng,'O arquivo original nao e regravado pelo navegador.');
                     if (sends===2 && failSecond) { failSecond=false;return route.fulfill({status:503,json:{message:'Falha temporaria no upload.'}}); }
-                    const id=photos.length+1;photos.push({id,albumid:9,fotoid:id+100,ordem:id,legenda:''});return respond({success:true,isFinalized:true});
+                    const id=photos.length+1;photos.push({id,albumid:9,fotoid:id+100,ordem:id,legenda:'',rotacao:rotation});return respond({success:true,isFinalized:true});
                 }
                 if (endpoint.endsWith('/ReadPublicacaoAlbum')) { assert.equal(body.userId,1);return read(publications); }
                 if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:applicationConfigured,conexoes:applicationConfigured?channels:[]});
@@ -85,7 +105,7 @@ async function main() {
                 if (endpoint.includes('YouTubeDesconectar')) { channels.find(item=>item.conexaoId===body.conexaoId).conectado=false;return respond({conectado:false}); }
                 if (endpoint.includes('AlbunsSolicitarPublicacao')) {
                     assert.equal(body.conexaoYouTubeId,channelB.conexaoId);
-                    publications.push({id:11,albumid:9,status:30,mensagem:'Renderizando fotos.',correlationid:'corr-11',conexaoyoutubeid:channelB.conexaoId,canalyoutubeid:'channel-b',youtubevideoid:''});
+                    publications.push({id:11,albumid:9,status:30,mensagem:'Renderizando fotos.',correlationid:'corr-11',conexaoyoutubeid:channelB.conexaoId,canalyoutubeid:'channel-b',youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
                     return respond({publicacaoAlbumId:11,status:'Solicitada'});
                 }
                 if (endpoint.includes('YouTubeRetomarPublicacao')) { assert.equal(body.conexaoYouTubeId,publications[0].conexaoyoutubeid || channelA.conexaoId);publications[0].conexaoyoutubeid=body.conexaoYouTubeId;publications[0].status=40;return respond({agendada:true}); }
@@ -98,6 +118,22 @@ async function main() {
                 throw new Error(`Endpoint inesperado: ${endpoint}`);
             });
             await page.goto(base);await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.getByLabel('Modelo',{exact:true}).inputValue(),'1');
+            assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'0');
+            await page.getByLabel('Modelo',{exact:true}).selectOption('2');
+            assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'1');
+            assert.equal(await page.locator('#mem-audio').getAttribute('src'),null,'Modelo nao inicia musica automaticamente.');
+            await page.getByLabel('Modelo',{exact:true}).selectOption('3');
+            assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'2');
+            await page.getByLabel('Modelo',{exact:true}).selectOption('4');
+            assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'0','Trilha indisponivel nao e selecionada.');
+            await page.getByLabel('Modelo',{exact:true}).selectOption('2');
+            await page.getByLabel('Musica',{exact:true}).selectOption('0');
+            assert.equal(await page.locator('#mem-volume').isDisabled(),true);
+            await page.getByLabel('Musica',{exact:true}).selectOption('1');
+            await page.locator('#mem-volume').fill('0');
+            assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'2');
+            assert.deepEqual(await page.getByLabel('Qualidade do video',{exact:true}).locator('option').evaluateAll(options=>options.map(option=>option.value)),['1','2','3']);
             await page.waitForFunction(()=>getComputedStyle(document.getElementById('mem-files')).opacity==='0');
             assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).isDisabled(),true,'O seletor nativo permanece invisivel quando desabilitado.');
             assert.equal(await page.getByRole('button',{name:'Enviar fotos',exact:true}).isDisabled(),true);
@@ -148,6 +184,8 @@ async function main() {
             assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),'','Novo login com varios canais nao escolhe um destino implicito.');
             await page.getByLabel('Titulo',{exact:true}).fill('<img src=x onerror=alert(1)> Album de familia');
             await page.getByLabel('Descricao',{exact:true}).fill('Momentos importantes da nossa familia.');
+            await page.getByLabel('Modelo',{exact:true}).selectOption('2');
+            await page.locator('#mem-volume').fill('0');
             await page.getByLabel('Segundos por foto',{exact:true}).fill('2');
             const beforeCancel=calls.length;
             acceptDialogs=false;
@@ -159,18 +197,45 @@ async function main() {
             await page.getByRole('button',{name:'Salvar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
             assert.equal(await page.locator('#mem-album-list img').count(),0,'Titulo e texto, nao HTML.');
+            for (const quality of ['1','2','3']) {
+                await page.getByLabel('Qualidade do video',{exact:true}).selectOption(quality);
+                assert.equal(await page.locator('#mem-unsaved').innerText(),'Alteracoes nao salvas');
+                await page.getByRole('button',{name:'Salvar album',exact:true}).click();
+                await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
+                assert.equal(albums[0].qualidadevideo,Number(quality));
+            }
+            delete albums[0].qualidadevideo;
+            await page.reload();await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.getByLabel('Modelo',{exact:true}).inputValue(),'2');
+            assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'1');
+            assert.equal(await page.locator('#mem-volume').inputValue(),'0');
+            await page.screenshot({path:path.join(__dirname,`artifacts/modelos-${viewport.width}.png`),fullPage:true});
+            assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'2','Album legado continua em 1080p.');
+            await page.getByLabel('Qualidade do video',{exact:true}).selectOption('3');
+            await page.getByRole('button',{name:'Salvar album',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
             const png=await page.evaluate(()=> {
                 const canvas=document.createElement('canvas');canvas.width=120;canvas.height=90;
-                const ctx=canvas.getContext('2d');ctx.fillStyle='#63aa97';ctx.fillRect(0,0,120,90);ctx.fillStyle='#fbdf73';ctx.fillRect(60,0,60,90);
+                const ctx=canvas.getContext('2d');
+                for(const [x,y,color] of [[0,0,'#de4242'],[60,0,'#3baf66'],[0,45,'#3f7ade'],[60,45,'#fbdf73']]){ctx.fillStyle=color;ctx.fillRect(x,y,60,45);}
                 return canvas.toDataURL('image/png').split(',')[1];
             });
+            photoPng=Buffer.from(png,'base64');
             await page.getByLabel('Selecionar fotos',{exact:true}).setInputFiles([
                 {name:'familia.png',mimeType:'image/png',buffer:Buffer.from(png,'base64')},
                 {name:'viagem.png',mimeType:'image/png',buffer:Buffer.from(png,'base64')}
             ]);
+            await page.getByRole('button',{name:'Girar 180 graus: familia.png',exact:true}).click();
+            await page.getByRole('button',{name:'Girar para a esquerda: viagem.png',exact:true}).click();
+            assert.equal(await page.locator('#mem-file-previews img').nth(1).evaluate(image=>image.style.transform),'rotate(270deg)');
+            await page.getByRole('button',{name:'Girar 180 graus: viagem.png',exact:true}).click();
+            assert.equal(await page.locator('#mem-file-previews img').nth(0).evaluate(image=>image.style.transform),'rotate(180deg)');
+            assert.equal(await page.locator('#mem-file-previews img').nth(1).evaluate(image=>image.style.transform),'rotate(90deg)');
+            await page.screenshot({path:path.join(__dirname,`artifacts/fotos-selecionadas-${viewport.width}.png`),fullPage:true});
             await page.getByRole('button',{name:'Enviar fotos',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Falha temporaria no upload.'}).waitFor();
             assert.equal(sessions,2);assert.equal(sends,2);
+            assert.equal(await page.getByRole('button',{name:'Girar 180 graus: viagem.png',exact:true}).isDisabled(),true,'Uma tentativa iniciada conserva a orientacao para o retry.');
             await page.getByRole('button',{name:'Enviar fotos',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Fotos adicionadas ao album.'}).waitFor();
             assert.equal(sessions,2,'Retoma a sessao, nao cria outra.');assert.equal(sends,3);assert.equal(photos.length,2);
@@ -178,6 +243,33 @@ async function main() {
             await page.locator('.mem-photo-row').first().getByRole('button',{name:'Salvar foto',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Foto atualizada.'}).waitFor();
             assert.equal(photos[0].legenda,'Primeira memoria');
+            assert.equal(calls.filter(call=>call.endpoint.endsWith('/arquivo')).length,0,'Fotos persistidas sao carregadas apenas ao abrir a previa.');
+            const orientation=page.getByRole('dialog',{name:'Orientacao da foto',exact:true});
+            await page.getByRole('button',{name:'Girar foto 101',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-photo-save').disabled && document.getElementById('mem-photo-image').complete && document.getElementById('mem-photo-image').naturalWidth>0);
+            assert.equal(await page.locator('#mem-photo-angle').innerText(),'180 graus');
+            await orientation.getByRole('button',{name:'Girar 180 graus',exact:true}).click();
+            assert.equal(await page.locator('#mem-photo-angle').innerText(),'0 graus');
+            await orientation.getByRole('button',{name:'Girar para a direita',exact:true}).click();
+            assert.equal(await page.locator('#mem-photo-image').evaluate(image=>image.style.transform),'rotate(90deg)');
+            assert.equal(await orientation.evaluate(element=>element.scrollWidth>element.clientWidth),false);
+            await page.screenshot({path:path.join(__dirname,`artifacts/orientacao-${viewport.width}.png`)});
+            failRotation=true;
+            await orientation.getByRole('button',{name:'Salvar orientacao',exact:true}).click();
+            await orientation.getByRole('status').filter({hasText:'Album em publicacao.'}).waitFor();
+            assert.equal(photos[0].rotacao,180,'Falha nao confirma orientacao local.');
+            await orientation.getByRole('button',{name:'Salvar orientacao',exact:true}).click();
+            await orientation.waitFor({state:'hidden'});
+            assert.equal(photos[0].rotacao,90);
+            await page.getByRole('button',{name:'Atualizar fotos',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-photos').disabled);
+            await page.getByRole('button',{name:'Girar foto 101',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-photo-save').disabled);
+            assert.equal(await page.locator('#mem-photo-angle').innerText(),'90 graus','Reabrir a foto conserva a orientacao salva.');
+            await orientation.getByRole('button',{name:'Girar para a esquerda',exact:true}).click();
+            await orientation.getByRole('button',{name:'Fechar foto',exact:true}).click();
+            assert.equal(photos[0].rotacao,90,'Fechar descarta a previa sem alterar o album.');
+            assert.equal(await page.locator('#mem-photo-image').getAttribute('src'),null,'A imagem privada e liberada ao fechar.');
             await page.getByLabel('Canal YouTube de destino').selectOption(channelB.conexaoId);
             assert.equal(await page.locator('#mem-channel-status').innerText(),`Canal conectado: ${channelB.canalTitulo}`);
             assert.equal(calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length,0,'Usar um canal salvo nao exige OAuth novamente.');
@@ -186,8 +278,12 @@ async function main() {
             await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
             assert.equal(await page.getByLabel('Canal YouTube de destino').isDisabled(),true);
             assert.equal(await page.getByLabel('Titulo',{exact:true}).isDisabled(),true,'Album solicitado nao muda durante a renderizacao.');
+            assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).isDisabled(),true);
+            assert.equal(publications[0].qualidadevideo,3);
+            assert.equal(await page.locator('#mem-publication-quality').innerText(),'Qualidade: Alta (4K 2160p)');
             assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).evaluate(input=>getComputedStyle(input).opacity),'0');
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
+            assert.equal(await page.getByRole('button',{name:'Girar foto 101',exact:true}).isDisabled(),true,'Nao gira fotos durante publicacao.');
             publications[0].status=45;publications[0].mensagem='Video pronto. Reconecte o mesmo canal.';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.getByRole('button',{name:'Retomar envio',exact:true}).waitFor();
@@ -221,8 +317,18 @@ async function main() {
             await page.getByRole('status').filter({hasText:'Endereco de autorizacao invalido.'}).waitFor();
             const last=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,last,'Status somente por botao.');
             await page.getByLabel('Titulo',{exact:true}).fill('Memorias de familia');
+            await page.getByLabel('Qualidade do video',{exact:true}).selectOption('1');
+            await page.getByLabel('Modelo',{exact:true}).selectOption('1');
             await page.getByRole('button',{name:'Salvar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
+            assert.equal(await page.locator('#mem-publication-quality').innerText(),'Qualidade: Alta (4K 2160p)','Publicacao anterior nao muda ao editar qualidade do album.');
+            assert.equal(await page.locator('#mem-publication-model').innerText(),'Romantico / Air Prelude');
+            await page.getByLabel('Musica',{exact:true}).selectOption('1');
+            await page.getByRole('button',{name:'Ouvir musica',exact:true}).click();
+            await page.waitForFunction(()=>document.getElementById('mem-audio').readyState>=1 && !document.getElementById('mem-listen').disabled);
+            assert.ok(await page.locator('#mem-audio').evaluate(audio=>audio.duration>0));
+            await page.getByLabel('Musica',{exact:true}).selectOption('0');
+            assert.equal(await page.locator('#mem-audio').getAttribute('src'),null,'Trocar a musica libera o audio privado.');
             assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
             assert.equal(await page.locator('#mem-file-previews img').evaluateAll(images=>images.every(image=>image.complete&&image.naturalWidth>0)),true);
             fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});
@@ -234,6 +340,7 @@ async function main() {
             assert.equal(new URL(page.url()).search,'');assert.deepEqual(errors,[]);
             await page.goto(base);await page.waitForFunction(()=>window.ready);
             assert.equal(await page.getByLabel('Titulo',{exact:true}).inputValue(),'Memorias de familia');
+            assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'1','Reabrir o album conserva a qualidade escolhida.');
             assert.equal(await page.locator('.mem-photo-row').count(),2,'Restaura o album apos OAuth.');
             publications[0].status=45;publications[0].conexaoyoutubeid='';publications[0].canalyoutubeid='';publications[0].youtubevideoid='';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
@@ -246,6 +353,10 @@ async function main() {
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true,'Nao duplica publicacao durante retry da saga.');
+            publications[0].qualidadevideo=0;
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            assert.equal(await page.locator('#mem-publication-quality').innerText(),'Qualidade: Padrao (Full HD 1080p)','Publicacao legada nao herda a qualidade atual do album.');
             assert.deepEqual(errors,[]);
             configuration={podeConfigurar:false,configurado:false};
             await page.reload();await page.waitForFunction(()=>window.ready);

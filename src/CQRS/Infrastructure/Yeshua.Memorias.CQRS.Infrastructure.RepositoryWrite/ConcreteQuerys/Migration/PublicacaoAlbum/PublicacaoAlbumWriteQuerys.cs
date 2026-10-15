@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPublicacaoAlbumQuery(IPublicacaoAlbumEntity PublicacaoAlbum)
         {
-            this.Query = $@" INSERT INTO [PublicacaoAlbum] ([AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId]) OUTPUT INSERTED.[Id] VALUES(@AlbumId, @CorrelationId, @ManifestStorageKey, @VideoStorageKey, @YouTubeVideoId, @YouTubeUrl, @Mensagem, @SolicitadaEmUtc, @PublicadaEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @ConexaoYouTubeId, @CanalYouTubeId, @YouTubeCredentialUserId) ";
+            this.Query = $@" INSERT INTO [PublicacaoAlbum] ([AlbumId], [CorrelationId], [ManifestStorageKey], [VideoStorageKey], [YouTubeVideoId], [YouTubeUrl], [Mensagem], [SolicitadaEmUtc], [PublicadaEmUtc], [Status], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [ConexaoYouTubeId], [CanalYouTubeId], [YouTubeCredentialUserId], [QualidadeVideo], [ModeloVideo], [MusicaId], [VolumeMusica]) OUTPUT INSERTED.[Id] VALUES(@AlbumId, @CorrelationId, @ManifestStorageKey, @VideoStorageKey, @YouTubeVideoId, @YouTubeUrl, @Mensagem, @SolicitadaEmUtc, @PublicadaEmUtc, @Status, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @ConexaoYouTubeId, @CanalYouTubeId, @YouTubeCredentialUserId, @QualidadeVideo, @ModeloVideo, @MusicaId, @VolumeMusica) ";
             this.Parameters = new
             {
                 AlbumId = PublicacaoAlbum.AlbumId,
@@ -51,6 +51,10 @@ namespace Query.Write
                 ConexaoYouTubeId = PublicacaoAlbum.ConexaoYouTubeId,
                 CanalYouTubeId = PublicacaoAlbum.CanalYouTubeId,
                 YouTubeCredentialUserId = PublicacaoAlbum.YouTubeCredentialUserId,
+                QualidadeVideo = PublicacaoAlbum.QualidadeVideo,
+                ModeloVideo = PublicacaoAlbum.ModeloVideo,
+                MusicaId = PublicacaoAlbum.MusicaId,
+                VolumeMusica = PublicacaoAlbum.VolumeMusica,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -251,6 +255,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 YouTubeCredentialUserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateQualidadeVideo(int id, int value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [QualidadeVideo] = @QualidadeVideo WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                QualidadeVideo = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateModeloVideo(int id, int value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [ModeloVideo] = @ModeloVideo WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                ModeloVideo = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateMusicaId(int id, int value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [MusicaId] = @MusicaId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                MusicaId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateVolumeMusica(int id, int value)
+        {
+            this.Query = $@" UPDATE [PublicacaoAlbum] SET [VolumeMusica] = @VolumeMusica WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                VolumeMusica = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

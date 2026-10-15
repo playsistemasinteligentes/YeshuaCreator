@@ -27,6 +27,10 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateQualidadeVideo(int id, int value);
+        QueryModel UpdateModeloVideo(int id, int value);
+        QueryModel UpdateMusicaId(int id, int value);
+        QueryModel UpdateVolumeMusica(int id, int value);
         public QueryModel DeleteAlbumQuery(IAlbumEntity Album);
     }
 }

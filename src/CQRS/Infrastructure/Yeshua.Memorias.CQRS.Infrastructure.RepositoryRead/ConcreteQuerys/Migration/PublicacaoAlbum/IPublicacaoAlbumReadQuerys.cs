@@ -36,6 +36,10 @@ namespace IQuery.Read
         public QueryModel ExistsByConexaoYouTubeIdQuery(string value );
         public QueryModel ExistsByCanalYouTubeIdQuery(string value );
         public QueryModel ExistsByYouTubeCredentialUserIdQuery(int value );
+        public QueryModel ExistsByQualidadeVideoQuery(int value );
+        public QueryModel ExistsByModeloVideoQuery(int value );
+        public QueryModel ExistsByMusicaIdQuery(int value );
+        public QueryModel ExistsByVolumeMusicaQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByAlbumIdQuery(int value );
         public QueryModel FirstByCorrelationIdQuery(string value );
@@ -55,6 +59,10 @@ namespace IQuery.Read
         public QueryModel FirstByConexaoYouTubeIdQuery(string value );
         public QueryModel FirstByCanalYouTubeIdQuery(string value );
         public QueryModel FirstByYouTubeCredentialUserIdQuery(int value );
+        public QueryModel FirstByQualidadeVideoQuery(int value );
+        public QueryModel FirstByModeloVideoQuery(int value );
+        public QueryModel FirstByMusicaIdQuery(int value );
+        public QueryModel FirstByVolumeMusicaQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

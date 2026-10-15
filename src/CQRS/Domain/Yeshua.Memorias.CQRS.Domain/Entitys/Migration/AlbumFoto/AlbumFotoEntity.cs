@@ -30,13 +30,15 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public int? Rotacao { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal AlbumFotoEntity(int? id, int albumid, int fotoid, int ordem, string? legenda ){
+ internal AlbumFotoEntity(int? id, int albumid, int fotoid, int ordem, string? legenda, int? rotacao ){
  Id = id; 
  AlbumId = albumid; 
  FotoId = fotoid; 
  Ordem = ordem; 
  Legenda = legenda; 
+ Rotacao = rotacao;
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

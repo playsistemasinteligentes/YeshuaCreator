@@ -22,12 +22,21 @@ namespace Command.Receivers
         int Height,
         int Fps,
         int SecondsPerPhoto,
-        IReadOnlyCollection<AlbumRenderPhoto> Photos);
+        IReadOnlyCollection<AlbumRenderPhoto> Photos,
+        int QualityClass,
+        int Crf,
+        string Motion,
+        string Transition,
+        double TransitionSeconds,
+        double Zoom,
+        string? AudioStorageKey,
+        double AudioVolume);
 
     internal sealed record AlbumRenderPhoto(
         string StorageKey,
         int DurationSeconds,
-        string Caption);
+        string Caption,
+        int RotationDegrees = 0);
 
     public sealed class RenderAlbumResultMessage : ICommand
     {

@@ -83,6 +83,10 @@ public partial class AlbumCrudApiSmokeTests : ApiIntegrationTestBase
             ["Privacidade"] = 1,
             ["SegundosPorFoto"] = 1,
             ["Status"] = 1,
+            ["QualidadeVideo"] = 1,
+            ["ModeloVideo"] = 1,
+            ["MusicaId"] = 0,
+            ["VolumeMusica"] = 1,
         };
     }
 
@@ -104,6 +108,10 @@ public partial class AlbumCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Privacidade"] = 1;
         payload["SegundosPorFoto"] = 2;
         payload["Status"] = 1;
+        payload["QualidadeVideo"] = 1;
+        payload["ModeloVideo"] = 1;
+        payload["MusicaId"] = 0;
+        payload["VolumeMusica"] = 2;
         return payload;
     }
 
