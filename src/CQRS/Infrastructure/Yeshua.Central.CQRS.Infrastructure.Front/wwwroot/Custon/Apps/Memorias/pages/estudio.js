@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261015-video-models01';
+const version = '20261015-album-sharing01';
 const qualityNames = {1:'Economica (HD 720p)',2:'Padrao (Full HD 1080p)',3:'Alta (4K 2160p)'};
 const stepNames = [
     ['PrepararManifestoAlbum', 'Manifesto', 'fa-list-check'],
@@ -161,7 +161,9 @@ class Studio {
         click('refresh-status', () => this.refreshPublication());
         click('publish', () => this.publish());
         click('resume', () => this.resume());
-        click('copy-link', async () => { await navigator.clipboard.writeText(this.videoUrl()); this.feedback('Link copiado.'); });
+        click('copy-link', () => this.copyVideoLink());
+        click('share-link', () => this.shareVideoLink());
+        on('published-link', 'click', () => this.selectVideoLink());
     }
     async initialize() {
         await this.run(async () => {
@@ -198,7 +200,7 @@ class Studio {
     }
     async loadAlbums(page) {
         const result = readPaginatedResult(await this.read('Album', {titulo:this.el('search').value.trim()}, {...this.albumsPage, page}), {...this.albumsPage, page});
-        applyPaginationResult(this.albumsPage, result); this.albums = result.items; this.renderAlbums();
+        applyPaginationResult(this.albumsPage, result); this.albums = result.items.filter(album => album.userid === this.userId && !album.deleted); this.renderAlbums();
     }
     renderAlbums() {
         const list = this.el('album-list'); list.replaceChildren();
@@ -490,7 +492,7 @@ class Studio {
     async refreshPublication() {
         if (!this.album?.id) return;
         const result = readPaginatedResult(await this.read('PublicacaoAlbum', {albumId:this.album.id}, createPaginationState({pageSize:100})), {page:1,pageSize:100});
-        this.publications = result.items.sort((a,b) => b.id-a.id);
+        this.publications = result.items.filter(item => item.albumid === this.album.id && item.userid === this.userId && !item.deleted).sort((a,b) => b.id-a.id);
         this.publication = this.publications.find(item => item.id === this.publication?.id) || this.publications[0] || null;
         this.publicationsLoaded = true;
         await this.loadSteps(); this.renderPublication();
@@ -545,14 +547,50 @@ class Studio {
             this.el('channel').value = publication.conexaoyoutubeid;
         }
         const url = this.videoUrl();
-        this.el('video-link').hidden = !url; this.el('copy-link').hidden = !url;
-        if (url) this.el('video-link').href = url; else this.el('video-link').removeAttribute('href');
+        this.el('sharing').hidden = !url;
+        this.el('published-link').value = url;
+        this.text('sharing-publication', url ? `#${this.publishedAlbumVideo().id}` : '');
+        this.el('share-link').hidden = !window.isSecureContext || typeof navigator.share !== 'function';
+        for (const [id, target] of [['video-link', url], ['share-whatsapp', url ? `https://wa.me/?text=${encodeURIComponent(url)}` : ''], ['share-email', url ? `mailto:?body=${encodeURIComponent(url)}` : '']]) {
+            if (target) this.el(id).href = target; else this.el(id).removeAttribute('href');
+        }
         this.el('resume').hidden = Number(publication?.status) !== 45;
         this.updateControls();
     }
     videoUrl() {
-        const id = this.publication?.youtubevideoid || '';
-        return /^[A-Za-z0-9_-]{11}$/.test(id) ? `https://www.youtube.com/watch?v=${id}` : '';
+        const video = this.publishedAlbumVideo();
+        return video ? `https://www.youtube.com/watch?v=${video.youtubevideoid}` : '';
+    }
+    publishedAlbumVideo() {
+        if (!this.album?.id || this.album.userid !== this.userId) return null;
+        return this.publications.find(item => item.albumid === this.album.id && item.userid === this.userId && !item.deleted
+            && [50,60].includes(Number(item.status)) && /^[A-Za-z0-9_-]{11}$/.test(item.youtubevideoid || '')) || null;
+    }
+    selectVideoLink() {
+        if (!this.videoUrl()) return;
+        const input = this.el('published-link');
+        input.focus({preventScroll:true}); input.select(); input.setSelectionRange(0, input.value.length);
+    }
+    async copyVideoLink() {
+        const url = this.videoUrl(); if (!url) return;
+        let copied = false;
+        if (window.isSecureContext && navigator.clipboard?.writeText) {
+            try { await navigator.clipboard.writeText(url); copied = true; } catch { /* Seguir com a copia local quando o navegador bloquear a API. */ }
+        }
+        if (!copied) {
+            this.selectVideoLink();
+            try { copied = document.execCommand('copy') === true; } catch { copied = false; }
+        }
+        this.feedback(copied ? 'Link do album copiado.' : 'Copia automatica indisponivel. O link do album esta selecionado.');
+    }
+    async shareVideoLink() {
+        const url = this.videoUrl(); if (!url) return;
+        try { await navigator.share({url}); }
+        catch (error) {
+            if (error.name !== 'AbortError') {
+                this.selectVideoLink(); this.feedback('Compartilhamento indisponivel. O link do album esta selecionado.');
+            }
+        }
     }
     publicationInProgress() {
         return this.latestSagaInProgress || this.publications.some(item => [10,20,30,40,45,50].includes(Number(item.status)));
@@ -585,6 +623,7 @@ class Studio {
         if (this.disposed) return;
         this.renderChannelStatus();
         this.host.querySelectorAll('button,input,select,textarea').forEach(element => element.disabled = this.busy);
+        this.el('published-link').disabled = false;
         const publishing = this.publicationInProgress();
         this.el('album-fields').disabled = this.busy || publishing;
         this.el('save').disabled = this.busy || publishing;

@@ -118,6 +118,39 @@ class PhotoRotationTests(unittest.TestCase):
                 run.assert_not_called()
         self.assertFalse((self.root / "bad.mp4").exists())
 
+    def test_direct_encoding_handles_mixed_phone_formats_exif_and_manual_rotation(self):
+        photos = [dict(storageKey="photo.png")]
+        expected = [0]
+        originals = {self.source: self.source.read_bytes()}
+        for orientation, angle in [(3, 180), (6, 90), (8, 270)]:
+            source = self.root / f"phone-{orientation}.jpg"
+            exif = Image.Exif()
+            exif[274] = orientation
+            self.image.save(source, quality=100, subsampling=0, exif=exif)
+            originals[source] = source.read_bytes()
+            for rotation in [0, 90, 180, 270]:
+                photos.append(dict(storageKey=source.name, rotationDegrees=rotation))
+                expected.append((angle + rotation) % 360)
+        self.image.save(self.root / "phone.webp", lossless=True)
+        originals[self.root / "phone.webp"] = (self.root / "phone.webp").read_bytes()
+        photos.append(dict(storageKey="phone.webp", rotationDegrees=90))
+        expected.append(90)
+        manifest = dict(outputStorageKey="mixed.mp4", width=320, height=240, fps=10,
+                        secondsPerPhoto=.3, photos=photos)
+        (self.root / "mixed.json").write_text(json.dumps(manifest), encoding="utf-8")
+        render.render_album("mixed.json")
+        raw = subprocess.run([FFMPEG, "-hide_banner", "-loglevel", "error", "-i", str(self.root / "mixed.mp4"),
+                              "-fps_mode", "passthrough", "-f", "rawvideo", "-pix_fmt", "rgb24", "pipe:1"],
+                             check=True, capture_output=True).stdout
+        frame_size = 320 * 240 * 3
+        self.assertEqual(len(photos) * 3 * frame_size, len(raw))
+        for index, angle in enumerate(expected):
+            with self.subTest(photo=index):
+                frame = raw[(index * 3 + 1) * frame_size:(index * 3 + 2) * frame_size]
+                self.assert_quadrants(Image.frombytes("RGB", (320, 240), frame), angle)
+        for source, content in originals.items():
+            self.assertEqual(content, source.read_bytes())
+
     def test_all_quality_classes_render_at_declared_resolution_and_crf(self):
         real_run = subprocess.run
         for quality, width, height, crf in [(1, 1280, 720, 23), (2, 1920, 1080, 18), (3, 3840, 2160, 18)]:

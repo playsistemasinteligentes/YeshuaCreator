@@ -500,8 +500,26 @@ Regra resumida:
 - Album escolhe modelo, musica e volume; PublicacaoAlbum captura os tres
   campos imutaveis no pedido. O .NET traduz o preset em parametros do manifesto;
   Python apenas renderiza esses parametros. Quadros temporarios reservam margem
-  para evitar recorte durante movimento, e clipes intermediarios sem perdas
-  limitam memoria a uma foto por vez. Originais permanecem intactos.
+  para evitar recorte durante movimento. Originais permanecem intactos.
+- O renderer processa uma foto por vez e grava um clipe MP4 ja no CRF/preset
+  final. Orientacao, ajuste ao quadro, efeitos e compressao usam o mesmo
+  processo FFmpeg, sem PNG intermediario. Todos os clipes
+  usam resolucao, fps, formato de pixel, BT.709/faixa limitada e timebase iguais;
+  a conversao de matriz/faixa ocorre no scale, nao apenas nos metadados.
+  A montagem usa concat
+  com copia do video, sem segunda compressao. Musica continua e fades de audio
+  sao aplicados nessa mesma montagem. Duracao deriva da soma inteira de quadros.
+  Decoder e filtros usam uma thread, encoder usa duas; o Docker mantem uma
+  tarefa Celery por vez. A quantidade de fotos aumenta tempo e disco temporario,
+  nao deve criar um grafo de filtros ou decoders proporcional ao album.
+- Temporarios de renderizacao ficam em diretorio privado da tentativa no mesmo
+  volume do video de destino, nao em memoria. O arquivo final so e substituido
+  apos sucesso do FFmpeg; falhas preservam um resultado anterior e limpam os
+  temporarios da tentativa enquanto o processo Python consegue tratar a falha.
+  Encerramento abrupto do processo/container pode deixar temporarios orfaos;
+  limpeza posterior e retomada de clipes entre tentativas ficam como evolucao.
+  Os testes de volume e o benchmark comparativo ficam em tests/Media/Memorias;
+  RSS local amostrado nao substitui validacao do limite cgroup do Docker Linux.
 - O catalogo inicial de musicas e curado, versionado e restrito a faixas com
   licenca comprovada. As tres faixas Kevin MacLeod CC BY 4.0 ficam em
   `infra/Memorias/DockerCompose/music`, com fonte, creditos e SHA-256. O deploy
@@ -534,6 +552,21 @@ Regra resumida:
   usuario ou pelo botao Atualizar status, nunca por polling automatico.
   A extensao `dashboard` do Memorias abre o estudio como tela inicial; as
   telas genericas continuam acessiveis pelo menu padrao.
+- O link de compartilhamento pertence ao album aberto e vem da ultima
+  PublicacaoAlbum confirmada (50/60) do mesmo album e usuario, com ID YouTube
+  valido. Historico selecionado, tentativa pendente ou falha posterior nao
+  trocam esse link por outro album; nao duplicar a URL em Album. Consultas
+  principais de Album e PublicacaoAlbum fixam UserId pela sessao no repository
+  Custon, mesmo se o cliente omitir ou enviar outro usuario. Tenant continua
+  aplicado pela query gerada; leituras internas da saga permanecem separadas.
+- Copiar/compartilhar envia somente a URL canonica do video, nunca token,
+  endereco da sessao ou link da pagina inteira. Clipboard bloqueado ou ausente
+  usa copia local e, se tambem falhar, mantem o link visivel e selecionado.
+  Compartilhamento nativo depende do navegador/HTTPS; WhatsApp e email sao
+  compositores abertos somente por clique. Nenhuma dessas acoes muda a
+  visibilidade do YouTube. Privados exigem a conta Google autorizada ou convite;
+  acesso por link para terceiros requer escolha explicita de Nao listado ou
+  Publico. Videos ja enviados podem ser gerenciados no YouTube Studio.
 
 - O upload YouTube persiste sessao resumable e recibo cifrados no repositorio
   privado do aplicativo, com lock por publicacao e vinculo imutavel a dono,

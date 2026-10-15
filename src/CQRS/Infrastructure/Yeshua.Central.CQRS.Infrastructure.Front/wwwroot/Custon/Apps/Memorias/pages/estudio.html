@@ -51,8 +51,21 @@
         <label id="mem-history-label" hidden>Publicacao<select id="mem-history" aria-label="Historico de publicacoes"></select></label>
         <ol id="mem-timeline" class="mem-timeline" aria-label="Etapas da publicacao"></ol>
         <div class="mem-publication-state"><strong id="mem-publication-state">Ainda nao solicitada</strong><p id="mem-publication-message"></p><p id="mem-publication-destination" class="mem-muted"></p><p id="mem-publication-quality" class="mem-muted"></p><p id="mem-publication-model" class="mem-muted"></p><small id="mem-updated-at" class="mem-muted"></small></div>
-        <div class="mem-actions"><button id="mem-publish" class="mem-button mem-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Publicar album</button><button id="mem-resume" class="mem-button" hidden><i class="fa-solid fa-play" aria-hidden="true"></i> Retomar envio</button><a id="mem-video-link" class="mem-button" target="_blank" rel="noopener noreferrer" hidden><i class="fa-brands fa-youtube" aria-hidden="true"></i> Abrir video</a><button id="mem-copy-link" class="mem-icon" title="Copiar link do video" aria-label="Copiar link do video" hidden><i class="fa-solid fa-copy" aria-hidden="true"></i></button></div>
+        <div class="mem-actions"><button id="mem-publish" class="mem-button mem-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Publicar album</button><button id="mem-resume" class="mem-button" hidden><i class="fa-solid fa-play" aria-hidden="true"></i> Retomar envio</button></div>
         <p id="mem-publish-reason" class="mem-muted"></p>
+        <div id="mem-sharing" class="mem-sharing" role="region" aria-labelledby="mem-sharing-title" hidden>
+          <div class="mem-section-heading"><h3 id="mem-sharing-title">Video deste album</h3><span id="mem-sharing-publication" class="mem-muted"></span></div>
+          <label>Link do album<input id="mem-published-link" type="url" readonly aria-label="Link do album" autocomplete="off" spellcheck="false"></label>
+          <div class="mem-actions">
+            <a id="mem-video-link" class="mem-button" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> Abrir video</a>
+            <button id="mem-copy-link" class="mem-icon" title="Copiar link do video" aria-label="Copiar link do video"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+            <button id="mem-share-link" class="mem-icon" title="Compartilhar video" aria-label="Compartilhar video" hidden><i class="fa-solid fa-share-nodes" aria-hidden="true"></i></button>
+            <a id="mem-share-whatsapp" class="mem-icon" title="Compartilhar no WhatsApp" aria-label="Compartilhar no WhatsApp" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+            <a id="mem-share-email" class="mem-icon" title="Compartilhar por email" aria-label="Compartilhar por email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+          </div>
+          <p class="mem-muted">O link nao muda a visibilidade no YouTube. Um video privado exige a conta Google do canal ou um convite; nao listado permite acesso a quem tiver o link.</p>
+          <a id="mem-youtube-studio" class="mem-muted" href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer">Gerenciar no YouTube Studio</a>
+        </div>
       </section>
       </div>
     </div>

@@ -105,7 +105,7 @@ async function main() {
                 if (endpoint.includes('YouTubeDesconectar')) { channels.find(item=>item.conexaoId===body.conexaoId).conectado=false;return respond({conectado:false}); }
                 if (endpoint.includes('AlbunsSolicitarPublicacao')) {
                     assert.equal(body.conexaoYouTubeId,channelB.conexaoId);
-                    publications.push({id:11,albumid:9,status:30,mensagem:'Renderizando fotos.',correlationid:'corr-11',conexaoyoutubeid:channelB.conexaoId,canalyoutubeid:'channel-b',youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
+                    publications.push({id:11,albumid:9,userid:1,status:30,mensagem:'Renderizando fotos.',correlationid:'corr-11',conexaoyoutubeid:channelB.conexaoId,canalyoutubeid:'channel-b',youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
                     return respond({publicacaoAlbumId:11,status:'Solicitada'});
                 }
                 if (endpoint.includes('YouTubeRetomarPublicacao')) { assert.equal(body.conexaoYouTubeId,publications[0].conexaoyoutubeid || channelA.conexaoId);publications[0].conexaoyoutubeid=body.conexaoYouTubeId;publications[0].status=40;return respond({agendada:true}); }
@@ -118,6 +118,7 @@ async function main() {
                 throw new Error(`Endpoint inesperado: ${endpoint}`);
             });
             await page.goto(base);await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.locator('#mem-sharing').isHidden(),true,'Album sem publicacao nao possui link para compartilhar.');
             assert.equal(await page.getByLabel('Modelo',{exact:true}).inputValue(),'1');
             assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'0');
             await page.getByLabel('Modelo',{exact:true}).selectOption('2');
@@ -311,6 +312,66 @@ async function main() {
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.getByRole('link',{name:'Abrir video',exact:true}).waitFor();
             assert.equal(await page.getByRole('link',{name:'Abrir video',exact:true}).getAttribute('href'),'https://www.youtube.com/watch?v=a1B2c3D4e5F');
+            const videoUrl='https://www.youtube.com/watch?v=a1B2c3D4e5F';
+            assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),videoUrl);
+            assert.equal(await page.getByRole('link',{name:'Compartilhar no WhatsApp',exact:true}).getAttribute('href'),`https://wa.me/?text=${encodeURIComponent(videoUrl)}`);
+            assert.equal(await page.getByRole('link',{name:'Compartilhar por email',exact:true}).getAttribute('href'),`mailto:?body=${encodeURIComponent(videoUrl)}`);
+            const beforeSharing=calls.length;
+            await page.evaluate(()=>{
+                window.shared=[];window.copied=[];window.copyMode='success';window.legacyCopy=true;
+                Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{
+                    if(window.copyMode==='denied')throw new DOMException('Denied','NotAllowedError');
+                    window.copied.push(text);
+                }}});
+                document.execCommand=command=>{
+                    if(command==='copy'&&window.legacyCopy){window.copied.push(document.activeElement.value);return true;}
+                    return false;
+                };
+                Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{
+                    if(window.shareMode==='cancel')throw new DOMException('Cancelled','AbortError');
+                    if(window.shareMode==='denied')throw new DOMException('Denied','NotAllowedError');
+                    window.shared.push(data);
+                }});
+            });
+            await page.getByRole('button',{name:'Copiar link do video',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Link do album copiado.'}).waitFor();
+            assert.deepEqual(await page.evaluate(()=>window.copied),[videoUrl],'Copia somente a URL do video, nunca a pagina do aplicativo.');
+            await page.evaluate(()=>window.copyMode='denied');
+            await page.getByRole('button',{name:'Copiar link do video',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-copy-link').disabled);
+            assert.deepEqual(await page.evaluate(()=>window.copied),[videoUrl,videoUrl],'API bloqueada usa copia local.');
+            await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined}));
+            await page.getByRole('button',{name:'Copiar link do video',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-copy-link').disabled);
+            assert.deepEqual(await page.evaluate(()=>window.copied),[videoUrl,videoUrl,videoUrl],'Navegador sem Clipboard API tambem copia.');
+            await page.evaluate(()=>window.legacyCopy=false);
+            await page.getByRole('button',{name:'Copiar link do video',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Copia automatica indisponivel.'}).waitFor();
+            assert.deepEqual(await page.getByLabel('Link do album',{exact:true}).evaluate(input=>[input.selectionStart,input.selectionEnd]),[0,videoUrl.length]);
+            assert.equal(calls.length,beforeSharing,'Copiar o link nao altera publicacao, conta ou visibilidade.');
+            publications.push({id:99,albumid:90,userid:1,status:60,youtubevideoid:'otherAlbum1'},
+                {id:98,albumid:9,userid:2,status:60,youtubevideoid:'otherOwner1'},
+                {id:97,albumid:9,userid:1,status:30,youtubevideoid:'notReady123'});
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),videoUrl,'Publicacao de outro album, outro dono ou incompleta nao troca o link.');
+            await page.getByRole('button',{name:'Compartilhar video',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-share-link').disabled);
+            assert.deepEqual(await page.evaluate(()=>window.shared),[{url:videoUrl}]);
+            await page.evaluate(()=>window.shareMode='cancel');
+            await page.getByRole('button',{name:'Compartilhar video',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-share-link').disabled);
+            assert.deepEqual(errors,[],'Cancelar o compartilhamento nao causa erro.');
+            await page.evaluate(()=>window.shareMode='denied');
+            await page.getByRole('button',{name:'Compartilhar video',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Compartilhamento indisponivel.'}).waitFor();
+            assert.deepEqual(await page.getByLabel('Link do album',{exact:true}).evaluate(input=>[input.selectionStart,input.selectionEnd]),[0,videoUrl.length]);
+            assert.equal(albums[0].privacidade,1,'Compartilhar um privado nunca muda a visibilidade.');
+            publications.splice(1);
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});
+            await page.screenshot({path:path.join(__dirname,`artifacts/compartilhar-${viewport.width}.png`),fullPage:true});
             await page.waitForFunction(()=>!document.getElementById('mem-channel').disabled);
             await page.getByLabel('Canal YouTube de destino').selectOption(channelA.conexaoId);
             await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).click();
@@ -342,6 +403,15 @@ async function main() {
             assert.equal(await page.getByLabel('Titulo',{exact:true}).inputValue(),'Memorias de familia');
             assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'1','Reabrir o album conserva a qualidade escolhida.');
             assert.equal(await page.locator('.mem-photo-row').count(),2,'Restaura o album apos OAuth.');
+            await page.getByRole('button',{name:'Novo album',exact:true}).click();
+            assert.equal(await page.locator('#mem-sharing').isHidden(),true,'Novo album nunca reutiliza o link do album anterior.');
+            assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),'');
+            assert.equal(await page.locator('#mem-video-link').getAttribute('href'),null);
+            assert.equal(await page.locator('#mem-share-whatsapp').getAttribute('href'),null);
+            assert.equal(await page.locator('#mem-share-email').getAttribute('href'),null);
+            await page.locator('.mem-album-item').filter({hasText:'Memorias de familia'}).click();
+            await page.getByRole('status').filter({hasText:'Album carregado.'}).waitFor();
+            assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),videoUrl,'Reabrir o album restaura seu proprio video.');
             publications[0].status=45;publications[0].conexaoyoutubeid='';publications[0].canalyoutubeid='';publications[0].youtubevideoid='';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-channel').disabled);

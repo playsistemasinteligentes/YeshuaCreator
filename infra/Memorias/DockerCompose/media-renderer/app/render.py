@@ -44,15 +44,14 @@ def render_album(manifest_storage_key: str) -> dict:
     audio_path = _storage_path(storage_root, audio_key) if audio_key else None
     if audio_path and not audio_path.is_file():
         raise FileNotFoundError("Musica do manifesto nao encontrada.")
-    styled = motion != "none" or transition != "none"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with tempfile.TemporaryDirectory(prefix="yeshua-memorias-") as temp_directory:
+    # O volume de storage recebe os clipes; apenas uma foto e processada por vez.
+    with tempfile.TemporaryDirectory(prefix=".render-", dir=output_path.parent) as temp_directory:
         temp_root = Path(temp_directory)
         concat_path = temp_root / "album.ffconcat"
         concat_lines = ["ffconcat version 1.0"]
-        total_duration = 0.0
-        last_staged_path = None
+        total_frames = 0
 
         for index, photo in enumerate(photos):
             storage_key = photo.get("storageKey")
@@ -66,68 +65,40 @@ def render_album(manifest_storage_key: str) -> dict:
             rotation = photo.get("rotationDegrees", 0)
             if type(rotation) is not int or rotation not in (0, 90, 180, 270):
                 raise ValueError(f"photos[{index}].rotationDegrees deve ser 0, 90, 180 ou 270.")
-            staged_path = temp_root / f"photo-{index:06d}.png"
-            _prepare_photo(source_path, staged_path, rotation, width, height, zoom if styled else 1)
-
             duration = _positive_number(
                 photo.get("durationSeconds", default_duration),
                 f"photos[{index}].durationSeconds",
             )
-            if styled:
-                frames = max(1, round(duration * fps))
-                duration = frames / fps
-                clip = temp_root / f"clip-{index:06d}.mkv"
-                _motion_clip(staged_path, clip, width, height, fps, frames, motion, zoom,
-                             min(transition_seconds, duration / 4) if transition == "fade" else 0)
-                concat_lines.append(f"file '{clip.as_posix()}'")
-            else:
-                concat_lines.append(f"file '{staged_path.as_posix()}'")
-                concat_lines.append(f"duration {duration}")
-            total_duration += duration
-            last_staged_path = staged_path
+            frames = max(1, round(duration * fps))
+            duration = frames / fps
+            clip = temp_root / f"clip-{index:06d}.mp4"
+            _render_clip(source_path, clip, rotation, width, height, fps, frames, motion, zoom,
+                         min(transition_seconds, duration / 4) if transition == "fade" else 0, crf)
+            concat_lines.append(f"file '{clip.name}'")
+            total_frames += frames
 
-        # FFmpeg precisa da ultima imagem repetida para respeitar sua duracao.
-        if not styled:
-            concat_lines.append(f"file '{last_staged_path.as_posix()}'")
         concat_path.write_text("\n".join(concat_lines) + "\n", encoding="utf-8")
-
-        video_filter = f"setsar=1,fps={fps},format=yuv420p"
+        total_duration = total_frames / fps
+        completed_path = temp_root / "completed.mp4"
+        # Todos os clipes ja estao codificados no mesmo perfil; a uniao nao recomprime video.
         command = [
             os.environ.get("FFMPEG_BINARY", "ffmpeg"),
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-y",
-            "-f",
-            "concat",
-            "-safe",
-            "0",
-            "-i",
-            str(concat_path),
-            "-vf",
-            video_filter,
-            "-c:v",
-            "libx264",
-            "-threads", "2", "-filter_threads", "2",
-            "-preset",
-            os.environ.get("FFMPEG_PRESET", "medium"),
-            "-crf",
-            str(crf),
-            "-movflags",
-            "+faststart",
-            "-t", str(total_duration), "-an",
-            str(temp_root / "video.mp4" if audio_path else output_path),
+            "-hide_banner", "-loglevel", "error", "-y",
+            "-f", "concat", "-safe", "1", "-threads", "1", "-i", str(concat_path),
         ]
-        subprocess.run(command, check=True, capture_output=True, text=True)
         if audio_path:
             fade = min(.8, total_duration / 4)
             audio_filter = f"volume={audio_volume},afade=t=in:d={fade},afade=t=out:st={total_duration-fade}:d={fade}"
-            subprocess.run([os.environ.get("FFMPEG_BINARY", "ffmpeg"), "-hide_banner", "-loglevel", "error", "-y",
-                            "-i", str(temp_root / "video.mp4"), "-stream_loop", "-1", "-i", str(audio_path),
-                            "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-af", audio_filter,
-                            "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2", "-threads", "2",
-                            "-t", str(total_duration), "-movflags", "+faststart", str(output_path)],
-                           check=True, capture_output=True, text=True)
+            command += ["-stream_loop", "-1", "-threads", "1", "-i", str(audio_path),
+                        "-map", "0:v:0", "-map", "1:a:0", "-af", audio_filter,
+                        "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2",
+                        "-t", str(total_duration)]
+        else:
+            command += ["-map", "0:v:0", "-an"]
+        command += ["-c:v", "copy", "-threads", "2", "-filter_threads", "1",
+                    "-video_track_timescale", str(fps * 512), "-movflags", "+faststart", str(completed_path)]
+        subprocess.run(command, check=True, capture_output=True, text=True)
+        os.replace(completed_path, output_path)
 
     return {
         "outputStorageKey": output_storage_key,
@@ -141,14 +112,19 @@ def render_album(manifest_storage_key: str) -> dict:
     }
 
 
-def _prepare_photo(source: Path, output: Path, rotation: int, width: int, height: int, zoom: float = 1) -> None:
+def _photo_filters(rotation, width, height, zoom=1):
     filters = {0: [], 90: ["transpose=clock"], 180: ["hflip", "vflip"], 270: ["transpose=cclock"]}[rotation]
     # A margem protege as bordas da foto durante o zoom e o deslocamento.
-    filters += [f"scale={int(width / zoom) // 2 * 2}:{int(height / zoom) // 2 * 2}:force_original_aspect_ratio=decrease",
+    filters += [f"scale={int(width / zoom) // 2 * 2}:{int(height / zoom) // 2 * 2}:force_original_aspect_ratio=decrease:out_color_matrix=bt709:out_range=tv",
                 f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=black", "setsar=1"]
+    return filters
+
+
+def _prepare_photo(source: Path, output: Path, rotation: int, width: int, height: int, zoom: float = 1) -> None:
     # Cada foto tem sua propria orientacao; normalizar antes de concatenar preserva o giro individual.
     subprocess.run([os.environ.get("FFMPEG_BINARY", "ffmpeg"), "-hide_banner", "-loglevel", "error", "-y",
-                    "-i", str(source), "-vf", ",".join(filters), "-filter_threads", "2", "-threads", "2", "-frames:v", "1", str(output)],
+                    "-threads", "1", "-i", str(source), "-vf", ",".join(_photo_filters(rotation, width, height, zoom)),
+                    "-filter_threads", "1", "-threads", "2", "-frames:v", "1", str(output)],
                    check=True, capture_output=True, text=True)
 
 
@@ -180,19 +156,24 @@ def _bounded_number(value, name, minimum, maximum):
     return float(value)
 
 
-def _motion_clip(source, output, width, height, fps, frames, motion, zoom, fade):
+def _render_clip(source, output, rotation, width, height, fps, frames, motion, zoom, fade, crf):
     progress = f"on/{max(1, frames-1)}"
     z = {"none": "1", "zoom-in": f"1+({zoom}-1)*{progress}",
          "zoom-out": f"{zoom}-({zoom}-1)*{progress}", "pan": str(zoom)}[motion]
     x = f"(iw-iw/zoom)*{progress}" if motion == "pan" else "(iw-iw/zoom)/2"
-    filters = [f"zoompan=z='{z}':x='{x}':y='(ih-ih/zoom)/2':d={frames}:s={width}x{height}:fps={fps}",
-               "setsar=1", "format=yuv420p"]
+    filters = _photo_filters(rotation, width, height, zoom if motion != "none" or fade else 1)
+    if motion != "none":
+        filters += [f"zoompan=z='{z}':x='{x}':y='(ih-ih/zoom)/2':d={frames}:s={width}x{height}:fps={fps}", "format=yuv420p"]
+    else:
+        filters += ["format=yuv420p", f"loop=loop={frames-1}:size=1:start=0"]
     if fade:
         filters += [f"fade=t=in:d={fade}", f"fade=t=out:st={frames/fps-fade}:d={fade}"]
-    # Um clipe por foto limita memoria; a compressao com perda so ocorre no video final.
     subprocess.run([os.environ.get("FFMPEG_BINARY", "ffmpeg"), "-hide_banner", "-loglevel", "error", "-y",
-                    "-i", str(source), "-vf", ",".join(filters), "-frames:v", str(frames),
-                    "-c:v", "libx264", "-preset", "ultrafast", "-crf", "0", "-threads", "2", "-filter_threads", "2", str(output)],
+                    "-threads", "1", "-framerate", str(fps), "-i", str(source),
+                    "-vf", ",".join(filters), "-frames:v", str(frames), "-an",
+                    "-c:v", "libx264", "-preset", os.environ.get("FFMPEG_PRESET", "medium"), "-crf", str(crf),
+                    "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+                    "-threads", "2", "-filter_threads", "1", "-video_track_timescale", str(fps * 512), str(output)],
                    check=True, capture_output=True, text=True)
 
 

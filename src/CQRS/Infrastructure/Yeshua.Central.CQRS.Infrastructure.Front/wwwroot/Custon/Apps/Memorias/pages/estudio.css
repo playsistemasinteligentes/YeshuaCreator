@@ -82,6 +82,12 @@
 .mem-publication-state { background:#f5f8f6; padding:14px 16px; border-left:3px solid #b8cec1; }
 .mem-publication-state strong { font-size:15px; }
 .mem-publication-state p { margin:6px 0 0; overflow-wrap:anywhere; }
+.mem-sharing { margin-top:24px; padding-top:20px; border-top:1px solid var(--mem-border); }
+.mem-sharing h3 { font-size:15px; margin:0; }
+.mem-sharing .mem-section-heading { margin-bottom:12px; }
+.mem-sharing .mem-section-heading .mem-muted { margin:0; }
+.mem-sharing input { font-size:13px; }
+.mem-sharing > a { display:inline-block; margin-top:8px; }
 @media(max-width:1100px) { .mem-workspace { display:block; } .mem-publishing { border-left:0; padding-left:0; } }
 @media(max-width:900px) { .mem-layout { grid-template-columns:205px minmax(0,1fr); } .mem-workspace { padding-left:20px; } }
 @media(max-width:650px) { .mem-studio { margin:0; padding:0 16px; } .mem-layout { display:block; } .mem-albums { border-right:0; border-bottom:1px solid var(--mem-border); padding:16px 0; } .mem-album-list { max-height:200px; overflow:auto; min-height:0; } .mem-workspace { padding:0; } .mem-fields { grid-template-columns:minmax(0,1fr); } .mem-section-heading { flex-wrap:wrap; } .mem-photo-row { grid-template-columns:32px minmax(0,1fr) 68px 36px 36px 36px; gap:5px; } .mem-photo-row .mem-icon { width:36px; min-height:36px; height:36px; flex-basis:36px; } .mem-button { padding:9px 12px; } }
