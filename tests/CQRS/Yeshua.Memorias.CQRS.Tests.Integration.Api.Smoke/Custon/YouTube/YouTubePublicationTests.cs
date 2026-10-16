@@ -122,7 +122,51 @@ public class YouTubePublicationTests
         Assert.Equal(first.ConexaoId, rig.Created!.ConexaoYouTubeId);
         Assert.Equal("channel-a", rig.Created.CanalYouTubeId);
         Assert.Equal(9, rig.Created.YouTubeCredentialUserId);
-        Assert.Equal(new[] { "BeginTran", "Insert", "SaveSaga", "Commit" }, rig.Events);
+        Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "Insert", "SaveSaga", "Commit" }, rig.Events);
+        Assert.Equal(rig.Created.SolicitadaEmUtc.AddMinutes(-5), rig.LastRequestCutoff);
+    }
+
+    [Theory]
+    [InlineData(10)]
+    [InlineData(30)]
+    [InlineData(60)]
+    [InlineData(90)]
+    public async Task RecentRequestBlocksAnotherPublicationRegardlessOfStatus(int status)
+    {
+        using var rig = new RequestRig();
+        var channel = await rig.Connections.Connect("channel-a");
+        var command = new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId };
+        Assert.Equal(200, (await rig.Handler.ExecuteAsync(command)).StatusCode);
+        rig.Created!.SolicitadaEmUtc = DateTime.UtcNow.AddMinutes(-4);
+        rig.Created.Status = status;
+        rig.Events.Clear();
+
+        var result = await rig.Handler.ExecuteAsync(command);
+
+        Assert.Equal(400, result.StatusCode);
+        Assert.Single(rig.Requests);
+        Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "Rollback" }, rig.Events);
+    }
+
+    [Fact]
+    public async Task ManualRequestAfterFiveMinutesCreatesAnotherPublicationWithoutReopeningPreviousSaga()
+    {
+        using var rig = new RequestRig();
+        var channel = await rig.Connections.Connect("channel-a");
+        var command = new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId };
+        Assert.Equal(200, (await rig.Handler.ExecuteAsync(command)).StatusCode);
+        var previous = rig.Created!;
+        previous.SolicitadaEmUtc = DateTime.UtcNow.AddMinutes(-5).AddSeconds(-1);
+        previous.Status = 30;
+        rig.Events.Clear();
+
+        var result = await rig.Handler.ExecuteAsync(command);
+
+        Assert.Equal(200, result.StatusCode);
+        Assert.Equal(2, rig.Requests.Count);
+        Assert.Equal(30, previous.Status);
+        Assert.NotEqual(previous.CorrelationId, rig.Created!.CorrelationId);
+        Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "Insert", "SaveSaga", "Commit" }, rig.Events);
     }
 
     [Theory]
@@ -284,6 +328,8 @@ public class YouTubePublicationTests
         public YouTubeConnectionTests.Rig Connections { get; } = new();
         public AlbumDTO Album { get; } = new() { id = 5, tenantid = 7, userid = 9, titulo = "Album" };
         public IPublicacaoAlbumEntity? Created;
+        public List<IPublicacaoAlbumEntity> Requests { get; } = [];
+        public DateTime LastRequestCutoff;
         public List<string> Events { get; } = [];
         public ILogger Logger { get; } = TestProxy.For<ILogger>();
         public IExecutionContext Context { get; } = TestProxy.For<IExecutionContext>((name, _) => name switch
@@ -299,9 +345,18 @@ public class YouTubePublicationTests
             Handler = new(TestProxy.For<IUnitOfWork>((method, _) => { Events.Add(method); return null; }),
                 Logger, Context, TestProxy.For<IDomainTrackingPolicy>(),
                 TestProxy.For<IAlbumReadRepository>((_, _) => Album), TestProxy.For<IAlbumWriteRepository>(),
-                TestProxy.For<IPublicacaoAlbumWriteRepository>((_, args) =>
+                TestProxy.For<IPublicacaoAlbumWriteRepository>((method, args) =>
                 {
-                    Events.Add("Insert"); Created = (IPublicacaoAlbumEntity)args[0]!; Created.Id = 3; return null;
+                    if (method == "CanRequestPublication")
+                    {
+                        Events.Add("CheckRequestWindow");
+                        Assert.Equal(5, args[0]); Assert.Equal(7, args[1]); Assert.Equal(9, args[2]);
+                        LastRequestCutoff = (DateTime)args[3]!;
+                        return !Requests.Any(item => item.SolicitadaEmUtc > LastRequestCutoff);
+                    }
+                    Assert.Equal("Insert", method);
+                    Events.Add("Insert"); Created = (IPublicacaoAlbumEntity)args[0]!;
+                    Created.Id = Requests.Count + 3; Requests.Add(Created); return null;
                 }),
                 TestProxy.For<IySagaWriteRepository>((_, _) => { Events.Add("SaveSaga"); return null; }), Connections.Service,
                 TestProxy.For<IFileStorage>((_, _) => Task.FromResult(MusicAvailable)));

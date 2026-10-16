@@ -84,6 +84,7 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
         return ValidationError(exception.Message, new SolicitarPublicacaoAlbumOutputCommand());
     }
 
+    var requestedAtUtc = DateTime.UtcNow;
     var correlationId = Guid.NewGuid().ToString("D");
     var domainContext = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.UseCase,
         "SolicitarPublicacaoAlbum", _executionContext.TenantID, _executionContext.UserId,
@@ -98,7 +99,7 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
         null,
         null,
         "Publicacao solicitada.",
-        DateTime.UtcNow,
+        requestedAtUtc,
         null,
         MemoriasPublicationStatus.Solicitada,
         destination.ConexaoId, destination.CanalId, _executionContext.UserId, (int)quality.Quality,
@@ -129,6 +130,13 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
     _unitOfWork.BeginTran();
     try
     {
+        if (!_repWritePublicacaoAlbum.CanRequestPublication(comand.AlbumId, _executionContext.TenantID,
+                _executionContext.UserId, requestedAtUtc.AddMinutes(-5)))
+        {
+            return ValidationError("Aguarde cinco minutos entre pedidos de publicacao deste album.",
+                new SolicitarPublicacaoAlbumOutputCommand());
+        }
+
         _repWritePublicacaoAlbum.Insert(publicacao);
         saga.Start(publicacao.Id.GetValueOrDefault().ToString(), nameof(PublicacaoAlbumEntity));
         _sagaWriteRepository.Save(saga);

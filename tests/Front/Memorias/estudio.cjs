@@ -32,13 +32,14 @@ async function main() {
         for (const viewport of [{width:1366,height:900},{width:375,height:812}]) {
             const context = await browser.newContext({viewport});
             const page = await context.newPage();
-            const errors = [], calls = [], albums = [], photos = [], publications = [];
+            const errors = [], calls = [], albums = [], photos = [], publications = [], dialogs = [];
             const channels = [structuredClone(channelA),structuredClone(channelB)];
             let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
             const testSecret = 'GOCSPX-test-secret-only';
             let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false, failRotation = false, photoPng;
             page.on('pageerror', error => errors.push(error.message));
-            page.on('dialog',dialog => acceptDialogs ? dialog.accept() : dialog.dismiss());
+            page.on('dialog',dialog => { dialogs.push(dialog.message());return acceptDialogs ? dialog.accept() : dialog.dismiss(); });
+            await page.clock.install();
             await page.route('**/apps/memorias/yapi/**', async route => {
                 const req = route.request(), endpoint = new URL(req.url()).pathname;
                 assert.equal(req.headers().authorization,`Bearer ${jwt}`);
@@ -104,9 +105,12 @@ async function main() {
                 if (endpoint.includes('YouTubeConcluirConexao')) return respond({...channels[1],configurado:true});
                 if (endpoint.includes('YouTubeDesconectar')) { channels.find(item=>item.conexaoId===body.conexaoId).conectado=false;return respond({conectado:false}); }
                 if (endpoint.includes('AlbunsSolicitarPublicacao')) {
-                    assert.equal(body.conexaoYouTubeId,channelB.conexaoId);
-                    publications.push({id:11,albumid:9,userid:1,status:30,mensagem:'Renderizando fotos.',correlationid:'corr-11',conexaoyoutubeid:channelB.conexaoId,canalyoutubeid:'channel-b',youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
-                    return respond({publicacaoAlbumId:11,status:'Solicitada'});
+                    const destination=publications.length ? channelA : channelB;
+                    assert.equal(body.conexaoYouTubeId,destination.conexaoId);
+                    const id=publications.length ? Math.max(...publications.map(item=>item.id))+1 : 11;
+                    const requestedAt=await page.evaluate(()=>new Date().toISOString());
+                    publications.push({id,albumid:9,userid:1,status:30,solicitadaemutc:id===11 ? requestedAt.replace(/Z$/,'') : requestedAt,mensagem:'Renderizando fotos.',correlationid:`corr-${id}`,conexaoyoutubeid:destination.conexaoId,canalyoutubeid:destination.canalId,youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
+                    return respond({publicacaoAlbumId:id,status:'Solicitada'});
                 }
                 if (endpoint.includes('YouTubeRetomarPublicacao')) { assert.equal(body.conexaoYouTubeId,publications[0].conexaoyoutubeid || channelA.conexaoId);publications[0].conexaoyoutubeid=body.conexaoYouTubeId;publications[0].status=40;return respond({agendada:true}); }
                 if (endpoint.endsWith('/ReadySaga')) return read([{id:55,status:publications[0]?.status===60?2:1}]);
@@ -422,11 +426,27 @@ async function main() {
             publications[0].status=90;publications[0].mensagem='Falha temporaria. A saga controla a retomada.';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
-            assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true,'Nao duplica publicacao durante retry da saga.');
+            assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true,'Novo pedido respeita cinco minutos mesmo quando houve falha.');
             publications[0].qualidadevideo=0;
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
             assert.equal(await page.locator('#mem-publication-quality').innerText(),'Qualidade: Padrao (Full HD 1080p)','Publicacao legada nao herda a qualidade atual do album.');
+            assert.match(await page.locator('#mem-publish-reason').innerText(),/Novo envio deste album disponivel/);
+            const beforeCooldown=calls.length;
+            await page.clock.fastForward(5*60*1000+100);
+            await page.waitForFunction(()=>!document.getElementById('mem-publish').disabled);
+            assert.equal(calls.length,beforeCooldown,'O prazo libera somente o botao local, sem polling ou reenvio automatico.');
+            acceptDialogs=false;
+            await page.getByRole('button',{name:'Publicar album',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-publish').disabled);
+            assert.match(dialogs.at(-1),/anterior ainda pode estar em processamento/);
+            assert.equal(calls.length,beforeCooldown,'Cancelar o aviso nao cria outra publicacao.');
+            acceptDialogs=true;
+            await page.getByRole('button',{name:'Publicar album',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
+            assert.equal(calls.filter(call=>call.endpoint.includes('AlbunsSolicitarPublicacao')).length,2,'Reenvio exige novo clique e confirmacao.');
+            assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true,'Novo pedido reinicia o intervalo de cinco minutos.');
+            await page.screenshot({path:path.join(__dirname,`artifacts/cooldown-${viewport.width}.png`),fullPage:true});
             assert.deepEqual(errors,[]);
             configuration={podeConfigurar:false,configurado:false};
             await page.reload();await page.waitForFunction(()=>window.ready);

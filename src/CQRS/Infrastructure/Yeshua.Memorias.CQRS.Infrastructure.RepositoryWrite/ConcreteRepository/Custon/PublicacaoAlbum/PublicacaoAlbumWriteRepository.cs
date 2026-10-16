@@ -12,6 +12,25 @@ namespace Input.Repository.PublicacaoAlbum;
 
 public partial class PublicacaoAlbumWriteRepository
 {
+    // A transacao do command mantem a trava ate gravar a publicacao e a saga.
+    public bool CanRequestPublication(int albumId, int tenantId, int userId, DateTime requestedAfterUtc)
+    {
+        const string sql = """
+            DECLARE @LockedAlbumId int;
+            SELECT @LockedAlbumId = Id FROM Album WITH (UPDLOCK, HOLDLOCK)
+             WHERE Id = @AlbumId AND TenantID = @TenantId AND UserId = @UserId AND Deleted = 0;
+            SELECT CASE WHEN @LockedAlbumId IS NOT NULL AND NOT EXISTS (
+                SELECT 1 FROM PublicacaoAlbum
+                 WHERE AlbumId = @LockedAlbumId AND TenantID = @TenantId AND UserId = @UserId
+                   AND SolicitadaEmUtc > @RequestedAfterUtc
+            ) THEN 1 ELSE 0 END;
+            """;
+        return _UnitOfWork.ExecuteScalar<int>(sql, new
+        {
+            AlbumId = albumId, TenantId = tenantId, UserId = userId, RequestedAfterUtc = requestedAfterUtc
+        }) == 1;
+    }
+
     public bool ScheduleYouTubeResume(int publicationId, int tenantId, int userId, string processingScope, DateTime now,
         string connectionId, string channelId, int credentialUserId)
     {

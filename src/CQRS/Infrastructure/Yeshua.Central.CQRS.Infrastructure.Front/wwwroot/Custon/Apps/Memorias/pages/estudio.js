@@ -2,7 +2,8 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261015-album-sharing01';
+const version = '20261015-publication-cooldown01';
+const publicationRequestInterval = 5 * 60 * 1000;
 const qualityNames = {1:'Economica (HD 720p)',2:'Padrao (Full HD 1080p)',3:'Alta (4K 2160p)'};
 const stepNames = [
     ['PrepararManifestoAlbum', 'Manifesto', 'fa-list-check'],
@@ -75,6 +76,7 @@ class Studio {
     text(id, text) { this.el(id).textContent = text; }
     dispose() {
         if (this.disposed) return;
+        clearTimeout(this.publicationCooldownTimer);
         const secret = this.el('config-secret'); if (secret) secret.value = '';
         this.el('config-dialog')?.close();
         this.el('photo-dialog')?.close(); this.closePhoto();
@@ -595,6 +597,16 @@ class Studio {
     publicationInProgress() {
         return this.latestSagaInProgress || this.publications.some(item => [10,20,30,40,45,50].includes(Number(item.status)));
     }
+    nextPublicationAt() {
+        let latest = 0;
+        for (const item of this.publications) {
+            const value = item.solicitadaemutc;
+            if (typeof value !== 'string' || !value) continue;
+            const timestamp = Date.parse(/(?:Z|[+-]\d{2}:?\d{2})$/i.test(value) ? value : `${value}Z`);
+            if (Number.isFinite(timestamp)) latest = Math.max(latest, timestamp);
+        }
+        return latest ? latest + publicationRequestInterval : 0;
+    }
     publishReason() {
         if (!this.album?.id) return 'Salve o album para publicar.';
         if (this.dirty) return 'Salve as alteracoes do album.';
@@ -602,13 +614,14 @@ class Studio {
         if (this.queue.some(photo => !photo.done)) return 'Envie as fotos selecionadas.';
         if (!this.photosLoaded || !this.publicationsLoaded) return 'Consulte as fotos e o status antes de publicar.';
         if (!this.photos.length) return 'Adicione fotos ao album.';
-        if (this.latestSagaInProgress) return 'A saga ainda esta retomando a publicacao anterior.';
-        if (this.publications.some(item => [10,20,30,40,45,50].includes(Number(item.status)))) return 'O album possui uma publicacao em andamento.';
+        const next = this.nextPublicationAt();
+        if (next > Date.now()) return `Novo envio deste album disponivel as ${new Date(next).toLocaleTimeString('pt-BR')}.`;
         if (!this.selectedChannel()?.conectado) return 'Selecione um canal conectado.';
         return '';
     }
     async publish() {
         const reason = this.publishReason(); if (reason) throw new Error(reason);
+        if (this.publicationInProgress() && !window.confirm('A publicacao anterior ainda pode estar em processamento. Enviar novamente pode gerar outro video. Deseja continuar?')) return;
         if (this.el('privacy').value === '3' && !window.confirm('Publicar este album como publico no YouTube?')) return;
         const result = await this.command('AlbunsSolicitarPublicacaoAlbum', {albumId:this.album.id,conexaoYouTubeId:this.selectedChannel().conexaoId});
         this.publication = {id:result.publicacaoAlbumId};
@@ -621,6 +634,9 @@ class Studio {
     }
     updateControls() {
         if (this.disposed) return;
+        clearTimeout(this.publicationCooldownTimer);
+        const remaining = this.nextPublicationAt() - Date.now();
+        if (remaining > 0) this.publicationCooldownTimer = setTimeout(() => this.updateControls(), Math.min(remaining + 50, 2147483647));
         this.renderChannelStatus();
         this.host.querySelectorAll('button,input,select,textarea').forEach(element => element.disabled = this.busy);
         this.el('published-link').disabled = false;

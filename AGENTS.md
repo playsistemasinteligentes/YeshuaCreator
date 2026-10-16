@@ -607,6 +607,22 @@ Regra resumida:
   intactos. Nao alterar a orientacao somente na tela ou regravar o original.
 - O aplicativo Memorias reutiliza o caminho assincrono padrao do Yeshua:
   Saga -> Outbox -> RabbitMQ/Celery -> Worker Python -> RabbitMQ -> Inbox -> Saga.
+- O renderer Memorias confirma a tarefa Celery antes da execucao
+  (`task_acks_late=False`), sem retry automatico de renderizacao. A demora do
+  FFmpeg nao mantem a entrega ativa sem ACK. Queda apos o aceite pode deixar a
+  publicacao sem retorno; nesta fase a recuperacao e um novo pedido manual,
+  sem controlador persistente de jobs em arquivos no Python. Isso nao promete
+  entrega/executacao exatamente uma vez; reserva antecipada e falhas de
+  transporte ainda precisam de validacao operacional.
+- Novos pedidos do mesmo album respeitam cinco minutos desde
+  `PublicacaoAlbum.SolicitadaEmUtc`, independentemente do status anterior.
+  O command aplica a regra por repository, na mesma transacao que grava
+  publicacao e saga, com trava do album por tenant/usuario para serializar
+  requisicoes simultaneas. O Front libera somente o envio manual apos o
+  intervalo, com aviso se a publicacao anterior ainda puder estar ativa.
+  O temporizador local nao consulta status nem reenvia o pedido. Cinco minutos
+  limitam novos pedidos; nao significam fim, cancelamento ou timeout do render
+  anterior. Nao criar retry automatico agendado nem alterar a saga antiga.
 - A saga de publicacao do Memorias deve começar no pedido de publicacao do
   album, por exemplo no use case `SolicitarPublicacaoAlbum`. O album existir
   com fotos ainda e preparo de dados; ao solicitar publicacao, a saga cria ou

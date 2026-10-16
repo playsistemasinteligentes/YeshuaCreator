@@ -34,7 +34,9 @@ celery_app.conf.update(
     accept_content=["json"],
     result_serializer="json",
     worker_prefetch_multiplier=1,
-    task_acks_late=True,
+    # O aceite encerra a entrega; queda durante o render exige novo pedido manual.
+    task_acks_late=False,
+    task_reject_on_worker_lost=False,
 )
 
 celery_app.autodiscover_tasks(["app"])
