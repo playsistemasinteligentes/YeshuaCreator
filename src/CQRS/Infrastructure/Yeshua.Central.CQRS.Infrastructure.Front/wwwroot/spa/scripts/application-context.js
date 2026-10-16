@@ -15,11 +15,23 @@ export async function initializeApplicationContext(forceReload = false) {
     environments.authenticationApi = central?.apiBasePath || '/yapi';
 
     availableApplications = filterAuthorizedApplications(catalog, central);
+    const requestedName = new URLSearchParams(location.search).get('app')?.trim().toUpperCase();
+    const requestedApplication = localStorage.getItem('token')
+        ? availableApplications.find(item => String(item.application).toUpperCase() === requestedName)
+        : null;
     const selectedName = localStorage.getItem(storageKey);
-    activeApplication = availableApplications.find(item => item.application === selectedName)
+    activeApplication = requestedApplication
+        || availableApplications.find(item => item.application === selectedName)
         || central
         || availableApplications[0]
         || null;
+
+    if (requestedApplication) {
+        localStorage.setItem(storageKey, requestedApplication.application);
+        const url = new URL(location.href);
+        url.searchParams.delete('app');
+        history.replaceState(null, '', url);
+    }
 
     applyApplication(activeApplication);
     return activeApplication;

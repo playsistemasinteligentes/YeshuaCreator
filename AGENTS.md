@@ -771,6 +771,11 @@ Regra resumida:
   Nao recriar Front por aplicativo nem manter copias da implementacao central.
 - O catalogo de aplicativos, suas rotas logicas e os caminhos de assets sao
   mantidos diretamente no Front Central, inicialmente em `applications.json`.
+- Entradas diretas como `/memorias` abrem a mesma SPA com `app=Memorias`.
+  O parametro preserva a selecao durante o login da Central e, quando autorizado,
+  seleciona o aplicativo pelo fluxo existente de `GET /getMenu`. A selecao e
+  consumida apos a entrada para permitir trocar de aplicativo normalmente;
+  nao cria login, token ou Front separado nem concede acesso ao aplicativo.
 - O Front chama rotas logicas como `/apps/clinica/yapi` e
   `/apps/fiscal/yapi`; Nginx ou outro gateway resolve a API fisica. O navegador
   nao deve conhecer portas ou nomes internos dos containers.

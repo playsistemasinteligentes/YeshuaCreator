@@ -81,6 +81,13 @@ async function attachEvents(route) {
                     localStorage.setItem('token', data.token);
                     const payload = JSON.parse(atob(data.token.split('.')[1]));
                     localStorage.setItem('tokenExp', payload.exp * 1000);
+                    if (new URLSearchParams(location.search).has('app')) {
+                        const url = new URL(location.href);
+                        url.hash = 'dashboard';
+                        history.replaceState(null, '', url);
+                        location.reload();
+                        return;
+                    }
                     location.hash = '#dashboard';
                 } else {
                     alert('Login inválido');
