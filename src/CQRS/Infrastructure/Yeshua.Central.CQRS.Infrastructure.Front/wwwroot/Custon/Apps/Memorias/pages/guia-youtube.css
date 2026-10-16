@@ -1,0 +1,39 @@
+:root { color-scheme:light; font:17px/1.65 Arial,sans-serif; color:#202827; background:#fff; letter-spacing:0; }
+* { box-sizing:border-box; letter-spacing:0; }
+body { margin:0; }
+main { max-width:820px; padding:32px 24px 48px; margin:auto; overflow-wrap:anywhere; }
+header { border-bottom:2px solid #086653; padding-bottom:24px; }
+.brand { color:#086653; font-size:20px; font-weight:700; margin:0 0 8px; }
+h1 { font-size:30px; line-height:1.25; margin:0 0 16px; }
+h2 { font-size:23px; line-height:1.35; margin:0 0 16px; }
+h3 { font-size:18px; line-height:1.45; margin:0 0 8px; }
+p { margin:0 0 16px; }
+a { color:#075e91; text-underline-offset:3px; }
+a:hover { color:#086653; }
+a:focus-visible { outline:2px solid #139880; outline-offset:4px; }
+nav { padding:20px 0; border-bottom:1px solid #dce4e3; }
+nav ul { display:flex; flex-wrap:wrap; gap:12px 24px; list-style:none; padding:0; margin:0; }
+section { padding:28px 0; border-bottom:1px solid #dce4e3; }
+section[id],h3[id] { scroll-margin-top:24px; }
+ol,ul { padding-left:28px; }
+ol > li { padding-left:4px; margin-bottom:20px; }
+li > p:last-child { margin-bottom:0; }
+li::marker { font-weight:700; color:#086653; }
+.note { border-left:3px solid #086653; padding:8px 0 8px 16px; margin:20px 0; }
+.note p:last-child { margin-bottom:0; }
+.address { border-left:3px solid #b8cec1; padding:8px 0 8px 16px; margin:12px 0; }
+.address dt { font-weight:700; margin-top:10px; }
+.address dt:first-child { margin-top:0; }
+.address dd { margin:4px 0 16px; }
+.address dd:last-child { margin-bottom:0; }
+code { font-size:15px; overflow-wrap:anywhere; white-space:normal; }
+.scopes { margin:8px 0 16px; }
+.scopes li { margin:8px 0; }
+.questions { margin:0; }
+.questions dt { font-size:18px; font-weight:700; margin:24px 0 6px; }
+.questions dt:first-child { margin-top:0; }
+.questions dd { margin:0 0 16px; }
+.source,footer { color:#56655f; font-size:14px; }
+footer { padding-top:24px; }
+@media(max-width:480px) { main { padding:24px 20px 36px; } h1 { font-size:27px; } nav ul { display:block; } nav li + li { margin-top:12px; } }
+@media print { :root { font-size:11pt; } main { max-width:none; padding:0; } nav { display:none; } section { padding:18px 0; } h1,h2,h3,dt { break-after:avoid; } .note,.address { break-inside:avoid; } a { color:inherit; } }

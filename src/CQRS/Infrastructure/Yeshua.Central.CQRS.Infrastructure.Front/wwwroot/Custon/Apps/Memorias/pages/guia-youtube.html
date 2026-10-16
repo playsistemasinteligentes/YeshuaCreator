@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Como cadastrar um canal YouTube | Memórias</title>
+  <link rel="stylesheet" href="/Custon/Apps/Memorias/pages/guia-youtube.css?v=20261016-youtube-guide01">
+</head>
+<body>
+<main>
+  <header>
+    <p class="brand">Memórias</p>
+    <h1>Como cadastrar seu canal do YouTube</h1>
+    <p>Para usar seu próprio canal, conecte sua conta Google ao Memórias uma vez. Depois, o canal fica disponível na sua organização.</p>
+    <p><strong>Você não precisa criar um aplicativo no Google Cloud nem preencher Client ID e Client Secret.</strong> Essa preparação é responsabilidade do administrador do sistema.</p>
+  </header>
+  <nav aria-label="Neste guia">
+    <ul>
+      <li><a href="#conectar">Conectar meu canal</a></li>
+      <li><a href="#duvidas">Resolver dúvidas</a></li>
+      <li><a href="#administrador">Guia do administrador</a></li>
+    </ul>
+  </nav>
+
+  <section id="conectar" aria-labelledby="conectar-titulo">
+    <h2 id="conectar-titulo">Conectar meu canal</h2>
+    <p>Tenha em mãos o acesso à conta Google que possui o canal. Se ainda não tiver um canal, siga a <a href="https://support.google.com/youtube/answer/1646861?hl=pt-BR" target="_blank" rel="noopener noreferrer">orientação do YouTube para criar um canal</a> antes de continuar.</p>
+    <ol>
+      <li><strong>Entre no Memórias.</strong> Use seu usuário e senha do sistema e confira se está na organização correta.</li>
+      <li><strong>Na área Canal YouTube, clique em Adicionar canal próprio.</strong> Se já houver um canal, o botão será <strong>Adicionar outro canal próprio</strong>. Se aparecer um aviso de alterações no álbum, cancele a saída e conclua sua edição antes de continuar.</li>
+      <li><strong>Escolha sua conta no Google.</strong> Faça o login somente na página do Google. Se houver uma escolha de canais, selecione o canal em que deseja publicar.</li>
+      <li><strong>Confira o aplicativo e as permissões.</strong> O Memórias solicita acesso de leitura ao YouTube e permissão para envio de vídeos. Autorize as duas permissões se concordar. Se o nome do aplicativo for desconhecido ou aparecer um bloqueio de segurança, pare e confirme com o administrador antes de continuar.</li>
+      <li><strong>Aguarde a confirmação Canal conectado: nome do canal.</strong> Clique em <strong>Voltar ao Memórias</strong>. Não abra o endereço de retorno manualmente: ele é usado pelo Google ao concluir a autorização.</li>
+      <li><strong>Confira o Canal de destino.</strong> Com um único canal conectado, ele já vem selecionado. Com vários, escolha qual deseja usar. Se a informação não aparecer, clique em <strong>Atualizar canais</strong>.</li>
+    </ol>
+    <p>Pronto. Conectar o canal não publica nenhum vídeo: a publicação acontece quando você clicar em <strong>Publicar álbum</strong>.</p>
+    <div class="note">
+      <p><strong>Não é necessário autorizar a cada acesso.</strong> O Memórias guarda a conexão no servidor. Voltar à tela ou entrar pelo celular não deve, por si só, pedir uma nova autorização. Use <strong>Reconectar</strong> se a permissão expirar ou for revogada.</p>
+      <p>Os canais próprios são compartilhados pela organização (tenant); os álbuns continuam pertencendo a cada usuário. Conecte apenas canais que essa organização pode usar.</p>
+    </div>
+    <p class="source">A autorização de um canal é diferente do login no Memórias. Veja como funciona o <a href="https://developers.google.com/youtube/data/guides/auth/server-side-web-apps" target="_blank" rel="noopener noreferrer">consentimento do Google para acesso ao YouTube</a>.</p>
+    <h3>Posso publicar sem cadastrar um canal?</h3>
+    <p>Sim, quando aparecer <strong>Publicação automática disponível</strong>. Sem canais próprios cadastrados, o servidor escolhe um canal standard da plataforma. Você não precisa entrar no Google para isso.</p>
+    <p>Se aparecer <strong>Publicação automática indisponível no momento</strong>, avise o administrador ou conecte seu canal próprio. Depois que a organização cadastra canais próprios, precisa escolher um deles conectado; não há troca automática para um canal standard se ele desconectar.</p>
+    <p>Para compartilhar por link, escolha <strong>Não listado</strong>. Um vídeo <strong>Privado</strong> exige acesso autorizado pelo YouTube; copiar o link não libera a visualização. Canais standard não permitem a opção Privado no Memórias.</p>
+  </section>
+
+  <section id="duvidas" aria-labelledby="duvidas-titulo">
+    <h2 id="duvidas-titulo">Dúvidas e mensagens comuns</h2>
+    <dl class="questions">
+      <dt>Por que preciso entrar no Google se já entrei no Memórias?</dt>
+      <dd>O login do Memórias dá acesso ao sistema. A autorização do Google permite que o sistema use um canal específico em seu nome. Client ID e Client Secret identificam o aplicativo, mas não dão acesso ao seu canal sozinhos.</dd>
+      <dt>O Google pediu autorização outra vez.</dt>
+      <dd>Isso acontece ao adicionar outro canal, clicar em Reconectar ou perder uma permissão anterior. Não clique em Adicionar canal próprio para usar um canal já conectado. Se o aplicativo estiver em teste no Google, a autorização do YouTube expira após sete dias; o administrador deve revisar esse modo antes do uso regular. <a href="https://support.google.com/cloud/answer/15549945?hl=pt-BR" target="_blank" rel="noopener noreferrer">Entenda o modo de teste do Google</a>.</dd>
+      <dt>Apareceu Autorização não concluída no Google.</dt>
+      <dd>Você pode ter cancelado a autorização ou aberto a página de retorno diretamente. Volte ao Memórias e comece pelo botão Adicionar canal próprio ou Reconectar. Se persistir, informe ao suporte a mensagem e o horário, sem enviar a URL de retorno completa.</dd>
+      <dt>O Google bloqueou meu acesso ou disse que o aplicativo está em teste.</dt>
+      <dd>Peça ao administrador para conferir a configuração e, em testes autorizados, incluir sua conta Google na lista de usuários de teste. Não desative proteções da conta nem conceda acesso a um aplicativo que não reconhece.</dd>
+      <dt>Conectei, mas apareceu o canal errado.</dt>
+      <dd>Confira a conta Google e o nome do canal na confirmação. Adicione o canal correto e selecione-o em Canal de destino antes de publicar. Trocar essa seleção não move vídeos já publicados para outro canal.</dd>
+      <dt>O botão para adicionar canal está desabilitado.</dt>
+      <dd>Aguarde se houver uma operação em andamento. Se continuar desabilitado, peça ao administrador para conferir a configuração YouTube do aplicativo.</dd>
+      <dt>O Client Secret está vazio. Ele não foi salvo?</dt>
+      <dd>Se a tela administrativa mostra <strong>Segredo salvo</strong>, está correto: o segredo não é devolvido ao navegador. Salvar com esse campo vazio preserva o valor existente. O usuário comum não precisa acessar essa configuração.</dd>
+    </dl>
+  </section>
+
+  <section id="administrador" aria-labelledby="administrador-titulo">
+    <h2 id="administrador-titulo">Configuração inicial: administrador</h2>
+    <p>Esta parte é feita pelo administrador autorizado da instalação, não por cada usuário. O aplicativo Google é compartilhado pela instalação; cada canal precisa de sua própria autorização.</p>
+    <ol>
+      <li>
+        <h3>Abra a configuração no Memórias</h3>
+        <p>Na área Canal YouTube, abra a engrenagem <strong>Configuração YouTube</strong>. Copie o <strong>Endereço de retorno</strong> pelo botão de copiar. Se a engrenagem não aparecer, sua conta não está autorizada a administrar essa configuração.</p>
+      </li>
+      <li>
+        <h3>Ative a API no projeto Google</h3>
+        <p>No <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, selecione o projeto da instalação. Em <strong>APIs e serviços → Biblioteca</strong>, encontre <strong>YouTube Data API v3</strong> e clique em <strong>Ativar</strong>. Se o status já for <strong>Ativado</strong> e houver o botão Desabilitar API, prossiga sem desabilitá-la. <a href="https://developers.google.com/youtube/data/guides/auth/server-side-web-apps#enable-apis" target="_blank" rel="noopener noreferrer">Referência da API</a>.</p>
+      </li>
+      <li>
+        <h3>Prepare a tela de autorização</h3>
+        <p>Abra <strong>Google Auth Platform → Branding</strong>. No primeiro acesso, use <strong>Começar</strong> e informe nome do aplicativo, e-mail de suporte, público e contato. Para contas Google fora da sua organização Workspace, escolha público <strong>Externo</strong>.</p>
+        <p>Em <strong>Público-alvo</strong>, se o app estiver em <strong>Teste</strong>, adicione os e-mails Google que farão os testes. Em <strong>Acesso a dados → Adicionar ou remover escopos</strong>, inclua os dois escopos usados pelo Memórias e salve:</p>
+        <ul class="scopes">
+          <li><code>https://www.googleapis.com/auth/youtube.readonly</code></li>
+          <li><code>https://www.googleapis.com/auth/youtube.upload</code></li>
+        </ul>
+        <p class="source">Veja a <a href="https://developers.google.com/workspace/guides/configure-oauth-consent" target="_blank" rel="noopener noreferrer">configuração oficial de Branding, público e acesso a dados</a>. Para atender usuários fora do teste, revise a publicação e as verificações exigidas pelo Google; mudar o status não equivale a obter aprovação.</p>
+      </li>
+      <li>
+        <h3>Crie o cliente OAuth como Aplicativo da Web</h3>
+        <p>Em <strong>Google Auth Platform → Clientes → Criar cliente</strong>, selecione <strong>Aplicativo da Web</strong> e dê um nome, como Memórias. Em <strong>URIs de redirecionamento autorizados</strong>, adicione exatamente o endereço copiado do Memórias. Confira protocolo, domínio e caminho.</p>
+        <div class="note">
+          <p><strong>Não confunda os dois campos.</strong> O endereço completo de retorno não deve ser colocado em Origens JavaScript autorizadas.</p>
+          <dl class="address">
+            <dt>Origens JavaScript autorizadas</dt>
+            <dd>Se preencher esse campo, use somente a origem, sem caminho nem barra final. Exemplo da instalação PlaySis: <code>https://playsis.com.br</code>. Esse campo não substitui o redirecionamento.</dd>
+            <dt>URIs de redirecionamento autorizados</dt>
+            <dd>Use o endereço completo copiado da configuração. Exemplo da instalação PlaySis: <code>https://playsis.com.br/spa/youtube-callback.html</code>.</dd>
+          </dl>
+          <p>Em outro domínio, use o endereço da respectiva instalação, não o exemplo acima.</p>
+        </div>
+        <p class="source">O Google exige correspondência exata do endereço de retorno. Veja as <a href="https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred" target="_blank" rel="noopener noreferrer">instruções de criação do cliente OAuth</a>.</p>
+      </li>
+      <li>
+        <h3>Salve Client ID e Client Secret no Memórias</h3>
+        <p>Ao criar o cliente, guarde o Client Secret em local seguro. Volte à engrenagem do Memórias, preencha <strong>Client ID</strong> e <strong>Client Secret</strong> e clique em <strong>Salvar configuração</strong>. Confira <strong>Aplicativo configurado</strong> e <strong>Segredo salvo</strong>.</p>
+        <p>O segredo desaparece do campo por segurança. Não o coloque em prints, e-mails, documentação ou repositórios. Não substitua o Client ID já configurado sem revisão operacional.</p>
+      </li>
+      <li>
+        <h3>Autorize um canal e confira o resultado</h3>
+        <p>Feche a configuração e siga <a href="#conectar">Conectar meu canal</a>. Salvar as credenciais do aplicativo não conecta nenhum canal automaticamente. Confira o nome retornado e faça uma primeira publicação pequena, com conteúdo de teste e visibilidade Não listado, quando permitido pela situação do projeto no YouTube.</p>
+        <p>Se houver <strong>redirect_uri_mismatch</strong>, confira o cliente do mesmo projeto e compare a URI cadastrada com o Endereço de retorno. Se aparecer <strong>Origem inválida</strong>, remova o caminho da origem e coloque o endereço completo no campo de redirecionamento.</p>
+      </li>
+    </ol>
+    <h3 id="standard">Para disponibilizar um canal standard da plataforma</h3>
+    <p>Conecte o canal da plataforma em uma organização destinada a ela. Depois, solicite à operação o cadastro desse canal no pool standard. Nesta versão, esse cadastro é interno e manual na base: não há botão para transformar um canal próprio em standard.</p>
+    <p>O cadastro referencia a conexão já autorizada e sua organização; não contém senha Google, token ou Client Secret. Uma linha cadastrada sem a autorização Google correspondente não disponibiliza o canal.</p>
+    <p>Confira o funcionamento em outra organização, sem canais próprios: clique em Atualizar canais e confirme Publicação automática disponível. Os usuários continuam donos de seus álbuns, mas não recebem administração do canal da plataforma. Limites e políticas do YouTube continuam valendo.</p>
+  </section>
+  <footer>
+    <p>Guia do Memórias · Revisado em 16/10/2026. Os nomes dos menus do Google podem variar conforme o idioma e atualizações do serviço.</p>
+    <a href="#conectar">Voltar ao passo a passo</a>
+  </footer>
+</main>
+</body>
+</html>
