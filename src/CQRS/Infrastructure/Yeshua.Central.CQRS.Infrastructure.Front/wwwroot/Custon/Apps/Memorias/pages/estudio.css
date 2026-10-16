@@ -48,24 +48,25 @@
 .mem-music-details .mem-muted { flex:1; min-width:0; overflow-wrap:anywhere; }
 .mem-studio input[type=range] { width:100%; min-height:32px; padding:0; accent-color:var(--mem-green); }
 .mem-config-dialog input { font-size:14px; }
-.mem-previews { display:grid; grid-template-columns:repeat(auto-fill,minmax(135px,1fr)); gap:12px; margin-top:18px; }
-.mem-previews figure { min-width:0; margin:0; border:1px solid var(--mem-border); border-radius:4px; overflow:hidden; }
-.mem-preview-image { aspect-ratio:1; background:#f2f5f4; overflow:hidden; }
-.mem-previews img { display:block; width:100%; height:100%; object-fit:contain; }
-.mem-preview-tools { display:flex; justify-content:center; gap:4px; padding:6px; }
-.mem-preview-tools .mem-icon { width:36px; height:36px; min-height:36px; flex-basis:36px; }
-.mem-previews figcaption { padding:8px; font-size:12px; overflow-wrap:anywhere; }
+.mem-photo-list { margin-top:18px; }
+.mem-photo-thumbnail { display:flex; align-items:center; justify-content:center; position:relative; aspect-ratio:1; width:100%; min-width:0; padding:0; border:1px solid var(--mem-border); border-radius:4px; background:#f2f5f4; overflow:hidden; color:#5b7064; cursor:pointer; }
+.mem-photo-thumbnail img { display:block; width:100%; height:100%; object-fit:contain; }
+.mem-photo-thumbnail i { font-size:24px; }
+.mem-preview-tools { grid-column:1 / -1; }
+.mem-pending-photo { margin:0; }
+.mem-pending-photo .mem-photo-thumbnail { cursor:default; }
+.mem-pending-photo .mem-photo-caption { align-self:start; font-size:13px; font-weight:400; overflow-wrap:anywhere; }
+.mem-pending-photo .mem-upload-state { grid-column:1 / -1; }
 .mem-upload-state { display:block; color:var(--mem-green); }
 .mem-studio progress { width:100%; height:6px; accent-color:var(--mem-green); margin-top:16px; }
-.mem-photo-row { display:grid; grid-template-columns:40px minmax(0,1fr) minmax(65px,85px) 136px; align-items:end; gap:8px; padding:12px 0; border-bottom:1px solid #edf0ee; }
-.mem-photo-tools { display:flex; gap:8px; justify-content:flex-end; }
-.mem-photo-id { align-self:center; color:#5b7064; text-align:center; }
+.mem-photo-row { display:grid; grid-template-columns:132px minmax(0,1fr); align-items:start; gap:16px; padding:16px 0; border-bottom:1px solid #edf0ee; }
+.mem-photo-fields { display:grid; grid-template-columns:minmax(65px,85px) minmax(0,1fr); align-items:end; gap:10px 12px; min-width:0; }
+.mem-photo-caption { grid-column:1 / -1; }
+.mem-photo-tools { display:flex; gap:8px; justify-content:flex-end; align-items:end; min-width:0; }
+.mem-photo-id { grid-column:1 / -1; color:#5b7064; font-size:12px; }
 .mem-photo-row label { font-size:12px; }
 .mem-photo-footer { margin-top:12px; }
-@media(max-width:650px) {
-    .mem-photo-list .mem-photo-row { grid-template-columns:32px minmax(0,1fr) 68px; }
-    .mem-photo-tools { grid-column:1 / -1; }
-}
+@media(max-width:1250px) and (min-width:1101px) { .mem-photo-row { grid-template-columns:104px minmax(0,1fr); gap:12px; } .mem-photo-tools { grid-column:1 / -1; } }
 .mem-channel-label { max-width:620px; }
 .mem-connection-status { margin:12px 0 0; font-weight:600; overflow-wrap:anywhere; }
 .mem-connection-status[data-state=connected] { color:var(--mem-green); }
@@ -90,4 +91,4 @@
 .mem-sharing > a { display:inline-block; margin-top:8px; }
 @media(max-width:1100px) { .mem-workspace { display:block; } .mem-publishing { border-left:0; padding-left:0; } }
 @media(max-width:900px) { .mem-layout { grid-template-columns:205px minmax(0,1fr); } .mem-workspace { padding-left:20px; } }
-@media(max-width:650px) { .mem-studio { margin:0; padding:0 16px; } .mem-layout { display:block; } .mem-albums { border-right:0; border-bottom:1px solid var(--mem-border); padding:16px 0; } .mem-album-list { max-height:200px; overflow:auto; min-height:0; } .mem-workspace { padding:0; } .mem-fields { grid-template-columns:minmax(0,1fr); } .mem-section-heading { flex-wrap:wrap; } .mem-photo-row { grid-template-columns:32px minmax(0,1fr) 68px 36px 36px 36px; gap:5px; } .mem-photo-row .mem-icon { width:36px; min-height:36px; height:36px; flex-basis:36px; } .mem-button { padding:9px 12px; } }
+@media(max-width:650px) { .mem-studio { margin:0; padding:0 16px; } .mem-layout { display:block; } .mem-albums { border-right:0; border-bottom:1px solid var(--mem-border); padding:16px 0; } .mem-album-list { max-height:200px; overflow:auto; min-height:0; } .mem-workspace { padding:0; } .mem-fields { grid-template-columns:minmax(0,1fr); } .mem-section-heading { flex-wrap:wrap; } .mem-photo-row { grid-template-columns:minmax(0,1fr); gap:12px; } .mem-photo-tools { gap:8px; } .mem-button { padding:9px 12px; } }

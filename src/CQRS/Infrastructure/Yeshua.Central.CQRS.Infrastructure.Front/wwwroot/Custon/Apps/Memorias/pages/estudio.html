@@ -34,8 +34,11 @@
         <div class="mem-section-heading"><h2 id="mem-photos-title">Fotos</h2><button id="mem-refresh-photos" class="mem-icon" title="Atualizar fotos" aria-label="Atualizar fotos"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div>
         <div class="mem-actions"><label class="mem-button mem-file"><i class="fa-solid fa-images" aria-hidden="true"></i> Selecionar fotos<input id="mem-files" type="file" multiple accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" aria-label="Selecionar fotos"></label><button id="mem-upload" class="mem-button" type="button" hidden><i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Tentar novamente</button><button id="mem-clear-files" class="mem-icon" title="Limpar selecao de fotos" aria-label="Limpar selecao de fotos" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><span id="mem-file-count" class="mem-muted"></span></div>
         <progress id="mem-upload-progress" max="1" value="0" aria-label="Fotos enviadas" hidden></progress>
-        <div id="mem-file-previews" class="mem-previews"></div>
-        <div id="mem-photo-list" class="mem-photo-list"></div>
+        <div id="mem-photo-list" class="mem-photo-list">
+          <p id="mem-photo-empty" class="mem-muted"></p>
+          <div id="mem-saved-photos"></div>
+          <div id="mem-file-previews"></div>
+        </div>
         <div class="mem-actions mem-photo-footer"><button id="mem-more-photos" class="mem-button">Carregar mais fotos</button><span id="mem-photo-count" class="mem-muted"></span></div>
       </section>
       </div>

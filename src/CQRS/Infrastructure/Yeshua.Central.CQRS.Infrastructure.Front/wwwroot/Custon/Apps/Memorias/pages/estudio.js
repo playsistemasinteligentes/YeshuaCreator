@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261016-photo-flow01';
+const version = '20261016-photo-items01';
 const publicationRequestInterval = 5 * 60 * 1000;
 const qualityNames = {1:'Economica (HD 720p)',2:'Padrao (Full HD 1080p)',3:'Alta (4K 2160p)'};
 const stepNames = [
@@ -60,6 +60,19 @@ class Studio {
         this.photos = []; this.photoEdits = new Set(); this.publications = []; this.publication = null; this.steps = [];
         this.photosLoaded = false; this.publicationsLoaded = false;
         this.photoPreview = null;
+        this.thumbnails = null;
+        this.thumbnailObserver = new IntersectionObserver(entries => {
+            const scope = this.thumbnails;
+            if (!scope) return;
+            for (const entry of entries) {
+                if (!entry.isIntersecting || !entry.target.isConnected) continue;
+                this.thumbnailObserver.unobserve(entry.target);
+                const id = Number(entry.target.dataset.fotoId);
+                if (scope.pending.has(id) || scope.urls.has(id)) continue;
+                scope.pending.add(id); scope.queue.push(id);
+            }
+            this.loadThumbnails(scope);
+        }, {rootMargin:'120px'});
         this.models = []; this.music = []; this.audioUrl = null;
         this.albumsPage = createPaginationState({pageSize:8});
         this.photosPage = createPaginationState({pageSize:12});
@@ -82,7 +95,7 @@ class Studio {
         this.el('config-dialog')?.close();
         this.el('photo-dialog')?.close(); this.closePhoto();
         this.stopMusic();
-        this.disposed = true; this.controller.abort(); this.observer.disconnect(); this.clearQueue();
+        this.disposed = true; this.controller.abort(); this.observer.disconnect(); this.clearQueue(); this.resetThumbnails();
     }
     feedback(message, error = false) {
         if (this.disposed) return;
@@ -197,6 +210,7 @@ class Studio {
         return (!this.dirty && !this.photoEdits.size && !this.queue.some(photo => !photo.done)) || window.confirm('Descartar alteracoes e fotos ainda nao enviadas?');
     }
     openNewAlbum() {
+        this.resetThumbnails();
         this.clearQueue(); this.photoEdits.clear(); this.album = null; this.dirty = false; this.photos = []; this.publications = []; this.publication = null; this.steps = [];
         this.photosLoaded = false; this.publicationsLoaded = false; sessionStorage.removeItem('memorias.studio.album');
         this.latestSagaInProgress = false;
@@ -229,6 +243,7 @@ class Studio {
         const response = await this.read('Album', {id}, createPaginationState({pageSize:1}));
         const album = readPaginatedResult(response, {page:1,pageSize:1}).items[0];
         if (!album || album.userid !== this.userId) throw new Error('Album nao encontrado.');
+        this.resetThumbnails();
         this.clearQueue(); this.photoEdits.clear(); this.album = album; this.dirty = false; this.photos = []; this.publications = []; this.publication = null; this.steps = [];
         this.photosLoaded = false; this.publicationsLoaded = false;
         this.latestSagaInProgress = false;
@@ -294,28 +309,33 @@ class Studio {
         return true;
     }
     clearQueue() {
-        this.queue.forEach(photo => URL.revokeObjectURL(photo.url)); this.queue = []; this.uploadFailed = false;
+        this.queue.forEach(photo => { if (photo.url) URL.revokeObjectURL(photo.url); }); this.queue = []; this.uploadFailed = false;
     }
     renderQueue() {
         const previews = this.el('file-previews'); previews.replaceChildren();
         for (const photo of this.queue) {
-            const figure = document.createElement('figure'); const image = document.createElement('img');
+            if (photo.confirmed) continue;
+            const figure = document.createElement('figure'); figure.className = 'mem-photo-row mem-pending-photo';
+            const image = document.createElement('img');
+            image.loading = 'lazy'; image.decoding = 'async';
             image.src = photo.url; image.alt = photo.file.name; image.style.transform = `rotate(${photo.rotation}deg)`;
-            const frame = document.createElement('div'); frame.className = 'mem-preview-image'; frame.append(image);
-            const caption = document.createElement('figcaption'); caption.textContent = photo.file.name;
+            const frame = document.createElement('div'); frame.className = 'mem-photo-thumbnail'; frame.append(image);
+            const caption = document.createElement('figcaption'); caption.className = 'mem-photo-fields';
+            const name = document.createElement('strong'); name.className = 'mem-photo-caption'; name.textContent = photo.file.name;
             const state = document.createElement('span'); state.className = 'mem-upload-state'; state.textContent = photo.done ? 'Enviada' : 'Selecionada';
-            const tools = document.createElement('div'); tools.className = 'mem-preview-tools';
+            const tools = document.createElement('div'); tools.className = 'mem-preview-tools mem-photo-tools';
             for (const [delta,label,icon] of [[-90,'Girar para a esquerda','fa-rotate-left'],[90,'Girar para a direita','fa-rotate-right'],[180,'Girar 180 graus','fa-arrows-rotate']]) {
                 const button = iconButton(`${label}: ${photo.file.name}`, icon);
                 button.disabled = this.busy || photo.done || Boolean(photo.token);
                 button.onclick = () => { if (!this.busy && !photo.done && !photo.token) { photo.rotation = (photo.rotation + delta + 360) % 360; this.renderQueue(); this.updateControls(); } };
                 tools.append(button);
             }
-            caption.append(state); figure.append(frame, caption,tools); previews.append(figure);
+            caption.append(name,state,tools); figure.append(frame,caption); previews.append(figure);
         }
         this.text('file-count', this.queue.length ? `${this.queue.filter(photo => photo.done).length}/${this.queue.length} enviadas` : '');
         const progress = this.el('upload-progress'); progress.hidden = !this.queue.length;
         progress.max = this.queue.length || 1; progress.value = this.queue.filter(photo => photo.done).length;
+        this.renderPhotosEmpty();
     }
     async uploadPhotos() {
         this.uploadFailed = false;
@@ -348,16 +368,36 @@ class Studio {
         const result = readPaginatedResult(await this.read('AlbumFoto', {albumId:this.album.id}, pagination), pagination);
         applyPaginationResult(this.photosPage, result);
         this.photos = append ? [...this.photos, ...result.items] : result.items;
+        for (const photo of this.queue) {
+            if (!photo.done || photo.confirmed) continue;
+            URL.revokeObjectURL(photo.url); photo.url = null; photo.file = null; photo.confirmed = true;
+        }
         if (!append) this.photoEdits.clear();
-        this.photosLoaded = true; this.renderPhotos();
+        this.photosLoaded = true; this.renderPhotos(); this.renderQueue();
+    }
+    renderPhotosEmpty() {
+        const message = this.el('photo-empty');
+        message.hidden = Boolean(this.photos.length || this.queue.some(photo => !photo.confirmed));
+        message.textContent = this.album?.id ? 'Nenhuma foto no album.' : 'Album ainda nao salvo.';
     }
     renderPhotos() {
-        const list = this.el('photo-list'); list.replaceChildren();
-        if (!this.photos.length) list.append(empty(this.album?.id ? 'Nenhuma foto no album.' : 'Album ainda nao salvo.'));
+        this.thumbnailObserver.disconnect();
+        const list = this.el('saved-photos'); list.replaceChildren();
+        this.renderPhotosEmpty();
         for (const photo of [...this.photos].sort((a,b) => a.ordem - b.ordem || a.id - b.id)) {
             const row = document.createElement('div'); row.className = 'mem-photo-row';
+            row.dataset.albumFotoId = photo.id;
+            const thumbnail = iconButton(`Abrir foto ${photo.fotoid}`, 'fa-image');
+            thumbnail.className = 'mem-photo-thumbnail'; thumbnail.dataset.fotoId = photo.fotoid;
+            const image = document.createElement('img'); image.alt = `Foto ${photo.fotoid}`; image.hidden = true;
+            image.style.transform = `rotate(${photo.rotacao || 0}deg)`;
+            thumbnail.append(image);
+            thumbnail.onclick = () => this.run(() => this.openPhoto(photo));
+            const cached = this.thumbnails.urls.get(photo.fotoid);
+            if (cached) this.showThumbnail(thumbnail,cached); else this.thumbnailObserver.observe(thumbnail);
+            const fields = document.createElement('div'); fields.className = 'mem-photo-fields';
             const id = document.createElement('span'); id.className = 'mem-photo-id'; id.textContent = `#${photo.fotoid}`; id.title = `Foto ${photo.fotoid}`;
-            const captionLabel = document.createElement('label'); captionLabel.textContent = 'Legenda';
+            const captionLabel = document.createElement('label'); captionLabel.className = 'mem-photo-caption'; captionLabel.textContent = 'Legenda';
             const caption = document.createElement('input'); caption.maxLength = 500; caption.value = photo.legenda || ''; caption.setAttribute('aria-label', `Legenda da foto ${photo.fotoid}`); captionLabel.append(caption);
             const orderLabel = document.createElement('label'); orderLabel.textContent = 'Ordem';
             const order = document.createElement('input'); order.type = 'number'; order.min = 1; order.step = 1; order.value = photo.ordem; order.setAttribute('aria-label', `Ordem da foto ${photo.fotoid}`); orderLabel.append(order);
@@ -380,10 +420,43 @@ class Studio {
                 await this.loadPhotos(1); this.feedback('Foto removida do album.');
             });
             const tools = document.createElement('div'); tools.className = 'mem-photo-tools'; tools.append(rotate,save,remove);
-            row.append(id,captionLabel,orderLabel,tools); list.append(row);
+            fields.append(id,captionLabel,orderLabel,tools); row.append(thumbnail,fields); list.append(row);
         }
         this.text('photo-count', this.photos.length ? `${this.photos.length} foto(s) carregada(s)` : '');
         this.el('more-photos').hidden = !this.photosPage.hasNext;
+    }
+    resetThumbnails() {
+        this.thumbnailObserver.disconnect();
+        if (this.thumbnails) {
+            this.thumbnails.controller.abort();
+            this.thumbnails.urls.forEach(url => URL.revokeObjectURL(url));
+        }
+        this.thumbnails = this.disposed ? null : {controller:new AbortController(),urls:new Map(),pending:new Set(),queue:[],loading:false};
+    }
+    showThumbnail(button,url) {
+        const image = button.querySelector('img'); image.src = url; image.hidden = false;
+        button.querySelector('i').hidden = true;
+    }
+    async loadThumbnails(scope) {
+        if (scope.loading) return;
+        scope.loading = true;
+        try {
+            // Somente fotos proximas da tela, uma por vez, mantendo apenas a miniatura reduzida.
+            while (scope.queue.length && !scope.controller.signal.aborted) {
+                const id = scope.queue.shift();
+                try {
+                    const response = await apiFetch(`${environments.urlApi}/Memorias/fotos/${id}/arquivo`, {signal:scope.controller.signal});
+                    if (!response.ok || !/^image\/(jpeg|png|webp)(;|$)/i.test(response.headers.get('Content-Type') || '')) throw new Error('Foto indisponivel.');
+                    const url = await createThumbnail(await response.blob());
+                    if (this.thumbnails !== scope) { URL.revokeObjectURL(url); return; }
+                    scope.urls.set(id,url);
+                    for (const button of this.el('saved-photos').querySelectorAll(`[data-foto-id="${id}"]`)) this.showThumbnail(button,url);
+                } catch (error) {
+                    if (scope.controller.signal.aborted) return;
+                    for (const button of this.el('saved-photos').querySelectorAll(`[data-foto-id="${id}"]`)) button.title = `Abrir foto ${id} (miniatura indisponivel)`;
+                } finally { scope.pending.delete(id); }
+            }
+        } finally { scope.loading = false; }
     }
     async openPhoto(photo) {
         if (this.publicationInProgress()) throw new Error('O album possui uma publicacao em andamento.');
@@ -420,6 +493,8 @@ class Studio {
         if (!preview?.url || this.publicationInProgress()) return;
         const result = await this.command('FotosGirarFoto', {albumFotoId:preview.photo.id,rotacao:preview.rotation});
         preview.photo.rotacao = result.rotacao;
+        const image = this.el('saved-photos').querySelector(`[data-album-foto-id="${preview.photo.id}"] img`);
+        if (image) image.style.transform = `rotate(${result.rotacao}deg)`;
         this.closePhoto(); this.el('photo-dialog').close(); this.feedback('Orientacao da foto salva.');
     }
     async loadModels() {
@@ -681,7 +756,8 @@ class Studio {
         this.el('volume').disabled = this.busy || publishing || !track;
         this.el('listen').disabled = this.busy || publishing || !track?.disponivel;
         this.el('photo-list').querySelectorAll('input,button').forEach(element => element.disabled = this.busy || publishing);
-        this.el('file-previews').querySelectorAll('figure').forEach((figure,index) => figure.querySelectorAll('button').forEach(button => button.disabled = this.busy || this.queue[index].done || Boolean(this.queue[index].token)));
+        const pending = this.queue.filter(photo => !photo.confirmed);
+        this.el('file-previews').querySelectorAll('figure').forEach((figure,index) => figure.querySelectorAll('button').forEach(button => button.disabled = this.busy || pending[index].done || Boolean(pending[index].token)));
         for (const id of ['photo-left','photo-right','photo-invert','photo-save']) this.el(id).disabled = this.busy || publishing || !this.photoPreview?.url;
         this.el('prev').disabled = this.busy || this.albumsPage.page <= 1;
         this.el('next').disabled = this.busy || !this.albumsPage.hasNext;
@@ -713,6 +789,22 @@ function readClaims() {
     } catch { return {}; }
 }
 function empty(message) { const p = document.createElement('p'); p.className = 'mem-muted'; p.textContent = message; return p; }
+async function createThumbnail(blob) {
+    const source = URL.createObjectURL(blob), image = new Image();
+    try {
+        image.src = source; await image.decode();
+        const scale = Math.min(1,320 / Math.max(image.naturalWidth,image.naturalHeight));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1,Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1,Math.round(image.naturalHeight * scale));
+        const context = canvas.getContext('2d');
+        context.fillStyle = '#ffffff'; context.fillRect(0,0,canvas.width,canvas.height);
+        context.drawImage(image,0,0,canvas.width,canvas.height);
+        const thumbnail = await new Promise(resolve => canvas.toBlob(resolve,'image/jpeg',0.8));
+        if (!thumbnail) throw new Error('Miniatura indisponivel.');
+        return URL.createObjectURL(thumbnail);
+    } finally { image.removeAttribute('src'); URL.revokeObjectURL(source); }
+}
 function iconButton(label, icon) {
     const button = document.createElement('button'); button.type = 'button'; button.className = 'mem-icon'; button.title = label; button.setAttribute('aria-label',label);
     const image = document.createElement('i'); image.className = `fa-solid ${icon}`; image.setAttribute('aria-hidden','true'); button.append(image); return button;

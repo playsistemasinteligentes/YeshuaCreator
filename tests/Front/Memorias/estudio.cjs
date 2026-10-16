@@ -37,6 +37,8 @@ async function main() {
             let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
             const testSecret = 'GOCSPX-test-secret-only';
             let sessions = 0, sends = 0, failSecond = true, failSave = false, saveGate = null, saveStarted = null, acceptDialogs = true, applicationConfigured = false, automaticAvailable = false, failRotation = false, photoPng;
+            let imageGate = null, imageStarted = null, imageInFlight = 0, maxImagesInFlight = 0, failThumbnailId = null;
+            const requestCount = () => calls.filter(call=>!/\/fotos\/\d+\/arquivo$/.test(call.endpoint)).length;
             const choosePhotos = async (files = []) => {
                 const opening = page.waitForEvent('filechooser');
                 await page.getByLabel('Selecionar fotos',{exact:true}).click();
@@ -61,7 +63,12 @@ async function main() {
                 });
                 if (/\/Memorias\/fotos\/\d+\/arquivo$/.test(endpoint)) {
                     assert.equal(req.method(),'GET');
-                    return route.fulfill({contentType:'image/png',body:photoPng});
+                    imageInFlight++; maxImagesInFlight=Math.max(maxImagesInFlight,imageInFlight);
+                    try {
+                        if(imageGate){imageStarted();await imageGate;}
+                        if(Number(endpoint.split('/').at(-2))===failThumbnailId){failThumbnailId=null;return await route.fulfill({status:403,json:{message:'Miniatura indisponivel.'}});}
+                        return await route.fulfill({contentType:'image/png',body:photoPng});
+                    } finally { imageInFlight--; }
                 }
                 if (endpoint.includes('FotosGirarFoto')) {
                     if (failRotation) { failRotation=false;return route.fulfill({status:400,json:{message:'Album em publicacao.'}}); }
@@ -272,9 +279,9 @@ async function main() {
             await page.getByLabel('Qualidade do video',{exact:true}).selectOption('3');
             await choosePhotos();
             const png=await page.evaluate(()=> {
-                const canvas=document.createElement('canvas');canvas.width=120;canvas.height=90;
+                const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=900;
                 const ctx=canvas.getContext('2d');
-                for(const [x,y,color] of [[0,0,'#de4242'],[60,0,'#3baf66'],[0,45,'#3f7ade'],[60,45,'#fbdf73']]){ctx.fillStyle=color;ctx.fillRect(x,y,60,45);}
+                for(const [x,y,color] of [[0,0,'#de4242'],[600,0,'#3baf66'],[0,450,'#3f7ade'],[600,450,'#fbdf73']]){ctx.fillStyle=color;ctx.fillRect(x,y,600,450);}
                 return canvas.toDataURL('image/png').split(',')[1];
             });
             photoPng=Buffer.from(png,'base64');
@@ -297,6 +304,21 @@ async function main() {
             await page.getByRole('status').filter({hasText:'Fotos adicionadas ao album.'}).waitFor();
             assert.equal(sessions,2,'Retoma a sessao, nao cria outra.');assert.equal(sends,3);assert.equal(photos.length,2);
             assert.equal(await page.locator('#mem-upload').isHidden(),true);
+            assert.equal(await page.locator('#mem-file-previews figure').count(),0,'A foto enviada nao fica duplicada em outra lista.');
+            for (const row of await page.locator('#mem-saved-photos .mem-photo-row').all()) {
+                await row.scrollIntoViewIfNeeded();
+                await page.waitForFunction(id=>{
+                    const image=document.querySelector(`[data-album-foto-id="${id}"] img`);
+                    return !image.hidden && image.complete && image.naturalWidth>0;
+                },await row.getAttribute('data-album-foto-id'));
+                assert.equal(await row.locator('img').evaluate(image=>Math.max(image.naturalWidth,image.naturalHeight)<=320),true,'Somente a miniatura reduzida permanece na tela.');
+                assert.equal(await row.getByLabel(/^Legenda da foto/).count(),1);
+                assert.equal(await row.getByLabel(/^Ordem da foto/).count(),1);
+                for(const name of ['Salvar foto','Remover foto do album'])assert.equal(await row.getByRole('button',{name,exact:true}).count(),1);
+                assert.equal(await row.getByRole('button',{name:/^Girar foto/}).count(),1);
+                assert.equal(await row.evaluate(element=>element.scrollWidth>element.clientWidth),false);
+            }
+            await page.locator('#mem-photo-list').screenshot({path:path.join(__dirname,`artifacts/fotos-unificadas-${viewport.width}.png`)});
             await choosePhotos([{name:'outro-lote.png',mimeType:'image/png',buffer:photoPng}]);
             await page.waitForFunction(()=>!document.getElementById('mem-files').disabled);
             assert.equal(sessions,3);assert.equal(sends,4);assert.equal(photos.length,3,'Segundo lote envia automaticamente somente a foto nova.');
@@ -306,7 +328,7 @@ async function main() {
             await page.locator('.mem-photo-row').first().getByRole('button',{name:'Salvar foto',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Foto atualizada.'}).waitFor();
             assert.equal(photos[0].legenda,'Primeira memoria');
-            assert.equal(calls.filter(call=>call.endpoint.endsWith('/arquivo')).length,0,'Fotos persistidas sao carregadas apenas ao abrir a previa.');
+            assert.ok(calls.filter(call=>/\/fotos\/\d+\/arquivo$/.test(call.endpoint)).length>0,'Miniaturas usam a borda autenticada existente.');
             const orientation=page.getByRole('dialog',{name:'Orientacao da foto',exact:true});
             await page.getByRole('button',{name:'Girar foto 101',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-photo-save').disabled && document.getElementById('mem-photo-image').complete && document.getElementById('mem-photo-image').naturalWidth>0);
@@ -324,6 +346,11 @@ async function main() {
             await orientation.getByRole('button',{name:'Salvar orientacao',exact:true}).click();
             await orientation.waitFor({state:'hidden'});
             assert.equal(photos[0].rotacao,90);
+            assert.equal(await page.locator('[data-album-foto-id="1"] .mem-photo-thumbnail img').evaluate(image=>image.style.transform),'rotate(90deg)','Salvar orientacao atualiza a miniatura do mesmo item.');
+            assert.equal(await page.locator('[data-album-foto-id="1"] .mem-photo-thumbnail').evaluate(button=>{
+                const frame=button.getBoundingClientRect(),image=button.querySelector('img').getBoundingClientRect();
+                return image.left>=frame.left-1 && image.top>=frame.top-1 && image.right<=frame.right+1 && image.bottom<=frame.bottom+1;
+            }),true,'A miniatura girada cabe inteira no quadro, inclusive no celular.');
             await page.getByRole('button',{name:'Atualizar fotos',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-photos').disabled);
             await page.getByRole('button',{name:'Girar foto 101',exact:true}).click();
@@ -400,7 +427,7 @@ async function main() {
             assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),videoUrl);
             assert.equal(await page.getByRole('link',{name:'Compartilhar no WhatsApp',exact:true}).getAttribute('href'),`https://wa.me/?text=${encodeURIComponent(videoUrl)}`);
             assert.equal(await page.getByRole('link',{name:'Compartilhar por email',exact:true}).getAttribute('href'),`mailto:?body=${encodeURIComponent(videoUrl)}`);
-            const beforeSharing=calls.length;
+            const beforeSharing=requestCount();
             await page.evaluate(()=>{
                 window.shared=[];window.copied=[];window.copyMode='success';window.legacyCopy=true;
                 Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{
@@ -432,7 +459,7 @@ async function main() {
             await page.getByRole('button',{name:'Copiar link do video',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Copia automatica indisponivel.'}).waitFor();
             assert.deepEqual(await page.getByLabel('Link do album',{exact:true}).evaluate(input=>[input.selectionStart,input.selectionEnd]),[0,videoUrl.length]);
-            assert.equal(calls.length,beforeSharing,'Copiar o link nao altera publicacao, conta ou visibilidade.');
+            assert.equal(requestCount(),beforeSharing,'Copiar o link nao altera publicacao, conta ou visibilidade.');
             publications.push({id:99,albumid:90,userid:1,status:60,youtubevideoid:'otherAlbum1'},
                 {id:98,albumid:9,userid:2,status:60,youtubevideoid:'otherOwner1'},
                 {id:97,albumid:9,userid:1,status:30,youtubevideoid:'notReady123'});
@@ -460,7 +487,7 @@ async function main() {
             await page.getByLabel('Canal YouTube de destino').selectOption(channelA.conexaoId);
             await page.getByRole('button',{name:'Adicionar outro canal proprio',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Endereco de autorizacao invalido.'}).waitFor();
-            const last=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,last,'Status somente por botao.');
+            const last=requestCount();await page.waitForTimeout(1100);assert.equal(requestCount(),last,'Status somente por botao.');
             await page.getByLabel('Titulo',{exact:true}).fill('Memorias de familia');
             await page.getByLabel('Qualidade do video',{exact:true}).selectOption('1');
             await page.getByLabel('Modelo',{exact:true}).selectOption('1');
@@ -474,7 +501,7 @@ async function main() {
             await page.getByLabel('Musica',{exact:true}).selectOption('0');
             assert.equal(await page.locator('#mem-audio').getAttribute('src'),null,'Trocar a musica libera o audio privado.');
             assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-            assert.equal(await page.locator('#mem-file-previews img').evaluateAll(images=>images.every(image=>image.complete&&image.naturalWidth>0)),true);
+            assert.equal(await page.locator('#mem-file-previews img').count(),0,'Fotos confirmadas ficam somente nos itens com seus controles.');
             fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});
             await page.screenshot({path:path.join(__dirname,`artifacts/estudio-${viewport.width}.png`),fullPage:true});
             await page.evaluate(()=>sessionStorage.setItem('memorias.youtube.return',JSON.stringify({page:'memorias-estudio',albumId:9})));
@@ -512,15 +539,15 @@ async function main() {
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
             assert.equal(await page.locator('#mem-publication-quality').innerText(),'Qualidade: Padrao (Full HD 1080p)','Publicacao legada nao herda a qualidade atual do album.');
             assert.match(await page.locator('#mem-publish-reason').innerText(),/Novo envio deste album disponivel/);
-            const beforeCooldown=calls.length;
+            const beforeCooldown=requestCount();
             await page.clock.fastForward(5*60*1000+100);
             await page.waitForFunction(()=>!document.getElementById('mem-publish').disabled);
-            assert.equal(calls.length,beforeCooldown,'O prazo libera somente o botao local, sem polling ou reenvio automatico.');
+            assert.equal(requestCount(),beforeCooldown,'O prazo libera somente o botao local, sem polling ou reenvio automatico.');
             acceptDialogs=false;
             await page.getByRole('button',{name:'Publicar album',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-publish').disabled);
             assert.match(dialogs.at(-1),/anterior ainda pode estar em processamento/);
-            assert.equal(calls.length,beforeCooldown,'Cancelar o aviso nao cria outra publicacao.');
+            assert.equal(requestCount(),beforeCooldown,'Cancelar o aviso nao cria outra publicacao.');
             acceptDialogs=true;
             await page.getByRole('button',{name:'Publicar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
@@ -580,7 +607,41 @@ async function main() {
             await page.waitForFunction(()=>!document.getElementById('mem-history').disabled);
             assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),'https://www.youtube.com/watch?v=o1W2n3V4i5D');
             assert.equal(await page.locator('#mem-youtube-studio').isVisible(),true,'O atalho acompanha o video proprio compartilhado, nao a publicacao standard selecionada no historico.');
-            const passive=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,passive,'Disponibilidade automatica tambem e atualizada somente por botao.');
+            const passive=requestCount();await page.waitForTimeout(1100);assert.equal(requestCount(),passive,'Disponibilidade automatica tambem e atualizada somente por botao.');
+            photos.splice(0,photos.length,...Array.from({length:30},(_,index)=>({id:index+1000,albumid:9,fotoid:index+1000,ordem:index+1,legenda:'Foto de volume '+(index+1),rotacao:0})));
+            await page.evaluate(()=>{
+                window.thumbnailUrls=new Set();
+                const create=URL.createObjectURL.bind(URL),revoke=URL.revokeObjectURL.bind(URL);
+                URL.createObjectURL=blob=>{const url=create(blob);window.thumbnailUrls.add(url);return url;};
+                URL.revokeObjectURL=url=>{window.thumbnailUrls.delete(url);revoke(url);};
+            });
+            let releaseImages;
+            imageGate=new Promise(resolve=>{releaseImages=resolve;});
+            const imageIsPending=new Promise(resolve=>{imageStarted=resolve;});
+            maxImagesInFlight=0;
+            const beforeImages=calls.filter(call=>/\/fotos\/\d+\/arquivo$/.test(call.endpoint)).length;
+            await page.getByRole('button',{name:'Atualizar fotos',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-photos').disabled);
+            assert.equal(await page.locator('#mem-saved-photos .mem-photo-row').count(),12,'Mantem paginacao, sem montar todas as fotos.');
+            await page.locator('.mem-photo-thumbnail').first().scrollIntoViewIfNeeded();
+            await imageIsPending;
+            await page.locator('.mem-photo-thumbnail').last().scrollIntoViewIfNeeded();
+            await page.clock.fastForward(100);
+            assert.equal(maxImagesInFlight,1,'A miniatura seguinte espera o fim da anterior.');
+            assert.equal(calls.filter(call=>/\/fotos\/\d+\/arquivo$/.test(call.endpoint)).length,beforeImages+1);
+            failThumbnailId=1011;
+            imageGate=null;releaseImages();
+            await page.waitForFunction(()=>document.querySelector('[data-foto-id="1011"]').title.includes('miniatura indisponivel'));
+            const lastRow=page.locator('[data-album-foto-id="1011"]');
+            assert.equal(await lastRow.getByLabel('Legenda da foto 1011').isEnabled(),true,'Falha de miniatura nao impede editar os dados.');
+            assert.equal(await lastRow.getByRole('button',{name:'Remover foto do album',exact:true}).isEnabled(),true);
+            assert.ok(calls.filter(call=>/\/fotos\/\d+\/arquivo$/.test(call.endpoint)).length-beforeImages<30,'Nao baixa originais fora da pagina nem fora da tela.');
+            await lastRow.getByRole('button',{name:'Abrir foto 1011',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-photo-save').disabled);
+            await orientation.getByRole('button',{name:'Fechar foto',exact:true}).click();
+            await page.getByRole('button',{name:'Novo album',exact:true}).click();
+            await page.waitForFunction(()=>window.thumbnailUrls.size===0);
+            assert.equal(await page.locator('#mem-photo-list img').count(),0,'Trocar de album remove miniaturas e libera URLs privadas.');
             await page.evaluate(()=>document.getElementById('custom-page-container').replaceChildren());
             await page.waitForTimeout(50);assert.deepEqual(errors,[],'Desmontar a tela remove os controles e o dialogo sem erro.');
             await context.close();console.log(`Estudio Memorias passou: ${viewport.width}x${viewport.height}`);

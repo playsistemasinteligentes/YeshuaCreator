@@ -635,7 +635,15 @@ Regra resumida:
   API do Memorias para streaming autenticado, sem cache, do `IFileStorage`,
   apos leitura/ownership pelo repository. E uma borda binaria especifica do
   aplicativo; nao cria storage publico, endpoint CRUD paralelo nem entrega
-  tokens em URL. O Front carrega essa imagem somente ao abrir a previa.
+  tokens em URL. O Front reutiliza essa borda para miniaturas proximas da
+  tela, uma requisicao por vez, reduzindo cada imagem a no maximo 320 pixels
+  no maior lado e liberando o original temporario. Essas miniaturas ficam
+  somente na memoria da tela e sao liberadas ao trocar album ou sair.
+  A previa ampliada continua sendo carregada apenas ao clicar na foto.
+- O Estudio agrupa miniatura, legenda, ordem, rotacao, salvar e excluir no
+  mesmo item da foto. Previa de envio sai quando a lista persistida confirma
+  o lote, sem duplicar a foto em duas listas. Upload automatico, paginacao,
+  Commands e bloqueio durante publicacao permanecem no caminho existente.
 - O manifesto inclui `rotationDegrees` por foto (ausencia significa zero).
   O renderer normaliza orientacao de metadados e giro manual em quadros
   temporarios antes de concatenar; originais e hashes do upload permanecem
