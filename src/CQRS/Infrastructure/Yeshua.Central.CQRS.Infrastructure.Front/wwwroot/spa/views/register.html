@@ -1,68 +1,43 @@
-<div id="create-account" class="max-w-md mx-auto mt-16 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">Criar Conta</h2>
-
-    <form id="create-account-form" class="space-y-4">
-        <!-- CPF/CNPJ -->
-        <input type="text"
-               id="cpfCnpj"
-               name="cpfCnpj"
-               placeholder="CPF/CNPJ"
-               inputmode="numeric"
-               pattern="[0-9]*"
-               required
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-        <!-- Nome -->
-        <input type="text"
-               id="nome"
-               name="nome"
-               placeholder="Nome"
-               required
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-        <!-- Email -->
-        <input type="email"
-               id="email"
-               name="email"
-               placeholder="Digite seu e-mail"
-               required
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-        <!-- Telefone -->
-        <input type="tel"
-               id="phone"
-               name="phone"
-               placeholder="Telefone"
-               required
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-        <!-- Senha -->
-        <input type="password"
-               id="password"
-               name="password"
-               placeholder="Senha"
-               required
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-        <!-- Confirmar Senha -->
-        <input type="password"
-               id="confirmpassword"
-               name="confirmpassword"
-               placeholder="Confirme a senha"
-               required
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-        <!-- Botões -->
-        <div class="flex items-center justify-center gap-6 pt-4">
-            <button type="submit"
-                    id="btn-create-account"
-                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded font-medium transition">
-                Criar Conta
+<main class="yeshua-auth-page" aria-labelledby="register-title">
+    <header class="yeshua-auth-brand">
+        <i class="fa-solid fa-play" aria-hidden="true"></i>
+        <div><strong>Play Sistemas Inteligentes</strong><span>Central Yeshua</span></div>
+    </header>
+    <section id="create-account" class="yeshua-auth-panel" aria-labelledby="register-title">
+        <h1 id="register-title">Criar conta</h1>
+        <form id="create-account-form" class="yeshua-auth-form">
+            <div class="yeshua-auth-fields yeshua-auth-fields-register">
+                <div class="yeshua-auth-field yeshua-auth-field-wide">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" required autocomplete="name" />
+                </div>
+                <div class="yeshua-auth-field">
+                    <label for="cpfCnpj">CPF/CNPJ</label>
+                    <input type="text" id="cpfCnpj" name="cpfCnpj" inputmode="numeric" pattern="[0-9]*" required />
+                </div>
+                <div class="yeshua-auth-field">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+                </div>
+                <div class="yeshua-auth-field yeshua-auth-field-wide">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="seu@email.com" />
+                </div>
+                <div class="yeshua-auth-field">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required autocomplete="new-password" />
+                </div>
+                <div class="yeshua-auth-field">
+                    <label for="confirmpassword">Confirmar senha</label>
+                    <input type="password" id="confirmpassword" name="confirmpassword" required autocomplete="new-password" />
+                </div>
+            </div>
+            <button type="submit" id="btn-create-account" class="yeshua-button-primary yeshua-auth-submit">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Criar conta
             </button>
-
-            <a href="#login" title="Voltar para login" class="text-blue-600 hover:text-blue-800">
-                <i class="fas fa-sign-in-alt text-2xl"></i>
-            </a>
-        </div>
-    </form>
-</div>
+        </form>
+        <nav class="yeshua-auth-links" aria-label="Op&#231;&#245;es de acesso">
+            <a href="#login"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> J&#225; tenho conta</a>
+        </nav>
+    </section>
+</main>

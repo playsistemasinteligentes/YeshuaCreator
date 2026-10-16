@@ -26,17 +26,21 @@ export async function handleRouting(hash) {
         return;
     }
 
+    document.body.classList.toggle('yeshua-auth-active', publicRoutes.includes(route));
+
     if (await tryHandleCustomPage(route)) {
         return;
     }
 
     let pageRendered = false;
     try {
-        const res = await fetch(`views/${route.replace('#', '')}.html`);
+        const viewVersion = publicRoutes.includes(route) ? '?v=20261016-auth-layout01' : '';
+        const res = await fetch(`views/${route.replace('#', '')}.html${viewVersion}`);
         if (!res.ok) throw new Error('Página não encontrada...');
 
         const html = await res.text();
         app.innerHTML = html;
+        if (publicRoutes.includes(route)) window.scrollTo(0, 0);
         pageRendered = true;
 
         await attachEvents(route);

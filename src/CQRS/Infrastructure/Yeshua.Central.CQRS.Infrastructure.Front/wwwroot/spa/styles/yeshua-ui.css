@@ -588,21 +588,169 @@ textarea:focus-visible {
 }
 
 /* Authentication */
+body.yeshua-auth-active #alertContainer {
+    top: 16px !important;
+    width: min(384px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+}
+
+.yeshua-auth-page {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 36px 16px;
+}
+
+.yeshua-auth-brand {
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 12px;
+    color: var(--y-brand);
+}
+
+.yeshua-auth-brand > i {
+    flex: 0 0 24px;
+    width: 24px;
+    font-size: 24px;
+}
+
+.yeshua-auth-brand strong,
+.yeshua-auth-brand span {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.yeshua-auth-brand strong {
+    font-size: 15px;
+    font-weight: 750;
+    line-height: 1.5;
+}
+
+.yeshua-auth-brand span {
+    color: var(--y-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
 #login-screen,
 #create-account,
 #forgot-password {
-    width: calc(100% - 32px);
+    width: 100%;
+    max-width: 440px;
+    margin: 0;
     border: 1px solid var(--y-line);
     border-radius: var(--y-radius) !important;
     background: var(--y-surface) !important;
+    padding: 28px;
     box-shadow: var(--y-shadow) !important;
 }
 
-#login-screen h2,
-#create-account h2,
-#forgot-password h2 {
+#create-account {
+    max-width: 560px;
+}
+
+.yeshua-auth-panel h1 {
+    margin: 0 0 24px;
+    color: var(--y-ink);
+    font-size: 22px;
+    font-weight: 750;
+    line-height: 1.35;
+}
+
+.yeshua-auth-form,
+.yeshua-auth-fields {
+    display: grid;
+    gap: 18px;
+}
+
+.yeshua-auth-fields-register {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.yeshua-auth-field {
+    display: grid;
+    min-width: 0;
+    gap: 7px;
+}
+
+.yeshua-auth-field-wide {
+    grid-column: 1 / -1;
+}
+
+#app .yeshua-auth-field label {
     color: var(--y-ink) !important;
-    font-size: 22px !important;
+    font-size: 13px !important;
+    line-height: 1.5;
+}
+
+#app .yeshua-auth-page .yeshua-auth-field input,
+#app .yeshua-auth-page .yeshua-auth-field select {
+    min-width: 0;
+    min-height: 46px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#app .yeshua-auth-submit {
+    display: inline-flex;
+    width: 100%;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.yeshua-auth-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: 24px;
+    border-top: 1px solid var(--y-line);
+    padding-top: 16px;
+}
+
+.yeshua-auth-links a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 8px;
+    color: var(--y-brand);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.yeshua-auth-links a:hover {
+    color: var(--y-brand-strong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .yeshua-auth-page {
+        gap: 20px;
+        padding: 24px 16px;
+    }
+
+    #login-screen,
+    #create-account,
+    #forgot-password {
+        padding: 22px;
+    }
+
+    .yeshua-auth-fields-register {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 /* Modals */
