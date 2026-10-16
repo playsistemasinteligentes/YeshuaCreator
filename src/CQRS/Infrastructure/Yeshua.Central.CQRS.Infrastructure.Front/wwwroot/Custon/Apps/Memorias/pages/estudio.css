@@ -38,7 +38,7 @@
 .mem-pagination { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:18px; font-size:12px; color:#63716b; }
 .mem-studio .mem-file { display:inline-flex; flex-direction:row; position:relative; overflow:hidden; font-weight:400; }
 .mem-studio .mem-file input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; }
-.mem-tools { display:flex; gap:8px; }
+.mem-tools { display:flex; align-items:center; gap:8px; }
 .mem-config-dialog,.mem-photo-dialog { width:min(560px,calc(100% - 32px)); max-height:calc(100% - 32px); padding:20px; margin:auto; border:1px solid var(--mem-border); border-radius:6px; overflow:auto; color:inherit; background:#fff; }
 .mem-config-dialog::backdrop,.mem-photo-dialog::backdrop { background:rgba(15,30,26,.5); }
 .mem-photo-frame { aspect-ratio:1; width:min(100%,480px); margin:auto; background:#f2f5f4; overflow:hidden; }

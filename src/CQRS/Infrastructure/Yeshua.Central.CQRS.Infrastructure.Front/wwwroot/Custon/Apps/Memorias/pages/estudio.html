@@ -5,7 +5,7 @@
   <div id="mem-feedback" role="status" aria-live="polite" class="mem-feedback"></div>
   <div class="mem-layout">
     <aside class="mem-albums" aria-label="Albuns">
-      <div class="mem-section-heading"><h2>Meus albuns</h2><button id="mem-new" class="mem-icon" title="Novo album" aria-label="Novo album"><i class="fa-solid fa-plus" aria-hidden="true"></i></button></div>
+      <div class="mem-section-heading"><h2>Meus albuns</h2></div>
       <form id="mem-search-form" class="mem-search"><input id="mem-search" type="search" aria-label="Buscar albuns" placeholder="Buscar album"><button class="mem-icon" title="Buscar albuns" aria-label="Buscar albuns"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button></form>
       <div id="mem-album-list" class="mem-album-list"></div>
       <nav class="mem-pagination" aria-label="Paginas de albuns"><button id="mem-prev" class="mem-icon" title="Pagina anterior" aria-label="Pagina anterior"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button><span id="mem-page"></span><button id="mem-next" class="mem-icon" title="Proxima pagina" aria-label="Proxima pagina"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button></nav>
@@ -13,7 +13,7 @@
     <div class="mem-workspace">
       <div class="mem-editor">
       <section class="mem-section" aria-labelledby="mem-album-title">
-        <div class="mem-section-heading"><h2 id="mem-album-title">Album</h2><span id="mem-album-badge" class="mem-badge">Novo</span></div>
+        <div class="mem-section-heading"><h2 id="mem-album-title">Album</h2><div class="mem-tools"><span id="mem-album-badge" class="mem-badge">Novo</span><button id="mem-new" class="mem-icon" title="Novo album" aria-label="Novo album"><i class="fa-solid fa-plus" aria-hidden="true"></i></button></div></div>
         <form id="mem-album-form">
           <fieldset id="mem-album-fields" class="mem-fields">
             <label class="mem-wide">Titulo<input id="mem-title" required maxlength="200" placeholder="Nome do album"></label>
@@ -27,12 +27,12 @@
             <div class="mem-wide mem-music-details"><div class="mem-actions"><button id="mem-listen" type="button" class="mem-icon" title="Ouvir musica" aria-label="Ouvir musica"><i class="fa-solid fa-play" aria-hidden="true"></i></button><span id="mem-music-credit" class="mem-muted"></span><a id="mem-music-license" target="_blank" rel="noopener noreferrer" hidden>CC BY 4.0</a></div><audio id="mem-audio" controls preload="none" hidden></audio></div>
           </fieldset>
           <p class="mem-muted"><a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer">Biblioteca de audio do YouTube</a></p>
-          <div class="mem-actions"><button id="mem-save" class="mem-button mem-primary" type="submit"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Salvar album</button><span id="mem-unsaved" class="mem-muted"></span></div>
+          <p id="mem-unsaved" class="mem-muted" role="status" aria-live="polite"></p>
         </form>
       </section>
       <section class="mem-section" aria-labelledby="mem-photos-title">
         <div class="mem-section-heading"><h2 id="mem-photos-title">Fotos</h2><button id="mem-refresh-photos" class="mem-icon" title="Atualizar fotos" aria-label="Atualizar fotos"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div>
-        <div class="mem-actions"><label class="mem-button mem-file"><i class="fa-solid fa-images" aria-hidden="true"></i> Selecionar fotos<input id="mem-files" type="file" multiple accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" aria-label="Selecionar fotos"></label><button id="mem-upload" class="mem-button" type="button"><i class="fa-solid fa-upload" aria-hidden="true"></i> Enviar fotos</button><button id="mem-clear-files" class="mem-icon" title="Limpar selecao de fotos" aria-label="Limpar selecao de fotos"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><span id="mem-file-count" class="mem-muted"></span></div>
+        <div class="mem-actions"><label class="mem-button mem-file"><i class="fa-solid fa-images" aria-hidden="true"></i> Selecionar fotos<input id="mem-files" type="file" multiple accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" aria-label="Selecionar fotos"></label><button id="mem-upload" class="mem-button" type="button" hidden><i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Tentar novamente</button><button id="mem-clear-files" class="mem-icon" title="Limpar selecao de fotos" aria-label="Limpar selecao de fotos" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><span id="mem-file-count" class="mem-muted"></span></div>
         <progress id="mem-upload-progress" max="1" value="0" aria-label="Fotos enviadas" hidden></progress>
         <div id="mem-file-previews" class="mem-previews"></div>
         <div id="mem-photo-list" class="mem-photo-list"></div>

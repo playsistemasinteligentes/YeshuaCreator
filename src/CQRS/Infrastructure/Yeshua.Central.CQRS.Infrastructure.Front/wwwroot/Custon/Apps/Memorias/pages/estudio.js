@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261016-channel-routing02';
+const version = '20261016-photo-flow01';
 const publicationRequestInterval = 5 * 60 * 1000;
 const qualityNames = {1:'Economica (HD 720p)',2:'Padrao (Full HD 1080p)',3:'Alta (4K 2160p)'};
 const stepNames = [
@@ -91,7 +91,7 @@ class Studio {
     async run(action) {
         if (this.busy || this.disposed) return;
         this.busy = true; this.updateControls();
-        try { await action(); }
+        try { return await action(); }
         catch (error) {
             if (!this.disposed && error.name !== 'AbortError') {
                 const message = error.message || 'Nao foi possivel concluir a operacao.';
@@ -120,9 +120,10 @@ class Studio {
         const on = (id, event, action) => this.el(id).addEventListener(event, action, {signal:this.controller.signal});
         const click = (id, action) => on(id, 'click', () => this.run(action));
         on('search-form', 'submit', event => { event.preventDefault(); this.run(() => this.loadAlbums(1)); });
-        on('album-form', 'submit', event => { event.preventDefault(); this.run(() => this.saveAlbum()); });
+        on('album-form', 'submit', event => event.preventDefault());
         on('album-fields', 'input', () => { this.dirty = true; this.updateControls(); });
-        on('files', 'change', () => this.selectFiles());
+        on('files', 'click', event => this.preparePhotoSelection(event));
+        on('files', 'change', () => { if (this.selectFiles()) this.run(() => this.uploadPhotos()); });
         on('channel', 'change', () => this.updateControls());
         on('model', 'change', () => {
             const suggested = this.models.find(model => model.id === Number(this.el('model').value))?.musicaSugeridaId || 0;
@@ -136,7 +137,10 @@ class Studio {
             this.publication = this.publications.find(item => item.id === Number(this.el('history').value)) || null;
             await this.loadSteps(); this.renderPublication();
         }));
-        click('new', () => { if (this.canLeave()) this.openNewAlbum(); });
+        on('new', 'click', () => {
+            if (this.busy || !this.canLeave()) return;
+            this.openNewAlbum(); this.el('title').focus();
+        });
         click('prev', () => this.loadAlbums(this.albumsPage.page - 1));
         click('next', () => this.loadAlbums(this.albumsPage.page + 1));
         click('upload', () => this.uploadPhotos());
@@ -243,8 +247,9 @@ class Studio {
         this.feedback('Album carregado.');
     }
     async saveAlbum() {
+        if (this.album?.id && !this.dirty) return true;
         if (this.photoEdits.size) throw new Error('Salve as alteracoes das fotos antes de salvar o album.');
-        if (!this.el('album-form').reportValidity()) return;
+        if (!this.el('album-form').reportValidity()) return false;
         const body = {id:this.album?.id, titulo:this.el('title').value.trim(), descricao:this.el('description').value.trim(),
             privacidade:Number(this.el('privacy').value), segundosPorFoto:Number(this.el('duration').value),
             qualidadeVideo:Number(this.el('quality').value), modeloVideo:Number(this.el('model').value),
@@ -261,17 +266,35 @@ class Studio {
         this.text('heading', body.titulo); this.text('album-badge', `#${saved.id}`);
         await this.loadAlbums(this.albumsPage.page); await this.loadPhotos(1); await this.refreshPublication();
         this.feedback('Album salvo.');
+        return true;
+    }
+    preparePhotoSelection(event) {
+        if (this.busy || this.publicationInProgress() || this.photoEdits.size) { event.preventDefault(); return; }
+        if (this.album?.id && !this.dirty) return;
+        event.preventDefault();
+        if (!this.el('album-form').reportValidity()) return;
+        this.run(() => this.saveAlbum()).then(saved => {
+            if (!saved || this.disposed) return;
+            // A espera pelo servidor pode expirar a permissao de abrir o seletor.
+            if (typeof this.el('files').showPicker === 'function') {
+                try { this.el('files').showPicker(); return; }
+                catch (error) { if (error.name !== 'NotAllowedError') throw error; }
+            }
+            this.feedback('Album salvo. Toque em Selecionar fotos.');
+        }).catch(error => { if (!this.disposed) this.feedback(error.message, true); });
     }
     selectFiles() {
-        if (this.busy) return;
+        if (this.busy || this.publicationInProgress() || this.photoEdits.size) return false;
         const files = Array.from(this.el('files').files || []);
+        if (!files.length) return false;
         const invalid = files.find(file => !/\.(jpe?g|png|webp)$/i.test(file.name) || file.size <= 0 || file.size > 25*1024*1024);
         if (invalid) { this.el('files').value = ''; this.feedback(`${invalid.name}: envie JPEG, PNG ou WebP de ate 25 MB.`, true); return; }
         this.queue.push(...files.map(file => ({file, url:URL.createObjectURL(file), token:null, done:false,rotation:0})));
         this.el('files').value = ''; this.renderQueue(); this.updateControls();
+        return true;
     }
     clearQueue() {
-        this.queue.forEach(photo => URL.revokeObjectURL(photo.url)); this.queue = [];
+        this.queue.forEach(photo => URL.revokeObjectURL(photo.url)); this.queue = []; this.uploadFailed = false;
     }
     renderQueue() {
         const previews = this.el('file-previews'); previews.replaceChildren();
@@ -295,23 +318,29 @@ class Studio {
         progress.max = this.queue.length || 1; progress.value = this.queue.filter(photo => photo.done).length;
     }
     async uploadPhotos() {
-        if (!this.album?.id || this.dirty) throw new Error('Salve o album antes de enviar fotos.');
-        for (const photo of this.queue) {
-            if (photo.done) continue;
-            this.feedback(`Enviando ${photo.file.name}...`);
-            if (!photo.token) {
-                const session = await this.api('/FileUpload/InfraStarSessionUploadUseCase', {entityType:'Album',entityId:String(this.album.id)});
-                photo.token = session.uploadToken;
-                if (!photo.token) throw new Error('A API nao confirmou a sessao da foto.');
+        this.uploadFailed = false;
+        try {
+            if (!await this.saveAlbum()) { this.uploadFailed = true; return; }
+            for (const [index,photo] of this.queue.entries()) {
+                if (photo.done) continue;
+                this.feedback(`Enviando foto ${index + 1} de ${this.queue.length}...`);
+                if (!photo.token) {
+                    const session = await this.api('/FileUpload/InfraStarSessionUploadUseCase', {entityType:'Album',entityId:String(this.album.id)});
+                    photo.token = session.uploadToken;
+                    if (!photo.token) throw new Error('A API nao confirmou a sessao da foto.');
+                }
+                const form = new FormData(); form.append('token', photo.token); form.append('ChunkIndex', '0'); form.append('IsFinalChunk', 'true');
+                form.append('FileName', photo.file.name); form.append('ContentType', photo.file.type); form.append('FileStream', photo.file, photo.file.name);
+                form.append('Rotacao', String(photo.rotation));
+                const result = await this.api('/FileUpload/InfraSendFileUseCase', form);
+                if (!result.success || !result.isFinalized) throw new Error('A API nao confirmou o envio da foto.');
+                photo.done = true; this.renderQueue();
             }
-            const form = new FormData(); form.append('token', photo.token); form.append('ChunkIndex', '0'); form.append('IsFinalChunk', 'true');
-            form.append('FileName', photo.file.name); form.append('ContentType', photo.file.type); form.append('FileStream', photo.file, photo.file.name);
-            form.append('Rotacao', String(photo.rotation));
-            const result = await this.api('/FileUpload/InfraSendFileUseCase', form);
-            if (!result.success || !result.isFinalized) throw new Error('A API nao confirmou o envio da foto.');
-            photo.done = true; this.renderQueue();
+            await this.loadPhotos(1); this.feedback('Fotos adicionadas ao album.');
+        } catch (error) {
+            this.uploadFailed = true;
+            throw error;
         }
-        await this.loadPhotos(1); this.feedback('Fotos adicionadas ao album.');
     }
     async loadPhotos(page, append = false) {
         if (!this.album?.id) return;
@@ -612,10 +641,9 @@ class Studio {
         return latest ? latest + publicationRequestInterval : 0;
     }
     publishReason() {
-        if (!this.album?.id) return 'Salve o album para publicar.';
-        if (this.dirty) return 'Salve as alteracoes do album.';
+        if (!this.album?.id) return 'Adicione fotos ao album.';
         if (this.photoEdits.size) return 'Salve as alteracoes das fotos.';
-        if (this.queue.some(photo => !photo.done)) return 'Envie as fotos selecionadas.';
+        if (this.queue.some(photo => !photo.done)) return this.uploadFailed ? 'Ha fotos pendentes de envio.' : 'Aguarde o envio das fotos.';
         if (!this.photosLoaded || !this.publicationsLoaded) return 'Consulte as fotos e o status antes de publicar.';
         if (!this.photos.length) return 'Adicione fotos ao album.';
         const next = this.nextPublicationAt();
@@ -630,6 +658,7 @@ class Studio {
         const reason = this.publishReason(); if (reason) throw new Error(reason);
         if (this.publicationInProgress() && !window.confirm('A publicacao anterior ainda pode estar em processamento. Enviar novamente pode gerar outro video. Deseja continuar?')) return;
         if (this.el('privacy').value === '3' && !window.confirm('Publicar este album como publico no YouTube?')) return;
+        if (!await this.saveAlbum()) return;
         const result = await this.command('AlbunsSolicitarPublicacaoAlbum', {albumId:this.album.id,conexaoYouTubeId:this.selectedChannel()?.conexaoId || ''});
         this.publication = {id:result.publicacaoAlbumId};
         await this.refreshPublication(); this.feedback('Publicacao solicitada.');
@@ -648,7 +677,6 @@ class Studio {
         this.el('published-link').disabled = false;
         const publishing = this.publicationInProgress();
         this.el('album-fields').disabled = this.busy || publishing;
-        this.el('save').disabled = this.busy || publishing;
         const track = this.music.find(item => item.id === Number(this.el('music').value));
         this.el('volume').disabled = this.busy || publishing || !track;
         this.el('listen').disabled = this.busy || publishing || !track?.disponivel;
@@ -657,9 +685,10 @@ class Studio {
         for (const id of ['photo-left','photo-right','photo-invert','photo-save']) this.el(id).disabled = this.busy || publishing || !this.photoPreview?.url;
         this.el('prev').disabled = this.busy || this.albumsPage.page <= 1;
         this.el('next').disabled = this.busy || !this.albumsPage.hasNext;
-        const albumReady = Boolean(this.album?.id) && !this.dirty;
-        this.el('files').disabled = this.busy || publishing || !albumReady || this.photoEdits.size > 0;
-        this.el('upload').disabled = this.busy || publishing || !albumReady || this.photoEdits.size > 0 || !this.queue.some(photo => !photo.done);
+        this.el('files').disabled = this.busy || publishing || this.photoEdits.size > 0;
+        this.el('upload').hidden = !this.uploadFailed;
+        this.el('upload').disabled = this.busy || publishing || this.photoEdits.size > 0 || !this.queue.length;
+        this.el('clear-files').hidden = !this.uploadFailed;
         this.el('clear-files').disabled = this.busy || !this.queue.length;
         this.el('refresh-photos').disabled = this.busy || !this.album?.id;
         this.el('refresh-status').disabled = this.busy || !this.album?.id;
@@ -673,7 +702,7 @@ class Studio {
         this.el('resume').disabled = this.busy || !this.publication?.conexaoyoutubeid;
         const reason = this.publishReason(); this.text('publish-reason', reason);
         this.el('publish').disabled = this.busy || Boolean(reason);
-        this.text('unsaved', this.dirty ? 'Alteracoes nao salvas' : '');
+        this.text('unsaved', this.dirty ? 'Alteracoes pendentes' : '');
     }
 }
 

@@ -705,8 +705,16 @@ Regra resumida:
   opcional fica na configuracao existente. Selecao de fotos deve iniciar o
   upload sem exigir outro clique. Varias publicacoes do mesmo album permanecem
   registros separados, com seus respectivos destinos e links. O seletor
-  condicional e o balanceamento estao implementados; o upload automatico ao
-  selecionar fotos continua pendente.
+  condicional e o balanceamento estao implementados.
+- No estudio, Novo album abre apenas um rascunho local. Digitar, sair do campo
+  ou pressionar Enter nao salva. Selecionar fotos valida e salva o album antes
+  de abrir o seletor; Publicar salva alteracoes pendentes antes de solicitar a
+  publicacao. Nao existe botao Salvar album nem autosave por tempo.
+  Se a espera pelo servidor expirar a permissao do navegador para abrir o
+  seletor, um segundo toque usa o album ja confirmado, sem cria-lo novamente.
+  Confirmar fotos inicia o upload sequencial existente. Falhas conservam sessoes
+  e fotos confirmadas para Tentar novamente, sem retry automatico ou polling.
+  Essa retomada e local a pagina aberta, nao uma promessa apos fechar/recarregar.
 - A publicacao captura `ConexaoYouTubeId`, `CanalYouTubeId` e
   `YouTubeCredentialTenantId` quando e solicitada. O Worker usa esse destino,
   nunca a ultima conta conectada ou um canal padrao implicito. Desconexao ou

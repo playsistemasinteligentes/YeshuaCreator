@@ -36,7 +36,15 @@ async function main() {
             const channels = [structuredClone(channelA),structuredClone(channelB)];
             let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
             const testSecret = 'GOCSPX-test-secret-only';
-            let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false, automaticAvailable = false, failRotation = false, photoPng;
+            let sessions = 0, sends = 0, failSecond = true, failSave = false, saveGate = null, saveStarted = null, acceptDialogs = true, applicationConfigured = false, automaticAvailable = false, failRotation = false, photoPng;
+            const choosePhotos = async (files = []) => {
+                const opening = page.waitForEvent('filechooser');
+                await page.getByLabel('Selecionar fotos',{exact:true}).click();
+                const chooser = await opening;
+                assert.equal(albums[0]?.id,9,'O servidor confirma o album antes de abrir o seletor.');
+                await chooser.setFiles(files);
+                if (!files.length) await page.waitForFunction(()=>!document.getElementById('mem-files').disabled);
+            };
             page.on('pageerror', error => errors.push(error.message));
             page.on('dialog',dialog => { dialogs.push(dialog.message());return acceptDialogs ? dialog.accept() : dialog.dismiss(); });
             await page.clock.install();
@@ -74,6 +82,8 @@ async function main() {
                     return read(albums.filter(item => (!body.id || item.id===body.id) && (!body.titulo || item.titulo.includes(body.titulo))));
                 }
                 if (endpoint.endsWith('/PostAlbum') || endpoint.endsWith('/PutAlbum')) {
+                    if (failSave) { failSave=false;return route.fulfill({status:503,json:{message:'Falha ao salvar o album.'}}); }
+                    if (saveGate) { saveStarted(); await saveGate; }
                     assert.ok([1,2,3].includes(body.qualidadeVideo));
                     const album = {id:9,userid:1,titulo:body.titulo,descricao:body.descricao,privacidade:body.privacidade,segundosporfoto:body.segundosPorFoto,qualidadevideo:body.qualidadeVideo,modelovideo:body.modeloVideo,musicaid:body.musicaId,volumemusica:body.volumeMusica,status:1};
                     if (albums.length) albums[0]=album; else albums.push(album);
@@ -94,7 +104,7 @@ async function main() {
                     ++sends;
                     const form=await new Request(req.url(),{method:'POST',headers:req.headers(),body:req.postDataBuffer()}).formData();
                     const rotation=Number(form.get('Rotacao'));
-                    assert.equal(rotation,form.get('FileName')==='familia.png'?180:90,'O envio preserva o giro inclusive ao retomar.');
+                    assert.equal(rotation,0,'O envio automatico preserva a orientacao original inclusive ao retomar.');
                     assert.deepEqual(Buffer.from(await form.get('FileStream').arrayBuffer()),photoPng,'O arquivo original nao e regravado pelo navegador.');
                     if (sends===2 && failSecond) { failSecond=false;return route.fulfill({status:503,json:{message:'Falha temporaria no upload.'}}); }
                     const id=photos.length+1;photos.push({id,albumid:9,fotoid:id+100,ordem:id,legenda:'',rotacao:rotation});return respond({success:true,isFinalized:true});
@@ -146,8 +156,12 @@ async function main() {
             assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'2');
             assert.deepEqual(await page.getByLabel('Qualidade do video',{exact:true}).locator('option').evaluateAll(options=>options.map(option=>option.value)),['1','2','3']);
             await page.waitForFunction(()=>getComputedStyle(document.getElementById('mem-files')).opacity==='0');
-            assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).isDisabled(),true,'O seletor nativo permanece invisivel quando desabilitado.');
-            assert.equal(await page.getByRole('button',{name:'Enviar fotos',exact:true}).isDisabled(),true);
+            assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).isEnabled(),true,'Selecionar fotos permite criar o album sem um botao Salvar.');
+            assert.equal(await page.getByRole('button',{name:'Salvar album',exact:true}).count(),0);
+            assert.equal(await page.locator('#mem-upload').isHidden(),true);
+            assert.equal(await page.locator('#mem-new').evaluate(button=>button.closest('.mem-section-heading').querySelector('h2').textContent),'Album');
+            await page.getByLabel('Selecionar fotos',{exact:true}).click();
+            assert.equal(calls.some(call=>call.endpoint.endsWith('/PostAlbum')),false,'Titulo obrigatorio impede criar um album vazio.');
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
             assert.equal(await page.getByRole('button',{name:'Adicionar canal proprio',exact:true}).isDisabled(),true);
             assert.equal(await page.locator('#mem-channel-label').isHidden(),true);
@@ -201,6 +215,12 @@ async function main() {
             await page.locator('#mem-volume').fill('0');
             await page.getByLabel('Segundos por foto',{exact:true}).fill('2');
             await page.getByLabel('Visibilidade no YouTube',{exact:true}).selectOption('1');
+            await page.getByLabel('Titulo',{exact:true}).focus();
+            await page.getByLabel('Titulo',{exact:true}).press('Enter');
+            await page.getByLabel('Descricao',{exact:true}).focus();
+            const editing=calls.length;
+            await page.clock.fastForward(10000);
+            assert.equal(calls.length,editing,'Digitar, sair do titulo e pressionar Enter nao salva o album.');
             const beforeCancel=calls.length;
             acceptDialogs=false;
             await page.getByRole('button',{name:'Adicionar outro canal proprio',exact:true}).click();
@@ -208,14 +228,38 @@ async function main() {
             acceptDialogs=true;
             assert.equal(calls.length,beforeCancel,'Cancelar saida nao cria autorizacao pendente.');
             assert.equal(await page.getByLabel('Titulo',{exact:true}).inputValue(),'<img src=x onerror=alert(1)> Album de familia');
-            await page.getByRole('button',{name:'Salvar album',exact:true}).click();
-            await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
+            failSave=true;
+            await page.getByLabel('Selecionar fotos',{exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Falha ao salvar o album.'}).waitFor();
+            assert.equal(albums.length,0);assert.equal(sessions,0);
+            assert.equal(await page.getByLabel('Titulo',{exact:true}).inputValue(),'<img src=x onerror=alert(1)> Album de familia');
+            await page.evaluate(()=>{
+                window.originalPicker=HTMLInputElement.prototype.showPicker;
+                HTMLInputElement.prototype.showPicker=function(){throw new DOMException('Gesture expired','NotAllowedError');};
+            });
+            let releaseSave;
+            saveGate=new Promise(resolve=>{releaseSave=resolve;});
+            const started=new Promise(resolve=>{saveStarted=resolve;});
+            const beforeCreate=calls.filter(call=>call.endpoint.endsWith('/PostAlbum')).length;
+            await page.getByLabel('Selecionar fotos',{exact:true}).click();
+            await started;
+            await page.waitForFunction(()=>document.getElementById('mem-files').disabled);
+            await page.evaluate(()=>{document.getElementById('mem-files').click();document.getElementById('mem-new').click();});
+            assert.equal(sessions,0,'Nao inicia upload enquanto o servidor ainda salva o album.');
+            assert.equal(albums.length,0);
+            assert.equal(calls.filter(call=>call.endpoint.endsWith('/PostAlbum')).length,beforeCreate+1,'Cliques repetidos nao criam salvamentos concorrentes.');
+            releaseSave();saveGate=null;
+            await page.getByRole('status').filter({hasText:'Album salvo. Toque em Selecionar fotos.'}).waitFor();
+            const created=calls.filter(call=>call.endpoint.endsWith('/PostAlbum')).length;
+            await page.evaluate(()=>{HTMLInputElement.prototype.showPicker=window.originalPicker;});
+            await choosePhotos();
+            assert.equal(calls.filter(call=>call.endpoint.endsWith('/PostAlbum')).length,created,'Segundo toque apos bloqueio do seletor nao cria outro album.');
+            assert.equal(sessions,0,'Cancelar o seletor nao inicia upload.');
             assert.equal(await page.locator('#mem-album-list img').count(),0,'Titulo e texto, nao HTML.');
             for (const quality of ['1','2','3']) {
                 await page.getByLabel('Qualidade do video',{exact:true}).selectOption(quality);
-                assert.equal(await page.locator('#mem-unsaved').innerText(),'Alteracoes nao salvas');
-                await page.getByRole('button',{name:'Salvar album',exact:true}).click();
-                await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
+                assert.equal(await page.locator('#mem-unsaved').innerText(),'Alteracoes pendentes');
+                await choosePhotos();
                 assert.equal(albums[0].qualidadevideo,Number(quality));
             }
             delete albums[0].qualidadevideo;
@@ -226,8 +270,7 @@ async function main() {
             await page.screenshot({path:path.join(__dirname,`artifacts/modelos-${viewport.width}.png`),fullPage:true});
             assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'2','Album legado continua em 1080p.');
             await page.getByLabel('Qualidade do video',{exact:true}).selectOption('3');
-            await page.getByRole('button',{name:'Salvar album',exact:true}).click();
-            await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
+            await choosePhotos();
             const png=await page.evaluate(()=> {
                 const canvas=document.createElement('canvas');canvas.width=120;canvas.height=90;
                 const ctx=canvas.getContext('2d');
@@ -235,24 +278,30 @@ async function main() {
                 return canvas.toDataURL('image/png').split(',')[1];
             });
             photoPng=Buffer.from(png,'base64');
-            await page.getByLabel('Selecionar fotos',{exact:true}).setInputFiles([
+            await choosePhotos([{name:'invalido.pdf',mimeType:'application/pdf',buffer:Buffer.from('invalid')}]);
+            await page.getByRole('status').filter({hasText:'invalido.pdf: envie JPEG, PNG ou WebP de ate 25 MB.'}).waitFor();
+            assert.equal(sessions,0,'Arquivo invalido nao inicia sessao de upload.');
+            await choosePhotos([
                 {name:'familia.png',mimeType:'image/png',buffer:Buffer.from(png,'base64')},
                 {name:'viagem.png',mimeType:'image/png',buffer:Buffer.from(png,'base64')}
             ]);
-            await page.getByRole('button',{name:'Girar 180 graus: familia.png',exact:true}).click();
-            await page.getByRole('button',{name:'Girar para a esquerda: viagem.png',exact:true}).click();
-            assert.equal(await page.locator('#mem-file-previews img').nth(1).evaluate(image=>image.style.transform),'rotate(270deg)');
-            await page.getByRole('button',{name:'Girar 180 graus: viagem.png',exact:true}).click();
-            assert.equal(await page.locator('#mem-file-previews img').nth(0).evaluate(image=>image.style.transform),'rotate(180deg)');
-            assert.equal(await page.locator('#mem-file-previews img').nth(1).evaluate(image=>image.style.transform),'rotate(90deg)');
-            await page.screenshot({path:path.join(__dirname,`artifacts/fotos-selecionadas-${viewport.width}.png`),fullPage:true});
-            await page.getByRole('button',{name:'Enviar fotos',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Falha temporaria no upload.'}).waitFor();
             assert.equal(sessions,2);assert.equal(sends,2);
+            assert.equal(await page.locator('#mem-publish-reason').innerText(),'Ha fotos pendentes de envio.');
+            assert.equal(calls.filter(call=>call.endpoint.includes('AlbunsSolicitarPublicacao')).length,0,'Selecionar fotos envia sem publicar um video.');
+            await page.screenshot({path:path.join(__dirname,`artifacts/fotos-selecionadas-${viewport.width}.png`),fullPage:true});
             assert.equal(await page.getByRole('button',{name:'Girar 180 graus: viagem.png',exact:true}).isDisabled(),true,'Uma tentativa iniciada conserva a orientacao para o retry.');
-            await page.getByRole('button',{name:'Enviar fotos',exact:true}).click();
+            await choosePhotos();
+            assert.equal(sends,2,'Cancelar outro seletor nao repete fotos pendentes.');
+            await page.getByRole('button',{name:'Tentar novamente',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Fotos adicionadas ao album.'}).waitFor();
             assert.equal(sessions,2,'Retoma a sessao, nao cria outra.');assert.equal(sends,3);assert.equal(photos.length,2);
+            assert.equal(await page.locator('#mem-upload').isHidden(),true);
+            await choosePhotos([{name:'outro-lote.png',mimeType:'image/png',buffer:photoPng}]);
+            await page.waitForFunction(()=>!document.getElementById('mem-files').disabled);
+            assert.equal(sessions,3);assert.equal(sends,4);assert.equal(photos.length,3,'Segundo lote envia automaticamente somente a foto nova.');
+            await page.locator('.mem-photo-row').last().getByRole('button',{name:'Remover foto do album',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Foto removida do album.'}).waitFor();
             await page.getByLabel('Legenda da foto 101').fill('Primeira memoria');
             await page.locator('.mem-photo-row').first().getByRole('button',{name:'Salvar foto',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Foto atualizada.'}).waitFor();
@@ -261,17 +310,17 @@ async function main() {
             const orientation=page.getByRole('dialog',{name:'Orientacao da foto',exact:true});
             await page.getByRole('button',{name:'Girar foto 101',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-photo-save').disabled && document.getElementById('mem-photo-image').complete && document.getElementById('mem-photo-image').naturalWidth>0);
-            assert.equal(await page.locator('#mem-photo-angle').innerText(),'180 graus');
-            await orientation.getByRole('button',{name:'Girar 180 graus',exact:true}).click();
             assert.equal(await page.locator('#mem-photo-angle').innerText(),'0 graus');
-            await orientation.getByRole('button',{name:'Girar para a direita',exact:true}).click();
+            await orientation.getByRole('button',{name:'Girar 180 graus',exact:true}).click();
+            assert.equal(await page.locator('#mem-photo-angle').innerText(),'180 graus');
+            await orientation.getByRole('button',{name:'Girar para a esquerda',exact:true}).click();
             assert.equal(await page.locator('#mem-photo-image').evaluate(image=>image.style.transform),'rotate(90deg)');
             assert.equal(await orientation.evaluate(element=>element.scrollWidth>element.clientWidth),false);
             await page.screenshot({path:path.join(__dirname,`artifacts/orientacao-${viewport.width}.png`)});
             failRotation=true;
             await orientation.getByRole('button',{name:'Salvar orientacao',exact:true}).click();
             await orientation.getByRole('status').filter({hasText:'Album em publicacao.'}).waitFor();
-            assert.equal(photos[0].rotacao,180,'Falha nao confirma orientacao local.');
+            assert.equal(photos[0].rotacao,0,'Falha nao confirma orientacao local.');
             await orientation.getByRole('button',{name:'Salvar orientacao',exact:true}).click();
             await orientation.waitFor({state:'hidden'});
             assert.equal(photos[0].rotacao,90);
@@ -288,8 +337,18 @@ async function main() {
             assert.equal(await page.locator('#mem-channel-status').innerText(),`Canal conectado: ${channelB.canalTitulo}`);
             assert.equal(calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length,0,'Usar um canal salvo nao exige OAuth novamente.');
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isEnabled(),true);
+            await page.getByLabel('Descricao',{exact:true}).fill('Descricao atualizada antes de publicar.');
+            const beforePublish=calls.length;
+            failSave=true;
+            await page.getByRole('button',{name:'Publicar album',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Falha ao salvar o album.'}).waitFor();
+            assert.equal(calls.slice(beforePublish).some(call=>call.endpoint.includes('AlbunsSolicitarPublicacao')),false,'Falha no salvamento impede publicar.');
+            assert.equal(await page.getByLabel('Descricao',{exact:true}).inputValue(),'Descricao atualizada antes de publicar.');
             await page.getByRole('button',{name:'Publicar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
+            assert.equal(albums[0].descricao,'Descricao atualizada antes de publicar.');
+            const publishCalls=calls.slice(beforePublish);
+            assert.ok(publishCalls.findLastIndex(call=>call.endpoint.endsWith('/PutAlbum'))<publishCalls.findIndex(call=>call.endpoint.includes('AlbunsSolicitarPublicacao')),'Salvar precede a solicitacao de publicacao.');
             assert.equal(await page.getByLabel('Canal YouTube de destino').isEnabled(),true,'A escolha para a proxima publicacao e independente do destino ja capturado.');
             assert.equal(await page.getByLabel('Titulo',{exact:true}).isDisabled(),true,'Album solicitado nao muda durante a renderizacao.');
             assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).isDisabled(),true);
@@ -405,8 +464,7 @@ async function main() {
             await page.getByLabel('Titulo',{exact:true}).fill('Memorias de familia');
             await page.getByLabel('Qualidade do video',{exact:true}).selectOption('1');
             await page.getByLabel('Modelo',{exact:true}).selectOption('1');
-            await page.getByRole('button',{name:'Salvar album',exact:true}).click();
-            await page.getByRole('status').filter({hasText:'Album salvo.'}).waitFor();
+            await choosePhotos();
             assert.equal(await page.locator('#mem-publication-quality').innerText(),'Qualidade: Alta (4K 2160p)','Publicacao anterior nao muda ao editar qualidade do album.');
             assert.equal(await page.locator('#mem-publication-model').innerText(),'Romantico / Air Prelude');
             await page.getByLabel('Musica',{exact:true}).selectOption('1');
@@ -428,7 +486,10 @@ async function main() {
             assert.equal(await page.getByLabel('Titulo',{exact:true}).inputValue(),'Memorias de familia');
             assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).inputValue(),'1','Reabrir o album conserva a qualidade escolhida.');
             assert.equal(await page.locator('.mem-photo-row').count(),2,'Restaura o album apos OAuth.');
+            const beforeNew=calls.length;
             await page.getByRole('button',{name:'Novo album',exact:true}).click();
+            assert.equal(calls.length,beforeNew,'Novo album nao cria registro vazio.');
+            assert.equal(await page.getByLabel('Titulo',{exact:true}).evaluate(input=>document.activeElement===input),true);
             assert.equal(await page.locator('#mem-sharing').isHidden(),true,'Novo album nunca reutiliza o link do album anterior.');
             assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),'');
             assert.equal(await page.locator('#mem-video-link').getAttribute('href'),null);
